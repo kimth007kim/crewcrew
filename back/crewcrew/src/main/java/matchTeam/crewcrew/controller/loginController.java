@@ -22,9 +22,9 @@ public class loginController {
         // 멤버여러개 뺴와서 정보를 찾아보는 메서드
 
         List<Member> member = new ArrayList<Member>();
-        member.add(new Member("kimth007kim@naver.com","1234"));
-        member.add(new Member("aaaabbbbcccc123@naver.com","0987"));
-        member.add(new Member("rlarudehd12@class.com","25341587453"));
+        member.add(new Member(1,"kimth007kim@naver.com","1234"));
+        member.add(new Member(2,"aaaabbbbcccc123@naver.com","0987"));
+        member.add(new Member(3,"rlarudehd12@class.com","25341587453"));
         return member;
     }
 
