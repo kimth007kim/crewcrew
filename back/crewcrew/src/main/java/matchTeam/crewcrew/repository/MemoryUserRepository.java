@@ -1,7 +1,7 @@
 package matchTeam.crewcrew.repository;
 
 
-import matchTeam.crewcrew.domain.User;
+import matchTeam.crewcrew.Entity.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -16,8 +16,8 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        user.setId(++sequence);
-        store.put(user.getId(),user);
+        user.setUid(++sequence);
+        store.put(user.getUid(),user);
         return user;
     }
 
@@ -35,6 +35,4 @@ public class MemoryUserRepository implements UserRepository {
     public Optional<User> findByEmail(String Email) {
         return Optional.empty();
     }
-
-
 }
