@@ -1,6 +1,7 @@
 package matchTeam.crewcrew.repository;
 
-import matchTeam.crewcrew.domain.User;
+import matchTeam.crewcrew.Entity.User;
+
 import java.util.List;
 import java.util.Optional;
 

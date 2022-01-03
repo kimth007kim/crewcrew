@@ -1,6 +1,7 @@
 package matchTeam.crewcrew.repository;
 
-import matchTeam.crewcrew.domain.User;
+
+import matchTeam.crewcrew.Entity.User;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -36,4 +37,5 @@ public class JpaUserRepository implements UserRepository {
     public List<User> findAll() {
         return em.createQuery("select m from User m",User.class).getResultList();
     }
+
 }

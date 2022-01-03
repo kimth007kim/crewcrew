@@ -1,27 +1,32 @@
 package matchTeam.crewcrew.Entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.type.descriptor.sql.LobTypeMappings;
+
+import javax.persistence.*;
 import java.sql.Blob;
 
 @Entity
+@NoArgsConstructor
+@Getter
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long uid;
     private String email;
     private String password;
-    private byte[] profileImage;
+    private byte[] profileimage;
     private String introduce;
     private String nickname;
-    public Long getId() {
-        return id;
+
+
+    public Long getUid() {
+        return uid;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUid(Long uid) {
+        this.uid = uid;
     }
 
     public String getEmail() {
@@ -40,12 +45,12 @@ public class User {
         this.password = password;
     }
 
-    public byte[] getProfileImage() {
-        return profileImage;
+    public byte[] getProfileimage() {
+        return profileimage;
     }
 
-    public void setProfileImage(byte[] profileImage) {
-        this.profileImage = profileImage;
+    public void setProfileimage(byte[] profileimage) {
+        this.profileimage = profileimage;
     }
 
     public String getIntroduce() {
@@ -63,5 +68,4 @@ public class User {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
-
 }
