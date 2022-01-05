@@ -6,10 +6,15 @@ module.exports = {
   extends: ['airbnb', 'airbnb/hooks'],
   rules: {
     'linebreak-style': 0,
-    'react/jsx-filename-extension': [1, { extensions: ['js', 'jsx'] }],
+    'react/jsx-filename-extension': [
+      1,
+      {
+        extensions: ['js', 'jsx'],
+      },
+    ],
     // 확장자로 js와 jsx 둘다 허용하도록 수정
-    'arrow-parens': ['warn', 'as-needed'],
-    // 화살표 함수의 파라미터가 하나일때 괄호 생략
+    'arrow-parens': ['warn', 'always'],
+    // 화살표 함수의 파라미터가 하나일때도 괄호
     'no-unused-vars': ['off'],
     // 사용하지 않는 변수가 있을때 빌드에러가 나던 규칙 해제
     'no-console': ['off'],
@@ -24,6 +29,22 @@ module.exports = {
     // props의 타입체크를 처리하려면 prop-types보단 차라리 typescript를 사용하는게 낫다.
     'no-underscore-dangle': ['off'],
     // camelCase를 따르는게 좋긴 하지만 `_`를 어쩔수 없이 써야하는 상황을 위해(가령 백엔드가 mongoDB)
+    'object-curly-newline': [
+      'warn',
+      {
+        ObjectExpression: 'always',
+        ObjectPattern: {
+          multiline: true,
+        },
+        ImportDeclaration: 'never',
+        ExportDeclaration: {
+          multiline: true,
+          minProperties: 3,
+        },
+      },
+    ],
+    'operator-linebreak': ['error', 'after'],
+    'implicit-arrow-linebreak': ['error', 'below'],
   },
   settings: {
     'import/resolver': {

@@ -2,7 +2,15 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import styled, { keyframes, css } from 'styled-components';
 
-function Modal({ size = 'regular', visible = false, handleClose, close = false, header = null, body, footer = null }) {
+function Modal({
+  size = 'regular',
+  visible = false,
+  handleClose,
+  close = false,
+  header = null,
+  body,
+  footer = null,
+}) {
   const element = useRef(null);
   const ignoreClick = useRef(false);
   const [LocalVisible, setLocalVisible] = useState(visible);
