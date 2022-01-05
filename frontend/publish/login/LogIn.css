@@ -1,0 +1,402 @@
+
+
+* { margin: 0;
+    padding: 0;
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif'; 
+     }
+ul{
+    list-style-type: none;
+}
+a{
+    text-decoration:none;
+}
+
+body.Modal{
+    height: 100vh;
+    overflow: hidden;
+}
+.ModalWrapper{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ModalBg{
+    background-color: #000;
+    opacity: 0;
+    transition: opacity 1s;
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+}
+.ModalWrapper.Modal .ModalBg{
+    opacity: .5;
+}
+.ModalWrapper .ModalBox{
+    padding: 100px 138px 80px;
+    background-color: #fff;
+    opacity: 0;
+    transition-property: opacity, top, bottom, padding;
+    transition-duration: .5s;
+    border-radius: 62px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, .16);
+    z-index: 1;
+    position: relative;
+}
+.ModalWrapper.Modal .ModalBox{
+    opacity: 1;
+}
+.ModalClose{
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    width: 14px;
+    height: 14px;
+    background: url("../../src/assets/images/ModalClose.png");
+    background-size: 100%;
+    cursor: pointer;
+}
+.ModalCont{
+    width: 260px;
+    color: #868686;
+}
+.ModalTitle{
+    display: flex;
+}
+.ModalContent{
+    opacity: 1;
+    transition: .5s;
+}
+.ModalContent.Off{
+    opacity: 0;
+}
+.ModalTitle li{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: .5s;
+    height: 45px;
+}
+.ModalTitle li.On{
+    font-size: 32px;
+    color: #000;
+    font-weight: 700;
+    cursor: default;
+}
+.LogInForm>ul>li{
+    position: relative;
+}
+.LogInForm>ul>li:nth-of-type(1){
+    margin: 35px 0 13px;
+    height: 64px;
+}
+.LogInForm>ul>li:nth-of-type(2){
+    margin: 0 0 31px;
+    height: 64px;
+}
+.LogInForm>ul>li:nth-of-type(3){
+    margin: 0 0 31px;
+}
+.LogInForm>ul>li>input{
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid #e2e2e2;
+    outline: none;
+    padding: 16px 12px;
+    box-sizing: border-box;
+    font-size: 13px;
+}
+.LogInForm>ul>li>label{
+    position: absolute;
+    left: 12px;
+    top: 13px;
+    font-size: 18px;
+    font-weight: 300;
+    padding: 0 4px 0 7px;
+    background-color: #fff;
+    transition: .5s;
+    line-height: 24px;
+}
+.LogInForm>ul>li p.InputTxt{
+    font-size: 10px;
+    text-align: center;
+    font-weight: 300;
+    position: absolute;
+    width: 100%;
+    top: 50px;
+    opacity: 0;
+    transition: .5s;
+}
+.LogInForm>ul>li .InputDel{
+    width: 18px;
+    height: 18px;
+    background: url("../../src/assets/images/InputDel.png");
+    background-size: 100%;
+    cursor: pointer;
+    position: absolute;
+    top: 16px;
+    right: 15px;
+    display: none;
+}
+.LogInForm>ul>li .PasswordShow{
+    width: 25px;
+    height: 15px;
+    background: url("../../src/assets/images/PasswordShow.png");
+    background-size: 100%;
+    cursor: pointer;
+    position: absolute;
+    top: 17px;
+    right: -41px;
+    transition: .3s;
+    display: none;
+}
+.LogInForm>ul>li .PasswordShow.On{
+    background: url("../../src/assets/images/PasswordShow_On.png");
+    background-size: 100%;
+}
+.LogInForm>ul>li .PasswordShow.Error{
+    background: url("../../src/assets/images/PasswordShow_Error.png");
+    background-size: 100%;
+}
+.LogInForm>ul>li.On>input{
+    border: 1px solid #00B7FF;
+    caret-color: #00B7FF;
+}
+.LogInForm>ul>li.On>label{
+    top: -10px;
+    color: #00B7FF;
+    font-size: 13px;
+    font-weight: 500;
+}
+.LogInForm>ul>li.Over .InputDel, .LogInForm>ul>li.Error .InputDel{
+    display: block;
+}
+.LogInForm>ul>li.Over .PasswordShow, .LogInForm>ul>li.Error .PasswordShow{
+    display: block;
+}
+.LogInForm>ul>li p.InputTxt.On{
+    display: block;
+    color: #00B7FF;
+    opacity: 1;
+    top: 54px;
+}
+.LogInForm>ul>li.Error>input{
+    border: 1px solid #FF0045;
+    caret-color: #FF0045;
+}
+.LogInForm>ul>li.Error>label{
+    top: -12px;
+    color: #FF0045;
+    font-size: 13px;
+    font-weight: 500;
+}
+.LogInForm>ul>li p.InputTxt.Error{
+    display: block;
+    color: #FF0045;
+    opacity: 1;
+    top: 54px;
+}
+.LogInForm>ul>li .LogInSubmit{
+    width: 100%;
+    height: 50px;
+    border: none;
+    outline: none;
+    background-color: #001881;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+}
+.LogInForm ul ul{
+    display: flex;
+}
+.LogInForm ul ul li{
+    display: flex;
+    width: 50%;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 300;
+    color: #868686;
+}
+.LogInForm ul ul li:nth-of-type(1){
+    justify-content: space-between;
+}
+.LogInForm ul ul li p{
+    cursor: pointer;
+    line-height: 21px;
+}
+.LogInForm ul ul li label{
+    display: flex;
+    line-height: 21px;
+    cursor: pointer;
+}
+.LogInForm ul ul li label span{
+    display:block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    background: url("../../src/assets/images/LogInCheck_off.png");
+    background-size: 100%;
+    transition: background .2s;
+}
+.LogInForm ul ul #LogInCheck{
+    width: 1px;
+    height: 1px;
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute;
+}
+.LogInForm ul ul #LogInCheck:checked~label span{
+    background: url("../../src/assets/images/LogInCheck_on.png");
+    background-size: 100%;
+}
+
+p.SnsTitle{
+    margin: 54px auto 28px;
+    font-size: 13px;
+    color: #000;
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    white-space: nowrap;
+}
+p.SnsTitle::before, p.SnsTitle::after{
+    content: "";
+    display: block;
+    height: 1px;
+    width: 78px;
+    background-color: #E2E2E2;
+}
+
+ul.Sns{
+    display: flex;
+    justify-content: space-between;
+}
+ul.Sns button{
+    width: 122px;
+    height: 40px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: -0.05em;
+    cursor: pointer;
+}
+ul.Sns button.Naver{
+    background-color: #03C75A;
+    color: #fff;
+}
+ul.Sns button.Naver img{
+    width: 10px;
+    margin-right: 6px;
+}
+ul.Sns button.Kakao{
+    background-color: #FEE500;
+    font-weight: 400;
+}
+ul.Sns button.Kakao img{
+    width: 13px;
+    margin-right: 4px;
+    margin-top: 2px;
+}
+
+@media screen and (max-width:768px) {
+
+    .ModalWrapper.Modal .ModalBox{
+        padding-top: 0;
+    }
+
+    .ModalWrapper .ModalBox{
+        padding: 0 20px 0;
+        opacity: 1;
+        border-radius: 30px 30px 0 0;
+        width: 100%;
+        box-sizing: border-box;
+        position: absolute;
+        bottom: -180px;
+        top: 100vh;
+        overflow: hidden;
+    }
+
+    .ModalWrapper.Modal .ModalBox{
+        top: 82px;
+        height: auto;
+        bottom: 0;
+    }
+
+    .ModalClose{
+        top: 48px;
+        right: 22px;
+    }
+
+    .ModalCont{
+        width: 100%;
+        height: 100%;
+    }
+    .ModalCont::-webkit-scrollbar{
+        display: none;
+    }
+
+    .ModalTitle{
+        padding-top: 87px;
+        padding-bottom: 8px;
+    }
+
+    .LogInForm>ul>li .PasswordShow{
+        right: 50px;
+    }
+
+    .LogInForm ul ul li:nth-of-type(1){
+        justify-content: center;
+    }
+
+    ul.Sns{
+        padding-bottom: 80px;
+    }
+
+    ul.Sns li{
+        width: 50%;
+    }
+
+    ul.Sns li:first-of-type{
+        margin-right: 12px;
+    }
+
+    ul.Sns button{
+        width: 100%;
+    }
+
+    p.SnsTitle::before, p.SnsTitle::after{
+        width: 100%;
+    }
+    p.SnsTitle::before{
+        margin-right: 15px;
+    }
+    p.SnsTitle::after{
+        margin-left: 15px;
+    }
+
+    .ModalContent{
+        overflow: auto;
+        height: calc(100vh - 227px);
+    }
+
+    .ModalContent::-webkit-scrollbar{
+        display: none;
+    }
+}
