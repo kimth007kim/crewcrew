@@ -7,12 +7,12 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin"); // 추가 코드
 
 module.exports = {
-  mode: "production", // 개발 환경
+  mode: process.env.NODE_ENV, // 개발 환경
   entry: "./src/index.js", // 애플리케이션 시작 경로
   // 번들된 파일 경로
   output: {
-    filename: "bundle.[hash].js",
-    path: path.resolve("./build"),
+    path: path.resolve(__dirname, "dist/"),
+    publicPath: "/",
   },
   module: {
     rules: [
