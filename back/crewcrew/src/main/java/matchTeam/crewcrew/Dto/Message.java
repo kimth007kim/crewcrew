@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.dto;
+package matchTeam.crewcrew.Dto;
 
 import lombok.Data;
 

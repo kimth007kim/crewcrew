@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.repository;
+package matchTeam.crewcrew.Repository;
 
 import matchTeam.crewcrew.Entity.User;
 

@@ -2,8 +2,7 @@ package matchTeam.crewcrew.Service;
 
 
 import matchTeam.crewcrew.Entity.User;
-import matchTeam.crewcrew.repository.UserRepository;
-import matchTeam.crewcrew.service.UserService;
+import matchTeam.crewcrew.Repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

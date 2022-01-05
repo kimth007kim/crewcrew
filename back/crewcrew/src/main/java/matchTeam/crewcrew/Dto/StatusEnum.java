@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.dto;
+package matchTeam.crewcrew.Dto;
 
 public enum StatusEnum {
     OK(200,"OK"),
