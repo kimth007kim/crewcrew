@@ -1,10 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
+import Router from './pages/Router';
 
 const App = () => {
-  return <Wrapper className="title">Hello, Crew</Wrapper>;
+  return <Router></Router>;
 };
 
 export default App;
-
-const Wrapper = styled.header``;

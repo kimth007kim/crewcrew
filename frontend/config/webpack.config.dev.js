@@ -14,9 +14,9 @@ module.exports = {
     publicPath: '/',
   },
   devServer: {
-    host: 'localhost',
-    port: port,
-    open: true, // open page when start
+    open: true,
+    port: 3000,
+    historyApiFallback: true,
   },
 
   module: {
@@ -49,9 +49,12 @@ module.exports = {
       },
     ],
   },
+  resolve: {
+    extensions: ['.js', '.jsx'],
+  },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html',
+      template: './src/index.html',
       filename: 'index.html',
     }),
     new MiniCssExtractPlugin({
