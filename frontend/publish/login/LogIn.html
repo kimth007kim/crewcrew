@@ -1,79 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CrewCrew</title>
-    <link rel="stylesheet" href="./LogIn.css">
-    <link href='../fonts.css' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="./LogIn.css" />
+    <link href="../fonts.css" rel="stylesheet" type="text/css" />
     <script src="./LogIn.js"></script>
-</head>
-<body><!--로그인 버튼 클릭 시 Modal클래스 추가-->
+  </head>
+  <body>
+    <!--로그인 버튼 클릭 시 Modal클래스 추가-->
 
+    <div class="ModalWrapper">
+      <!--로그인 버튼 클릭 시 Modal클래스 추가-->
+      <div class="ModalBg"></div>
+      <div class="ModalBox">
+        <div class="ModalClose"></div>
 
-    <div class="ModalWrapper"> <!--로그인 버튼 클릭 시 Modal클래스 추가-->
-        <div class="ModalBg"></div>
-        <div class="ModalBox">
+        <div class="ModalCont">
+          <ul class="ModalTitle">
+            <li class="LogIn On">로그인</li>
+            <li class="Sign">회원가입</li>
+          </ul>
 
-            <div class="ModalClose"></div>
+          <div class="ModalContent ContentLogin">
+            <form action="" class="LogInForm">
+              <ul class="LogInUl">
+                <li>
+                  <input type="email" id="LogInEmail" class="LogInInput" />
+                  <label for="LogInEmail">이메일</label>
+                  <div class="InputDel"></div>
+                  <p class="InputTxt">가입된 이메일 주소를 입력해 주세요</p>
+                  <!--error상태시 텍스트 변경-->
+                </li>
+                <li>
+                  <input type="password" id="LogInPassword" class="LogInInput" />
+                  <label for="LogInPassword">비밀번호</label>
+                  <div class="InputDel"></div>
+                  <div class="PasswordShow"></div>
+                  <p class="InputTxt">숫자/영문/특수문자 포함 8~20글자</p>
+                  <!--error상태시 텍스트 변경-->
+                </li>
+                <li>
+                  <button type="submit" class="LogInSubmit">로그인</button>
+                </li>
+                <li>
+                  <ul>
+                    <li>
+                      <input type="checkbox" id="LogInCheck" />
+                      <label for="LogInCheck"><span></span>로그인상태유지</label>
+                    </li>
+                    <li>
+                      <p>비밀번호 찾기</p>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </form>
 
-            <div class="ModalCont">
+            <p class="SnsTitle">또는 간편하게</p>
 
-                <ul class="ModalTitle">
-                    <li class="LogIn On">로그인</li>
-                    <li class="Sign">회원가입</li>
-                </ul>
-
-                <div class="ModalContent ContentLogin">
-                    <form action="" class="LogInForm">
-                        <ul class="LogInUl">
-                            <li> 
-                                <input type="email" id="LogInEmail" class="LogInInput"> 
-                                <label for="LogInEmail">이메일</label>
-                                <div class="InputDel"></div>
-                                <p class="InputTxt">가입된 이메일 주소를 입력해 주세요</p> <!--error상태시 텍스트 변경-->
-                            </li>
-                            <li>
-                                <input type="password" id="LogInPassword" class="LogInInput">
-                                <label for="LogInPassword">비밀번호</label>
-                                <div class="InputDel"></div>
-                                <div class="PasswordShow"></div>
-                                <p class="InputTxt">숫자/영문/특수문자 포함 8~20글자</p>  <!--error상태시 텍스트 변경-->
-                            </li>
-                            <li>
-                                <button type="submit" class="LogInSubmit">로그인</button>
-                            </li>
-                            <li>
-                                <ul>
-                                    <li>
-                                        <input type="checkbox" id="LogInCheck">
-                                        <label for="LogInCheck"><span></span>로그인상태유지</label>
-                                    </li>
-                                    <li>
-                                        <p>비밀번호 찾기</p>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </form>
-
-                    <p class="SnsTitle">또는 간편하게</p>
-
-                    <ul class="Sns">
-                        <li>
-                            <button type="button" class="Naver"><img src="../../src/assets/images/Naver.png" alt="네이버">네이버 로그인</button>
-                        </li>
-                        <li>
-                            <button type="button" class="Kakao"><img src="../../src/assets/images/Kakao.png" alt="카카오">카카오 로그인</button>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <ul class="Sns">
+              <li>
+                <button type="button" class="Naver">
+                  <img src="../../src/assets/images/Naver.png" alt="네이버" />네이버 로그인
+                </button>
+              </li>
+              <li>
+                <button type="button" class="Kakao">
+                  <img src="../../src/assets/images/Kakao.png" alt="카카오" />카카오 로그인
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
+      </div>
     </div>
 
-
-    <button class="ButtonLogin" style="margin: 20vh 30vw; width: 100px; height: 50px; cursor: pointer; z-index: 9999; position: relative;">로그인</button> <!--개발 과정에선 무시-->
-</body>
+    <button
+      class="ButtonLogin"
+      style="
+        margin: 20vh 30vw;
+        width: 100px;
+        height: 50px;
+        cursor: pointer;
+        z-index: 9999;
+        position: relative;
+      "
+    >
+      로그인
+    </button>
+    <!--개발 과정에선 무시-->
+  </body>
 </html>
