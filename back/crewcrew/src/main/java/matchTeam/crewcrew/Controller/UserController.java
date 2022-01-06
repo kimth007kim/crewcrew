@@ -37,8 +37,11 @@ public class UserController {
     public ResponseEntity<Object> Login(String email, String password) {
         if (userService.login(email, password) == true) {
             return ResponseHandler.generateResponse("Login Success", HttpStatus.OK, null);
+        }else{
+            return ResponseHandler.ErrorResponse(ErrorCode.LOGIN_FAILED);
+
         }
-        return ResponseHandler.generateResponse("Login Fail", HttpStatus.OK, null);
+//        return ResponseHandler.generateResponse("Login Fail", HttpStatus.OK, null);
 
     }
 
@@ -54,7 +57,6 @@ public class UserController {
         user1.setIntroduce(user.getIntroduce());
         long pid = userService.join(user1);
         if (pid == -1) {
-            JoinFailed fail = new JoinFailed();
             return ResponseHandler.ErrorResponse(ErrorCode.EMAIL_ALREADY_EXIST);
 
         } else {

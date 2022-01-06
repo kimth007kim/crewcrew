@@ -21,14 +21,13 @@ public class ResponseHandler {
     }
 
     public static ResponseEntity<Object> ErrorResponse(ErrorCode errorCode) {
-
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("status", errorCode.getCode());
         map.put("success", false);
         map.put("errorMessage", errorCode.getMessage());
         map.put("error", true);
 
-        return  new ResponseEntity<Object>(map, HttpStatus.valueOf(errorCode.getCode()));
+        return  new ResponseEntity<Object>(map,HttpStatus.OK);
 
     }
 }

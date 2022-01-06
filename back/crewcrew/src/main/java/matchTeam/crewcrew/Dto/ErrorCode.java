@@ -9,6 +9,7 @@ public enum ErrorCode {
     ILLEGAL_STATE(400, "STANDARD_001", "illegal state"),
     ILLEGAL_ARGUMENT(400, "STANDARD_002", "illegal argument"),
 
+    LOGIN_FAILED(600,"LOGIN_FAILED","cannot login to server"),
     // Exception
     EXCEPTION(500, "EXCEPTION", "exception"),
 
