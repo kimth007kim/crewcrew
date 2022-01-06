@@ -44,8 +44,8 @@ public class UserController {
 
 
     @PostMapping("/join")
-//    public ResponseEntity<Message> join(@RequestParam("profileImage") MultipartFile file, User user) {
-    public ResponseEntity<Object> join(@RequestParam("profileImage") MultipartFile file, User user) {
+    public ResponseEntity<Object> join( User user) {
+//    public ResponseEntity<Object> join(@RequestParam("profileImage") MultipartFile file, User user) {
 
         User user1 = new User();
         user1.setEmail(user.getEmail());
