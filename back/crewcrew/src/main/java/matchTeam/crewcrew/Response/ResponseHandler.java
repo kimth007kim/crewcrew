@@ -22,7 +22,7 @@ public class ResponseHandler {
 
     public static ResponseEntity<Object> ErrorResponse(ErrorCode errorCode) {
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("status", errorCode.getCode());
+        map.put("status", errorCode.getStatus());
         map.put("success", false);
         map.put("errorMessage", errorCode.getMessage());
         map.put("error", true);
