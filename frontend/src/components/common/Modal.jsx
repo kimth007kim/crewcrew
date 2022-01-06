@@ -11,8 +11,6 @@ function Modal({
   body,
   footer = null,
 }) {
-  const element = useRef(null);
-  const ignoreClick = useRef(false);
   const [LocalVisible, setLocalVisible] = useState(visible);
   const [Animate, setAnimate] = useState(visible);
 
@@ -25,21 +23,6 @@ function Modal({
     }
     setLocalVisible(visible);
   }, [LocalVisible, visible]);
-
-  //   const handleCloseModal = useCallback((event) => {
-  //     if (ignoreClick.current) {
-  //       ignoreClick.current = false;
-  //       return;
-  //     }
-
-  //     const { target, currenTarget } = event;
-
-  //     if (target !== currenTarget) {
-  //       return;
-  //     }
-
-  //     handleClose();
-  //   }, []);
 
   if (!Animate && !LocalVisible) return null;
 

@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // 추가 코드
 const path = require('path');
+
 const port = process.env.PORT || 3000;
 
 module.exports = {
@@ -21,6 +22,13 @@ module.exports = {
 
   module: {
     rules: [
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        loader: 'file-loader',
+        options: {
+          name: 'assets/[contenthash].[ext]',
+        },
+      },
       {
         test: /\.(js|jsx)$/, // 빌드할 파일 확장자 정규식
         exclude: /node_modules/, // 제외할 파일 정규식
@@ -41,11 +49,28 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: '',
+            },
+          },
+          'css-loader',
+        ],
       },
       {
         test: /\.scss$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: '',
+            },
+          },
+          'css-loader',
+          'sass-loader',
+        ],
       },
     ],
   },

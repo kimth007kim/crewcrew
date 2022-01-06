@@ -54,12 +54,12 @@ window.addEventListener('DOMContentLoaded', () => {
   const inputDel = document.querySelectorAll('.InputDel');
   inputDel.forEach((e) => {
     // input 지우기 버튼 클릭 이벤트
-    e.addEventListener('mousedown', function (e) {
-      e.preventDefault();
+    e.addEventListener('mousedown', function (event) {
+      event.preventDefault();
       this.parentNode.firstElementChild.value = '';
       this.parentNode.classList.remove('On'); // error상태시 On 대신 Error 클래스 제거
       this.parentNode.firstElementChild.blur();
-      this.parentNode.firstElementChild.focus();//input 지운 후 바로 포커스되도록
+      this.parentNode.firstElementChild.focus(); // input 지운 후 바로 포커스되도록
     });
   });
 
@@ -70,7 +70,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // password보기 버튼 클릭 이벤트
     e.preventDefault();
     this.parentNode.firstElementChild.blur();
-    this.parentNode.firstElementChild.focus();//버튼 누르면 바로 포커스되도록
+    this.parentNode.firstElementChild.focus(); // 버튼 누르면 바로 포커스되도록
 
     if (isOn) {
       this.classList.add('On'); // error상태시 On 대신 Error 클래스 추가
