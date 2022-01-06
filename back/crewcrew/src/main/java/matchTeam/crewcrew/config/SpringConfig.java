@@ -1,4 +1,4 @@
-package matchTeam.crewcrew;
+package matchTeam.crewcrew.config;
 
 import matchTeam.crewcrew.Repository.*;
 import matchTeam.crewcrew.Service.UserService;
