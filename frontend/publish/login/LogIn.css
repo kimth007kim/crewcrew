@@ -74,6 +74,9 @@ body.Modal {
 .ModalContent.Off {
   opacity: 0;
 }
+.ModalContent.On{
+  opacity: 1 !important; /*로그인 css에도 적용*/
+}
 .ModalTitle li {
   width: 50%;
   display: flex;
@@ -177,11 +180,11 @@ body.Modal {
   font-size: 13px;
   font-weight: 500;
 }
-.LogInForm > ul > li.Over .InputDel,
+.LogInForm > ul > li.On .InputDel,
 .LogInForm > ul > li.Error .InputDel {
   display: block;
 }
-.LogInForm > ul > li.Over .PasswordShow,
+.LogInForm > ul > li.On .PasswordShow,
 .LogInForm > ul > li.Error .PasswordShow {
   display: block;
 }
@@ -272,13 +275,18 @@ p.SnsTitle {
   justify-content: space-between;
   white-space: nowrap;
 }
-p.SnsTitle::before,
-p.SnsTitle::after {
-  content: '';
+p.SnsTitle::before, p.SnsTitle::after{
+  content: "";
   display: block;
   height: 1px;
-  width: 78px;
-  background-color: #e2e2e2;
+  width: 100%;
+  background-color: #E2E2E2;
+}
+p.SnsTitle::before{
+  margin-right: 9px;
+}
+p.SnsTitle::after{
+  margin-left: 9px;
 }
 
 ul.Sns {
