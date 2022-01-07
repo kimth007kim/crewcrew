@@ -1,12 +1,10 @@
-package matchTeam.crewcrew.Entity;
+package matchTeam.crewcrew.entity;
 
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.type.descriptor.sql.LobTypeMappings;
 
 import javax.persistence.*;
-import java.sql.Blob;
 
 @Entity
 @NoArgsConstructor

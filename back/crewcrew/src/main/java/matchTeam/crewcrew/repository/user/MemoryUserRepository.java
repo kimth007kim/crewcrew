@@ -1,7 +1,7 @@
-package matchTeam.crewcrew.Repository;
+package matchTeam.crewcrew.repository.user;
 
 
-import matchTeam.crewcrew.Entity.User;
+import matchTeam.crewcrew.entity.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;

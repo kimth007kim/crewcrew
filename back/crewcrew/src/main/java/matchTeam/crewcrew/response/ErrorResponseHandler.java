@@ -1,6 +1,6 @@
-package matchTeam.crewcrew.Response;
+package matchTeam.crewcrew.response;
 
-import matchTeam.crewcrew.Dto.ErrorCode;
+import matchTeam.crewcrew.dto.ErrorCode;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 

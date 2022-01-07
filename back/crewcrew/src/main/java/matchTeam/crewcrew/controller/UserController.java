@@ -1,16 +1,13 @@
-package matchTeam.crewcrew.Controller;
+package matchTeam.crewcrew.controller;
 
-import matchTeam.crewcrew.Dto.ErrorCode;
-import matchTeam.crewcrew.Dto.JoinFailed;
-import matchTeam.crewcrew.Dto.UserDTO;
-import matchTeam.crewcrew.Entity.User;
-import matchTeam.crewcrew.Response.ErrorResponseHandler;
-import matchTeam.crewcrew.Response.ResponseHandler;
-import matchTeam.crewcrew.Service.UserService;
+import matchTeam.crewcrew.dto.ErrorCode;
+import matchTeam.crewcrew.dto.UserDTO;
+import matchTeam.crewcrew.entity.User;
+import matchTeam.crewcrew.response.ResponseHandler;
+import matchTeam.crewcrew.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;

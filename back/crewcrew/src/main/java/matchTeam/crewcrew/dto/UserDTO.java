@@ -1,8 +1,8 @@
-package matchTeam.crewcrew.Dto;
+package matchTeam.crewcrew.dto;
 
 import lombok.Data;
 import lombok.Getter;
-import matchTeam.crewcrew.Entity.User;
+import matchTeam.crewcrew.entity.User;
 
 @Data
 @Getter

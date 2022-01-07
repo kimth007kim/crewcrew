@@ -1,7 +1,8 @@
 package matchTeam.crewcrew.config;
 
-import matchTeam.crewcrew.Repository.*;
-import matchTeam.crewcrew.Service.UserService;
+import matchTeam.crewcrew.repository.user.JpaUserRepository;
+import matchTeam.crewcrew.repository.user.UserRepository;
+import matchTeam.crewcrew.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
