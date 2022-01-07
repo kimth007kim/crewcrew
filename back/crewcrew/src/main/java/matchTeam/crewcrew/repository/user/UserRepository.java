@@ -1,6 +1,6 @@
-package matchTeam.crewcrew.Repository;
+package matchTeam.crewcrew.repository.user;
 
-import matchTeam.crewcrew.Entity.User;
+import matchTeam.crewcrew.entity.User;
 
 import java.util.List;
 import java.util.Optional;

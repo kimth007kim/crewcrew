@@ -1,7 +1,7 @@
-package matchTeam.crewcrew.Controller;
+package matchTeam.crewcrew.controller;
 
-import matchTeam.crewcrew.Dto.ErrorCode;
-import matchTeam.crewcrew.Response.ErrorResponseHandler;
+import matchTeam.crewcrew.dto.ErrorCode;
+import matchTeam.crewcrew.response.ErrorResponseHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;

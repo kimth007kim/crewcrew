@@ -1,16 +1,13 @@
-package matchTeam.crewcrew.Controller;
+package matchTeam.crewcrew.controller;
 
-import matchTeam.crewcrew.Dto.ErrorCode;
-import matchTeam.crewcrew.Dto.JoinFailed;
-import matchTeam.crewcrew.Dto.UserDTO;
-import matchTeam.crewcrew.Entity.User;
-import matchTeam.crewcrew.Response.ErrorResponseHandler;
-import matchTeam.crewcrew.Response.ResponseHandler;
-import matchTeam.crewcrew.Service.UserService;
+import matchTeam.crewcrew.dto.ErrorCode;
+import matchTeam.crewcrew.dto.UserDTO;
+import matchTeam.crewcrew.entity.User;
+import matchTeam.crewcrew.response.ResponseHandler;
+import matchTeam.crewcrew.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,15 +34,18 @@ public class UserController {
     public ResponseEntity<Object> Login(String email, String password) {
         if (userService.login(email, password) == true) {
             return ResponseHandler.generateResponse("Login Success", HttpStatus.OK, null);
+        }else{
+            return ResponseHandler.ErrorResponse(ErrorCode.LOGIN_FAILED);
+
         }
-        return ResponseHandler.generateResponse("Login Fail", HttpStatus.OK, null);
+//        return ResponseHandler.generateResponse("Login Fail", HttpStatus.OK, null);
 
     }
 
 
     @PostMapping("/join")
-//    public ResponseEntity<Message> join(@RequestParam("profileImage") MultipartFile file, User user) {
-    public ResponseEntity<Object> join(@RequestParam("profileImage") MultipartFile file, User user) {
+    public ResponseEntity<Object> join( User user) {
+//    public ResponseEntity<Object> join(@RequestParam("profileImage") MultipartFile file, User user) {
 
         User user1 = new User();
         user1.setEmail(user.getEmail());
@@ -54,7 +54,6 @@ public class UserController {
         user1.setIntroduce(user.getIntroduce());
         long pid = userService.join(user1);
         if (pid == -1) {
-            JoinFailed fail = new JoinFailed();
             return ResponseHandler.ErrorResponse(ErrorCode.EMAIL_ALREADY_EXIST);
 
         } else {

@@ -1,7 +1,7 @@
-package matchTeam.crewcrew.Service;
+package matchTeam.crewcrew.service;
 
-import matchTeam.crewcrew.Entity.User;
-import matchTeam.crewcrew.Repository.UserRepository;
+import matchTeam.crewcrew.entity.User;
+import matchTeam.crewcrew.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
