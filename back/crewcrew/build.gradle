@@ -19,8 +19,8 @@ repositories {
 }
 
 dependencies {
-//	implementation 'org.springframework.boot:spring-boot-starter-security'
-//	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -28,7 +28,7 @@ dependencies {
 	implementation ('io.springfox:springfox-swagger-ui:2.9.2')
 
 	compileOnly 'org.projectlombok:lombok'
-//	compileOnly 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	compileOnly 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
