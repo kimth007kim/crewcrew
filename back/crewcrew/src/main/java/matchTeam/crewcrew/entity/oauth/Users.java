@@ -53,7 +53,7 @@ public class Users extends BaseTimeEntity{
         return this;
     }
 
-    public String getSnsType(){
+    public String getSnsTypeKey(){
         return this.snsType.getKey();
     }
 }
