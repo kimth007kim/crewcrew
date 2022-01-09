@@ -207,6 +207,10 @@ p.SnsTitle {
         overflow-y: auto;
     }
 
+    .ModalBody::-webkit-scrollbar{
+        display: none;
+    }
+
     .SnsList li{
         margin-right: 10px;
     }

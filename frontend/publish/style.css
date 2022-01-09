@@ -69,6 +69,7 @@ a {
   /*padding, font-size, font-weight, line-height, border-radius*/
   background-color: #001881;
   height: 40px;
+  color: #fff;
 }
 
 .ButtonFullSmall:hover {

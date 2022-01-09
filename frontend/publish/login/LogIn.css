@@ -69,6 +69,7 @@ a {
   /*padding, font-size, font-weight, line-height, border-radius*/
   background-color: #001881;
   height: 40px;
+  color: #fff;
 }
 
 .ButtonFullSmall:hover {
@@ -545,6 +546,9 @@ p.SnsTitle::after {
     border-radius: 0;
     height: calc(100vh - 194px);
     overflow-y: auto;
+  }
+  .ModalBody::-webkit-scrollbar {
+    display: none;
   }
   .SnsList li {
     margin-right: 10px;
