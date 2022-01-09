@@ -1,0 +1,280 @@
+/*색상 변수*/
+$black1 : #000; 
+$black2 : #707070;
+$black3 : #868686;
+$black4 : #a8a8a8;
+$black5 : #e2e2e2;
+
+$blue1 : #001881; 
+$blue2 : #005ec5;
+$blue3 : #00b7ff;
+$blue4 : #e6faff;
+
+$yellow1 : #ffd458; 
+
+$red1 : #ff0045; 
+
+$white : #fff;
+
+
+/*reset*/
+* { margin: 0;
+    padding: 0;
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif'; 
+}
+
+ul{
+    list-style-type: none;
+}
+
+a{
+    text-decoration: none;
+    color: $black3;
+}
+
+
+/*button*/
+@mixin buttonFull($padding, $size, $weight, $lheight, $radius) {
+    width: 100%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: .3s;
+    padding-top: $padding;
+    padding-bottom: $padding;
+    font-size: $size;
+    font-weight: $weight;
+    border-radius: $radius;
+    line-height: $lheight;
+}
+
+.ButtonFull{
+    @include buttonFull(12px, 20px, 500, 26px, 10px);
+    /*padding, font-size, font-weight, line-height, border-radius*/
+    background-color: $blue1;
+    height: 50px;
+    color: $white;
+
+    &:hover{
+        background-color: $blue2;
+    }
+
+    &.Disable{
+        background-color: $black5;
+        cursor: default;
+
+        &:hover{
+            background-color: $black5;
+        }
+    }
+}
+
+.ButtonFullSmall{
+    @include buttonFull(11px, 13px, 400, 20px, 6px);
+   /*padding, font-size, font-weight, line-height, border-radius*/
+    background-color: $blue1;
+    height: 40px;
+
+    &:hover{
+        box-shadow: 0 3px 6px rgba($color: #000000, $alpha: 0.15);
+    }
+
+    &.Disable{
+        background-color: $black5;
+        cursor: default;
+    }
+}
+
+.ButtonSns{
+    @include buttonFull(11px, 13px, 300, 20px, 6px);
+    /*padding, font-size, font-weight, line-height, border-radius*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    letter-spacing: -0.05em;
+    height: 40px;
+
+    &:hover{
+        box-shadow: 0 3px 6px rgba($color: #000000, $alpha: 0.1);
+    }
+
+    &.Kakao{
+        background-color: #fee500;
+        font-weight: 400;
+
+        img{
+            width: 13px;
+            margin-right: 4px;
+            margin-top: 2px;
+        }
+    }
+
+    &.Naver{
+        background-color: #03c75a;
+        color: $white;
+
+        img{
+            width: 10px;
+            margin-right: 6px;
+        }
+    }
+}
+
+
+
+/*input*/
+
+ul.InputList li{
+    position: relative;
+    height: 75px;
+}
+
+.InputFull{
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid $black5;
+    outline: none;
+    padding: 16px 12px;
+    box-sizing: border-box;
+    font-size: 13px;
+
+    &:hover{
+        border: 1px solid $black2;
+    }
+
+    &.On{
+        border: 1px solid $blue3;
+        caret-color: $blue3;
+    }
+
+    &.Error{
+        border: 1px solid $red1;
+        caret-color: $red1;
+    }
+}
+
+.LabelFull{
+    position: absolute;
+    left: 12px;
+    top: 13px;
+    font-weight: 18px;
+    font-weight: 300;
+    padding: 0 4px 0 7px;
+    background-color: $white;
+    transition: .5s;
+    line-height: 24px;
+
+    &.On{
+        top: -10px;
+        color: $blue3;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    &.Error{
+        top: -10px;
+        color: $red1;
+        font-size: 13px;
+        font-weight: 500;
+    }
+}
+
+.InputTxt{
+    font-size: 10px;
+    text-align: center;
+    font-weight: 300;
+    position: absolute;
+    width: 100%;
+    top: 50px;
+    opacity: 0;
+    transition: .5s;
+    user-select: none;
+
+    &.On{
+        color: $blue3;
+        opacity: 1;
+        top: 54px;
+    }
+
+    &.Error{
+        color: $red1;
+        opacity: 1;
+        top: 54px;
+    }
+}
+
+.InputDel{
+    width: 18px;
+    height: 18px;
+    background: url("../../src/assets/images/InputDel.png");
+    background-size: 100%;
+    cursor: pointer;
+    position: absolute;
+    top: 16px;
+    right: 15px;
+    display: none;
+
+    &.On{
+        display: block;
+    }
+}
+
+.PasswordShow{
+    width: 25px;
+    height: 15px;
+    background: url("../../src/assets/images/PasswordShow.png");
+    background-size: 100%;
+    cursor: pointer;
+    position: absolute;
+    top: 17px;
+    right: 48px;
+    transition: .3s;
+    display: none;
+
+    &.Over{
+        display: block;
+    }
+
+    &.On{
+        background: url("../../src/assets/images/PasswordShow_On.png");
+        background-size: 100%;
+    }
+
+    &.Error{
+        background: url("../src/assets/images/PasswordShow_Error.png");
+        background-size: 100%;
+        display: block;
+    }
+}
+
+.InputHide{ /*로그인 상태 유지*/
+    width: 1px;
+    height: 1px;
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute;
+
+    & ~ .LabelCheck{ /*로그인 상태 유지*/
+        display: flex;
+        line-height: 21px;
+        cursor: pointer;
+        user-select: none;
+    
+        span{
+            display: block;
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            background: url("../../src/assets/images/LogInCheck_off.png");
+            background-size: 100%;
+            transition: background .2s;
+        }
+    }
+
+    &:checked ~ .LabelCheck span{
+        background: url("../../src/assets/images/LogInCheck_on.png");
+        background-size: 100%;
+    }
+}
+

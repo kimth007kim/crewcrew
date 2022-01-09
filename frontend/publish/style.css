@@ -1,0 +1,307 @@
+@charset "UTF-8";
+/*색상 변수*/
+/*reset*/
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+}
+
+ul {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  color: #868686;
+}
+
+/*button*/
+.ButtonFull {
+  width: 100%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transition: .3s;
+  transition: .3s;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 20px;
+  font-weight: 500;
+  border-radius: 10px;
+  line-height: 26px;
+  /*padding, font-size, font-weight, line-height, border-radius*/
+  background-color: #001881;
+  height: 50px;
+  color: #fff;
+}
+
+.ButtonFull:hover {
+  background-color: #005ec5;
+}
+
+.ButtonFull.Disable {
+  background-color: #e2e2e2;
+  cursor: default;
+}
+
+.ButtonFull.Disable:hover {
+  background-color: #e2e2e2;
+}
+
+.ButtonFullSmall {
+  width: 100%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transition: .3s;
+  transition: .3s;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  font-size: 13px;
+  font-weight: 400;
+  border-radius: 6px;
+  line-height: 20px;
+  /*padding, font-size, font-weight, line-height, border-radius*/
+  background-color: #001881;
+  height: 40px;
+}
+
+.ButtonFullSmall:hover {
+  -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.ButtonFullSmall.Disable {
+  background-color: #e2e2e2;
+  cursor: default;
+}
+
+.ButtonSns {
+  width: 100%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transition: .3s;
+  transition: .3s;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  font-size: 13px;
+  font-weight: 300;
+  border-radius: 6px;
+  line-height: 20px;
+  /*padding, font-size, font-weight, line-height, border-radius*/
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  letter-spacing: -0.05em;
+  height: 40px;
+}
+
+.ButtonSns:hover {
+  -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.ButtonSns.Kakao {
+  background-color: #fee500;
+  font-weight: 400;
+}
+
+.ButtonSns.Kakao img {
+  width: 13px;
+  margin-right: 4px;
+  margin-top: 2px;
+}
+
+.ButtonSns.Naver {
+  background-color: #03c75a;
+  color: #fff;
+}
+
+.ButtonSns.Naver img {
+  width: 10px;
+  margin-right: 6px;
+}
+
+/*input*/
+ul.InputList li {
+  position: relative;
+  height: 75px;
+}
+
+.InputFull {
+  width: 100%;
+  height: 50px;
+  border-radius: 10px;
+  border: 1px solid #e2e2e2;
+  outline: none;
+  padding: 16px 12px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  font-size: 13px;
+}
+
+.InputFull:hover {
+  border: 1px solid #707070;
+}
+
+.InputFull.On {
+  border: 1px solid #00b7ff;
+  caret-color: #00b7ff;
+}
+
+.InputFull.Error {
+  border: 1px solid #ff0045;
+  caret-color: #ff0045;
+}
+
+.LabelFull {
+  position: absolute;
+  left: 12px;
+  top: 13px;
+  font-weight: 18px;
+  font-weight: 300;
+  padding: 0 4px 0 7px;
+  background-color: #fff;
+  -webkit-transition: .5s;
+  transition: .5s;
+  line-height: 24px;
+}
+
+.LabelFull.On {
+  top: -10px;
+  color: #00b7ff;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.LabelFull.Error {
+  top: -10px;
+  color: #ff0045;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.InputTxt {
+  font-size: 10px;
+  text-align: center;
+  font-weight: 300;
+  position: absolute;
+  width: 100%;
+  top: 50px;
+  opacity: 0;
+  -webkit-transition: .5s;
+  transition: .5s;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.InputTxt.On {
+  color: #00b7ff;
+  opacity: 1;
+  top: 54px;
+}
+
+.InputTxt.Error {
+  color: #ff0045;
+  opacity: 1;
+  top: 54px;
+}
+
+.InputDel {
+  width: 18px;
+  height: 18px;
+  background: url("../../src/assets/images/InputDel.png");
+  background-size: 100%;
+  cursor: pointer;
+  position: absolute;
+  top: 16px;
+  right: 15px;
+  display: none;
+}
+
+.InputDel.On {
+  display: block;
+}
+
+.PasswordShow {
+  width: 25px;
+  height: 15px;
+  background: url("../../src/assets/images/PasswordShow.png");
+  background-size: 100%;
+  cursor: pointer;
+  position: absolute;
+  top: 17px;
+  right: 48px;
+  -webkit-transition: .3s;
+  transition: .3s;
+  display: none;
+}
+
+.PasswordShow.Over {
+  display: block;
+}
+
+.PasswordShow.On {
+  background: url("../../src/assets/images/PasswordShow_On.png");
+  background-size: 100%;
+}
+
+.PasswordShow.Error {
+  background: url("../src/assets/images/PasswordShow_Error.png");
+  background-size: 100%;
+  display: block;
+}
+
+.InputHide {
+  /*로그인 상태 유지*/
+  width: 1px;
+  height: 1px;
+  clip: rect(1px, 1px, 1px, 1px);
+  position: absolute;
+}
+
+.InputHide ~ .LabelCheck {
+  /*로그인 상태 유지*/
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  line-height: 21px;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.InputHide ~ .LabelCheck span {
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  background: url("../../src/assets/images/LogInCheck_off.png");
+  background-size: 100%;
+  -webkit-transition: background .2s;
+  transition: background .2s;
+}
+
+.InputHide:checked ~ .LabelCheck span {
+  background: url("../../src/assets/images/LogInCheck_on.png");
+  background-size: 100%;
+}
+/*# sourceMappingURL=style.css.map */
