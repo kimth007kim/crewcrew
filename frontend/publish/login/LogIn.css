@@ -1,135 +1,201 @@
+@charset "UTF-8";
+/*색상 변수*/
+/*reset*/
 * {
   margin: 0;
   padding: 0;
   font-family: 'Spoqa Han Sans Neo', 'sans-serif';
 }
+
 ul {
   list-style-type: none;
 }
+
 a {
   text-decoration: none;
-}
-
-body.Modal {
-  height: 100vh;
-  overflow: hidden;
-}
-.ModalWrapper {
-  width: 100%;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.ModalBg {
-  background-color: #000;
-  opacity: 0;
-  transition: opacity 1s;
-  width: 100%;
-  height: 100vh;
-  position: absolute;
-  top: 0;
-}
-.ModalWrapper.Modal .ModalBg {
-  opacity: 0.5;
-}
-.ModalWrapper .ModalBox {
-  padding: 100px 138px 80px;
-  background-color: #fff;
-  opacity: 0;
-  transition-property: opacity, top, bottom, padding;
-  transition-duration: 0.5s;
-  border-radius: 62px;
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.16);
-  z-index: 1;
-  position: relative;
-}
-.ModalWrapper.Modal .ModalBox {
-  opacity: 1;
-}
-.ModalClose {
-  position: absolute;
-  top: 50px;
-  right: 50px;
-  width: 14px;
-  height: 14px;
-  background: url('../../src/assets/images/ModalClose.png');
-  background-size: 100%;
-  cursor: pointer;
-}
-.ModalCont {
-  width: 260px;
   color: #868686;
 }
-.ModalTitle {
-  display: flex;
-}
-.ModalContent {
-  opacity: 1;
-  transition: 0.5s;
-}
-.ModalContent.Off {
-  opacity: 0;
-}
-.ModalContent.On{
-  opacity: 1 !important; /*로그인 css에도 적용*/
-}
-.ModalTitle li {
-  width: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 18px;
-  font-weight: 300;
+
+/*button*/
+.ButtonFull {
+  width: 100%;
+  border: none;
+  outline: none;
   cursor: pointer;
-  transition: 0.5s;
-  height: 45px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transition: .3s;
+  transition: .3s;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 20px;
+  font-weight: 500;
+  border-radius: 10px;
+  line-height: 26px;
+  /*padding, font-size, font-weight, line-height, border-radius*/
+  background-color: #001881;
+  height: 50px;
+  color: #fff;
 }
-.ModalTitle li.On {
-  font-size: 32px;
-  color: #000;
-  font-weight: 700;
+
+.ButtonFull:hover {
+  background-color: #005ec5;
+}
+
+.ButtonFull.Disable {
+  background-color: #e2e2e2;
   cursor: default;
 }
-.LogInForm > ul > li {
+
+.ButtonFull.Disable:hover {
+  background-color: #e2e2e2;
+}
+
+.ButtonFullSmall {
+  width: 100%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transition: .3s;
+  transition: .3s;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  font-size: 13px;
+  font-weight: 400;
+  border-radius: 6px;
+  line-height: 20px;
+  /*padding, font-size, font-weight, line-height, border-radius*/
+  background-color: #001881;
+  height: 40px;
+}
+
+.ButtonFullSmall:hover {
+  -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.ButtonFullSmall.Disable {
+  background-color: #e2e2e2;
+  cursor: default;
+}
+
+.ButtonSns {
+  width: 100%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transition: .3s;
+  transition: .3s;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  font-size: 13px;
+  font-weight: 300;
+  border-radius: 6px;
+  line-height: 20px;
+  /*padding, font-size, font-weight, line-height, border-radius*/
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  letter-spacing: -0.05em;
+  height: 40px;
+}
+
+.ButtonSns:hover {
+  -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.ButtonSns.Kakao {
+  background-color: #fee500;
+  font-weight: 400;
+}
+
+.ButtonSns.Kakao img {
+  width: 13px;
+  margin-right: 4px;
+  margin-top: 2px;
+}
+
+.ButtonSns.Naver {
+  background-color: #03c75a;
+  color: #fff;
+}
+
+.ButtonSns.Naver img {
+  width: 10px;
+  margin-right: 6px;
+}
+
+/*input*/
+ul.InputList li {
   position: relative;
+  height: 75px;
 }
-.LogInForm > ul > li:nth-of-type(1) {
-  margin: 35px 0 13px;
-  height: 64px;
-}
-.LogInForm > ul > li:nth-of-type(2) {
-  margin: 0 0 31px;
-  height: 64px;
-}
-.LogInForm > ul > li:nth-of-type(3) {
-  margin: 0 0 31px;
-}
-.LogInForm > ul > li > input {
+
+.InputFull {
   width: 100%;
   height: 50px;
   border-radius: 10px;
   border: 1px solid #e2e2e2;
   outline: none;
   padding: 16px 12px;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   font-size: 13px;
 }
-.LogInForm > ul > li > label {
+
+.InputFull:hover {
+  border: 1px solid #707070;
+}
+
+.InputFull.On {
+  border: 1px solid #00b7ff;
+  caret-color: #00b7ff;
+}
+
+.InputFull.Error {
+  border: 1px solid #ff0045;
+  caret-color: #ff0045;
+}
+
+.LabelFull {
   position: absolute;
   left: 12px;
   top: 13px;
-  font-size: 18px;
+  font-weight: 18px;
   font-weight: 300;
   padding: 0 4px 0 7px;
   background-color: #fff;
-  transition: 0.5s;
+  -webkit-transition: .5s;
+  transition: .5s;
   line-height: 24px;
 }
-.LogInForm > ul > li p.InputTxt {
+
+.LabelFull.On {
+  top: -10px;
+  color: #00b7ff;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.LabelFull.Error {
+  top: -10px;
+  color: #ff0045;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.InputTxt {
   font-size: 10px;
   text-align: center;
   font-weight: 300;
@@ -137,12 +203,30 @@ body.Modal {
   width: 100%;
   top: 50px;
   opacity: 0;
-  transition: 0.5s;
+  -webkit-transition: .5s;
+  transition: .5s;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
-.LogInForm > ul > li .InputDel {
+
+.InputTxt.On {
+  color: #00b7ff;
+  opacity: 1;
+  top: 54px;
+}
+
+.InputTxt.Error {
+  color: #ff0045;
+  opacity: 1;
+  top: 54px;
+}
+
+.InputDel {
   width: 18px;
   height: 18px;
-  background: url('../../src/assets/images/InputDel.png');
+  background: url("../../src/assets/images/InputDel.png");
   background-size: 100%;
   cursor: pointer;
   position: absolute;
@@ -150,263 +234,320 @@ body.Modal {
   right: 15px;
   display: none;
 }
-.LogInForm > ul > li .PasswordShow {
+
+.InputDel.On {
+  display: block;
+}
+
+.PasswordShow {
   width: 25px;
   height: 15px;
-  background: url('../../src/assets/images/PasswordShow.png');
+  background: url("../../src/assets/images/PasswordShow.png");
   background-size: 100%;
   cursor: pointer;
   position: absolute;
   top: 17px;
-  right: -41px;
-  transition: 0.3s;
+  right: 48px;
+  -webkit-transition: .3s;
+  transition: .3s;
   display: none;
 }
-.LogInForm > ul > li .PasswordShow.On {
-  background: url('../../src/assets/images/PasswordShow_On.png');
+
+.PasswordShow.Over {
+  display: block;
+}
+
+.PasswordShow.On {
+  background: url("../../src/assets/images/PasswordShow_On.png");
   background-size: 100%;
 }
-.LogInForm > ul > li .PasswordShow.Error {
-  background: url('../../src/assets/images/PasswordShow_Error.png');
+
+.PasswordShow.Error {
+  background: url("../src/assets/images/PasswordShow_Error.png");
   background-size: 100%;
-}
-.LogInForm > ul > li.On > input {
-  border: 1px solid #00b7ff;
-  caret-color: #00b7ff;
-}
-.LogInForm > ul > li.On > label {
-  top: -10px;
-  color: #00b7ff;
-  font-size: 13px;
-  font-weight: 500;
-}
-.LogInForm > ul > li.On .InputDel,
-.LogInForm > ul > li.Error .InputDel {
   display: block;
 }
-.LogInForm > ul > li.On .PasswordShow,
-.LogInForm > ul > li.Error .PasswordShow {
-  display: block;
-}
-.LogInForm > ul > li p.InputTxt.On {
-  display: block;
-  color: #00b7ff;
-  opacity: 1;
-  top: 54px;
-}
-.LogInForm > ul > li.Error > input {
-  border: 1px solid #ff0045;
-  caret-color: #ff0045;
-}
-.LogInForm > ul > li.Error > label {
-  top: -12px;
-  color: #ff0045;
-  font-size: 13px;
-  font-weight: 500;
-}
-.LogInForm > ul > li p.InputTxt.Error {
-  display: block;
-  color: #ff0045;
-  opacity: 1;
-  top: 54px;
-}
-.LogInForm > ul > li .LogInSubmit {
-  width: 100%;
-  height: 50px;
-  border: none;
-  outline: none;
-  background-color: #001881;
-  border-radius: 10px;
-  color: #fff;
-  font-size: 20px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.LogInForm ul ul {
-  display: flex;
-}
-.LogInForm ul ul li {
-  display: flex;
-  width: 50%;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: 300;
-  color: #868686;
-}
-.LogInForm ul ul li:nth-of-type(1) {
-  justify-content: space-between;
-}
-.LogInForm ul ul li p {
-  cursor: pointer;
-  line-height: 21px;
-}
-.LogInForm ul ul li label {
-  display: flex;
-  line-height: 21px;
-  cursor: pointer;
-}
-.LogInForm ul ul li label span {
-  display: block;
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-  background: url('../../src/assets/images/LogInCheck_off.png');
-  background-size: 100%;
-  transition: background 0.2s;
-}
-.LogInForm ul ul #LogInCheck {
+
+.InputHide {
+  /*로그인 상태 유지*/
   width: 1px;
   height: 1px;
   clip: rect(1px, 1px, 1px, 1px);
   position: absolute;
 }
-.LogInForm ul ul #LogInCheck:checked ~ label span {
-  background: url('../../src/assets/images/LogInCheck_on.png');
+
+.InputHide ~ .LabelCheck {
+  /*로그인 상태 유지*/
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  line-height: 21px;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.InputHide ~ .LabelCheck span {
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  background: url("../../src/assets/images/LogInCheck_off.png");
+  background-size: 100%;
+  -webkit-transition: background .2s;
+  transition: background .2s;
+}
+
+.InputHide:checked ~ .LabelCheck span {
+  background: url("../../src/assets/images/LogInCheck_on.png");
   background-size: 100%;
 }
 
+body.Modal {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.ModalWrapper {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.ModalWrapper.Modal .ModalBg {
+  opacity: .5;
+}
+
+.ModalWrapper.Modal .ModalHeader, .ModalWrapper.Modal .ModalBody {
+  opacity: 1;
+}
+
+.ModalBg {
+  background-color: #000;
+  opacity: 0;
+  -webkit-transition: opacity 1s;
+  transition: opacity 1s;
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+}
+
+.ModalHeader {
+  padding: 0 40px;
+  width: 534px;
+  background-color: #fff;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  z-index: 1;
+  opacity: 0;
+  -webkit-transition: .5s;
+  transition: .5s;
+  color: #868686;
+  border-radius: 20px 20px 0 0;
+}
+
+.ModalTop {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-bottom: 35px;
+  margin-top: 48px;
+}
+
+.ModalTop .ModalClose {
+  display: block;
+  width: 14px;
+  height: 14px;
+  background: url("../../src/assets/images/ModalClose.png");
+  background-size: 100%;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.ModalTitle {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 10px;
+}
+
+.ModalTitle li {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 18px;
+  font-weight: 300;
+  cursor: pointer;
+  -webkit-transition: .5s;
+  transition: .5s;
+  height: 45px;
+}
+
+.ModalTitle li.On {
+  font-size: 32px;
+  color: #000;
+  font-weight: 700;
+  cursor: default;
+}
+
+.ModalBody {
+  padding: 0 40px;
+  width: 534px;
+  background-color: #fff;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  z-index: 1;
+  opacity: 0;
+  -webkit-transition: .5s;
+  transition: .5s;
+  color: #868686;
+  border-radius: 0 0 20px 20px;
+}
+
+.ModalContents {
+  opacity: 0;
+  -webkit-transition: .5s;
+  transition: .5s;
+}
+
+.ModalContents.On {
+  opacity: 1;
+}
+
+.InputList {
+  margin: 35px 0 20px;
+}
+
+.SubList {
+  margin: 30px 0 58px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.SubList li {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  font-size: 15px;
+  font-weight: 300;
+  color: #868686;
+}
+
 p.SnsTitle {
-  margin: 54px auto 28px;
+  margin: 58px auto 30px;
   font-size: 13px;
   color: #000;
   font-weight: 300;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   white-space: nowrap;
 }
-p.SnsTitle::before, p.SnsTitle::after{
+
+p.SnsTitle::before, p.SnsTitle::after {
   content: "";
   display: block;
   height: 1px;
   width: 100%;
-  background-color: #E2E2E2;
-}
-p.SnsTitle::before{
-  margin-right: 9px;
-}
-p.SnsTitle::after{
-  margin-left: 9px;
+  background-color: #e2e2e2;
 }
 
-ul.Sns {
+p.SnsTitle::before {
+  margin-right: 11px;
+}
+
+p.SnsTitle::after {
+  margin-left: 11px;
+}
+
+.SnsList {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
+  padding-bottom: 80px;
 }
-ul.Sns button {
-  width: 122px;
-  height: 40px;
-  border-radius: 6px;
-  border: none;
-  outline: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 13px;
-  font-weight: 300;
-  letter-spacing: -0.05em;
-  cursor: pointer;
+
+.SnsList li {
+  width: 100%;
+  margin-right: 16px;
 }
-ul.Sns button.Naver {
-  background-color: #03c75a;
-  color: #fff;
-}
-ul.Sns button.Naver img {
-  width: 10px;
-  margin-right: 6px;
-}
-ul.Sns button.Kakao {
-  background-color: #fee500;
-  font-weight: 400;
-}
-ul.Sns button.Kakao img {
-  width: 13px;
-  margin-right: 4px;
-  margin-top: 2px;
+
+.SnsList li:last-child {
+  margin: 0;
 }
 
 @media screen and (max-width: 768px) {
-  .ModalWrapper.Modal .ModalBox {
-    padding-top: 0;
+  .ModalWrapper {
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
   }
-
-  .ModalWrapper .ModalBox {
-    padding: 0 20px 0;
-    opacity: 1;
-    border-radius: 30px 30px 0 0;
+  .ModalWrapper.Modal .ModalHeader {
+    margin-top: 40px;
+    height: 154px;
+  }
+  .ModalHeader {
+    padding: 0 20px;
     width: 100%;
-    box-sizing: border-box;
-    position: absolute;
-    bottom: -180px;
-    top: 100vh;
-    overflow: hidden;
+    height: 0;
+    margin-top: 100vh;
   }
-
-  .ModalWrapper.Modal .ModalBox {
-    top: 82px;
-    height: auto;
-    bottom: 0;
+  .ModalTop {
+    margin-top: 40px;
+    margin-bottom: 45px;
   }
-
-  .ModalClose {
-    top: 40px;
-    right: 22px;
+  .ModalTop .ModalClose {
+    margin-right: 0;
   }
-
-  .ModalCont {
+  .ModalBody {
+    padding: 0 20px;
     width: 100%;
-    height: 100%;
+    margin-top: -1px;
+    border-radius: 0;
+    height: calc(100vh - 194px);
+    overflow-y: auto;
   }
-  .ModalCont::-webkit-scrollbar {
-    display: none;
-  }
-
-  .ModalTitle {
-    padding-top: 87px;
-    padding-bottom: 8px;
-  }
-
-  .LogInForm > ul > li .PasswordShow {
-    right: 50px;
-  }
-
-  .LogInForm ul ul li:nth-of-type(1) {
-    justify-content: center;
-  }
-
-  ul.Sns {
-    padding-bottom: 80px;
-  }
-
-  ul.Sns li {
-    width: 50%;
-  }
-
-  ul.Sns li:first-of-type {
-    margin-right: 12px;
-  }
-
-  ul.Sns button {
-    width: 100%;
-  }
-
-  p.SnsTitle::before,
-  p.SnsTitle::after {
-    width: 100%;
-  }
-  p.SnsTitle::before {
-    margin-right: 15px;
-  }
-  p.SnsTitle::after {
-    margin-left: 15px;
-  }
-
-  .ModalContent {
-    overflow: auto;
-    height: calc(100vh - 227px);
-  }
-
-  .ModalContent::-webkit-scrollbar {
-    display: none;
+  .SnsList li {
+    margin-right: 10px;
   }
 }
+/*# sourceMappingURL=Login.css.map */
