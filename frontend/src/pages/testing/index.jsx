@@ -47,6 +47,17 @@ function Testing() {
           onDelete={HandleDelete}
         />
       </Cont>
+      <TextSpan>이게 왜 색깔이 안되지 글꼴 깨짐현상 발생 ㅏㅇ아아</TextSpan>
+      <span
+        style={{
+          color: '#00b7ff',
+          fontSize: '14px',
+          fontWeight: '300',
+          fontFamily: "'Spoqa Han Sans Neo', 'sans-serif",
+        }}
+      >
+        이게 왜 색깔이 안되지 글꼴 깨짐현상 발생 ㅏㅇ아아
+      </span>
     </div>
   );
 }
@@ -56,4 +67,11 @@ export default Testing;
 const Cont = styled.div`
   margin: 20px;
   width: 260px;
+  color: #868686;
+`;
+
+const TextSpan = styled.p`
+  font-size: 14px;
+  font-weight: 500;
+  color: #00b7ff;
 `;
