@@ -1,0 +1,348 @@
+@import "../style";
+
+@mixin modalBox($padding, $width) {
+    padding: 0 $padding;
+    width: $width;
+    background-color: $white;
+    box-sizing: border-box;
+    z-index: 1;
+    opacity: 0;
+    transition: .5s;
+    color: $black3;
+}
+
+body.Modal {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.ModalWrapper {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &.Modal{
+
+        .ModalBg{
+            opacity: .5;
+        }
+
+        .ModalHeader, .ModalBody{
+            opacity: 1;
+        }
+    }
+}
+
+.ModalBg {
+    background-color: #000;
+    opacity: 0;
+    transition: opacity 1s;
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+}
+
+
+.ModalHeader{
+    @include modalBox(40px, 534px);
+    border-radius: 20px 20px 0 0;
+}
+
+.ModalTop{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 35px;
+    margin-top: 48px;
+
+    .ModalArrow{
+        font-size: 18px;
+        color: $black3;
+        cursor: pointer;
+        line-height: 1;
+        font-weight: 300;
+
+        img{
+            width: 8px;
+            margin-right: 15px;
+        }
+    }
+
+    .ModalClose {
+        display: block;
+        width: 14px;
+        height: 14px;
+        background: url('../../src/assets/images/ModalClose.png');
+        background-size: 100%;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+}
+
+.ModalTitle{
+    display: flex;
+    padding-bottom: 10px;
+
+    li{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        font-weight: 300;
+        cursor: pointer;
+        transition: .5s;
+        height: 45px;
+
+        &.On{
+            font-size: 32px;
+            color: #000;
+            font-weight: 700;
+            cursor: default;
+        }
+    }
+}
+
+.ModalBody{
+    @include modalBox(40px, 534px);
+    border-radius: 0 0 20px 20px;
+}
+
+.ModalContents{
+    opacity: 0;
+    transition: .5s;
+
+    &.On{
+        opacity: 1;
+    }
+}
+
+.InputList{
+    margin: 35px 0 20px;
+}
+
+.ListFlex{
+    display: flex;
+    
+    li{
+        width: 100%;
+        margin-right: 16px;
+
+        &:last-child{
+            margin-right: 0;
+        }
+    }
+}
+
+p.SnsTitle {
+    margin: 58px auto 30px;
+    font-size: 13px;
+    color: #000;
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    white-space: nowrap;
+
+    &::before, &::after{
+        content: "";
+        display: block;
+        height: 1px;
+        width: 100%;
+        background-color: $black5;
+    }
+
+    &::before{
+        margin-right: 11px;
+    }
+
+    &::after{
+        margin-left: 11px;
+    }
+
+    &.SendPassword{
+        margin-top: 39px;
+    }
+}
+
+.SnsList{
+    display: flex;
+    padding-bottom: 15px;
+
+    li{
+        width: 100%;
+        margin-right: 16px;
+        position: relative;
+
+        &:last-child{
+            margin: 0;
+        }
+    }
+}
+
+li.MailList{
+    z-index: 1;
+}
+
+ul.MailList{
+    width: 100%;
+    border: 1px solid $black5;
+    border-radius: 10px;
+    height: 50px;
+    transition: .5s;
+    overflow: hidden;
+    background-color: $white;
+
+    &.On{
+        border: 1px solid $blue3;
+    }
+
+    li{
+        width: 100%;
+        cursor: pointer;
+
+        &:first-child{
+            height: 50px;
+
+            &::after{
+                content: '';
+                display: block;
+                height: 1px;
+                width: calc(100% - 24px);
+                background-color: $black5;
+                margin: 0 auto;
+            }
+        }
+
+        &:not(:first-child){
+            height: 21px;
+            padding: 8px 36px 0;
+        }
+
+        &:hover p{
+            background-color: $blue3;
+            color: $white;
+        }
+
+        p{
+            width: fit-content;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: $black1;
+            transition: .2s;
+        }
+    }
+
+}
+
+.InputMail{
+    padding: 15px 37px 17px;
+    width: 100%;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    font-size: 13px;
+    line-height: 1;
+
+    &.On{
+        caret-color: $blue3;
+    }
+}
+
+.LabelMail{
+    position: absolute;
+    font-size: 13px;
+    line-height: 13px;
+    top: 18px;
+    left: 16px;
+    color: $black5;
+    transition: .5s;
+
+    &.On{
+        color: $blue3;
+    }
+}
+
+button.SignStep1{
+    margin: 30px 0 10px;
+}
+
+ul.SignStep1{
+    margin-bottom: 80px;
+}
+
+.StepSlide{
+    width: 100%;
+    height: 5px;
+    border: 1px solid $black5;
+    border-radius: 4px;
+    position: relative;
+
+    .Stepbar{
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        border-radius: 4px;
+        border: none;
+        transition: .5s;
+        width: 0;
+        background-color: $blue3;
+    }
+}
+
+@media screen and (max-width:768px) {
+    
+    .ModalWrapper{
+        justify-content: flex-end;
+    }
+
+    .ModalWrapper.Modal .ModalHeader{
+        margin-top: 40px;
+        height: 154px;
+    }
+    
+    .ModalHeader{
+        padding: 0 20px;
+        width: 100%;
+        height: 0;
+        margin-top: 100vh;
+    }
+
+    .ModalTop{
+        margin-top: 40px;
+        margin-bottom: 45px;
+
+        .ModalClose{
+            margin-right: 0;
+        }
+    }
+
+    .ModalBody{
+        padding: 0 20px;
+        width: 100%;
+        margin-top: -1px;
+        border-radius: 0;
+        height: calc(100vh - 194px);
+        overflow-y: auto;
+    }
+
+    .ModalBody::-webkit-scrollbar{
+        display: none;
+    }
+
+    .SnsList li{
+        margin-right: 10px;
+    }
+
+    button.SignStep1{
+        margin: 15px 0 10px;
+    }
+}
