@@ -1,6 +1,6 @@
-package matchTeam.crewcrew.repository.user.oauth;
+package matchTeam.crewcrew.oauth.repository;
 
-import matchTeam.crewcrew.Entity.oauth.Users;
+import matchTeam.crewcrew.oauth.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigInteger;

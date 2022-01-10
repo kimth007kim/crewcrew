@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.service;
+package matchTeam.crewcrew.oauth.service;
 
 import javax.transaction.Transactional;
 

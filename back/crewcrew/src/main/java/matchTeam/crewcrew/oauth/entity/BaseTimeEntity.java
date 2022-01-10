@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.Entity.oauth;
+package matchTeam.crewcrew.oauth.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
