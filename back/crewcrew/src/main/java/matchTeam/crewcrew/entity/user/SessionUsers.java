@@ -1,6 +1,7 @@
-package matchTeam.crewcrew.oauth.entity;
+package matchTeam.crewcrew.entity.user;
 
 import lombok.Getter;
+import matchTeam.crewcrew.entity.user.Users;
 
 import java.io.Serializable;
 
