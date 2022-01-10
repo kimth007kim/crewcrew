@@ -8,7 +8,6 @@ import matchTeam.crewcrew.oauth.entity.RoleType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
@@ -55,4 +54,15 @@ public class Users extends BaseTimeEntity {
     @NotNull
     private RoleType roleType;
 
+    @Builder
+    public Users(@NotNull String userId, @NotNull String username, @NotNull String password, @NotNull String email, @NotNull byte[] profileImage, String introduce, @NotNull ProviderType providerType, @NotNull RoleType roleType) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.profileImage = profileImage;
+        this.introduce = introduce;
+        this.providerType = providerType;
+        this.roleType = roleType;
+    }
 }
