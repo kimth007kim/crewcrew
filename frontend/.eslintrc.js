@@ -4,6 +4,7 @@ module.exports = {
     es2020: true,
   },
   extends: ['airbnb', 'airbnb/hooks'],
+  plugins: ['prettier'],
   rules: {
     'linebreak-style': 0,
     'react/jsx-filename-extension': [
@@ -44,7 +45,7 @@ module.exports = {
       },
     ],
     'operator-linebreak': ['error', 'after'],
-    'implicit-arrow-linebreak': ['error', 'below'],
+    'implicit-arrow-linebreak': ['warn', 'below'],
   },
   settings: {
     'import/resolver': {
