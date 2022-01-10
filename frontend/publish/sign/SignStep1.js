@@ -94,7 +94,7 @@ window.addEventListener("DOMContentLoaded", function(){
         if(this.value){
             isMailIdChecked = true;
         } else {
-            isMailDomainChecked = false;
+            isMailIdChecked = false;
         }
         if(isMailIdChecked && isMailDomainChecked){
             this.closest("ul.ListFlex").parentNode.classList.add("Checked");
