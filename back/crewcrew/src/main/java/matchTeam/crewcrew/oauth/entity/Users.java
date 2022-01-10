@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.Entity.oauth;
+package matchTeam.crewcrew.oauth.entity;
 
 import lombok.Builder;
 import lombok.Getter;

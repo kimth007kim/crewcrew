@@ -1,11 +1,11 @@
-package matchTeam.crewcrew.service;
+package matchTeam.crewcrew.oauth.service;
 
 import lombok.RequiredArgsConstructor;
 
-import matchTeam.crewcrew.Entity.oauth.SessionUsers;
-import matchTeam.crewcrew.Entity.oauth.Users;
+import matchTeam.crewcrew.oauth.entity.SessionUsers;
+import matchTeam.crewcrew.oauth.entity.Users;
 import matchTeam.crewcrew.dto.OAuthAttributes;
-import matchTeam.crewcrew.repository.user.oauth.UserOAuthRepository;
+import matchTeam.crewcrew.oauth.repository.UserOAuthRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

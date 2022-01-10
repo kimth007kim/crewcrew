@@ -1,7 +1,7 @@
 package matchTeam.crewcrew.config;
 
 import lombok.RequiredArgsConstructor;
-import matchTeam.crewcrew.service.CustomOAuth2UserService;
+import matchTeam.crewcrew.oauth.service.CustomOAuth2UserService;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;

@@ -2,8 +2,7 @@ package matchTeam.crewcrew.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import matchTeam.crewcrew.Entity.oauth.SnsType;
-import matchTeam.crewcrew.Entity.oauth.Users;
+import matchTeam.crewcrew.oauth.entity.Users;
 
 import java.util.Map;
 
