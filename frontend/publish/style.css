@@ -264,7 +264,7 @@ ul.InputList li {
 }
 
 .PasswordShow.Error {
-  background: url("../src/assets/images/PasswordShow_Error.png");
+  background: url("../../src/assets/images/PasswordShow_Error.png");
   background-size: 100%;
   display: block;
 }
