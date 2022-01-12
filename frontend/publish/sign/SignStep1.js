@@ -119,13 +119,34 @@ window.addEventListener("DOMContentLoaded", function(){
         ProgressTransition(); //입력 완료된 input의 수에 따라 Stepbar 넓이 조절
     });
 
-    const SignLength = 100 / document.querySelectorAll(".InputList>li").length; //회원가입 진행도 1개당 올라가는 width
+    const SignLength = document.querySelectorAll(".InputList>li").length;
+    const Signwidth = 100 / SignLength; //회원가입 진행도 1개당 올라가는 width
     let SignProgress = 0; //회원가입 진행도
     function ProgressTransition(){ //입력 완료된 input의 수에 따라 Stepbar 넓이 조절
         SignProgress = document.querySelectorAll(".Checked").length; 
         console.log(SignProgress);
         if (document.querySelector(".ModalContents").classList.contains("ContentSignStep1")) { //회원가입 1단계일떄
-            document.querySelector(".StepSlide1").firstElementChild.style.width = SignProgress * SignLength + "%";
+            document.querySelector(".StepSlide1").firstElementChild.style.width = SignProgress * Signwidth + "%";
+        } else { //회원가입 2단계일떄
+            document.querySelector(".StepSlide2").firstElementChild.style.width = SignProgress * Signwidth + "%";
+        }
+
+        if (SignProgress>=SignLength){
+            if(document.querySelector(".ModalContents").classList.contains("ContentSignStep1")) { //회원가입 1단계일떄
+                document.querySelector("button.SignStep1").classList.remove("Disable");
+                document.querySelector("button.SignStep1").disabled = false;
+            } else { //회원가입 2단계일떄
+                document.querySelector("button.SignStep2").classList.remove("Disable");
+                document.querySelector("button.SignStep2").disabled = false;
+            }
+        } else {
+            if(document.querySelector(".ModalContents").classList.contains("ContentSignStep1")) { //회원가입 1단계일떄
+                document.querySelector("button.SignStep1").classList.add("Disable");
+                document.querySelector("button.SignStep1").disabled = "disabled";
+            } else { //회원가입 2단계일떄
+                document.querySelector("button.SignStep2").classList.add("Disable");
+                document.querySelector("button.SignStep2").disabled = "disabled";
+            }
         }
     }
 
@@ -135,8 +156,8 @@ window.addEventListener("DOMContentLoaded", function(){
     const MailListLength = MailList.length - 1; //메일 리스트의 수
     inputMail.addEventListener("focus", function(){ //메일 도메인 input 이벤트
         const children = this.parentNode.children;
-        this.parentNode.parentNode.classList.add("On");
-        this.parentNode.parentNode.style.height = 58 + 29 * MailListLength + "px";
+        this.closest("ul.MailList").classList.add("On");
+        this.closest("ul.MailList").style.height = 58 + 29 * MailListLength + "px";
         children[1].classList.add("On");
         this.closest("ul.ListFlex").parentNode.lastElementChild.classList.add('On'); // InputTxt show, error상태시 On 대신 Error 클래스 추가
         if(this.value){
@@ -145,10 +166,10 @@ window.addEventListener("DOMContentLoaded", function(){
     });
     inputMail.addEventListener("blur", function(){ //메일 도메인 input 이벤트
         const children = this.parentNode.children;
-        this.parentNode.parentNode.style.height = "50px";
+        this.closest("ul.MailList").style.height = "50px";
         this.closest("ul.ListFlex").parentNode.lastElementChild.classList.remove('On'); // InputTxt hide
         if(!this.value){
-            this.parentNode.parentNode.classList.remove("On");
+            this.closest("ul.MailList").classList.remove("On");
             children[1].classList.remove("On");
             children[2].classList.remove("On");
         }

@@ -13,102 +13,105 @@
     <div class="ModalWrapper Modal">
         <div class="ModalBg"></div>
         
-        <div class="ModalHeader">
-          <ul class="ModalTop">
-            <li>
-              
-            </li> <!--이전 단계로 가는 버튼 있을 시 여기 생성-->
-            <li>
-              <span class="ModalClose"></span>
-            </li>
-          </ul>
-         
-          <ul class="ModalTitle">
-            <li class="LogIn">로그인</li>
-            <li class="Sign On">회원가입</li>
-          </ul>
-        </div>
+        <div class="ModalBox">
+          <div class="ModalHeader">
+            <ul class="ModalTop">
+              <li>
+                
+              </li> <!--이전 단계로 가는 버튼 있을 시 여기 생성-->
+              <li>
+                <span class="ModalClose"></span>
+              </li>
+            </ul>
+           
+            <ul class="ModalTitle">
+              <li class="LogIn">로그인</li>
+              <li class="Sign On">회원가입</li>
+            </ul>
+          </div>
+    
+          <div class="ModalBody">
+            <div class="ModalContents ContentSignStep1 On">
+              <form action="">
+                <ul class="InputList">
+                  <li>
+                    <input type="text" id="SignName" class="InputFull" />
+                    <label for="SignName" class="LabelFull">이름</label>
+                    <div class="InputDel"></div>
+                    <p class="InputTxt">본명을 입력해 주세요</p>
+                  </li>
+                  <li>
+                    <ul class="ListFlex">
+                      <li>
+                        <input type="text" id="SignEmailID" class="InputFull ListFlex CheckAllInput" />
+                        <label for="SignEmailID" class="LabelFull">이메일</label>
+                        <div class="InputDel"></div>
+                      </li>
+                      <li class="MailList">
+                        <ul class="MailList">
+                          <li>
+                            <input type="text" id="SignEmailDomain" class="InputMail ListFlex CheckAllInput" autocomplete="off" placeholder="examle.com"/>
+                            <label for="SignEmailDomain" class="LabelMail">@</label>
+                            <div class="InputDel"></div>
+                          </li>
+                          <li>
+                            <p>naver.com</p>
+                          </li>
+                          <li>
+                            <p>gmail.com</p>
+                          </li>
+                          <li>
+                            <p>daum.net</p>
+                          </li>
+                          <li>
+                            <p>hanmail.net</p>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                    <p class="InputTxt">가입할 이메일 주소를 입력해주세요.</p>
+                  </li>
+                  <li>
+                    <ul class="ListFlex">
+                      <li>
+                        <input type="text" id="SignCode" class="InputFull ListFlex" />
+                        <label for="SignCode" class="LabelFull">코드입력</label>
+                        <div class="InputDel"></div>
+                      </li>
+                      <li>
+                        <button type="submit" class="ButtonFull">코드전송</button>
+                      </li>
+                    </ul>
+                    <p class="InputTxt">코드 전송 후, 입력창에 코드를 입력해주세요.</p>
+                  </li>
+                  <li>
+                    <input type="password" id="SignPassword" class="InputFull Password" />
+                    <label for="SignPassword" class="LabelFull">비밀번호</label>
+                    <div class="InputDel"></div>
+                    <div class="PasswordShow"></div>
+                    <p class="InputTxt">숫자/영문/특수문자 포함 8~20글자</p>
+                  </li>
+                </ul>
+    
+                <button type="submit" class="ButtonFull SignStep1 Disable" disabled="disabled">2단계로 넘어가기</button>
+                <ul class="ListFlex SignStep1">
+                  <li>
+                    <div class="StepSlide StepSlide1">
+                      <div class="Stepbar"></div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="StepSlide StepSlide2">
+                      <div class="Stepbar"></div>
+                    </div>
+                  </li>
+                </ul>
+              </form>
   
-        <div class="ModalBody">
-          <div class="ModalContents ContentSignStep1 On">
-            <form action="">
-              <ul class="InputList">
-                <li>
-                  <input type="text" id="SignName" class="InputFull" />
-                  <label for="SignName" class="LabelFull">이름</label>
-                  <div class="InputDel"></div>
-                  <p class="InputTxt">본명을 입력해 주세요</p>
-                </li>
-                <li>
-                  <ul class="ListFlex">
-                    <li>
-                      <input type="text" id="SignEmailID" class="InputFull ListFlex CheckAllInput" />
-                      <label for="SignEmailID" class="LabelFull">이메일</label>
-                      <div class="InputDel"></div>
-                    </li>
-                    <li class="MailList">
-                      <ul class="MailList">
-                        <li>
-                          <input type="text" id="SignEmailDomain" class="InputMail ListFlex CheckAllInput" autocomplete="off" placeholder="examle.com"/>
-                          <label for="SignEmailDomain" class="LabelMail">@</label>
-                          <div class="InputDel"></div>
-                        </li>
-                        <li>
-                          <p>naver.com</p>
-                        </li>
-                        <li>
-                          <p>gmail.com</p>
-                        </li>
-                        <li>
-                          <p>daum.net</p>
-                        </li>
-                        <li>
-                          <p>hanmail.net</p>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                  <p class="InputTxt">가입할 이메일 주소를 입력해주세요.</p>
-                </li>
-                <li>
-                  <ul class="ListFlex">
-                    <li>
-                      <input type="text" id="SignCode" class="InputFull ListFlex" />
-                      <label for="SignCode" class="LabelFull">코드입력</label>
-                      <div class="InputDel"></div>
-                    </li>
-                    <li>
-                      <button type="submit" class="ButtonFull">코드전송</button>
-                    </li>
-                  </ul>
-                  <p class="InputTxt">코드 전송 후, 입력창에 코드를 입력해주세요.</p>
-                </li>
-                <li>
-                  <input type="password" id="SignPassword" class="InputFull Password" />
-                  <label for="SignPassword" class="LabelFull">비밀번호</label>
-                  <div class="InputDel"></div>
-                  <div class="PasswordShow"></div>
-                  <p class="InputTxt">숫자/영문/특수문자 포함 8~20글자</p>
-                </li>
-              </ul>
-  
-              <button type="submit" class="ButtonFull SignStep1">2단계로 넘어가기</button>
-              <ul class="ListFlex SignStep1">
-                <li>
-                  <div class="StepSlide StepSlide1">
-                    <div class="Stepbar"></div>
-                  </div>
-                </li>
-                <li>
-                  <div class="StepSlide StepSlide2">
-                    <div class="Stepbar"></div>
-                  </div>
-                </li>
-              </ul>
-            </form>
-
+            </div>
           </div>
         </div>
+        
       </div>
 </body>
 </html>
