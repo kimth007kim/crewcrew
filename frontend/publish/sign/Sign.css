@@ -360,6 +360,8 @@ body.Modal {
   color: #868686;
   border-radius: 20px;
   height: 685px;
+  -webkit-box-shadow: 0 0 30px rgba(0, 0, 0, 0.16);
+          box-shadow: 0 0 30px rgba(0, 0, 0, 0.16);
 }
 
 .ModalTop {
@@ -568,10 +570,16 @@ ul.MailList {
   border: 1px solid #e2e2e2;
   border-radius: 10px;
   height: 50px;
-  -webkit-transition: .5s;
-  transition: .5s;
+  -webkit-transition: height .5s;
+  transition: height .5s;
   overflow: hidden;
   background-color: #fff;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+ul.MailList:hover {
+  border: 1px solid #000;
 }
 
 ul.MailList.On {
@@ -599,6 +607,7 @@ ul.MailList li:first-child::after {
 ul.MailList li:not(:first-child) {
   height: 21px;
   padding: 8px 36px 0;
+  padding-right: 0;
 }
 
 ul.MailList li:hover p {

@@ -52,6 +52,7 @@ body.Modal {
     @include modalBox(40px, 534px);
     border-radius: 20px;
     height: 685px;
+    box-shadow: 0 0 30px rgba($color: #000000, $alpha: 0.16);
 }
 
 
