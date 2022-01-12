@@ -443,6 +443,21 @@ body.Modal {
   margin: 35px 0 20px;
 }
 
+.ListFlex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.ListFlex li {
+  width: 100%;
+  margin-right: 16px;
+}
+
+.ListFlex li:last-child {
+  margin-right: 0;
+}
+
 .SubList {
   margin: 30px 0 58px;
   display: -webkit-box;
@@ -543,26 +558,4 @@ p.SnsTitle::after {
     margin-right: 10px;
   }
 }
-
-.SnsList.SendPassword {
-  padding-bottom: 15px;
-}
-
-p.SnsTitle.SendPassword {
-  margin-top: 39px;
-}
-
-.ButtonFull.SendPassword {
-  height: 70px;
-}
-
-.ButtonFull.SendPassword p {
-  font-size: 10px;
-  color: #00b7ff;
-  font-weight: 300;
-}
-
-.ButtonFullSmall.SendPassword {
-  margin-bottom: 74px;
-}
-/*# sourceMappingURL=password.css.map */
+/*# sourceMappingURL=common.css.map */
