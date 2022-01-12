@@ -4,6 +4,8 @@ public enum ErrorCode {
     INVALID_INPUT_VALUE(400, "COMMON_001", " Invalid Input Value"),
     METHOD_NOT_ALLOWED(405, "COMMON_002", "Method not allowed"),
     HANDLE_ACCESS_DENIED(403, "COMMON_003", "Access is Denied"),
+    INVALID_REQUEST_DATA(404,"INVALID_REQUEST","invalid Access"),
+    TOKEN_NOT_FOUND(404,"TOKEN_NOT_FOUND","invalidToken"),
 
     // Standard
     ILLEGAL_STATE(400, "STANDARD_001", "illegal state"),

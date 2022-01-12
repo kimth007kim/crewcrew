@@ -2,10 +2,10 @@ package matchTeam.crewcrew.dto;
 
 import lombok.Data;
 import lombok.Getter;
-import matchTeam.crewcrew.entity.User;
+import lombok.Setter;
 
 @Data
-@Getter
+@Getter @Setter
 public class UserDTO {
     private Long uid;
     private String email;
@@ -14,12 +14,4 @@ public class UserDTO {
     private String introduce;
     private String nickname;
 
-    public UserDTO(User user) {
-        this.uid= user.getUid();
-        this.email= user.getEmail();
-        this.password=user.getPassword();
-        this.profileimage=user.getProfileimage();
-        this.introduce= user.getIntroduce();
-        this.nickname= user.getIntroduce();
-    }
 }
