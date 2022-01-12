@@ -11,11 +11,12 @@ import java.util.Optional;
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
+//    private final ConfirmationTokenService confirmationTokenService;
 
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
+      }
 
     public long join(User user){
         if(validateDuplicateMember(user)) {

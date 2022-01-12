@@ -1,69 +1,63 @@
 package matchTeam.crewcrew.entity;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import matchTeam.crewcrew.oauth.entity.BaseTimeEntity;
+import matchTeam.crewcrew.oauth.entity.ProviderType;
+import matchTeam.crewcrew.oauth.entity.RoleType;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
+@Getter @Setter
 @NoArgsConstructor
-@Getter
-public class User {
+@AllArgsConstructor
+public class User extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
+
+    @Column(nullable = false, unique = true)
+    @NotNull
     private String email;
-    private String password;
-    private byte[] profileimage;
+
+    @Column
     private String introduce;
+
+
+    @Column
+    private String name;
+
+    @JsonIgnore
+    @Column
+    @NotNull
+    private String password;
+
+    @Column(name = "profile_image")
+    private byte[] profileImage;
+
+    @Column
     private String nickname;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "provider_type")
+    private ProviderType providerType;
 
-    public Long getUid() {
-        return uid;
-    }
+    @Column(name = "role_type", length = 20)
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType;
 
-    public void setUid(Long uid) {
-        this.uid = uid;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
+    @Builder
+    public User(Long uid, String email, String password, byte[] profileImage, String introduce, ProviderType providerType, RoleType roleType) {
+        this.uid= uid;
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
         this.password = password;
-    }
-
-    public byte[] getProfileimage() {
-        return profileimage;
-    }
-
-    public void setProfileimage(byte[] profileimage) {
-        this.profileimage = profileimage;
-    }
-
-    public String getIntroduce() {
-        return introduce;
-    }
-
-    public void setIntroduce(String introduce) {
+        this.profileImage = profileImage;
         this.introduce = introduce;
+        this.providerType = providerType;
+        this.roleType = roleType;
     }
 
-    public String getNickname() {
-        return nickname;
-    }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
 }
