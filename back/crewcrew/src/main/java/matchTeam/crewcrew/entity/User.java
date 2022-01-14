@@ -1,12 +1,6 @@
 package matchTeam.crewcrew.entity;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import matchTeam.crewcrew.oauth.entity.BaseTimeEntity;
-import matchTeam.crewcrew.oauth.entity.ProviderType;
-import matchTeam.crewcrew.oauth.entity.RoleType;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Arrays;
@@ -15,7 +9,7 @@ import java.util.Arrays;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends BaseTimeEntity {
+public class User{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
 
