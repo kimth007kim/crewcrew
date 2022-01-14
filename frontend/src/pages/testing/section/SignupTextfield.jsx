@@ -1,22 +1,29 @@
 import React, { useCallback, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
-import delImage from '../../assets/images/InputDel.png';
-import PWshow from '../../assets/images/PasswordShow.png';
-import PWon from '../../assets/images/PasswordShow_On.png';
-import PWError from '../../assets/images/PasswordShow_Error.png';
+import delImage from '../../../assets/images/InputDel.png';
 
-function TextfieldPW({ onChange, value, valid, validMessage, label, onDelete }) {
+function TextfieldSU({
+  type = 'text',
+  onChange,
+  value,
+  valid,
+  validMessage,
+  label,
+  onDelete,
+  setFocus,
+}) {
   const [Focused, setFocused] = useState(false);
   const [Hover, setHover] = useState(false);
   const InputRef = useRef(null);
-  const [InputType, setInputType] = useState('password');
 
   const HandleOnFocus = useCallback(() => {
     setFocused(true);
+    setFocus(true);
   }, []);
 
   const HandleOnBlur = useCallback(() => {
     setFocused(false);
+    setFocus(false);
   }, []);
 
   const HandleOnHover = useCallback(() => {
@@ -27,17 +34,10 @@ function TextfieldPW({ onChange, value, valid, validMessage, label, onDelete }) 
     setHover(false);
   }, []);
 
-  const HandleOnShowPw = useCallback(() => {
-    if (InputType === 'password') {
-      return setInputType('text');
-    }
-    return setInputType('password');
-  }, [InputType]);
-
   return (
     <Wrapper onMouseEnter={HandleOnHover} onMouseLeave={HandleOutHover}>
       <Input
-        type={InputType}
+        type={type}
         ref={InputRef}
         onChange={onChange}
         onFocus={HandleOnFocus}
@@ -61,12 +61,6 @@ function TextfieldPW({ onChange, value, valid, validMessage, label, onDelete }) 
         }}
         TextIn={!!value}
       />
-      <InputPWShow
-        onClick={HandleOnShowPw}
-        TextIn={!!value}
-        active={InputType !== 'password'}
-        Valid={valid}
-      />
       <InputText Focused={Focused} Valid={valid}>
         {validMessage}
       </InputText>
@@ -74,7 +68,7 @@ function TextfieldPW({ onChange, value, valid, validMessage, label, onDelete }) 
   );
 }
 
-export default TextfieldPW;
+export default TextfieldSU;
 
 const Wrapper = styled.div`
   position: relative;
@@ -166,7 +160,6 @@ const InputText = styled.div`
       top: 54px;
       color: #00b7ff;
     `};
-
   ${(props) =>
     props.Valid &&
     css`
@@ -191,37 +184,4 @@ const InputDel = styled.div`
     css`
       display: block;
     `};
-`;
-
-const InputPWShow = styled.div`
-  width: 25px;
-  height: 15px;
-  background: url(${PWshow});
-  background-size: 100%;
-  cursor: pointer;
-  position: absolute;
-  top: 17px;
-  right: 48px;
-  transition: 0.3s;
-  display: none;
-
-  ${(props) =>
-    props.TextIn &&
-    css`
-      display: block;
-    `};
-
-  ${(props) =>
-    props.active &&
-    css`
-      background: url(${PWon});
-      background-size: 100%;
-    `};
-
-  ${(props) =>
-    props.Valid &&
-    css`
-      background: url(${PWError});
-      background-size: 100%;
-    `}
 `;

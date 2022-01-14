@@ -12,6 +12,7 @@ function Modal({
   header = null,
   body,
   footer = null,
+  heightSize,
 }) {
   const [LocalVisible, setLocalVisible] = useState(visible);
   const [Animate, setAnimate] = useState(visible);
@@ -31,7 +32,7 @@ function Modal({
   return ReactDOM.createPortal(
     <Wrapper>
       <ModalBg onClick={handleClose} disappear={!visible} />
-      <ModalBox disappear={!visible} size={size}>
+      <ModalBox disappear={!visible} size={size} heightSize={heightSize}>
         {header && header}
         {body && body}
         {footer && footer}
@@ -98,6 +99,8 @@ const ModalBox = styled.div`
   background-color: #fff;
   transition-property: opacity, top, bottom, padding;
   transition-duration: 0.5s;
+  box-sizing: content-box;
+  box-shadow: 0 0 30px rgb(0 0 0 / 16%);
 
   z-index: 1;
   position: relative;
@@ -107,6 +110,12 @@ const ModalBox = styled.div`
   animation-timing-function: ease-out;
   animation-name: ${FadeIn};
   animation-fill-mode: forwards;
+  ${(props) =>
+    props.heightSize &&
+    css`
+      height: ${props.heightSize}px;
+    `}
+
   ${(props) =>
     props.disappear &&
     css`
