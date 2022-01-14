@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.dto;
+package matchTeam.crewcrew.response;
 
 public enum ErrorCode {
     INVALID_INPUT_VALUE(400, "COMMON_001", " Invalid Input Value"),

@@ -1,6 +1,5 @@
 package matchTeam.crewcrew.response;
 
-import matchTeam.crewcrew.dto.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
