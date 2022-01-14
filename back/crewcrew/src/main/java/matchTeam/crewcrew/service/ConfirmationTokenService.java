@@ -30,8 +30,9 @@ public class ConfirmationTokenService {
         return emailConfirmationToken.getEmail();
     }
 
-    public Optional<ConfirmationToken> findByEmailAndExpirationDateAfterAndExpired(String confirmationTokenId){
-        Optional<ConfirmationToken> confirmationToken = confirmationTokenRepository.findByEmailAndExpirationDateAfterAndExpired(confirmationTokenId, LocalDateTime.now(),false);
-        return confirmationToken;
+
+    public ConfirmationToken findByIdAndExpirationDateAfterAndExpired(String confirmationTokenId){
+        Optional<ConfirmationToken> confirmationToken = confirmationTokenRepository.findByIdAndExpirationDateAfterAndExpired(confirmationTokenId, LocalDateTime.now(),false);
+        return confirmationToken.orElseThrow(IllegalArgumentException::new);
     }
 }

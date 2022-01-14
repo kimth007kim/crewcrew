@@ -9,6 +9,7 @@ import matchTeam.crewcrew.oauth.entity.RoleType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 
 @Entity
 @Getter @Setter
@@ -29,7 +30,6 @@ public class User extends BaseTimeEntity {
     @Column
     private String name;
 
-    @JsonIgnore
     @Column
     @NotNull
     private String password;
@@ -44,20 +44,32 @@ public class User extends BaseTimeEntity {
     @Column(name = "provider_type")
     private ProviderType providerType;
 
-    @Column(name = "role_type", length = 20)
-    @Enumerated(EnumType.STRING)
-    private RoleType roleType;
+    @Column
+    private String role;
 
     @Builder
-    public User(Long uid, String email, String password, byte[] profileImage, String introduce, ProviderType providerType, RoleType roleType) {
+    public User(Long uid, String email, String password, byte[] profileImage, String introduce, ProviderType providerType, String role) {
         this.uid= uid;
         this.email = email;
         this.password = password;
         this.profileImage = profileImage;
         this.introduce = introduce;
         this.providerType = providerType;
-        this.roleType = roleType;
+        this.role=role;
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid=" + uid +
+                ", email='" + email + '\'' +
+                ", introduce='" + introduce + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", profileImage=" + Arrays.toString(profileImage) +
+                ", nickname='" + nickname + '\'' +
+                ", providerType=" + providerType +
+                ", role=" + role +
+                '}';
+    }
 }

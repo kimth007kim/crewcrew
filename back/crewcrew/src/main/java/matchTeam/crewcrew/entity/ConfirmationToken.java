@@ -23,7 +23,7 @@ public class ConfirmationToken {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(length = 36)
-    private String email;
+    private String id;
 
     @Column
     private LocalDateTime expirationDate;
@@ -31,6 +31,9 @@ public class ConfirmationToken {
     @Column
     private boolean expired;
 
+
+    @Column
+    private String email;
 
     @CreatedDate
     @Column(updatable = false)

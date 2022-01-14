@@ -1,9 +1,5 @@
 package matchTeam.crewcrew.config;
 
-import matchTeam.crewcrew.repository.user.JpaUserRepository;
-import matchTeam.crewcrew.repository.user.UserRepository;
-import matchTeam.crewcrew.service.UserService;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManager;
@@ -17,13 +13,13 @@ public class SpringConfig {
         this.em = em;
     }
 
-    @Bean
-    public UserService userService(){
-        return new UserService(userRepository());
-    }
-    @Bean
-    public UserRepository userRepository(){
-        return new JpaUserRepository(em);
-    }
+//    @Bean
+//    public UserService userService(){
+//        return new UserService(userRepository());
+//    }
+//    @Bean
+//    public UserRepository userRepository(){
+//        return new JpaUserRepository(em);
+//    }
 }
 

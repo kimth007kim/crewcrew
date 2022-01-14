@@ -1,22 +1,21 @@
 package matchTeam.crewcrew.service;
 
+import lombok.RequiredArgsConstructor;
+import matchTeam.crewcrew.entity.ConfirmationToken;
 import matchTeam.crewcrew.entity.User;
 import matchTeam.crewcrew.repository.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
+@RequiredArgsConstructor
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
-//    private final ConfirmationTokenService confirmationTokenService;
+    private final ConfirmationTokenService confirmationTokenService;
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-      }
 
     public long join(User user){
         if(validateDuplicateMember(user)) {
@@ -44,6 +43,9 @@ public class UserService {
     public List<User> findUsers(){
         return userRepository.findAll();
     }
+    public Optional<User> findByEmail(String email){
+        return userRepository.findByEmail(email);
+    }
 
     private boolean validateDuplicateMember(User user){
         if (userRepository.findByEmail(user.getEmail()).isEmpty()){
@@ -53,4 +55,10 @@ public class UserService {
         }
     }
 
+    public void confirmEmail(String token) {
+        ConfirmationToken findConfirmationToken =confirmationTokenService.findByIdAndExpirationDateAfterAndExpired(token);
+//        User user = findByEmail(findConfirmationToken.getEmail());
+        findConfirmationToken.useToken();
+
+    }
 }
