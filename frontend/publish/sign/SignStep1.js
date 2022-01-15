@@ -157,7 +157,7 @@ window.addEventListener("DOMContentLoaded", function(){
     inputMail.addEventListener("focus", function(){ //메일 도메인 input 이벤트
         const children = this.parentNode.children;
         this.closest("ul.MailList").classList.add("On");
-        this.closest("ul.MailList").style.height = 58 + 29 * MailListLength + "px";
+        this.closest("ul.MailList").style.height = 7 + 58 + 31 * MailListLength + "px";
         children[1].classList.add("On");
         this.closest("ul.ListFlex").parentNode.lastElementChild.classList.add('On'); // InputTxt show, error상태시 On 대신 Error 클래스 추가
         if(this.value){
