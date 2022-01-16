@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable array-callback-return */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable indent */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -12,17 +14,40 @@ const emailList = ['naver.com', 'gmail.com', 'daum.net', 'hanmail.net'];
 
 function SignupSection({ IsClick }) {
   const [name, setName] = useState('');
+  const [nameValid, setNameValid] = useState(true);
+
   const [emailId, setEmailId] = useState('');
+  const [emailIdValid, setEmailIdValid] = useState(true);
   const [email, setEmail] = useState('');
+  const [emailValid, setEmailValid] = useState(true);
+
   const [code, setCode] = useState('');
+  const [codeValid, setCodeValid] = useState(true);
+
   const [password, setPassword] = useState('');
-  const [Valid, setValid] = useState(true);
+  const [passwordValid, setPasswordValid] = useState(true);
 
   const [IDFocus, setIDFocus] = useState(false);
   const [EmailFocus, setEmailFocus] = useState(false);
   const [CodeFocus, setCodeFocus] = useState(false);
-  const [ProgressF, setProgressF] = useState({});
-  const [ProgressS, setProgressS] = useState(0);
+  const [ProgressF, setProgressF] = useState([
+    {
+      index: 0,
+      check: 0,
+    },
+    {
+      index: 1,
+      check: 0,
+    },
+    {
+      index: 2,
+      check: 0,
+    },
+    {
+      index: 3,
+      check: 0,
+    },
+  ]);
 
   const [SendCode, setSendCode] = useState(false);
   const [CodeComplete, setCodeComplete] = useState(false);
@@ -30,49 +55,75 @@ function SignupSection({ IsClick }) {
 
   const EmailRef = useRef(null);
   const MailListRef = useRef(null);
-  const EntireRef = useRef([]);
 
   const HandleNameChange = useCallback((e) => {
     setName(e.target.value);
+    if (e.target.value.length >= 2) {
+      setNameValid(false);
+    } else {
+      setNameValid(true);
+    }
   }, []);
 
   const HandleNameDelete = useCallback(() => {
     setName('');
+    setNameValid(false);
   }, []);
 
   const HandleEmailIdChange = useCallback((e) => {
     setEmailId(e.target.value);
+    if (e.target.value.length >= 5) {
+      setEmailIdValid(false);
+    } else {
+      setEmailIdValid(true);
+    }
   }, []);
 
   const HandleEmailIdDelete = useCallback((e) => {
     setEmailId('');
+    setEmailIdValid(false);
   }, []);
 
-  const HandleEmailChange = (e) => {
+  const HandleEmailChange = useCallback((e) => {
     setEmail(e.target.value);
-    setValid(false);
-  };
+    if (e.target.value.length >= 5) {
+      setEmailValid(false);
+    } else {
+      setEmailValid(true);
+    }
+  }, []);
 
   const HandleEmailDelete = useCallback(() => {
     setEmail('');
+    setEmailValid(false);
   }, []);
 
   const HandleCodeChange = (e) => {
     setCode(e.target.value);
-    setValid(false);
+    if (e.target.value.length >= 5) {
+      setCodeValid(false);
+    } else {
+      setCodeValid(true);
+    }
   };
 
   const HandleCodeDelete = useCallback(() => {
     setCode('');
+    setCodeValid(false);
   }, []);
 
   const HandlePasswordChange = (e) => {
     setPassword(e.target.value);
-    setValid(false);
+    if (e.target.value.length >= 8) {
+      setPasswordValid(false);
+    } else {
+      setPasswordValid(true);
+    }
   };
 
   const HandlePasswordDelete = useCallback(() => {
     setPassword('');
+    setPasswordValid(false);
   }, []);
 
   const HandleInputFocus = useCallback(() => {
@@ -89,8 +140,82 @@ function SignupSection({ IsClick }) {
   const ClickMailList = useCallback((e, m) => {
     e.preventDefault();
     setEmail(m);
+    setEmailValid(false);
     EmailRef.current.blur();
   }, []);
+
+  const CheckProgressF = useCallback(
+    (index) => {
+      const Check = ProgressF.map((p) => {
+        if (p.index === index) {
+          return {
+            ...p,
+            check: 1,
+          };
+        }
+        return p;
+      });
+      setProgressF([...Check]);
+    },
+    [ProgressF],
+  );
+
+  const NotCheckProgressF = useCallback(
+    (index) => {
+      const Check = ProgressF.map((p) => {
+        if (p.index === index) {
+          return {
+            ...p,
+            check: 0,
+          };
+        }
+        return p;
+      });
+      setProgressF([...Check]);
+    },
+    [ProgressF],
+  );
+
+  useEffect(() => {
+    if (name.length >= 2 && !nameValid) {
+      CheckProgressF(0);
+    } else {
+      NotCheckProgressF(0);
+    }
+  }, [nameValid, name]);
+
+  useEffect(() => {
+    if (emailId.length >= 5 && !emailIdValid && email.length >= 5 && !emailValid) {
+      CheckProgressF(1);
+    } else {
+      NotCheckProgressF(1);
+    }
+  }, [emailIdValid, emailId, emailValid, email]);
+
+  useEffect(() => {
+    if (code.length >= 5 && !codeValid) {
+      CheckProgressF(2);
+    } else {
+      NotCheckProgressF(2);
+    }
+  }, [codeValid, code]);
+
+  useEffect(() => {
+    if (password.length >= 8 && !passwordValid) {
+      CheckProgressF(3);
+    } else {
+      NotCheckProgressF(3);
+    }
+  }, [password, passwordValid]);
+
+  useEffect(() => {
+    const stepComplete = ProgressF.filter((p) => p.check === 1).length;
+    if (stepComplete >= 4) {
+      setStepActive(true);
+    } else {
+      setStepActive(false);
+    }
+  }, [ProgressF]);
 
   return (
     <SignupContents active={IsClick === 1}>
@@ -199,7 +324,7 @@ function SignupSection({ IsClick }) {
       </ButtonWrap>
       <SignStep1>
         <li>
-          <StepSlide>
+          <StepSlide progress={ProgressF.filter((p) => p.check === 1).length}>
             <StepBar1 />
           </StepSlide>
         </li>
@@ -451,7 +576,7 @@ const StepSlide = styled.div`
   border-radius: 4px;
   position: relative;
 
-  ${StepBar} {
+  ${StepBar1} {
     position: absolute;
     top: 0;
     left: 0;
@@ -459,7 +584,13 @@ const StepSlide = styled.div`
     border-radius: 4px;
     border: none;
     transition: 0.5s;
-    width: 0;
+    width: 0%;
+    ${(props) =>
+      props.progress &&
+      css`
+        width: ${props.progress * 25}%;
+      `};
+
     background-color: #00b7ff;
   }
 `;
