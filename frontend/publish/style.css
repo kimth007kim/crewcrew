@@ -138,7 +138,7 @@ a {
 }
 
 /*input*/
-ul.InputList li {
+ul.InputList > li {
   position: relative;
   height: 75px;
 }
@@ -266,6 +266,48 @@ ul.InputList li {
 .PasswordShow.Error {
   background: url("../../src/assets/images/PasswordShow_Error.png");
   background-size: 100%;
+  display: block;
+}
+
+.InputDouble {
+  font-size: 10px;
+  color: #fff;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 48px;
+  height: 20px;
+  background-color: #707070;
+  border-radius: 10px;
+  position: absolute;
+  top: 15px;
+  right: 48px;
+  cursor: pointer;
+  display: none;
+}
+
+.InputDouble.On {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.InputChecked {
+  width: 20px;
+  height: 20px;
+  background: url("../../src/assets/images/Checked_on.png");
+  background-size: 100%;
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 48px;
+  display: none;
+}
+
+.InputChecked.On {
   display: block;
 }
 

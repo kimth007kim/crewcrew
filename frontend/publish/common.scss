@@ -203,6 +203,8 @@ p.SnsTitle {
         margin-top: 40px;
         height: calc(100vh - 40px);
         max-height: 720px;
+        position: fixed;
+        bottom: 0;
     }
 
     .ModalBox{
@@ -227,13 +229,19 @@ p.SnsTitle {
     .ModalBody{
         height: calc(100vh - 194px);
         overflow-y: auto;
+        overflow-x: hidden;
     }
 
     .ModalBody::-webkit-scrollbar{
         display: none;
     }
 
+
     .SnsList li{
+        margin-right: 10px;
+    }
+
+    .ListFlex li{
         margin-right: 10px;
     }
 

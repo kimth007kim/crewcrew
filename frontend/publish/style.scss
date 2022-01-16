@@ -14,6 +14,8 @@ $yellow1 : #ffd458;
 
 $red1 : #ff0045; 
 
+$green1 : #8ED819;
+
 $white : #fff;
 
 
@@ -126,7 +128,7 @@ a{
 
 /*input*/
 
-ul.InputList li{
+ul.InputList>li{
     position: relative;
     height: 75px;
 }
@@ -154,6 +156,7 @@ ul.InputList li{
         border: 1px solid $red1;
         caret-color: $red1;
     }
+
 }
 
 .LabelFull{
@@ -246,6 +249,42 @@ ul.InputList li{
     &.Error{
         background: url("../../src/assets/images/PasswordShow_Error.png");
         background-size: 100%;
+        display: block;
+    }
+}
+
+.InputDouble{
+    font-size: 10px;
+    color: $white;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 20px;
+    background-color: $black2;
+    border-radius: 10px;
+    position: absolute;
+    top: 15px;
+    right: 48px;
+    cursor: pointer;
+    display: none;
+
+    &.On {
+        display: flex;
+    }
+}
+
+.InputChecked{
+    width: 20px;
+    height: 20px;
+    background: url("../../src/assets/images/Checked_on.png");
+    background-size: 100%;
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 48px;
+    display: none;
+
+    &.On{
         display: block;
     }
 }
