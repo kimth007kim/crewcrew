@@ -1,21 +1,25 @@
 package matchTeam.crewcrew.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import matchTeam.crewcrew.oauth.entity.BaseTimeEntity;
-import matchTeam.crewcrew.oauth.entity.ProviderType;
-import matchTeam.crewcrew.oauth.entity.RoleType;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@Entity
-@Getter @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends BaseTimeEntity {
+@Builder
+@Entity
+public class User implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
 
@@ -44,32 +48,46 @@ public class User extends BaseTimeEntity {
     @Column(name = "provider_type")
     private ProviderType providerType;
 
-    @Column
-    private String role;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
 
-    @Builder
-    public User(Long uid, String email, String password, byte[] profileImage, String introduce, ProviderType providerType, String role) {
-        this.uid= uid;
-        this.email = email;
-        this.password = password;
-        this.profileImage = profileImage;
-        this.introduce = introduce;
-        this.providerType = providerType;
-        this.role=role;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+
+
+
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return null;
+//    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-                "uid=" + uid +
-                ", email='" + email + '\'' +
-                ", introduce='" + introduce + '\'' +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", profileImage=" + Arrays.toString(profileImage) +
-                ", nickname='" + nickname + '\'' +
-                ", providerType=" + providerType +
-                ", role=" + role +
-                '}';
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 }

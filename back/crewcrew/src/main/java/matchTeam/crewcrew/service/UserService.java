@@ -47,8 +47,8 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    private boolean validateDuplicateMember(User user){
-        if (userRepository.findByEmail(user.getEmail()).isEmpty()){
+    public boolean validateDuplicateMember(String email){
+        if (userRepository.findByEmail(email).isEmpty()){
             return true;
         }else{
             return false;
