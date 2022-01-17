@@ -4,9 +4,12 @@ import React, { useCallback, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import Modal from '../../components/common/Modal';
 import Close from '../../assets/images/ModalClose.png';
+import Arrow from '../../assets/images/Arrow.png';
 
 import LoginSection from './section/LoginSection';
 import SignupSection from './section/SignupSection';
+import PasswordSection from './section/PasswordSection';
+import TitleRender from './component/TitleRender';
 
 // eslint-disable-next-line react/jsx-wrap-multilines
 function AuthModal({ closeModal, visible }) {
@@ -27,7 +30,14 @@ function AuthModal({ closeModal, visible }) {
       header={
         <Header disappear={!visible}>
           <Top>
-            <li />
+            <li>
+              {IsClick === 2 && (
+                <ModalArrow onClick={() => HandleClick(0)}>
+                  <ArrowImg src={Arrow} />
+                  로그인
+                </ModalArrow>
+              )}
+            </li>
             <li>
               <ModalClose
                 onClick={() => {
@@ -40,19 +50,15 @@ function AuthModal({ closeModal, visible }) {
             </li>
           </Top>
           <Title>
-            <TitleLi active={IsClick === 0} onClick={() => HandleClick(0)}>
-              로그인
-            </TitleLi>
-            <TitleLi active={IsClick === 1} onClick={() => HandleClick(1)}>
-              회원가입
-            </TitleLi>
+            <TitleRender IsClick={IsClick} HandleClick={HandleClick} />
           </Title>
         </Header>
       }
       body={
         <Body>
-          <LoginSection IsClick={IsClick} />
+          <LoginSection IsClick={IsClick} HandleClick={HandleClick} />
           <SignupSection IsClick={IsClick} />
+          <PasswordSection IsClick={IsClick} HandleClick={HandleClick} />
         </Body>
       }
       visible={visible}
@@ -132,36 +138,22 @@ const ModalClose = styled.span`
   }
 `;
 
+const ModalArrow = styled.p`
+  font-size: 18px;
+  color: #868686;
+  cursor: pointer;
+  line-height: 1;
+  font-weight: 300;
+`;
+
+const ArrowImg = styled.img`
+  width: 8px;
+  margin-right: 15px;
+`;
+
 const Title = styled.ul`
   display: flex;
   padding-bottom: 10px;
-`;
-
-const TitleLi = styled.li`
-  width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  font-size: 18px;
-  font-weight: 300;
-  cursor: pointer;
-  transition: 0.5s;
-  height: 45px;
-
-  ${(props) =>
-    props.active &&
-    css`
-      font-size: 32px;
-      color: #000;
-      font-weight: 700;
-      cursor: default;
-    `}
 `;
 
 const Body = styled.div`

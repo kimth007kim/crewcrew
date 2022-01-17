@@ -47,7 +47,7 @@ module.exports = {
     'operator-linebreak': ['error', 'after'],
     'implicit-arrow-linebreak': ['warn', 'below'],
     'jsx-a11y/no-noninteractive-element-interactions': [
-      'error',
+      'warn',
       {
         handlers: ['onClick', 'onMouseDown', 'onMouseUp', 'onKeyPress', 'onKeyDown', 'onKeyUp'],
       },

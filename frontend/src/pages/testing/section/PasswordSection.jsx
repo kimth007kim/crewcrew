@@ -5,29 +5,16 @@
 import React, { useCallback, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
-import CheckOff from '../../../assets/images/LogInCheck_off.png';
-import CheckOn from '../../../assets/images/LogInCheck_on.png';
 import Naver from '../../../assets/images/Naver.png';
 import Kakao from '../../../assets/images/Kakao.png';
 
 import Button from '../../../components/common/Button';
 import Textfield from '../../../components/common/TextfieldEmail';
-import TextfieldPW from '../../../components/common/TextfieldPW';
 
-function LoginSection({ IsClick, HandleClick }) {
-  const [IsChecked, setIsChecked] = useState(false);
+function PasswordSection({ HandleClick, IsClick }) {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [Valid, setValid] = useState(true);
-
-  const MovePasswordFind = useCallback(() => {
-    HandleClick(2);
-  }, []);
-
-  const HandleCheck = useCallback((e) => {
-    setIsChecked(e.target.checked);
-  }, []);
-
   const HandleEmailChange = (e) => {
     setEmail(e.target.value);
     setValid(false);
@@ -37,13 +24,13 @@ function LoginSection({ IsClick, HandleClick }) {
     setEmail('');
   }, []);
 
-  const HandlePasswordChange = (e) => {
-    setPassword(e.target.value);
+  const HandleNameChange = (e) => {
+    setName(e.target.value);
     setValid(false);
   };
 
-  const HandlePasswordDelete = useCallback(() => {
-    setPassword('');
+  const HandleNameDelete = useCallback(() => {
+    setName('');
   }, []);
 
   const HandleSubmitLogin = useCallback((e) => {
@@ -51,9 +38,20 @@ function LoginSection({ IsClick, HandleClick }) {
   }, []);
 
   return (
-    <LoginContents active={IsClick === 0}>
+    <PWFindContents active={IsClick === 2}>
       <form onSubmit={HandleSubmitLogin}>
         <InputList>
+          <InputLi>
+            <Textfield
+              type="text"
+              onChange={HandleNameChange}
+              value={name}
+              label="이름"
+              validMessage="이름을 입력해주세요"
+              valid={false}
+              onDelete={HandleNameDelete}
+            />
+          </InputLi>
           <InputLi>
             <Textfield
               type="email"
@@ -65,34 +63,10 @@ function LoginSection({ IsClick, HandleClick }) {
               onDelete={HandleEmailDelete}
             />
           </InputLi>
-          <InputLi>
-            <TextfieldPW
-              onChange={HandlePasswordChange}
-              value={password}
-              label="비밀번호"
-              validMessage="숫자/영문/특수문자 포함 8~20글자"
-              valid={false}
-              onDelete={HandlePasswordDelete}
-            />
-          </InputLi>
         </InputList>
         <Button size="fullregular" color="darkblue">
-          로그인
+          비밀번호 찾기
         </Button>
-
-        <SubList>
-          <li>
-            <InputHide type="checkbox" id="LogInCheck" checked={IsChecked} onChange={HandleCheck} />
-
-            <LabelCheck htmlFor="LogInCheck" className="LabelCheck">
-              <CheckBox active={IsChecked} />
-              로그인상태유지
-            </LabelCheck>
-          </li>
-          <li>
-            <p onClick={MovePasswordFind}>비밀번호 찾기</p>
-          </li>
-        </SubList>
       </form>
       <DividingLine>또는 간편하게</DividingLine>
       <SnsList>
@@ -109,11 +83,16 @@ function LoginSection({ IsClick, HandleClick }) {
           </ButtonKakao>
         </li>
       </SnsList>
-    </LoginContents>
+      <ButtonWrap>
+        <Button size="fullsmall" color="darkblue" onClick={() => HandleClick(1)}>
+          이메일로 회원가입하기
+        </Button>
+      </ButtonWrap>
+    </PWFindContents>
   );
 }
 
-export default LoginSection;
+export default PasswordSection;
 
 const FadeIn = keyframes`
     from{
@@ -131,7 +110,7 @@ const FadeOut = keyframes`
     }
 `;
 
-const LoginContents = styled.div`
+const PWFindContents = styled.div`
   transition: 0.5s;
   display: none;
 
@@ -151,55 +130,6 @@ const LoginContents = styled.div`
 
 const InputList = styled.ul`
   margin: 35px 0 20px;
-`;
-
-const SubList = styled.ul`
-  margin: 30px 0 58px;
-
-  display: flex;
-  & > li {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    font-size: 15px;
-    font-weight: 300;
-    color: #868686;
-  }
-
-  & > li > p {
-    cursor: pointer;
-  }
-`;
-
-const InputHide = styled.input`
-  width: 1px;
-  height: 1px;
-  clip: rect(1px, 1px, 1px, 1px);
-  position: absolute;
-`;
-
-const LabelCheck = styled.label`
-  display: flex;
-  line-height: 21px;
-  cursor: pointer;
-  user-select: none;
-`;
-
-const CheckBox = styled.span`
-  display: block;
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-  background: url(${CheckOff});
-  background-size: 100%;
-  transition: background 0.2s;
-
-  ${(props) =>
-    props.active &&
-    css`
-      background: url(${CheckOn});
-      background-size: 100%;
-    `}
 `;
 
 const InputLi = styled.li`
@@ -243,7 +173,7 @@ const SnsList = styled.ul`
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  padding-bottom: 80px;
+  padding-bottom: 15px;
   gap: 16px;
 
   & > li {
@@ -311,4 +241,8 @@ const KakaoImg = styled.img`
   width: 13px;
   margin-right: 4px;
   margin-top: 2px;
+`;
+
+const ButtonWrap = styled.div`
+  margin-bottom: 74px;
 `;
