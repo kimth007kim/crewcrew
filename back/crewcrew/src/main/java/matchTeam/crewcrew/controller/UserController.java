@@ -83,25 +83,23 @@ public class UserController {
     // 유저 정보를 (쿠키)토대로 반환하는 API(GET) @GetMapping(/user)
 
     @PostMapping("/join")
-    public ResponseEntity<Object> join( UserDTO userDTO) {
+    public ResponseEntity<Object> Join( UserDTO userDTO) {
 //    public ResponseEntity<Object> join(@RequestParam("profileImage") MultipartFile file, User user) {
 
-//        boolean emailExist=userService.validateDuplicateMember(userDTO.getEmail());
-//        if (emailExist ==true) {
-//            return ResponseHandler.ErrorResponse(ErrorCode.EMAIL_ALREADY_EXIST);
-//
-//        } else {
-//            return ResponseHandler.generateResponse("Join Success", HttpStatus.OK, userDTO);
-//        }
-//        userService.join(User.builder().email(userDTO.getEmail())
-//                .password(bCryptPasswordEncoder.encode(userDTO.getPassword()))
-//                        .roles(Collections.singletonList("USER"))
+        boolean emailExist=userService.validateDuplicateMember(userDTO.getEmail());
+        if (emailExist ==false) {
+            return ResponseHandler.ErrorResponse(ErrorCode.EMAIL_ALREADY_EXIST);
+
+        } else {
+            userService.join(User.builder()
+                            .email(userDTO.getEmail())
+                            .password(bCryptPasswordEncoder.encode(userDTO.getPassword()))
+                            .roles(Collections.singletonList("ROLE_USER"))
+                            .build());
 //                       .build()).getID();
+            return ResponseHandler.generateResponse("Join Success", HttpStatus.OK, userDTO);
+        }
 
-
-//        long pid = userService.join(user);
-
-        return ResponseHandler.ErrorResponse(ErrorCode.EMAIL_ALREADY_EXIST);
     }
 
 
