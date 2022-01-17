@@ -50,6 +50,7 @@ function SignupSection({ IsClick }) {
   ]);
 
   const [SendCode, setSendCode] = useState(false);
+  const [CodeActive, setCodeActive] = useState(false);
   const [CodeComplete, setCodeComplete] = useState(false);
   const [StepActive, setStepActive] = useState(false);
 
@@ -186,9 +187,11 @@ function SignupSection({ IsClick }) {
 
   useEffect(() => {
     if (emailId.length >= 5 && !emailIdValid && email.length >= 5 && !emailValid) {
+      setCodeActive(true);
       CheckProgressF(1);
     } else {
       NotCheckProgressF(1);
+      setCodeActive(false);
     }
   }, [emailIdValid, emailId, emailValid, email]);
 
@@ -216,6 +219,33 @@ function SignupSection({ IsClick }) {
       setStepActive(false);
     }
   }, [ProgressF]);
+
+  useEffect(() => {
+    setName('');
+    setEmailId('');
+    setCode('');
+    setEmail('');
+    setPassword('');
+    setCodeActive(false);
+    setProgressF([
+      {
+        index: 0,
+        check: 0,
+      },
+      {
+        index: 1,
+        check: 0,
+      },
+      {
+        index: 2,
+        check: 0,
+      },
+      {
+        index: 3,
+        check: 0,
+      },
+    ]);
+  }, [IsClick]);
 
   return (
     <SignupContents active={IsClick === 1}>
@@ -299,7 +329,7 @@ function SignupSection({ IsClick }) {
               />
             </li>
             <li>
-              <Button size="fullregular" color="darkblue">
+              <Button size="fullregular" color="darkblue" disabled={!CodeActive}>
                 {SendCode ? '코드 재전송' : '코드 전송'}
               </Button>
             </li>
@@ -575,6 +605,7 @@ const StepSlide = styled.div`
   border: 1px solid #e2e2e2;
   border-radius: 4px;
   position: relative;
+  box-sizing: content-box;
 
   ${StepBar1} {
     position: absolute;
