@@ -171,6 +171,7 @@ ul.InputList>li{
     background-color: $white;
     transition: .5s;
     line-height: 24px;
+    color: $black4;
 
     &.On{
         top: -12px;
@@ -184,22 +185,6 @@ ul.InputList>li{
         color: $red1;
         font-size: 13px;
         font-weight: 500;
-    }
-}
-
-.LabelAttached{
-    position: absolute;
-    left: 8px;
-    top: 13px;
-    font-size: 16px;
-    font-weight: 300;
-    padding: 0 4px 0 7px;
-    transition: .5s;
-    line-height: 24px;
-    color: $black4;
-
-    &.On{
-        color: $black2;
     }
 }
 
@@ -227,16 +212,20 @@ ul.InputList>li{
     }
 }
 
-.InputDel{
-    width: 18px;
-    height: 18px;
-    background: url("../../src/assets/images/InputDel.png");
-    background-size: 100%;
+@mixin InputButton($width, $height, $top, $right:inherit) {
+    width: $width;
+    height: $height;
     cursor: pointer;
     position: absolute;
-    top: 16px;
-    right: 15px;
     display: none;
+    top: $top;
+    right: $right;
+}
+
+.InputDel{
+    @include InputButton(18px, 18px, 16px, 15px); /*width,heigh,top,right*/
+    background: url("../../src/assets/images/InputDel.png");
+    background-size: 100%;
 
     &.On{
         display: block;
@@ -244,16 +233,10 @@ ul.InputList>li{
 }
 
 .PasswordShow{
-    width: 25px;
-    height: 15px;
+    @include InputButton(25px, 15px, 17px, 48px); /*width,heigh,top,right*/
     background: url("../../src/assets/images/PasswordShow.png");
     background-size: 100%;
-    cursor: pointer;
-    position: absolute;
-    top: 17px;
-    right: 48px;
     transition: .3s;
-    display: none;
 
     &.Over{
         display: block;
@@ -271,7 +254,7 @@ ul.InputList>li{
     }
 }
 
-@mixin InputButton($width, $height, $fontsize) {
+@mixin InputTextButton($width, $height, $fontsize, $top, $right:inherit) {
     font-size: $fontsize;
     color: $white;
     justify-content: center;
@@ -282,6 +265,9 @@ ul.InputList>li{
     border-radius: $height / 2;
     position: absolute;
     display: none;
+    top: $top;
+    right: $right;
+    cursor: pointer;
 
     &.On {
         display: flex;
@@ -289,28 +275,18 @@ ul.InputList>li{
 }
 
 .InputDouble{
-    @include InputButton(48px, 20px, 10px); /*width, height, fontsize*/
-    top: 15px;
-    right: 48px;
-    cursor: pointer;
+    @include InputTextButton(48px, 20px, 10px, 15px, 48px); /*width, height, fontsize, top, right*/
 }
 
 .InputAdd{
-    @include InputButton(30px, 20px, 10px); /*width, height, fontsize*/
-    top: 15px;
-    right: 15px;
-    cursor: pointer;
+    @include InputTextButton(48px, 20px, 10px, 15px, 15px); /*width, height, fontsize, top, right*/
 }
 
 .InputChecked{
-    width: 20px;
-    height: 20px;
+    @include InputButton(20px, 20px, 15px, 48px); /*width,heigh,top,right*/
     background: url("../../src/assets/images/Checked_on.png");
     background-size: 100%;
-    position: absolute;
-    top: 15px;
-    right: 48px;
-    display: none;
+    cursor: default;
 
     &.On{
         display: block;

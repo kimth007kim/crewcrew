@@ -1,7 +1,17 @@
 @import "../common";
 
+.InputList.Sign{
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 310px;
 
-li.MailList, li.ChooseList{
+    &::-webkit-scrollbar{
+        display: none;
+    }
+}
+
+
+li.MailList{
     z-index: 1;
 }
 
@@ -39,12 +49,7 @@ ul.MailList, ul.ChooseList{
                 margin: 0 auto;
             }
         }
-
-        
-
-        
     }
-
 }
 
 ul.MailList{
@@ -73,63 +78,15 @@ ul.MailList{
     }
 }
 
-ul.ChooseList{
 
-    li{
-        cursor: pointer;
-        &:not(:first-child){
-            height: 21px;
-            padding: 4px 6px 2px;
-            padding-right: 0;
-        }
-    }
-
-    p{
-        width: fit-content;
-        padding: 4px 26px 4px 6px;
-        border-radius: 12px;
-        font-size: 13px;
-        color: $black1;
-        transition: .2s;
-        cursor: pointer;
-        position: relative;
-
-        em{
-            cursor: pointer;
-            font-style: normal;
-        }
-
-        span{
-            cursor: pointer;
-        }
-
-        &.On{
-            background-color: $blue3;
-            color: $white;
-            cursor: default;
-        }
-    }
-}
 
 .InputMail{
+    @include DropdownInput(13px, $black3); /*fontsize, color*/
     padding: 15px 37px 17px;
-    width: 100%;
-    border: none;
-    outline: none;
-    box-sizing: border-box;
-    font-size: 13px;
-    line-height: 1;
 
     &.On{
         caret-color: $blue3;
     }
-}
-
-.InputChoose{
-    height: 50px;
-    width: 100%;
-    border: none;
-    outline: none;
 }
 
 .LabelMail{
@@ -146,22 +103,12 @@ ul.ChooseList{
     }
 }
 
-.ChooseCancel{
-    width: 10px;
-    height: 10px;
-    background: url("../../src/assets/images/CloseWhite.png") 50% 50%;
-    background-size: 100%;
-    position: absolute;
-    top: 7px;
-    right: 10px;
-}
-
 button.SignStep{
     margin: 30px 0 10px;
 }
 
 ul.SignStep1{
-    margin-bottom: 80px;
+    margin-bottom: 70px;
 }
 
 .StepSlide{
@@ -201,6 +148,14 @@ ul.SignStep1{
     }
 }
 
+@mixin BgCircle($diameter){
+    width: $diameter;
+    height: $diameter;
+    top: calc(50% - (#{$diameter}/2));
+    left: calc(50% - (#{$diameter}/2));
+}
+
+
 .ProfileShow{
     height: 160px;
     background-color: $black5;
@@ -222,22 +177,8 @@ ul.SignStep1{
     }
 
     .ProfileChange{
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        width: 48px;
-        height: 20px;
-        border-radius: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 10px;
-        color: $white;
-        background-color: $black2;
+        @include InputTextButton(48px, 20px, 10px, 10px, 10px); /*width, height, fontsize, top, right*/
         z-index: 1;
-        cursor: pointer;
-        opacity: 0;
-        transition: .3s;
     }
 
     .ProfileImg{
@@ -260,17 +201,15 @@ ul.SignStep1{
     }
 
     .ProfileBg{
+        @include BgCircle(148px);
         position: absolute;
-        width: 148px;
-        height: 148px;
         border-radius: 50%;
-        top: calc(50% - 74px);
-        left: calc(50% - 74px);
         background: transparent;
         box-shadow: 0 0 0 300px $black1;
         opacity: .3;
     }
 }
+
 
 .SelectWrapper{
     display: flex;
@@ -431,14 +370,12 @@ ul.SignStep1{
 
 @media screen and (max-width:768px) {
 
+    .InputList.Sign{
+        height: calc(100vh - 393px);
+    }    
 
-
-    button.SignStep1{
-        margin: 84px 0 10px;
-    }
-
-    button.SignStep2{
-        margin: 15px 0 10px;
+    button.SignStep{
+        margin-top: 15px;
     }
 
     .InputList li.ProfileSection{
@@ -455,10 +392,7 @@ ul.SignStep1{
     }
 
     .ProfileShow .ProfileBg{
-        width: 202px;
-        height: 202px;
-        top: calc(50% - 101px);
-        left: calc(50% - 101px);
+        @include BgCircle(202px)
     }
 
     .ProfileList li{
@@ -486,4 +420,10 @@ ul.SignStep1{
             padding: 5px 10px 5px 4px;
         }
     }
+
+    ul.ChooseListUnder{
+        height: 30px;
+        flex-wrap: nowrap;
+    }
+
 }

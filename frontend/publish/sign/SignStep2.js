@@ -135,7 +135,7 @@ window.addEventListener("DOMContentLoaded", function(){
             profileUpload.click();
             isUploaded = false;
         } else {
-            document.querySelector(".ProfileChange").style.opacity = "1";
+            document.querySelector(".ProfileChange").classList.add("On");
             profileShow.style.backgroundColor = "#e2e2e2";
             profileImg.firstElementChild.setAttribute("src", profileURL);
         }
@@ -146,7 +146,7 @@ window.addEventListener("DOMContentLoaded", function(){
     profileUpload.addEventListener("change", function () { //사진 업로드 시
         this.parentNode.classList.add("On");
         document.querySelector(".ProfileTitle").style.opacity = "1";
-        document.querySelector(".ProfileChange").style.opacity = "1";
+        document.querySelector(".ProfileChange").classList.add("On");
         profileShow.style.backgroundColor = "#e2e2e2";
         profileImg.classList.remove("Grayed");
 
@@ -165,7 +165,7 @@ window.addEventListener("DOMContentLoaded", function(){
             document.querySelector(".TxtNick").classList.remove("On");
             document.querySelector(".SelectWrapper").firstElementChild.classList.remove("On");
             document.querySelector(".ProfileTitle").style.opacity = "1";
-            document.querySelector(".ProfileChange").style.opacity = "0";
+            document.querySelector(".ProfileChange").classList.remove("On");
         });
     });
 

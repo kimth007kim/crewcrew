@@ -55,16 +55,12 @@ body.Modal {
     box-shadow: 0 0 30px rgba($color: #000000, $alpha: 0.16);
 }
 
-.ModalBody{
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
 .ModalTop{
     display: flex;
     justify-content: space-between;
     margin-bottom: 35px;
     margin-top: 48px;
+    height: 18px;
 
     .ModalClose {
         display: block;
@@ -128,7 +124,7 @@ body.Modal {
 }
 
 .InputList{
-    margin: 35px 0 20px;
+    padding: 35px 0 20px;
 }
 
 .ListFlex{
@@ -199,13 +195,130 @@ p.SnsTitle {
     }
 }
 
+@mixin DropdownInput($fontsize, $color){
+    width: 100%;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    font-size: $fontsize;
+    line-height: 1;
+    color: $color;
+}
+
+.ChooseTitle {
+    @include DropdownInput(16px, $black4); /*fontsize, color*/
+    height: 50px;
+    font-weight: 300;
+    padding: 17px 4px 0 12px;
+    transition: .5s;
+
+    &.On {
+        color: $black2;
+    }
+}
+
+@mixin Choose{
+    width: fit-content;
+    padding: 4px 6px 4px 6px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 14px;
+    color: $black1;
+    transition: .2s;
+    position: relative;
+    white-space: nowrap;
+    user-select: none;
+}
+
+@mixin ChooseOn{
+    background-color: $blue3;
+    color: $white;
+    padding-right: 26px;
+
+    .ChooseCancel{
+        display: block;
+    }
+}
+
+.Choose {
+    @include Choose;
+
+    em {
+        font-style: normal;
+    }
+}
+
+.ChooseUnder{
+    @include Choose;
+    @include ChooseOn;
+    cursor: pointer;
+}
+
+.InputChoose:checked ~ .LabelChoose .Choose{
+    @include ChooseOn;
+}
+
+ul.InputList.SignStep3 li.ChooseList{
+    height: auto;
+    margin-bottom: 25px;
+}
+
+.LabelChoose {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    height: 21px;
+    padding: 4px 6px 2px;
+    padding-right: 0;
+    
+    &:hover p{
+        background-color: $black5;
+    }
+}
+
+ul.ChooseListUnder{
+    margin-top: 4px;
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    position: relative;
+    flex-wrap: wrap;
+    
+    li{
+        margin-left: 8px;
+        margin-top: 6px;
+    }
+
+    &::-webkit-scrollbar{
+        display: none;
+    }
+}
+
+
+.ChooseCancel{
+    @include InputButton(10px, 10px, 6px, 10px); /*width,heigh,top,right*/
+    background: url("../../src/assets/images/CloseWhite.png") 50% 50%;
+    background-size: 100%;
+    cursor: default;
+}
+
+.ChooseComplete{
+    @include InputTextButton(36px, 20px, 13px, 8px, 8px); /*width, height, fontsize, top, right*/
+    background-color: $black5;
+    transition: .3s;
+
+    &:hover{
+        background-color: $blue3;
+    }
+}
+
 @media screen and (max-width:768px) {
 
 
     .ModalWrapper.Modal .ModalBox{
         margin-top: 40px;
         height: calc(100vh - 40px);
-        max-height: 720px;
         position: fixed;
         bottom: 0;
     }
@@ -219,7 +332,13 @@ p.SnsTitle {
     }
     
     .InputList{
-        margin-top: 25px;
+        padding-top: 25px;
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        &::-webkit-scrollbar{
+            display: none;
+        }
     }
 
     .ModalTop{

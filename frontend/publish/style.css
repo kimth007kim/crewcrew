@@ -180,6 +180,7 @@ ul.InputList > li {
   -webkit-transition: .5s;
   transition: .5s;
   line-height: 24px;
+  color: #a8a8a8;
 }
 
 .LabelFull.On {
@@ -194,23 +195,6 @@ ul.InputList > li {
   color: #ff0045;
   font-size: 13px;
   font-weight: 500;
-}
-
-.LabelAttached {
-  position: absolute;
-  left: 8px;
-  top: 13px;
-  font-size: 16px;
-  font-weight: 300;
-  padding: 0 4px 0 7px;
-  -webkit-transition: .5s;
-  transition: .5s;
-  line-height: 24px;
-  color: #a8a8a8;
-}
-
-.LabelAttached.On {
-  color: #707070;
 }
 
 .InputTxt {
@@ -244,13 +228,14 @@ ul.InputList > li {
 .InputDel {
   width: 18px;
   height: 18px;
-  background: url("../../src/assets/images/InputDel.png");
-  background-size: 100%;
   cursor: pointer;
   position: absolute;
+  display: none;
   top: 16px;
   right: 15px;
-  display: none;
+  /*width,heigh,top,right*/
+  background: url("../../src/assets/images/InputDel.png");
+  background-size: 100%;
 }
 
 .InputDel.On {
@@ -260,15 +245,16 @@ ul.InputList > li {
 .PasswordShow {
   width: 25px;
   height: 15px;
-  background: url("../../src/assets/images/PasswordShow.png");
-  background-size: 100%;
   cursor: pointer;
   position: absolute;
+  display: none;
   top: 17px;
   right: 48px;
+  /*width,heigh,top,right*/
+  background: url("../../src/assets/images/PasswordShow.png");
+  background-size: 100%;
   -webkit-transition: .3s;
   transition: .3s;
-  display: none;
 }
 
 .PasswordShow.Over {
@@ -301,10 +287,10 @@ ul.InputList > li {
   border-radius: 10px;
   position: absolute;
   display: none;
-  /*width, height, fontsize*/
   top: 15px;
   right: 48px;
   cursor: pointer;
+  /*width, height, fontsize, top, right*/
 }
 
 .InputDouble.On {
@@ -322,16 +308,16 @@ ul.InputList > li {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  width: 30px;
+  width: 48px;
   height: 20px;
   background-color: #707070;
   border-radius: 10px;
   position: absolute;
   display: none;
-  /*width, height, fontsize*/
   top: 15px;
   right: 15px;
   cursor: pointer;
+  /*width, height, fontsize, top, right*/
 }
 
 .InputAdd.On {
@@ -343,12 +329,15 @@ ul.InputList > li {
 .InputChecked {
   width: 20px;
   height: 20px;
-  background: url("../../src/assets/images/Checked_on.png");
-  background-size: 100%;
+  cursor: pointer;
   position: absolute;
+  display: none;
   top: 15px;
   right: 48px;
-  display: none;
+  /*width,heigh,top,right*/
+  background: url("../../src/assets/images/Checked_on.png");
+  background-size: 100%;
+  cursor: default;
 }
 
 .InputChecked.On {
