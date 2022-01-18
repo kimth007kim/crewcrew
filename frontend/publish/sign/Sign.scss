@@ -293,7 +293,7 @@ ul.SignStep1{
 
 @mixin Circle($color) {
     .OuterCircle{
-        .On{
+        &.On{
             border-color: $color;
         }
         &:hover{
@@ -339,7 +339,7 @@ ul.SignStep1{
             @include Circle($purple1);
         }
         &:nth-child(5){
-            @include Circle($blue2);
+            @include Circle($yellow1);
         }
     }
 }

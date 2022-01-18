@@ -1195,7 +1195,7 @@ ul.SignStep1 {
   cursor: pointer;
 }
 
-.ProfileList li:nth-child(1) .OuterCircle .On {
+.ProfileList li:nth-child(1) .OuterCircle.On {
   border-color: #00b7ff;
 }
 
@@ -1207,7 +1207,7 @@ ul.SignStep1 {
   background-color: #00b7ff;
 }
 
-.ProfileList li:nth-child(2) .OuterCircle .On {
+.ProfileList li:nth-child(2) .OuterCircle.On {
   border-color: #8ED819;
 }
 
@@ -1219,7 +1219,7 @@ ul.SignStep1 {
   background-color: #8ED819;
 }
 
-.ProfileList li:nth-child(3) .OuterCircle .On {
+.ProfileList li:nth-child(3) .OuterCircle.On {
   border-color: #ff0045;
 }
 
@@ -1231,7 +1231,7 @@ ul.SignStep1 {
   background-color: #ff0045;
 }
 
-.ProfileList li:nth-child(4) .OuterCircle .On {
+.ProfileList li:nth-child(4) .OuterCircle.On {
   border-color: #8d2bf5;
 }
 
@@ -1243,16 +1243,16 @@ ul.SignStep1 {
   background-color: #8d2bf5;
 }
 
-.ProfileList li:nth-child(5) .OuterCircle .On {
-  border-color: #005ec5;
+.ProfileList li:nth-child(5) .OuterCircle.On {
+  border-color: #ffd458;
 }
 
 .ProfileList li:nth-child(5) .OuterCircle:hover {
-  border-color: #005ec5;
+  border-color: #ffd458;
 }
 
 .ProfileList li:nth-child(5) .OuterCircle .InnerCircle {
-  background-color: #005ec5;
+  background-color: #ffd458;
 }
 
 .OuterCircle {
