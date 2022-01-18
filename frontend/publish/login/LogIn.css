@@ -4,7 +4,7 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+  font-family: 'SUIT', 'sans-serif';
 }
 
 ul {
@@ -171,9 +171,9 @@ ul.InputList > li {
 
 .LabelFull {
   position: absolute;
-  left: 12px;
+  left: 8px;
   top: 13px;
-  font-weight: 18px;
+  font-size: 16px;
   font-weight: 300;
   padding: 0 4px 0 7px;
   background-color: #fff;
@@ -183,17 +183,34 @@ ul.InputList > li {
 }
 
 .LabelFull.On {
-  top: -10px;
+  top: -12px;
   color: #00b7ff;
   font-size: 13px;
   font-weight: 500;
 }
 
 .LabelFull.Error {
-  top: -10px;
+  top: -12px;
   color: #ff0045;
   font-size: 13px;
   font-weight: 500;
+}
+
+.LabelAttached {
+  position: absolute;
+  left: 8px;
+  top: 13px;
+  font-size: 16px;
+  font-weight: 300;
+  padding: 0 4px 0 7px;
+  -webkit-transition: .5s;
+  transition: .5s;
+  line-height: 24px;
+  color: #a8a8a8;
+}
+
+.LabelAttached.On {
+  color: #707070;
 }
 
 .InputTxt {
@@ -283,13 +300,41 @@ ul.InputList > li {
   background-color: #707070;
   border-radius: 10px;
   position: absolute;
+  display: none;
+  /*width, height, fontsize*/
   top: 15px;
   right: 48px;
   cursor: pointer;
-  display: none;
 }
 
 .InputDouble.On {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.InputAdd {
+  font-size: 10px;
+  color: #fff;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 30px;
+  height: 20px;
+  background-color: #707070;
+  border-radius: 10px;
+  position: absolute;
+  display: none;
+  /*width, height, fontsize*/
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+}
+
+.InputAdd.On {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -300,7 +345,6 @@ ul.InputList > li {
   height: 20px;
   background: url("../../src/assets/images/Checked_on.png");
   background-size: 100%;
-  cursor: pointer;
   position: absolute;
   top: 15px;
   right: 48px;
@@ -404,6 +448,11 @@ body.Modal {
   height: 685px;
   -webkit-box-shadow: 0 0 30px rgba(0, 0, 0, 0.16);
           box-shadow: 0 0 30px rgba(0, 0, 0, 0.16);
+}
+
+.ModalBody {
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .ModalTop {
@@ -586,6 +635,9 @@ p.SnsTitle::after {
     height: 0;
     margin-top: 100vh;
   }
+  .InputList {
+    margin-top: 25px;
+  }
   .ModalTop {
     margin-top: 40px;
     margin-bottom: 45px;
@@ -595,8 +647,6 @@ p.SnsTitle::after {
   }
   .ModalBody {
     height: calc(100vh - 194px);
-    overflow-y: auto;
-    overflow-x: hidden;
   }
   .ModalBody::-webkit-scrollbar {
     display: none;

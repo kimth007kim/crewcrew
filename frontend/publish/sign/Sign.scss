@@ -1,11 +1,11 @@
 @import "../common";
 
 
-li.MailList{
+li.MailList, li.ChooseList{
     z-index: 1;
 }
 
-ul.MailList{
+ul.MailList, ul.ChooseList{
     width: 100%;
     border: 1px solid $black5;
     border-radius: 10px;
@@ -16,7 +16,7 @@ ul.MailList{
     box-sizing: border-box;
 
     &:hover{
-        border: 1px solid $black1;
+        border: 1px solid $black2;
     }
 
     &.On{
@@ -25,7 +25,6 @@ ul.MailList{
 
     li{
         width: 100%;
-        cursor: pointer;
         position: relative;
 
         &:first-child{
@@ -41,27 +40,75 @@ ul.MailList{
             }
         }
 
+        
+
+        
+    }
+
+}
+
+ul.MailList{
+
+    li{
+        cursor: pointer;
+
         &:not(:first-child){
             height: 21px;
-            padding: 8px 36px 2px;
+            padding: 3px 35px;
             padding-right: 0;
         }
 
         &:hover p{
-            background-color: $blue3;
-            color: $white;
-        }
-
-        p{
-            width: fit-content;
-            padding: 2px 4px;
-            border-radius: 4px;
-            font-size: 13px;
-            color: $black1;
-            transition: .2s;
+            background-color: $black5;
         }
     }
 
+    p{
+        width: fit-content;
+        padding: 5px 10px 5px 4px;
+        border-radius: 4px;
+        font-size: 13px;
+        color: $black1;
+        transition: .2s;
+    }
+}
+
+ul.ChooseList{
+
+    li{
+        cursor: pointer;
+        &:not(:first-child){
+            height: 21px;
+            padding: 4px 6px 2px;
+            padding-right: 0;
+        }
+    }
+
+    p{
+        width: fit-content;
+        padding: 4px 26px 4px 6px;
+        border-radius: 12px;
+        font-size: 13px;
+        color: $black1;
+        transition: .2s;
+        cursor: pointer;
+        position: relative;
+
+        em{
+            cursor: pointer;
+            font-style: normal;
+        }
+
+        span{
+            cursor: pointer;
+        }
+
+        &.On{
+            background-color: $blue3;
+            color: $white;
+            cursor: default;
+        }
+    }
 }
 
 .InputMail{
@@ -78,6 +125,13 @@ ul.MailList{
     }
 }
 
+.InputChoose{
+    height: 50px;
+    width: 100%;
+    border: none;
+    outline: none;
+}
+
 .LabelMail{
     position: absolute;
     font-size: 13px;
@@ -90,6 +144,16 @@ ul.MailList{
     &.On{
         color: $blue3;
     }
+}
+
+.ChooseCancel{
+    width: 10px;
+    height: 10px;
+    background: url("../../src/assets/images/CloseWhite.png") 50% 50%;
+    background-size: 100%;
+    position: absolute;
+    top: 7px;
+    right: 10px;
 }
 
 button.SignStep{
@@ -106,6 +170,7 @@ ul.SignStep1{
     border: 1px solid $black5;
     border-radius: 4px;
     position: relative;
+    box-sizing: border-box;
 
     .Stepbar{
         position: absolute;
@@ -369,6 +434,10 @@ ul.SignStep1{
 
 
     button.SignStep1{
+        margin: 84px 0 10px;
+    }
+
+    button.SignStep2{
         margin: 15px 0 10px;
     }
 
@@ -401,6 +470,20 @@ ul.SignStep1{
 
         &:last-child{
             margin-right: 8px;
+        }
+    }
+
+    ul.MailList{
+
+        li{
+    
+            &:not(:first-child){
+                padding: 7px 35px;
+            }
+        }
+    
+        p{
+            padding: 5px 10px 5px 4px;
         }
     }
 }

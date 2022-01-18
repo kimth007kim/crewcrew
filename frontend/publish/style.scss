@@ -271,24 +271,35 @@ ul.InputList>li{
     }
 }
 
-.InputDouble{
-    font-size: 10px;
+@mixin InputButton($width, $height, $fontsize) {
+    font-size: $fontsize;
     color: $white;
     justify-content: center;
     align-items: center;
-    width: 48px;
-    height: 20px;
+    width: $width;
+    height: $height;
     background-color: $black2;
-    border-radius: 10px;
+    border-radius: $height / 2;
     position: absolute;
-    top: 15px;
-    right: 48px;
-    cursor: pointer;
     display: none;
 
     &.On {
         display: flex;
     }
+}
+
+.InputDouble{
+    @include InputButton(48px, 20px, 10px); /*width, height, fontsize*/
+    top: 15px;
+    right: 48px;
+    cursor: pointer;
+}
+
+.InputAdd{
+    @include InputButton(30px, 20px, 10px); /*width, height, fontsize*/
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
 }
 
 .InputChecked{

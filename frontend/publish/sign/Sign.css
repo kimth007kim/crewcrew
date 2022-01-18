@@ -173,8 +173,8 @@ ul.InputList > li {
   position: absolute;
   left: 8px;
   top: 13px;
-  font-weight: 18px;
-  font-weight: 400;
+  font-size: 16px;
+  font-weight: 300;
   padding: 0 4px 0 7px;
   background-color: #fff;
   -webkit-transition: .5s;
@@ -194,6 +194,23 @@ ul.InputList > li {
   color: #ff0045;
   font-size: 13px;
   font-weight: 500;
+}
+
+.LabelAttached {
+  position: absolute;
+  left: 8px;
+  top: 13px;
+  font-size: 16px;
+  font-weight: 300;
+  padding: 0 4px 0 7px;
+  -webkit-transition: .5s;
+  transition: .5s;
+  line-height: 24px;
+  color: #a8a8a8;
+}
+
+.LabelAttached.On {
+  color: #707070;
 }
 
 .InputTxt {
@@ -283,13 +300,41 @@ ul.InputList > li {
   background-color: #707070;
   border-radius: 10px;
   position: absolute;
+  display: none;
+  /*width, height, fontsize*/
   top: 15px;
   right: 48px;
   cursor: pointer;
-  display: none;
 }
 
 .InputDouble.On {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.InputAdd {
+  font-size: 10px;
+  color: #fff;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 30px;
+  height: 20px;
+  background-color: #707070;
+  border-radius: 10px;
+  position: absolute;
+  display: none;
+  /*width, height, fontsize*/
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+}
+
+.InputAdd.On {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -590,6 +635,9 @@ p.SnsTitle::after {
     height: 0;
     margin-top: 100vh;
   }
+  .InputList {
+    margin-top: 25px;
+  }
   .ModalTop {
     margin-top: 40px;
     margin-bottom: 45px;
@@ -611,11 +659,11 @@ p.SnsTitle::after {
   }
 }
 
-li.MailList {
+li.MailList, li.ChooseList {
   z-index: 1;
 }
 
-ul.MailList {
+ul.MailList, ul.ChooseList {
   width: 100%;
   border: 1px solid #e2e2e2;
   border-radius: 10px;
@@ -628,25 +676,24 @@ ul.MailList {
           box-sizing: border-box;
 }
 
-ul.MailList:hover {
-  border: 1px solid #000;
+ul.MailList:hover, ul.ChooseList:hover {
+  border: 1px solid #707070;
 }
 
-ul.MailList.On {
+ul.MailList.On, ul.ChooseList.On {
   border: 1px solid #00b7ff;
 }
 
-ul.MailList li {
+ul.MailList li, ul.ChooseList li {
   width: 100%;
-  cursor: pointer;
   position: relative;
 }
 
-ul.MailList li:first-child {
+ul.MailList li:first-child, ul.ChooseList li:first-child {
   height: 50px;
 }
 
-ul.MailList li:first-child::after {
+ul.MailList li:first-child::after, ul.ChooseList li:first-child::after {
   content: '';
   display: block;
   height: 1px;
@@ -655,27 +702,69 @@ ul.MailList li:first-child::after {
   margin: 0 auto;
 }
 
+ul.MailList li {
+  cursor: pointer;
+}
+
 ul.MailList li:not(:first-child) {
   height: 21px;
-  padding: 8px 36px 2px;
+  padding: 3px 35px;
   padding-right: 0;
 }
 
 ul.MailList li:hover p {
-  background-color: #00b7ff;
-  color: #fff;
+  background-color: #e2e2e2;
 }
 
-ul.MailList li p {
+ul.MailList p {
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
-  padding: 2px 4px;
+  padding: 5px 10px 5px 4px;
   border-radius: 4px;
   font-size: 13px;
   color: #000;
   -webkit-transition: .2s;
   transition: .2s;
+}
+
+ul.ChooseList li {
+  cursor: pointer;
+}
+
+ul.ChooseList li:not(:first-child) {
+  height: 21px;
+  padding: 4px 6px 2px;
+  padding-right: 0;
+}
+
+ul.ChooseList p {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 4px 26px 4px 6px;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #000;
+  -webkit-transition: .2s;
+  transition: .2s;
+  cursor: pointer;
+  position: relative;
+}
+
+ul.ChooseList p em {
+  cursor: pointer;
+  font-style: normal;
+}
+
+ul.ChooseList p span {
+  cursor: pointer;
+}
+
+ul.ChooseList p.On {
+  background-color: #00b7ff;
+  color: #fff;
+  cursor: default;
 }
 
 .InputMail {
@@ -693,6 +782,13 @@ ul.MailList li p {
   caret-color: #00b7ff;
 }
 
+.InputChoose {
+  height: 50px;
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
 .LabelMail {
   position: absolute;
   font-size: 13px;
@@ -706,6 +802,16 @@ ul.MailList li p {
 
 .LabelMail.On {
   color: #00b7ff;
+}
+
+.ChooseCancel {
+  width: 10px;
+  height: 10px;
+  background: url("../../src/assets/images/CloseWhite.png") 50% 50%;
+  background-size: 100%;
+  position: absolute;
+  top: 7px;
+  right: 10px;
 }
 
 button.SignStep {
@@ -722,6 +828,8 @@ ul.SignStep1 {
   border: 1px solid #e2e2e2;
   border-radius: 4px;
   position: relative;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 .StepSlide .Stepbar {
@@ -1065,6 +1173,9 @@ ul.SignStep1 {
 
 @media screen and (max-width: 768px) {
   button.SignStep1 {
+    margin: 84px 0 10px;
+  }
+  button.SignStep2 {
     margin: 15px 0 10px;
   }
   .InputList li.ProfileSection {
@@ -1091,6 +1202,12 @@ ul.SignStep1 {
   }
   .ProfileList li:last-child {
     margin-right: 8px;
+  }
+  ul.MailList li:not(:first-child) {
+    padding: 7px 35px;
+  }
+  ul.MailList p {
+    padding: 5px 10px 5px 4px;
   }
 }
 /*# sourceMappingURL=Sign.css.map */

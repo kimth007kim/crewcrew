@@ -300,13 +300,41 @@ ul.InputList > li {
   background-color: #707070;
   border-radius: 10px;
   position: absolute;
+  display: none;
+  /*width, height, fontsize*/
   top: 15px;
   right: 48px;
   cursor: pointer;
-  display: none;
 }
 
 .InputDouble.On {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.InputAdd {
+  font-size: 10px;
+  color: #fff;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 30px;
+  height: 20px;
+  background-color: #707070;
+  border-radius: 10px;
+  position: absolute;
+  display: none;
+  /*width, height, fontsize*/
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+}
+
+.InputAdd.On {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
