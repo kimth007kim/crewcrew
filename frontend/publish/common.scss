@@ -55,7 +55,10 @@ body.Modal {
     box-shadow: 0 0 30px rgba($color: #000000, $alpha: 0.16);
 }
 
-
+.ModalBody{
+    overflow-y: auto;
+    overflow-x: hidden;
+}
 
 .ModalTop{
     display: flex;
@@ -228,8 +231,6 @@ p.SnsTitle {
 
     .ModalBody{
         height: calc(100vh - 194px);
-        overflow-y: auto;
-        overflow-x: hidden;
     }
 
     .ModalBody::-webkit-scrollbar{

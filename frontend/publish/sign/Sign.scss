@@ -185,10 +185,12 @@ ul.SignStep1{
             object-fit: cover;
             filter: grayscale(0);
             transition: .5s;
+            opacity: 1;
         }
 
         &.Grayed img{
             filter: grayscale(100%);
+            opacity: .5;
         }
     }
 
@@ -324,13 +326,13 @@ ul.SignStep1{
             @include Circle($blue3);
         }
         &:nth-child(2){
-            @include Circle($yellow1);
+            @include Circle($green1);
         }
         &:nth-child(3){
             @include Circle($red1);
         }
         &:nth-child(4){
-            @include Circle($green1);
+            @include Circle($purple1);
         }
         &:nth-child(5){
             @include Circle($blue2);

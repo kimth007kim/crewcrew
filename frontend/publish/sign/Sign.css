@@ -4,7 +4,7 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+  font-family: 'SUIT', 'sans-serif';
 }
 
 ul {
@@ -171,10 +171,10 @@ ul.InputList > li {
 
 .LabelFull {
   position: absolute;
-  left: 12px;
+  left: 8px;
   top: 13px;
   font-weight: 18px;
-  font-weight: 300;
+  font-weight: 400;
   padding: 0 4px 0 7px;
   background-color: #fff;
   -webkit-transition: .5s;
@@ -183,14 +183,14 @@ ul.InputList > li {
 }
 
 .LabelFull.On {
-  top: -10px;
+  top: -12px;
   color: #00b7ff;
   font-size: 13px;
   font-weight: 500;
 }
 
 .LabelFull.Error {
-  top: -10px;
+  top: -12px;
   color: #ff0045;
   font-size: 13px;
   font-weight: 500;
@@ -300,7 +300,6 @@ ul.InputList > li {
   height: 20px;
   background: url("../../src/assets/images/Checked_on.png");
   background-size: 100%;
-  cursor: pointer;
   position: absolute;
   top: 15px;
   right: 48px;
@@ -404,6 +403,11 @@ body.Modal {
   height: 685px;
   -webkit-box-shadow: 0 0 30px rgba(0, 0, 0, 0.16);
           box-shadow: 0 0 30px rgba(0, 0, 0, 0.16);
+}
+
+.ModalBody {
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .ModalTop {
@@ -595,8 +599,6 @@ p.SnsTitle::after {
   }
   .ModalBody {
     height: calc(100vh - 194px);
-    overflow-y: auto;
-    overflow-x: hidden;
   }
   .ModalBody::-webkit-scrollbar {
     display: none;
@@ -819,11 +821,13 @@ ul.SignStep1 {
           filter: grayscale(0);
   -webkit-transition: .5s;
   transition: .5s;
+  opacity: 1;
 }
 
 .ProfileShow .ProfileImg.Grayed img {
   -webkit-filter: grayscale(100%);
           filter: grayscale(100%);
+  opacity: .5;
 }
 
 .ProfileShow .ProfileBg {
@@ -980,15 +984,15 @@ ul.SignStep1 {
 }
 
 .ProfileList li:nth-child(2) .OuterCircle .On {
-  border-color: #ffd458;
+  border-color: #8ED819;
 }
 
 .ProfileList li:nth-child(2) .OuterCircle:hover {
-  border-color: #ffd458;
+  border-color: #8ED819;
 }
 
 .ProfileList li:nth-child(2) .OuterCircle .InnerCircle {
-  background-color: #ffd458;
+  background-color: #8ED819;
 }
 
 .ProfileList li:nth-child(3) .OuterCircle .On {
@@ -1004,15 +1008,15 @@ ul.SignStep1 {
 }
 
 .ProfileList li:nth-child(4) .OuterCircle .On {
-  border-color: #8ED819;
+  border-color: #8d2bf5;
 }
 
 .ProfileList li:nth-child(4) .OuterCircle:hover {
-  border-color: #8ED819;
+  border-color: #8d2bf5;
 }
 
 .ProfileList li:nth-child(4) .OuterCircle .InnerCircle {
-  background-color: #8ED819;
+  background-color: #8d2bf5;
 }
 
 .ProfileList li:nth-child(5) .OuterCircle .On {

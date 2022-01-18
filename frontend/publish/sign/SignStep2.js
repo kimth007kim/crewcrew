@@ -129,10 +129,20 @@ window.addEventListener("DOMContentLoaded", function(){
     const profileImg = document.querySelector(".ProfileImg");
     const profileShow = document.querySelector(".ProfileShow");
     const profileUpload = document.querySelector("#ProfileUpload");
+    let isUploaded = true;
     profileCustom.addEventListener("click", function () { //내 사진 클릭 시 사진업로드
-        profileUpload.click();
+        if(isUploaded){ //처음 내 사진 클릭했을때
+            profileUpload.click();
+            isUploaded = false;
+        } else {
+            document.querySelector(".ProfileChange").style.opacity = "1";
+            profileShow.style.backgroundColor = "#e2e2e2";
+            profileImg.firstElementChild.setAttribute("src", profileURL);
+        }
+        
     });
 
+    let profileURL;
     profileUpload.addEventListener("change", function () { //사진 업로드 시
         this.parentNode.classList.add("On");
         document.querySelector(".ProfileTitle").style.opacity = "1";
@@ -140,7 +150,7 @@ window.addEventListener("DOMContentLoaded", function(){
         profileShow.style.backgroundColor = "#e2e2e2";
         profileImg.classList.remove("Grayed");
 
-        const profileURL = URL.createObjectURL(this.files[0]); //등록한 이미지 상단에 보이기
+        profileURL = URL.createObjectURL(this.files[0]); //등록한 이미지 상단에 보이기
         profileImg.firstElementChild.setAttribute("src", profileURL);
     });
 
