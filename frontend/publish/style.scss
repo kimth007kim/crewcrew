@@ -165,8 +165,8 @@ ul.InputList>li{
     position: absolute;
     left: 8px;
     top: 13px;
-    font-weight: 18px;
-    font-weight: 400;
+    font-size: 16px;
+    font-weight: 300;
     padding: 0 4px 0 7px;
     background-color: $white;
     transition: .5s;
@@ -184,6 +184,22 @@ ul.InputList>li{
         color: $red1;
         font-size: 13px;
         font-weight: 500;
+    }
+}
+
+.LabelAttached{
+    position: absolute;
+    left: 8px;
+    top: 13px;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 0 4px 0 7px;
+    transition: .5s;
+    line-height: 24px;
+    color: $black4;
+
+    &.On{
+        color: $black2;
     }
 }
 
