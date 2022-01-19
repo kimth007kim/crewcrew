@@ -26,12 +26,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/manager/**").hasRole("MANAGER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().permitAll()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/login")           //로그인 주소가 호출되면 시큐리티가 낚아채서 대신로그인 진행
-                .defaultSuccessUrl("/");
+                .anyRequest().permitAll();
+//                .and()
+//                .formLogin()
+//                .loginPage("/login")
+//                .loginProcessingUrl("/login")           //로그인 주소가 호출되면 시큐리티가 낚아채서 대신로그인 진행
+//                .defaultSuccessUrl("/");
     }
 
     @Bean

@@ -2,6 +2,7 @@ package matchTeam.crewcrew.controller;
 
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.auth.JwtTokenProvider;
+import matchTeam.crewcrew.dto.JoinSuccess;
 import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.dto.UserDTO;
 import matchTeam.crewcrew.entity.User;
@@ -35,14 +36,13 @@ public class UserController {
 
         return ResponseHandler.generateResponse("list called Success", HttpStatus.OK, null);
     }
-    @GetMapping("/login")
-    public ResponseEntity<Object> loginPage() {
-        return ResponseHandler.generateResponse("Login Page", HttpStatus.OK, "login");
-
-    }
+//    @GetMapping("/login")
+//    public ResponseEntity<Object> loginPage() {
+//        return ResponseHandler.generateResponse("Login Page", HttpStatus.OK, "login");
+//
+//    }
 
     @PostMapping("/login")
-//    response body 로 바꿔서 올려야한다.
     public ResponseEntity<Object> Login(String email,String password) {
 
         User member = userService.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("가입되지 않은 E-MAIL 입니다."));
@@ -85,19 +85,21 @@ public class UserController {
     @PostMapping("/join")
     public ResponseEntity<Object> Join( UserDTO userDTO) {
 //    public ResponseEntity<Object> join(@RequestParam("profileImage") MultipartFile file, User user) {
-
         boolean emailExist=userService.validateDuplicateMember(userDTO.getEmail());
         if (emailExist ==false) {
             return ResponseHandler.ErrorResponse(ErrorCode.EMAIL_ALREADY_EXIST);
 
         } else {
-            userService.join(User.builder()
+            long userPk =userService.join(User.builder()
                             .email(userDTO.getEmail())
                             .password(bCryptPasswordEncoder.encode(userDTO.getPassword()))
+                            .name(userDTO.getName())
+                            .nickname(userDTO.getNickname())
                             .roles(Collections.singletonList("ROLE_USER"))
                             .build());
-//                       .build()).getID();
-            return ResponseHandler.generateResponse("Join Success", HttpStatus.OK, userDTO);
+            JoinSuccess joinSuccess= new JoinSuccess(userPk,userDTO.getEmail(), userDTO.getName(), userDTO.getNickname());
+
+            return ResponseHandler.generateResponse("Join Success", HttpStatus.OK, joinSuccess);
         }
 
     }

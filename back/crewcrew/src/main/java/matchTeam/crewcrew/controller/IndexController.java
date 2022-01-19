@@ -1,12 +1,12 @@
-package matchTeam.crewcrew.controller;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-@RestController // view return
-public class IndexController {
-
+//package matchTeam.crewcrew.controller;
+//
+//import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.web.bind.annotation.ResponseBody;
+//import org.springframework.web.bind.annotation.RestController;
+//
+//@RestController // view return
+//public class IndexController {
+//
 //    @GetMapping({"", "/"})
 //    public String index(){
 //        return "index";
@@ -42,5 +42,5 @@ public class IndexController {
 //    public @ResponseBody String joinProc(){
 //        return "회원가입 완료됨! ";
 //    }
-}
-
+//}
+//
