@@ -4,21 +4,29 @@ import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
 function TitleRender({ IsClick, HandleClick }) {
-  if (IsClick === 2) {
-    return <TitleLi active={IsClick === 2}>비밀번호 찾기</TitleLi>;
-  }
-  if (IsClick === 0 || IsClick === 1) {
-    return (
-      <>
-        <TitleLi active={IsClick === 0} onClick={() => HandleClick(0)}>
-          로그인
-        </TitleLi>
-        <TitleLi active={IsClick === 1} onClick={() => HandleClick(1)}>
-          회원가입
-        </TitleLi>
-      </>
-    );
-  }
+  return (
+    <>
+      <TitleLi
+        active={IsClick === 0}
+        onClick={() => HandleClick(0)}
+        fade={IsClick === 0 || IsClick === 1}
+        left={IsClick === 2 || IsClick === 3 || IsClick === 4}
+      >
+        {(IsClick === 0 || IsClick === 1) && '로그인'}
+      </TitleLi>
+
+      <TitleLi
+        active={IsClick === 1}
+        onClick={() => HandleClick(1)}
+        fade={IsClick === 0 || IsClick === 1}
+      >
+        회원가입
+      </TitleLi>
+      <TitleLi active={IsClick === 5} fade={IsClick === 5}>
+        비밀번호 찾기
+      </TitleLi>
+    </>
+  );
 }
 
 export default TitleRender;
@@ -31,22 +39,51 @@ const FadeIn = keyframes`
     }
 `;
 
+const LeftToCenter = keyframes`
+  from {
+    width: 100%;
+  } to {
+    width: 0%;
+  }
+`;
+
 const TitleLi = styled.li`
   width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
+
   justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
+
   align-items: center;
   font-size: 18px;
   font-weight: 300;
   cursor: pointer;
   transition: 0.5s;
   height: 45px;
+
+  display: none;
+  opacity: 0;
+  user-select: none;
+
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+
+  animation-fill-mode: forwards;
+
+  ${(props) =>
+    props.fade &&
+    css`
+      opacity: 1;
+      display: flex;
+      animation-name: ${FadeIn};
+    `}
+
+  ${(props) =>
+    props.left &&
+    css`
+      animation-duration: 0.3s;
+
+      animation-name: ${LeftToCenter};
+    `}
+
 
   ${(props) =>
     props.active &&

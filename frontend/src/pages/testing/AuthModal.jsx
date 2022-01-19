@@ -31,7 +31,7 @@ function AuthModal({ closeModal, visible }) {
         <Header disappear={!visible}>
           <Top>
             <li>
-              {IsClick === 2 && (
+              {IsClick === 5 && (
                 <ModalArrow onClick={() => HandleClick(0)}>
                   <ArrowImg src={Arrow} />
                   로그인
@@ -154,6 +154,7 @@ const ArrowImg = styled.img`
 const Title = styled.ul`
   display: flex;
   padding-bottom: 10px;
+  transition: all 0.5s;
 `;
 
 const Body = styled.div`

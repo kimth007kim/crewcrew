@@ -21,7 +21,7 @@ function LoginSection({ IsClick, HandleClick }) {
   const [Valid, setValid] = useState(true);
 
   const MovePasswordFind = useCallback(() => {
-    HandleClick(2);
+    HandleClick(5);
   }, []);
 
   const HandleCheck = useCallback((e) => {
@@ -164,6 +164,7 @@ const SubList = styled.ul`
     font-size: 15px;
     font-weight: 300;
     color: #868686;
+    user-select: none;
   }
 
   & > li > p {
@@ -222,6 +223,7 @@ const DividingLine = styled.div`
   -ms-flex-pack: justify;
   justify-content: space-between;
   white-space: nowrap;
+  user-select: none;
 
   ::after,
   ::before {
@@ -245,6 +247,7 @@ const SnsList = styled.ul`
   display: flex;
   padding-bottom: 80px;
   gap: 16px;
+  user-select: none;
 
   & > li {
     width: 100%;

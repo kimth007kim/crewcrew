@@ -38,7 +38,7 @@ function PasswordSection({ HandleClick, IsClick }) {
   }, []);
 
   return (
-    <PWFindContents active={IsClick === 2}>
+    <PWFindContents active={IsClick === 5}>
       <form onSubmit={HandleSubmitLogin}>
         <InputList>
           <InputLi>
