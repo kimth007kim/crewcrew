@@ -36,6 +36,10 @@ a{
     color: $black3;
 }
 
+em {
+    font-style: normal;
+}
+
 
 /*button*/
 @mixin buttonFull($padding, $size, $weight, $lheight, $radius) {
@@ -133,6 +137,7 @@ a{
 ul.InputList>li{
     position: relative;
     height: 75px;
+    transition: .3s;
 }
 
 .InputFull{
@@ -185,6 +190,24 @@ ul.InputList>li{
         color: $red1;
         font-size: 13px;
         font-weight: 500;
+    }
+}
+
+.LabelAttached{
+    position: absolute;
+    left: 8px;
+    top: 13px;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 0 4px 0 7px;
+    transition: .5s;
+    line-height: 24px;
+    color: $black4;
+    cursor: pointer;
+    user-select: none;
+
+    &.On{
+        color: $black2;
     }
 }
 
@@ -298,6 +321,7 @@ ul.InputList>li{
     height: 1px;
     clip: rect(1px, 1px, 1px, 1px);
     position: absolute;
+    display: none;
 
     & ~ .LabelCheck{ /*로그인 상태 유지*/
         display: flex;

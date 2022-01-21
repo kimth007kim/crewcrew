@@ -124,7 +124,7 @@ body.Modal {
 }
 
 .InputList{
-    padding: 35px 0 20px;
+    padding: 25px 0 20px;
 }
 
 .ListFlex{
@@ -209,12 +209,9 @@ p.SnsTitle {
     @include DropdownInput(16px, $black4); /*fontsize, color*/
     height: 50px;
     font-weight: 300;
-    padding: 17px 4px 0 12px;
+    padding: 8px 4px 8px 12px;
     transition: .5s;
-
-    &.On {
-        color: $black2;
-    }
+    cursor: pointer;
 }
 
 @mixin Choose{
@@ -231,7 +228,7 @@ p.SnsTitle {
 }
 
 @mixin ChooseOn{
-    background-color: $blue3;
+    background-color: $blue3 !important;
     color: $white;
     padding-right: 26px;
 
@@ -242,10 +239,6 @@ p.SnsTitle {
 
 .Choose {
     @include Choose;
-
-    em {
-        font-style: normal;
-    }
 }
 
 .ChooseUnder{
@@ -276,6 +269,44 @@ ul.InputList.SignStep3 li.ChooseList{
     }
 }
 
+ul.ChooseList{
+    width: 100%;
+    border: 1px solid $black5;
+    border-radius: 10px;
+    height: 50px;
+    transition: height .3s;
+    overflow: hidden;
+    background-color: $white;
+    box-sizing: border-box;
+
+    &:hover{
+        border: 1px solid $black2;
+    }
+
+    &.On{
+        border: 1px solid $blue3;
+    }
+
+    li{
+        width: 100%;
+        position: relative;
+
+        &:first-child{
+            height: 50px;
+
+            &::after{
+                content: '';
+                display: block;
+                height: 1px;
+                width: calc(100% - 24px);
+                background-color: $black5;
+                margin: 0 auto;
+            }
+        }
+    }
+    
+}
+
 ul.ChooseListUnder{
     margin-top: 4px;
     display: flex;
@@ -284,6 +315,7 @@ ul.ChooseListUnder{
     overflow-y: hidden;
     position: relative;
     flex-wrap: wrap;
+    display: none;
     
     li{
         margin-left: 8px;
@@ -307,8 +339,13 @@ ul.ChooseListUnder{
     @include InputTextButton(36px, 20px, 13px, 8px, 8px); /*width, height, fontsize, top, right*/
     background-color: $black5;
     transition: .3s;
+    display: flex;
 
     &:hover{
+        background-color: $blue3;
+    }
+
+    &.On{
         background-color: $blue3;
     }
 }
@@ -367,4 +404,20 @@ ul.ChooseListUnder{
         margin-right: 10px;
     }
 
+    ul.ChooseList{
+
+        li:not(:first-child){
+            padding: 8px 0;
+        }
+    }
+
+    .ChooseComplete{
+        top: 12px;
+        width: 40px;
+        height: 24px;
+    }
+
+    ul.ChooseListUnder{
+        flex-wrap: nowrap;
+    }
 }

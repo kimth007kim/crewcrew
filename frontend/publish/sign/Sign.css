@@ -16,6 +16,10 @@ a {
   color: #868686;
 }
 
+em {
+  font-style: normal;
+}
+
 /*button*/
 .ButtonFull {
   width: 100%;
@@ -141,6 +145,8 @@ a {
 ul.InputList > li {
   position: relative;
   height: 75px;
+  -webkit-transition: .3s;
+  transition: .3s;
 }
 
 .InputFull {
@@ -195,6 +201,28 @@ ul.InputList > li {
   color: #ff0045;
   font-size: 13px;
   font-weight: 500;
+}
+
+.LabelAttached {
+  position: absolute;
+  left: 8px;
+  top: 13px;
+  font-size: 16px;
+  font-weight: 300;
+  padding: 0 4px 0 7px;
+  -webkit-transition: .5s;
+  transition: .5s;
+  line-height: 24px;
+  color: #a8a8a8;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.LabelAttached.On {
+  color: #707070;
 }
 
 .InputTxt {
@@ -350,6 +378,7 @@ ul.InputList > li {
   height: 1px;
   clip: rect(1px, 1px, 1px, 1px);
   position: absolute;
+  display: none;
 }
 
 .InputHide ~ .LabelCheck {
@@ -518,7 +547,7 @@ body.Modal {
 }
 
 .InputList {
-  padding: 35px 0 20px;
+  padding: 25px 0 20px;
 }
 
 .ListFlex {
@@ -617,13 +646,10 @@ p.SnsTitle::after {
   /*fontsize, color*/
   height: 50px;
   font-weight: 300;
-  padding: 17px 4px 0 12px;
+  padding: 8px 4px 8px 12px;
   -webkit-transition: .5s;
   transition: .5s;
-}
-
-.ChooseTitle.On {
-  color: #707070;
+  cursor: pointer;
 }
 
 .Choose {
@@ -645,10 +671,6 @@ p.SnsTitle::after {
           user-select: none;
 }
 
-.Choose em {
-  font-style: normal;
-}
-
 .ChooseUnder {
   width: -webkit-fit-content;
   width: -moz-fit-content;
@@ -666,7 +688,7 @@ p.SnsTitle::after {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  background-color: #00b7ff;
+  background-color: #00b7ff !important;
   color: #fff;
   padding-right: 26px;
   cursor: pointer;
@@ -677,7 +699,7 @@ p.SnsTitle::after {
 }
 
 .InputChoose:checked ~ .LabelChoose .Choose {
-  background-color: #00b7ff;
+  background-color: #00b7ff !important;
   color: #fff;
   padding-right: 26px;
 }
@@ -704,6 +726,45 @@ ul.InputList.SignStep3 li.ChooseList {
   background-color: #e2e2e2;
 }
 
+ul.ChooseList {
+  width: 100%;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  height: 50px;
+  -webkit-transition: height .3s;
+  transition: height .3s;
+  overflow: hidden;
+  background-color: #fff;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+ul.ChooseList:hover {
+  border: 1px solid #707070;
+}
+
+ul.ChooseList.On {
+  border: 1px solid #00b7ff;
+}
+
+ul.ChooseList li {
+  width: 100%;
+  position: relative;
+}
+
+ul.ChooseList li:first-child {
+  height: 50px;
+}
+
+ul.ChooseList li:first-child::after {
+  content: '';
+  display: block;
+  height: 1px;
+  width: calc(100% - 24px);
+  background-color: #e2e2e2;
+  margin: 0 auto;
+}
+
 ul.ChooseListUnder {
   margin-top: 4px;
   display: -webkit-box;
@@ -715,6 +776,7 @@ ul.ChooseListUnder {
   position: relative;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
+  display: none;
 }
 
 ul.ChooseListUnder li {
@@ -762,6 +824,9 @@ ul.ChooseListUnder::-webkit-scrollbar {
   background-color: #e2e2e2;
   -webkit-transition: .3s;
   transition: .3s;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .ChooseComplete.On {
@@ -771,6 +836,10 @@ ul.ChooseListUnder::-webkit-scrollbar {
 }
 
 .ChooseComplete:hover {
+  background-color: #00b7ff;
+}
+
+.ChooseComplete.On {
   background-color: #00b7ff;
 }
 
@@ -815,12 +884,26 @@ ul.ChooseListUnder::-webkit-scrollbar {
   .ListFlex li {
     margin-right: 10px;
   }
+  ul.ChooseList li:not(:first-child) {
+    padding: 8px 0;
+  }
+  .ChooseComplete {
+    top: 12px;
+    width: 40px;
+    height: 24px;
+  }
+  ul.ChooseListUnder {
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+  }
 }
 
 .InputList.Sign {
   overflow-y: auto;
   overflow-x: hidden;
-  height: 310px;
+  height: 320px;
+  position: relative;
+  scroll-behavior: smooth;
 }
 
 .InputList.Sign::-webkit-scrollbar {
@@ -831,7 +914,7 @@ li.MailList {
   z-index: 1;
 }
 
-ul.MailList, ul.ChooseList {
+ul.MailList {
   width: 100%;
   border: 1px solid #e2e2e2;
   border-radius: 10px;
@@ -844,24 +927,24 @@ ul.MailList, ul.ChooseList {
           box-sizing: border-box;
 }
 
-ul.MailList:hover, ul.ChooseList:hover {
+ul.MailList:hover {
   border: 1px solid #707070;
 }
 
-ul.MailList.On, ul.ChooseList.On {
+ul.MailList.On {
   border: 1px solid #00b7ff;
 }
 
-ul.MailList li, ul.ChooseList li {
+ul.MailList li {
   width: 100%;
   position: relative;
 }
 
-ul.MailList li:first-child, ul.ChooseList li:first-child {
+ul.MailList li:first-child {
   height: 50px;
 }
 
-ul.MailList li:first-child::after, ul.ChooseList li:first-child::after {
+ul.MailList li:first-child::after {
   content: '';
   display: block;
   height: 1px;
@@ -1324,11 +1407,6 @@ ul.SignStep1 {
   }
   ul.MailList p {
     padding: 5px 10px 5px 4px;
-  }
-  ul.ChooseListUnder {
-    height: 30px;
-    -ms-flex-wrap: nowrap;
-        flex-wrap: nowrap;
   }
 }
 /*# sourceMappingURL=Sign.css.map */

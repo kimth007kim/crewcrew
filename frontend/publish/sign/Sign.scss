@@ -3,7 +3,9 @@
 .InputList.Sign{
     overflow-y: auto;
     overflow-x: hidden;
-    height: 310px;
+    height: 320px;
+    position: relative;
+    scroll-behavior: smooth;
 
     &::-webkit-scrollbar{
         display: none;
@@ -15,7 +17,7 @@ li.MailList{
     z-index: 1;
 }
 
-ul.MailList, ul.ChooseList{
+ul.MailList{
     width: 100%;
     border: 1px solid $black5;
     border-radius: 10px;
@@ -419,11 +421,6 @@ ul.SignStep1{
         p{
             padding: 5px 10px 5px 4px;
         }
-    }
-
-    ul.ChooseListUnder{
-        height: 30px;
-        flex-wrap: nowrap;
     }
 
 }
