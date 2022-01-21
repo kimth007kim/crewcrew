@@ -336,7 +336,7 @@ ul.InputList > li {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  width: 48px;
+  width: 30px;
   height: 20px;
   background-color: #707070;
   border-radius: 10px;
@@ -346,6 +346,12 @@ ul.InputList > li {
   right: 15px;
   cursor: pointer;
   /*width, height, fontsize, top, right*/
+}
+
+.InputAdd.On {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .InputAdd.On {

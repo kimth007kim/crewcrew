@@ -269,7 +269,7 @@ ul.InputList.SignStep3 li.ChooseList{
     }
 }
 
-ul.ChooseList{
+ul.ChooseListDetail{
     width: 100%;
     border: 1px solid $black5;
     border-radius: 10px;
@@ -404,7 +404,7 @@ ul.ChooseListUnder{
         margin-right: 10px;
     }
 
-    ul.ChooseList{
+    ul.ChooseListDetail{
 
         li:not(:first-child){
             padding: 8px 0;
@@ -415,9 +415,6 @@ ul.ChooseListUnder{
         top: 12px;
         width: 40px;
         height: 24px;
-    }
-
-    ul.ChooseListUnder{
-        flex-wrap: nowrap;
+        border-radius: 12px;
     }
 }

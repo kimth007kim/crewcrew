@@ -302,7 +302,11 @@ ul.InputList>li{
 }
 
 .InputAdd{
-    @include InputTextButton(48px, 20px, 10px, 15px, 15px); /*width, height, fontsize, top, right*/
+    @include InputTextButton(30px, 20px, 10px, 15px, 15px); /*width, height, fontsize, top, right*/
+
+    &.On{
+        display: flex;
+    }
 }
 
 .InputChecked{
