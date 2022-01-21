@@ -49,7 +49,7 @@ public class UserController {
         if (!bCryptPasswordEncoder.matches(password, member.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
-        return ResponseHandler.generateResponse("Login Success", HttpStatus.OK, jwtTokenProvider.createToken(member.getUsername(), member.getRoles()));
+        return ResponseHandler.generateResponse("Login Success", HttpStatus.OK, jwtTokenProvider.createToken(member.getUsername()));
     }
 
 
@@ -95,7 +95,6 @@ public class UserController {
                             .password(bCryptPasswordEncoder.encode(userDTO.getPassword()))
                             .name(userDTO.getName())
                             .nickname(userDTO.getNickname())
-                            .roles(Collections.singletonList("ROLE_USER"))
                             .build());
             JoinSuccess joinSuccess= new JoinSuccess(userPk,userDTO.getEmail(), userDTO.getName(), userDTO.getNickname());
 

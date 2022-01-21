@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.entity;
+package matchTeam.crewcrew.oauth2.entity;
 
 import lombok.Getter;
 
@@ -7,4 +7,5 @@ public enum ProviderType {
     NAVER,
     LOCAL,
     KAKAO;
+
 }

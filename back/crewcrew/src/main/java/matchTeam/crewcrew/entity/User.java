@@ -2,13 +2,14 @@ package matchTeam.crewcrew.entity;
 
 import lombok.*;
 
-import lombok.*;
+import matchTeam.crewcrew.oauth2.entity.ProviderType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Builder
 @Entity
-public class User implements UserDetails {
+//public class User implements UserDetails {
+public class User{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
 
@@ -43,12 +45,20 @@ public class User implements UserDetails {
     private String nickname;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "provider_type")
+    @Column(name = "social_type")
     private ProviderType providerType;
-    
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
+
+    @Column(name = "CREATED_AT")
+    @NotNull
+    private LocalDateTime createdAt;
+
+    @Column(name = "MODIFIED_AT")
+    @NotNull
+    private LocalDateTime modifiedAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

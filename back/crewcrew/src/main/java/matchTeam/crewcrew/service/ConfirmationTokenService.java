@@ -24,7 +24,7 @@ public class ConfirmationTokenService {
         SimpleMailMessage mailMessage  = new SimpleMailMessage();
         mailMessage.setTo(receiverEmail);
         mailMessage.setSubject("회원가입 이메일 인증");
-        mailMessage.setText("http://localhost:8090/confirm-email?token="+emailConfirmationToken.getEmail());
+        mailMessage.setText("http://localhost:8080/confirm-email?token="+emailConfirmationToken.getEmail());
         emailSenderService.sendEmail(mailMessage);
 
         return emailConfirmationToken.getEmail();

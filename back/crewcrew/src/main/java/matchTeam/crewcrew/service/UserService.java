@@ -17,15 +17,6 @@ public class UserService {
     private final ConfirmationTokenService confirmationTokenService;
 
 
-//    public long join(User user){
-//        if(validateDuplicateMember(user.getEmail())) {
-//            userRepository.save(user);
-//            return user.getUid();
-//        }else{
-//            return -1;
-//        }
-//    }
-
     public long join(User user) {
             userRepository.save(user);
             return user.getUid();
