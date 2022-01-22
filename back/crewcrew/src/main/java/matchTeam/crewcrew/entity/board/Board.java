@@ -1,10 +1,14 @@
 package matchTeam.crewcrew.entity.board;
 
+import lombok.*;
 import matchTeam.crewcrew.entity.User;
 
 import javax.persistence.*;
 
 @Entity
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "board")
 public class Board {
     @Id
@@ -31,59 +35,4 @@ public class Board {
     @Column(name = "url")
     private String url;
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Integer getTotalCrew() {
-        return totalCrew;
-    }
-
-    public void setTotalCrew(Integer totalCrew) {
-        this.totalCrew = totalCrew;
-    }
-
-    public Integer getRecruitedCrew() {
-        return recruitedCrew;
-    }
-
-    public void setRecruitedCrew(Integer recruitedCrew) {
-        this.recruitedCrew = recruitedCrew;
-    }
-
-    public String getBoardContent() {
-        return boardContent;
-    }
-
-    public void setBoardContent(String boardContent) {
-        this.boardContent = boardContent;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public User getUid() {
-        return uid;
-    }
-
-    public void setUid(User uid) {
-        this.uid = uid;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

@@ -1,8 +1,16 @@
 package matchTeam.crewcrew.entity.board;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "board_category")
 public class BoardCategory {
     @Id
@@ -17,28 +25,4 @@ public class BoardCategory {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public Board getBoardSeq() {
-        return boardSeq;
-    }
-
-    public void setBoardSeq(Board boardSeq) {
-        this.boardSeq = boardSeq;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }
