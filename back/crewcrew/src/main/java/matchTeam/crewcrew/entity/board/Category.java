@@ -1,8 +1,18 @@
 package matchTeam.crewcrew.entity.board;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Email;
+import org.w3c.dom.stylesheets.LinkStyle;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "categories")
 public class Category {
     @Id
@@ -10,66 +20,13 @@ public class Category {
     @Column(name = "category_id", nullable = false)
     private Long id;
 
-    @Column(name = "category_lev")
-    private Long categoryLev;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_parent_id")
+    private Category categoryParent;
 
     @Column(name = "category_name")
     private String categoryName;
 
-    @Column(name = "category_detail_lev")
-    private Long categoryDetailLev;
-
-    @Column(name = "category_detail_name")
-    private String categoryDetailName;
-
-    @Column(name = "category_parent_lev")
-    private Long categoryParentLev;
-
-    public Long getCategoryParentLev() {
-        return categoryParentLev;
-    }
-
-    public void setCategoryParentLev(Long categoryParentLev) {
-        this.categoryParentLev = categoryParentLev;
-    }
-
-    public String getCategoryDetailName() {
-        return categoryDetailName;
-    }
-
-    public void setCategoryDetailName(String categoryDetailName) {
-        this.categoryDetailName = categoryDetailName;
-    }
-
-    public Long getCategoryDetailLev() {
-        return categoryDetailLev;
-    }
-
-    public void setCategoryDetailLev(Long categoryDetailLev) {
-        this.categoryDetailLev = categoryDetailLev;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public Long getCategoryLev() {
-        return categoryLev;
-    }
-
-    public void setCategoryLev(Long categoryLev) {
-        this.categoryLev = categoryLev;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @OneToMany(mappedBy = "categoryParent")
+    private List<Category> categoryChildren = new ArrayList<>();
 }
