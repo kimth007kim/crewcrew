@@ -14,13 +14,17 @@ $yellow1 : #ffd458;
 
 $red1 : #ff0045; 
 
+$green1 : #8ED819;
+
+$purple1 : #8d2bf5;
+
 $white : #fff;
 
 
 /*reset*/
 * { margin: 0;
     padding: 0;
-    font-family: 'Spoqa Han Sans Neo', 'sans-serif'; 
+    font-family: 'SUIT', 'sans-serif'; 
 }
 
 ul{
@@ -30,6 +34,10 @@ ul{
 a{
     text-decoration: none;
     color: $black3;
+}
+
+em {
+    font-style: normal;
 }
 
 
@@ -126,9 +134,10 @@ a{
 
 /*input*/
 
-ul.InputList li{
+ul.InputList>li{
     position: relative;
     height: 75px;
+    transition: .3s;
 }
 
 .InputFull{
@@ -154,31 +163,51 @@ ul.InputList li{
         border: 1px solid $red1;
         caret-color: $red1;
     }
+
 }
 
 .LabelFull{
     position: absolute;
-    left: 12px;
+    left: 8px;
     top: 13px;
-    font-weight: 18px;
+    font-size: 16px;
     font-weight: 300;
     padding: 0 4px 0 7px;
     background-color: $white;
     transition: .5s;
     line-height: 24px;
+    color: $black4;
 
     &.On{
-        top: -10px;
+        top: -12px;
         color: $blue3;
         font-size: 13px;
         font-weight: 500;
     }
 
     &.Error{
-        top: -10px;
+        top: -12px;
         color: $red1;
         font-size: 13px;
         font-weight: 500;
+    }
+}
+
+.LabelAttached{
+    position: absolute;
+    left: 8px;
+    top: 13px;
+    font-size: 16px;
+    font-weight: 300;
+    padding: 0 4px 0 7px;
+    transition: .5s;
+    line-height: 24px;
+    color: $black4;
+    cursor: pointer;
+    user-select: none;
+
+    &.On{
+        color: $black2;
     }
 }
 
@@ -206,16 +235,20 @@ ul.InputList li{
     }
 }
 
-.InputDel{
-    width: 18px;
-    height: 18px;
-    background: url("../../src/assets/images/InputDel.png");
-    background-size: 100%;
+@mixin InputButton($width, $height, $top, $right:inherit) {
+    width: $width;
+    height: $height;
     cursor: pointer;
     position: absolute;
-    top: 16px;
-    right: 15px;
     display: none;
+    top: $top;
+    right: $right;
+}
+
+.InputDel{
+    @include InputButton(18px, 18px, 16px, 15px); /*width,heigh,top,right*/
+    background: url("../../src/assets/images/InputDel.png");
+    background-size: 100%;
 
     &.On{
         display: block;
@@ -223,16 +256,10 @@ ul.InputList li{
 }
 
 .PasswordShow{
-    width: 25px;
-    height: 15px;
+    @include InputButton(25px, 15px, 17px, 48px); /*width,heigh,top,right*/
     background: url("../../src/assets/images/PasswordShow.png");
     background-size: 100%;
-    cursor: pointer;
-    position: absolute;
-    top: 17px;
-    right: 48px;
     transition: .3s;
-    display: none;
 
     &.Over{
         display: block;
@@ -250,11 +277,55 @@ ul.InputList li{
     }
 }
 
+@mixin InputTextButton($width, $height, $fontsize, $top, $right:inherit) {
+    font-size: $fontsize;
+    color: $white;
+    justify-content: center;
+    align-items: center;
+    width: $width;
+    height: $height;
+    background-color: $black2;
+    border-radius: $height / 2;
+    position: absolute;
+    display: none;
+    top: $top;
+    right: $right;
+    cursor: pointer;
+
+    &.On {
+        display: flex;
+    }
+}
+
+.InputDouble{
+    @include InputTextButton(48px, 20px, 10px, 15px, 48px); /*width, height, fontsize, top, right*/
+}
+
+.InputAdd{
+    @include InputTextButton(30px, 20px, 10px, 15px, 15px); /*width, height, fontsize, top, right*/
+
+    &.On{
+        display: flex;
+    }
+}
+
+.InputChecked{
+    @include InputButton(20px, 20px, 15px, 48px); /*width,heigh,top,right*/
+    background: url("../../src/assets/images/Checked_on.png");
+    background-size: 100%;
+    cursor: default;
+
+    &.On{
+        display: block;
+    }
+}
+
 .InputHide{ /*로그인 상태 유지*/
     width: 1px;
     height: 1px;
     clip: rect(1px, 1px, 1px, 1px);
     position: absolute;
+    display: none;
 
     & ~ .LabelCheck{ /*로그인 상태 유지*/
         display: flex;

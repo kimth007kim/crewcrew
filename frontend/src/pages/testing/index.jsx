@@ -35,7 +35,7 @@ function Testing() {
       <button type="button" onClick={handleClick}>
         로그인
       </button>
-      <AuthModal closeModal={closeModal} visible={Dialog} />
+      <AuthModal closeModal={closeModal} visible={Dialog} size="large" />
       <Cont>
         <Textfield
           type="email"

@@ -47,6 +47,7 @@ function TextfieldPW({ onChange, value, valid, validMessage, label, onDelete }) 
         Valid={valid}
         Hover={Hover}
         TextIn={!!value}
+        autoComplete="off"
       />
       <Label Focused={Focused} TextIn={!!value} Valid={valid}>
         {label}
@@ -165,6 +166,12 @@ const InputText = styled.div`
       top: 54px;
       color: #00b7ff;
     `};
+
+  ${(props) =>
+    props.Valid &&
+    css`
+      color: #ff0045;
+    `}
 `;
 
 const InputDel = styled.div`

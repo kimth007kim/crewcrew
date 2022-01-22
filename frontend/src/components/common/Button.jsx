@@ -339,6 +339,7 @@ const ButtonStyled = styled.button`
   font-weight: 500;
   cursor: pointer;
   transition: 0.3s;
+  user-select: none;
 
   ${handleSize}
   ${handleColors}

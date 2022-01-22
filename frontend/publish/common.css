@@ -4,7 +4,7 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+  font-family: 'SUIT', 'sans-serif';
 }
 
 ul {
@@ -14,6 +14,10 @@ ul {
 a {
   text-decoration: none;
   color: #868686;
+}
+
+em {
+  font-style: normal;
 }
 
 /*button*/
@@ -138,9 +142,11 @@ a {
 }
 
 /*input*/
-ul.InputList li {
+ul.InputList > li {
   position: relative;
   height: 75px;
+  -webkit-transition: .3s;
+  transition: .3s;
 }
 
 .InputFull {
@@ -171,29 +177,52 @@ ul.InputList li {
 
 .LabelFull {
   position: absolute;
-  left: 12px;
+  left: 8px;
   top: 13px;
-  font-weight: 18px;
+  font-size: 16px;
   font-weight: 300;
   padding: 0 4px 0 7px;
   background-color: #fff;
   -webkit-transition: .5s;
   transition: .5s;
   line-height: 24px;
+  color: #a8a8a8;
 }
 
 .LabelFull.On {
-  top: -10px;
+  top: -12px;
   color: #00b7ff;
   font-size: 13px;
   font-weight: 500;
 }
 
 .LabelFull.Error {
-  top: -10px;
+  top: -12px;
   color: #ff0045;
   font-size: 13px;
   font-weight: 500;
+}
+
+.LabelAttached {
+  position: absolute;
+  left: 8px;
+  top: 13px;
+  font-size: 16px;
+  font-weight: 300;
+  padding: 0 4px 0 7px;
+  -webkit-transition: .5s;
+  transition: .5s;
+  line-height: 24px;
+  color: #a8a8a8;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.LabelAttached.On {
+  color: #707070;
 }
 
 .InputTxt {
@@ -227,13 +256,14 @@ ul.InputList li {
 .InputDel {
   width: 18px;
   height: 18px;
-  background: url("../../src/assets/images/InputDel.png");
-  background-size: 100%;
   cursor: pointer;
   position: absolute;
+  display: none;
   top: 16px;
   right: 15px;
-  display: none;
+  /*width,heigh,top,right*/
+  background: url("../../src/assets/images/InputDel.png");
+  background-size: 100%;
 }
 
 .InputDel.On {
@@ -243,15 +273,16 @@ ul.InputList li {
 .PasswordShow {
   width: 25px;
   height: 15px;
-  background: url("../../src/assets/images/PasswordShow.png");
-  background-size: 100%;
   cursor: pointer;
   position: absolute;
+  display: none;
   top: 17px;
   right: 48px;
+  /*width,heigh,top,right*/
+  background: url("../../src/assets/images/PasswordShow.png");
+  background-size: 100%;
   -webkit-transition: .3s;
   transition: .3s;
-  display: none;
 }
 
 .PasswordShow.Over {
@@ -269,12 +300,91 @@ ul.InputList li {
   display: block;
 }
 
+.InputDouble {
+  font-size: 10px;
+  color: #fff;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 48px;
+  height: 20px;
+  background-color: #707070;
+  border-radius: 10px;
+  position: absolute;
+  display: none;
+  top: 15px;
+  right: 48px;
+  cursor: pointer;
+  /*width, height, fontsize, top, right*/
+}
+
+.InputDouble.On {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.InputAdd {
+  font-size: 10px;
+  color: #fff;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 30px;
+  height: 20px;
+  background-color: #707070;
+  border-radius: 10px;
+  position: absolute;
+  display: none;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  /*width, height, fontsize, top, right*/
+}
+
+.InputAdd.On {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.InputAdd.On {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.InputChecked {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  position: absolute;
+  display: none;
+  top: 15px;
+  right: 48px;
+  /*width,heigh,top,right*/
+  background: url("../../src/assets/images/Checked_on.png");
+  background-size: 100%;
+  cursor: default;
+}
+
+.InputChecked.On {
+  display: block;
+}
+
 .InputHide {
   /*로그인 상태 유지*/
   width: 1px;
   height: 1px;
   clip: rect(1px, 1px, 1px, 1px);
   position: absolute;
+  display: none;
 }
 
 .InputHide ~ .LabelCheck {
@@ -373,6 +483,7 @@ body.Modal {
           justify-content: space-between;
   margin-bottom: 35px;
   margin-top: 48px;
+  height: 18px;
 }
 
 .ModalTop .ModalClose {
@@ -442,7 +553,7 @@ body.Modal {
 }
 
 .InputList {
-  margin: 35px 0 20px;
+  padding: 25px 0 20px;
 }
 
 .ListFlex {
@@ -529,11 +640,221 @@ p.SnsTitle::after {
   margin: 0;
 }
 
+.ChooseTitle {
+  width: 100%;
+  border: none;
+  outline: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  font-size: 16px;
+  line-height: 1;
+  color: #a8a8a8;
+  /*fontsize, color*/
+  height: 50px;
+  font-weight: 300;
+  padding: 8px 4px 8px 12px;
+  -webkit-transition: .5s;
+  transition: .5s;
+  cursor: pointer;
+}
+
+.Choose {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 4px 6px 4px 6px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 14px;
+  color: #000;
+  -webkit-transition: .2s;
+  transition: .2s;
+  position: relative;
+  white-space: nowrap;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.ChooseUnder {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 4px 6px 4px 6px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 14px;
+  color: #000;
+  -webkit-transition: .2s;
+  transition: .2s;
+  position: relative;
+  white-space: nowrap;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-color: #00b7ff !important;
+  color: #fff;
+  padding-right: 26px;
+  cursor: pointer;
+}
+
+.ChooseUnder .ChooseCancel {
+  display: block;
+}
+
+.InputChoose:checked ~ .LabelChoose .Choose {
+  background-color: #00b7ff !important;
+  color: #fff;
+  padding-right: 26px;
+}
+
+.InputChoose:checked ~ .LabelChoose .Choose .ChooseCancel {
+  display: block;
+}
+
+ul.InputList.SignStep3 li.ChooseList {
+  height: auto;
+  margin-bottom: 25px;
+}
+
+.LabelChoose {
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  height: 21px;
+  padding: 4px 6px 2px;
+  padding-right: 0;
+}
+
+.LabelChoose:hover p {
+  background-color: #e2e2e2;
+}
+
+ul.ChooseListDetail {
+  width: 100%;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  height: 50px;
+  -webkit-transition: height .3s;
+  transition: height .3s;
+  overflow: hidden;
+  background-color: #fff;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+ul.ChooseListDetail:hover {
+  border: 1px solid #707070;
+}
+
+ul.ChooseListDetail.On {
+  border: 1px solid #00b7ff;
+}
+
+ul.ChooseListDetail li {
+  width: 100%;
+  position: relative;
+}
+
+ul.ChooseListDetail li:first-child {
+  height: 50px;
+}
+
+ul.ChooseListDetail li:first-child::after {
+  content: '';
+  display: block;
+  height: 1px;
+  width: calc(100% - 24px);
+  background-color: #e2e2e2;
+  margin: 0 auto;
+}
+
+ul.ChooseListUnder {
+  margin-top: 4px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  display: none;
+}
+
+ul.ChooseListUnder li {
+  margin-left: 8px;
+  margin-top: 6px;
+}
+
+ul.ChooseListUnder::-webkit-scrollbar {
+  display: none;
+}
+
+.ChooseCancel {
+  width: 10px;
+  height: 10px;
+  cursor: pointer;
+  position: absolute;
+  display: none;
+  top: 6px;
+  right: 10px;
+  /*width,heigh,top,right*/
+  background: url("../../src/assets/images/CloseWhite.png") 50% 50%;
+  background-size: 100%;
+  cursor: default;
+}
+
+.ChooseComplete {
+  font-size: 13px;
+  color: #fff;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 36px;
+  height: 20px;
+  background-color: #707070;
+  border-radius: 10px;
+  position: absolute;
+  display: none;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
+  /*width, height, fontsize, top, right*/
+  background-color: #e2e2e2;
+  -webkit-transition: .3s;
+  transition: .3s;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.ChooseComplete.On {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.ChooseComplete:hover {
+  background-color: #00b7ff;
+}
+
+.ChooseComplete.On {
+  background-color: #00b7ff;
+}
+
 @media screen and (max-width: 768px) {
   .ModalWrapper.Modal .ModalBox {
     margin-top: 40px;
     height: calc(100vh - 40px);
-    max-height: 720px;
+    position: fixed;
+    bottom: 0;
   }
   .ModalBox {
     padding: 0 20px;
@@ -541,6 +862,14 @@ p.SnsTitle::after {
     border-radius: 20px 20px 0 0;
     height: 0;
     margin-top: 100vh;
+  }
+  .InputList {
+    padding-top: 25px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .InputList::-webkit-scrollbar {
+    display: none;
   }
   .ModalTop {
     margin-top: 40px;
@@ -551,13 +880,24 @@ p.SnsTitle::after {
   }
   .ModalBody {
     height: calc(100vh - 194px);
-    overflow-y: auto;
   }
   .ModalBody::-webkit-scrollbar {
     display: none;
   }
   .SnsList li {
     margin-right: 10px;
+  }
+  .ListFlex li {
+    margin-right: 10px;
+  }
+  ul.ChooseListDetail li:not(:first-child) {
+    padding: 8px 0;
+  }
+  .ChooseComplete {
+    top: 12px;
+    width: 40px;
+    height: 24px;
+    border-radius: 12px;
   }
 }
 /*# sourceMappingURL=common.css.map */

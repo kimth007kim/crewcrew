@@ -17,10 +17,6 @@ window.addEventListener("DOMContentLoaded", function(){
 
             if (this.value) {
                 children[2].classList.add('On');
-
-                if (this.classList.contains('Password')) {
-                    children[3].classList.add('Over');
-                }
             }
 
             if(!this.classList.contains('ListFlex')) { //1단그리드일 떄
@@ -122,8 +118,8 @@ window.addEventListener("DOMContentLoaded", function(){
     const SignLength = document.querySelectorAll(".InputList>li").length;
     const Signwidth = 100 / SignLength; //회원가입 진행도 1개당 올라가는 width
     let SignProgress = 0; //회원가입 진행도
-    function ProgressTransition(){ //입력 완료된 input의 수에 따라 Stepbar 넓이 조절
-        SignProgress = document.querySelectorAll(".Checked").length; 
+    function ProgressTransition() { //입력 완료된 input의 수에 따라 Stepbar 넓이 조절
+        SignProgress = document.querySelectorAll(".Checked").length;
         console.log(SignProgress);
         if (document.querySelector(".ModalContents").classList.contains("ContentSignStep1")) { //회원가입 1단계일떄
             document.querySelector(".StepSlide1").firstElementChild.style.width = SignProgress * Signwidth + "%";
@@ -131,22 +127,12 @@ window.addEventListener("DOMContentLoaded", function(){
             document.querySelector(".StepSlide2").firstElementChild.style.width = SignProgress * Signwidth + "%";
         }
 
-        if (SignProgress>=SignLength){
-            if(document.querySelector(".ModalContents").classList.contains("ContentSignStep1")) { //회원가입 1단계일떄
-                document.querySelector("button.SignStep1").classList.remove("Disable");
-                document.querySelector("button.SignStep1").disabled = false;
-            } else { //회원가입 2단계일떄
-                document.querySelector("button.SignStep2").classList.remove("Disable");
-                document.querySelector("button.SignStep2").disabled = false;
-            }
+        if (SignProgress >= SignLength) {
+            document.querySelector("button.SignStep").classList.remove("Disable");
+            document.querySelector("button.SignStep").disabled = false;
         } else {
-            if(document.querySelector(".ModalContents").classList.contains("ContentSignStep1")) { //회원가입 1단계일떄
-                document.querySelector("button.SignStep1").classList.add("Disable");
-                document.querySelector("button.SignStep1").disabled = "disabled";
-            } else { //회원가입 2단계일떄
-                document.querySelector("button.SignStep2").classList.add("Disable");
-                document.querySelector("button.SignStep2").disabled = "disabled";
-            }
+            document.querySelector("button.SignStep").classList.add("Disable");
+            document.querySelector("button.SignStep").disabled = "disabled";
         }
     }
 
@@ -156,8 +142,9 @@ window.addEventListener("DOMContentLoaded", function(){
     const MailListLength = MailList.length - 1; //메일 리스트의 수
     inputMail.addEventListener("focus", function(){ //메일 도메인 input 이벤트
         const children = this.parentNode.children;
+        const MailListHeight = parseInt(window.getComputedStyle(MailList[1]).height) + parseInt(window.getComputedStyle(MailList[1]).paddingTop)*2;
         this.closest("ul.MailList").classList.add("On");
-        this.closest("ul.MailList").style.height = 58 + 29 * MailListLength + "px";
+        this.closest("ul.MailList").style.height = 8 + 52 + MailListHeight * MailListLength + "px";
         children[1].classList.add("On");
         this.closest("ul.ListFlex").parentNode.lastElementChild.classList.add('On'); // InputTxt show, error상태시 On 대신 Error 클래스 추가
         if(this.value){
