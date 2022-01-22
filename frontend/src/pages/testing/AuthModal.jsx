@@ -10,6 +10,7 @@ import LoginSection from './section/LoginSection';
 import SignupSection from './section/SignupSection';
 import PasswordSection from './section/PasswordSection';
 import TitleRender from './component/TitleRender';
+import SignupSection2 from './section/SignupSection2';
 
 // eslint-disable-next-line react/jsx-wrap-multilines
 function AuthModal({ closeModal, visible }) {
@@ -57,7 +58,8 @@ function AuthModal({ closeModal, visible }) {
       body={
         <Body>
           <LoginSection IsClick={IsClick} HandleClick={HandleClick} />
-          <SignupSection IsClick={IsClick} />
+          <SignupSection IsClick={IsClick} HandleClick={HandleClick} />
+          <SignupSection2 IsClick={IsClick} HandleClick={HandleClick} />
           <PasswordSection IsClick={IsClick} HandleClick={HandleClick} />
         </Body>
       }
@@ -119,6 +121,7 @@ const Top = styled.ul`
   justify-content: space-between;
   margin-bottom: 35px;
   margin-top: 48px;
+  height: 18px;
   @media screen and (max-width: 768px) {
     margin-top: 40px;
     margin-bottom: 45px;

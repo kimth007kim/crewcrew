@@ -12,7 +12,7 @@ import delImage from '../../../assets/images/InputDel.png';
 
 const emailList = ['naver.com', 'gmail.com', 'daum.net', 'hanmail.net'];
 
-function SignupSection({ IsClick }) {
+function SignupSection({ IsClick, HandleClick }) {
   const [name, setName] = useState('');
   const [nameValid, setNameValid] = useState(true);
 
@@ -177,6 +177,23 @@ function SignupSection({ IsClick }) {
     [ProgressF],
   );
 
+  const CodeButtonTextRender = useCallback(() => {
+    if (CodeComplete) {
+      return '인증완료';
+    }
+    if (SendCode) {
+      return '코드 재전송';
+    }
+    return '코드 전송';
+  }, [CodeComplete, SendCode]);
+
+  const HandleNextStep = useCallback(() => {
+    if (!StepActive) {
+      return 0;
+    }
+    HandleClick(2);
+  }, [StepActive]);
+
   useEffect(() => {
     if (name.length >= 2 && !nameValid) {
       CheckProgressF(0);
@@ -330,7 +347,7 @@ function SignupSection({ IsClick }) {
             </li>
             <li>
               <Button size="fullregular" color="darkblue" disabled={!CodeActive}>
-                {SendCode ? '코드 재전송' : '코드 전송'}
+                {CodeButtonTextRender()}
               </Button>
             </li>
           </ListFlex>
@@ -348,8 +365,8 @@ function SignupSection({ IsClick }) {
         </InputLi>
       </InputList>
       <ButtonWrap>
-        <Button size="fullregular" color="darkblue" disabled={!StepActive}>
-          2단계로 넘어가기
+        <Button size="fullregular" color="darkblue" disabled={!StepActive} onClick={HandleNextStep}>
+          다음 단계로!
         </Button>
       </ButtonWrap>
       <SignStep1>
@@ -362,6 +379,12 @@ function SignupSection({ IsClick }) {
         <li>
           <StepSlide>
             <StepBar2 />
+          </StepSlide>
+        </li>
+
+        <li>
+          <StepSlide>
+            <StepBar3 />
           </StepSlide>
         </li>
       </SignStep1>
@@ -405,7 +428,11 @@ const SignupContents = styled.div`
 `;
 
 const InputList = styled.ul`
-  margin: 35px 0 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 310px;
+  box-sizing: content-box;
+  padding: 35px 0 20px;
 `;
 
 const InputLi = styled.li`
@@ -599,13 +626,14 @@ const StepBar1 = styled.div``;
 
 const StepBar2 = styled.div``;
 
+const StepBar3 = styled.div``;
+
 const StepSlide = styled.div`
   width: 100%;
   height: 5px;
   border: 1px solid #e2e2e2;
   border-radius: 4px;
   position: relative;
-  box-sizing: content-box;
 
   ${StepBar1} {
     position: absolute;

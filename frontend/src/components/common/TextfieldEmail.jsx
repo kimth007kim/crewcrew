@@ -78,7 +78,7 @@ const Input = styled.input`
   ${(props) =>
     props.Hover &&
     css`
-      border-color: #000;
+      border-color: #707070;
     `};
 
   ${(props) =>
@@ -100,7 +100,7 @@ const Label = styled.label`
   position: absolute;
   left: 12px;
   top: 13px;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 300;
   padding: 0 4px 0 7px;
   background-color: #fff;
@@ -108,7 +108,7 @@ const Label = styled.label`
   line-height: 24px;
   user-select: none;
   pointer-events: none;
-  color: #868686;
+  color: #a8a8a8;
 
   ${(props) =>
     (props.Focused || props.TextIn) &&
