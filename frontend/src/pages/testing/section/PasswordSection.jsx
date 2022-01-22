@@ -4,10 +4,8 @@
 
 import React, { useCallback, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
-
 import Naver from '../../../assets/images/Naver.png';
 import Kakao from '../../../assets/images/Kakao.png';
-
 import Button from '../../../components/common/Button';
 import Textfield from '../../../components/common/TextfieldEmail';
 

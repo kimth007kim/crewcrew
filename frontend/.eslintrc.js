@@ -44,6 +44,14 @@ module.exports = {
         },
       },
     ],
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
+    'consistent-return': 'warn',
+    'no-useless-return': 'warn',
     'operator-linebreak': ['error', 'after'],
     'implicit-arrow-linebreak': ['warn', 'below'],
     'jsx-a11y/no-noninteractive-element-interactions': [

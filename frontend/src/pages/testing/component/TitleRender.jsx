@@ -4,21 +4,28 @@ import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
 function TitleRender({ IsClick, HandleClick }) {
+  const SignupClick = () => {
+    if (IsClick >= 2) {
+      return undefined;
+    }
+
+    HandleClick(1);
+  };
   return (
     <>
       <TitleLi
         active={IsClick === 0}
         onClick={() => HandleClick(0)}
-        fade={IsClick === 0 || IsClick === 1}
+        fade={IsClick === 0 || IsClick === 1 || IsClick === 2}
         left={IsClick === 2 || IsClick === 3 || IsClick === 4}
       >
         {(IsClick === 0 || IsClick === 1) && '로그인'}
       </TitleLi>
 
       <TitleLi
-        active={IsClick === 1}
-        onClick={() => HandleClick(1)}
-        fade={IsClick === 0 || IsClick === 1}
+        active={IsClick === 1 || IsClick === 2 || IsClick === 3}
+        onClick={SignupClick}
+        fade={IsClick === 0 || IsClick === 1 || IsClick === 2 || IsClick === 3}
       >
         회원가입
       </TitleLi>
