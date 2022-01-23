@@ -19,7 +19,8 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     public List<CategoryDTO> getAllCategories(){
-        final List<Category> result = categoryRepository.findAllBy();
+        //final List<Category> result = categoryRepository.findAllBy();
+        final List<Category> result = categoryRepository.findAllByCategoryParentIsNull();
         return result.stream().map(CategoryDTO::new).collect(Collectors.toList());
     }
 }

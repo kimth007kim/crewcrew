@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findAllBy();
+    List<Category> findAllByCategoryParentIsNull();
 }
