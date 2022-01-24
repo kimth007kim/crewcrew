@@ -1,25 +1,25 @@
 package matchTeam.crewcrew.controller;
 
 import lombok.RequiredArgsConstructor;
-import matchTeam.crewcrew.dto.CategoryDTO;
+import matchTeam.crewcrew.dto.BoardDTO;
 import matchTeam.crewcrew.response.board.BoardSuccessResponse;
-import matchTeam.crewcrew.service.CategoryService;
+import matchTeam.crewcrew.service.BoardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
-public class CategoryController {
-    private final CategoryService categoryService;
+public class BoardController {
+    private final BoardService boardService;
 
-    @GetMapping("/boardwrite")
+    @GetMapping("/board/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public BoardSuccessResponse getAllCategories(){
-        final List<CategoryDTO> categories = categoryService.getAllCategories();
-        return BoardSuccessResponse.success(categories);
+    public BoardSuccessResponse getBoard(@PathVariable(name = "id") Long id) {
+        BoardDTO board = boardService.getBoard(id);
+
+        return BoardSuccessResponse.success(board);
     }
 }
