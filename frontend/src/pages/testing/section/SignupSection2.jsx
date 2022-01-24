@@ -1,21 +1,215 @@
-import React, { useCallback, useState } from 'react';
+/* eslint-disable indent */
+
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
+import { toast } from 'react-toastify';
 import Textfield from '../../../components/common/TextfieldEmail';
-import CameraImg from '../../../assets/images/Camera.png';
 import Button from '../../../components/common/Button';
+
+import CameraImg from '../../../assets/images/Camera.png';
+import CameraOnImg from '../../../assets/images/Camera_on.png';
+import CheckImg from '../../../assets/images/Checked_on.png';
+import Profile1 from '../../../assets/images/Profile1.png';
+import Profile2 from '../../../assets/images/Profile2.png';
+import Profile3 from '../../../assets/images/Profile3.png';
+import Profile4 from '../../../assets/images/Profile4.png';
+import Profile5 from '../../../assets/images/Profile5.png';
+import { emojiSlice, spaceSlice } from '../../../utils';
+
+const Profile = [
+  {
+    src: Profile1,
+    bg: '#00b7ff',
+  },
+  {
+    src: Profile2,
+    bg: '#8ED819',
+  },
+  {
+    src: Profile3,
+    bg: '#ff0045',
+  },
+  {
+    src: Profile4,
+    bg: '#8d2bf5',
+  },
+  {
+    src: Profile5,
+    bg: '#ffd458',
+  },
+];
 
 function SignupSection2({ IsClick, HandleClick }) {
   const [nickname, setNickname] = useState('');
   const [nicknameValid, setNicknameValid] = useState(false);
+  const [validMessage, setValidMessage] = useState('');
+  const [doubleCheck, setDoubleCheck] = useState(false);
+  const [uploadFileImg, setUploadFileImg] = useState(null);
+  const [grayed, setGrayed] = useState(true);
+  const [isUpload, setIsUpload] = useState(false);
+  const [isImg, setIsImg] = useState(false);
+  const [myFileImg, setMyFileImg] = useState(null);
+
+  const [StepActive, setStepActive] = useState(false);
+
+  const uploadRef = useRef(null);
+  const bgShowRef = useRef(null);
+  const myImgRef = useRef(null);
+  const imgTitleRef = useRef(null);
+  const imgChangeRef = useRef(null);
+  const [ProgressF, setProgressF] = useState([
+    {
+      index: 0,
+      check: 0,
+    },
+    {
+      index: 1,
+      check: 0,
+    },
+  ]);
 
   const HandleNicknameChange = useCallback((e) => {
-    setNickname(e.target.value);
+    const value = emojiSlice(spaceSlice(e.target.value)).slice(0, 10);
+    setNickname(value);
+    setDoubleCheck(false);
+    setValidMessage('앞으로 사용할 닉네임을 입력해주세요. (10자 이내)');
   }, []);
 
   const HandleNicknameDelete = useCallback(() => {
     setNickname('');
     setNicknameValid(false);
+    setDoubleCheck(false);
   }, []);
+
+  const HandleCheckNickname = useCallback((e) => {
+    e.preventDefault();
+    setDoubleCheck(true);
+    setValidMessage('사용 가능한 닉네임입니다.');
+  }, []);
+
+  const HandleImgUpload = useCallback(() => {
+    if (!isUpload) {
+      uploadRef.current.click();
+    } else {
+      const profileUrl = URL.createObjectURL(uploadFileImg);
+      bgShowRef.current.style.backgroundColor = '#e2e2e2';
+      myImgRef.current.firstElementChild.setAttribute('src', profileUrl);
+      setMyFileImg(uploadFileImg);
+      setIsImg(true);
+    }
+  }, [isUpload]);
+
+  const deleteFiles = useCallback(() => {
+    if (uploadFileImg) {
+      return null;
+    }
+    console.log(uploadFileImg);
+    setUploadFileImg(null);
+    setIsUpload(false);
+    setIsImg(false);
+
+    uploadRef.current.value = '';
+  }, [uploadFileImg]);
+
+  const HandleImgFileChange = useCallback(
+    (e) => {
+      const fileImg = e.target.files[0];
+      if (!fileImg) {
+        return null;
+      }
+      const filesize = Number((fileImg.size / 1024 / 1024).toFixed(4));
+      if (filesize >= 10) {
+        deleteFiles();
+
+        toast.error('이미지 사이즈가 너무 큽니다.');
+        return null;
+      }
+
+      if (!(fileImg && fileImg.type.startsWith('image/'))) {
+        deleteFiles();
+
+        toast.error('잘못된 파일입니다.');
+        return null;
+      }
+
+      setUploadFileImg(fileImg);
+      setIsUpload(true);
+      setMyFileImg(fileImg);
+
+      const profileUrl = URL.createObjectURL(fileImg);
+      bgShowRef.current.style.backgroundColor = '#e2e2e2';
+      myImgRef.current.firstElementChild.setAttribute('src', profileUrl);
+      setGrayed(false);
+      setIsImg(true);
+    },
+    [uploadFileImg],
+  );
+
+  const HandleDefaultImgChange = useCallback((p, i) => {
+    myImgRef.current.firstElementChild.setAttribute('src', p.src);
+    bgShowRef.current.style.backgroundColor = p.bg;
+    setMyFileImg(i + 1);
+    setGrayed(false);
+    setIsImg(false);
+  }, []);
+
+  const CheckProgressF = useCallback(
+    (index) => {
+      const Check = ProgressF.map((p) => {
+        if (p.index === index) {
+          return {
+            ...p,
+            check: 1,
+          };
+        }
+        return p;
+      });
+      setProgressF([...Check]);
+    },
+    [ProgressF],
+  );
+
+  const NotCheckProgressF = useCallback(
+    (index) => {
+      const Check = ProgressF.map((p) => {
+        if (p.index === index) {
+          return {
+            ...p,
+            check: 0,
+          };
+        }
+        return p;
+      });
+      setProgressF([...Check]);
+    },
+    [ProgressF],
+  );
+
+  useEffect(() => {
+    if (nickname.length >= 2 && !nicknameValid && doubleCheck) {
+      CheckProgressF(0);
+    } else {
+      NotCheckProgressF(0);
+    }
+  }, [nicknameValid, nickname, doubleCheck]);
+
+  useEffect(() => {
+    console.log(myFileImg);
+    if (myFileImg) {
+      CheckProgressF(1);
+    } else {
+      NotCheckProgressF(1);
+    }
+  }, [myFileImg]);
+
+  useEffect(() => {
+    const stepComplete = ProgressF.filter((p) => p.check === 1).length;
+    if (stepComplete >= 2) {
+      setStepActive(true);
+    } else {
+      setStepActive(false);
+    }
+  }, [ProgressF]);
 
   return (
     <SignupContents active={IsClick === 2}>
@@ -26,36 +220,68 @@ function SignupSection2({ IsClick, HandleClick }) {
             onChange={HandleNicknameChange}
             value={nickname}
             label="닉네임"
-            validMessage="앞으로 사용할 닉네임을 알려주세요. (10자 이내)"
+            validMessage={validMessage}
             valid={nicknameValid}
             onDelete={HandleNicknameDelete}
           />
+          <InputDouble
+            active={nickname.length >= 2 && !doubleCheck}
+            onMouseDown={HandleCheckNickname}
+          >
+            중복확인
+          </InputDouble>
+          <InputChecked active={doubleCheck} />
         </InputLi>
         <ProfileSection>
           <ProfileBox>
-            <ProfileShow>
-              <ProfileTitle />
-              <ProfileChange />
-              <ProfileImg />
+            <ProfileShow ref={bgShowRef}>
+              <ProfileTitle ref={imgTitleRef} active={isImg || myFileImg}>
+                프로필 사진
+              </ProfileTitle>
+              <ProfileChange
+                onClick={() => uploadRef.current.click()}
+                ref={imgChangeRef}
+                active={isImg}
+              >
+                사진변경
+              </ProfileChange>
+              <ProfileImg ref={myImgRef} grayed={grayed}>
+                <img src={`${Profile1}`} alt="" />
+              </ProfileImg>
               <ProfileBg />
             </ProfileShow>
             <ProfileSelect>
               <SelectWrapper>
                 <li>
-                  <InputHide />
-                  <InputHide />
-                  <InputLabel>
+                  <InputHide type="radio" id="ProfileCustom" />
+                  <InputHide
+                    type="file"
+                    accept="image/jpeg, image/png"
+                    ref={uploadRef}
+                    onChange={HandleImgFileChange}
+                  />
+                  <InputLabel htmlFor="ProfileCustom" onClick={HandleImgUpload} active={isUpload}>
                     <span />
                     <p>내 사진</p>
                   </InputLabel>
                 </li>
                 <li>
                   <ProfileList>
-                    <li />
-                    <li />
-                    <li />
-                    <li />
-                    <li />
+                    {Profile.map((p, i) => (
+                      <li key={p.src + p.bg}>
+                        <InputHide type="radio" id={`ProfileCustom${i}`} />
+                        <OuterCircle
+                          htmlFor={`ProfileCustom${i}`}
+                          bg={p.bg}
+                          onClick={() => HandleDefaultImgChange(p, i)}
+                          active={myFileImg === i + 1}
+                        >
+                          <InnerCircle bg={p.bg}>
+                            <img src={`${p.src}`} alt="" />
+                          </InnerCircle>
+                        </OuterCircle>
+                      </li>
+                    ))}
                   </ProfileList>
                 </li>
               </SelectWrapper>
@@ -64,7 +290,7 @@ function SignupSection2({ IsClick, HandleClick }) {
         </ProfileSection>
       </InputList>
       <ButtonWrap>
-        <Button size="fullregular" color="darkblue">
+        <Button size="fullregular" color="darkblue" disabled={!StepActive}>
           거의 다 왔어요!
         </Button>
       </ButtonWrap>
@@ -76,7 +302,7 @@ function SignupSection2({ IsClick, HandleClick }) {
         </li>
 
         <li>
-          <StepSlide>
+          <StepSlide progress={ProgressF.filter((p) => p.check === 1).length}>
             <StepBar2 />
           </StepSlide>
         </li>
@@ -131,6 +357,45 @@ const InputLi = styled.li`
   height: 75px;
 `;
 
+const InputDouble = styled.div`
+  font-size: 10px;
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 20px;
+  background-color: #707070;
+  border-radius: 10px;
+  position: absolute;
+  display: none;
+  top: 15px;
+  right: 48px;
+  cursor: pointer;
+  ${(props) =>
+    props.active &&
+    css`
+      display: flex;
+    `}
+`;
+
+const InputChecked = styled.div`
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  position: absolute;
+  display: none;
+  top: 15px;
+  right: 48px;
+  background: url(${CheckImg});
+  background-size: 100%;
+  cursor: default;
+  ${(props) =>
+    props.active &&
+    css`
+      display: flex;
+    `}
+`;
+
 const ProfileSection = styled.li`
   position: relative;
   height: 230px;
@@ -141,6 +406,7 @@ const ProfileBox = styled.div`
   border: 1px solid #e2e2e2;
   border-radius: 10px;
   overflow: hidden;
+  box-sizing: content-box;
 `;
 
 const ProfileShow = styled.div`
@@ -163,8 +429,12 @@ const ProfileTitle = styled.p`
   color: #fff;
   z-index: 1;
   opacity: 0;
-  -webkit-transition: 0.3s;
   transition: 0.3s;
+  ${(props) =>
+    props.active &&
+    css`
+      opacity: 1;
+    `}
 `;
 
 const ProfileChange = styled.label`
@@ -182,11 +452,31 @@ const ProfileChange = styled.label`
   right: 10px;
   cursor: pointer;
   z-index: 1;
+  ${(props) =>
+    props.active &&
+    css`
+      display: flex;
+    `}
 `;
 
 const ProfileImg = styled.div`
   width: 160px;
   height: 160px;
+  & > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(0);
+    opacity: 1;
+
+    transition: 0.5s;
+    ${(props) =>
+      props.grayed &&
+      css`
+        filter: grayscale(100%);
+        opacity: 0.5;
+      `}
+  }
 `;
 
 const ProfileBg = styled.div`
@@ -249,6 +539,48 @@ const ProfileList = styled.ul`
   }
 `;
 
+const OuterCircle = styled.label`
+  width: 54px;
+  height: 54px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 1px solid #e2e2e2;
+  transition: 0.3s;
+  cursor: pointer;
+  ${(props) =>
+    props.bg &&
+    css`
+      :hover {
+        border-color: ${props.bg};
+      }
+    `}
+  ${(props) =>
+    props.active &&
+    css`
+      border-color: ${props.bg};
+    `}
+`;
+
+const InnerCircle = styled.div`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  ${(props) =>
+    props.bg &&
+    css`
+      background-color: ${props.bg};
+    `}
+
+  & > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
 const InputHide = styled.input`
   width: 1px;
   height: 1px;
@@ -267,6 +599,7 @@ const InputLabel = styled.label`
   border-radius: 3px;
   background-color: #fff;
   transition: 0.3s;
+
   & > span {
     display: block;
     width: 23px;
@@ -283,6 +616,30 @@ const InputLabel = styled.label`
     margin-top: 5px;
     transition: 0.3s;
   }
+  :hover {
+    background-color: #00b7ff;
+
+    & > p {
+      color: #fff;
+    }
+    & > span {
+      background: url(${CameraOnImg}) 50% 50%;
+      background-size: 100%;
+    }
+  }
+  ${(props) =>
+    props.active &&
+    css`
+      background-color: #00b7ff;
+
+      & > p {
+        color: #fff;
+      }
+      & > span {
+        background: url(${CameraOnImg}) 50% 50%;
+        background-size: 100%;
+      }
+    `}
 `;
 
 const ButtonWrap = styled.div`
@@ -323,6 +680,24 @@ const StepSlide = styled.div`
     border: none;
     transition: 0.5s;
     width: 100%;
+
+    background-color: #00b7ff;
+  }
+
+  ${StepBar2} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 4px;
+    border: none;
+    transition: 0.5s;
+    width: 0%;
+    ${(props) =>
+      props.progress &&
+      css`
+        width: ${props.progress * 50}%;
+      `};
 
     background-color: #00b7ff;
   }
