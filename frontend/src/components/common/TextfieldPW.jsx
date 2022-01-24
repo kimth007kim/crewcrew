@@ -115,7 +115,7 @@ const Input = styled.input`
 
 const Label = styled.label`
   position: absolute;
-  left: 12px;
+  left: 8px;
   top: 13px;
   font-size: 16px;
   font-weight: 300;
@@ -130,7 +130,7 @@ const Label = styled.label`
   ${(props) =>
     (props.Focused || props.TextIn) &&
     css`
-      top: -10px;
+      top: -12px;
       color: #00b7ff;
       font-size: 13px;
       font-weight: 500;

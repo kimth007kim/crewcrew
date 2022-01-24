@@ -238,30 +238,32 @@ function SignupSection({ IsClick, HandleClick }) {
   }, [ProgressF]);
 
   useEffect(() => {
-    setName('');
-    setEmailId('');
-    setCode('');
-    setEmail('');
-    setPassword('');
-    setCodeActive(false);
-    setProgressF([
-      {
-        index: 0,
-        check: 0,
-      },
-      {
-        index: 1,
-        check: 0,
-      },
-      {
-        index: 2,
-        check: 0,
-      },
-      {
-        index: 3,
-        check: 0,
-      },
-    ]);
+    if (IsClick === 0) {
+      setName('');
+      setEmailId('');
+      setCode('');
+      setEmail('');
+      setPassword('');
+      setCodeActive(false);
+      setProgressF([
+        {
+          index: 0,
+          check: 0,
+        },
+        {
+          index: 1,
+          check: 0,
+        },
+        {
+          index: 2,
+          check: 0,
+        },
+        {
+          index: 3,
+          check: 0,
+        },
+      ]);
+    }
   }, [IsClick]);
 
   return (

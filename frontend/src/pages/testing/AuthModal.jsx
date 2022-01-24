@@ -38,6 +38,12 @@ function AuthModal({ closeModal, visible }) {
                   로그인
                 </ModalArrow>
               )}
+              {IsClick >= 2 && IsClick <= 4 && (
+                <ModalArrow onClick={() => HandleClick(IsClick - 1)}>
+                  <ArrowImg src={Arrow} />
+                  이전 단계
+                </ModalArrow>
+              )}
             </li>
             <li>
               <ModalClose
