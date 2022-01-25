@@ -179,7 +179,7 @@ ul.InputList > li {
   position: absolute;
   left: 8px;
   top: 13px;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 300;
   padding: 0 4px 0 7px;
   background-color: #fff;
@@ -207,7 +207,7 @@ ul.InputList > li {
   position: absolute;
   left: 8px;
   top: 13px;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 300;
   padding: 0 4px 0 7px;
   -webkit-transition: .5s;
@@ -1373,6 +1373,87 @@ ul.SignStep1 {
      object-fit: cover;
 }
 
+.ModalHeader.SignStep4 {
+  height: 108px;
+  padding-bottom: 10px;
+}
+
+.ModalContents.ContentSignStep4 {
+  position: relative;
+}
+
+.ResultProfileWrapper {
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  scroll-behavior: smooth;
+}
+
+.ResultProfile {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #00b7ff;
+  z-index: 1;
+  margin: 0 auto;
+}
+
+.ResultProfile img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.ResultFlag {
+  width: 27px;
+  position: absolute;
+  top: 27px;
+  left: calc(50% - 2px);
+  -webkit-animation: Flag 1s forwards;
+          animation: Flag 1s forwards;
+}
+
+@-webkit-keyframes Flag {
+  0% {
+    top: 27px;
+  }
+  100% {
+    top: -33px;
+  }
+}
+
+@keyframes Flag {
+  0% {
+    top: 27px;
+  }
+  100% {
+    top: -33px;
+  }
+}
+
+.ResultTitle {
+  font-size: 32px;
+  text-align: center;
+  margin: 22px 0 29px;
+  font-weight: 300;
+  color: #000;
+}
+
+.ResultTitle b {
+  font-weight: 700;
+}
+
+.ResultTxt {
+  font-size: 13px;
+  text-align: center;
+  margin-bottom: 60px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #000;
+}
+
 @media screen and (max-width: 768px) {
   .InputList.Sign {
     height: calc(100vh - 393px);
@@ -1410,6 +1491,27 @@ ul.SignStep1 {
   }
   ul.MailList p {
     padding: 5px 10px 5px 4px;
+  }
+  .ResultProfileWrapper {
+    height: calc(100vh - 338px);
+  }
+  .ResultProfile {
+    position: relative;
+    width: 150px;
+    height: 150px;
+  }
+  .ResultTitle {
+    margin: 29px 0 30px;
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: 0.05em;
+    word-break: keep-all;
+  }
+  .ResultTxt {
+    margin-bottom: 0;
+  }
+  .ButtonFull.Sign4 {
+    margin-top: 20px;
   }
 }
 /*# sourceMappingURL=Sign.css.map */

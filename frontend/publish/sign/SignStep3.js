@@ -131,7 +131,7 @@ window.addEventListener("DOMContentLoaded", function(){
                 }
 
                 if(chooseTitle[i].classList.contains("Clicked")){
-                    document.querySelectorAll(".InputAdd")[i].classList.add("On");
+                    document.querySelectorAll(".InputAdd")[i].classList.add("On"); //추가 버튼 생성
                 }
             }
 
@@ -162,7 +162,6 @@ window.addEventListener("DOMContentLoaded", function(){
     function listScroll(){ //스터디, 취미 스크롤
         listOffset = this.closest(".ChooseList").offsetTop;
         this.closest(".InputList").scrollTop = listOffset - 25;
-        console.log(listOffset);
     }
 
     const chooseCompete = document.querySelectorAll(".ChooseComplete");
