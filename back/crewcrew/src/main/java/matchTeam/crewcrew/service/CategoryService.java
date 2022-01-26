@@ -1,13 +1,13 @@
 package matchTeam.crewcrew.service;
 
 import lombok.RequiredArgsConstructor;
+import matchTeam.crewcrew.dto.CategoryDTO;
 import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.repository.board.CategoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,7 +20,11 @@ public class CategoryService {
     public List<CategoryDTO> getAllCategories(){
         //final List<Category> result = categoryRepository.findAllBy();
         final List<Category> result = categoryRepository.findAllByCategoryParentIsNull();
-        System.out.println("CategoryService.getAllCategories");
+        return result.stream().map(CategoryDTO::new).collect(Collectors.toList());
+    }
+
+    public List<CategoryDTO> getChildCategories(Category categoryParent){
+        final List<Category> result = categoryRepository.findCategoryByCategoryParent(categoryParent);
         return result.stream().map(CategoryDTO::new).collect(Collectors.toList());
     }
 
