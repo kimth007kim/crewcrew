@@ -18,7 +18,7 @@ public class Board {
     @Column(name = "board_seq", nullable = false)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uid")
     private User uid;
 
@@ -37,7 +37,6 @@ public class Board {
     @Column(name = "total_crew")
     private Integer totalCrew;
 
-    @Lob
     @Column(name = "approach")
     private String approach;
 

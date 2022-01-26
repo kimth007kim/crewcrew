@@ -1,7 +1,6 @@
 package matchTeam.crewcrew.service;
 
 import lombok.RequiredArgsConstructor;
-import matchTeam.crewcrew.dto.CategoryDTO;
 import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.repository.board.CategoryRepository;
 import org.springframework.stereotype.Service;
@@ -21,27 +20,8 @@ public class CategoryService {
     public List<CategoryDTO> getAllCategories(){
         //final List<Category> result = categoryRepository.findAllBy();
         final List<Category> result = categoryRepository.findAllByCategoryParentIsNull();
+        System.out.println("CategoryService.getAllCategories");
         return result.stream().map(CategoryDTO::new).collect(Collectors.toList());
     }
-
-    /*public List<CategoryDTO> getChildrenCategories(Long categoryParent){
-
-    }*/
-/*
-
-    public BoardDTO getBoard(Long boardSeq){
-        Optional<Board> findId = boardRepository.findById(boardSeq);
-
-        Board findPost = findId.orElseThrow(() -> new BoardNotFound("해당 게시물이 존재하지 않습니다."));
-
-        return  BoardDTO.builder()
-                .title(findPost.getTitle())
-                .boardContent(findPost.getBoardContent())
-                .recruitedCrew(findPost.getRecruitedCrew())
-                .totalCrew(findPost.getTotalCrew())
-                .url(findPost.getUrl())
-                .build();
-    }
-*/
 
 }

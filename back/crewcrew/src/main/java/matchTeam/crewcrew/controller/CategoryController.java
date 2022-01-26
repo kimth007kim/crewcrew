@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import matchTeam.crewcrew.dto.CategoryDTO;
 import matchTeam.crewcrew.response.board.BoardSuccessResponse;
 import matchTeam.crewcrew.service.CategoryService;
 import org.springframework.http.HttpStatus;
