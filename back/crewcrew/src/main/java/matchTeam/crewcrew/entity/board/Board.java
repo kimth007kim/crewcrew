@@ -3,16 +3,18 @@ package matchTeam.crewcrew.entity.board;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import matchTeam.crewcrew.entity.BaseTimeEntity;
 import matchTeam.crewcrew.entity.User;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "board")
 @Entity
-public class Board {
+public class Board extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_seq", nullable = false)
@@ -44,9 +46,9 @@ public class Board {
     private Long hit;
 
     @Column(name = "created_date")
-    private Instant createdDate;
+    private LocalDateTime createdDate;
 
     @Column(name = "modified_date")
-    private Instant modifiedDate;
+    private LocalDateTime modifiedDate;
 
 }

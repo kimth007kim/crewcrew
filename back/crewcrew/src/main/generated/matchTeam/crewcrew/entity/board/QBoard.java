@@ -22,19 +22,21 @@ public class QBoard extends EntityPathBase<Board> {
 
     public static final QBoard board = new QBoard("board");
 
+    public final matchTeam.crewcrew.entity.QBaseTimeEntity _super = new matchTeam.crewcrew.entity.QBaseTimeEntity(this);
+
     public final NumberPath<Integer> appliedCrew = createNumber("appliedCrew", Integer.class);
 
     public final StringPath approach = createString("approach");
 
     public final StringPath boardContent = createString("boardContent");
 
-    public final DateTimePath<java.time.Instant> createdDate = createDateTime("createdDate", java.time.Instant.class);
+    public final DateTimePath<java.time.LocalDateTime> createdDate = createDateTime("createdDate", java.time.LocalDateTime.class);
 
     public final NumberPath<Long> hit = createNumber("hit", Long.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final DateTimePath<java.time.Instant> modifiedDate = createDateTime("modifiedDate", java.time.Instant.class);
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = createDateTime("modifiedDate", java.time.LocalDateTime.class);
 
     public final NumberPath<Integer> recruitedCrew = createNumber("recruitedCrew", Integer.class);
 
