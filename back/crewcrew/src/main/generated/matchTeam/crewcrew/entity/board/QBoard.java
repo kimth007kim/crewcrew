@@ -26,17 +26,21 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final NumberPath<Integer> appliedCrew = createNumber("appliedCrew", Integer.class);
 
-    public final StringPath approach = createString("approach");
+    public final EnumPath<BoardApproach> approach = createEnum("approach", BoardApproach.class);
 
     public final StringPath boardContent = createString("boardContent");
 
-    public final DateTimePath<java.time.LocalDateTime> createdDate = createDateTime("createdDate", java.time.LocalDateTime.class);
+    public final QCategory category;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
     public final NumberPath<Long> hit = createNumber("hit", Long.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final DateTimePath<java.time.LocalDateTime> modifiedDate = createDateTime("modifiedDate", java.time.LocalDateTime.class);
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
     public final NumberPath<Integer> recruitedCrew = createNumber("recruitedCrew", Integer.class);
 
@@ -44,7 +48,7 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final NumberPath<Integer> totalCrew = createNumber("totalCrew", Integer.class);
 
-    public final matchTeam.crewcrew.entity.QUser uid;
+    public final matchTeam.crewcrew.entity.QUser user;
 
     public QBoard(String variable) {
         this(Board.class, forVariable(variable), INITS);
@@ -64,7 +68,8 @@ public class QBoard extends EntityPathBase<Board> {
 
     public QBoard(Class<? extends Board> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.uid = inits.isInitialized("uid") ? new matchTeam.crewcrew.entity.QUser(forProperty("uid")) : null;
+        this.category = inits.isInitialized("category") ? new QCategory(forProperty("category"), inits.get("category")) : null;
+        this.user = inits.isInitialized("user") ? new matchTeam.crewcrew.entity.QUser(forProperty("user")) : null;
     }
 
 }

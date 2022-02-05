@@ -1,14 +1,13 @@
 package matchTeam.crewcrew.service;
 
 import lombok.RequiredArgsConstructor;
-import matchTeam.crewcrew.dto.CategoryDTO;
+import matchTeam.crewcrew.dto.category.CategoryDTO;
 import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.repository.board.CategoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -17,15 +16,9 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public List<CategoryDTO> getAllCategories(){
-        //final List<Category> result = categoryRepository.findAllBy();
-        final List<Category> result = categoryRepository.findAllByCategoryParentIsNull();
-        return result.stream().map(CategoryDTO::new).collect(Collectors.toList());
-    }
-
-    public List<CategoryDTO> getChildCategories(Category categoryParent){
-        final List<Category> result = categoryRepository.findCategoryByCategoryParent(categoryParent);
-        return result.stream().map(CategoryDTO::new).collect(Collectors.toList());
+    public List<CategoryDTO> readAll() {
+        List<Category> categories = categoryRepository.findAllOrderByParentIdAscNullsFirstCategoryIdAsc();
+        return CategoryDTO.toDtoList(categories);
     }
 
 }

@@ -22,8 +22,6 @@ public class QCategory extends EntityPathBase<Category> {
 
     public static final QCategory category = new QCategory("category");
 
-    public final ListPath<Category, QCategory> categoryChildren = this.<Category, QCategory>createList("categoryChildren", Category.class, QCategory.class, PathInits.DIRECT2);
-
     public final StringPath categoryName = createString("categoryName");
 
     public final QCategory categoryParent;
