@@ -11,6 +11,7 @@ import SignupSection from './section/SignupSection';
 import PasswordSection from './section/PasswordSection';
 import TitleRender from './component/TitleRender';
 import SignupSection2 from './section/SignupSection2';
+import SignupSection3 from './section/SignupSection3';
 
 // eslint-disable-next-line react/jsx-wrap-multilines
 function AuthModal({ closeModal, visible }) {
@@ -38,7 +39,7 @@ function AuthModal({ closeModal, visible }) {
                   로그인
                 </ModalArrow>
               )}
-              {IsClick >= 2 && IsClick <= 4 && (
+              {IsClick >= 2 && IsClick <= 3 && (
                 <ModalArrow onClick={() => HandleClick(IsClick - 1)}>
                   <ArrowImg src={Arrow} />
                   이전 단계
@@ -66,6 +67,7 @@ function AuthModal({ closeModal, visible }) {
           <LoginSection IsClick={IsClick} HandleClick={HandleClick} />
           <SignupSection IsClick={IsClick} HandleClick={HandleClick} />
           <SignupSection2 IsClick={IsClick} HandleClick={HandleClick} />
+          <SignupSection3 IsClick={IsClick} HandleClick={HandleClick} />
           <PasswordSection IsClick={IsClick} HandleClick={HandleClick} />
         </Body>
       }
@@ -172,6 +174,9 @@ const Body = styled.div`
   z-index: 1;
   transition: 0.5s;
   color: #868686;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   @media screen and (max-width: 768px) {
     padding: 0 20px;
     width: 100%;

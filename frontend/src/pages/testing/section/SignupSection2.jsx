@@ -153,6 +153,13 @@ function SignupSection2({ IsClick, HandleClick }) {
     setIsImg(false);
   }, []);
 
+  const HandleNextStep = useCallback(() => {
+    if (!StepActive) {
+      return 0;
+    }
+    HandleClick(3);
+  }, [StepActive]);
+
   const CheckProgressF = useCallback(
     (index) => {
       const Check = ProgressF.map((p) => {
@@ -290,7 +297,7 @@ function SignupSection2({ IsClick, HandleClick }) {
         </ProfileSection>
       </InputList>
       <ButtonWrap>
-        <Button size="fullregular" color="darkblue" disabled={!StepActive}>
+        <Button size="fullregular" color="darkblue" disabled={!StepActive} onClick={HandleNextStep}>
           거의 다 왔어요!
         </Button>
       </ButtonWrap>
