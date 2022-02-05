@@ -3,7 +3,7 @@ package matchTeam.crewcrew.entity.board;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import matchTeam.crewcrew.entity.User;
+import matchTeam.crewcrew.entity.user.User;
 
 import javax.persistence.*;
 

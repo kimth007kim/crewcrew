@@ -10,19 +10,21 @@ import java.util.stream.Collectors;
 public class ErrorResponseHandler {
     private String code;
     private String message;
+    private String error;
     private int status;
-    private List<CustomFieldError> errors;
+//    private List<CustomFieldError> errors;
+
 
     public static class CustomFieldError {
         private String field;
         private String value;
         private String reason;
 
-        private CustomFieldError(String field, String value, String reason) {
-            this.field = field;
-            this.value = value;
-            this.reason = reason;
-        }
+//        private CustomFieldError(String field, String value, String reason) {
+//            this.field = field;
+//            this.value = value;
+//            this.reason = reason;
+//        }
 
         private CustomFieldError(FieldError fieldError) {
             this.field = fieldError.getField();
@@ -47,15 +49,18 @@ public class ErrorResponseHandler {
         this.code = errorCode.getCode();
         this.message = errorCode.getMessage();
         this.status = errorCode.getStatus();
+        this.error = errorCode.getError();
     }
 
     private ErrorResponseHandler(ErrorCode errorCode, List<FieldError> errors) {
         setErrorCode(errorCode);
-        this.errors = errors.stream().map(CustomFieldError:: new).collect(Collectors.toList());
+//        this.error="True";
+//        this.errors = errors.stream().map(CustomFieldError:: new).collect(Collectors.toList());
     }
     private ErrorResponseHandler(ErrorCode errorCode, String exceptionMessage) {
         setErrorCode(errorCode);
-        this.errors = List.of(new CustomFieldError("", "", exceptionMessage));
+//        this.error="True";
+//        this.errors = List.of(new CustomFieldError("", "", exceptionMessage));
     }
 
     public static ErrorResponseHandler of(ErrorCode errorCode) {
@@ -82,7 +87,10 @@ public class ErrorResponseHandler {
         return status;
     }
 
-    public List<CustomFieldError> getErrors() {
-        return errors;
+    public String getError() {
+        return error;
     }
+//    public List<CustomFieldError> getErrors() {
+//        return errors;
+//    }
 }
