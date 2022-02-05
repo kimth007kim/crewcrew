@@ -10,24 +10,34 @@ public enum ErrorCode {
     // Standard
     ILLEGAL_STATE(400, "STANDARD_001", "illegal state"),
     ILLEGAL_ARGUMENT(400, "STANDARD_002", "illegal argument"),
+    AUTHENTICATION_ENTRY(800, "ILLEGAL ACCESS", "Invalid token! Access denied"),
 
-    LOGIN_FAILED(600,"LOGIN_FAILED","cannot login to server"),
+    LOGIN_FAILED_BY_EMAIL(501,"EMAIL NOT EXIST","email not exist"),
+    LOGIN_FAILED_BY_PASSWORD(502,"PASSWORD INCORRECT","password not correct with email"),
+    ACCESS_DENIED(-100,"PERMISSION_DENIED","permission is not accessible to this resuource"),
+    LOGIN_FAILED(600,"LOGIN_FAILED","invalid email or password"),
     // Exception
     EXCEPTION(500, "EXCEPTION", "exception"),
 
-    EMAIL_ALREADY_EXIST(1001,"EMAIL_001","email alreadyExist");
+    SIGN_UP_FAILED(1001,"EMAIL_001","email alreadyExist ");
 
 
     private int status;
     private final String code;
     private final String message;
+    private final String error;
 
 
     ErrorCode( int status,String code, String message) {
         this.status = status;
         this.code = code;
         this.message = message;
+        this.error = "True";
 
+    }
+
+    public String getError() {
+        return error;
     }
 
     public int getStatus() {

@@ -1,19 +1,22 @@
 package matchTeam.crewcrew.response;
 
+import lombok.RequiredArgsConstructor;
+import matchTeam.crewcrew.response.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.file.AccessDeniedException;
 
-@ControllerAdvice
-
+@RestControllerAdvice
 public class GlobalExceptionHandler {
+
     /**
      *  javax.validation.Valid or @Validated 으로 binding error 발생시 발생한다.
      *  HttpMessageConverter 에서 등록한 HttpMessageConverter binding 못할경우 발생
@@ -88,8 +91,45 @@ public class GlobalExceptionHandler {
      * 여기서 작성하지 않은 다른 모든 예외에 대해 처리한다. 이 때 500 status code와 함께 반환한다.
      */
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity handleException(Exception e) {
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EXCEPTION, e.getMessage());
+    protected ResponseEntity<ErrorResponseHandler> handleException(Exception e) {
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EXCEPTION);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    /**
+     * 로그인을 할때 이메일이 존재하지않을때 예외처리를 발생한다.
+     */
+    @ExceptionHandler(LoginFailedByEmailNotExistException.class)
+    protected ResponseEntity<ErrorResponseHandler> emailLoginFailedException(LoginFailedByEmailNotExistException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.LOGIN_FAILED_BY_EMAIL);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * 로그인을 할때 이메일이 존재하지않을때 예외처리를 발생한다.
+     */
+    @ExceptionHandler(LoginFailedByPasswordException.class)
+    protected ResponseEntity<ErrorResponseHandler> loginFailedByPasswordException(LoginFailedByPasswordException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.LOGIN_FAILED_BY_PASSWORD);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    /**
+     * 로그인을 할때 이메일이 존재하지않을때 예외처리를 발생한다.
+     */
+    @ExceptionHandler(EmailSignUpFailedCException.class)
+    protected ResponseEntity<ErrorResponseHandler> signUpFailedException(EmailSignUpFailedCException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.SIGN_UP_FAILED);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(CAuthenticationEntryPointException.class)
+    protected ResponseEntity<ErrorResponseHandler> authenticationEntrypointException(CAuthenticationEntryPointException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.AUTHENTICATION_ENTRY);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(CAccessDeniedException.class)
+    protected ResponseEntity<ErrorResponseHandler> accessDeniedException(CAccessDeniedException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.ACCESS_DENIED);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

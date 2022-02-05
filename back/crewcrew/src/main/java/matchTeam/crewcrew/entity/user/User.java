@@ -1,27 +1,27 @@
-package matchTeam.crewcrew.entity;
+package matchTeam.crewcrew.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import lombok.*;
+import matchTeam.crewcrew.entity.BaseTimeEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
-public class User implements UserDetails {
-
+public class User extends BaseTimeEntity implements UserDetails {
+//public class User{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
 
@@ -36,8 +36,8 @@ public class User implements UserDetails {
     @Column
     private String name;
 
-    @Column
-    @NotNull
+    @JsonProperty(access= JsonProperty.Access.WRITE_ONLY)
+    @Column(nullable = false,length=100)
     private String password;
 
     @Column(name = "profile_image")
@@ -46,13 +46,14 @@ public class User implements UserDetails {
     @Column
     private String nickname;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "provider_type")
-    private ProviderType providerType;
+
+    @Column(length=100)
+    private String provider;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -61,35 +62,33 @@ public class User implements UserDetails {
                 .collect(Collectors.toList());
     }
 
-
-
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return null;
-//    }
-
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public String getUsername() {
         return email;
     }
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
