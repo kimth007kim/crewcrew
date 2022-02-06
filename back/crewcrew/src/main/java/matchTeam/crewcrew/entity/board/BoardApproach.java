@@ -4,6 +4,12 @@ import lombok.Getter;
 
 @Getter
 public enum BoardApproach {
-    온라인,
-    오프라인;
+    오프라인(0),
+    온라인(1);
+
+    private final Integer approach;
+
+    BoardApproach(Integer approach){
+        this.approach = approach;
+    }
 }

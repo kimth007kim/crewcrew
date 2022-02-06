@@ -19,6 +19,14 @@ public enum ErrorCode {
     // Exception
     EXCEPTION(500, "EXCEPTION", "exception"),
 
+
+    //게시판 관련 에러
+    THE_NUMBER_OF_CREW_BY_ZERO(400, "", "모집인원이나 총인원이 0이하입니다"),
+    OVER_RECRUITED(400, "", "총인원이 모집인원보다 적습니다"),
+    BOARD_NOT_FOUND(400, "", "해당 게시글이 존재하지 않습니다"),
+    CATEGOTY_NOT_FOUND(501, "", "해당 카테고리가 존재하지 않습니다"),
+    NOT_SELECT_DETAIL_CATEGORY(400, "", "세부 카테고리를 지정하지 않았습니다"),
+
     SIGN_UP_FAILED(1001,"EMAIL_001","email alreadyExist ");
 
 

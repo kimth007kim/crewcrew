@@ -3,19 +3,16 @@ package matchTeam.crewcrew.board;
 import matchTeam.crewcrew.entity.User;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.board.BoardApproach;
-import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.repository.board.BoardRepository;
 import matchTeam.crewcrew.repository.board.CategoryRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
-import matchTeam.crewcrew.util.customException.BoardNotFoundException;
+import matchTeam.crewcrew.response.exception.board.BoardNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.slf4j.MDC.clear;

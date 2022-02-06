@@ -1,6 +1,7 @@
 package matchTeam.crewcrew.service;
 
 import lombok.RequiredArgsConstructor;
+import matchTeam.crewcrew.dto.board.BoardResponseDTO;
 import matchTeam.crewcrew.dto.board.BoardSaveRequestDTO;
 import matchTeam.crewcrew.dto.board.BoardSaveResponseDTO;
 import matchTeam.crewcrew.entity.board.Board;
@@ -9,7 +10,9 @@ import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.repository.board.BoardRepository;
 import matchTeam.crewcrew.repository.board.CategoryRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
-import matchTeam.crewcrew.util.customException.CategoryNotFoundException;
+import matchTeam.crewcrew.response.exception.board.BoardNotFoundException;
+import matchTeam.crewcrew.response.exception.board.CategoryNotFoundException;
+import matchTeam.crewcrew.response.exception.board.SelectCategoryException;
 import matchTeam.crewcrew.util.customException.UserNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,12 +40,20 @@ public class BoardService {
                         .totalCrew(req.getTotalCrew())
                         .user(user)
                         .category(category)
+                        .expiredDate(req.getExpiredDate())
                         .build()
         );
 
         return BoardSaveResponseDTO.builder()
-                .rep(board)
+                .res(board)
                 .build();
+    }
+
+    public BoardResponseDTO findById(Long id){
+        Board findBoard = boardRepository.findById(id)
+                .orElseThrow(BoardNotFoundException::new);
+
+        return new BoardResponseDTO(findBoard);
     }
 
 }

@@ -5,10 +5,12 @@ import matchTeam.crewcrew.entity.BaseTimeEntity;
 import matchTeam.crewcrew.entity.user.User;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -54,12 +56,16 @@ public class Board extends BaseTimeEntity {
     private Integer totalCrew;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "approach", nullable = false)
     private BoardApproach approach;
 
     @Column(name = "hit", columnDefinition = "bigint default 0")
     private Long hit;
+
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    @Column(name = "expired_date")
+    private LocalDate expiredDate;
 
     /*
     @Column(name = "created_date")
@@ -72,7 +78,8 @@ public class Board extends BaseTimeEntity {
     @Builder
     public Board(String title, String boardContent,
                  User user, Category category,
-                 Integer recruitedCrew, Integer totalCrew, BoardApproach approach) {
+                 Integer recruitedCrew, Integer totalCrew, BoardApproach approach,
+                 LocalDate expiredDate) {
         this.title = title;
         this.boardContent = boardContent;
         this.user = user;
@@ -81,6 +88,9 @@ public class Board extends BaseTimeEntity {
         this.recruitedCrew = recruitedCrew;
         this.totalCrew = totalCrew;
         this.approach = approach;
+        this.expiredDate = expiredDate;
         this.hit = 0L;
     }
+
+//    public void update()
 }
