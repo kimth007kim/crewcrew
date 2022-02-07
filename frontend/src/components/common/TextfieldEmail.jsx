@@ -100,7 +100,7 @@ const Label = styled.label`
   position: absolute;
   left: 8px;
   top: 13px;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 300;
   padding: 0 4px 0 7px;
   background-color: #fff;

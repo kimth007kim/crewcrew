@@ -3,9 +3,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { toast } from 'react-toastify';
+import { useRecoilState } from 'recoil';
+
 import Textfield from '../../../components/common/TextfieldEmail';
 import Button from '../../../components/common/Button';
-
 import CameraImg from '../../../assets/images/Camera.png';
 import CameraOnImg from '../../../assets/images/Camera_on.png';
 import CheckImg from '../../../assets/images/Checked_on.png';
@@ -15,6 +16,8 @@ import Profile3 from '../../../assets/images/Profile3.png';
 import Profile4 from '../../../assets/images/Profile4.png';
 import Profile5 from '../../../assets/images/Profile5.png';
 import { emojiSlice, spaceSlice } from '../../../utils';
+import Progress from './Progress';
+import { sectionProgress2, nickNameState, uploadFileImgState } from '../../../atom/register';
 
 const Profile = [
   {
@@ -40,11 +43,13 @@ const Profile = [
 ];
 
 function SignupSection2({ IsClick, HandleClick }) {
-  const [nickname, setNickname] = useState('');
+  const [nickname, setNickname] = useRecoilState(nickNameState);
   const [nicknameValid, setNicknameValid] = useState(false);
-  const [validMessage, setValidMessage] = useState('');
+  const [validMessage, setValidMessage] = useState(
+    '앞으로 사용할 닉네임을 입력해주세요. (10자 이내)',
+  );
   const [doubleCheck, setDoubleCheck] = useState(false);
-  const [uploadFileImg, setUploadFileImg] = useState(null);
+  const [uploadFileImg, setUploadFileImg] = useRecoilState(uploadFileImgState);
   const [grayed, setGrayed] = useState(true);
   const [isUpload, setIsUpload] = useState(false);
   const [isImg, setIsImg] = useState(false);
@@ -57,16 +62,7 @@ function SignupSection2({ IsClick, HandleClick }) {
   const myImgRef = useRef(null);
   const imgTitleRef = useRef(null);
   const imgChangeRef = useRef(null);
-  const [ProgressF, setProgressF] = useState([
-    {
-      index: 0,
-      check: 0,
-    },
-    {
-      index: 1,
-      check: 0,
-    },
-  ]);
+  const [ProgressF, setProgressF] = useRecoilState(sectionProgress2);
 
   const HandleNicknameChange = useCallback((e) => {
     const value = emojiSlice(spaceSlice(e.target.value)).slice(0, 10);
@@ -87,23 +83,27 @@ function SignupSection2({ IsClick, HandleClick }) {
     setValidMessage('사용 가능한 닉네임입니다.');
   }, []);
 
-  const HandleImgUpload = useCallback(() => {
-    if (!isUpload) {
-      uploadRef.current.click();
-    } else {
-      const profileUrl = URL.createObjectURL(uploadFileImg);
-      bgShowRef.current.style.backgroundColor = '#e2e2e2';
-      myImgRef.current.firstElementChild.setAttribute('src', profileUrl);
-      setMyFileImg(uploadFileImg);
-      setIsImg(true);
-    }
-  }, [isUpload]);
+  const HandleImgUpload = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (!isUpload) {
+        console.log(uploadRef.current);
+        uploadRef.current.click();
+      } else {
+        const profileUrl = URL.createObjectURL(uploadFileImg);
+        bgShowRef.current.style.backgroundColor = '#e2e2e2';
+        myImgRef.current.firstElementChild.setAttribute('src', profileUrl);
+        setMyFileImg(uploadFileImg);
+        setIsImg(true);
+      }
+    },
+    [isUpload],
+  );
 
   const deleteFiles = useCallback(() => {
     if (uploadFileImg) {
       return null;
     }
-    console.log(uploadFileImg);
     setUploadFileImg(null);
     setIsUpload(false);
     setIsImg(false);
@@ -153,6 +153,13 @@ function SignupSection2({ IsClick, HandleClick }) {
     setIsImg(false);
   }, []);
 
+  const HandleNextStep = useCallback(() => {
+    if (!StepActive) {
+      return 0;
+    }
+    HandleClick(3);
+  }, [StepActive]);
+
   const CheckProgressF = useCallback(
     (index) => {
       const Check = ProgressF.map((p) => {
@@ -194,7 +201,6 @@ function SignupSection2({ IsClick, HandleClick }) {
   }, [nicknameValid, nickname, doubleCheck]);
 
   useEffect(() => {
-    console.log(myFileImg);
     if (myFileImg) {
       CheckProgressF(1);
     } else {
@@ -210,6 +216,25 @@ function SignupSection2({ IsClick, HandleClick }) {
       setStepActive(false);
     }
   }, [ProgressF]);
+
+  useEffect(() => {
+    if (IsClick === 0) {
+      deleteFiles();
+      setNickname('');
+      setUploadFileImg(null);
+      setDoubleCheck(false);
+      setProgressF([
+        {
+          index: 0,
+          check: 0,
+        },
+        {
+          index: 1,
+          check: 0,
+        },
+      ]);
+    }
+  }, [IsClick]);
 
   return (
     <SignupContents active={IsClick === 2}>
@@ -290,29 +315,11 @@ function SignupSection2({ IsClick, HandleClick }) {
         </ProfileSection>
       </InputList>
       <ButtonWrap>
-        <Button size="fullregular" color="darkblue" disabled={!StepActive}>
+        <Button size="fullregular" color="darkblue" disabled={!StepActive} onClick={HandleNextStep}>
           거의 다 왔어요!
         </Button>
       </ButtonWrap>
-      <SignStep>
-        <li>
-          <StepSlide>
-            <StepBar1 />
-          </StepSlide>
-        </li>
-
-        <li>
-          <StepSlide progress={ProgressF.filter((p) => p.check === 1).length}>
-            <StepBar2 />
-          </StepSlide>
-        </li>
-
-        <li>
-          <StepSlide>
-            <StepBar3 />
-          </StepSlide>
-        </li>
-      </SignStep>
+      <Progress />
     </SignupContents>
   );
 }
