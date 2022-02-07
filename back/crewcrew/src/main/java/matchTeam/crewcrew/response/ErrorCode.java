@@ -26,6 +26,7 @@ public enum ErrorCode {
     BOARD_NOT_FOUND(400, "", "해당 게시글이 존재하지 않습니다"),
     CATEGOTY_NOT_FOUND(501, "", "해당 카테고리가 존재하지 않습니다"),
     NOT_SELECT_DETAIL_CATEGORY(400, "", "세부 카테고리를 지정하지 않았습니다"),
+    EXPIRED_DATE_BEFORE_TODAY(400, "", "만료 날짜가 오늘보다 이전입니다"),
 
     SIGN_UP_FAILED(1001,"EMAIL_001","email alreadyExist ");
 

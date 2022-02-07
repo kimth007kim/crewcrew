@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.response.exception.*;
 import matchTeam.crewcrew.response.exception.board.BoardNotFoundException;
 import matchTeam.crewcrew.response.exception.board.CategoryNotFoundException;
+import matchTeam.crewcrew.response.exception.board.ExpiredDateBeforeTodayException;
 import matchTeam.crewcrew.response.exception.board.SelectCategoryException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -148,6 +149,15 @@ public class  GlobalExceptionHandler {
     @ExceptionHandler(SelectCategoryException.class)
     protected ResponseEntity<ErrorResponseHandler> notSelectDetailCategory(SelectCategoryException e){
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.NOT_SELECT_DETAIL_CATEGORY);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    /*
+    * 만료 날짜가 현재 날짜보다 작을때
+    * */
+    @ExceptionHandler(ExpiredDateBeforeTodayException.class)
+    protected ResponseEntity<ErrorResponseHandler> beforeExpiredDate(ExpiredDateBeforeTodayException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EXPIRED_DATE_BEFORE_TODAY);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 

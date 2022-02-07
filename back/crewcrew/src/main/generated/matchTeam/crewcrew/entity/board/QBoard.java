@@ -52,6 +52,8 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final matchTeam.crewcrew.entity.user.QUser user;
 
+    public final BooleanPath viewable = createBoolean("viewable");
+
     public QBoard(String variable) {
         this(Board.class, forVariable(variable), INITS);
     }

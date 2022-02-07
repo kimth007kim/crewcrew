@@ -67,6 +67,9 @@ public class Board extends BaseTimeEntity {
     @Column(name = "expired_date")
     private LocalDate expiredDate;
 
+    @Column
+    private Boolean viewable;
+
     /*
     @Column(name = "created_date")
     private LocalDateTime createdDate;
@@ -90,6 +93,7 @@ public class Board extends BaseTimeEntity {
         this.approach = approach;
         this.expiredDate = expiredDate;
         this.hit = 0L;
+        this.viewable = true;
     }
 
 //    public void update()
