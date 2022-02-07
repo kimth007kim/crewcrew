@@ -12,6 +12,7 @@ import PasswordSection from './section/PasswordSection';
 import TitleRender from './component/TitleRender';
 import SignupSection2 from './section/SignupSection2';
 import SignupSection3 from './section/SignupSection3';
+import SignupSection4 from './section/SignupSection4';
 
 // eslint-disable-next-line react/jsx-wrap-multilines
 function AuthModal({ closeModal, visible }) {
@@ -30,44 +31,65 @@ function AuthModal({ closeModal, visible }) {
         }, 500);
       }}
       header={
-        <Header disappear={!visible}>
-          <Top>
-            <li>
-              {IsClick === 5 && (
-                <ModalArrow onClick={() => HandleClick(0)}>
-                  <ArrowImg src={Arrow} />
-                  로그인
-                </ModalArrow>
-              )}
-              {IsClick >= 2 && IsClick <= 3 && (
-                <ModalArrow onClick={() => HandleClick(IsClick - 1)}>
-                  <ArrowImg src={Arrow} />
-                  이전 단계
-                </ModalArrow>
-              )}
-            </li>
-            <li>
-              <ModalClose
-                onClick={() => {
-                  closeModal();
-                  setTimeout(() => {
-                    HandleClick(0);
-                  }, 500);
-                }}
-              />
-            </li>
-          </Top>
-          <Title>
-            <TitleRender IsClick={IsClick} HandleClick={HandleClick} />
-          </Title>
-        </Header>
+        IsClick !== 4 ? (
+          <Header disappear={!visible}>
+            <Top>
+              <li>
+                {IsClick === 5 && (
+                  <ModalArrow onClick={() => HandleClick(0)}>
+                    <ArrowImg src={Arrow} />
+                    로그인
+                  </ModalArrow>
+                )}
+                {IsClick >= 2 && IsClick <= 3 && (
+                  <ModalArrow onClick={() => HandleClick(IsClick - 1)}>
+                    <ArrowImg src={Arrow} />
+                    이전 단계
+                  </ModalArrow>
+                )}
+              </li>
+              <li>
+                <ModalClose
+                  onClick={() => {
+                    closeModal();
+                    setTimeout(() => {
+                      HandleClick(0);
+                    }, 500);
+                  }}
+                />
+              </li>
+            </Top>
+            <Title>
+              <TitleRender IsClick={IsClick} HandleClick={HandleClick} />
+            </Title>
+          </Header>
+        ) : (
+          <CompleteHeader>
+            <Top>
+              <li />
+              <li>
+                <ModalClose
+                  onClick={() => {
+                    closeModal();
+                    setTimeout(() => {
+                      HandleClick(0);
+                    }, 500);
+                  }}
+                />
+              </li>
+            </Top>
+          </CompleteHeader>
+        )
       }
       body={
         <Body>
           <LoginSection IsClick={IsClick} HandleClick={HandleClick} />
           <SignupSection IsClick={IsClick} HandleClick={HandleClick} />
           <SignupSection2 IsClick={IsClick} HandleClick={HandleClick} />
-          <SignupSection3 IsClick={IsClick} HandleClick={HandleClick} />
+          {IsClick === 3 && <SignupSection3 IsClick={IsClick} HandleClick={HandleClick} />}
+          {IsClick === 4 && (
+            <SignupSection4 IsClick={IsClick} closeModal={closeModal} HandleClick={HandleClick} />
+          )}
           <PasswordSection IsClick={IsClick} HandleClick={HandleClick} />
         </Body>
       }
@@ -118,6 +140,13 @@ const Header = styled.div`
         animation-name: ${SizeDown};
       `}
   }
+`;
+
+const CompleteHeader = styled.div`
+  height: 108px;
+  padding: 0 40px;
+  padding-bottom: 10px;
+  box-sizing: content-box;
 `;
 
 const Top = styled.ul`

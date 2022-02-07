@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './home';
 import Testing from './testing';
-import NotFound from './notFound';
+import NotFound from './notfound';
 import Register from './register';
 
 function Router() {

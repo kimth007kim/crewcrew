@@ -1,10 +1,17 @@
 /* eslint-disable indent */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import styled, { css, keyframes } from 'styled-components';
 import CloseWhite from '../../../assets/images/CloseWhite.png';
+import {
+  sectionProgress3,
+  studyListState,
+  hobbyListState,
+  messageState,
+} from '../../../atom/register';
 import Button from '../../../components/common/Button';
-import Textfield from '../../../components/common/TextfieldEmail';
 import MTextfield from './MTextfield';
+import Progress from './Progress';
 
 const studyArray = [
   {
@@ -74,24 +81,34 @@ const hobbyArray = [
 
 function SignupSection3({ IsClick, HandleClick }) {
   const [studyClick, setStudyClick] = useState(false);
+  const [studyCheck, setStudyCheck] = useState(false);
   const [hobbyClick, setHobbyClick] = useState(false);
-  const [studyList, setStudyList] = useState([]);
-  const [hobbyList, setHobbyList] = useState([]);
+  const [hobbyCheck, setHobbyCheck] = useState(false);
+
+  const [studyList, setStudyList] = useRecoilState(studyListState);
+  const [hobbyList, setHobbyList] = useRecoilState(hobbyListState);
 
   const [StepActive, setStepActive] = useState(false);
 
-  const [message, setMessage] = useState('');
-  const [messageValid, setMessageValid] = useState(true);
+  const [message, setMessage] = useRecoilState(messageState);
+  const [messageValid, setMessageValid] = useState(false);
+  const [messageValidMsg, setMessageValidMsg] = useState(
+    '나를 소개하는 한 줄 메세지를 입력해주세요.(30자 이내)',
+  );
 
+  const [ProgressF, setProgressF] = useRecoilState(sectionProgress3);
   const scrollRef = useRef(null);
-  const itemRef = useRef(null);
+  const studyRef = useRef(null);
+  const hobbyRef = useRef(null);
+  const studyUnderRef = useRef(null);
+  const hobbyUnderRef = useRef(null);
 
   const HandleMessageChange = useCallback((e) => {
     setMessage(e.target.value);
-    if (e.target.value.length >= 2) {
-      setMessageValid(false);
-    } else {
+    if (e.target.value.length < 6 && e.target.value) {
       setMessageValid(true);
+    } else {
+      setMessageValid(false);
     }
   }, []);
 
@@ -115,20 +132,59 @@ function SignupSection3({ IsClick, HandleClick }) {
       e.target.closest('.ChooseList').style.marginBottom = `${parseInt(height, 10) - 55}px`;
       setTimeout(() => {
         scrollRef.current.scrollTop = parseInt(height, 10);
-      }, 300);
+      }, 250);
     }
   };
 
   const HandleStudyInputClick = useCallback(
     (e) => {
       e.preventDefault();
-      setStudyClick(!studyClick);
-      setHobbyClick(false);
-      setTimeout(() => {
-        HandleScrollTop(e);
-      }, 300);
+      e.stopPropagation();
+      if (studyUnderRef.current.contains(e.target)) {
+        return;
+      }
+
+      if (studyRef.current.contains(e.target)) {
+        console.log(studyClick);
+        if (studyClick) {
+          setStudyClick(false);
+        } else {
+          setStudyClick(true);
+        }
+
+        setHobbyClick(false);
+        setTimeout(() => {
+          HandleScrollTop(e);
+        }, 250);
+      } else {
+        setStudyClick(false);
+      }
     },
     [studyClick],
+  );
+
+  const HandleHobbyInputClick = useCallback(
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (hobbyUnderRef.current.contains(e.target)) {
+        return 0;
+      }
+      if (hobbyRef.current.contains(e.target)) {
+        if (hobbyClick) {
+          setHobbyClick(false);
+        } else {
+          setHobbyClick(true);
+        }
+        setStudyClick(false);
+        setTimeout(() => {
+          HandleScrollTop(e);
+        }, 250);
+      } else {
+        setHobbyClick(false);
+      }
+    },
+    [hobbyClick],
   );
 
   const toggleStudyList = useCallback(
@@ -146,18 +202,6 @@ function SignupSection3({ IsClick, HandleClick }) {
   const studyFilterItems = useCallback(
     (query) => studyList.filter((el) => el.indexOf(query) > -1),
     [studyList],
-  );
-
-  const HandleHobbyInputClick = useCallback(
-    (e) => {
-      e.preventDefault();
-      setHobbyClick(!hobbyClick);
-      setStudyClick(false);
-      setTimeout(() => {
-        HandleScrollTop(e);
-      }, 300);
-    },
-    [hobbyClick],
   );
 
   const toggleHobbyList = useCallback(
@@ -179,18 +223,133 @@ function SignupSection3({ IsClick, HandleClick }) {
 
   const HandleRegister = useCallback((e) => {
     e.preventDefault();
+    HandleClick(4);
   }, []);
 
+  const CheckProgressF = useCallback(
+    (index) => {
+      const Check = ProgressF.map((p) => {
+        if (p.index === index) {
+          return {
+            ...p,
+            check: 1,
+          };
+        }
+        return p;
+      });
+      setProgressF([...Check]);
+    },
+    [ProgressF],
+  );
+
+  const NotCheckProgressF = useCallback(
+    (index) => {
+      const Check = ProgressF.map((p) => {
+        if (p.index === index) {
+          return {
+            ...p,
+            check: 0,
+          };
+        }
+        return p;
+      });
+      setProgressF([...Check]);
+    },
+    [ProgressF],
+  );
+
+  useEffect(() => {
+    if (studyList.length >= 1 && !studyClick) {
+      setStudyCheck(true);
+    }
+    if (studyList.length === 0) {
+      setStudyCheck(false);
+    }
+
+    if (hobbyList.length >= 1 && !hobbyClick) {
+      setHobbyCheck(true);
+    }
+
+    if (hobbyList.length === 0) {
+      setHobbyCheck(false);
+    }
+  }, [studyList, studyClick, hobbyClick, hobbyList]);
+
+  useEffect(() => {
+    if (studyList.length >= 1 && studyCheck) {
+      CheckProgressF(0);
+    } else {
+      NotCheckProgressF(0);
+    }
+  }, [studyList, studyCheck]);
+
+  useEffect(() => {
+    if (hobbyList.length >= 1 && hobbyCheck) {
+      CheckProgressF(1);
+    } else {
+      NotCheckProgressF(1);
+    }
+  }, [hobbyList, hobbyCheck]);
+
+  useEffect(() => {
+    if (message.length >= 6 && !messageValid) {
+      CheckProgressF(2);
+    } else {
+      NotCheckProgressF(2);
+    }
+  }, [message, messageValid]);
+
+  useEffect(() => {
+    const stepComplete = ProgressF.filter((p) => p.check === 1).length;
+    if (stepComplete >= 3) {
+      setStepActive(true);
+    } else {
+      setStepActive(false);
+    }
+  }, [ProgressF]);
+
+  useEffect(() => {
+    if (IsClick === 0) {
+      setStudyList([]);
+      setHobbyList([]);
+      setMessage('');
+      setProgressF([
+        {
+          index: 0,
+          check: 0,
+        },
+        {
+          index: 1,
+          check: 0,
+        },
+        {
+          index: 2,
+          check: 0,
+        },
+      ]);
+    }
+  }, [IsClick]);
+
+  useEffect(() => {
+    // 현재 document에 이벤트리스너를 추가합니다.
+
+    function handleClickOutside(e) {
+      HandleStudyInputClick(e);
+      HandleHobbyInputClick(e);
+    }
+
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [studyRef, hobbyRef]); // ref가 변경되면 useEffect를 다시 생성합니다.
   return (
-    <SignupContents active={IsClick === 3}>
+    <SignupContents active={IsClick === 3} onClick={HandleStudyInputClick}>
       <form>
         <InputList ref={scrollRef}>
-          <ChooseList className="ChooseList">
-            <ChooseListDetail
-              active={studyClick}
-              onClick={HandleStudyInputClick}
-              hLength={8 + 50 + studyArray.length * 27}
-            >
+          <ChooseList className="ChooseList" ref={studyRef}>
+            <ChooseListDetail active={studyClick} hLength={8 + 50 + studyArray.length * 27}>
               <div>
                 <ChooseTitle readOnly id="SignStudy" type="text" />
                 <LabelAttached htmlFor="SignStudy">어떤 스터디 크루원이 필요하세요?</LabelAttached>
@@ -213,7 +372,7 @@ function SignupSection3({ IsClick, HandleClick }) {
               ))}
               {studyClick && <ChooseComplete active={studyList.length > 0}>완료</ChooseComplete>}
             </ChooseListDetail>
-            <ChooseListUnder active={!studyClick}>
+            <ChooseListUnder active={!studyClick && studyList.length > 0} ref={studyUnderRef}>
               {studyList.map((m, i) => (
                 <div key={m}>
                   <LabelChoose onClick={(e) => toggleStudyList(e, m)}>
@@ -227,7 +386,7 @@ function SignupSection3({ IsClick, HandleClick }) {
             </ChooseListUnder>
           </ChooseList>
 
-          <ChooseList className="ChooseList">
+          <ChooseList className="ChooseList" ref={hobbyRef}>
             <ChooseListDetail
               active={hobbyClick}
               onClick={HandleHobbyInputClick}
@@ -239,11 +398,11 @@ function SignupSection3({ IsClick, HandleClick }) {
                 {!hobbyClick && hobbyList.length > 0 && <InputAdd>추가</InputAdd>}
               </div>
               {hobbyArray.map((m) => (
-                <div key={m.name + m.id} ref={itemRef}>
+                <div key={m.name + m.id}>
                   <InputChoose />
                   <LabelChoose
                     onClick={(e) => toggleHobbyList(e, m.name)}
-                    active={studyFilterItems(m.name).length > 0}
+                    active={HobbyFilterItems(m.name).length > 0}
                   >
                     <Choose active={HobbyFilterItems(m.name).length > 0}>
                       <em>{m.name}</em>
@@ -255,7 +414,7 @@ function SignupSection3({ IsClick, HandleClick }) {
               ))}
               {hobbyClick && <ChooseComplete active={hobbyList.length > 0}>완료</ChooseComplete>}
             </ChooseListDetail>
-            <ChooseListUnder active={!hobbyClick}>
+            <ChooseListUnder active={!hobbyClick && hobbyList.length > 0} ref={hobbyUnderRef}>
               {hobbyList.map((m, i) => (
                 <div key={m}>
                   <LabelChoose onClick={(e) => toggleHobbyList(e, m)}>
@@ -268,18 +427,18 @@ function SignupSection3({ IsClick, HandleClick }) {
               ))}
             </ChooseListUnder>
           </ChooseList>
-          <ChooseList className="ChooseList">
+          <ChooseLast className="ChooseList">
             <MTextfield
               type="text"
               onChange={HandleMessageChange}
               value={message}
               label="한줄 메세지"
-              validMessage="나를 소개하는 한 줄 메세지를 입력해주세요.(30자 이내)"
-              valid={!messageValid}
+              validMessage={messageValidMsg}
+              valid={messageValid}
               onDelete={HandleMessageDelete}
               HandleScrollTop={HandleScrollMessage}
             />
-          </ChooseList>
+          </ChooseLast>
         </InputList>
         <ButtonWrap>
           <Button
@@ -288,10 +447,11 @@ function SignupSection3({ IsClick, HandleClick }) {
             disabled={!StepActive}
             onClick={HandleRegister}
           >
-            회원가입 완료
+            회원가입 완료!
           </Button>
         </ButtonWrap>
       </form>
+      <Progress />
     </SignupContents>
   );
 }
@@ -326,7 +486,7 @@ const InputList = styled.ul`
   padding: 25px 0 20px;
   overflow-y: auto;
   overflow-x: hidden;
-  height: 310px;
+  height: 320px;
   box-sizing: content-box;
   position: relative;
   &::-webkit-scrollbar {
@@ -342,6 +502,12 @@ const ChooseList = styled.li`
   box-sizing: content-box;
 `;
 
+const ChooseLast = styled.li`
+  position: relative;
+  height: 75px;
+  transition: 0.3s;
+`;
+
 const ChooseListUnder = styled.div`
   margin-top: 4px;
   display: flex;
@@ -351,6 +517,7 @@ const ChooseListUnder = styled.div`
   position: relative;
   flex-wrap: wrap;
   display: none;
+  box-sizing: content-box;
 
   ${(props) =>
     props.active &&

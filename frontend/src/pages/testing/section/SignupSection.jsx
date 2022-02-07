@@ -4,50 +4,48 @@
 /* eslint-disable indent */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
+import { useRecoilState } from 'recoil';
 import Button from '../../../components/common/Button';
 import Textfield from '../../../components/common/TextfieldEmail';
 import TextfieldSU from './SignupTextfield';
 import TextfieldPW from '../../../components/common/TextfieldPW';
 import delImage from '../../../assets/images/InputDel.png';
+import Progress from './Progress';
+import {
+  sectionProgress1,
+  nameState,
+  emailIdState,
+  emailState,
+  codeState,
+  passwordState,
+} from '../../../atom/register';
 
 const emailList = ['naver.com', 'gmail.com', 'daum.net', 'hanmail.net'];
 
 function SignupSection({ IsClick, HandleClick }) {
-  const [name, setName] = useState('');
+  const [name, setName] = useRecoilState(nameState);
   const [nameValid, setNameValid] = useState(true);
+  const [nameValidMsg, setNameValidMsg] = useState('이름을 입력해주세요');
 
-  const [emailId, setEmailId] = useState('');
+  const [emailId, setEmailId] = useRecoilState(emailIdState);
   const [emailIdValid, setEmailIdValid] = useState(true);
-  const [email, setEmail] = useState('');
+
+  const [email, setEmail] = useRecoilState(emailState);
   const [emailValid, setEmailValid] = useState(true);
+  const [emailValidMsg, setEmailValidMsg] = useState('가입할 이메일 주소를 입력해주세요');
 
-  const [code, setCode] = useState('');
+  const [code, setCode] = useRecoilState(codeState);
   const [codeValid, setCodeValid] = useState(true);
+  const [codeValidMsg, setCodeValidMsg] = useState('코드 전송 후, 입력창에 코드를 입력해주세요');
 
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useRecoilState(passwordState);
   const [passwordValid, setPasswordValid] = useState(true);
+  const [passwordValidMsg, setPasswordValidMsg] = useState('숫자/영문/특수문자 포함 8~20글자');
 
   const [IDFocus, setIDFocus] = useState(false);
   const [EmailFocus, setEmailFocus] = useState(false);
   const [CodeFocus, setCodeFocus] = useState(false);
-  const [ProgressF, setProgressF] = useState([
-    {
-      index: 0,
-      check: 0,
-    },
-    {
-      index: 1,
-      check: 0,
-    },
-    {
-      index: 2,
-      check: 0,
-    },
-    {
-      index: 3,
-      check: 0,
-    },
-  ]);
+  const [ProgressF, setProgressF] = useRecoilState(sectionProgress1);
 
   const [SendCode, setSendCode] = useState(false);
   const [CodeActive, setCodeActive] = useState(false);
@@ -275,7 +273,7 @@ function SignupSection({ IsClick, HandleClick }) {
             onChange={HandleNameChange}
             value={name}
             label="이름"
-            validMessage="이름을 입력해주세요"
+            validMessage={nameValidMsg}
             valid={false}
             onDelete={HandleNameDelete}
           />
@@ -331,7 +329,7 @@ function SignupSection({ IsClick, HandleClick }) {
               </MailUList>
             </MailList>
           </ListFlex>
-          <InputText Focused={EmailFocus || IDFocus}>가입할 이메일 주소를 입력해주세요</InputText>
+          <InputText Focused={EmailFocus || IDFocus}>{emailValidMsg}</InputText>
         </InputLi>
         <InputLi>
           <ListFlex>
@@ -353,14 +351,14 @@ function SignupSection({ IsClick, HandleClick }) {
               </Button>
             </li>
           </ListFlex>
-          <InputText Focused={CodeFocus}>코드 전송 후, 입력창에 코드를 입력해주세요</InputText>
+          <InputText Focused={CodeFocus}>{codeValidMsg}</InputText>
         </InputLi>
         <InputLi>
           <TextfieldPW
             onChange={HandlePasswordChange}
             value={password}
             label="비밀번호"
-            validMessage="숫자/영문/특수문자 포함 8~20글자"
+            validMessage={passwordValidMsg}
             valid={false}
             onDelete={HandlePasswordDelete}
           />
@@ -371,25 +369,7 @@ function SignupSection({ IsClick, HandleClick }) {
           다음 단계로!
         </Button>
       </ButtonWrap>
-      <SignStep1>
-        <li>
-          <StepSlide progress={ProgressF.filter((p) => p.check === 1).length}>
-            <StepBar1 />
-          </StepSlide>
-        </li>
-
-        <li>
-          <StepSlide>
-            <StepBar2 />
-          </StepSlide>
-        </li>
-
-        <li>
-          <StepSlide>
-            <StepBar3 />
-          </StepSlide>
-        </li>
-      </SignStep1>
+      <Progress />
     </SignupContents>
   );
 }
@@ -609,49 +589,4 @@ const InputText = styled.div`
     css`
       color: #ff0045;
     `}
-`;
-
-const SignStep1 = styled.ul`
-  display: flex;
-  margin-bottom: 80px;
-  & > li {
-    width: 100%;
-    margin-right: 16px;
-  }
-
-  & > li:last-child {
-    margin-right: 0;
-  }
-`;
-
-const StepBar1 = styled.div``;
-
-const StepBar2 = styled.div``;
-
-const StepBar3 = styled.div``;
-
-const StepSlide = styled.div`
-  width: 100%;
-  height: 5px;
-  border: 1px solid #e2e2e2;
-  border-radius: 4px;
-  position: relative;
-
-  ${StepBar1} {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    border-radius: 4px;
-    border: none;
-    transition: 0.5s;
-    width: 0%;
-    ${(props) =>
-      props.progress &&
-      css`
-        width: ${props.progress * 25}%;
-      `};
-
-    background-color: #00b7ff;
-  }
 `;
