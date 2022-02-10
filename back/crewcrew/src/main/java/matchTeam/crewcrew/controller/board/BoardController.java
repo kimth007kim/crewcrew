@@ -73,18 +73,14 @@ public class BoardController {
         Long updateBoardId = boardService.update(id, req);
         BoardResponseDTO updateBoard = boardService.findById(updateBoardId);
         return ResponseHandler.generateResponse("게시글 번호로 수정 성공",HttpStatus.OK, updateBoard);
+    }
 
-        /**
-         * {
-         *   "approachCode": 1,
-         *   "boardContent": "담원 승리, 젠지 승리",
-         *   "categoryId": 5,
-         *   "expiredDate": "2022-02-20",
-         *   "recruitedCrew": 7,
-         *   "title": "0210 LCK 결과",
-         *   "totalCrew": 7
-         * }
-         */
+    @ApiOperation(value = "게시글 삭제(게시글 번호로 삭제)", notes = "게시글 번호로 삭제한다.")
+    @ResponseStatus(value = HttpStatus.OK)
+    @DeleteMapping("/board/{id}")
+    public ResponseEntity<Object> delete(@PathVariable Long id){
+        boardService.delete(id);
+        return ResponseHandler.generateResponse("%d번 게시글이 삭제 성공" + id, HttpStatus.OK, id);
     }
 
 

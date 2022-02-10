@@ -69,6 +69,14 @@ public class BoardService {
         return id;
     }
 
+    @Transactional
+    public void delete(Long id){
+        Board board = boardRepository.findById(id)
+                .orElseThrow(BoardNotFoundException::new);
+
+        boardRepository.delete(board);
+    }
+
     public BoardResponseDTO findById(Long id){
         Board findBoard = boardRepository.findById(id)
                 .orElseThrow(BoardNotFoundException::new);
