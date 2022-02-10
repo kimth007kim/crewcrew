@@ -22,6 +22,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final matchTeam.crewcrew.entity.QBaseTimeEntity _super = new matchTeam.crewcrew.entity.QBaseTimeEntity(this);
 
+    public final StringPath Category = createString("Category");
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 

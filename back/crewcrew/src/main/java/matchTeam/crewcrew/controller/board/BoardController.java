@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.controller;
+package matchTeam.crewcrew.controller.board;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
