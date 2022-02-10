@@ -42,9 +42,8 @@ public class BoardSaveRequestDTO {
     @NotNull(message = "총 모집 크루원 수 입력해주세요.")
     private Integer totalCrew;
 
-    @ApiModelProperty(value = "온라인 or 오프라인", notes = "온라인인지 오프라인인지 선택해주세요", required = true, example = "온라인")
+    @ApiModelProperty(value = "온라인 or 오프라인", notes = "0은 오프라인, 1은 온라인", required = true, example = "1")
     @NotNull(message = "모집방식을 선택해주세요.")
-    @Enumerated(EnumType.STRING)
     private BoardApproach approach;
 
     private Long userId;
@@ -62,19 +61,26 @@ public class BoardSaveRequestDTO {
 
     @Builder
     public BoardSaveRequestDTO(String title, String boardContent,
-                               Integer recruitedCrew, Integer totalCrew, BoardApproach approach,
+                               Integer recruitedCrew, Integer totalCrew, Integer approachCode,
                                Long userId, Long categoryId, LocalDate expiredDate) {
         this.title = title;
         this.boardContent = boardContent;
         this.recruitedCrew = recruitedCrew;
         this.totalCrew = totalCrew;
-        this.approach = approach;
+
+        if (approachCode == 0){
+            this.approach = BoardApproach.APPROACH_OFFLINE;
+        } else if(approachCode == 1){
+            this.approach = BoardApproach.APPROACH_ONLINE;
+        }
+
         this.userId = userId;
         this.categoryId = categoryId;
         this.expiredDate = expiredDate;
     }
 
     public Board toEntity(BoardSaveRequestDTO req, UserRepository userRepository, CategoryRepository categoryRepository){
+
         return Board.builder()
                 .title(req.title)
                 .boardContent(req.boardContent)

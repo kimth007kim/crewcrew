@@ -15,7 +15,7 @@ public class BoardSaveResponseDTO {
     private String boardContent;
     private Integer recruitedCrew;
     private Integer totalCrew;
-    private BoardApproach approach;
+    private Integer approachCode;
     private Long categoryId;
     private LocalDate expiredDate;
 
@@ -26,7 +26,7 @@ public class BoardSaveResponseDTO {
         this.boardContent = res.getBoardContent();
         this.recruitedCrew = res.getRecruitedCrew();
         this.totalCrew = res.getTotalCrew();
-        this.approach = res.getApproach();
+        this.approachCode = res.getApproach().getApproachCode();
         this.categoryId = res.getCategory().getId();
         this.expiredDate = res.getExpiredDate();
     }

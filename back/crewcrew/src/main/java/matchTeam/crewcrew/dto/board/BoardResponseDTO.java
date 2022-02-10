@@ -1,9 +1,11 @@
 package matchTeam.crewcrew.dto.board;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.board.BoardApproach;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,8 +19,11 @@ public class BoardResponseDTO {
     private Integer appliedCrew;
     private Integer recruitedCrew;
     private Integer totalCrew;
-    private BoardApproach approach;
+    private Integer approachCode;
     private Long categoryId;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDateTime createdDate;
     private LocalDate expiredDate;
 
@@ -31,7 +36,7 @@ public class BoardResponseDTO {
         this.appliedCrew = res.getAppliedCrew();
         this.recruitedCrew = res.getRecruitedCrew();
         this.totalCrew = res.getTotalCrew();
-        this.approach = res.getApproach();
+        this.approachCode = res.getApproach().getApproachCode();
         this.categoryId = res.getCategory().getId();
         this.createdDate = res.getCreatedDate();
         this.expiredDate = res.getExpiredDate();

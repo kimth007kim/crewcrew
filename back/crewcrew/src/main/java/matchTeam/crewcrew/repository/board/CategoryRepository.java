@@ -13,4 +13,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     @Query("select c from Category c left join c.categoryParent p order by p.id asc nulls first, c.id asc")
     List<Category> findAllOrderByParentIdAscNullsFirstCategoryIdAsc();
+
 }

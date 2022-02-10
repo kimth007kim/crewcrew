@@ -7,6 +7,7 @@ import matchTeam.crewcrew.dto.board.BoardResponseDTO;
 import matchTeam.crewcrew.dto.board.BoardSaveRequestDTO;
 import matchTeam.crewcrew.dto.board.BoardSaveResponseDTO;
 import matchTeam.crewcrew.dto.board.BoardUpdateRequestDTO;
+import matchTeam.crewcrew.entity.board.BoardApproach;
 import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.service.BoardService;
@@ -56,8 +57,35 @@ public class BoardController {
     @ResponseStatus(value = HttpStatus.OK)
     @PutMapping("/board/{id}")
     public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody BoardUpdateRequestDTO req){
-        BoardResponseDTO findBoard = boardService.findById(id);
-        return ResponseHandler.generateResponse("게시글 번호로 조회 성공",HttpStatus.OK, findBoard);
+        //모집인원이나 총인원이 0일경우
+        if (req.getTotalCrew() <= 0 || req.getRecruitedCrew() <=0){
+            return ResponseHandler.ErrorResponse(ErrorCode.THE_NUMBER_OF_CREW_BY_ZERO);
+        }
+
+        if (req.getTotalCrew() < req.getRecruitedCrew()){
+            return ResponseHandler.ErrorResponse(ErrorCode.OVER_RECRUITED);
+        }
+
+        if (req.getCategoryId() <= 2){
+            return ResponseHandler.ErrorResponse(ErrorCode.NOT_SELECT_DETAIL_CATEGORY);
+        }
+
+
+        Long updateBoardId = boardService.update(id, req);
+        BoardResponseDTO updateBoard = boardService.findById(updateBoardId);
+        return ResponseHandler.generateResponse("게시글 번호로 수정 성공",HttpStatus.OK, updateBoard);
+
+        /**
+         * {
+         *   "approachCode": 1,
+         *   "boardContent": "담원 승리, 젠지 승리",
+         *   "categoryId": 5,
+         *   "expiredDate": "2022-02-20",
+         *   "recruitedCrew": 7,
+         *   "title": "0210 LCK 결과",
+         *   "totalCrew": 7
+         * }
+         */
     }
 
 

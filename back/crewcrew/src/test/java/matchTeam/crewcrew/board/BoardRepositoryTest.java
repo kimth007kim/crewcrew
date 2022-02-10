@@ -1,6 +1,4 @@
 package matchTeam.crewcrew.board;
-
-import matchTeam.crewcrew.entity.User;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.board.BoardApproach;
 import matchTeam.crewcrew.repository.board.BoardRepository;
@@ -39,7 +37,7 @@ public class BoardRepositoryTest {
         String boardContent = "테스트 내용1";
         Integer recruitedCrew = 3;
         Integer totalCrew = 7;
-        BoardApproach approach = BoardApproach.온라인;
+        BoardApproach approach = BoardApproach.APPROACH_ONLINE;
 
         Board board = boardRepository.save(
                 Board.builder()

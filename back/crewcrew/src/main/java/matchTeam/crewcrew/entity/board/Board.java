@@ -9,9 +9,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -96,5 +95,22 @@ public class Board extends BaseTimeEntity {
         this.viewable = true;
     }
 
-//    public void update()
+    public void update(String title, String boardContent,
+                       Integer recruitedCrew, Integer totalCrew, Integer approachCode, Category category,
+                       LocalDate expiredDate){
+        this.title = title;
+        this.boardContent = boardContent;
+        this.recruitedCrew = recruitedCrew;
+        this.totalCrew = totalCrew;
+
+        if (approachCode == 0){
+            this.approach = BoardApproach.APPROACH_OFFLINE;
+        } else if(approachCode == 1){
+            this.approach = BoardApproach.APPROACH_ONLINE;
+        }
+
+        this.category = category;
+        this.expiredDate = expiredDate;
+
+    }
 }
