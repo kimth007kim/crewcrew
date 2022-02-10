@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.service;
+package matchTeam.crewcrew.service.board;
 
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.board.BoardResponseDTO;
