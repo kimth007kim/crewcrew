@@ -20,25 +20,14 @@ public class UserSignUpRequestDto {
     private String nickName;
     private String provider;
 //
-//    public User toEntity(PasswordEncoder passwordEncoder) {
-//        return User.builder()
-//                .email(email)
-//                .password(passwordEncoder.encode(password))
-//                .nickname(nickName)
-//                .provider("local")
-//                .name(name)
-//                .roles(Collections.singletonList("ROLE_USER"))
-//                .build();
-//    }
-
-
-    public User toEntity() {
+    public User toEntity(String prov) {
         return User.builder()
                 .email(email)
                 .nickname(nickName)
+                .provider(prov)
                 .name(name)
-                .provider(provider)
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build();
     }
+
 }

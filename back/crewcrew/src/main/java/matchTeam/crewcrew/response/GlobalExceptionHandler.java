@@ -1,6 +1,6 @@
 package matchTeam.crewcrew.response;
 
-import lombok.RequiredArgsConstructor;
+import matchTeam.crewcrew.response.exception.CKakaoCommunicationException;
 import matchTeam.crewcrew.response.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import javax.servlet.http.HttpServletRequest;
 import java.nio.file.AccessDeniedException;
 
 @RestControllerAdvice
@@ -90,11 +89,15 @@ public class GlobalExceptionHandler {
     /**
      * 여기서 작성하지 않은 다른 모든 예외에 대해 처리한다. 이 때 500 status code와 함께 반환한다.
      */
-    @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ErrorResponseHandler> handleException(Exception e) {
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EXCEPTION);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(Exception.class)
+//    protected ResponseEntity<ErrorResponseHandler> handleException(Exception e) {
+//        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EXCEPTION);
+//        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
+
+
+
+
     /**
      * 로그인을 할때 이메일이 존재하지않을때 예외처리를 발생한다.
      */
@@ -132,4 +135,50 @@ public class GlobalExceptionHandler {
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.ACCESS_DENIED);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+
+
+
+    @ExceptionHandler(CUserNotFoundException.class)
+    protected ResponseEntity<ErrorResponseHandler> userNotFoundException(CUserNotFoundException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.USER_NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(CUserAlreadyExistException.class)
+    protected ResponseEntity<ErrorResponseHandler> userAlreadyExistException(CUserAlreadyExistException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.USER_ALREADY_EXIST);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(CKakaoCommunicationException.class)
+    protected ResponseEntity<ErrorResponseHandler> userNotFoundException(CKakaoCommunicationException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.KAKAO_COMMUNICATION_FAILED);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @ExceptionHandler(CEmailCodeNotMatchException.class)
+    protected ResponseEntity<ErrorResponseHandler> emailCodeMatchException(CEmailCodeNotMatchException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EMAIL_CODE_NOT_MATCH);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @ExceptionHandler(CNotValidEmailException.class)
+    protected ResponseEntity<ErrorResponseHandler> emailnotValidException(CNotValidEmailException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EMAIL_NOT_VALID);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(CNotVerifiedEmailException.class)
+    protected ResponseEntity<ErrorResponseHandler> emailSendException(CNotVerifiedEmailException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EMAIL_CODE_NOT_VERIFIED);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @ExceptionHandler(CInvalidTokenException.class)
+    protected ResponseEntity<ErrorResponseHandler> invalidTokenException(CInvalidTokenException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.INVALID_TOKEN);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+
+
 }

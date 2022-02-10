@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.service;
+package matchTeam.crewcrew.service.user;
 
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import matchTeam.crewcrew.dto.social.KakaoProfile;
 import matchTeam.crewcrew.dto.social.RetKakaoOAuth;
 import matchTeam.crewcrew.response.exception.CCommunicationException;
+import matchTeam.crewcrew.response.exception.CKakaoCommunicationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
@@ -32,21 +33,26 @@ public class KakaoService {
     public KakaoProfile getKakaoProfile(String kakaoAccessToken){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.set("Authorization","Bearer"+kakaoAccessToken);
+        headers.set("Authorization","Bearer "+kakaoAccessToken);
+        System.out.println(headers);
+
 
         String requestUrl = env.getProperty("social.kakao.url.profile");
-        if(requestUrl==null) throw new CCommunicationException();
+        System.out.println(requestUrl);
+//        if(requestUrl==null) throw new CCommunicationException();
 
         HttpEntity<MultiValueMap<String,String>> request = new HttpEntity<>(null,headers);
         try{
             ResponseEntity<String> response= restTemplate.postForEntity(requestUrl,request,String.class);
+            System.out.println(response.getHeaders());
             if(response.getStatusCode()== HttpStatus.OK)
                 return gson.fromJson(response.getBody(),KakaoProfile.class);
             log.error("header : "+ response.getHeaders());
         }catch(Exception e){
-            throw new CCommunicationException();
+            log.error(e.toString());
+            throw new CKakaoCommunicationException();
         }
-        throw new CCommunicationException();
+        throw new CKakaoCommunicationException();
     }
 
     public RetKakaoOAuth getKakaoTokenInfo(String code){
@@ -75,7 +81,7 @@ public class KakaoService {
 
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.set("Authorization","Bearer"+accessToken);
+        headers.set("Authorization","Bearer "+accessToken);
 
         HttpEntity<MultiValueMap<String,String>> request  = new HttpEntity<>(null,headers);
         ResponseEntity<String> response = restTemplate.postForEntity(unlinkUrl,request,String.class);

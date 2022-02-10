@@ -1,6 +1,5 @@
 package matchTeam.crewcrew.board;
 
-import matchTeam.crewcrew.entity.User;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.board.BoardApproach;
 import matchTeam.crewcrew.entity.board.Category;

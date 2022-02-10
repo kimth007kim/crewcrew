@@ -25,7 +25,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     @NotNull
     private String email;
 
@@ -37,7 +37,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     private String name;
 
     @JsonProperty(access= JsonProperty.Access.WRITE_ONLY)
-    @Column(nullable = false,length=100)
+    @Column(length=100)
     private String password;
 
     @Column(name = "profile_image")
@@ -54,6 +54,8 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
+    @Column
+    private String Category;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.service;
+package matchTeam.crewcrew.service.user;
 
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.repository.user.UserRepository;

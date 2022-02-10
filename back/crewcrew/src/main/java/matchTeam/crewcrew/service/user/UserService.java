@@ -1,5 +1,6 @@
-package matchTeam.crewcrew.service;
+package matchTeam.crewcrew.service.user;
 
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import matchTeam.crewcrew.config.security.JwtProvider;
@@ -7,9 +8,7 @@ import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.security.TokenRequestDto;
 import matchTeam.crewcrew.dto.user.LocalSignUpRequestDto;
 import matchTeam.crewcrew.dto.user.UserLoginRequestDto;
-import matchTeam.crewcrew.dto.user.UserLoginResponseDto;
 import matchTeam.crewcrew.dto.user.UserSignUpRequestDto;
-import matchTeam.crewcrew.entity.ConfirmationToken;
 import matchTeam.crewcrew.entity.security.RefreshToken;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.repository.security.RefreshTokenJpaRepository;
@@ -30,10 +29,10 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     //email 발송기능
-    private final ConfirmationTokenService confirmationTokenService;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
     private final JwtProvider jwtProvider;
+
 
     public User findByUid(Long id) {
         return userRepository.findByUid(id);
@@ -43,7 +42,7 @@ public class UserService {
     }
 
     public Long signup(LocalSignUpRequestDto localSignUpRequestDto) {
-        if (userRepository.findByEmail(localSignUpRequestDto.getEmail()).isPresent())
+        if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(),"local").isPresent())
             throw new EmailSignUpFailedCException();
         return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();
     }
@@ -51,7 +50,7 @@ public class UserService {
 
     public TokenDto login(UserLoginRequestDto userLoginRequestDto) {
         //회원 정보 존재하는지 확인
-        User user = userRepository.findByEmail(userLoginRequestDto.getEmail()).
+        User user = userRepository.findByEmailAndProvider(userLoginRequestDto.getEmail(),"local").
                 orElseThrow(LoginFailedByEmailNotExistException::new);
         // 회원 패스워드 일치하는지 확인
         System.out.println(userLoginRequestDto.getPassword() + "  " + user.getPassword());
@@ -100,9 +99,18 @@ public class UserService {
         return newCreatedToken;
     }
     public Long kakaoSignup(UserSignUpRequestDto userSignUpRequestDto){
+        Optional<User> user=userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(),userSignUpRequestDto.getProvider());
+        System.out.println(user);
         if (userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(),userSignUpRequestDto.getProvider())
-                .isPresent()) throw new CUserNotFoundException();
-        return userRepository.save(userSignUpRequestDto.toEntity()).getUid();
+                .isPresent()) throw new CUserAlreadyExistException();
+        return userRepository.save(userSignUpRequestDto.toEntity("kakao")).getUid();
+    }
+    public Long naverSignup(UserSignUpRequestDto userSignUpRequestDto){
+        Optional<User> user=userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(),userSignUpRequestDto.getProvider());
+        System.out.println(user);
+        if (userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(),userSignUpRequestDto.getProvider())
+                .isPresent()) throw new CUserAlreadyExistException();
+        return userRepository.save(userSignUpRequestDto.toEntity("naver")).getUid();
     }
 
     public List<User> findUsers() {
@@ -121,11 +129,16 @@ public class UserService {
 //        }
 //    }
 
-    public void confirmEmail(String token) {
-        ConfirmationToken findConfirmationToken = confirmationTokenService.findByIdAndExpirationDateAfterAndExpired(token);
-//        User user = findByEmail(findConfirmationToken.getEmail());
-        findConfirmationToken.useToken();
+    public User tokenChecker(String accessToken){
+        if(!jwtProvider.validateToken(accessToken)){
+            throw new CInvalidTokenException();
+        }
+        Claims c = jwtProvider.parseClaims(accessToken);
+        String uid =c.getSubject();
+        System.out.println("Claims=  "+c+"  uid= "+uid);
+        User user = userRepository.findByUid(Long.valueOf(uid));
 
+        return user;
     }
 
 
