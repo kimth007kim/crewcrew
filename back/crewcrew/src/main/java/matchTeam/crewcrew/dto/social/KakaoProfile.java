@@ -9,11 +9,11 @@ import java.util.Properties;
 public class KakaoProfile {
     private Long id;
     private Properties properties;
-    private KakaoAcount kakao_account;
+    private KakaoAccount kakao_account;
 
     @Getter
     @ToString
-    public static class KakaoAcount {
+    public static class KakaoAccount {
         private String email;
     }
 

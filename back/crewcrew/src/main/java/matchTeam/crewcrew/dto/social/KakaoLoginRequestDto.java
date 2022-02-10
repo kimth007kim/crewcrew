@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.dto.security;
+package matchTeam.crewcrew.dto.social;
 
 import lombok.*;
 

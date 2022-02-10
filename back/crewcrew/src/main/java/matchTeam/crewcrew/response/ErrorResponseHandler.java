@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ErrorResponseHandler {
-    private String code;
+//    private String code;
     private String message;
     private String error;
     private int status;
@@ -46,7 +46,7 @@ public class ErrorResponseHandler {
     }
 
     private void setErrorCode(ErrorCode errorCode) {
-        this.code = errorCode.getCode();
+//        this.code = errorCode.getCode();
         this.message = errorCode.getMessage();
         this.status = errorCode.getStatus();
         this.error = errorCode.getError();
@@ -75,9 +75,9 @@ public class ErrorResponseHandler {
         return new ErrorResponseHandler(errorCode, exceptionMessage);
     }
 
-    public String getCode() {
-        return code;
-    }
+//    public String getCode() {
+//        return code;
+//    }
 
     public String getMessage() {
         return message;

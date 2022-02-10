@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.dto.security;
+package matchTeam.crewcrew.dto.social;
 import lombok.*;
 
 @Getter
@@ -6,6 +6,6 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class KakaoSignupRequestDto {
+public class NaverSignupRequestDto {
     private String accessToken;
 }

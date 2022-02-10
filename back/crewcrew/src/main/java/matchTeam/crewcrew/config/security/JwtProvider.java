@@ -1,12 +1,12 @@
 package matchTeam.crewcrew.config.security;
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.response.exception.CAuthenticationEntryPointException;
-import matchTeam.crewcrew.service.CustomUserDetailService;
+import matchTeam.crewcrew.response.exception.CInvalidTokenException;
+import matchTeam.crewcrew.service.user.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,10 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -88,7 +85,7 @@ public class JwtProvider {
 
     }
 
-    private Claims parseClaims(String token) {
+    public Claims parseClaims(String token) {
         try{
 
             return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
@@ -108,8 +105,6 @@ public class JwtProvider {
     public boolean validateToken(String token){
         try{
            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-//           Jwts.parser().setSigningKey(key).parseClaimsJws(token);
-//            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
            return true;
         }catch (JwtException | IllegalArgumentException e){
             log.error(e.toString());
