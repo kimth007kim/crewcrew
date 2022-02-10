@@ -5,11 +5,12 @@ import matchTeam.crewcrew.entity.BaseTimeEntity;
 import matchTeam.crewcrew.entity.user.User;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.time.Instant;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -54,12 +55,19 @@ public class Board extends BaseTimeEntity {
     private Integer totalCrew;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "approach", nullable = false)
     private BoardApproach approach;
 
     @Column(name = "hit", columnDefinition = "bigint default 0")
     private Long hit;
+
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    @Column(name = "expired_date")
+    private LocalDate expiredDate;
+
+    @Column
+    private Boolean viewable;
 
     /*
     @Column(name = "created_date")
@@ -72,7 +80,8 @@ public class Board extends BaseTimeEntity {
     @Builder
     public Board(String title, String boardContent,
                  User user, Category category,
-                 Integer recruitedCrew, Integer totalCrew, BoardApproach approach) {
+                 Integer recruitedCrew, Integer totalCrew, BoardApproach approach,
+                 LocalDate expiredDate) {
         this.title = title;
         this.boardContent = boardContent;
         this.user = user;
@@ -81,6 +90,27 @@ public class Board extends BaseTimeEntity {
         this.recruitedCrew = recruitedCrew;
         this.totalCrew = totalCrew;
         this.approach = approach;
+        this.expiredDate = expiredDate;
         this.hit = 0L;
+        this.viewable = true;
+    }
+
+    public void update(String title, String boardContent,
+                       Integer recruitedCrew, Integer totalCrew, Integer approachCode, Category category,
+                       LocalDate expiredDate){
+        this.title = title;
+        this.boardContent = boardContent;
+        this.recruitedCrew = recruitedCrew;
+        this.totalCrew = totalCrew;
+
+        if (approachCode == 0){
+            this.approach = BoardApproach.APPROACH_OFFLINE;
+        } else if(approachCode == 1){
+            this.approach = BoardApproach.APPROACH_ONLINE;
+        }
+
+        this.category = category;
+        this.expiredDate = expiredDate;
+
     }
 }

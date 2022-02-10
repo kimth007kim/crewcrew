@@ -2,6 +2,10 @@ package matchTeam.crewcrew.response;
 
 import matchTeam.crewcrew.response.exception.CKakaoCommunicationException;
 import matchTeam.crewcrew.response.exception.*;
+import matchTeam.crewcrew.response.exception.board.BoardNotFoundException;
+import matchTeam.crewcrew.response.exception.board.CategoryNotFoundException;
+import matchTeam.crewcrew.response.exception.board.ExpiredDateBeforeTodayException;
+import matchTeam.crewcrew.response.exception.board.SelectCategoryException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -14,7 +18,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.nio.file.AccessDeniedException;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class  GlobalExceptionHandler {
 
     /**
      *  javax.validation.Valid or @Validated 으로 binding error 발생시 발생한다.
@@ -122,6 +126,42 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponseHandler> signUpFailedException(EmailSignUpFailedCException e){
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.SIGN_UP_FAILED);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * 번호로 조회할 경우 해당 게시판이 존재하지 않을 때의 예외처리
+     */
+    @ExceptionHandler(BoardNotFoundException.class)
+    protected ResponseEntity<ErrorResponseHandler> findBoardFailedException(BoardNotFoundException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.BOARD_NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * 존재하지 않은 카테고리 번호로 게시판을 생성할 때의 예외처리
+     */
+    @ExceptionHandler(CategoryNotFoundException.class)
+    protected ResponseEntity<ErrorResponseHandler> categoryNotFoundException(CategoryNotFoundException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.CATEGOTY_NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * 상세 카테고리를 지정하지 않았을때
+     */
+    @ExceptionHandler(SelectCategoryException.class)
+    protected ResponseEntity<ErrorResponseHandler> notSelectDetailCategory(SelectCategoryException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.NOT_SELECT_DETAIL_CATEGORY);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    /*
+    * 만료 날짜가 현재 날짜보다 작을때
+    * */
+    @ExceptionHandler(ExpiredDateBeforeTodayException.class)
+    protected ResponseEntity<ErrorResponseHandler> beforeExpiredDate(ExpiredDateBeforeTodayException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EXPIRED_DATE_BEFORE_TODAY);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(CAuthenticationEntryPointException.class)

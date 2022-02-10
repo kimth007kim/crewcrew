@@ -35,6 +35,8 @@ public class QBoard extends EntityPathBase<Board> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
+    public final DatePath<java.time.LocalDate> expiredDate = createDate("expiredDate", java.time.LocalDate.class);
+
     public final NumberPath<Long> hit = createNumber("hit", Long.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
@@ -48,7 +50,9 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final NumberPath<Integer> totalCrew = createNumber("totalCrew", Integer.class);
 
-    public final matchTeam.crewcrew.entity.QUser user;
+    public final matchTeam.crewcrew.entity.user.QUser user;
+
+    public final BooleanPath viewable = createBoolean("viewable");
 
     public QBoard(String variable) {
         this(Board.class, forVariable(variable), INITS);
@@ -69,7 +73,7 @@ public class QBoard extends EntityPathBase<Board> {
     public QBoard(Class<? extends Board> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.category = inits.isInitialized("category") ? new QCategory(forProperty("category"), inits.get("category")) : null;
-        this.user = inits.isInitialized("user") ? new matchTeam.crewcrew.entity.QUser(forProperty("user")) : null;
+        this.user = inits.isInitialized("user") ? new matchTeam.crewcrew.entity.user.QUser(forProperty("user")) : null;
     }
 
 }

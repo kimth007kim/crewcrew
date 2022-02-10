@@ -22,15 +22,23 @@ public enum ErrorCode {
     // Exception
     EXCEPTION(500, "EXCEPTION", "exception"),
 
+    //로그인 및 인증 관련 에러
     EMAIL_CODE_NOT_MATCH(900,"EMAIL_0000","인증 코드가 다릅니다."),
     EMAIL_NOT_VALID(901,"EMAIL_INVALID","이메일 형식이 유효하지않습니다.."),
-
-
     INVALID_TOKEN(902,"INVALID TOKEN","유효하지 않는 토큰입니다."),
-
     SIGN_UP_FAILED(1001,"EMAIL_001","이메일이 이미 존재합니다. "),
     EMAIL_CODE_NOT_VERIFIED(1002,"EMAIL_002","이메일 인증이 되지않은 이메일 주소입니다."),
     KAKAO_COMMUNICATION_FAILED(1101,"KAKAO_01","카카오와 http통신이 실패하였습니다.");
+
+    //게시판 관련 에러
+    THE_NUMBER_OF_CREW_BY_ZERO(400, "", "모집인원이나 총인원이 0이하입니다"),
+    OVER_RECRUITED(400, "", "총인원이 모집인원보다 적습니다"),
+    BOARD_NOT_FOUND(400, "", "해당 게시글이 존재하지 않습니다"),
+    CATEGOTY_NOT_FOUND(501, "", "해당 카테고리가 존재하지 않습니다"),
+    NOT_SELECT_DETAIL_CATEGORY(400, "", "세부 카테고리를 지정하지 않았습니다"),
+    EXPIRED_DATE_BEFORE_TODAY(400, "", "만료 날짜가 오늘보다 이전입니다"),
+
+
 
     private int status;
     private final String code;
