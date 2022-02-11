@@ -1042,8 +1042,16 @@ ul.ChooseListUnder::-webkit-scrollbar {
 }
 
 .NavPC {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   width: 70px;
-  height: 730px;
+  height: calc(100vh - 80px);
+  max-height: 730px;
   -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
           box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
   border-radius: 40px;
@@ -1054,7 +1062,7 @@ ul.ChooseListUnder::-webkit-scrollbar {
 }
 
 .NavPCHeader {
-  height: 86px;
+  min-height: 86px;
   border-bottom: 1px solid #e2e2e2;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1072,7 +1080,7 @@ ul.ChooseListUnder::-webkit-scrollbar {
 }
 
 .NavPCBody {
-  height: 548px;
+  height: 100%;
   border-bottom: 1px solid #e2e2e2;
 }
 
@@ -1180,6 +1188,7 @@ ul.ChooseListUnder::-webkit-scrollbar {
 }
 
 .NavPCFooter {
+  min-height: 92px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

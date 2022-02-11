@@ -15,8 +15,11 @@ $Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
 }
 
 .NavPC{
+    display: flex;
+    flex-direction: column;
     width: 70px;
-    height: 730px;
+    height: calc(100vh - 80px);
+    max-height: 730px;
     box-shadow: $Shadow2;
     border-radius: 40px;
     z-index: 9;
@@ -26,7 +29,7 @@ $Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
 }
 
 .NavPCHeader{
-    height: 86px;
+    min-height: 86px;
     border-bottom: 1px solid $black5;
     display: flex;
     justify-content: center;
@@ -57,7 +60,7 @@ $Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
 }
 
 .NavPCBody{
-    height: 548px;
+    height: 100%;
     border-bottom: 1px solid $black5;
 
     ul{
@@ -104,6 +107,7 @@ $Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
 }
 
 .NavPCFooter{
+    min-height: 92px;
     display: flex;
     justify-content: center;
 
