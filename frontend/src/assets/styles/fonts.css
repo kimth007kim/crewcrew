@@ -1,70 +1,91 @@
-/* @font-face {
+/*Spoqa Han Sans*/
+
+@font-face {
   font-family: 'Spoqa Han Sans Neo';
   font-weight: 700;
-  src: local('Spoqa Han Sans Bold'), url('../fonts/SpoqaHanSansNeo-Bold.woff2') format('woff2'),
-    url('../fonts/SpoqaHanSansNeo-Bold.woff') format('woff'),
-    url('../fonts/SpoqaHanSansNeo-Bold.otf') format('opentype');
+  src: local('Spoqa Han Sans Bold'),
+    url('../src/assets/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Bold.woff2') format('woff2'),
+    url('../src/assets/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Bold.woff') format('woff'),
+    url('../src/assets/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Bold.otf') format('opentype');
 }
 
 @font-face {
   font-family: 'Spoqa Han Sans Neo';
   font-weight: 500;
-  src: local('Spoqa Han Sans Regular'), url('../fonts/SpoqaHanSansNeo-Medium.woff2') format('woff2'),
-    url('../fonts/SpoqaHanSansNeo-Medium.woff') format('woff'),
-    url('../fonts/SpoqaHanSansNeo-Medium.otf') format('opentype');
+  src: local('Spoqa Han Sans Regular'),
+    url('../src/assets/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Medium.woff2') format('woff2'),
+    url('../src/assets/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Medium.woff') format('woff'),
+    url('../src/assets/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Medium.otf') format('opentype');
 }
 
 @font-face {
   font-family: 'Spoqa Han Sans Neo';
   font-weight: 400;
   src: local('Spoqa Han Sans Regular'),
-    url('../fonts/SpoqaHanSansNeo-Regular.woff2') format('woff2'),
-    url('../fonts/SpoqaHanSansNeo-Regular.woff') format('woff'),
-    url('../fonts/SpoqaHanSansNeo-Regular.otf') format('opentype');
+    url('../src/assets/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.woff2') format('woff2'),
+    url('../src/assets/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.woff') format('woff'),
+    url('../src/assets/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Regular.otf') format('opentype');
 }
 
 @font-face {
   font-family: 'Spoqa Han Sans Neo';
   font-weight: 300;
-  src: local('Spoqa Han Sans Light'), url('../fonts/SpoqaHanSansNeo-Light.woff2') format('woff2'),
-    url('../fonts/SpoqaHanSansNeo-Light.woff') format('woff'),
-    url('../fonts/SpoqaHanSansNeo-Light.otf') format('opentype');
-} */
+  src: local('Spoqa Han Sans Light'),
+    url('../src/assets/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Light.woff2') format('woff2'),
+    url('../src/assets/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Light.woff') format('woff'),
+    url('../src/assets/fonts/SpoqaHanSansNeo/SpoqaHanSansNeo-Light.otf') format('opentype');
+}
+
 
 /*SUIT*/
 
 @font-face {
   font-family: 'SUIT';
   font-weight: 900;
-  src: local('SUIT-ExtraBold'), url('../fonts/SUIT/SUIT-ExtraBold.otf');
+  src: local('SUIT-ExtraBold'),
+    url('../src/assets/fonts/SUIT/SUIT-ExtraBold.otf');
 }
+
 
 @font-face {
   font-family: 'SUIT';
   font-weight: 700;
-  src: local('SUIT-Bold'), url('../fonts/SUIT/SUIT-Bold.otf');
+  src: local('SUIT-Bold'),
+    url('../src/assets/fonts/SUIT/SUIT-Bold.otf');
 }
 
 @font-face {
   font-family: 'SUIT';
   font-weight: 600;
-  src: local('SUIT-SemiBold'), url('../fonts/SUIT/SUIT-SemiBold.otf');
+  src: local('SUIT-SemiBold'),
+    url('../src/assets/fonts/SUIT/SUIT-SemiBold.otf');
 }
+
 
 @font-face {
   font-family: 'SUIT';
   font-weight: 500;
-  src: local('SUIT-Medium'), url('../fonts/SUIT/SUIT-Medium.otf');
+  src: local('SUIT-Medium'),
+    url('../src/assets/fonts/SUIT/SUIT-Medium.otf');
 }
 
 @font-face {
   font-family: 'SUIT';
   font-weight: 400;
-  src: local('SUIT-Regular'), url('../fonts/SUIT/SUIT-Regular.otf');
+  src: local('SUIT-Regular'),
+    url('../src/assets/fonts/SUIT/SUIT-Regular.otf');
 }
 
 @font-face {
   font-family: 'SUIT';
   font-weight: 300;
-  src: local('SUIT-Light'), url('../fonts/SUIT/SUIT-Light.otf');
+  src: local('SUIT-Light'),
+    url('../src/assets/fonts/SUIT/SUIT-Light.otf');
+}
+
+@font-face {
+  font-family: 'SUIT';
+  font-weight: 200;
+  src: local('SUIT-Thin'),
+    url('../src/assets/fonts/SUIT/SUIT-Thin.otf');
 }

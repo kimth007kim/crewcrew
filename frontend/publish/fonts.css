@@ -82,3 +82,10 @@
   src: local('SUIT-Light'),
     url('../src/assets/fonts/SUIT/SUIT-Light.otf');
 }
+
+@font-face {
+  font-family: 'SUIT';
+  font-weight: 200;
+  src: local('SUIT-Thin'),
+    url('../src/assets/fonts/SUIT/SUIT-Thin.otf');
+}

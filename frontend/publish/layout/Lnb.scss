@@ -1,0 +1,501 @@
+@import "../common";
+
+$Shadow1 : 5px 0px 10px rgba(0, 0, 0, 0.15);
+$Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
+
+.LnbWrapper{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: hidden;
+    z-index: 99;
+    box-shadow: $Shadow1;
+    transition: .5s;
+}
+
+.NavPC{
+    width: 70px;
+    height: 730px;
+    box-shadow: $Shadow2;
+    border-radius: 40px;
+    z-index: 9;
+    position: absolute;
+    top: 40px;
+    left: 35px;
+}
+
+.NavPCHeader{
+    height: 86px;
+    border-bottom: 1px solid $black5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img{
+        width: 49px;
+    }
+}
+
+@mixin Nav($width, $height, $fontsize, $fontweight, $color, $spanwidth) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: $width;
+    height: $height;
+    font-size: $fontsize;
+    font-weight: $fontweight;
+    color: $color;
+
+    span.Icon{
+        display: block;
+        width: $spanwidth;
+        height: $spanwidth;
+        background-size: 100% !important;
+    }
+}
+
+.NavPCBody{
+    height: 548px;
+    border-bottom: 1px solid $black5;
+
+    ul{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        height: 100%;
+
+        li{
+
+            a{
+                @include Nav(46px, 64px, 13px, 500, $black2, 46px);
+                transition: .2s;
+
+                span.Icon{
+                    transition: .2s;
+                }
+            }
+
+            &.Active a{
+                color: $blue3;
+            }
+
+            @for $i from 1 to 5{
+
+                &:nth-of-type(#{$i}){
+
+                    span.Icon{
+                        background: url("../../src/assets/images/NavIcon#{$i}.png");
+                    }
+
+                    &:hover span.Icon{
+                        background: url("../../src/assets/images/NavIcon#{$i}_Hover.png");
+                    }
+
+                    &.Active span.Icon{
+                        background: url("../../src/assets/images/NavIcon#{$i}_Active.png");
+                    } 
+                }
+            }
+        }
+    }
+}
+
+.NavPCFooter{
+    display: flex;
+    justify-content: center;
+
+    a{
+        display: block;
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-top: 32px;
+
+        img{
+            width: 100%;
+        }
+    }
+}
+
+.NavArrow{
+    width: 26px;
+    height: 46px;
+    position: fixed;
+    top: 56px;
+    left: 142px;
+    box-shadow: $Shadow1;
+    background: url("../../src/assets/images/IconNavArrow_Rev.png") 40% 50% no-repeat;
+    background-size: 7px !important;
+    background-color: #fff !important;
+    transition: .5s;
+    cursor: pointer;
+
+    &.On{
+        left: 516px;
+        background: url("../../src/assets/images/IconNavArrow.png") 40% 50% no-repeat;
+    }
+}
+
+.NavContWrapper{
+    position: relative;
+    width: 142px;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    transition: .5s;
+    background-color: #fff;
+
+    &.On{
+        width: 516px;
+    }
+}
+
+.NavCont{
+    width: 330px;
+    height: 100%;
+    margin-left: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .NavContInner{
+        width: 100%;
+        padding: 0 13px;
+        box-sizing: border-box;
+    }
+
+    h1{
+        width: 100%;
+        text-align: center;
+        padding: 50px 0 10px;
+        border-bottom: 1px solid $black5;
+    }
+
+    h2{
+        margin: 45px 0 10px;
+        font-size: 20px;
+    }
+
+    p{
+
+        &:nth-of-type(1){
+            margin: 40px 0 20px;
+            font-size: 18px;
+            font-weight: 200;
+            color: $black1;
+            line-height: 32px;
+        }
+
+        &:nth-of-type(2){
+            font-size: 13px;
+            color: $black3;
+            font-weight: 400;
+        }
+    }
+}
+
+.NavButtonList{
+
+    li:not(:last-child){
+        margin-bottom: 15px;
+    }
+}
+
+.NavCardList{
+    margin-top: 30px;
+    height: calc(100vh - 494px);
+    overflow-y: auto;
+    margin-right: -10px;
+
+    &::-webkit-scrollbar{
+        display: none;
+    }
+
+    li{
+        padding-bottom: 15px;
+        margin-right: 10px;
+
+        .CardIntro{
+            height: 120px;
+            padding: 35px 0 16px;
+            box-sizing: border-box;
+            background-size: 120px !important;
+            background-repeat: no-repeat !important;
+            position: relative;
+            border-radius: 15px;
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
+
+            h3{
+                font-size: 10px;
+                color: $white;
+                font-weight: 500;
+                width: fit-content;
+            }
+
+            p{
+                font-size: 18px;
+                color: $white;
+                margin: 8px 0;
+                line-height: 24px;
+            }
+
+            &::before{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 10px;
+                color: $white;
+                width: 15px;
+                height: 15px;
+                border-radius: 50% ;
+                background-color: rgba(0, 0, 0, 0.3);
+                position: absolute;
+                top: 7px;
+                left: 7px;
+            }
+        }
+
+        @for $a from 1 to 5 {
+            &:nth-child(#{$a}) .CardIntro{
+
+                @if $a%2 != 0 {
+                    background-position: 20px 50%;
+
+                    h3, p{
+                        margin-left: 167px;
+                    }
+                } @else{
+                    background-position: calc(100% - 20px) 50%;
+
+                    h3, p{
+                        margin-left: 20px;
+                    }
+                }
+
+                &::before{
+                    content: '#{$a}';
+                }
+            }
+        }
+
+        &:nth-child(1) .CardIntro{
+            background-color: $blue1;
+            background-image: url("../../src/assets/images/Profile1.png");
+        }
+
+        &:nth-child(2) .CardIntro{
+            background-color: $blue2;
+            background-image: url("../../src/assets/images/Profile3.png");
+        }
+
+        &:nth-child(3) .CardIntro{
+            background-color: $blue3;
+            background-image: url("../../src/assets/images/Profile5.png");
+        }
+
+        &:nth-child(4) .CardIntro{
+            background-color: $green2;
+            background-image: url("../../src/assets/images/Profile2.png");
+        }
+    }
+}
+
+.NavHam, br.m, .MobileGnb, .MobileNav{
+    display: none;
+}
+
+@media screen and (max-width:768px) {
+    .NavPC, .NavArrow, .NavCont h1{
+        display: none;
+    }
+
+    br.m{
+        display: block;
+    }
+
+    .NavContWrapper{
+        width: 0;
+
+        &.On{
+            width: 266px;
+        }
+    }
+
+    .NavCont{
+        width: 266px;
+        margin-left: 0;
+
+        .NavContInner{
+            padding: 0 20px;
+        }
+
+        p{
+
+            &:nth-of-type(1){
+                margin-top: 100px;
+                font-size: 13px;
+                line-height: 22px;
+            }
+
+            &:nth-of-type(2){
+                font-size: 10px;
+            }
+        }
+
+        .NavButtonList{
+            display: flex;
+    
+            li{
+                width: 100%;
+                margin-bottom: 0;
+    
+                &:not(:last-child){
+                    margin-right: 5px;
+                }
+            }
+        }
+    }
+
+    .NavCardList{
+        margin-top: 25px;
+        height: calc(100vh - 312px);
+
+        li{
+            padding-bottom: 10px;
+
+            .CardIntro{
+                height: 70px;
+                padding: 0;
+                background-size: 90px !important;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+
+                p{
+                    display: none;
+                }
+            }
+
+            @for $a from 1 to 5{
+                &:nth-child(#{$a}) .CardIntro{
+
+                    @if $a%2 != 0{
+                        background-position: 15px 50%;
+    
+                        h3{
+                            margin-left: 140px;
+                        }
+                    } @else{
+                        background-position: calc(100% - 15px) 50%;
+
+                        h3{
+                            margin-left: 30px;
+                            text-align: right;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .NavHam{
+        display: block;
+        position: fixed;
+        top: 15px;
+        left: 20px;
+        width: 30px;
+        height: 30px;
+        background: url("../../src/assets/images/IconHam.png");
+        background-size: 100% !important;
+        z-index: 100;
+        transition: .5s;
+
+        &.On{
+            background: url("../../src/assets/images/IconClose.png");
+        }
+    }
+
+    @mixin MobileLayout($height, $shadow, $ulheight){
+        display: block;
+        position: fixed;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 20px;
+        height: $height;
+        box-shadow: 0px $shadow 5px rgba(0, 0, 0, 0.05);
+
+        ul{
+            height: $ulheight;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+
+    .MobileGnb{
+        @include MobileLayout(60px, 5px, 100%);
+        top: 0;
+        box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.05);
+
+        a {
+            display: block;
+            height: 30px;
+        }
+
+        img {
+            width: 100px;
+        }
+
+        li {
+            &:first-of-type {
+                width: 30px;
+            }
+
+            &:nth-of-type(3) img {
+                width: 30px;
+            }
+        }
+    }    
+
+    .MobileNav{
+        @include MobileLayout(70px, -5px, 50px);
+        bottom: 0;
+
+        ul{
+            margin-top: 7px;
+        }
+
+        li{
+
+            a{
+                @include Nav(36px, 50px, 10px, 400, $black1, 36px);
+            }
+
+            &.Active a{
+                color: $blue3;
+            }
+
+            @for $i from 1 to 5{
+
+                &:nth-of-type(#{$i}){
+
+                    span.Icon{
+                        background: url("../../src/assets/images/NavIcon#{$i}.png");
+                    }
+
+                    &:hover span.Icon{
+                        background: url("../../src/assets/images/NavIcon#{$i}_Hover.png");
+                    }
+
+                    &.Active span.Icon{
+                        background: url("../../src/assets/images/NavIcon#{$i}_Active.png");
+                    } 
+                }
+            }
+        }
+    }
+}

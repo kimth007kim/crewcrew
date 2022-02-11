@@ -15,6 +15,7 @@ $yellow1 : #ffd458;
 $red1 : #ff0045; 
 
 $green1 : #8ED819;
+$green2 : #1AB861;
 
 $purple1 : #8d2bf5;
 
@@ -57,15 +58,13 @@ em {
     line-height: $lheight;
 }
 
-.ButtonFull{
-    @include buttonFull(12px, 20px, 500, 26px, 10px);
-    /*padding, font-size, font-weight, line-height, border-radius*/
-    background-color: $blue1;
+@mixin buttonFullLarge($bg1, $bg2){
+    background-color: $bg1;
     height: 50px;
     color: $white;
 
     &:hover{
-        background-color: $blue2;
+        background-color: $bg2;
     }
 
     &.Disable{
@@ -77,6 +76,65 @@ em {
         }
     }
 }
+
+@mixin buttonFullLarge2($paddingLeft, $paddingRight, $width, $height){
+    padding-left: $paddingLeft;
+    padding-right: $paddingRight;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    span{
+        background-size: 100% !important;
+        width: $width;
+        height: $height;
+    }
+}
+
+.ButtonFull{
+    @include buttonFull(12px, 20px, 500, 26px, 10px);
+    /*padding, font-size, font-weight, line-height, border-radius*/
+    @include buttonFullLarge($blue1, $blue2);
+}
+
+.ButtonFull2{
+    @include buttonFull(17px, 13px, 500, 16px, 25px);
+    @include buttonFullLarge($blue2, $blue3);
+    @include buttonFullLarge2(26px, 20px, 6px, 12px);
+
+    span{
+        background: url("../../src/assets/images/ButtonArrow.png") 50% 50% no-repeat;
+    }
+}
+
+.ButtonFull2Ghost{
+    @include buttonFull(17px, 13px, 500, 16px, 25px);
+    @include buttonFullLarge($white, $white);
+    @include buttonFullLarge2(26px, 20px, 6px, 12px);
+    border: 1px solid $black5;
+
+    &:hover{
+        border: 1px solid $black4;
+    }
+
+    span{
+        background: url("../../src/assets/images/ButtonArrowGhost.png") 50% 50% no-repeat;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .ButtonFull2, .ButtonFull2Ghost{
+        padding: 8px 0;
+        height: 30px;
+        font-size: 10px;
+        justify-content: center;
+
+        span{
+            display: none
+        }
+    }
+}
+
 
 .ButtonFullSmall{
     @include buttonFull(11px, 13px, 400, 20px, 6px);

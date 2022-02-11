@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrewCrew</title>
+    <link rel="stylesheet" href="./Lnb.css">
+    <link rel="stylesheet" href="../fonts.css">
+    <script src="./Lnb.js"></script>
+</head>
+<body>
+    <header>
+        <div class="LnbWrapper"> 
+            <nav class="NavPC"> <!--pc 네비게이션-->
+                <div class="NavPCHeader">
+                    <a href="소개페이지">
+                        <img src="../../src/assets/images/LogoCircle.png" alt="크루크루소개">
+                    </a>
+                </div>
+                <div class="NavPCBody">
+                    <ul>
+                        <li class="Active">
+                            <a href="홈"> <!--Active상태일 땐 preventDefault-->
+                                <span class="Icon"></span>
+                                홈
+                            </a>
+                        </li>
+                        <li>
+                            <a href="크루참여">
+                                <span class="Icon"></span>
+                                크루참여
+                            </a>
+                        </li>
+                        <li>
+                            <a href="팀원모집">
+                                <span class="Icon"></span>
+                                팀원모집
+                            </a>
+                        </li>
+                        <li>
+                            <a href="채팅">
+                                <span class="Icon"></span>
+                                채팅
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="NavPCFooter">
+                    <a href="마이페이지">
+                        <img src="../../src/assets/images/ProfileNull.png" alt="마이페이지">
+                    </a>
+                </div>
+            </nav>
+    
+            <div class="NavArrow"></div> <!--pc Lnb 펼치는 화살표-->
+    
+            <div class="NavContWrapper">
+                <div class="NavCont">
+                    <h1><a href="홈"><img src="../../src/assets/images/LogoTxt.png" alt="CrewCrew"></a></h1>
+                    <div class="NavContInner">
+                        <p>목표를 향해 항해하는<br>크루크루에 오신 것을 환영합니다!</p>
+                        <ul class="NavButtonList">
+                            <li>
+                                <button type="button" class="ButtonFull2">로그인/회원가입<span></span></button>
+                            </li>
+                            <li>
+                                <button type="button" class="ButtonFull2Ghost"><a href="#">서비스 소개</a><span></span></button>
+                            </li>
+                        </ul>
+                        <h2>CREW 4 U</h2>
+                        <p>나에게 딱 맞는 크루원을 찾고 있었다면, 잘 찾아오셨어요!</p>
+                        <ul class="NavCardList">
+                            <li>
+                                <div class="CardIntro">
+                                    <h3>14가지 분야 <br class="m">크루원 모집</h3>
+                                    <p>스터디, 취미도<br>크루원과 함께!</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="CardIntro">
+                                    <h3>속전속결 <br class="m">간편 모집글 작성</h3>
+                                    <p>크루원 모으기,<br>어렵지 않잖아?</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="CardIntro">
+                                    <h3>안전한 <br class="m">크루크루 채팅</h3>
+                                    <p>따로 방파지 말고<br>여기서 떠들자~!</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="CardIntro">
+                                    <h3>간단한 <br class="m">간편 가입 신청</h3>
+                                    <p>한번의 클릭으로<br>QUICK 가입신청!</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="NavHam"></div> <!--mobile Lnb 펼치는 햄버거바-->
+        <div class="MobileGnb"> <!--mobile Gnb-->
+            <ul>
+                <li></li>
+                <li>
+                    <h2><a href="홈">
+                        <img src="../../src/assets/images/LogoTxt.png" alt="CrewCrew"></a>
+                    </h2>
+                </li>
+                <li>
+                    <a href="마이페이지">
+                        <img src="../../src/assets/images/ProfileNull.png" alt="마이페이지">
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <nav class="MobileNav"> <!--mobile 하단네비게이션-->
+            <ul>
+                <li class="Active">
+                    <a href="홈"> <!--Active상태일 땐 preventDefault-->
+                        <span class="Icon"></span>
+                        홈
+                    </a>
+                </li>
+                <li>
+                    <a href="크루참여">
+                        <span class="Icon"></span>
+                        크루참여
+                    </a>
+                </li>
+                <li>
+                    <a href="팀원모집">
+                        <span class="Icon"></span>
+                        팀원모집
+                    </a>
+                </li>
+                <li>
+                    <a href="채팅">
+                        <span class="Icon"></span>
+                        채팅
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    
+</body>
+</html>

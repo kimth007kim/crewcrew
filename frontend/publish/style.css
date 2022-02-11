@@ -55,6 +55,133 @@ em {
   background-color: #e2e2e2;
 }
 
+.ButtonFull2 {
+  width: 100%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transition: .3s;
+  transition: .3s;
+  padding-top: 17px;
+  padding-bottom: 17px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 25px;
+  line-height: 16px;
+  background-color: #005ec5;
+  height: 50px;
+  color: #fff;
+  padding-left: 26px;
+  padding-right: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.ButtonFull2:hover {
+  background-color: #00b7ff;
+}
+
+.ButtonFull2.Disable {
+  background-color: #e2e2e2;
+  cursor: default;
+}
+
+.ButtonFull2.Disable:hover {
+  background-color: #e2e2e2;
+}
+
+.ButtonFull2 span {
+  background-size: 100% !important;
+  width: 6px;
+  height: 12px;
+}
+
+.ButtonFull2 span {
+  background: url("../../src/assets/images/ButtonArrow.png") 50% 50% no-repeat;
+}
+
+.ButtonFull2Ghost {
+  width: 100%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transition: .3s;
+  transition: .3s;
+  padding-top: 17px;
+  padding-bottom: 17px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 25px;
+  line-height: 16px;
+  background-color: #fff;
+  height: 50px;
+  color: #fff;
+  padding-left: 26px;
+  padding-right: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: 1px solid #e2e2e2;
+}
+
+.ButtonFull2Ghost:hover {
+  background-color: #fff;
+}
+
+.ButtonFull2Ghost.Disable {
+  background-color: #e2e2e2;
+  cursor: default;
+}
+
+.ButtonFull2Ghost.Disable:hover {
+  background-color: #e2e2e2;
+}
+
+.ButtonFull2Ghost span {
+  background-size: 100% !important;
+  width: 6px;
+  height: 12px;
+}
+
+.ButtonFull2Ghost:hover {
+  border: 1px solid #a8a8a8;
+}
+
+.ButtonFull2Ghost span {
+  background: url("../../src/assets/images/ButtonArrowGhost.png") 50% 50% no-repeat;
+}
+
+@media screen and (max-width: 768px) {
+  .ButtonFull2, .ButtonFull2Ghost {
+    padding: 8px 0;
+    height: 30px;
+    font-size: 10px;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  .ButtonFull2 span, .ButtonFull2Ghost span {
+    display: none;
+  }
+}
+
 .ButtonFullSmall {
   width: 100%;
   border: none;
