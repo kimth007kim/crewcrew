@@ -86,7 +86,7 @@ function AuthModal({ closeModal, visible }) {
           <LoginSection IsClick={IsClick} HandleClick={HandleClick} />
           <SignupSection IsClick={IsClick} HandleClick={HandleClick} />
           <SignupSection2 IsClick={IsClick} HandleClick={HandleClick} />
-          {IsClick === 3 && <SignupSection3 IsClick={IsClick} HandleClick={HandleClick} />}
+          <SignupSection3 IsClick={IsClick} HandleClick={HandleClick} />
           {IsClick === 4 && (
             <SignupSection4 IsClick={IsClick} closeModal={closeModal} HandleClick={HandleClick} />
           )}
@@ -134,6 +134,7 @@ const Header = styled.div`
     animation-name: ${SizeUp};
     animation-fill-mode: forwards;
     padding: 0px 20px;
+    margin-bottom: 5px;
     ${(props) =>
       props.disappear &&
       css`
@@ -147,6 +148,10 @@ const CompleteHeader = styled.div`
   padding: 0 40px;
   padding-bottom: 10px;
   box-sizing: content-box;
+  @media screen and (max-width: 768px) {
+    padding: 0 20px;
+    padding-bottom: 10px;
+  }
 `;
 
 const Top = styled.ul`
@@ -195,6 +200,7 @@ const Title = styled.ul`
   display: flex;
   padding-bottom: 10px;
   transition: all 0.5s;
+  box-sizing: content-box;
 `;
 
 const Body = styled.div`

@@ -12,10 +12,10 @@ function SignupSection4({ IsClick, closeModal, HandleClick }) {
 
   const HandleComplete = useCallback((e) => {
     e.preventDefault();
-    closeModal();
     setTimeout(() => {
       HandleClick(0);
-    }, 500);
+    }, 200);
+    closeModal();
   }, []);
 
   return (
@@ -38,9 +38,11 @@ function SignupSection4({ IsClick, closeModal, HandleClick }) {
           {' 크루크루와 함께 힘차게 출발해봐요~!'}
         </ResultTxt>
       </ResultProfileWrapper>
-      <Button size="fullregular" color="darkblue" onClick={HandleComplete}>
-        확인
-      </Button>
+      <ButtonWrap>
+        <Button size="fullregular" color="darkblue" onClick={HandleComplete}>
+          확인
+        </Button>
+      </ButtonWrap>
     </SignupContents>
   );
 }
@@ -59,7 +61,7 @@ const Flag = keyframes`
     0%{
         top: 27px;
     } 100% {
-        top:-33px;
+        top: -33px;
     }
 `;
 const SignupContents = styled.div`
@@ -71,6 +73,7 @@ const SignupContents = styled.div`
   animation-timing-function: ease-out;
 
   animation-fill-mode: forwards;
+  box-sizing: content-box;
 
   ${(props) =>
     props.active &&
@@ -85,6 +88,9 @@ const ResultProfileWrapper = styled.div`
   overflow-x: hidden;
   position: relative;
   scroll-behavior: smooth;
+  @media screen and (max-width: 768px) {
+    height: calc(100vh - 338px);
+  }
 `;
 
 const ResultFlag = styled.img`
@@ -108,6 +114,11 @@ const ResultProfile = styled.div`
     height: 100%;
     object-fit: cover;
   }
+  @media screen and (max-width: 768px) {
+    width: 150px;
+    height: 150px;
+    position: relative;
+  }
 `;
 
 const ResultTitle = styled.h2`
@@ -120,6 +131,13 @@ const ResultTitle = styled.h2`
   b {
     font-weight: 700;
   }
+  @media screen and (max-width: 768px) {
+    margin: 29px 0 30px;
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: 0.05em;
+    word-break: keep-all;
+  }
 `;
 
 const ResultTxt = styled.p`
@@ -129,4 +147,13 @@ const ResultTxt = styled.p`
   font-weight: 400;
   line-height: 24px;
   color: #000;
+  @media screen and (max-width: 768px) {
+    margin-bottom: 0;
+  }
+`;
+
+const ButtonWrap = styled.div`
+  @media screen and (max-width: 768px) {
+    margin-top: 20px;
+  }
 `;

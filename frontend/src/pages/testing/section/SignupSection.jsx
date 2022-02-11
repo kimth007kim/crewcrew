@@ -384,14 +384,6 @@ const FadeIn = keyframes`
     }
 `;
 
-const FadeOut = keyframes`
-    from{
-        opacity:1;
-    } to {
-        opacity:0;
-    }
-`;
-
 const SignupContents = styled.div`
   transition: 0.5s;
   display: none;
@@ -412,9 +404,13 @@ const SignupContents = styled.div`
 const InputList = styled.ul`
   overflow-y: auto;
   overflow-x: hidden;
-  height: 310px;
+  height: 320px;
   box-sizing: content-box;
-  padding: 35px 0 20px;
+  padding: 25px 0 20px;
+  scroll-behavior: smooth;
+  @media screen and (max-width: 768px) {
+    height: calc(100vh - 393px);
+  }
 `;
 
 const InputLi = styled.li`
@@ -426,6 +422,9 @@ const ButtonWrap = styled.div`
   display: inline-block;
   width: 100%;
   margin: 30px 0 10px;
+  @media screen and (max-width: 768px) {
+    margin-top: 15px;
+  }
 `;
 
 const ListFlex = styled.ul`
@@ -435,7 +434,7 @@ const ListFlex = styled.ul`
 
   & > li {
     width: 100%;
-    margin-right: 16px;
+    margin-right: 10px;
   }
 
   & > li:last-child {

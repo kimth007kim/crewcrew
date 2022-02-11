@@ -62,17 +62,17 @@ const FadeOut = keyframes`
 
 const DownTop = keyframes`
     from{
-      margin-top: 100vh;
+      height: 0;
     } to {
-      margin-top: 40px;
+      height: calc(100vh - 40px);
     }
 `;
 
 const TopDown = keyframes`
     from{
-      margin-top: 40px;
+      height: calc(100vh - 40px);
     } to {
-      margin-top: 100vh;
+      height: 0;
     }
 `;
 
@@ -143,6 +143,10 @@ const ModalBox = styled.div`
   @media screen and (max-width: 768px) {
     width: 100%;
     border-radius: 20px 20px 0 0;
+    margin-top: 40px;
+    height: calc(100vh - 40px);
+    position: fixed;
+    bottom: 0;
     animation-name: ${DownTop};
     ${(props) =>
       props.disappear &&

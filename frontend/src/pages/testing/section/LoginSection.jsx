@@ -150,7 +150,11 @@ const LoginContents = styled.div`
 `;
 
 const InputList = styled.ul`
-  margin: 35px 0 20px;
+  padding: 25px 0 20px;
+  @media screen and (max-width: 768px) {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 `;
 
 const SubList = styled.ul`

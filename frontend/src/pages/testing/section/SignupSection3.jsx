@@ -145,7 +145,6 @@ function SignupSection3({ IsClick, HandleClick }) {
       }
 
       if (studyRef.current.contains(e.target)) {
-        console.log(studyClick);
         if (studyClick) {
           setStudyClick(false);
         } else {
@@ -331,6 +330,9 @@ function SignupSection3({ IsClick, HandleClick }) {
   }, [IsClick]);
 
   useEffect(() => {
+    if (IsClick !== 3) {
+      return;
+    }
     // 현재 document에 이벤트리스너를 추가합니다.
 
     function handleClickOutside(e) {
@@ -343,13 +345,13 @@ function SignupSection3({ IsClick, HandleClick }) {
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
-  }, [studyRef, hobbyRef]); // ref가 변경되면 useEffect를 다시 생성합니다.
+  }, [studyRef, hobbyRef, IsClick]); // ref가 변경되면 useEffect를 다시 생성합니다.
   return (
     <SignupContents active={IsClick === 3} onClick={HandleStudyInputClick}>
       <form>
         <InputList ref={scrollRef}>
           <ChooseList className="ChooseList" ref={studyRef}>
-            <ChooseListDetail active={studyClick} hLength={8 + 50 + studyArray.length * 27}>
+            <ChooseListDetail active={studyClick} hLength={studyArray.length}>
               <div>
                 <ChooseTitle readOnly id="SignStudy" type="text" />
                 <LabelAttached htmlFor="SignStudy">어떤 스터디 크루원이 필요하세요?</LabelAttached>
@@ -390,7 +392,7 @@ function SignupSection3({ IsClick, HandleClick }) {
             <ChooseListDetail
               active={hobbyClick}
               onClick={HandleHobbyInputClick}
-              hLength={8 + 50 + hobbyArray.length * 27}
+              hLength={hobbyArray.length}
             >
               <div>
                 <ChooseTitle readOnly id="SignHobby" type="text" />
@@ -483,7 +485,6 @@ const SignupContents = styled.div`
 `;
 
 const InputList = styled.ul`
-  padding: 25px 0 20px;
   overflow-y: auto;
   overflow-x: hidden;
   height: 320px;
@@ -491,6 +492,11 @@ const InputList = styled.ul`
   position: relative;
   &::-webkit-scrollbar {
     display: none;
+  }
+  padding: 25px 0 20px;
+  scroll-behavior: smooth;
+  @media screen and (max-width: 768px) {
+    height: calc(100vh - 393px);
   }
 `;
 
@@ -566,7 +572,7 @@ const ChooseListDetail = styled.div`
     props.active &&
     css`
       border: 1px solid #00b7ff;
-      height: ${props.hLength}px;
+      height: ${8 + 50 + props.hLength * 27}px;
       &:hover {
         border-color: #00b7ff;
       }
@@ -587,6 +593,16 @@ const ChooseListDetail = styled.div`
       background-color: #e2e2e2;
       margin: 0 auto;
     }
+  }
+  @media screen and (max-width: 768px) {
+    div:not(:first-child) {
+      padding: 8px 0;
+    }
+    ${(props) =>
+      props.active &&
+      css`
+        height: ${8 + 50 + props.hLength * 43}px;
+      `}
   }
 `;
 
@@ -725,8 +741,18 @@ const ChooseComplete = styled.label`
     css`
       background-color: #00b7ff;
     `}
+  @media screen and (max-width: 768px) {
+    bottom: 14px;
+    right: 9px;
+    width: 40px;
+    height: 24px;
+    border-radius: 12px;
+  }
 `;
 
 const ButtonWrap = styled.div`
   margin: 30px 0 10px;
+  @media screen and (max-width: 768px) {
+    margin-top: 15px;
+  }
 `;

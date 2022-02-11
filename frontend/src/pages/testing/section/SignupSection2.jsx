@@ -87,7 +87,6 @@ function SignupSection2({ IsClick, HandleClick }) {
     (e) => {
       e.preventDefault();
       if (!isUpload) {
-        console.log(uploadRef.current);
         uploadRef.current.click();
       } else {
         const profileUrl = URL.createObjectURL(uploadFileImg);
@@ -355,8 +354,13 @@ const InputList = styled.ul`
   padding: 35px 0 20px;
   overflow-y: auto;
   overflow-x: hidden;
-  height: 310px;
+  height: 320px;
   box-sizing: content-box;
+  padding: 25px 0 20px;
+  scroll-behavior: smooth;
+  @media screen and (max-width: 768px) {
+    height: calc(100vh - 393px);
+  }
 `;
 
 const InputLi = styled.li`
@@ -406,6 +410,10 @@ const InputChecked = styled.div`
 const ProfileSection = styled.li`
   position: relative;
   height: 230px;
+  box-sizing: border-box;
+  @media screen and (max-width: 768px) {
+    height: 290px;
+  }
 `;
 
 const ProfileBox = styled.div`
@@ -413,7 +421,6 @@ const ProfileBox = styled.div`
   border: 1px solid #e2e2e2;
   border-radius: 10px;
   overflow: hidden;
-  box-sizing: content-box;
 `;
 
 const ProfileShow = styled.div`
@@ -426,6 +433,9 @@ const ProfileShow = styled.div`
   overflow: hidden;
 
   transition: 0.5s;
+  @media screen and (max-width: 768px) {
+    height: 218px;
+  }
 `;
 
 const ProfileTitle = styled.p`
@@ -484,6 +494,10 @@ const ProfileImg = styled.div`
         opacity: 0.5;
       `}
   }
+  @media screen and (max-width: 768px) {
+    width: 218px;
+    height: 218px;
+  }
 `;
 
 const ProfileBg = styled.div`
@@ -497,6 +511,12 @@ const ProfileBg = styled.div`
   -webkit-box-shadow: 0 0 0 300px #000;
   box-shadow: 0 0 0 300px #000;
   opacity: 0.3;
+  @media screen and (max-width: 768px) {
+    width: 202px;
+    height: 202px;
+    top: calc(50% - (202px / 2));
+    left: calc(50% - (202px / 2));
+  }
 `;
 
 const ProfileSelect = styled.div``;
@@ -544,6 +564,18 @@ const ProfileList = styled.ul`
     justify-content: center;
     align-items: center;
   }
+
+  @media screen and (max-width: 768px) {
+    & > li:first-child {
+      margin-left: 8px;
+    }
+    & > li {
+      min-width: 62px;
+    }
+    & > li:last-child {
+      margin-right: 8px;
+    }
+  }
 `;
 
 const OuterCircle = styled.label`
@@ -556,6 +588,8 @@ const OuterCircle = styled.label`
   border: 1px solid #e2e2e2;
   transition: 0.3s;
   cursor: pointer;
+  box-sizing: content-box;
+
   ${(props) =>
     props.bg &&
     css`
@@ -575,6 +609,8 @@ const InnerCircle = styled.div`
   height: 50px;
   border-radius: 50%;
   overflow: hidden;
+  box-sizing: content-box;
+
   ${(props) =>
     props.bg &&
     css`
@@ -651,61 +687,7 @@ const InputLabel = styled.label`
 
 const ButtonWrap = styled.div`
   margin: 30px 0 10px;
-`;
-
-const SignStep = styled.ul`
-  display: flex;
-  margin-bottom: 80px;
-  & > li {
-    width: 100%;
-    margin-right: 16px;
-  }
-
-  & > li:last-child {
-    margin-right: 0;
-  }
-`;
-const StepBar1 = styled.div``;
-
-const StepBar2 = styled.div``;
-
-const StepBar3 = styled.div``;
-
-const StepSlide = styled.div`
-  width: 100%;
-  height: 5px;
-  border: 1px solid #e2e2e2;
-  border-radius: 4px;
-  position: relative;
-
-  ${StepBar1} {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    border-radius: 4px;
-    border: none;
-    transition: 0.5s;
-    width: 100%;
-
-    background-color: #00b7ff;
-  }
-
-  ${StepBar2} {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    border-radius: 4px;
-    border: none;
-    transition: 0.5s;
-    width: 0%;
-    ${(props) =>
-      props.progress &&
-      css`
-        width: ${props.progress * 50}%;
-      `};
-
-    background-color: #00b7ff;
+  @media screen and (max-width: 768px) {
+    margin-top: 15px;
   }
 `;

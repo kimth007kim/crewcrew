@@ -38,7 +38,7 @@ const SignStep1 = styled.ul`
   margin-bottom: 80px;
   & > li {
     width: 100%;
-    margin-right: 16px;
+    margin-right: 10px;
   }
 
   & > li:last-child {
