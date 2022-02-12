@@ -3,11 +3,13 @@ package matchTeam.crewcrew.dto.board;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.board.BoardApproach;
 
 import java.time.LocalDate;
 
+@NoArgsConstructor
 @Getter
 public class BoardSaveResponseDTO {
     private Long id;
