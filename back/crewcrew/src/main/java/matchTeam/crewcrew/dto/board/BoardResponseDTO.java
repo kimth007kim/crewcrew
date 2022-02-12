@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.board.BoardApproach;
+import matchTeam.crewcrew.entity.board.Category;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ public class BoardResponseDTO {
     private Integer totalCrew;
     private Integer approachCode;
     private Long categoryId;
+    private Long categoryParentId;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -38,6 +40,7 @@ public class BoardResponseDTO {
         this.totalCrew = res.getTotalCrew();
         this.approachCode = res.getApproach().getApproachCode();
         this.categoryId = res.getCategory().getId();
+        this.categoryParentId = res.getCategory().getCategoryParent().getId();
         this.createdDate = res.getCreatedDate();
         this.expiredDate = res.getExpiredDate();
     }
