@@ -17,6 +17,7 @@ public class BoardSaveResponseDTO {
     private Integer totalCrew;
     private Integer approachCode;
     private Long categoryId;
+    private Long categoryParentId;
     private LocalDate expiredDate;
 
     @Builder
@@ -28,6 +29,7 @@ public class BoardSaveResponseDTO {
         this.totalCrew = res.getTotalCrew();
         this.approachCode = res.getApproach().getApproachCode();
         this.categoryId = res.getCategory().getId();
+        this.categoryParentId = res.getCategory().getCategoryParent().getId();
         this.expiredDate = res.getExpiredDate();
     }
 }
