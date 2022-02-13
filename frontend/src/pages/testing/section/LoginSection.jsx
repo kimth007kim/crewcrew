@@ -5,6 +5,7 @@
 import React, { useCallback, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
+import axios from 'axios';
 import CheckOff from '../../../assets/images/LogInCheck_off.png';
 import CheckOn from '../../../assets/images/LogInCheck_on.png';
 import Naver from '../../../assets/images/Naver.png';
@@ -18,6 +19,7 @@ function LoginSection({ IsClick, HandleClick }) {
   const [IsChecked, setIsChecked] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [BtnLoading, setBtnLoading] = useState(false);
   const [Valid, setValid] = useState(true);
 
   const MovePasswordFind = useCallback(() => {
@@ -46,9 +48,29 @@ function LoginSection({ IsClick, HandleClick }) {
     setPassword('');
   }, []);
 
-  const HandleSubmitLogin = useCallback((e) => {
-    e.preventDefault();
-  }, []);
+  const HandleSubmitLogin = useCallback(
+    (e) => {
+      e.preventDefault();
+      async function axiosPost() {
+        try {
+          setBtnLoading(true);
+          const context = {
+            email,
+            password,
+          };
+          console.log(context);
+          const { data } = await axios.post(`${process.env.API_URL}/sign/login`, context);
+          console.log(data);
+        } catch (error) {
+          console.dir(error);
+        } finally {
+          setBtnLoading(false);
+        }
+      }
+      axiosPost();
+    },
+    [email, password],
+  );
 
   return (
     <LoginContents active={IsClick === 0}>

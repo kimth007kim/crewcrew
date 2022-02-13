@@ -2,6 +2,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // 추가 코드
+const Dotenv = require('dotenv-webpack');
 const path = require('path');
 
 const port = process.env.PORT || 3000;
@@ -86,5 +87,6 @@ module.exports = {
       filename: 'style.css',
     }),
     new CleanWebpackPlugin(),
+    new Dotenv(),
   ],
 };

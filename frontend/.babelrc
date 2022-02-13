@@ -7,7 +7,8 @@
         "rootPathPrefix": "~",
         "rootPathSuffix": "src"
       }
-    ]
+    ],
+    "@babel/plugin-transform-runtime"
   ],
   "env": {
     "development": {
