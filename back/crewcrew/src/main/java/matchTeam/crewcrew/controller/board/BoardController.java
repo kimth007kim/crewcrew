@@ -80,7 +80,7 @@ public class BoardController {
     @DeleteMapping("/board/{id}")
     public ResponseEntity<Object> delete(@PathVariable Long id){
         boardService.delete(id);
-        return ResponseHandler.generateResponse("%d번 게시글이 삭제 성공" + id, HttpStatus.OK, id);
+        return ResponseHandler.generateResponse(id+"번 게시글이 삭제 성공", HttpStatus.OK, id);
     }
 
 

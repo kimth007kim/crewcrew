@@ -32,7 +32,6 @@ public class CategoryService {
         if (category.getCategoryParent() == null) {
             throw new SelectCategoryException();
         }
-
         return EachCategoryResponseDTO.builder().res(category).build();
     }
 

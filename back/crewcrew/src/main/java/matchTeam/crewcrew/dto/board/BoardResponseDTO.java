@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 public class BoardResponseDTO {
-    private Long id;
+    private Long boardId;
     private String title;
     private Long userId;
     private String boardContent;
@@ -33,7 +33,7 @@ public class BoardResponseDTO {
 
     @Builder
     public BoardResponseDTO(Board res) {
-        this.id = res.getId();
+        this.boardId = res.getId();
         this.title = res.getTitle();
         this.userId = res.getUser().getUid();
         this.boardContent = res.getBoardContent();

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 public class BoardSaveResponseDTO {
-    private Long id;
+    private Long boardId;
     private String title;
     private String boardContent;
     private Integer recruitedCrew;
@@ -24,7 +24,7 @@ public class BoardSaveResponseDTO {
 
     @Builder
     public BoardSaveResponseDTO(Board res) {
-        this.id = res.getId();
+        this.boardId = res.getId();
         this.title = res.getTitle();
         this.boardContent = res.getBoardContent();
         this.recruitedCrew = res.getRecruitedCrew();

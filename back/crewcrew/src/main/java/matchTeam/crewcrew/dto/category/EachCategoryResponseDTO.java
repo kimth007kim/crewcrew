@@ -9,8 +9,8 @@ import matchTeam.crewcrew.entity.board.Category;
 @Getter
 public class EachCategoryResponseDTO {
     private Long categoryParentId;
-    private String categoryParentName;
     private Long categoryId;
+    private String categoryParentName;
     private String categoryName;
 
     @Builder
@@ -18,5 +18,6 @@ public class EachCategoryResponseDTO {
         this.categoryParentId = res.getCategoryParent().getId();
         this.categoryId = res.getId();
         this.categoryName = res.getCategoryName();
+        this.categoryParentName = res.getCategoryParent().getCategoryName();
     }
 }
