@@ -2,7 +2,7 @@ package matchTeam.crewcrew.service.user;
 
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.repository.user.UserRepository;
-import matchTeam.crewcrew.response.exception.CUserNotFoundException;
+import matchTeam.crewcrew.response.exception.auth.CUserNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;

@@ -3,11 +3,11 @@ package matchTeam.crewcrew.service.user;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import matchTeam.crewcrew.dto.social.KakaoProfile;
 import matchTeam.crewcrew.dto.social.NaverProfile;
 import matchTeam.crewcrew.dto.social.RetNaverOAuth;
-import matchTeam.crewcrew.response.exception.CCommunicationException;
-import matchTeam.crewcrew.response.exception.CKakaoCommunicationException;
+import matchTeam.crewcrew.response.exception.auth.CCommunicationException;
+import matchTeam.crewcrew.response.exception.auth.CKakaoCommunicationException;
+import matchTeam.crewcrew.response.exception.auth.CNaverCommunicationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
@@ -65,7 +65,7 @@ public class NaverService {
 
         if(response.getStatusCode()== HttpStatus.OK)
             return gson.fromJson(response.getBody(), RetNaverOAuth.class);
-        throw new CCommunicationException();
+        throw new CNaverCommunicationException();
     }
 
     public NaverProfile getNaverProfile(String token){
@@ -77,7 +77,7 @@ public class NaverService {
         MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
 
         String requestUrl = env.getProperty("social.naver.url.profile");
-        if(requestUrl==null) throw new CCommunicationException();
+        if(requestUrl==null) throw new CNaverCommunicationException();
 
 
         HttpEntity<MultiValueMap<String,String>> request = new HttpEntity<>(null,headers);
@@ -89,8 +89,8 @@ public class NaverService {
             log.error("header : "+ response.getHeaders());
         }catch(Exception e){
             log.error(e.toString());
-            throw new CKakaoCommunicationException();
+            throw new CNaverCommunicationException();
         }
-        throw new CKakaoCommunicationException();
+        throw new CNaverCommunicationException();
     }
 }

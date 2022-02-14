@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import matchTeam.crewcrew.dto.social.KakaoProfile;
 import matchTeam.crewcrew.dto.social.RetKakaoOAuth;
-import matchTeam.crewcrew.response.exception.CCommunicationException;
-import matchTeam.crewcrew.response.exception.CKakaoCommunicationException;
+import matchTeam.crewcrew.response.exception.auth.CCommunicationException;
+import matchTeam.crewcrew.response.exception.auth.CKakaoCommunicationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
@@ -72,12 +72,12 @@ public class KakaoService {
 
         if(response.getStatusCode()== HttpStatus.OK)
             return gson.fromJson(response.getBody(), RetKakaoOAuth.class);
-        throw new CCommunicationException();
+        throw new CKakaoCommunicationException();
     }
 
     public void kakaoUnlink(String accessToken) {
         String unlinkUrl =env.getProperty("social.kakao.url.unlink");
-        if(unlinkUrl==null) throw new CCommunicationException();
+        if(unlinkUrl==null) throw new CKakaoCommunicationException();
 
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -90,6 +90,6 @@ public class KakaoService {
             log.info("unlink "+ response.getBody());
             return;
         }
-        throw new CCommunicationException();
+        throw new CKakaoCommunicationException();
     }
 }

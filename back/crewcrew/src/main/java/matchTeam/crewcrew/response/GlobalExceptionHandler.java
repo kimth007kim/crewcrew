@@ -1,7 +1,6 @@
 package matchTeam.crewcrew.response;
 
-import matchTeam.crewcrew.response.exception.CKakaoCommunicationException;
-import matchTeam.crewcrew.response.exception.*;
+import matchTeam.crewcrew.response.exception.auth.*;
 import matchTeam.crewcrew.response.exception.board.BoardNotFoundException;
 import matchTeam.crewcrew.response.exception.board.CategoryNotFoundException;
 import matchTeam.crewcrew.response.exception.board.ExpiredDateBeforeTodayException;
@@ -93,6 +92,12 @@ public class  GlobalExceptionHandler {
     /**
      * 여기서 작성하지 않은 다른 모든 예외에 대해 처리한다. 이 때 500 status code와 함께 반환한다.
      */
+
+    /**
+     * 예외가 발생했는데 아직 지정되지않은 예외일 경우
+     */
+    
+    
 //    @ExceptionHandler(Exception.class)
 //    protected ResponseEntity<ErrorResponseHandler> handleException(Exception e) {
 //        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EXCEPTION);
@@ -100,33 +105,26 @@ public class  GlobalExceptionHandler {
 //    }
 
 
-
-
     /**
-     * 로그인을 할때 이메일이 존재하지않을때 예외처리를 발생한다.
+     * 토큰에 권한이 부족할경우에 발생하는 예외
      */
-    @ExceptionHandler(LoginFailedByEmailNotExistException.class)
-    protected ResponseEntity<ErrorResponseHandler> emailLoginFailedException(LoginFailedByEmailNotExistException e){
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.LOGIN_FAILED_BY_EMAIL);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    /**
-     * 로그인을 할때 이메일이 존재하지않을때 예외처리를 발생한다.
-     */
-    @ExceptionHandler(LoginFailedByPasswordException.class)
-    protected ResponseEntity<ErrorResponseHandler> loginFailedByPasswordException(LoginFailedByPasswordException e){
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.LOGIN_FAILED_BY_PASSWORD);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(CAuthenticationEntryPointException.class)
+    protected ResponseEntity<ErrorResponseHandler> authenticationEntrypointException(CAuthenticationEntryPointException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.AUTHENTICATION_ENTRY);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
     /**
-     * 로그인을 할때 이메일이 존재하지않을때 예외처리를 발생한다.
+     * 접근이 거부되었을때 발생하는 예외
      */
-    @ExceptionHandler(EmailSignUpFailedCException.class)
-    protected ResponseEntity<ErrorResponseHandler> signUpFailedException(EmailSignUpFailedCException e){
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.SIGN_UP_FAILED);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    
+    @ExceptionHandler(CAccessDeniedException.class)
+    protected ResponseEntity<ErrorResponseHandler> accessDeniedException(CAccessDeniedException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.ACCESS_DENIED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+
+
 
     /**
      * 번호로 조회할 경우 해당 게시판이 존재하지 않을 때의 예외처리
@@ -164,60 +162,10 @@ public class  GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(CAuthenticationEntryPointException.class)
-    protected ResponseEntity<ErrorResponseHandler> authenticationEntrypointException(CAuthenticationEntryPointException e){
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.AUTHENTICATION_ENTRY);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(CAccessDeniedException.class)
-    protected ResponseEntity<ErrorResponseHandler> accessDeniedException(CAccessDeniedException e){
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.ACCESS_DENIED);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
 
 
 
-
-    @ExceptionHandler(CUserNotFoundException.class)
-    protected ResponseEntity<ErrorResponseHandler> userNotFoundException(CUserNotFoundException e){
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.USER_NOT_FOUND);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(CUserAlreadyExistException.class)
-    protected ResponseEntity<ErrorResponseHandler> userAlreadyExistException(CUserAlreadyExistException e){
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.USER_ALREADY_EXIST);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(CKakaoCommunicationException.class)
-    protected ResponseEntity<ErrorResponseHandler> userNotFoundException(CKakaoCommunicationException e){
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.KAKAO_COMMUNICATION_FAILED);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    @ExceptionHandler(CEmailCodeNotMatchException.class)
-    protected ResponseEntity<ErrorResponseHandler> emailCodeMatchException(CEmailCodeNotMatchException e){
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EMAIL_CODE_NOT_MATCH);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    @ExceptionHandler(CNotValidEmailException.class)
-    protected ResponseEntity<ErrorResponseHandler> emailnotValidException(CNotValidEmailException e){
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EMAIL_NOT_VALID);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(CNotVerifiedEmailException.class)
-    protected ResponseEntity<ErrorResponseHandler> emailSendException(CNotVerifiedEmailException e){
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EMAIL_CODE_NOT_VERIFIED);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    @ExceptionHandler(CInvalidTokenException.class)
-    protected ResponseEntity<ErrorResponseHandler> invalidTokenException(CInvalidTokenException e){
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.INVALID_TOKEN);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
+//
 
 
 

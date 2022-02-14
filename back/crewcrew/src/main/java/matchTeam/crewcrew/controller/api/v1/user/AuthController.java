@@ -1,8 +1,6 @@
 package matchTeam.crewcrew.controller.api.v1.user;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.config.security.JwtProvider;
 import matchTeam.crewcrew.dto.social.*;
@@ -13,17 +11,20 @@ import matchTeam.crewcrew.dto.user.UserLoginRequestDto;
 import matchTeam.crewcrew.dto.user.UserSignUpRequestDto;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.response.ResponseHandler;
-import matchTeam.crewcrew.response.exception.CNotValidEmailException;
-import matchTeam.crewcrew.response.exception.CSocialAgreementException;
-import matchTeam.crewcrew.response.exception.CUserAlreadyExistException;
-import matchTeam.crewcrew.response.exception.CUserNotFoundException;
+import matchTeam.crewcrew.response.exception.auth.CNotValidEmailException;
+import matchTeam.crewcrew.response.exception.auth.CSocialAgreementException;
+import matchTeam.crewcrew.response.exception.auth.CUserAlreadyExistException;
+import matchTeam.crewcrew.response.exception.auth.CUserNotFoundException;
 import matchTeam.crewcrew.service.user.EmailService;
 import matchTeam.crewcrew.service.user.KakaoService;
 import matchTeam.crewcrew.service.user.NaverService;
 import matchTeam.crewcrew.service.user.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.Cookie;
 
 @Api(tags = "1. Auth")
 @RequiredArgsConstructor
@@ -39,26 +40,146 @@ public class AuthController {
     private final NaverService naverService;
     private final JwtProvider jwtProvider;
 
-    @ApiOperation(value = "이메일 로그인", notes = "이메일로 로그인")
-    @PostMapping("/login")
-    public ResponseEntity<Object> login(
-            @ApiParam(value = "로그인 요청 DTO", required = true) @RequestBody UserLoginRequestDto userLoginRequestDto) {
 
-        TokenDto tokenDto = userService.login(userLoginRequestDto);
-        return ResponseHandler.generateResponse("Login Page", HttpStatus.OK, tokenDto);
+
+    @ApiOperation(value ="이메일 인증코드 발송" ,notes="1. 유효한 이메일 인지 확인합니다.\n " +
+            "2. 이미 같은 이메일로 가입되어있는지 확인합니다\n" +
+            "3. 1,2번 조건을 만족했다면 해당 메일로 인증코드를 보냅니다.")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "인증번호 발송 성공"
+                    ,response = String.class
+            )
+            , @ApiResponse(
+            code = 1001
+            , message ="이메일 형식이 유효하지않습니다."
+            )
+            , @ApiResponse(
+            code = 1002
+            , message ="이미 존재하는 유저입니다."
+            )
+    })
+    @PostMapping("/email/send")
+    public ResponseEntity<Object> SendEmail(String email) {
+        //email 주소 형식 에  맞는지 확인하는 메서드
+        if (emailService.isValidEmailAddress(email)==false){
+            throw new CNotValidEmailException();
+//            1001 이메일이 유효하지 않다.
+        }
+
+        //이미 가입되었는지 확인하는 메서드
+        if (userService.findByEmailAndProvider(email, "local").isPresent()){
+            throw new CUserAlreadyExistException();
+//            1002 이미 존재하는 유저이다.
+        }
+        // 이메일 전송하는메서드
+        String code = emailService.sendEmailMessage(email);
+
+        return ResponseHandler.generateResponse("인증번호 발송 성공", HttpStatus.OK, code);
+
+    }
+    @ApiOperation(value ="이메일 인증코드 유효성 검사" ,notes="이메일로 발송한 인증코드와 사용자가 입력한 인증코드가 맞는지 확인합니다.")
+    @PostMapping("/email/verify")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "인증번호 인증 성공"
+            )
+            , @ApiResponse(
+            code = 1003
+            , message ="발급된 인증 코드가 이메일과 다릅니다."
+    )
+    })
+    public ResponseEntity<Object> CodeVerify(String code,String email) {
+        emailService.getUserIdByCode(code,email);
+        //1003 발급된 인증 코드가 이메일과 일치하지않는다.
+        System.out.println(code);
+        return ResponseHandler.generateResponse("인증번호 인증 성공", HttpStatus.OK, null);
 
     }
 
-
     @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
     @PostMapping("/signup")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "회원가입 성공"
+                    ,response = Long.class
+            )
+            , @ApiResponse(
+            code = 1004
+            , message ="이메일 인증이 되지않은 이메일 주소입니다."
+    )
+            , @ApiResponse(
+            code = 1005
+            , message ="현재 입력한 이메일을 가진 유저가 이미 존재합니다. "
+    )
+    })
+
     public ResponseEntity<Object> signup(
             @ApiParam(value = "회원 가입 요청", required = true)
             @RequestBody LocalSignUpRequestDto localSignUpRequestDto) {
         emailService.checkVerifiedEmail(localSignUpRequestDto.getEmail());
+        //1004 이메일인증이 안된 이메일
         Long signupId = userService.signup(localSignUpRequestDto);
-        return ResponseHandler.generateResponse("Sign up Success", HttpStatus.OK, signupId);
+        //1005 현재 입력한 이메일로 이미 존재할 경우
+        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signupId);
     }
+
+    @ApiOperation(value = "이메일 로그인", notes = "이메일로 로그인")
+    @PostMapping("/login")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "회원가입 성공"
+                    ,response = TokenDto.class
+            )
+            , @ApiResponse(
+            code = 1101
+            , message ="존재하지 않는 이메일 입니다."
+    )
+            , @ApiResponse(
+            code = 1102
+            , message ="비밀번호가 이메일과 일치하지않습니다."
+    )
+    })
+    public ResponseEntity<Object> login(
+            @ApiParam(value = "로그인 요청 DTO", required = true) @RequestBody UserLoginRequestDto userLoginRequestDto) {
+
+        TokenDto tokenDto = userService.login(userLoginRequestDto);
+        return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK, tokenDto);
+
+    }
+
+
+    @ApiOperation(value = "이메일 로그인 HTTP ONLY COOKIE사용", notes = "이메일로 로그인")
+    @PostMapping("/login/cookie")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "회원가입 성공"
+                    ,response = ResponseCookie.class
+            )
+            , @ApiResponse(
+            code = 1101
+            , message ="존재하지 않는 이메일 입니다."
+    )
+            , @ApiResponse(
+            code = 1102
+            , message ="비밀번호가 이메일과 일치하지않습니다."
+    )
+    })
+    public ResponseEntity<Object> loginCookie(
+            @ApiParam(value = "로그인 요청 DTO", required = true) @RequestBody UserLoginRequestDto userLoginRequestDto) {
+
+        TokenDto tokenDto = userService.login(userLoginRequestDto);
+        ResponseCookie cookie= jwtProvider.createTokenCookie(tokenDto.getRefreshToken());
+        return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK, cookie);
+
+    }
+
+
 
     @ApiOperation(value = "엑세스,리프레시 토큰 재발급"
             , notes = "엑세스 리프레시 토큰 만료시 회원 검증 후 리프레시 토큰을 검증해서 엑세스 토큰과 리프레시 토큰을 재발급한다.")
@@ -173,34 +294,6 @@ public class AuthController {
     }
 
 
-    @ApiOperation(value ="이메일 인증코드 발송" ,notes="1. 유효한 이메일 인지 확인합니다.\n " +
-            "2. 이미 같은 이메일로 가입되어있는지 확인합니다\n" +
-            "3. 1,2번 조건을 만족했다면 해당 메일로 인증코드를 보냅니다.")
-    @PostMapping("/send")
-    public ResponseEntity<Object> SendEmail(String email) {
-        //email 주소 형식 에  맞는지 확인하는 메서드
-        if (emailService.isValidEmailAddress(email)==false){
-            throw new CNotValidEmailException();
-        }
-
-        //이미 가입되었는지 확인하는 메서드
-        if (userService.findByEmailAndProvider(email, "local").isPresent()){
-            throw new CUserAlreadyExistException();
-        }
-        // 이메일 전송하는메서드
-        String code = emailService.sendEmailMessage(email);
-
-        return ResponseHandler.generateResponse("인증번호 발송 성공", HttpStatus.OK, code);
-
-    }
-    @ApiOperation(value ="이메일 인증코드 유효성 검사" ,notes="이메일로 발송한 인증코드와 사용자가 입력한 인증코드가 맞는지 확인합니다.")
-    @PostMapping("/verify")
-    public ResponseEntity<Object> CodeVerify(String code,String email) {
-        emailService.getUserIdByCode(code,email);
-        System.out.println(code);
-        return ResponseHandler.generateResponse("인증번호 인증 성공", HttpStatus.OK, null);
-
-    }
 
 
 }

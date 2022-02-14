@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.response.exception;
+package matchTeam.crewcrew.response.exception.auth;
 
 public class EmailSignUpFailedCException extends RuntimeException {
     public EmailSignUpFailedCException(){

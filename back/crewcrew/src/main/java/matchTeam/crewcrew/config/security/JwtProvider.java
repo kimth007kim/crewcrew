@@ -1,17 +1,19 @@
 package matchTeam.crewcrew.config.security;
 
+import freemarker.template.utility.StringUtil;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import matchTeam.crewcrew.dto.security.TokenDto;
-import matchTeam.crewcrew.response.exception.CAuthenticationEntryPointException;
-import matchTeam.crewcrew.response.exception.CInvalidTokenException;
+import matchTeam.crewcrew.response.exception.auth.CAuthenticationEntryPointException;
 import matchTeam.crewcrew.service.user.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -83,6 +85,15 @@ public class JwtProvider {
         UserDetails userDetails =userDetailsService.loadUserByUsername(claims.getSubject());
         return new UsernamePasswordAuthenticationToken(userDetails,"",userDetails.getAuthorities());
 
+    }
+
+    public ResponseCookie createTokenCookie( String token){
+      return ResponseCookie.from("refreshToken",token)
+              .httpOnly(true)
+              .secure(true)
+              .path("/")
+              .maxAge(60*30L)
+              .build();
     }
 
     public Claims parseClaims(String token) {

@@ -2,8 +2,8 @@ package matchTeam.crewcrew.service.user;
 
 import lombok.AllArgsConstructor;
 import matchTeam.crewcrew.config.RedisUtil;
-import matchTeam.crewcrew.response.exception.CEmailCodeNotMatchException;
-import matchTeam.crewcrew.response.exception.CNotVerifiedEmailException;
+import matchTeam.crewcrew.response.exception.auth.CEmailCodeNotMatchException;
+import matchTeam.crewcrew.response.exception.auth.CNotVerifiedEmailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 

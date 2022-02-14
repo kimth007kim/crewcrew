@@ -1,8 +1,8 @@
 package matchTeam.crewcrew.controller;
 
 import lombok.RequiredArgsConstructor;
-import matchTeam.crewcrew.response.exception.CAccessDeniedException;
-import matchTeam.crewcrew.response.exception.CAuthenticationEntryPointException;
+import matchTeam.crewcrew.response.exception.auth.CAccessDeniedException;
+import matchTeam.crewcrew.response.exception.auth.CAuthenticationEntryPointException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -13,7 +13,7 @@ import matchTeam.crewcrew.entity.security.RefreshToken;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.repository.security.RefreshTokenJpaRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
-import matchTeam.crewcrew.response.exception.*;
+import matchTeam.crewcrew.response.exception.auth.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -74,6 +74,7 @@ public class UserService {
     public TokenDto reissue(TokenRequestDto tokenRequestDto) {
         if (!jwtProvider.validateToken(tokenRequestDto.getRefreshToken())) {
             throw new CRefreshTokenException();
+            //1901 리프레시토큰이 유효하지않습니다.
         }
 
         //AccessToken 에서 UserPk가져오기
@@ -84,12 +85,15 @@ public class UserService {
         //userPk로 user검색 /repo에 저장된 refreshtoken이 없음
         User user = userRepository.findById(Long.parseLong(authentication.getName()))
                 .orElseThrow(CUserNotFoundException::new);
+        //1902 토큰의 pk로 유저를 찾을수 없습니다.
         RefreshToken refreshToken = refreshTokenJpaRepository.findByPkey(user.getUid())
-                .orElseThrow(CRefreshTokenException::new);
+                .orElseThrow(CRefreshTokenNotExistInDBException::new);
+        //1903 DB에 해당 Refresh 토큰이 존재하지않습니다.
 
         // 리프레시 토큰 불일치 에러
         if (!refreshToken.getToken().equals(tokenRequestDto.getRefreshToken()))
-            throw new CRefreshTokenException();
+            throw new CRefreshTokenNotMatchWithInputException();
+        //입력받은 Refresh 토큰이 DB에 저장된 Refresh 토큰과 다릅니다.
 
         //AccessToken , refreshToken 토큰 재발급 ,리프레시 토큰 저장
         TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles());
@@ -102,7 +106,7 @@ public class UserService {
         Optional<User> user=userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(),userSignUpRequestDto.getProvider());
         System.out.println(user);
         if (userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(),userSignUpRequestDto.getProvider())
-                .isPresent()) throw new CUserAlreadyExistException();
+                .isPresent()) throw new CKakaoUserAlreadyExistException();
         return userRepository.save(userSignUpRequestDto.toEntity("kakao")).getUid();
     }
     public Long naverSignup(UserSignUpRequestDto userSignUpRequestDto){
