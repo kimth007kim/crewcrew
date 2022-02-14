@@ -10,7 +10,7 @@ public class ResponseHandler {
     public static ResponseEntity<Object> generateResponse(String message, HttpStatus status, Object responseObj) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("status", 200);
-        map.put("message", "성공");
+        map.put("message", message);
         map.put("data", responseObj);
         map.put("error", false);
 

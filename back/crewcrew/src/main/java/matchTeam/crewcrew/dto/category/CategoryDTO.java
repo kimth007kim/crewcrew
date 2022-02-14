@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class CategoryDTO {
-    private Long id;
+    private Long categoyId;
     private String categoryName;
     private List<CategoryDTO> children;
 
