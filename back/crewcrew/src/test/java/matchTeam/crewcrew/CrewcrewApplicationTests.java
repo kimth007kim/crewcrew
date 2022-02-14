@@ -1,6 +1,5 @@
 package matchTeam.crewcrew;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
@@ -8,8 +7,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootTest
 class CrewcrewApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+//	@Test
+//	void contextLoads() {
+//	}
 
 }

@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.controller.user;
+package matchTeam.crewcrew.controller.api.v1.user;
 
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -54,6 +54,8 @@ public class UserController {
         return ResponseHandler.generateResponse("Login Success", HttpStatus.OK, user);
 
     }
+
+
 
 
 
