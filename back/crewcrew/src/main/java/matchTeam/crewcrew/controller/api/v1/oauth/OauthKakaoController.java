@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.controller.oauth;
+package matchTeam.crewcrew.controller.api.v1.oauth;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;

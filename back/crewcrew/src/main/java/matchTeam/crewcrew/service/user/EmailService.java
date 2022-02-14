@@ -24,20 +24,28 @@ public class EmailService {
         mailMessage.setTo(email);
         mailMessage.setSubject("크루크루 회원가입 이메일 인증코드입니다.");
         mailMessage.setText("[인증 코드]: "+code);
+        StringBuilder sb = new StringBuilder();
+        sb.append("code_");
+        sb.append(email);
+        String verifier= sb.toString();
         emailSenderService.sendEmail(mailMessage);
-        redisUtil.setDataExpire(code,email,60*5L);
+        redisUtil.setDataExpire(verifier,code,60*3L);
         return code;
     }
 
-    public void getUserIdByCode(String code){
-        String email=redisUtil.getData(code);
-        if (email == null){
+    public void getUserIdByCode(String code,String email){
+        StringBuilder sb = new StringBuilder();
+        sb.append("code_");
+        sb.append(email);
+        System.out.println(sb);
+        String result=redisUtil.getData(sb.toString());
+        if (result == null){
             throw new CEmailCodeNotMatchException();
         }
         redisUtil.setDataExpire(email,"true",60*30L);
     }
 
-    public void checkCode(String email){
+    public void checkVerifiedEmail(String email){
         String check=redisUtil.getData(email);
         if (check == null){
             throw new CNotVerifiedEmailException();
@@ -45,10 +53,11 @@ public class EmailService {
     }
 
     private String createCode(){
+        // 아예 영어로 바꾸고 길이를 줄이자! 원래 12자 에 all 숫자
         Random random= new Random();
-        int length=12;
+        int length=6;
         String code = random
-                .ints(48,58)
+                .ints(65,91)
                 .limit(length)
                 .collect(StringBuilder::new,StringBuilder::appendCodePoint,StringBuilder::append)
                 .toString();
