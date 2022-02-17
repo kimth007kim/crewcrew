@@ -1,13 +1,14 @@
 package matchTeam.crewcrew.dto.board;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import matchTeam.crewcrew.entity.board.Board;
-import matchTeam.crewcrew.entity.board.BoardApproach;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
@@ -21,7 +22,12 @@ public class BoardSaveResponseDTO {
     private Integer approachCode;
     private Long categoryId;
     private Long categoryParentId;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime createdDate;
     private LocalDate expiredDate;
+    private Long hit;
 
     @Builder
     public BoardSaveResponseDTO(Board res) {
@@ -31,9 +37,11 @@ public class BoardSaveResponseDTO {
         this.boardContent = res.getBoardContent();
         this.recruitedCrew = res.getRecruitedCrew();
         this.totalCrew = res.getTotalCrew();
-        this.approachCode = res.getApproach().getApproachCode();
+        this.approachCode = res.getApproach();
         this.categoryId = res.getCategory().getId();
         this.categoryParentId = res.getCategory().getCategoryParent().getId();
         this.expiredDate = res.getExpiredDate();
+        this.createdDate = res.getCreatedDate();
+        this.hit = res.getHit();
     }
 }

@@ -1,10 +1,8 @@
 package matchTeam.crewcrew.board;
 import matchTeam.crewcrew.entity.board.Board;
-import matchTeam.crewcrew.entity.board.BoardApproach;
 import matchTeam.crewcrew.repository.board.BoardRepository;
 import matchTeam.crewcrew.repository.board.CategoryRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
-import matchTeam.crewcrew.response.exception.board.BoardNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

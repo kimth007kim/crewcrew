@@ -1,10 +1,6 @@
 package matchTeam.crewcrew.response;
 
 import matchTeam.crewcrew.response.exception.auth.*;
-import matchTeam.crewcrew.response.exception.board.BoardNotFoundException;
-import matchTeam.crewcrew.response.exception.category.CategoryNotFoundException;
-import matchTeam.crewcrew.response.exception.board.ExpiredDateBeforeTodayException;
-import matchTeam.crewcrew.response.exception.category.SelectCategoryException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;

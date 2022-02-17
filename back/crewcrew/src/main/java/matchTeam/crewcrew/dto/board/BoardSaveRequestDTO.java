@@ -6,10 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import matchTeam.crewcrew.entity.board.Board;
-import matchTeam.crewcrew.entity.board.BoardApproach;
 import matchTeam.crewcrew.repository.board.CategoryRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
-import matchTeam.crewcrew.response.exception.category.CategoryNotFoundException;
+import matchTeam.crewcrew.response.exception.category.NotExistCategoryException;
 import matchTeam.crewcrew.util.customException.UserNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -40,7 +39,7 @@ public class BoardSaveRequestDTO {
 
     @ApiModelProperty(value = "온라인 or 오프라인", notes = "0은 오프라인, 1은 온라인", required = true, example = "1")
     @NotNull(message = "모집방식을 선택해주세요.")
-    private BoardApproach approach;
+    private Integer approachCode;
 
     private Long uid;
 
@@ -63,13 +62,7 @@ public class BoardSaveRequestDTO {
         this.boardContent = boardContent;
         this.recruitedCrew = recruitedCrew;
         this.totalCrew = totalCrew;
-
-        if (approachCode == 0){
-            this.approach = BoardApproach.APPROACH_OFFLINE;
-        } else if(approachCode == 1){
-            this.approach = BoardApproach.APPROACH_ONLINE;
-        }
-
+        this.approachCode = approachCode;
         this.uid = uid;
         this.categoryId = categoryId;
         this.expiredDate = expiredDate;
@@ -81,10 +74,10 @@ public class BoardSaveRequestDTO {
                 .title(req.title)
                 .boardContent(req.boardContent)
                 .recruitedCrew(req.recruitedCrew)
-                .totalCrew(totalCrew)
-                .approach(approach)
+                .totalCrew(req.totalCrew)
+                .approach(req.approachCode)
                 .user(userRepository.findById(req.getUid()).orElseThrow(UserNotFoundException::new))
-                .category(categoryRepository.findById(req.getCategoryId()).orElseThrow(CategoryNotFoundException::new))
+                .category(categoryRepository.findById(req.getCategoryId()).orElseThrow(NotExistCategoryException::new))
                 .expiredDate(req.expiredDate)
                 .build();
     }

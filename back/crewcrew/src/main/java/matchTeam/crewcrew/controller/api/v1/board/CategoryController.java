@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(value = "3. Category Controller", tags = "category")
+@Api(value = "Category Controller", tags = " 3. category")
 @RequiredArgsConstructor
 @RestController
 public class CategoryController {

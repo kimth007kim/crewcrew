@@ -5,8 +5,8 @@ import matchTeam.crewcrew.dto.category.CategoryDTO;
 import matchTeam.crewcrew.dto.category.EachCategoryResponseDTO;
 import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.repository.board.CategoryRepository;
-import matchTeam.crewcrew.response.exception.category.CategoryNotFoundException;
-import matchTeam.crewcrew.response.exception.category.SelectCategoryException;
+import matchTeam.crewcrew.response.exception.category.NotExistCategoryException;
+import matchTeam.crewcrew.response.exception.category.AskNotDetailCategoryException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,10 +26,10 @@ public class CategoryService {
 
     public EachCategoryResponseDTO findById(Long id){
         Category category = categoryRepository.findById(id)
-                .orElseThrow(CategoryNotFoundException::new);
+                .orElseThrow(NotExistCategoryException::new);
 
         if (category.getCategoryParent() == null) {
-            throw new SelectCategoryException();
+            throw new AskNotDetailCategoryException();
         }
         return EachCategoryResponseDTO.builder().res(category).build();
     }

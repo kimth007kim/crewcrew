@@ -54,14 +54,30 @@ public enum ErrorCode {
 
 
     //게시판 관련 에러
-    //1. 2000~2099 카테고리에 관련된 예외
-    THE_NUMBER_OF_CREW_BY_ZERO(400, "THE_NUMBER_OF_CREW_SET_ZERO", "모집인원이나 총인원이 0이하입니다"),
-    OVER_RECRUITED(400, "RECRUITED_OVER_TOTAL", "총인원이 모집인원보다 적습니다"),
-    BOARD_NOT_FOUND(400, "INVALID_BOARD_ID", "해당 게시글이 존재하지 않습니다"),
-    CATEGOTY_NOT_FOUND(501, "INVALID_CATEGORY_ID", "해당 카테고리가 존재하지 않습니다"),
-    NOT_SELECT_DETAIL_CATEGORY(400, "INVALID_DETAIL_CATEGORY", "세부 카테고리를 지정하지 않았습니다"),
-    EXPIRED_DATE_BEFORE_TODAY(400, "INVALID_EXPIRED_DATE", "만료 날짜가 오늘보다 이전입니다");
+    // 1. 2000~2099 카테고리에 관련된 예외
+    NOT_EXIST_CATEGORY(2001, "NOT EXIST CATEGORY", "존재하지 않는 카테고리 번호입니다."),
+    ASK_NOT_DETAIL_CATEGORY(2002, "ASK NOT DETAIL CATEGORY", "부모 카테고리에 대해 조회했습니다."),
 
+    // 2. 2100~2199 게시판 수정과 작성시 요청에 대한 유효성 관련 에러
+    NO_TITLE(2101, "NO TITLE", "제목이 비어있습니다."),
+    NO_CONTENT(2102,"NO CONTENT", "본문 내용이 비어있습니다."),
+    NOT_VALID_APPROACH(2103,"NOT VALID APPROACH", "유효하지 않은 모임방식입니다."),
+    NOT_SELECT_CATEGORY(2104, "NOT SELECT CATEGORY", "카테고리 값이 비어있습니다."),
+    NOT_SELECT_CHILD_CATEGORY(2105,"NOT SELECT CHILD CATEGORY", "상세 카테고리를 고르지 않았습니다."),
+    NOT_VALID_RECRUITED_CREW(2106,"NOT VALID RECRUITED CREW", "모집인원이 0이하입니다."),
+    NOT_VALID_TOTAL_CREW(2107,"NOT VALID TOTAL CREW", "총인원이 0이하입니다."),
+    OVER_RECRUITED_CREW(2108,"OVER RECRUITED CREW", "모집인원이 총인원보다 많습니다."),
+    NOT_VALID_EXPIRED_DATE(2109," NOT VALID EXPIRED DATE", "만료날짜가 오늘날짜보다 이전이거나 오늘입니다."),
+    NOT_MATCH_UID(2110, "NOT MATCH UID", "요청한 유저와 응답한 결과의 유저가 다릅니다."),
+    NOT_VALID_UID(2111, "NOT VALID UID", "존재하지 않는 유저입니다."),
+    NOT_MATCh_BOARD_ID(2112, "NOT BOARD ID", "요청한 게시판 번호와 응답한 결과의 게시판 번호가 다릅니다"),
+
+
+
+    // 3. 2201~2299 게시판 삭제에 대한 예외
+
+    // 4. 2300~2399 게시판 조회에 대한 예외
+    NOT_EXIST_BOARD_IN_ID(2401, "NOT EXIST_BOARD IN ID", "존재하지 않는 게시글 번호입니다.");
 
 
     private int status;
