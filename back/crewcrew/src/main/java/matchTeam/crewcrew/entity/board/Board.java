@@ -111,6 +111,5 @@ public class Board extends BaseTimeEntity {
 
         this.category = category;
         this.expiredDate = expiredDate;
-
     }
 }

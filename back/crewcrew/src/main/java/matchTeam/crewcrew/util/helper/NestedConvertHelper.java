@@ -1,6 +1,6 @@
 package matchTeam.crewcrew.util.helper;
 
-import matchTeam.crewcrew.response.exception.board.CannotConvertNestedStructureException;
+import matchTeam.crewcrew.response.exception.category.CannotConvertNestedStructureException;
 
 import java.util.*;
 import java.util.function.Function;

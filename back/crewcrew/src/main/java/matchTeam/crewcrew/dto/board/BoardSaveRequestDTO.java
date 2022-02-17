@@ -1,8 +1,6 @@
 package matchTeam.crewcrew.dto.board;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,12 +9,10 @@ import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.board.BoardApproach;
 import matchTeam.crewcrew.repository.board.CategoryRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
-import matchTeam.crewcrew.response.exception.board.CategoryNotFoundException;
+import matchTeam.crewcrew.response.exception.category.CategoryNotFoundException;
 import matchTeam.crewcrew.util.customException.UserNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
@@ -46,7 +42,7 @@ public class BoardSaveRequestDTO {
     @NotNull(message = "모집방식을 선택해주세요.")
     private BoardApproach approach;
 
-    private Long userId;
+    private Long uid;
 
     @ApiModelProperty(value = "카테고리 아이디", notes = "카테고리를 선택해주세요", required = true, example = "3")
     @NotNull(message = "카테고리 아이디를 입력해주세요.")
@@ -62,7 +58,7 @@ public class BoardSaveRequestDTO {
     @Builder
     public BoardSaveRequestDTO(String title, String boardContent,
                                Integer recruitedCrew, Integer totalCrew, Integer approachCode,
-                               Long userId, Long categoryId, LocalDate expiredDate) {
+                               Long uid, Long categoryId, LocalDate expiredDate) {
         this.title = title;
         this.boardContent = boardContent;
         this.recruitedCrew = recruitedCrew;
@@ -74,7 +70,7 @@ public class BoardSaveRequestDTO {
             this.approach = BoardApproach.APPROACH_ONLINE;
         }
 
-        this.userId = userId;
+        this.uid = uid;
         this.categoryId = categoryId;
         this.expiredDate = expiredDate;
     }
@@ -87,7 +83,7 @@ public class BoardSaveRequestDTO {
                 .recruitedCrew(req.recruitedCrew)
                 .totalCrew(totalCrew)
                 .approach(approach)
-                .user(userRepository.findById(req.getUserId()).orElseThrow(UserNotFoundException::new))
+                .user(userRepository.findById(req.getUid()).orElseThrow(UserNotFoundException::new))
                 .category(categoryRepository.findById(req.getCategoryId()).orElseThrow(CategoryNotFoundException::new))
                 .expiredDate(req.expiredDate)
                 .build();

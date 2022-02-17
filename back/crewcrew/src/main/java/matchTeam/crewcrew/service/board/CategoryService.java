@@ -5,13 +5,12 @@ import matchTeam.crewcrew.dto.category.CategoryDTO;
 import matchTeam.crewcrew.dto.category.EachCategoryResponseDTO;
 import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.repository.board.CategoryRepository;
-import matchTeam.crewcrew.response.exception.board.CategoryNotFoundException;
-import matchTeam.crewcrew.response.exception.board.SelectCategoryException;
+import matchTeam.crewcrew.response.exception.category.CategoryNotFoundException;
+import matchTeam.crewcrew.response.exception.category.SelectCategoryException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)

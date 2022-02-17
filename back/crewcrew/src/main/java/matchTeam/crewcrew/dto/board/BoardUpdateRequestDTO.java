@@ -15,6 +15,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 public class BoardUpdateRequestDTO {
+    private Long uid;
+    private Long boardId;
     private String title;
     private String boardContent;
     private Integer recruitedCrew;
@@ -29,9 +31,11 @@ public class BoardUpdateRequestDTO {
     private LocalDate expiredDate;
 
     @Builder
-    public BoardUpdateRequestDTO(String title, String boardContent,
-                                 Integer recruitedCrew, Integer totalCrew, Integer approachCode, Long categoryId,
-                                 LocalDate expiredDate) {
+    public BoardUpdateRequestDTO(Long uid, Long boardId, String title, String boardContent,
+                                 Integer recruitedCrew, Integer totalCrew,
+                                 Integer approachCode, Long categoryId, LocalDate expiredDate) {
+        this.uid = uid;
+        this.boardId = boardId;
         this.title = title;
         this.boardContent = boardContent;
         this.recruitedCrew = recruitedCrew;

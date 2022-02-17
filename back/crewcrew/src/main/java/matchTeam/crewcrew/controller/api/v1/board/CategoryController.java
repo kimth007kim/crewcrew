@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.controller.board;
+package matchTeam.crewcrew.controller.api.v1.board;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(value = "Category Controller", tags = "category")
+@Api(value = "3. Category Controller", tags = "category")
 @RequiredArgsConstructor
 @RestController
 public class CategoryController {

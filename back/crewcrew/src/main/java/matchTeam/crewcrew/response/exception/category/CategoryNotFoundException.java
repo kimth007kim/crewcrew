@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.response.exception.board;
+package matchTeam.crewcrew.response.exception.category;
 
 public class CategoryNotFoundException extends RuntimeException{
 

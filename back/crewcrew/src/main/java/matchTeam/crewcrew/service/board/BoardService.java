@@ -12,14 +12,10 @@ import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.repository.board.BoardRepository;
 import matchTeam.crewcrew.repository.board.CategoryRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
-import matchTeam.crewcrew.response.ErrorCode;
-import matchTeam.crewcrew.response.ResponseHandler;
-import matchTeam.crewcrew.response.exception.board.BoardNotFoundException;
-import matchTeam.crewcrew.response.exception.board.CategoryNotFoundException;
-import matchTeam.crewcrew.response.exception.board.ExpiredDateBeforeTodayException;
-import matchTeam.crewcrew.response.exception.board.SelectCategoryException;
+import matchTeam.crewcrew.response.exception.board.*;
+import matchTeam.crewcrew.response.exception.category.CategoryNotFoundException;
+import matchTeam.crewcrew.response.exception.category.NotExistCategoryException;
 import matchTeam.crewcrew.util.customException.UserNotFoundException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +32,7 @@ public class BoardService {
     @Transactional
     public BoardSaveResponseDTO save(BoardSaveRequestDTO req){
 
-        User user = userRepository.findById(req.getUserId()).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findById(req.getUid()).orElseThrow(UserNotFoundException::new);
         Category category = categoryRepository.findById(req.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
 
         //오늘 날짜보다 만료 날짜가 작을때
@@ -82,6 +78,31 @@ public class BoardService {
                 .orElseThrow(BoardNotFoundException::new);
 
         return new BoardResponseDTO(findBoard);
+    }
+    public void validSaveCheck(BoardSaveRequestDTO saveRequestDTO){
+        //제목이 비어있을 경우
+        if (saveRequestDTO.getTitle() == null) {
+            throw new NoTitleException();
+        }// 본문 내용이 비어있을 경우
+        else if (saveRequestDTO.getBoardContent() == null) {
+            throw new NoContentException();
+        }else if(saveRequestDTO.getApproach() != BoardApproach.APPROACH_OFFLINE || saveRequestDTO.getApproach() != BoardApproach.APPROACH_ONLINE){
+            throw new NotValidApproachException();
+        }else if(saveRequestDTO.getCategoryId() == null){
+            throw new NotSelectCategoryException();
+        } else if (saveRequestDTO.getCategoryId() == 1 || saveRequestDTO.getCategoryId() == 2) {
+            throw new NotSelectChildCategoryException();
+        } else if (saveRequestDTO.getRecruitedCrew() <= 0){
+            throw new NotValidRecruitedCrewException();
+        } else if(saveRequestDTO.getTotalCrew() <= 0){
+            throw new NotValidTotalCrewException();
+        }else if (saveRequestDTO.getRecruitedCrew() > saveRequestDTO.getTotalCrew()){
+            throw new OverRecruitedCrewException();
+        }else{
+            categoryRepository.findById(saveRequestDTO.getCategoryId())
+                    .orElseThrow(NotExistCategoryException::new);
+            beforeExpiredDate(saveRequestDTO.getExpiredDate());
+        }
     }
 
     public void beforeExpiredDate(LocalDate reqDate){

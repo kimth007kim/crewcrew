@@ -53,17 +53,8 @@ public enum ErrorCode {
 
 
 
-
-
-
-
-
-
-
-
-
-
     //게시판 관련 에러
+    //1. 2000~2099 카테고리에 관련된 예외
     THE_NUMBER_OF_CREW_BY_ZERO(400, "THE_NUMBER_OF_CREW_SET_ZERO", "모집인원이나 총인원이 0이하입니다"),
     OVER_RECRUITED(400, "RECRUITED_OVER_TOTAL", "총인원이 모집인원보다 적습니다"),
     BOARD_NOT_FOUND(400, "INVALID_BOARD_ID", "해당 게시글이 존재하지 않습니다"),

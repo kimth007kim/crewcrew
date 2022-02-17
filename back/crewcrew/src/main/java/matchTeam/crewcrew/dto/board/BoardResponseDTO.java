@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class BoardResponseDTO {
     private Long boardId;
     private String title;
-    private Long userId;
+    private Long uid;
     private String boardContent;
     private Integer appliedCrew;
     private Integer recruitedCrew;
@@ -31,11 +31,14 @@ public class BoardResponseDTO {
     private LocalDateTime createdDate;
     private LocalDate expiredDate;
 
+    private Long hit;
+    private Boolean viewable;
+
     @Builder
     public BoardResponseDTO(Board res) {
         this.boardId = res.getId();
         this.title = res.getTitle();
-        this.userId = res.getUser().getUid();
+        this.uid = res.getUser().getUid();
         this.boardContent = res.getBoardContent();
         this.appliedCrew = res.getAppliedCrew();
         this.recruitedCrew = res.getRecruitedCrew();
@@ -45,6 +48,8 @@ public class BoardResponseDTO {
         this.categoryParentId = res.getCategory().getCategoryParent().getId();
         this.createdDate = res.getCreatedDate();
         this.expiredDate = res.getExpiredDate();
+        this.hit = res.getHit() + 1;
+        this.viewable = res.getViewable();
     }
 
     public static BoardResponseDTO toDTO(Board board){
