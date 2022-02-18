@@ -56,7 +56,7 @@ public class BoardService {
 
         board.update(req.getTitle(), req.getBoardContent(),
                 req.getRecruitedCrew(), req.getTotalCrew(), req.getApproachCode(),
-               category, req.getExpiredDate());
+               category, req.getExpiredDate(), checkViewableInDate(req.getExpiredDate()));
 
         return id;
     }
@@ -144,6 +144,14 @@ public class BoardService {
         }
 
     }
+    public Boolean checkViewableInDate(LocalDate reqDate) {
+        if (reqDate.compareTo(getTodayDate()) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     public void beforeExpiredDate(LocalDate reqDate){
         if (reqDate.compareTo(getTodayDate()) <= 0){

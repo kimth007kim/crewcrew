@@ -96,7 +96,7 @@ public class Board extends BaseTimeEntity {
 
     public void update(String title, String boardContent,
                        Integer recruitedCrew, Integer totalCrew, Integer approachCode, Category category,
-                       LocalDate expiredDate){
+                       LocalDate expiredDate, Boolean viewable){
         this.title = title;
         this.boardContent = boardContent;
         this.recruitedCrew = recruitedCrew;
@@ -104,5 +104,6 @@ public class Board extends BaseTimeEntity {
         this.approach = approachCode;
         this.category = category;
         this.expiredDate = expiredDate;
+        this.viewable = viewable;
     }
 }
