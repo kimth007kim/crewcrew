@@ -170,6 +170,23 @@ $Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
         width: 100%;
         padding: 0 13px;
         box-sizing: border-box;
+
+        &>p{
+
+            &:nth-of-type(1){
+                margin: 40px 0 20px;
+                font-size: 18px;
+                font-weight: 200;
+                color: $black1;
+                line-height: 32px;
+            }
+    
+            &:nth-of-type(2){
+                font-size: 13px;
+                color: $black3;
+                font-weight: 400;
+            }
+        }
     }
 
     h1{
@@ -182,23 +199,6 @@ $Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
     h2{
         margin: 45px 0 10px;
         font-size: 20px;
-    }
-
-    p{
-
-        &:nth-of-type(1){
-            margin: 40px 0 20px;
-            font-size: 18px;
-            font-weight: 200;
-            color: $black1;
-            line-height: 32px;
-        }
-
-        &:nth-of-type(2){
-            font-size: 13px;
-            color: $black3;
-            font-weight: 400;
-        }
     }
 }
 
@@ -335,18 +335,18 @@ $Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
 
         .NavContInner{
             padding: 0 20px;
-        }
 
-        p{
+            &>p{
 
-            &:nth-of-type(1){
-                margin-top: 100px;
-                font-size: 13px;
-                line-height: 22px;
-            }
-
-            &:nth-of-type(2){
-                font-size: 10px;
+                &:nth-of-type(1){
+                    margin-top: 100px;
+                    font-size: 13px;
+                    line-height: 22px;
+                }
+    
+                &:nth-of-type(2){
+                    font-size: 10px;
+                }
             }
         }
 

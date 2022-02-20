@@ -139,6 +139,7 @@ em {
       -ms-flex-align: center;
           align-items: center;
   border: 1px solid #e2e2e2;
+  color: #868686;
 }
 
 .ButtonFull2Ghost:hover {
@@ -541,6 +542,223 @@ ul.InputList > li {
 .InputHide:checked ~ .LabelCheck span {
   background: url("../../src/assets/images/LogInCheck_on.png");
   background-size: 100%;
+}
+
+.CardPost {
+  width: 100%;
+  border-radius: 2px 2px 15px 15px;
+  -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+          box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  cursor: pointer;
+}
+
+.CardPost.Study {
+  border-top: 6px solid #005ec5;
+}
+
+.CardPost.Study .CardTag.Color {
+  background-color: #005ec5;
+}
+
+.CardPost.Hobby {
+  border-top: 6px solid #F7971E;
+}
+
+.CardPost.Hobby .CardTag.Color {
+  background-color: #F7971E;
+}
+
+.CardPost p {
+  font-size: 10px;
+  font-weight: 400;
+  color: #868686;
+}
+
+.CardHead {
+  padding: 10px 12px 10px 15px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.CardHead h5 {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.CardHead .CardHeadRight {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.CardHead .CardHeadRight p {
+  margin-left: 10px;
+}
+
+.CardHead .CardHeadRight .Star {
+  width: 20px;
+  height: 20px;
+  background: url("../../src/assets/images/StarOff.png") 50% 50%;
+  background-size: 90% !important;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.CardHead .CardHeadRight .Star.On {
+  background: url("../../src/assets/images/StarOn.png") 50% 50%;
+}
+
+.CardBody {
+  height: 82px;
+  padding: 10px 12px 0 15px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.CardBody .CardProfile {
+  min-width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #8d2bf5;
+}
+
+.CardBody .CardProfile img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.CardBody .CardTxt {
+  width: 100%;
+  margin-left: 15px;
+}
+
+.CardBody .CardTxt h4 {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  line-height: 18px;
+}
+
+.CardFooter {
+  padding: 10px 12px 10px 15px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.CardFooter .CardTag {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 5px 8px;
+  border-radius: 13px;
+  background-color: #a8a8a8;
+  font-size: 13px;
+  line-height: 16px;
+  color: #fff;
+  font-weight: 300;
+}
+
+.CardFooter .CardTag:not(:last-child) {
+  margin-right: 8px;
+}
+
+.CardEmpty {
+  height: 120px;
+  padding: 0 32px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+          box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.CardEmpty .CardAdd {
+  min-width: 52px;
+  height: 52px;
+}
+
+.CardEmpty p {
+  font-size: 20px;
+  font-weight: 500;
+  color: #a8a8a8;
+  margin-left: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .CardHead {
+    padding: 10px 5px;
+  }
+  .CardHead .CardHeadRight p:nth-child(1) {
+    display: none;
+  }
+  .CardHead .CardHeadRight .Star {
+    margin-left: 18px;
+  }
+  .CardBody {
+    padding: 0 5px;
+    height: 64px;
+  }
+  .CardFooter {
+    padding: 5px;
+  }
+  .CardFooter .CardTag {
+    font-size: 10px;
+    line-height: 1;
+    border-radius: 12px;
+    padding: 7px 8px;
+  }
+  .CardEmpty {
+    height: 82px;
+  }
+  .CardEmpty .CardAdd {
+    min-width: 34px;
+    height: 34px;
+  }
+  .CardEmpty p {
+    font-size: 15px;
+    margin-left: 16px;
+  }
 }
 
 body.Modal {
