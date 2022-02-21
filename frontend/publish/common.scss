@@ -350,6 +350,12 @@ ul.ChooseListUnder{
     }
 }
 
+main{
+    margin-left: 142px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
 @media screen and (max-width:768px) {
 
 
@@ -416,5 +422,11 @@ ul.ChooseListUnder{
         width: 40px;
         height: 24px;
         border-radius: 12px;
+    }
+
+    main{
+        width: 100%;
+        padding: 60px 0 70px;
+        margin: 0;
     }
 }

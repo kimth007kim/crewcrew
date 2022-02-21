@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrewCrew</title>
+    <link rel="stylesheet" href="/frontend/publish/layout/Lnb.css">
+    <link rel="stylesheet" href="/frontend/publish/fonts.css">
+    <script src="/frontend/publish/layout/Lnb.js"></script>
+</head>
+<body>
+    <header>
+        <div class="LnbWrapper"> 
+            <nav class="NavPC"> <!--pc 네비게이션-->
+                <div class="NavPCHeader">
+                    <a href="홈">
+                        <img src="../../src/assets/images/LogoCircle.png" alt="크루크루소개">
+                    </a>
+                </div>
+                <div class="NavPCBody">
+                    <ul>
+                        <li class="Active">
+                            <a href="홈"> <!--Active상태일 땐 preventDefault-->
+                                <span class="Icon"></span>
+                                홈
+                            </a>
+                        </li>
+                        <li>
+                            <a href="크루참여">
+                                <span class="Icon"></span>
+                                크루참여
+                            </a>
+                        </li>
+                        <li>
+                            <a href="팀원모집">
+                                <span class="Icon"></span>
+                                팀원모집
+                            </a>
+                        </li>
+                        <li>
+                            <a href="채팅">
+                                <span class="Icon"></span>
+                                채팅
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="NavPCFooter">
+                    <a href="마이페이지">
+                        <img src="../../src/assets/images/ProfileNull.png" alt="마이페이지">
+                    </a>
+                </div>
+            </nav>
+    
+            <div class="NavArrow"></div> <!--pc Lnb 펼치는 화살표-->
+    
+            <div class="NavContWrapper">
+                <div class="NavCont">
+                    <h1><a href="홈"><img src="../../src/assets/images/LogoTxt.png" alt="CrewCrew"></a></h1>
+                    <div class="NavContInner">
+                        <p><span>닉네임</span>님,<br>크루크루에 오신 것을 환영합니다!</p>
+                        <ul class="NavButtonList">
+                            <li>
+                                <button type="button" class="ButtonFull2">마이페이지<span></span></button>
+                            </li>
+                            <li>
+                                <button type="button" class="ButtonFull2Ghost">로그아웃<span></span></button>
+                            </li>
+                        </ul>
+                        <h2>내가 스크랩한 모집글</h2>
+                        <p>내가 스크랩한 글의 현황을 확인하세요!</p>
+                        <ul class="NavCardList">
+                            <li>
+                                <div class="CardPost Study">
+                                    <div class="CardHead">
+                                        <h5><span>2/14 (월)</span> 마감</h5>
+                                        <div class="CardHeadRight">
+                                            <p>2/3 (목)</p>
+                                            <p>조회수 <span>50</span></p>
+                                            <div class="Star"></div>
+                                        </div>
+                                    </div>
+                                    <div class="CardBody">
+                                        <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                        <div class="CardTxt">
+                                            <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
+                                            <p>재영재영유재영</p>
+                                        </div>
+                                    </div>
+                                    <div class="CardFooter">
+                                        <div class="CardTag Color">프로젝트</div>
+                                        <div class="CardTag Color">오프라인</div>
+                                        <div class="CardTag"><span>10</span>/<span>10</span>명 모집됨</div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="CardPost Hobby">
+                                    <div class="CardHead">
+                                        <h5><span>2/14 (월)</span> 마감</h5>
+                                        <div class="CardHeadRight">
+                                            <p>2/3 (목)</p>
+                                            <p>조회수 <span>50</span></p>
+                                            <div class="Star On"></div>
+                                        </div>
+                                    </div>
+                                    <div class="CardBody">
+                                        <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                        <div class="CardTxt">
+                                            <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
+                                            <p>재영재영유재영</p>
+                                        </div>
+                                    </div>
+                                    <div class="CardFooter">
+                                        <div class="CardTag Color">프로젝트</div>
+                                        <div class="CardTag Color">오프라인</div>
+                                        <div class="CardTag"><span>10</span>/<span>10</span>명 모집됨</div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="CardEmpty">
+                                    <img src="../../src/assets/images/CardAdd.png" alt="" class="CardAdd">
+                                    <p>모집글 둘러보러 가기</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="NavHam"></div> <!--mobile Lnb 펼치는 햄버거바-->
+        <div class="MobileGnb"> <!--mobile Gnb-->
+            <ul>
+                <li></li>
+                <li>
+                    <h2><a href="홈">
+                        <img src="../../src/assets/images/LogoTxt.png" alt="CrewCrew"></a>
+                    </h2>
+                </li>
+                <li>
+                    <a href="마이페이지">
+                        <img src="../../src/assets/images/ProfileNull.png" alt="마이페이지">
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <nav class="MobileNav"> <!--mobile 하단네비게이션-->
+            <ul>
+                <li class="Active">
+                    <a href="홈"> <!--Active상태일 땐 preventDefault-->
+                        <span class="Icon"></span>
+                        홈
+                    </a>
+                </li>
+                <li>
+                    <a href="크루참여">
+                        <span class="Icon"></span>
+                        크루참여
+                    </a>
+                </li>
+                <li>
+                    <a href="팀원모집">
+                        <span class="Icon"></span>
+                        팀원모집
+                    </a>
+                </li>
+                <li>
+                    <a href="채팅">
+                        <span class="Icon"></span>
+                        채팅
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    
+</body>
+</html>

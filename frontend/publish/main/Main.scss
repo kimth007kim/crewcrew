@@ -1,0 +1,625 @@
+@import "../common";
+@import "../Swiper";
+
+*{
+    scroll-behavior: smooth;
+}
+
+.ScrollButton{
+    position: fixed;
+    width: 45px;
+    height: 110px;
+    right: 45px;
+    bottom: 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .ScrollTop, .ScrollBottom{
+        width: 45px;
+        height: 45px;
+        background-size: 100% !important;
+        cursor: pointer;
+        opacity: 1;
+        transition: .3s;
+
+        &.Disable{
+            opacity: .3;
+            cursor: default;
+        }
+    }
+
+    .ScrollTop{
+        background: url("/frontend/src/assets/images/ButtonScrollTop.png");
+    }
+
+    .ScrollBottom{
+        background: url("/frontend/src/assets/images/ButtonScrollBottom.png");
+    }
+}
+
+.MainTop{
+    height: 400px;
+    background-color: $blue2;
+    position: relative;
+    overflow: hidden;
+
+    .ButtonIntro{
+        width: 45px;
+        height: 45px;
+        background: url("/frontend/src/assets/images/IconLinkIntro.png") 50% 50%;
+        background-size: 100% !important;
+        cursor: pointer;
+        position: absolute;
+        top: 63px;
+        right: 45px;
+        opacity: .5;
+        transition: .3s;
+
+        &:hover{
+            opacity: 1;
+        }
+    }
+}
+
+.TopCont{
+    position: absolute;
+    left: calc(50% - 253px);
+    width: 506px;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &>img{
+        width: 60px;
+        height: 60px;
+        margin: 66px auto 20px;
+    }
+
+    h2{
+        font-size: 48px;
+        color: $white;
+        font-weight: 700;
+        line-height: 60px;
+    }
+    
+    h3{
+        font-size: 20px;
+        color: $white;
+        font-weight: 300;
+        line-height: 36px;
+    }
+
+    .InputWrapper{
+        width: 100%;
+        height: 50px;
+        border: 1px solid $black5;
+        border-radius: 25px;
+        box-sizing: border-box;
+        margin-top: 25px;
+        overflow: hidden;
+        background-color: $white;
+        display: flex;
+        align-items: center;
+
+        img{
+            width: 26px;
+            height: 26px;
+            margin-left: 18px;
+            margin-bottom: 4px;
+        }
+
+        input{
+            width: calc(100% - 76px);
+            height: 100%;
+            border: none;
+            outline: none;
+            margin-left: 14px;
+            font-size: 13px;
+            font-weight: 400;
+
+            &::placeholder{
+                color: $black4;
+            }
+        }
+    }
+}
+
+.TopWave{
+
+    .Wave{
+        position: absolute;
+        height: 160px;
+        width: 3200px;
+        bottom: 0;
+        left: 0;
+        animation: wave 4s linear infinite alternate;
+        background: url("/frontend/src/assets/images/Wave.svg") no-repeat;
+        background-size: 100% 100%;
+        background-position: left bottom;
+        
+        &:nth-child(1){
+            opacity: .9;
+            animation-direction: alternate-reverse;
+        }
+
+        &:nth-child(2){
+            opacity: .5;
+        }
+
+    }
+
+    @keyframes wave {
+        to{
+            left: -50%;
+        }
+    }
+}
+
+@mixin MainTitle {
+
+    .SectionWrap{
+
+        &>h4{
+            font-size: 20px;
+            font-weight: 500;
+        }
+    
+        &>p{
+            font-size: 13px;
+            font-weight: 400;
+            color: $black3;
+            margin-top: 10px;
+        }
+    
+        @media screen and (max-width:768px){
+    
+            &>h4{
+                font-size: 18px;
+            }
+    
+            &>p{
+                font-size: 10px;
+            }
+        }
+
+    }
+    
+}
+
+.MainCategory{
+    background-color: #F6F7FB;
+    padding: 90px 0 100px;
+    @include MainTitle;
+}
+
+.SectionWrap{
+    max-width: 800px;
+    margin: auto;
+}
+
+.GridWrap{
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 46px;
+    margin-right: -5px;
+
+    li{
+        @for $i from 1 to 13 {
+           &:nth-child(#{$i}){
+
+               .Icon{
+                    background-image: url("/frontend/src/assets/images/IconCategory#{$i}.png");
+               }
+           }
+        }
+    }
+}
+
+.Category{
+    width: 164px;
+    height: 164px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    padding: 14px;
+    box-sizing: border-box;
+    position: relative;
+    cursor: pointer;
+    transition: .3s;
+    filter: brightness(100%);
+
+    h5, p{
+        color: $white;
+    }
+
+    h5{
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+    p{
+        font-size: 13px;
+        font-weight: 300;
+        margin-top: 4px;
+        height: 13px;
+
+        &:nth-of-type(2){
+            text-align: right;
+            margin-top: 78px;
+        }
+    }
+
+    .Icon{
+        width: 58px;
+        height: 58px;
+        background-size: 100% !important;
+        position: absolute;
+        left: 14px;
+        bottom: 14px;
+        mix-blend-mode: overlay;
+    }
+
+    &.Study{
+        background: linear-gradient(135deg, #0F3FA6 3.96%, #0575E6 99.7%);
+    }
+
+    &.Hobby{
+        background: linear-gradient(135deg, #F7971E 0%, #FFD200 100%);
+    }
+
+    &:hover{
+        filter: brightness(110%);
+    }
+}
+
+.MainWrite{
+    padding: 45px 0;
+    @include MainTitle;
+
+    h4, p{
+        text-align: center;
+    }
+}
+
+.WriteButtonList{
+    display: flex;
+
+    li{
+        width: 100%;
+    }
+
+    li:nth-child(1){
+        margin-right: 48px;
+
+        .WriteButton{
+            background-color: #0575E6 !important;
+            
+            &:hover{
+                background-image: linear-gradient(103.05deg, #0F3FA6 0%, #0574E5 100%);
+            }
+        }
+    }
+
+    li:nth-child(2) .WriteButton{
+        background-color: #FFD458 !important;
+        
+        &:hover{
+            background-image: linear-gradient(103.05deg, #F7971E 0%, #FFD200 100%);
+        }
+    }
+
+    .WriteButton{
+        width: 100%;
+        height: 180px;
+        margin-top:  45px;
+        border-radius: 10px;
+        padding: 0 20px 0 0;
+        box-sizing: border-box;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+
+        img{
+            width: 180px;
+            height: 180px;
+        }
+
+        h5{
+            font-size: 20px;
+            font-weight: 300;
+            color: white;
+            margin: 0;
+            line-height: 26px;
+            text-align: right;
+            transform: translateY(0);
+            position: relative;
+            transition: .5s;
+
+            em{
+                font-weight: 500;
+            }
+        }
+
+        .Arrow{
+            width: 55px;
+            height: 55px;
+            background: url("/frontend/src/assets/images/ArrowCircle.png");
+            background-size: 100%;
+            position: absolute;
+            bottom: 25px;
+            right: 20px;
+            opacity: 0;
+            transition: .5s;
+            transition-delay: 0s;
+        }
+
+        &:hover{
+            
+            h5{
+                transform: translateY(-34px);
+            }
+
+            .Arrow{
+                opacity: 1;
+                transition-delay: .1s;
+            }
+        }
+
+    }
+}
+
+.MainPost{
+    background-color: #F6F7FB;
+    padding: 100px 0;
+    @include MainTitle;
+
+    .SectionWrap>h4{
+        display: flex;
+        align-items: center;
+
+        a{
+            color: $black1;
+        }
+
+        &::after{
+            content: '';
+            display: block;
+            width: 7px;
+            height: 14px;
+            margin-left: 8px;
+            background: url("/frontend/src/assets/images/IconNavArrow_Rev.png");
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+    }
+}
+
+.PostSwiperContainer{
+    position: relative;
+    margin: 36px 0 110px;
+}
+
+.PostSwiperWrapper{
+    overflow: hidden;
+
+    .PostSwiper{
+        margin-right: 10px;
+
+        li{
+            width: 304px;
+            margin-bottom: 10px;
+        }
+    }
+
+    .ButtonPrev, .ButtonNext{
+        position: absolute;
+        width: 62px;
+        height: 62px;
+        background-color: $white;
+        border-radius: 5px;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+        top: calc(50% - 31px);
+        z-index: 1;
+        cursor: pointer;
+        background-size: 10px !important;
+        background-color: $white !important;
+        opacity: 1;
+        transition: .5s;
+
+        &.swiper-button-disabled{
+            opacity: 0;
+            cursor: default;
+        }
+    }
+
+    .ButtonPrev{
+        left: -87px;
+        background: url("/frontend/src/assets/images/SlideArrowPrev.png") no-repeat 50% 50%;
+    }
+
+    .ButtonNext{
+        right: -87px;
+        background: url("/frontend/src/assets/images/SlideArrowNext.png") no-repeat 50% 50%;
+    }
+}
+
+@media screen and (max-width:768px) {
+
+    .ScrollButton{
+        display: none;
+    }
+
+    .MainTop{
+        height: 240px;
+
+        .ButtonIntro{
+            width: 30px;
+            height: 30px;
+            top: 17px;
+            right: 20px;
+            opacity: 1;
+        }
+    }
+
+    .TopCont{
+        width: calc(100vw - 40px);
+        left: 50%;
+        transform: translateX(-50%);
+
+        &>img{
+            width: 40px;
+            margin: 38px auto 12px;
+            height: 40px;
+        }
+
+        h2{
+            font-size: 28px;
+            line-height: 36px;
+        }
+
+        h3{
+            font-size: 13px;
+            line-height: 26px;
+        }
+
+        .InputWrapper{
+            height: 36px;
+            border-radius: 18px;
+            margin-top: 32px;
+
+            img{
+                width: 24px;
+                height: 24px;
+                margin-left: 24px;
+            }
+
+            input{
+                font-size: 10px;
+            }
+        }
+    }
+
+    .TopWave{
+
+        .Wave{
+            height: 80px;
+            width: 1600px;
+        }
+    }
+
+    .MainCategory{
+        padding: 50px 0;
+    }
+    
+    .SectionWrap{
+        max-width: calc(100vw - 40px);
+    }
+    
+    
+    .GridWrap{
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+    
+    .Category{
+        width: calc((100vw - 70px)/3);
+        height: calc((100vw - 70px)/3);
+        padding: 10px;
+
+        h5{
+            font-size: 15px;
+        }
+
+        p{
+            font-size: 10px;
+
+            &:nth-of-type(2){
+                margin-top: 0;
+                position: absolute;
+                right: 10px;
+                bottom: 10px;
+            }
+        }
+
+        .Icon{
+            width: 20px;
+            height: 20px;
+            left: 10px;
+            bottom: 10px;
+        }
+    }
+
+    .MainWrite{
+        padding: 30px 0;
+
+        h4, p{
+            text-align: left;
+        }
+    }
+
+    .WriteButtonList{
+
+        li{
+
+            &:nth-child(1){
+                margin-right: 20px;
+            }
+        }
+
+        .WriteButton{
+            height: 86px;
+            margin-top: 30px;
+            padding: 20px 0;
+            justify-content: center;
+
+            img{
+                display: none;
+            }
+
+            h5{
+                text-align: center;
+
+                span{
+                    display: none;
+                }
+            }
+
+            .Arrow{
+                display: none;
+            }
+
+            &:hover{
+
+                h5{
+                    transform: none;
+                }
+            }
+        }
+    }
+
+    .MainPost{
+        padding: 50px 0;
+    }
+
+    .PostSwiperContainer{
+        margin: 30px 0 70px;
+    }
+
+    .PostSwiperWrapper{
+
+        .PostSwiper li{
+            width: 226px;
+        }
+
+        .ButtonPrev, .ButtonNext{
+            display: none;
+        }
+    }
+}
+

@@ -1,17 +1,16 @@
 package matchTeam.crewcrew.service.board;
 
 import lombok.RequiredArgsConstructor;
-import matchTeam.crewcrew.dto.category.CategoryDTO;
+import matchTeam.crewcrew.dto.category.CategoryResponseDTO;
 import matchTeam.crewcrew.dto.category.EachCategoryResponseDTO;
 import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.repository.board.CategoryRepository;
-import matchTeam.crewcrew.response.exception.board.CategoryNotFoundException;
-import matchTeam.crewcrew.response.exception.board.SelectCategoryException;
+import matchTeam.crewcrew.response.exception.category.NotExistCategoryException;
+import matchTeam.crewcrew.response.exception.category.AskNotDetailCategoryException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -20,17 +19,17 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public List<CategoryDTO> readAll() {
+    public List<CategoryResponseDTO> readAll() {
         List<Category> categories = categoryRepository.findAllOrderByParentIdAscNullsFirstCategoryIdAsc();
-        return CategoryDTO.toDtoList(categories);
+        return CategoryResponseDTO.toDtoList(categories);
     }
 
     public EachCategoryResponseDTO findById(Long id){
         Category category = categoryRepository.findById(id)
-                .orElseThrow(CategoryNotFoundException::new);
+                .orElseThrow(NotExistCategoryException::new);
 
         if (category.getCategoryParent() == null) {
-            throw new SelectCategoryException();
+            throw new AskNotDetailCategoryException();
         }
         return EachCategoryResponseDTO.builder().res(category).build();
     }

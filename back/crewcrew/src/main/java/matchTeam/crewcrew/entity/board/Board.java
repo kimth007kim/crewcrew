@@ -55,9 +55,8 @@ public class Board extends BaseTimeEntity {
     private Integer totalCrew;
 
     @NotNull
-    @Enumerated(EnumType.ORDINAL)
     @Column(name = "approach", nullable = false)
-    private BoardApproach approach;
+    private Integer approach;
 
     @Column(name = "hit", columnDefinition = "bigint default 0")
     private Long hit;
@@ -80,7 +79,7 @@ public class Board extends BaseTimeEntity {
     @Builder
     public Board(String title, String boardContent,
                  User user, Category category,
-                 Integer recruitedCrew, Integer totalCrew, BoardApproach approach,
+                 Integer recruitedCrew, Integer totalCrew, Integer approach,
                  LocalDate expiredDate) {
         this.title = title;
         this.boardContent = boardContent;
@@ -97,20 +96,14 @@ public class Board extends BaseTimeEntity {
 
     public void update(String title, String boardContent,
                        Integer recruitedCrew, Integer totalCrew, Integer approachCode, Category category,
-                       LocalDate expiredDate){
+                       LocalDate expiredDate, Boolean viewable){
         this.title = title;
         this.boardContent = boardContent;
         this.recruitedCrew = recruitedCrew;
         this.totalCrew = totalCrew;
-
-        if (approachCode == 0){
-            this.approach = BoardApproach.APPROACH_OFFLINE;
-        } else if(approachCode == 1){
-            this.approach = BoardApproach.APPROACH_ONLINE;
-        }
-
+        this.approach = approachCode;
         this.category = category;
         this.expiredDate = expiredDate;
-
+        this.viewable = viewable;
     }
 }

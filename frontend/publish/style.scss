@@ -11,6 +11,7 @@ $blue3 : #00b7ff;
 $blue4 : #e6faff;
 
 $yellow1 : #ffd458; 
+$yellow2 : #F7971E;
 
 $red1 : #ff0045; 
 
@@ -112,6 +113,7 @@ em {
     @include buttonFullLarge($white, $white);
     @include buttonFullLarge2(26px, 20px, 6px, 12px);
     border: 1px solid $black5;
+    color: $black3;
 
     &:hover{
         border: 1px solid $black4;
@@ -408,3 +410,203 @@ ul.InputList>li{
     }
 }
 
+
+
+.CardPost{
+    width: 100%;
+    background-color: $white;
+    border-radius: 2px 2px 15px 15px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    cursor: pointer;
+    
+    &.Study{
+        border-top: 6px solid $blue2;
+
+        .CardTag.Color{
+            background-color: $blue2;
+        }
+    }
+
+    &.Hobby{
+        border-top: 6px solid $yellow2;
+
+        .CardTag.Color{
+            background-color: $yellow2;
+        }
+    }
+
+    p{
+        font-size: 10px;
+        font-weight: 400;
+        color: $black3;
+    }
+}
+
+.CardHead{
+    padding: 10px 12px 10px 15px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h5{
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .CardHeadRight{
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        p{       
+            margin-left: 10px;
+        }
+
+        .Star{
+            width: 20px;
+            height: 20px;
+            background: url("../../src/assets/images/StarOff.png") 50% 50% no-repeat;
+            background-size: 90% !important;
+            cursor: pointer;
+            margin-left: 10px;
+
+            &.On{
+                background: url("../../src/assets/images/StarOn.png") 50% 50% no-repeat;
+            }
+        }
+    }
+}
+
+.CardBody{
+    height: 82px;
+    padding: 10px 12px 0 15px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+
+    .CardProfile{
+        min-width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: $purple1;
+
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .CardTxt{
+        width: 100%;
+        margin-left: 15px;
+
+        h4{
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            line-height: 18px;
+        }
+    }
+}
+
+.CardFooter{
+    padding: 10px 12px 10px 15px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-end;
+
+    .CardTag{
+        width: fit-content;
+        padding: 5px 8px;
+        border-radius: 13px;
+        background-color: $black4;
+        font-size: 13px;
+        line-height: 16px;
+        color: $white;
+        font-weight: 300;
+
+        &:not(:last-child){
+            margin-right: 8px;
+        }
+    }
+}
+
+.CardEmpty{
+    height: 120px;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    background-color: $white;
+    
+    .CardAdd{
+        min-width: 52px;
+        height: 52px; 
+    }
+
+    p{
+        font-size: 20px;
+        font-weight: 500;
+        color: $black4;
+        margin-left: 20px;
+    }
+}
+
+@media screen and (max-width:768px){
+    
+    .CardHead{
+        padding: 10px 5px;
+
+        .CardHeadRight{
+
+            p:nth-child(1){
+                display: none;
+            }
+
+            .Star{
+                margin-left: 18px;
+            }
+        }
+    }
+
+    .CardBody{
+        padding: 0 5px;
+        height: 64px;
+    }
+
+    .CardFooter{
+        padding: 5px;
+
+        .CardTag{
+            font-size: 10px;
+            line-height: 1;
+            border-radius: 12px;
+            padding: 7px 8px;
+
+            &:not(:last-child){
+                margin-right: 4px;
+            }
+        }
+    }
+
+    .CardEmpty{
+        height: 82px;
+
+        .CardAdd{
+            min-width: 34px;
+            height: 34px;
+        }
+
+        p{
+            font-size: 15px;
+            margin-left: 16px;
+        }
+    }
+}
