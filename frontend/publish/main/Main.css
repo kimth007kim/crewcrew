@@ -2137,7 +2137,8 @@ main {
   }
   .Category p {
     font-size: 12px;
-    line-height: 20px;
+    line-height: 16px;
+    word-break: break-all;
   }
   .Category p:nth-of-type(2) {
     margin-top: 0;
