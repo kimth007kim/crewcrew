@@ -431,6 +431,8 @@ $Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
         padding: 0 20px;
         height: $height;
         box-shadow: 0px $shadow 5px rgba(0, 0, 0, 0.05);
+        z-index: 99;
+        background-color: $white;
 
         ul{
             height: $ulheight;

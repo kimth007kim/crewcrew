@@ -414,6 +414,7 @@ ul.InputList>li{
 
 .CardPost{
     width: 100%;
+    background-color: $white;
     border-radius: 2px 2px 15px 15px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
@@ -466,13 +467,13 @@ ul.InputList>li{
         .Star{
             width: 20px;
             height: 20px;
-            background: url("../../src/assets/images/StarOff.png") 50% 50%;
+            background: url("../../src/assets/images/StarOff.png") 50% 50% no-repeat;
             background-size: 90% !important;
             cursor: pointer;
             margin-left: 10px;
 
             &.On{
-                background: url("../../src/assets/images/StarOn.png") 50% 50%;
+                background: url("../../src/assets/images/StarOn.png") 50% 50% no-repeat;
             }
         }
     }
@@ -543,6 +544,7 @@ ul.InputList>li{
     box-sizing: border-box;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    background-color: $white;
     
     .CardAdd{
         min-width: 52px;
@@ -587,6 +589,10 @@ ul.InputList>li{
             line-height: 1;
             border-radius: 12px;
             padding: 7px 8px;
+
+            &:not(:last-child){
+                margin-right: 4px;
+            }
         }
     }
 

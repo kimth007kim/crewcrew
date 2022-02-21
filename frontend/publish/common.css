@@ -546,6 +546,7 @@ ul.InputList > li {
 
 .CardPost {
   width: 100%;
+  background-color: #fff;
   border-radius: 2px 2px 15px 15px;
   -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
           box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
@@ -615,14 +616,14 @@ ul.InputList > li {
 .CardHead .CardHeadRight .Star {
   width: 20px;
   height: 20px;
-  background: url("../../src/assets/images/StarOff.png") 50% 50%;
+  background: url("../../src/assets/images/StarOff.png") 50% 50% no-repeat;
   background-size: 90% !important;
   cursor: pointer;
   margin-left: 10px;
 }
 
 .CardHead .CardHeadRight .Star.On {
-  background: url("../../src/assets/images/StarOn.png") 50% 50%;
+  background: url("../../src/assets/images/StarOn.png") 50% 50% no-repeat;
 }
 
 .CardBody {
@@ -711,6 +712,7 @@ ul.InputList > li {
   -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
           box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  background-color: #fff;
 }
 
 .CardEmpty .CardAdd {
@@ -747,6 +749,9 @@ ul.InputList > li {
     line-height: 1;
     border-radius: 12px;
     padding: 7px 8px;
+  }
+  .CardFooter .CardTag:not(:last-child) {
+    margin-right: 4px;
   }
   .CardEmpty {
     height: 82px;
@@ -1194,6 +1199,13 @@ ul.ChooseListUnder::-webkit-scrollbar {
   background-color: #00b7ff;
 }
 
+main {
+  margin-left: 142px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  overflow-x: hidden;
+}
+
 @media screen and (max-width: 768px) {
   .ModalWrapper.Modal .ModalBox {
     margin-top: 40px;
@@ -1243,6 +1255,11 @@ ul.ChooseListUnder::-webkit-scrollbar {
     width: 40px;
     height: 24px;
     border-radius: 12px;
+  }
+  main {
+    width: 100%;
+    padding: 60px 0 70px;
+    margin: 0;
   }
 }
 /*# sourceMappingURL=common.css.map */

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrewCrew</title>
+    <link rel="stylesheet" href="./Main.css">
+    <link rel="stylesheet" href="../fonts.css">
+    <script src="/frontend/publish/layout/Include.js"></script> <!--퍼블단 인클루드용/개발때는 무시-->
+    <script src="/frontend/publish/Swiper.js"></script>
+    <script src="./Main.js"></script>
+</head>
+<body>
+    <div data-include="/frontend/publish/layout/Lnb.html"></div> <!--퍼블단 인클루드용/개발때는 무시-->
+
+    <main>
+        <div class="ScrollButton">
+            <div class="ScrollTop"></div>
+            <div class="ScrollBottom"></div>
+        </div>
+
+        <section class="MainTop">
+            <div class="TopCont">
+                <img src="/frontend/src/assets/images/LogoCircle2.png" alt="">
+                <h2>크루원과 크루원이 만나다!</h2>
+                <h3>목표를 향해 항해하는 팀원모집 플랫폼, 크루크루</h3>
+                <div class="InputWrapper">
+                    <img src="/frontend/src/assets/images/IconSearch.png" alt="">
+                    <input type="text" placeholder="참여하고 싶은 모임을 검색해보세요!">
+                </div>
+            </div>
+            <div class="TopWave">
+                <div class="Wave"></div>
+                <div class="Wave"></div>
+            </div>
+            <div class="ButtonIntro"></div>
+        </section>
+
+        <section class="MainCategory">
+            <div class="SectionWrap">
+                <h4>12가지 분야에서 크루원 절찬리 모집중!</h4>
+                <p>혼자서 공부하기 힘들었죠? 이제는 크루원들과 함께 성공합시다~!</p>
+                <ul class="GridWrap">
+                    <li>
+                        <div class="Category Study">
+                            <h5>어학</h5>
+                            <p>토플/토익</p>
+                            <p>스터디</p>
+                            <div class="Icon"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="Category Study">
+                            <h5>취업</h5>
+                            <p>면접/자소서</p>
+                            <p>스터디</p>
+                            <div class="Icon"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="Category Study">
+                            <h5>고시/공무원</h5>
+                            <p></p>
+                            <p>스터디</p>
+                            <div class="Icon"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="Category Study">
+                            <h5>프로젝트</h5>
+                            <p>디자인/개발</p>
+                            <p>스터디</p>
+                            <div class="Icon"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="Category Study">
+                            <h5>기타</h5>
+                            <p></p>
+                            <p>스터디</p>
+                            <div class="Icon"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="Category Hobby">
+                            <h5>예술</h5>
+                            <p>공예/회화</p>
+                            <p>취미</p>
+                            <div class="Icon"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="Category Hobby">
+                            <h5>요리</h5>
+                            <p>맛집탐방/카페탐방</p>
+                            <p>취미</p>
+                            <div class="Icon"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="Category Hobby">
+                            <h5>운동</h5>
+                            <p>헬스/구기종목</p>
+                            <p>취미</p>
+                            <div class="Icon"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="Category Hobby">
+                            <h5>게임</h5>
+                            <p>보드게임/온라인게임</p>
+                            <p>취미</p>
+                            <div class="Icon"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="Category Hobby">
+                            <h5>덕질</h5>
+                            <p>코스프레/콘서트/프라모델</p>
+                            <p>취미</p>
+                            <div class="Icon"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="Category Hobby">
+                            <h5>트렌드</h5>
+                            <p>뷰티/패션</p>
+                            <p>취미</p>
+                            <div class="Icon"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="Category Hobby">
+                            <h5>기타</h5>
+                            <p></p>
+                            <p>취미</p>
+                            <div class="Icon"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section class="MainWrite">
+            <div class="SectionWrap">
+                <h4>나도 크루원 모집해볼래요~!</h4>
+                <p>더울 효율적이면서, 간편하게 크루원을 모집해보아요</p>
+                <ul class="WriteButtonList">
+                    <li>
+                        <div class="WriteButton">
+                            <img src="/frontend/src/assets/images/Profile1.png" alt="">
+                            <h5><em>스터디 크루원</em><br>모집글 작성<span>하러 가기</span></h5>
+                            <div class="Arrow"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="WriteButton">
+                            <img src="/frontend/src/assets/images/Profile5.png" alt="">
+                            <h5><em>취미 크루원</em><br>모집글 작성<span>하러 가기</span></h5>
+                            <div class="Arrow"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="MainPost">
+            <div class="SectionWrap">
+                <h4><a href="#">신규 크루원 모집글</a></h4>
+                <p>이번주 새롭게 크루원을 모집하는 모집글을 소개해드려요.</p>
+
+                <div class="PostSwiperContainer"> <!--화살표 위치를 잡기 위한 컨테이너-->
+                    <div class="PostSwiperWrapper"> <!--overflow히든처리를 위한 래퍼-->
+                        <div class="PostSwiper swiper1"> <!--스와이퍼 기준점-->
+                            <ul class="PostSlideWrapper swiper-wrapper">
+                                <li class="swiper-slide">
+                                    <div class="CardPost Study"> <!--카드-->
+                                        <div class="CardHead">
+                                            <h5><span>2/14 (월)</span> 마감</h5>
+                                            <div class="CardHeadRight">
+                                                <p>2/3 (목)</p>
+                                                <p>조회수 <span>50</span></p>
+                                                <div class="Star On"></div>
+                                            </div>
+                                        </div>
+                                        <div class="CardBody">
+                                            <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                            <div class="CardTxt">
+                                                <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
+                                                <p>재영재영유재영</p>
+                                            </div>
+                                        </div>
+                                        <div class="CardFooter">
+                                            <div class="CardTag Color">프로젝트</div>
+                                            <div class="CardTag Color">오프라인</div>
+                                            <div class="CardTag"><span>10</span>/<span>10</span>명 모집됨</div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="swiper-slide">
+                                    <div class="CardPost Hobby">
+                                        <div class="CardHead">
+                                            <h5><span>2/14 (월)</span> 마감</h5>
+                                            <div class="CardHeadRight">
+                                                <p>2/3 (목)</p>
+                                                <p>조회수 <span>50</span></p>
+                                                <div class="Star On"></div>
+                                            </div>
+                                        </div>
+                                        <div class="CardBody">
+                                            <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                            <div class="CardTxt">
+                                                <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
+                                                <p>재영재영유재영</p>
+                                            </div>
+                                        </div>
+                                        <div class="CardFooter">
+                                            <div class="CardTag Color">프로젝트</div>
+                                            <div class="CardTag Color">오프라인</div>
+                                            <div class="CardTag"><span>10</span>/<span>10</span>명 모집됨</div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="swiper-slide">
+                                    <div class="CardPost Hobby">
+                                        <div class="CardHead">
+                                            <h5><span>2/14 (월)</span> 마감</h5>
+                                            <div class="CardHeadRight">
+                                                <p>2/3 (목)</p>
+                                                <p>조회수 <span>50</span></p>
+                                                <div class="Star On"></div>
+                                            </div>
+                                        </div>
+                                        <div class="CardBody">
+                                            <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                            <div class="CardTxt">
+                                                <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
+                                                <p>재영재영유재영</p>
+                                            </div>
+                                        </div>
+                                        <div class="CardFooter">
+                                            <div class="CardTag Color">프로젝트</div>
+                                            <div class="CardTag Color">오프라인</div>
+                                            <div class="CardTag"><span>10</span>/<span>10</span>명 모집됨</div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="swiper-slide">
+                                    <div class="CardPost Hobby">
+                                        <div class="CardHead">
+                                            <h5><span>2/14 (월)</span> 마감</h5>
+                                            <div class="CardHeadRight">
+                                                <p>2/3 (목)</p>
+                                                <p>조회수 <span>50</span></p>
+                                                <div class="Star On"></div>
+                                            </div>
+                                        </div>
+                                        <div class="CardBody">
+                                            <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                            <div class="CardTxt">
+                                                <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
+                                                <p>재영재영유재영</p>
+                                            </div>
+                                        </div>
+                                        <div class="CardFooter">
+                                            <div class="CardTag Color">프로젝트</div>
+                                            <div class="CardTag Color">오프라인</div>
+                                            <div class="CardTag"><span>10</span>/<span>10</span>명 모집됨</div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="swiper-slide">
+                                    <div class="CardPost Hobby">
+                                        <div class="CardHead">
+                                            <h5><span>2/14 (월)</span> 마감</h5>
+                                            <div class="CardHeadRight">
+                                                <p>2/3 (목)</p>
+                                                <p>조회수 <span>50</span></p>
+                                                <div class="Star On"></div>
+                                            </div>
+                                        </div>
+                                        <div class="CardBody">
+                                            <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                            <div class="CardTxt">
+                                                <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
+                                                <p>재영재영유재영</p>
+                                            </div>
+                                        </div>
+                                        <div class="CardFooter">
+                                            <div class="CardTag Color">프로젝트</div>
+                                            <div class="CardTag Color">오프라인</div>
+                                            <div class="CardTag"><span>10</span>/<span>10</span>명 모집됨</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="ButtonPrev1 ButtonPrev swiper-button-disabled"></div>
+                        <div class="ButtonNext1 ButtonNext"></div>
+                    </div>
+                </div>
+
+                <h4><a href="#">마감임박! 지금 놓치면 후회할지도 몰라요</a></h4>
+                <p>마감일이 가깝거나 모집인원을 거의 다 모은 크루원 모집글을 소개해드려요.</p>
+
+                <div class="PostSwiperContainer">
+                    <div class="PostSwiperWrapper">
+                        <div class="PostSwiper swiper2">
+                            <ul class="PostSlideWrapper swiper-wrapper">
+                                <li class="swiper-slide">
+                                    <div class="CardPost Study">
+                                        <div class="CardHead">
+                                            <h5><span>2/14 (월)</span> 마감</h5>
+                                            <div class="CardHeadRight">
+                                                <p>2/3 (목)</p>
+                                                <p>조회수 <span>50</span></p>
+                                                <div class="Star On"></div>
+                                            </div>
+                                        </div>
+                                        <div class="CardBody">
+                                            <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                            <div class="CardTxt">
+                                                <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
+                                                <p>재영재영유재영</p>
+                                            </div>
+                                        </div>
+                                        <div class="CardFooter">
+                                            <div class="CardTag Color">프로젝트</div>
+                                            <div class="CardTag Color">오프라인</div>
+                                            <div class="CardTag"><span>10</span>/<span>10</span>명 모집됨</div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="swiper-slide">
+                                    <div class="CardPost Hobby">
+                                        <div class="CardHead">
+                                            <h5><span>2/14 (월)</span> 마감</h5>
+                                            <div class="CardHeadRight">
+                                                <p>2/3 (목)</p>
+                                                <p>조회수 <span>50</span></p>
+                                                <div class="Star On"></div>
+                                            </div>
+                                        </div>
+                                        <div class="CardBody">
+                                            <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                            <div class="CardTxt">
+                                                <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
+                                                <p>재영재영유재영</p>
+                                            </div>
+                                        </div>
+                                        <div class="CardFooter">
+                                            <div class="CardTag Color">프로젝트</div>
+                                            <div class="CardTag Color">오프라인</div>
+                                            <div class="CardTag"><span>10</span>/<span>10</span>명 모집됨</div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="swiper-slide">
+                                    <div class="CardPost Hobby">
+                                        <div class="CardHead">
+                                            <h5><span>2/14 (월)</span> 마감</h5>
+                                            <div class="CardHeadRight">
+                                                <p>2/3 (목)</p>
+                                                <p>조회수 <span>50</span></p>
+                                                <div class="Star On"></div>
+                                            </div>
+                                        </div>
+                                        <div class="CardBody">
+                                            <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                            <div class="CardTxt">
+                                                <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
+                                                <p>재영재영유재영</p>
+                                            </div>
+                                        </div>
+                                        <div class="CardFooter">
+                                            <div class="CardTag Color">프로젝트</div>
+                                            <div class="CardTag Color">오프라인</div>
+                                            <div class="CardTag"><span>10</span>/<span>10</span>명 모집됨</div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="swiper-slide">
+                                    <div class="CardPost Hobby">
+                                        <div class="CardHead">
+                                            <h5><span>2/14 (월)</span> 마감</h5>
+                                            <div class="CardHeadRight">
+                                                <p>2/3 (목)</p>
+                                                <p>조회수 <span>50</span></p>
+                                                <div class="Star On"></div>
+                                            </div>
+                                        </div>
+                                        <div class="CardBody">
+                                            <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                            <div class="CardTxt">
+                                                <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
+                                                <p>재영재영유재영</p>
+                                            </div>
+                                        </div>
+                                        <div class="CardFooter">
+                                            <div class="CardTag Color">프로젝트</div>
+                                            <div class="CardTag Color">오프라인</div>
+                                            <div class="CardTag"><span>10</span>/<span>10</span>명 모집됨</div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="swiper-slide">
+                                    <div class="CardPost Hobby">
+                                        <div class="CardHead">
+                                            <h5><span>2/14 (월)</span> 마감</h5>
+                                            <div class="CardHeadRight">
+                                                <p>2/3 (목)</p>
+                                                <p>조회수 <span>50</span></p>
+                                                <div class="Star On"></div>
+                                            </div>
+                                        </div>
+                                        <div class="CardBody">
+                                            <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                            <div class="CardTxt">
+                                                <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
+                                                <p>재영재영유재영</p>
+                                            </div>
+                                        </div>
+                                        <div class="CardFooter">
+                                            <div class="CardTag Color">프로젝트</div>
+                                            <div class="CardTag Color">오프라인</div>
+                                            <div class="CardTag"><span>10</span>/<span>10</span>명 모집됨</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="ButtonPrev2 ButtonPrev swiper-button-disabled"></div>
+                        <div class="ButtonNext2 ButtonNext"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+</body>
+</html>
