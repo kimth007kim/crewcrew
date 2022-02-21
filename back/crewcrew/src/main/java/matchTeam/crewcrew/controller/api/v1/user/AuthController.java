@@ -19,12 +19,15 @@ import matchTeam.crewcrew.service.user.EmailService;
 import matchTeam.crewcrew.service.user.KakaoService;
 import matchTeam.crewcrew.service.user.NaverService;
 import matchTeam.crewcrew.service.user.UserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.CookieGenerator;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 
 @Api(tags = "1. Auth")
 @RequiredArgsConstructor
@@ -153,13 +156,14 @@ public class AuthController {
     }
 
 
-    @ApiOperation(value = "이메일 로그인 HTTP ONLY COOKIE사용", notes = "이메일로 로그인")
+    @CrossOrigin(origins = {"http://127.0.0.1:8089", "http://localhost:3000"}, allowCredentials = "true")
+    @ApiOperation(value = "이메일 로그인 HTTP ONLY COOKIE사용", notes = "Access 토큰은 payload에 전달하고 , Refresh 토큰은 cookie에다가 전달")
     @PostMapping("/login/cookie")
     @ApiResponses({
             @ApiResponse(
                     code = 200
-                    , message = "회원가입 성공"
-                    ,response = ResponseCookie.class
+                    , message = "로그인 성공"
+                    ,response = String.class
             )
             , @ApiResponse(
             code = 1101
@@ -170,16 +174,47 @@ public class AuthController {
             , message ="비밀번호가 이메일과 일치하지않습니다."
     )
     })
-    public ResponseEntity<Object> loginCookie(
-            @ApiParam(value = "로그인 요청 DTO", required = true) @RequestBody UserLoginRequestDto userLoginRequestDto) {
-
+    public ResponseEntity<Object> loginCookie(HttpServletResponse response,
+                                              @ApiParam(value = "로그인 요청 DTO", required = true) @RequestBody UserLoginRequestDto userLoginRequestDto) throws IOException {
         TokenDto tokenDto = userService.login(userLoginRequestDto);
-        ResponseCookie cookie= jwtProvider.createTokenCookie(tokenDto.getRefreshToken());
-        return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK, cookie);
+//        Cookie cookie= jwtProvider.provideCookie(tokenDto.getRefreshToken());
+        ResponseCookie cookie = ResponseCookie.from("access-token", tokenDto.getRefreshToken())
+                .path("/")
+                .secure(true)
+                .sameSite("None")
+                .httpOnly(false)
+                .domain("localhost")
+                .build();
+
+        response.setHeader("Set-Cookie", cookie.toString());
+
+//        response.addCookie(cookie);
+        return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK,null );
 
     }
+    @PostMapping("/login/cookies")
+    public ResponseEntity<?> resourceFunction(HttpServletResponse response) {
+        response.addCookie(new Cookie("SomeName", "someId"));
+        return ResponseEntity.ok().build();
+    }
 
+    @PostMapping("/cookie")
+    public ResponseEntity<Object> cookie(HttpServletRequest req, HttpServletResponse response, @RequestBody UserLoginRequestDto userLoginRequestDto) {
+        response.setHeader("Set-Cookie", "sadasd");
 
+//        Cookie cookie = new Cookie("X-AUTH-TOKEN", "sadasd");
+//        cookie.setPath("/");
+//        cookie.setHttpOnly(true);
+//        cookie.setSecure(true);
+//        response.addCookie(cookie);
+
+        HttpCookie cookie = ResponseCookie.from("heroku-nav-data"," aaa")
+                .path("/")
+                .build();
+//        response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+        return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK, cookie);
+    }
 
     @ApiOperation(value = "엑세스,리프레시 토큰 재발급"
             , notes = "엑세스 리프레시 토큰 만료시 회원 검증 후 리프레시 토큰을 검증해서 엑세스 토큰과 리프레시 토큰을 재발급한다.")

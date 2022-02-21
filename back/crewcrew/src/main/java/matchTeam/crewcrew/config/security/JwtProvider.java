@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
@@ -89,12 +90,27 @@ public class JwtProvider {
 
     public ResponseCookie createTokenCookie( String token){
       return ResponseCookie.from("refreshToken",token)
-              .httpOnly(true)
+//              .httpOnly(true)
               .secure(true)
+              .domain("localhost")
+              .sameSite("None")
               .path("/")
               .maxAge(60*30L)
               .build();
     }
+
+    public Cookie provideCookie(String token) {
+        Cookie cookie = new Cookie("Set-Cookie", token);
+        cookie.setPath("/");
+        cookie.setSecure(true);
+        cookie.setDomain("localhost");
+//        cookie.setDomain(".127.0.0.0.1:3000");
+        cookie.setMaxAge(7 * 24 * 60 * 60);
+        cookie.setHttpOnly(false);
+        return cookie;
+    }
+
+
 
     public Claims parseClaims(String token) {
         try{
@@ -110,7 +126,7 @@ public class JwtProvider {
 
     // HTTP Request 의 Header에서 Token Parsing -> "X-AUTH_TOKEN: jwt"
     public String resolveToken(HttpServletRequest request){
-        return request.getHeader("X-AUTH-TOKEN");
+        return request.getHeader("Authorization");
     }
 
     public boolean validateToken(String token){

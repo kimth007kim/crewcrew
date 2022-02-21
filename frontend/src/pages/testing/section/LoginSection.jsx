@@ -59,7 +59,10 @@ function LoginSection({ IsClick, HandleClick }) {
             password,
           };
           console.log(context);
-          const { data } = await axios.post(`${process.env.API_URL}/sign/login`, context);
+          // const { data } = await axios.post(`${process.env.API_URL}auth/login/cookie`, context,{
+            const { data } = await axios.post(`http://localhost:8080/auth/login/cookie`,context,{
+            // const { data } = await axios.post(`http://localhost:8080/auth/cookie`, context,{
+            withCredential: true,});
           console.log(data);
         } catch (error) {
           console.dir(error);

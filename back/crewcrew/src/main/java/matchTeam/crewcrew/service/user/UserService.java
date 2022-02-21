@@ -60,6 +60,12 @@ public class UserService {
 
         log.info(userLoginRequestDto.getEmail(), userLoginRequestDto.getPassword());
         // AccessToken ,Refresh Token 발급
+
+
+//       1. Refresh 토큰이 존재하면 그걸 토대로 access토큰 발급
+
+//        2. Refresh 토큰 없으면 새로 Refresh토큰 발급후 그걸 토대로 accesss토큰 발급
+
         TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles());
 
         // RefreshToken 저장
