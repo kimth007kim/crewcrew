@@ -465,10 +465,10 @@ ul.InputList>li{
         }
 
         .Star{
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             background: url("../../src/assets/images/StarOff.png") 50% 50% no-repeat;
-            background-size: 90% !important;
+            background-size: 20px !important;
             cursor: pointer;
             margin-left: 10px;
 
@@ -562,7 +562,7 @@ ul.InputList>li{
 @media screen and (max-width:768px){
     
     .CardHead{
-        padding: 10px 5px;
+        padding: 10px 5px 10px 15px;
 
         .CardHeadRight{
 
@@ -577,12 +577,12 @@ ul.InputList>li{
     }
 
     .CardBody{
-        padding: 0 5px;
+        padding: 0 5px 0 15px;
         height: 64px;
     }
 
     .CardFooter{
-        padding: 5px;
+        padding: 5px 5px 5px 5px;
 
         .CardTag{
             font-size: 10px;

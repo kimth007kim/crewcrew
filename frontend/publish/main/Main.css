@@ -614,10 +614,10 @@ ul.InputList > li {
 }
 
 .CardHead .CardHeadRight .Star {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   background: url("../../src/assets/images/StarOff.png") 50% 50% no-repeat;
-  background-size: 90% !important;
+  background-size: 20px !important;
   cursor: pointer;
   margin-left: 10px;
 }
@@ -729,7 +729,7 @@ ul.InputList > li {
 
 @media screen and (max-width: 768px) {
   .CardHead {
-    padding: 10px 5px;
+    padding: 10px 5px 10px 15px;
   }
   .CardHead .CardHeadRight p:nth-child(1) {
     display: none;
@@ -738,11 +738,11 @@ ul.InputList > li {
     margin-left: 18px;
   }
   .CardBody {
-    padding: 0 5px;
+    padding: 0 5px 0 15px;
     height: 64px;
   }
   .CardFooter {
-    padding: 5px;
+    padding: 5px 5px 5px 5px;
   }
   .CardFooter .CardTag {
     font-size: 10px;
@@ -1482,6 +1482,7 @@ main {
 
 * {
   scroll-behavior: smooth;
+  word-break: keep-all;
 }
 
 .ScrollButton {
@@ -1569,8 +1570,7 @@ main {
 }
 
 .TopCont > img {
-  width: 60px;
-  height: 60px;
+  width: 70px;
   margin: 66px auto 20px;
 }
 
@@ -1693,9 +1693,12 @@ main {
 @media screen and (max-width: 768px) {
   .MainCategory .SectionWrap > h4 {
     font-size: 18px;
+    line-height: 26px;
   }
   .MainCategory .SectionWrap > p {
-    font-size: 10px;
+    font-size: 12px;
+    line-height: 20px;
+    margin-top: 8px;
   }
 }
 
@@ -1842,9 +1845,12 @@ main {
 @media screen and (max-width: 768px) {
   .MainWrite .SectionWrap > h4 {
     font-size: 18px;
+    line-height: 26px;
   }
   .MainWrite .SectionWrap > p {
-    font-size: 10px;
+    font-size: 12px;
+    line-height: 20px;
+    margin-top: 8px;
   }
 }
 
@@ -1867,19 +1873,19 @@ main {
 }
 
 .WriteButtonList li:nth-child(1) .WriteButton {
-  background-color: #0575E6 !important;
+  background-color: #0575E6;
 }
 
 .WriteButtonList li:nth-child(1) .WriteButton:hover {
-  background-image: linear-gradient(103.05deg, #0F3FA6 0%, #0574E5 100%);
+  background-color: #005ec5;
 }
 
 .WriteButtonList li:nth-child(2) .WriteButton {
-  background-color: #FFD458 !important;
+  background-color: #FFD458;
 }
 
 .WriteButtonList li:nth-child(2) .WriteButton:hover {
-  background-image: linear-gradient(103.05deg, #F7971E 0%, #FFD200 100%);
+  background-color: #fcb90d;
 }
 
 .WriteButtonList .WriteButton {
@@ -1903,6 +1909,8 @@ main {
           align-items: center;
   cursor: pointer;
   position: relative;
+  -webkit-transition: 1s;
+  transition: 1s;
 }
 
 .WriteButtonList .WriteButton img {
@@ -1974,9 +1982,12 @@ main {
 @media screen and (max-width: 768px) {
   .MainPost .SectionWrap > h4 {
     font-size: 18px;
+    line-height: 26px;
   }
   .MainPost .SectionWrap > p {
-    font-size: 10px;
+    font-size: 12px;
+    line-height: 20px;
+    margin-top: 8px;
   }
 }
 
@@ -2076,9 +2087,8 @@ main {
             transform: translateX(-50%);
   }
   .TopCont > img {
-    width: 40px;
+    width: 42px;
     margin: 38px auto 12px;
-    height: 40px;
   }
   .TopCont h2 {
     font-size: 28px;
@@ -2125,7 +2135,8 @@ main {
     font-size: 15px;
   }
   .Category p {
-    font-size: 10px;
+    font-size: 12px;
+    line-height: 20px;
   }
   .Category p:nth-of-type(2) {
     margin-top: 0;
@@ -2183,6 +2194,39 @@ main {
   }
   .PostSwiperWrapper .ButtonPrev, .PostSwiperWrapper .ButtonNext {
     display: none;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .TopCont h2, .TopCont h3 {
+    text-align: center;
+    word-break: keep-all;
+  }
+  .TopCont h2 {
+    font-size: 22px;
+    line-height: 30px;
+  }
+  .TopCont h3 {
+    font-size: 12px;
+    line-height: 24px;
+  }
+  .TopCont > img {
+    margin-top: 50px;
+  }
+  .GridWrap {
+    -ms-grid-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
+  }
+  .Category {
+    width: calc((100vw - 55px)/2);
+    height: calc((100vw - 55px)/2);
+  }
+  .WriteButtonList li:nth-child(1) {
+    margin-right: 15px;
+  }
+  .WriteButtonList .WriteButton h5 {
+    font-size: 18px;
+    line-height: 24px;
   }
 }
 /*# sourceMappingURL=Main.css.map */
