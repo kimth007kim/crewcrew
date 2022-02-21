@@ -1,5 +1,6 @@
 package matchTeam.crewcrew.dto.category;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,15 +13,21 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CategoryDTO {
-    private Long categoyId;
-    private String categoryName;
-    private List<CategoryDTO> children;
+public class CategoryResponseDTO {
 
-    public static List<CategoryDTO> toDtoList(List<Category> categories) {
+    @ApiModelProperty(value = "카테고리 id", notes = "카테고리 번호", example = "1")
+    private Long categoyId;
+
+    @ApiModelProperty(value = "카테고리 이름", notes = "상위 카테고리 제목", example = "스터디")
+    private String categoryName;
+
+    @ApiModelProperty(value = "하위 카테고리 조회", notes = "하위 카테고리를 전부 조회")
+    private List<CategoryResponseDTO> children;
+
+    public static List<CategoryResponseDTO> toDtoList(List<Category> categories) {
         NestedConvertHelper helper = NestedConvertHelper.newInstance(
                 categories,
-                c -> new CategoryDTO(c.getId(), c.getCategoryName(), new ArrayList<>()),
+                c -> new CategoryResponseDTO(c.getId(), c.getCategoryName(), new ArrayList<>()),
                 c -> c.getCategoryParent(),
                 c -> c.getId(),
                 d -> d.getChildren());

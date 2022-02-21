@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
-@Api(tags=" 4. Oauth 2.0 kakao Login ")
+@Api(tags=" 3. Oauth 2.0 kakao Login ")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/oauth")
