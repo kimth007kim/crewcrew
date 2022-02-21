@@ -1,7 +1,7 @@
 package matchTeam.crewcrew.service.board;
 
 import lombok.RequiredArgsConstructor;
-import matchTeam.crewcrew.dto.category.CategoryDTO;
+import matchTeam.crewcrew.dto.category.CategoryResponseDTO;
 import matchTeam.crewcrew.dto.category.EachCategoryResponseDTO;
 import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.repository.board.CategoryRepository;
@@ -19,9 +19,9 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public List<CategoryDTO> readAll() {
+    public List<CategoryResponseDTO> readAll() {
         List<Category> categories = categoryRepository.findAllOrderByParentIdAscNullsFirstCategoryIdAsc();
-        return CategoryDTO.toDtoList(categories);
+        return CategoryResponseDTO.toDtoList(categories);
     }
 
     public EachCategoryResponseDTO findById(Long id){

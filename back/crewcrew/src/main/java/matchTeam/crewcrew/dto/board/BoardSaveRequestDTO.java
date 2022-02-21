@@ -41,17 +41,19 @@ public class BoardSaveRequestDTO {
     @NotNull(message = "모집방식을 선택해주세요.")
     private Integer approachCode;
 
+    @ApiModelProperty(value = "유저의 uid", notes = "현재 접속해있는 유저의 uid", required = true, example = "1")
+    @NotNull(message = "유저 아이디를 넣어주세요.")
     private Long uid;
 
     @ApiModelProperty(value = "카테고리 아이디", notes = "카테고리를 선택해주세요", required = true, example = "3")
     @NotNull(message = "카테고리 아이디를 입력해주세요.")
-    @PositiveOrZero(message = "올바른 카테고리 아이디를 입력해주세요.")
+    @PositiveOrZero(message = "카테고리 아이디를 입력해주세요.")
     private Long categoryId;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "만료날짜", notes = "만료날짜를 선택해주세요", required = true, example = "2022-02-06")
-    @NotNull(message = "만료 날짜를 선택해주세요.")
+    @NotNull(message = "만료 날짜를 선택해주세요.(오늘의 날짜보다 커야합니다.) 만료는 매일 자정에 이루어집니다.")
     private LocalDate expiredDate;
 
     @Builder
