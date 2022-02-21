@@ -392,6 +392,7 @@ ul.InputList>li{
         line-height: 21px;
         cursor: pointer;
         user-select: none;
+        white-space: nowrap;
     
         span{
             display: block;

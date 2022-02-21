@@ -526,6 +526,7 @@ ul.InputList > li {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+  white-space: nowrap;
 }
 
 .InputHide ~ .LabelCheck span {
