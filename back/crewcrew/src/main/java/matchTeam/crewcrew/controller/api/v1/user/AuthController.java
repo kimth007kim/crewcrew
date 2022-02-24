@@ -108,7 +108,6 @@ public class AuthController {
             @ApiResponse(
                     code = 200
                     , message = "회원가입 성공"
-                    ,response = Long.class
             )
             , @ApiResponse(
             code = 1004
@@ -151,51 +150,15 @@ public class AuthController {
             @ApiParam(value = "로그인 요청 DTO", required = true) @RequestBody UserLoginRequestDto userLoginRequestDto) {
 
         TokenDto tokenDto = userService.login(userLoginRequestDto);
-        return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK, tokenDto);
+        return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK, tokenDto.getAccessToken());
 
     }
 
 
-    @CrossOrigin(origins = {"http://127.0.0.1:8089", "http://localhost:3000"}, allowCredentials = "true")
-    @ApiOperation(value = "이메일 로그인 HTTP ONLY COOKIE사용", notes = "Access 토큰은 payload에 전달하고 , Refresh 토큰은 cookie에다가 전달")
-    @PostMapping("/login/cookie")
-    @ApiResponses({
-            @ApiResponse(
-                    code = 200
-                    , message = "로그인 성공"
-                    ,response = String.class
-            )
-            , @ApiResponse(
-            code = 1101
-            , message ="존재하지 않는 이메일 입니다."
-    )
-            , @ApiResponse(
-            code = 1102
-            , message ="비밀번호가 이메일과 일치하지않습니다."
-    )
-    })
-    public ResponseEntity<Object> loginCookie(HttpServletResponse response,
-                                              @ApiParam(value = "로그인 요청 DTO", required = true) @RequestBody UserLoginRequestDto userLoginRequestDto) throws IOException {
-        TokenDto tokenDto = userService.login(userLoginRequestDto);
-//        Cookie cookie= jwtProvider.provideCookie(tokenDto.getRefreshToken());
-        ResponseCookie cookie = ResponseCookie.from("access-token", tokenDto.getRefreshToken())
-                .path("/")
-                .secure(true)
-                .sameSite("None")
-                .httpOnly(false)
-                .domain("localhost")
-                .build();
-
-        response.setHeader("Set-Cookie", cookie.toString());
-
-//        response.addCookie(cookie);
-        return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK,null );
-
-    }
-    @PostMapping("/login/cookies")
-    public ResponseEntity<?> resourceFunction(HttpServletResponse response) {
-        response.addCookie(new Cookie("SomeName", "someId"));
-        return ResponseEntity.ok().build();
+    @PostMapping("/token/isvalid")
+    public ResponseEntity<?> validToken(String refreshToken) {
+        boolean isValid = jwtProvider.validateToken(refreshToken);
+        return ResponseHandler.generateResponse("토큰 유효 확인 성공", HttpStatus.OK,isValid );
     }
 
     @PostMapping("/cookie")
@@ -222,7 +185,7 @@ public class AuthController {
     public ResponseEntity<Object> check(
             @ApiParam(value = "토큰 재발급 요청 DTO", required = true)
             @RequestBody TokenRequestDto tokenRequestDto) {
-        return ResponseHandler.generateResponse("Login Page", HttpStatus.OK, userService.reissue(tokenRequestDto));
+        return ResponseHandler.generateResponse("Login Page", HttpStatus.OK, userService.reissue(tokenRequestDto).getAccessToken());
     }
 
 

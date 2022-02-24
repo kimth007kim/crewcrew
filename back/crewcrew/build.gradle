@@ -37,8 +37,20 @@ dependencies {
 	//JSon을 결과로 매핑하기 위한 의존성
 	implementation 'com.google.code.gson:gson:2.8.8'
 
-	implementation ('io.springfox:springfox-swagger2:2.9.2')
-	implementation ('io.springfox:springfox-swagger-ui:2.9.2')
+//	implementation ('io.springfox:springfox-swagger2:2.9.2')
+//	implementation ('io.springfox:springfox-swagger-ui:2.9.2')
+
+	implementation('io.springfox:springfox-swagger2:2.9.2') {
+		exclude group: 'io.swagger', module: 'swagger-annotations'
+		exclude group: 'io.swagger', module: 'swagger-models'
+	}
+	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+	implementation 'io.swagger:swagger-annotations:1.5.21'
+	implementation 'io.swagger:swagger-models:1.5.21'
+	implementation 'io.springfox:springfox-bean-validators:2.9.2'
+
+
+
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
 	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
 	implementation 'com.querydsl:querydsl-jpa'
