@@ -45,36 +45,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                    .authorizeRequests()
-//                            .antMatchers("/*/users").hasRole("ADMIN")
-//                            .antMatchers("/*/signup","/*/login","/*/reissue").permitAll()
-//                            .antMatchers(HttpMethod.GET,"/exception/**").permitAll()
-//                            .anyRequest().hasRole("USER")
-//                .anyRequest().permitAll()
-//                .and()
-//                    .exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint)
-//                .and()
-//                    .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler)
-//                .and()
-//                    .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
-    ;
+                .and()
+                    .authorizeRequests()
+//                            .antMatchers("/*/user").hasAnyRole("USER")
+                            .antMatchers("/*/signup","/*/login","/*/reissue").permitAll()
+                            .antMatchers("/exception/**").permitAll()
+                            .anyRequest().hasRole("USER")
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                .accessDeniedHandler(customAccessDeniedHandler)
+                .and()
+                    .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
     }
 
 
-//    @Bean
-//    public CorsConfigurationSource corsConfigurationSource(){
-//        CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000/"));
-//        configuration.setAllowedMethods(Arrays.asList("HEAD","GET","POST"));
-//        configuration.setAllowedHeaders(Arrays.asList("*"));
-////        configuration.setAllowedHeaders(Arrays.asList("Set-Cookie","XSRF-TOKEN","X-XSRF-TOKEN"));
-//        configuration.setAllowCredentials(true);
-////
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**",configuration);
-//        return source;
-//    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {

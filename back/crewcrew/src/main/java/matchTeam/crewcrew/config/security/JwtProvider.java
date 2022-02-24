@@ -126,7 +126,7 @@ public class JwtProvider {
 
     // HTTP Request 의 Header에서 Token Parsing -> "X-AUTH_TOKEN: jwt"
     public String resolveToken(HttpServletRequest request){
-        return request.getHeader("Authorization");
+        return request.getHeader("X-AUTH-TOKEN");
     }
 
     public boolean validateToken(String token){

@@ -61,6 +61,16 @@ public class UserService {
         log.info(userLoginRequestDto.getEmail(), userLoginRequestDto.getPassword());
         // AccessToken ,Refresh Token 발급
 
+        Long id = user.getUid();
+//        if (jwtProvider.validateToken()==True)
+        Optional<RefreshToken> refreshToken =refreshTokenJpaRepository.findByPkey(id);
+
+        if (refreshToken.isPresent() && (jwtProvider.validateToken(refreshToken.get().getToken())==true)){
+                TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles());
+                RefreshToken updateRefreshToken = refreshToken.get().updateToken(newCreatedToken.getRefreshToken());
+                refreshTokenJpaRepository.save(updateRefreshToken);
+                return newCreatedToken;
+            }
 
 //       1. Refresh 토큰이 존재하면 그걸 토대로 access토큰 발급
 
@@ -69,11 +79,11 @@ public class UserService {
         TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles());
 
         // RefreshToken 저장
-        RefreshToken refreshToken = RefreshToken.builder()
+        RefreshToken refresh_Token = RefreshToken.builder()
                 .pkey(user.getUid())
                 .token(tokenDto.getRefreshToken())
                 .build();
-        refreshTokenJpaRepository.save(refreshToken);
+        refreshTokenJpaRepository.save(refresh_Token);
         return tokenDto;
     }
 
