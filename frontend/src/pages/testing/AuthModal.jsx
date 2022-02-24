@@ -34,7 +34,7 @@ function AuthModal({ closeModal, visible }) {
         IsClick !== 4 ? (
           <Header disappear={!visible}>
             <Top>
-              <li>
+              <div>
                 {IsClick === 5 && (
                   <ModalArrow onClick={() => HandleClick(0)}>
                     <ArrowImg src={Arrow} />
@@ -47,8 +47,8 @@ function AuthModal({ closeModal, visible }) {
                     이전 단계
                   </ModalArrow>
                 )}
-              </li>
-              <li>
+              </div>
+              <div>
                 <ModalClose
                   onClick={() => {
                     closeModal();
@@ -57,7 +57,7 @@ function AuthModal({ closeModal, visible }) {
                     }, 500);
                   }}
                 />
-              </li>
+              </div>
             </Top>
             <Title>
               <TitleRender IsClick={IsClick} HandleClick={HandleClick} />
@@ -66,8 +66,8 @@ function AuthModal({ closeModal, visible }) {
         ) : (
           <CompleteHeader>
             <Top>
-              <li />
-              <li>
+              <div />
+              <div>
                 <ModalClose
                   onClick={() => {
                     closeModal();
@@ -76,14 +76,14 @@ function AuthModal({ closeModal, visible }) {
                     }, 500);
                   }}
                 />
-              </li>
+              </div>
             </Top>
           </CompleteHeader>
         )
       }
       body={
         <Body>
-          <LoginSection IsClick={IsClick} HandleClick={HandleClick} />
+          <LoginSection IsClick={IsClick} HandleClick={HandleClick} closeModal={closeModal} />
           <SignupSection IsClick={IsClick} HandleClick={HandleClick} />
           <SignupSection2 IsClick={IsClick} HandleClick={HandleClick} />
           <SignupSection3 IsClick={IsClick} HandleClick={HandleClick} />
@@ -154,7 +154,7 @@ const CompleteHeader = styled.div`
   }
 `;
 
-const Top = styled.ul`
+const Top = styled.div`
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

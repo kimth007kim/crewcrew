@@ -6,6 +6,7 @@ import React, { useCallback, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
 import CheckOff from '../../../assets/images/LogInCheck_off.png';
 import CheckOn from '../../../assets/images/LogInCheck_on.png';
 import Naver from '../../../assets/images/Naver.png';
@@ -15,12 +16,13 @@ import Button from '../../../components/common/Button';
 import Textfield from '../../../components/common/TextfieldEmail';
 import TextfieldPW from '../../../components/common/TextfieldPW';
 
-function LoginSection({ IsClick, HandleClick }) {
+function LoginSection({ IsClick, HandleClick, closeModal }) {
   const [IsChecked, setIsChecked] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [BtnLoading, setBtnLoading] = useState(false);
   const [Valid, setValid] = useState(true);
+  const [cookies, setCookie, removeCookie] = useCookies(['user-cookie']);
 
   const MovePasswordFind = useCallback(() => {
     HandleClick(5);
@@ -57,13 +59,38 @@ function LoginSection({ IsClick, HandleClick }) {
           const context = {
             email,
             password,
+            long: IsChecked,
           };
           console.log(context);
-          // const { data } = await axios.post(`${process.env.API_URL}auth/login/cookie`, context,{
-            const { data } = await axios.post(`http://localhost:8080/auth/login/cookie`,context,{
-            // const { data } = await axios.post(`http://localhost:8080/auth/cookie`, context,{
-            withCredential: true,});
-          console.log(data);
+          const { data } = await axios.post('/auth/login', context, {
+            withCredentials: true,
+          });
+          const now = new Date();
+          const afterh = new Date();
+
+          switch (data.status) {
+            case 200:
+              if (IsChecked) {
+                afterh.setHours(now.getHours() + 3);
+                setCookie('user-token', data.data.accessToken, {
+                  path: '/',
+                  expires: afterh,
+                });
+              } else {
+                afterh.setHours(now.getHours() + 72);
+                setCookie('user-token', data.data.accessToken, {
+                  path: '/',
+                  expires: afterh,
+                });
+              }
+              closeModal();
+              break;
+            case 400:
+            case 1000:
+            case 1008:
+            default:
+              break;
+          }
         } catch (error) {
           console.dir(error);
         } finally {

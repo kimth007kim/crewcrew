@@ -276,7 +276,7 @@ function SignupSection2({ IsClick, HandleClick }) {
             </ProfileShow>
             <ProfileSelect>
               <SelectWrapper>
-                <li>
+                <div>
                   <InputHide type="radio" id="ProfileCustom" />
                   <InputHide
                     type="file"
@@ -288,8 +288,8 @@ function SignupSection2({ IsClick, HandleClick }) {
                     <span />
                     <p>내 사진</p>
                   </InputLabel>
-                </li>
-                <li>
+                </div>
+                <div>
                   <ProfileList>
                     {Profile.map((p, i) => (
                       <li key={p.src + p.bg}>
@@ -307,7 +307,7 @@ function SignupSection2({ IsClick, HandleClick }) {
                       </li>
                     ))}
                   </ProfileList>
-                </li>
+                </div>
               </SelectWrapper>
             </ProfileSelect>
           </ProfileBox>
@@ -524,24 +524,24 @@ const SelectWrapper = styled.div`
   display: flex;
   height: 70px;
 
-  & > li {
+  & > div {
     height: 100%;
   }
 
-  & > li:first-child {
+  & > div:first-child {
     width: 88px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  & > li:last-child {
+  & > div:last-child {
     display: flex;
     overflow: hidden;
     width: 100%;
   }
 
-  & > li:last-child::before {
+  & > div:last-child::before {
     content: '';
     display: block;
     width: 1px;

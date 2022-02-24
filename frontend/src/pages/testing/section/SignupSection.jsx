@@ -280,7 +280,7 @@ function SignupSection({ IsClick, HandleClick }) {
         </InputLi>
         <InputLi>
           <ListFlex>
-            <li>
+            <div>
               <TextfieldSU
                 type="text"
                 onChange={HandleEmailIdChange}
@@ -291,10 +291,10 @@ function SignupSection({ IsClick, HandleClick }) {
                 onDelete={HandleEmailIdDelete}
                 setFocus={setIDFocus}
               />
-            </li>
+            </div>
             <MailList>
               <MailUList active={EmailFocus || !!email} ref={MailListRef}>
-                <li>
+                <div>
                   <InputMail
                     type="text"
                     id="SignEmailDomain"
@@ -320,7 +320,7 @@ function SignupSection({ IsClick, HandleClick }) {
                     }}
                     TextIn={!!email}
                   />
-                </li>
+                </div>
                 {emailList.map((m) => (
                   <li key={m} onMouseDown={(e) => ClickMailList(e, m)}>
                     <p>{m}</p>
@@ -333,7 +333,7 @@ function SignupSection({ IsClick, HandleClick }) {
         </InputLi>
         <InputLi>
           <ListFlex>
-            <li>
+            <div>
               <TextfieldSU
                 type="text"
                 onChange={HandleCodeChange}
@@ -344,12 +344,12 @@ function SignupSection({ IsClick, HandleClick }) {
                 onDelete={HandleCodeDelete}
                 setFocus={setCodeFocus}
               />
-            </li>
-            <li>
+            </div>
+            <div>
               <Button size="fullregular" color="darkblue" disabled={!CodeActive}>
                 {CodeButtonTextRender()}
               </Button>
-            </li>
+            </div>
           </ListFlex>
           <InputText Focused={CodeFocus}>{codeValidMsg}</InputText>
         </InputLi>
@@ -427,22 +427,22 @@ const ButtonWrap = styled.div`
   }
 `;
 
-const ListFlex = styled.ul`
+const ListFlex = styled.div`
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
 
-  & > li {
+  & > div {
     width: 100%;
     margin-right: 10px;
   }
 
-  & > li:last-child {
+  & > div:last-child {
     margin-right: 0;
   }
 `;
 
-const MailList = styled.li`
+const MailList = styled.div`
   z-index: 1;
   position: relative;
   height: 75px;
@@ -546,7 +546,7 @@ const LabelMail = styled.label`
     `}
 `;
 
-const InputDel = styled.div`
+const InputDel = styled.i`
   width: 18px;
   height: 18px;
   background-image: url(${delImage});
