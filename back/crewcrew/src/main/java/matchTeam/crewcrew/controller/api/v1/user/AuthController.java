@@ -1,11 +1,13 @@
 package matchTeam.crewcrew.controller.api.v1.user;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.config.security.JwtProvider;
 import matchTeam.crewcrew.dto.social.*;
 import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.security.TokenRequestDto;
+import matchTeam.crewcrew.dto.user.AccessTokenDto;
 import matchTeam.crewcrew.dto.user.LocalSignUpRequestDto;
 import matchTeam.crewcrew.dto.user.UserLoginRequestDto;
 import matchTeam.crewcrew.dto.user.UserSignUpRequestDto;
@@ -21,12 +23,9 @@ import matchTeam.crewcrew.service.user.NaverService;
 import matchTeam.crewcrew.service.user.UserService;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.CookieGenerator;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 
 @Api(tags = "1. Auth")
@@ -147,10 +146,12 @@ public class AuthController {
     )
     })
     public ResponseEntity<Object> login(
-            @ApiParam(value = "로그인 요청 DTO", required = true) @RequestBody UserLoginRequestDto userLoginRequestDto) {
+            @ApiParam(value = "로그인 요청 DTO", required = true) @RequestBody UserLoginRequestDto userLoginRequestDto) throws JsonProcessingException {
+
 
         TokenDto tokenDto = userService.login(userLoginRequestDto);
-        return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK, tokenDto.getAccessToken());
+
+        return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK, new AccessTokenDto(tokenDto.getAccessToken()));
 
     }
 
@@ -165,11 +166,6 @@ public class AuthController {
     public ResponseEntity<Object> cookie(HttpServletRequest req, HttpServletResponse response, @RequestBody UserLoginRequestDto userLoginRequestDto) {
         response.setHeader("Set-Cookie", "sadasd");
 
-//        Cookie cookie = new Cookie("X-AUTH-TOKEN", "sadasd");
-//        cookie.setPath("/");
-//        cookie.setHttpOnly(true);
-//        cookie.setSecure(true);
-//        response.addCookie(cookie);
 
         HttpCookie cookie = ResponseCookie.from("heroku-nav-data"," aaa")
                 .path("/")
@@ -253,7 +249,7 @@ public class AuthController {
         User user = userService.findByEmailAndProvider(kakaoProfile.getKakao_account().getEmail(),"kakao").orElseThrow(CUserNotFoundException::new);
 
 
-        return ResponseHandler.generateResponse("Login Page", HttpStatus.OK, jwtProvider.createTokenDto(user.getUid(),user.getRoles()));
+        return ResponseHandler.generateResponse("Login Page", HttpStatus.OK, jwtProvider.createTokenDto(user.getUid(),user.getRoles(),false));
     }
 
     @ApiOperation(value = "네이버 소셜 회원가입"
@@ -288,7 +284,7 @@ public class AuthController {
 
         User user = userService.findByEmailAndProvider(naverProfile.getResponse().getEmail(),"naver").orElseThrow(CUserNotFoundException::new);
 
-        return ResponseHandler.generateResponse("Login Page", HttpStatus.OK, jwtProvider.createTokenDto(user.getUid(),user.getRoles()));
+        return ResponseHandler.generateResponse("Login Page", HttpStatus.OK, jwtProvider.createTokenDto(user.getUid(),user.getRoles(),false));
     }
 
 

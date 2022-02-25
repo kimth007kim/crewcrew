@@ -58,15 +58,15 @@ public class UserService {
         if (!passwordEncoder.matches(userLoginRequestDto.getPassword(), user.getPassword()))
             throw new LoginFailedByPasswordException();
 
-        log.info(userLoginRequestDto.getEmail(), userLoginRequestDto.getPassword());
+        log.info(userLoginRequestDto.getEmail(), userLoginRequestDto.getPassword(),userLoginRequestDto.isMaintain());
         // AccessToken ,Refresh Token 발급
 
         Long id = user.getUid();
 //        if (jwtProvider.validateToken()==True)
         Optional<RefreshToken> refreshToken =refreshTokenJpaRepository.findByPkey(id);
-
+        boolean maintain = userLoginRequestDto.isMaintain();
         if (refreshToken.isPresent() && (jwtProvider.validateToken(refreshToken.get().getToken())==true)){
-                TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles());
+                TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles(),maintain);
                 RefreshToken updateRefreshToken = refreshToken.get().updateToken(newCreatedToken.getRefreshToken());
                 refreshTokenJpaRepository.save(updateRefreshToken);
                 return newCreatedToken;
@@ -76,7 +76,7 @@ public class UserService {
 
 //        2. Refresh 토큰 없으면 새로 Refresh토큰 발급후 그걸 토대로 accesss토큰 발급
 
-        TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles());
+        TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles(),maintain);
 
         // RefreshToken 저장
         RefreshToken refresh_Token = RefreshToken.builder()
@@ -112,7 +112,7 @@ public class UserService {
         //입력받은 Refresh 토큰이 DB에 저장된 Refresh 토큰과 다릅니다.
 
         //AccessToken , refreshToken 토큰 재발급 ,리프레시 토큰 저장
-        TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles());
+        TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles(),false);
         RefreshToken updateRefreshToken = refreshToken.updateToken(newCreatedToken.getRefreshToken());
         refreshTokenJpaRepository.save(updateRefreshToken);
 
