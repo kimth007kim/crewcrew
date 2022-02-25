@@ -7,10 +7,8 @@ export const isEmail = (email) => {
 };
 
 export const isCheckPassword = (password) => {
-  if (password.length < 6) {
-    return false;
-  }
-  return true;
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
+  return passwordRegex.test(password);
 };
 
 export const emojiSlice = (value) => {
