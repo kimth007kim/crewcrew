@@ -29,10 +29,6 @@ public class BoardSaveRequestDTO {
     @NotBlank(message = "게시글 본문을 입력해주세요.")
     private String boardContent;
 
-    @ApiModelProperty(value = "모집하는 크루원 수", notes = "모집하는 크루원 수를 입력해주세요", required = true, example = "3")
-    @NotNull(message = "모집하는 크루원 수 입력해주세요.")
-    private Integer recruitedCrew;
-
     @ApiModelProperty(value = "총 모집 크루원 수", notes = "총 모집 크루원 수를 입력해주세요", required = true, example = "10")
     @NotNull(message = "총 모집 크루원 수 입력해주세요.")
     private Integer totalCrew;
@@ -58,11 +54,10 @@ public class BoardSaveRequestDTO {
 
     @Builder
     public BoardSaveRequestDTO(String title, String boardContent,
-                               Integer recruitedCrew, Integer totalCrew, Integer approachCode,
+                               Integer totalCrew, Integer approachCode,
                                Long uid, Long categoryId, LocalDate expiredDate) {
         this.title = title;
         this.boardContent = boardContent;
-        this.recruitedCrew = recruitedCrew;
         this.totalCrew = totalCrew;
         this.approachCode = approachCode;
         this.uid = uid;
@@ -75,7 +70,6 @@ public class BoardSaveRequestDTO {
         return Board.builder()
                 .title(req.title)
                 .boardContent(req.boardContent)
-                .recruitedCrew(req.recruitedCrew)
                 .totalCrew(req.totalCrew)
                 .approach(req.approachCode)
                 .user(userRepository.findById(req.getUid()).orElseThrow(UserNotFoundException::new))

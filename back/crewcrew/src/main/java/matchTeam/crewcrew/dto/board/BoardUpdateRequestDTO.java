@@ -27,8 +27,8 @@ public class BoardUpdateRequestDTO {
     @NotBlank(message = "게시글 본문을 입력해주세요.")
     private String boardContent;
 
-    @ApiModelProperty(value = "모집하는 크루원 수", notes = "모집하는 크루원 수를 입력해주세요", required = true, example = "3")
-    @NotNull(message = "모집하는 크루원 수 입력해주세요.(1보다 커야합니다.)")
+    @ApiModelProperty(value = "모집된 크루원 수", notes = "모집된 크루원 수를 입력해주세요", required = true, example = "3")
+    @NotNull(message = "지금 현재 모집된 크루원 수 입력해주세요.(총 모집수 보다 작아야합니다.)")
     private Integer recruitedCrew;
 
     @ApiModelProperty(value = "총 모집 크루원 수", notes = "총 모집 크루원 수를 입력해주세요", required = true, example = "10")
