@@ -43,10 +43,8 @@ public class Board extends BaseTimeEntity {
 
     @Column(name = "applied_crew")
     private Integer appliedCrew;
-
-    @Positive
-    @NotNull
-    @Column(name = "recruited_crew", columnDefinition = "integer default 0", nullable = false)
+    
+    @Column(name = "recruited_crew", columnDefinition = "integer default 0")
     private Integer recruitedCrew;
 
     @Positive
@@ -78,15 +76,14 @@ public class Board extends BaseTimeEntity {
 */
     @Builder
     public Board(String title, String boardContent,
-                 User user, Category category,
-                 Integer recruitedCrew, Integer totalCrew, Integer approach,
+                 User user, Category category, Integer totalCrew, Integer approach,
                  LocalDate expiredDate) {
         this.title = title;
         this.boardContent = boardContent;
         this.user = user;
         this.category = category;
         this.appliedCrew = 0;
-        this.recruitedCrew = recruitedCrew;
+        this.recruitedCrew = 0;
         this.totalCrew = totalCrew;
         this.approach = approach;
         this.expiredDate = expiredDate;

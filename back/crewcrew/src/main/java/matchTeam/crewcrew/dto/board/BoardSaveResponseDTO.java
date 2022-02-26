@@ -27,7 +27,7 @@ public class BoardSaveResponseDTO {
     @ApiModelProperty(value = "게시글 본문 내용", notes = "게시글 본문 내용")
     private String boardContent;
 
-    @ApiModelProperty(value = "모집하는 인원수", notes = "모집하는 인원수")
+    @ApiModelProperty(value = "모집된 인원수", notes = "모집된 인원수")
     private Integer recruitedCrew;
 
     @ApiModelProperty(value = "총인원수", notes = "총인원수")
