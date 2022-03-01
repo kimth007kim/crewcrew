@@ -13,10 +13,7 @@ import matchTeam.crewcrew.dto.user.UserLoginRequestDto;
 import matchTeam.crewcrew.dto.user.UserSignUpRequestDto;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.response.ResponseHandler;
-import matchTeam.crewcrew.response.exception.auth.CNotValidEmailException;
-import matchTeam.crewcrew.response.exception.auth.CSocialAgreementException;
-import matchTeam.crewcrew.response.exception.auth.CUserAlreadyExistException;
-import matchTeam.crewcrew.response.exception.auth.CUserNotFoundException;
+import matchTeam.crewcrew.response.exception.auth.*;
 import matchTeam.crewcrew.service.user.EmailService;
 import matchTeam.crewcrew.service.user.KakaoService;
 import matchTeam.crewcrew.service.user.NaverService;
@@ -287,7 +284,35 @@ public class AuthController {
         return ResponseHandler.generateResponse("Login Page", HttpStatus.OK, jwtProvider.createTokenDto(user.getUid(),user.getRoles(),false));
     }
 
+    @PostMapping("/user/findPassword")
+    public ResponseEntity<Object> findPassword(String email,String name) {
+        User user = userService.findByEmailAndProvider(email,"local").orElseThrow(LoginFailedByEmailNotExistException::new);
+        String code =emailService.findPassword(email,name);
+        // 나중에 이름이나 닉네임으로 추가 인증
+//        if(user.getName().equals(name)){
+//        }
+        return ResponseHandler.generateResponse("성공", HttpStatus.OK,code);
+    }
 
+    @PostMapping("/user/findPassword/verify")
+    public ResponseEntity<Object> passwordSet(String email,String code) {
+        userService.findByEmailAndProvider(email,"local").orElseThrow(LoginFailedByEmailNotExistException::new);
+        String password=emailService.codeForPasswordFinder(email,code);
+        User user = userService.findByEmailAndProvider(email,"local").get();
+        userService.changePassword(user,password);
+        // 나중에 이름이나 닉네임으로 추가 인증
+//        if(user.getName().equals(name)){
+//        }
+        return ResponseHandler.generateResponse("성공", HttpStatus.OK,password);
+    }
+
+    @PostMapping("/user/changePassword")
+    public ResponseEntity<Object> changePwd(String email,String password) {
+        userService.findByEmailAndProvider(email,"local").orElseThrow(LoginFailedByEmailNotExistException::new);
+        User user = userService.findByEmailAndProvider(email,"local").get();
+        userService.changePassword(user,password);
+        return ResponseHandler.generateResponse("성공", HttpStatus.OK,password);
+    }
 
 
 }

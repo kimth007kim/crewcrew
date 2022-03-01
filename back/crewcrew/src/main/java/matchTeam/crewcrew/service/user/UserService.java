@@ -133,6 +133,11 @@ public class UserService {
         return userRepository.save(userSignUpRequestDto.toEntity("naver")).getUid();
     }
 
+    public void changePassword(User user, String password){
+        String new_password=passwordEncoder.encode(password);
+        user.setPassword(new_password);
+    }
+
     public List<User> findUsers() {
         return userRepository.findAll();
     }
