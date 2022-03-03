@@ -767,6 +767,270 @@ ul.InputList > li {
   }
 }
 
+.PostCard {
+  height: 94px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 16px 22px 16px 18px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-transition: .2s;
+  transition: .2s;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.PostCard:hover {
+  border-color: #a8a8a8;
+}
+
+.PostCard.Disable .PostCardHead .TextBox .Dday, .PostCard.Disable .PostCardBody .TextBox .TitleBox h5, .PostCard.Disable .PostCardBody .TextBox .TextList .Category {
+  color: #a8a8a8;
+}
+
+.PostCard.Disable .PostCardBody .ButtonBox button.Participate {
+  background-color: #f0f0f0;
+  cursor: default;
+}
+
+.PostCardHead {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  min-width: 204px;
+  height: 100%;
+  border-right: 1px solid #a8a8a8;
+}
+
+.PostCardHead .ProfileBox {
+  min-width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #8d2bf5;
+  overflow: hidden;
+}
+
+.PostCardHead .ProfileBox img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.PostCardHead .TextBox {
+  width: 100%;
+  height: 100%;
+  padding: 0 14px;
+}
+
+.PostCardHead .TextBox .Dday {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #00b7ff;
+  text-align: right;
+}
+
+.PostCardHead .TextBox .Date {
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 300;
+  color: #868686;
+}
+
+.PostCardHead .TextBox .Name {
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #000;
+}
+
+.PostCardBody {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  height: 100%;
+  padding-left: 15px;
+}
+
+.PostCardBody .TextBox {
+  width: 100%;
+  height: 100%;
+}
+
+.PostCardBody .TextBox .TitleBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: 2px;
+}
+
+.PostCardBody .TextBox .TitleBox h5 {
+  width: 323px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 15px;
+  font-weight: 700;
+  color: #000;
+}
+
+.PostCardBody .TextBox .TitleBox .Star {
+  width: 24px;
+  height: 24px;
+  background: url("../../src/assets/images/StarOff.png") 50% 50% no-repeat;
+  background-size: 20px !important;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.PostCardBody .TextBox .TitleBox .Star.On {
+  background: url("../../src/assets/images/StarOn.png") 50% 50% no-repeat;
+}
+
+.PostCardBody .TextBox .TextList {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 14px;
+}
+
+.PostCardBody .TextBox .TextList p {
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.PostCardBody .TextBox .TextList p:not(:last-child) {
+  margin-right: 20px;
+}
+
+.PostCardBody .TextBox .TextList .Category {
+  font-weight: 700;
+}
+
+.PostCardBody .TextBox .TextList .Category.Study {
+  color: #005ec5;
+}
+
+.PostCardBody .TextBox .TextList .Category.Hobby {
+  color: #F7971E;
+}
+
+.PostCardBody .ButtonBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  min-width: 214px;
+  height: 50px;
+}
+
+.PostCardBody .ButtonBox button {
+  width: 100px;
+  height: 100%;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.PostCardBody .ButtonBox button.Detail {
+  background-color: #c4c4c4;
+}
+
+.PostCardBody .ButtonBox button.Participate {
+  background-color: #00b7ff;
+}
+
+@media screen and (max-width: 768px) {
+  .PostCard {
+    height: 108px;
+    padding: 10px 44px 14px 12px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    position: relative;
+  }
+  .PostCardHead {
+    width: 100%;
+    height: 16px;
+    border: none;
+  }
+  .PostCardHead .ProfileBox {
+    display: none;
+  }
+  .PostCardHead .TextBox {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding: 0;
+  }
+  .PostCardHead .TextBox p.Dday, .PostCardHead .TextBox p.Date, .PostCardHead .TextBox p.Name {
+    margin: 0;
+  }
+  .PostCardHead .TextBox p.Dday {
+    margin-right: auto;
+  }
+  .PostCardHead .TextBox p.Date {
+    -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+            order: 1;
+    margin-left: 14px;
+  }
+  .PostCardHead .TextBox p.Name {
+    font-size: 10px;
+    font-weight: 300;
+    color: #868686;
+  }
+  .PostCardBody {
+    padding: 0;
+  }
+  .PostCardBody .TextBox .TitleBox {
+    margin-top: 18px;
+  }
+  .PostCardBody .TextBox .TitleBox h5 {
+    font-size: 13px;
+    min-width: calc(100vw - 64px);
+  }
+  .PostCardBody .TextBox .TitleBox .Star {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+  }
+  .PostCardBody .TextBox .TextList {
+    margin-top: 17px;
+  }
+  .PostCardBody .TextBox .TextList p:not(:last-child) {
+    margin-right: 12px;
+  }
+  .PostCardBody .ButtonBox {
+    display: none;
+  }
+}
+
 body.Modal {
   height: 100vh;
   overflow: hidden;
@@ -1264,6 +1528,209 @@ main {
   }
 }
 
+.ScrollButton {
+  position: fixed;
+  width: 45px;
+  height: 110px;
+  right: 45px;
+  bottom: 45px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.ScrollButton .ScrollTop, .ScrollButton .ScrollBottom {
+  width: 45px;
+  height: 45px;
+  background-size: 100% !important;
+  cursor: pointer;
+  opacity: 1;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.ScrollButton .ScrollTop.Disable, .ScrollButton .ScrollBottom.Disable {
+  opacity: .3;
+  cursor: default;
+}
+
+.ScrollButton .ScrollTop {
+  background: url("/frontend/src/assets/images/ButtonScrollTop.png");
+}
+
+.ScrollButton .ScrollBottom {
+  background: url("/frontend/src/assets/images/ButtonScrollBottom.png");
+}
+
+.MainTop {
+  height: 400px;
+  background-color: #005ec5;
+  position: relative;
+  overflow: hidden;
+}
+
+.MainTop .ButtonIntro {
+  width: 45px;
+  height: 45px;
+  background: url("/frontend/src/assets/images/IconLinkIntro.png") 50% 50%;
+  background-size: 100% !important;
+  cursor: pointer;
+  position: absolute;
+  top: 63px;
+  right: 45px;
+  opacity: .5;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.MainTop .ButtonIntro:hover {
+  opacity: 1;
+}
+
+.TopCont {
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  height: 100%;
+  z-index: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.TopCont > img {
+  width: 70px;
+  margin: 66px auto 20px;
+}
+
+.TopCont h2 {
+  font-size: 48px;
+  color: #fff;
+  font-weight: 700;
+  line-height: 60px;
+}
+
+.TopCont h3 {
+  font-size: 20px;
+  color: #fff;
+  font-weight: 300;
+  line-height: 36px;
+}
+
+.TopCont .InputWrapper {
+  width: 506px;
+  height: 50px;
+  border: 1px solid #e2e2e2;
+  border-radius: 25px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin-top: 25px;
+  overflow: hidden;
+  background-color: #fff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.TopCont .InputWrapper img {
+  width: 26px;
+  height: 26px;
+  margin-left: 18px;
+  margin-bottom: 4px;
+}
+
+.TopCont .InputWrapper input {
+  width: calc(100% - 76px);
+  height: 100%;
+  border: none;
+  outline: none;
+  margin-left: 14px;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.TopCont .InputWrapper input::-webkit-input-placeholder {
+  color: #a8a8a8;
+}
+
+.TopCont .InputWrapper input:-ms-input-placeholder {
+  color: #a8a8a8;
+}
+
+.TopCont .InputWrapper input::-ms-input-placeholder {
+  color: #a8a8a8;
+}
+
+.TopCont .InputWrapper input::placeholder {
+  color: #a8a8a8;
+}
+
+@media screen and (max-width: 768px) {
+  .ScrollButton {
+    display: none;
+  }
+  .MainTop {
+    height: 240px;
+  }
+  .MainTop .ButtonIntro {
+    width: 30px;
+    height: 30px;
+    top: 17px;
+    right: 20px;
+    opacity: 1;
+  }
+  .TopCont {
+    width: calc(100vw - 40px);
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+  }
+  .TopCont > img {
+    width: 42px;
+    margin: 38px auto 12px;
+  }
+  .TopCont h2 {
+    font-size: 28px;
+    line-height: 36px;
+  }
+  .TopCont h3 {
+    font-size: 13px;
+    line-height: 26px;
+  }
+  .TopCont .InputWrapper {
+    width: calc(100vw - 40px);
+    height: 36px;
+    border-radius: 18px;
+    margin-top: 32px;
+  }
+  .TopCont .InputWrapper img {
+    width: 24px;
+    height: 24px;
+    margin-left: 24px;
+  }
+  .TopCont .InputWrapper input {
+    font-size: 10px;
+  }
+}
+
 @font-face {
   font-family: 'swiper-icons';
   src: url("data:application/font-woff;charset=utf-8;base64, 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") format("woff");
@@ -1484,160 +1951,6 @@ main {
 * {
   scroll-behavior: smooth;
   word-break: keep-all;
-}
-
-.ScrollButton {
-  position: fixed;
-  width: 45px;
-  height: 110px;
-  right: 45px;
-  bottom: 45px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-}
-
-.ScrollButton .ScrollTop, .ScrollButton .ScrollBottom {
-  width: 45px;
-  height: 45px;
-  background-size: 100% !important;
-  cursor: pointer;
-  opacity: 1;
-  -webkit-transition: .3s;
-  transition: .3s;
-}
-
-.ScrollButton .ScrollTop.Disable, .ScrollButton .ScrollBottom.Disable {
-  opacity: .3;
-  cursor: default;
-}
-
-.ScrollButton .ScrollTop {
-  background: url("/frontend/src/assets/images/ButtonScrollTop.png");
-}
-
-.ScrollButton .ScrollBottom {
-  background: url("/frontend/src/assets/images/ButtonScrollBottom.png");
-}
-
-.MainTop {
-  height: 400px;
-  background-color: #005ec5;
-  position: relative;
-  overflow: hidden;
-}
-
-.MainTop .ButtonIntro {
-  width: 45px;
-  height: 45px;
-  background: url("/frontend/src/assets/images/IconLinkIntro.png") 50% 50%;
-  background-size: 100% !important;
-  cursor: pointer;
-  position: absolute;
-  top: 63px;
-  right: 45px;
-  opacity: .5;
-  -webkit-transition: .3s;
-  transition: .3s;
-}
-
-.MainTop .ButtonIntro:hover {
-  opacity: 1;
-}
-
-.TopCont {
-  position: absolute;
-  left: calc(50% - 253px);
-  width: 506px;
-  height: 100%;
-  z-index: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.TopCont > img {
-  width: 70px;
-  margin: 66px auto 20px;
-}
-
-.TopCont h2 {
-  font-size: 48px;
-  color: #fff;
-  font-weight: 700;
-  line-height: 60px;
-}
-
-.TopCont h3 {
-  font-size: 20px;
-  color: #fff;
-  font-weight: 300;
-  line-height: 36px;
-}
-
-.TopCont .InputWrapper {
-  width: 100%;
-  height: 50px;
-  border: 1px solid #e2e2e2;
-  border-radius: 25px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  margin-top: 25px;
-  overflow: hidden;
-  background-color: #fff;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.TopCont .InputWrapper img {
-  width: 26px;
-  height: 26px;
-  margin-left: 18px;
-  margin-bottom: 4px;
-}
-
-.TopCont .InputWrapper input {
-  width: calc(100% - 76px);
-  height: 100%;
-  border: none;
-  outline: none;
-  margin-left: 14px;
-  font-size: 13px;
-  font-weight: 400;
-}
-
-.TopCont .InputWrapper input::-webkit-input-placeholder {
-  color: #a8a8a8;
-}
-
-.TopCont .InputWrapper input:-ms-input-placeholder {
-  color: #a8a8a8;
-}
-
-.TopCont .InputWrapper input::-ms-input-placeholder {
-  color: #a8a8a8;
-}
-
-.TopCont .InputWrapper input::placeholder {
-  color: #a8a8a8;
 }
 
 .TopWave .Wave {
@@ -2068,50 +2381,6 @@ main {
 }
 
 @media screen and (max-width: 768px) {
-  .ScrollButton {
-    display: none;
-  }
-  .MainTop {
-    height: 240px;
-  }
-  .MainTop .ButtonIntro {
-    width: 30px;
-    height: 30px;
-    top: 17px;
-    right: 20px;
-    opacity: 1;
-  }
-  .TopCont {
-    width: calc(100vw - 40px);
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-            transform: translateX(-50%);
-  }
-  .TopCont > img {
-    width: 42px;
-    margin: 38px auto 12px;
-  }
-  .TopCont h2 {
-    font-size: 28px;
-    line-height: 36px;
-  }
-  .TopCont h3 {
-    font-size: 13px;
-    line-height: 26px;
-  }
-  .TopCont .InputWrapper {
-    height: 36px;
-    border-radius: 18px;
-    margin-top: 32px;
-  }
-  .TopCont .InputWrapper img {
-    width: 24px;
-    height: 24px;
-    margin-left: 24px;
-  }
-  .TopCont .InputWrapper input {
-    font-size: 10px;
-  }
   .TopWave .Wave {
     height: 80px;
     width: 1600px;

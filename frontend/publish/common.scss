@@ -430,3 +430,181 @@ main{
         margin: 0;
     }
 }
+
+.ScrollButton{
+    position: fixed;
+    width: 45px;
+    height: 110px;
+    right: 45px;
+    bottom: 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .ScrollTop, .ScrollBottom{
+        width: 45px;
+        height: 45px;
+        background-size: 100% !important;
+        cursor: pointer;
+        opacity: 1;
+        transition: .3s;
+
+        &.Disable{
+            opacity: .3;
+            cursor: default;
+        }
+    }
+
+    .ScrollTop{
+        background: url("/frontend/src/assets/images/ButtonScrollTop.png");
+    }
+
+    .ScrollBottom{
+        background: url("/frontend/src/assets/images/ButtonScrollBottom.png");
+    }
+}
+
+.MainTop{
+    height: 400px;
+    background-color: $blue2;
+    position: relative;
+    overflow: hidden;
+
+    .ButtonIntro{
+        width: 45px;
+        height: 45px;
+        background: url("/frontend/src/assets/images/IconLinkIntro.png") 50% 50%;
+        background-size: 100% !important;
+        cursor: pointer;
+        position: absolute;
+        top: 63px;
+        right: 45px;
+        opacity: .5;
+        transition: .3s;
+
+        &:hover{
+            opacity: 1;
+        }
+    }
+}
+
+.TopCont{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &>img{
+        width: 70px;
+        margin: 66px auto 20px;
+    }
+
+    h2{
+        font-size: 48px;
+        color: $white;
+        font-weight: 700;
+        line-height: 60px;
+    }
+    
+    h3{
+        font-size: 20px;
+        color: $white;
+        font-weight: 300;
+        line-height: 36px;
+    }
+
+    .InputWrapper{
+        width: 506px;
+        height: 50px;
+        border: 1px solid $black5;
+        border-radius: 25px;
+        box-sizing: border-box;
+        margin-top: 25px;
+        overflow: hidden;
+        background-color: $white;
+        display: flex;
+        align-items: center;
+
+        img{
+            width: 26px;
+            height: 26px;
+            margin-left: 18px;
+            margin-bottom: 4px;
+        }
+
+        input{
+            width: calc(100% - 76px);
+            height: 100%;
+            border: none;
+            outline: none;
+            margin-left: 14px;
+            font-size: 13px;
+            font-weight: 400;
+
+            &::placeholder{
+                color: $black4;
+            }
+        }
+    }
+}
+
+@media screen and (max-width:768px){
+
+    .ScrollButton{
+        display: none;
+    }
+
+    .MainTop{
+        height: 240px;
+
+        .ButtonIntro{
+            width: 30px;
+            height: 30px;
+            top: 17px;
+            right: 20px;
+            opacity: 1;
+        }
+    }
+
+    .TopCont{
+        width: calc(100vw - 40px);
+        left: 50%;
+        transform: translateX(-50%);
+
+        &>img{
+            width: 42px;
+            margin: 38px auto 12px;
+        }
+
+        h2{
+            font-size: 28px;
+            line-height: 36px;
+        }
+
+        h3{
+            font-size: 13px;
+            line-height: 26px;
+        }
+
+        .InputWrapper{
+            width: calc(100vw - 40px);
+            height: 36px;
+            border-radius: 18px;
+            margin-top: 32px;
+
+            img{
+                width: 24px;
+                height: 24px;
+                margin-left: 24px;
+            }
+
+            input{
+                font-size: 10px;
+            }
+        }
+    }
+}
