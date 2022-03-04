@@ -47,9 +47,9 @@ public class BoardExceptionHandler {
     }
 
 //    모집하는 인원이 0이하일 때의 예외
-    @ExceptionHandler(NotValidRecruitedCrewException.class)
-    protected ResponseEntity<ErrorResponseHandler> notValidRecruitedCrewException(NotValidRecruitedCrewException e){
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.NOT_VALID_RECRUITED_CREW);
+    @ExceptionHandler(OverTotalCrewException.class)
+    protected ResponseEntity<ErrorResponseHandler> notValidRecruitedCrewException(OverTotalCrewException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.OVER_TOTAL_CREW);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

@@ -2,10 +2,7 @@ package matchTeam.crewcrew.controller.api.v1.board;
 
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
-import matchTeam.crewcrew.dto.board.BoardResponseDTO;
-import matchTeam.crewcrew.dto.board.BoardSaveRequestDTO;
-import matchTeam.crewcrew.dto.board.BoardSaveResponseDTO;
-import matchTeam.crewcrew.dto.board.BoardUpdateRequestDTO;
+import matchTeam.crewcrew.dto.board.*;
 import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.service.board.BoardHitService;
@@ -14,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
+import java.util.Set;
 
 @Api(value = "Board Controller", tags = "5. board")
 @ApiOperation(value = "게시판 생성, 삭제, 수정, 조회")
@@ -113,6 +113,17 @@ public class BoardController {
         boardHitService.updateHit(boardId);
         return ResponseHandler.generateResponse("게시글 번호로 조회 성공",HttpStatus.OK, findBoard);
     }
+
+    @ApiOperation(value = "다중 조건에 의한 게시글 리스트 조회", notes = "조건에 따라 게시글 목록을 조회한다.")
+    @GetMapping("/board/list")
+    public ResponseEntity<Object> getBoardList(@ModelAttribute SearchRequestVO searchVO){
+        System.out.println("searchVO.getApproach() = " + searchVO.getApproach());
+        System.out.println("searchVO.getCategory() = " + searchVO.getCategory());
+        System.out.println("searchVO.getOrder() = " + searchVO.getOrder());
+        return ResponseHandler.generateResponse("게시글 리스트 조회 성공", HttpStatus.OK, searchVO);
+    }
+
+
 
     @ApiOperation(value = "게시글 수정(게시글 번호로 수정)", notes = "게시글 번호로 수정한다.")
     @ApiResponses({

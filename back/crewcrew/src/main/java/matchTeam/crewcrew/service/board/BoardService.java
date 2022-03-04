@@ -112,8 +112,8 @@ public class BoardService {
             throw new NotSelectCategoryException();
         } else if (updateRequestDTO.getCategoryId() == 1 || updateRequestDTO.getCategoryId() == 2) {
             throw new NotSelectChildCategoryException();
-        } else if (updateRequestDTO.getRecruitedCrew() < 0){
-            throw new NotValidRecruitedCrewException();
+        } else if (updateRequestDTO.getTotalCrew() > 10){
+            throw new OverTotalCrewException();
         } else if(updateRequestDTO.getTotalCrew() <= 0){
             throw new NotValidTotalCrewException();
         }else if (updateRequestDTO.getRecruitedCrew() >= updateRequestDTO.getTotalCrew()){
