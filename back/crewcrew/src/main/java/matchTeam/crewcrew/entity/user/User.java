@@ -41,7 +41,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     private String password;
 
     @Column(name = "profile_image")
-    private byte[] profileImage;
+    private String profileImage;
 
     @Column
     private String nickname;

@@ -7,10 +7,7 @@ import matchTeam.crewcrew.config.security.JwtProvider;
 import matchTeam.crewcrew.dto.social.*;
 import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.security.TokenRequestDto;
-import matchTeam.crewcrew.dto.user.AccessTokenDto;
-import matchTeam.crewcrew.dto.user.LocalSignUpRequestDto;
-import matchTeam.crewcrew.dto.user.UserLoginRequestDto;
-import matchTeam.crewcrew.dto.user.UserSignUpRequestDto;
+import matchTeam.crewcrew.dto.user.*;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.response.exception.auth.*;
@@ -73,7 +70,7 @@ public class AuthController {
 //            1002 이미 존재하는 유저이다.
         }
         // 이메일 전송하는메서드
-        String code = emailService.sendEmailMessage(email);
+        String code = emailService.sendVerifyCode(email);
 
         return ResponseHandler.generateResponse("인증번호 발송 성공", HttpStatus.OK, code);
 
@@ -125,6 +122,37 @@ public class AuthController {
         return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signupId);
     }
 
+
+
+    @PostMapping("/signup_image")
+    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "회원가입 성공"
+            )
+            , @ApiResponse(
+            code = 1004
+            , message ="이메일 인증이 되지않은 이메일 주소입니다."
+    )
+            , @ApiResponse(
+            code = 1005
+            , message ="현재 입력한 이메일을 가진 유저가 이미 존재합니다. "
+    )
+    })
+
+
+
+    public ResponseEntity<Object> signupImage(
+            @ApiParam(value = "회원 가입 요청 + 프로필 이미지까지", required = true)
+            @RequestBody LocalSignUp_RequestDto localSignUpRequestDto) {
+        emailService.checkVerifiedEmail(localSignUpRequestDto.getEmail());
+        //1004 이메일인증이 안된 이메일
+        Long signupId = userService.signup(localSignUpRequestDto);
+        //1005 현재 입력한 이메일로 이미 존재할 경우
+        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signupId);
+    }
+
     @ApiOperation(value = "이메일 로그인", notes = "이메일로 로그인")
     @PostMapping("/login")
     @ApiResponses({
@@ -159,18 +187,6 @@ public class AuthController {
         return ResponseHandler.generateResponse("토큰 유효 확인 성공", HttpStatus.OK,isValid );
     }
 
-    @PostMapping("/cookie")
-    public ResponseEntity<Object> cookie(HttpServletRequest req, HttpServletResponse response, @RequestBody UserLoginRequestDto userLoginRequestDto) {
-        response.setHeader("Set-Cookie", "sadasd");
-
-
-        HttpCookie cookie = ResponseCookie.from("heroku-nav-data"," aaa")
-                .path("/")
-                .build();
-//        response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-
-        return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK, cookie);
-    }
 
     @ApiOperation(value = "엑세스,리프레시 토큰 재발급"
             , notes = "엑세스 리프레시 토큰 만료시 회원 검증 후 리프레시 토큰을 검증해서 엑세스 토큰과 리프레시 토큰을 재발급한다.")
@@ -300,6 +316,7 @@ public class AuthController {
         String password=emailService.codeForPasswordFinder(email,code);
         User user = userService.findByEmailAndProvider(email,"local").get();
         userService.changePassword(user,password);
+        emailService.sendNewPassword(email,password,user.getName());
         // 나중에 이름이나 닉네임으로 추가 인증
 //        if(user.getName().equals(name)){
 //        }
@@ -307,11 +324,12 @@ public class AuthController {
     }
 
     @PostMapping("/user/changePassword")
-    public ResponseEntity<Object> changePwd(String email,String password) {
+    public ResponseEntity<Object> changePwd(String email,String previous ,String change_password) {
         userService.findByEmailAndProvider(email,"local").orElseThrow(LoginFailedByEmailNotExistException::new);
         User user = userService.findByEmailAndProvider(email,"local").get();
-        userService.changePassword(user,password);
-        return ResponseHandler.generateResponse("성공", HttpStatus.OK,password);
+        userService.passwordCheck(user,previous);
+        userService.changePassword(user,change_password);
+        return ResponseHandler.generateResponse("성공", HttpStatus.OK,change_password);
     }
 
 
