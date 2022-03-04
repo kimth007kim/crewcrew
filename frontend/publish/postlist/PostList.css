@@ -961,7 +961,7 @@ ul.InputList > li {
 @media screen and (max-width: 768px) {
   .PostCard {
     height: 108px;
-    padding: 10px 44px 14px 12px;
+    padding: 10px 12px 14px 12px;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
@@ -999,6 +999,7 @@ ul.InputList > li {
         -ms-flex-order: 1;
             order: 1;
     margin-left: 14px;
+    padding-right: 32px;
   }
   .PostCardHead .TextBox p.Name {
     font-size: 10px;
@@ -1013,7 +1014,6 @@ ul.InputList > li {
   }
   .PostCardBody .TextBox .TitleBox h5 {
     font-size: 13px;
-    min-width: calc(100vw - 64px);
   }
   .PostCardBody .TextBox .TitleBox .Star {
     position: absolute;
@@ -1028,6 +1028,12 @@ ul.InputList > li {
   }
   .PostCardBody .ButtonBox {
     display: none;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .PostCardBody .TextBox .TextList p {
+    font-size: 10px;
   }
 }
 
@@ -1544,6 +1550,7 @@ main {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  z-index: 9;
 }
 
 .ScrollButton .ScrollTop, .ScrollButton .ScrollBottom {
@@ -1731,6 +1738,24 @@ main {
   }
 }
 
+@media screen and (max-width: 300px) {
+  .TopCont h2, .TopCont h3 {
+    text-align: center;
+    word-break: keep-all;
+  }
+  .TopCont h2 {
+    font-size: 22px;
+    line-height: 30px;
+  }
+  .TopCont h3 {
+    font-size: 12px;
+    line-height: 24px;
+  }
+  .TopCont > img {
+    margin-top: 50px;
+  }
+}
+
 * {
   scroll-behavior: smooth;
 }
@@ -1783,7 +1808,7 @@ main {
 
 .PostList p {
   font-size: 13px;
-  font-weight: 300;
+  font-weight: 400;
   color: #868686;
 }
 
@@ -2189,6 +2214,9 @@ aside {
     padding: 0;
     margin-top: 18px;
   }
+  .FilterCategoryBox .FilterLabel:hover {
+    color: #868686;
+  }
   .FilterList {
     -webkit-box-align: center;
         -ms-flex-align: center;
@@ -2217,9 +2245,11 @@ aside {
   }
   .PostList .SectionWrap850 > h4 {
     padding-top: 136px;
+    font-size: 18px;
   }
   .PostList .SectionWrap850 > p {
     margin-bottom: 24px;
+    font-size: 12px;
   }
   .SectionWrap850 {
     width: 100%;
@@ -2236,10 +2266,7 @@ aside {
     height: 24px;
     font-size: 13px;
   }
-  .PaginationWrapper div.Prev2, .PaginationWrapper div.Next2 {
-    background-position: 5px;
-  }
-  .PaginationWrapper div.Prev, .PaginationWrapper div.Next {
+  .PaginationWrapper div.Prev, .PaginationWrapper div.Next, .PaginationWrapper div.Prev2, .PaginationWrapper div.Next2 {
     background-position: center;
   }
 }

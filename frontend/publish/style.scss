@@ -785,7 +785,7 @@ ul.InputList>li{
 
     .PostCard{
         height: 108px;
-        padding: 10px 44px 14px 12px;
+        padding: 10px 12px 14px 12px;
         flex-direction: column;
         position: relative;
     }
@@ -818,6 +818,7 @@ ul.InputList>li{
                 &.Date{
                     order: 1;
                     margin-left: 14px;
+                    padding-right: 32px;
                 }
 
                 &.Name{
@@ -840,7 +841,6 @@ ul.InputList>li{
 
                 h5{
                     font-size: 13px;
-                    min-width: calc(100vw - 64px);
                 }
 
                 .Star{
@@ -862,5 +862,12 @@ ul.InputList>li{
         .ButtonBox{
             display: none;
         }
+    }
+}
+
+@media screen and (max-width:300px) {
+
+    .PostCardBody .TextBox .TextList p{
+        font-size: 10px;
     }
 }

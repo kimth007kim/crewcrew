@@ -53,7 +53,7 @@
 
     p{
         font-size: 13px;
-        font-weight: 300;
+        font-weight: 400;
         color: $black3;
     }
 }
@@ -437,6 +437,10 @@ aside{
         .FilterLabel{
             padding: 0;
             margin-top: 18px;
+
+            &:hover{
+                color: $black3;
+            }
         }
     }
 
@@ -480,10 +484,12 @@ aside{
 
             &>h4{
                 padding-top: 136px;
+                font-size: 18px;
             }
     
             &>p{
                 margin-bottom: 24px;
+                font-size: 12px;
             }
         }
     }
@@ -503,11 +509,7 @@ aside{
             height: 24px;
             font-size: 13px;
 
-            &.Prev2, &.Next2{
-                background-position: 5px;
-            }
-
-            &.Prev, &.Next{
+            &.Prev, &.Next, &.Prev2, &.Next2{
                 background-position: center;
             }
         }

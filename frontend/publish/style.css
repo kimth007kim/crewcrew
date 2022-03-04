@@ -961,7 +961,7 @@ ul.InputList > li {
 @media screen and (max-width: 768px) {
   .PostCard {
     height: 108px;
-    padding: 10px 44px 14px 12px;
+    padding: 10px 12px 14px 12px;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
@@ -999,6 +999,7 @@ ul.InputList > li {
         -ms-flex-order: 1;
             order: 1;
     margin-left: 14px;
+    padding-right: 32px;
   }
   .PostCardHead .TextBox p.Name {
     font-size: 10px;
@@ -1013,7 +1014,6 @@ ul.InputList > li {
   }
   .PostCardBody .TextBox .TitleBox h5 {
     font-size: 13px;
-    min-width: calc(100vw - 64px);
   }
   .PostCardBody .TextBox .TitleBox .Star {
     position: absolute;
@@ -1028,6 +1028,12 @@ ul.InputList > li {
   }
   .PostCardBody .ButtonBox {
     display: none;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .PostCardBody .TextBox .TextList p {
+    font-size: 10px;
   }
 }
 /*# sourceMappingURL=style.css.map */

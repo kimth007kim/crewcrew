@@ -43,7 +43,7 @@
 
         &>h4{
             font-size: 20px;
-            font-weight: 500;
+            font-weight: 700;
         }
     
         &>p{
@@ -457,28 +457,6 @@
 }
 
 @media screen and (max-width:300px) {
-
-    .TopCont{
-        
-        h2, h3{
-            text-align: center;
-            word-break: keep-all;
-        }
-
-        h2{
-            font-size: 22px;
-            line-height: 30px;
-        }
-
-        h3{
-            font-size: 12px;
-            line-height: 24px;
-        }
-
-        &>img{
-            margin-top: 50px;
-        }
-    }
 
     .GridWrap{
         grid-template-columns: 1fr 1fr;

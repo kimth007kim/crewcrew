@@ -440,6 +440,7 @@ main{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    z-index: 9;
 
     .ScrollTop, .ScrollBottom{
         width: 45px;
@@ -605,6 +606,31 @@ main{
             input{
                 font-size: 10px;
             }
+        }
+    }
+}
+
+@media screen and (max-width:300px){
+
+    .TopCont{
+        
+        h2, h3{
+            text-align: center;
+            word-break: keep-all;
+        }
+
+        h2{
+            font-size: 22px;
+            line-height: 30px;
+        }
+
+        h3{
+            font-size: 12px;
+            line-height: 24px;
+        }
+
+        &>img{
+            margin-top: 50px;
         }
     }
 }

@@ -961,7 +961,7 @@ ul.InputList > li {
 @media screen and (max-width: 768px) {
   .PostCard {
     height: 108px;
-    padding: 10px 44px 14px 12px;
+    padding: 10px 12px 14px 12px;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
@@ -999,6 +999,7 @@ ul.InputList > li {
         -ms-flex-order: 1;
             order: 1;
     margin-left: 14px;
+    padding-right: 32px;
   }
   .PostCardHead .TextBox p.Name {
     font-size: 10px;
@@ -1013,7 +1014,6 @@ ul.InputList > li {
   }
   .PostCardBody .TextBox .TitleBox h5 {
     font-size: 13px;
-    min-width: calc(100vw - 64px);
   }
   .PostCardBody .TextBox .TitleBox .Star {
     position: absolute;
@@ -1028,6 +1028,12 @@ ul.InputList > li {
   }
   .PostCardBody .ButtonBox {
     display: none;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .PostCardBody .TextBox .TextList p {
+    font-size: 10px;
   }
 }
 
@@ -1544,6 +1550,7 @@ main {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  z-index: 9;
 }
 
 .ScrollButton .ScrollTop, .ScrollButton .ScrollBottom {
@@ -1728,6 +1735,24 @@ main {
   }
   .TopCont .InputWrapper input {
     font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .TopCont h2, .TopCont h3 {
+    text-align: center;
+    word-break: keep-all;
+  }
+  .TopCont h2 {
+    font-size: 22px;
+    line-height: 30px;
+  }
+  .TopCont h3 {
+    font-size: 12px;
+    line-height: 24px;
+  }
+  .TopCont > img {
+    margin-top: 50px;
   }
 }
 
@@ -1994,7 +2019,7 @@ main {
 
 .MainCategory .SectionWrap > h4 {
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .MainCategory .SectionWrap > p {
@@ -2146,7 +2171,7 @@ main {
 
 .MainWrite .SectionWrap > h4 {
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .MainWrite .SectionWrap > p {
@@ -2283,7 +2308,7 @@ main {
 
 .MainPost .SectionWrap > h4 {
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .MainPost .SectionWrap > p {
@@ -2469,21 +2494,6 @@ main {
 }
 
 @media screen and (max-width: 300px) {
-  .TopCont h2, .TopCont h3 {
-    text-align: center;
-    word-break: keep-all;
-  }
-  .TopCont h2 {
-    font-size: 22px;
-    line-height: 30px;
-  }
-  .TopCont h3 {
-    font-size: 12px;
-    line-height: 24px;
-  }
-  .TopCont > img {
-    margin-top: 50px;
-  }
   .GridWrap {
     -ms-grid-columns: 1fr 1fr;
         grid-template-columns: 1fr 1fr;
