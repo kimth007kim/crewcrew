@@ -1755,4 +1755,519 @@ main {
     margin-top: 50px;
   }
 }
-/*# sourceMappingURL=common.css.map */
+
+* {
+  scroll-behavior: smooth;
+}
+
+.MainTop {
+  background: -webkit-gradient(linear, left top, left bottom, from(#008BE2), to(#0F3FA6));
+  background: linear-gradient(180deg, #008BE2 0%, #0F3FA6 100%);
+}
+
+.MainTop .TopCont h2 {
+  margin-top: 102px;
+}
+
+.MainTop .TopCont h3 {
+  margin-top: 12px;
+}
+
+.MainTop .TopCont .InputWrapper {
+  margin-top: 32px;
+}
+
+.MainTop .TopBgCharacter {
+  position: absolute;
+  max-width: 1075px;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  mix-blend-mode: soft-light;
+  background-image: url("/frontend/src/assets/images/Profile1.png"), url("/frontend/src/assets/images/Profile3.png");
+  background-size: 400px 400px;
+  background-repeat: no-repeat;
+  background-position: left, right;
+}
+
+.PostList {
+  background-color: #F6F7FB;
+  padding-bottom: 80px;
+}
+
+.PostList h4 {
+  padding-top: 174px;
+  padding-bottom: 10px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+}
+
+.PostList p {
+  font-size: 13px;
+  font-weight: 400;
+  color: #868686;
+}
+
+.SectionWrap850 {
+  max-width: 850px;
+  margin: auto;
+  position: relative;
+}
+
+.FilterWrapper {
+  position: absolute;
+  top: -42px;
+  width: 100%;
+  max-width: 850px;
+  padding: 20px 10px 34px 25px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 10px;
+  -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
+          box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
+  z-index: 1;
+}
+
+.FilterWrapper.Fixed {
+  position: fixed;
+  top: 10px;
+}
+
+.FilterWrapper button {
+  width: 120px;
+  height: 30px;
+  font-size: 14px;
+  padding: 0;
+  position: absolute;
+  bottom: -15px;
+  left: calc(50% - 60px);
+  -ms-grid-column-align: end;
+      justify-self: end;
+}
+
+.FliterListWrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.FilterPostBox, .FilterCategoryBox {
+  display: inline-block;
+  height: 60px;
+}
+
+.FilterPostBox {
+  width: 328px;
+  border-right: 1px solid #e2e2e2;
+}
+
+.FilterPostBox .FilterLabel {
+  width: 88px;
+}
+
+.FilterCategoryBox {
+  width: calc(100% - 375px);
+  padding-left: 42px;
+}
+
+.FilterCategoryBox .FilterLabel {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 0 16px;
+}
+
+.FilterList {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.FilterList li {
+  margin-right: 8px;
+  margin-bottom: 14px;
+}
+
+.FilterInput:checked ~ .FilterLabel.Common {
+  background-color: #00b7ff;
+  border-color: transparent;
+  color: #fff;
+}
+
+.FilterInput:checked ~ .FilterLabel.Study {
+  background-color: #001881;
+  border-color: transparent;
+  color: #fff;
+}
+
+.FilterInput:checked ~ .FilterLabel.Hobby {
+  background-color: #F7971E;
+  border-color: transparent;
+  color: #fff;
+}
+
+.FilterLabel {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 24px;
+  border: 1px solid #e2e2e2;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #868686;
+  cursor: pointer;
+  -webkit-transition: .2s;
+  transition: .2s;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.FilterLabel:hover.Common {
+  border-color: #000;
+  color: #000;
+}
+
+.FilterLabel:hover.Study {
+  border-color: #001881;
+  color: #001881;
+}
+
+.FilterLabel:hover.Hobby {
+  border-color: #F7971E;
+  color: #F7971E;
+}
+
+.FilterChecked {
+  padding-top: 20px;
+  padding-bottom: 42px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.FilterChecked li {
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+
+.FilterChecked span, .FilterCheckedMobile span {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: 24px;
+  padding: 0 16px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 300;
+  border-radius: 14px;
+}
+
+.FilterChecked span.Common, .FilterCheckedMobile span.Common {
+  background-color: #00b7ff;
+}
+
+.FilterChecked span.Study, .FilterCheckedMobile span.Study {
+  background-color: #001881;
+}
+
+.FilterChecked span.Hobby, .FilterCheckedMobile span.Hobby {
+  background-color: #F7971E;
+}
+
+.PostWrapper li {
+  padding-bottom: 14px;
+}
+
+.PaginationWrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 598px;
+  margin: 48px auto 124px;
+}
+
+.PaginationWrapper div {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #fff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #000;
+  border: 1px solid transparent;
+  -webkit-transition: .2s;
+  transition: .2s;
+  cursor: pointer;
+}
+
+.PaginationWrapper div:hover {
+  border-color: #a8a8a8;
+}
+
+.PaginationWrapper div.On {
+  background-color: #00b7ff;
+  color: #fff;
+  border-color: transparent;
+  cursor: default;
+}
+
+.PaginationWrapper div.Prev2 {
+  background-repeat: no-repeat;
+  background-size: 13px;
+  background-position: 9px;
+  background-image: url("/frontend/src/assets/images/PageArrow2Prev.png");
+}
+
+.PaginationWrapper div.Prev {
+  background-repeat: no-repeat;
+  background-size: 6px;
+  background-position: 12px;
+  background-image: url("/frontend/src/assets/images/PageArrowPrev.png");
+}
+
+.PaginationWrapper div.Next {
+  background-repeat: no-repeat;
+  background-size: 6px;
+  background-position: 14px;
+  background-image: url("/frontend/src/assets/images/PageArrowNext.png");
+}
+
+.PaginationWrapper div.Next2 {
+  background-repeat: no-repeat;
+  background-size: 13px;
+  background-position: 10px;
+  background-image: url("/frontend/src/assets/images/PageArrow2Next.png");
+}
+
+aside {
+  width: 100%;
+  height: 188px;
+  background-color: #a8a8a8;
+}
+
+.FilterHead {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .MainTop .TopCont h2 {
+    margin-top: 70px;
+  }
+  .MainTop .TopBgCharacter {
+    background-image: url("/frontend/src/assets/images/Profile3.png");
+    background-size: 240px;
+    background-position: right;
+  }
+  .FilterChecked {
+    display: none;
+  }
+  .FilterWrapper {
+    top: 0;
+    left: 0;
+    display: block;
+    background-color: #fff;
+    padding: 0%;
+    border-radius: 0;
+  }
+  .FilterWrapper.Fixed {
+    top: 60px;
+  }
+  .FilterHead {
+    border-bottom: 1px solid #e2e2e2;
+    height: 68px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .FilterHead .FilterButton {
+    min-width: 100px;
+    border-right: 1px solid #e2e2e2;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .FilterHead .FilterButton .FilterArrow {
+    display: block;
+    background: url("/frontend/src/assets/images/FilterArrow.png") no-repeat;
+    background-size: 100%;
+    width: 11px;
+    height: 6px;
+    margin-left: 15px;
+  }
+  .FilterHead .FilterButton .FilterArrow.On {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
+  .FilterHead .FilterCheckedWrapper {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .FilterHead .FilterCheckedWrapper::-webkit-scrollbar {
+    display: none;
+  }
+  .FilterHead .FilterCheckedMobile {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    border: none;
+    padding-left: 8px;
+    width: auto;
+    height: 100%;
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+  }
+  .FilterHead .FilterCheckedMobile li {
+    margin-right: 8px;
+  }
+  .FilterHead .FilterCheckedMobile span {
+    white-space: nowrap;
+  }
+  .FliterListWrapper {
+    height: 0;
+    overflow: hidden;
+    position: relative;
+    -webkit-transition: 1s;
+    transition: 1s;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  .FliterListWrapper.On {
+    height: 322px;
+  }
+  .FliterListWrapper .FilterLabel {
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    background: none !important;
+    border-radius: 0;
+    border: none;
+    font-size: 13px;
+    margin-right: 24px;
+    margin-bottom: 0;
+  }
+  .FilterPostBox, .FilterCategoryBox {
+    display: block;
+    width: 100%;
+    padding: 0 20px;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    height: auto;
+  }
+  .FilterPostBox .FilterList {
+    height: 60px;
+    border-bottom: 1px solid #e2e2e2;
+  }
+  .FilterCategoryBox .FilterLabel {
+    padding: 0;
+    margin-top: 18px;
+  }
+  .FilterCategoryBox .FilterLabel:hover {
+    color: #868686;
+  }
+  .FilterList {
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  .FilterList li {
+    margin-bottom: 0;
+    margin-right: 0;
+  }
+  .FilterInput:checked ~ .FilterLabel.Common {
+    color: #00b7ff;
+  }
+  .FilterInput:checked ~ .FilterLabel.Study {
+    color: #001881;
+  }
+  .FilterInput:checked ~ .FilterLabel.Hobby {
+    color: #F7971E;
+  }
+  .FilterWrapper button {
+    width: 100%;
+    height: 50px;
+    bottom: 0;
+    left: 0;
+    border-radius: 0;
+    font-size: 15px;
+  }
+  .PostList .SectionWrap850 > h4 {
+    padding-top: 136px;
+    font-size: 18px;
+  }
+  .PostList .SectionWrap850 > p {
+    margin-bottom: 24px;
+    font-size: 12px;
+  }
+  .SectionWrap850 {
+    width: 100%;
+    padding: 0 20px;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+  }
+  .PaginationWrapper {
+    width: 100%;
+    margin: 28px auto 80px;
+  }
+  .PaginationWrapper div {
+    width: 24px;
+    height: 24px;
+    font-size: 13px;
+  }
+  .PaginationWrapper div.Prev, .PaginationWrapper div.Next, .PaginationWrapper div.Prev2, .PaginationWrapper div.Next2 {
+    background-position: center;
+  }
+}
+/*# sourceMappingURL=PostList.css.map */

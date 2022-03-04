@@ -48,8 +48,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests()
 //                            .antMatchers("/*/user").hasAnyRole("USER")
-                            .antMatchers("/*/signup","/*/login","/*/reissue").permitAll()
-                            .antMatchers("/exception/**").permitAll()
+                            .antMatchers("/*/signup","/*/login","/auth/**","/*/reissue").permitAll()
+                            .antMatchers("/exception/**","/s3/**").permitAll()
                             .anyRequest().hasRole("USER")
                 .and()
                 .exceptionHandling()
@@ -57,6 +57,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(customAccessDeniedHandler)
                 .and()
                     .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
+    }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000/"));
+        configuration.setAllowedMethods(Arrays.asList("HEAD","GET","POST"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+//        configuration.setAllowedHeaders(Arrays.asList("Set-Cookie","XSRF-TOKEN","X-XSRF-TOKEN"));
+        configuration.setAllowCredentials(true);
+//
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**",configuration);
+        return source;
     }
 
 

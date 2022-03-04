@@ -14,11 +14,12 @@ import java.util.List;
 public class UserLoginRequestDto {
     private String email;
     private String password;
+    private boolean maintain;
 
-    public User toUser(PasswordEncoder passwordEncoder) {
-        return User.builder()
-                .email(email)
-                .password(passwordEncoder.encode(password))
-                .build();
-    }
+//    public User toUser(PasswordEncoder passwordEncoder) {
+//        return User.builder()
+//                .email(email)
+//                .password(passwordEncoder.encode(password))
+//                .build();
+//    }
 }

@@ -766,4 +766,274 @@ ul.InputList > li {
     margin-left: 16px;
   }
 }
+
+.PostCard {
+  height: 94px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 16px 22px 16px 18px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-transition: .2s;
+  transition: .2s;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.PostCard:hover {
+  border-color: #a8a8a8;
+}
+
+.PostCard.Disable .PostCardHead .TextBox .Dday, .PostCard.Disable .PostCardBody .TextBox .TitleBox h5, .PostCard.Disable .PostCardBody .TextBox .TextList .Category {
+  color: #a8a8a8;
+}
+
+.PostCard.Disable .PostCardBody .ButtonBox button.Participate {
+  background-color: #f0f0f0;
+  cursor: default;
+}
+
+.PostCardHead {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  min-width: 204px;
+  height: 100%;
+  border-right: 1px solid #a8a8a8;
+}
+
+.PostCardHead .ProfileBox {
+  min-width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #8d2bf5;
+  overflow: hidden;
+}
+
+.PostCardHead .ProfileBox img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.PostCardHead .TextBox {
+  width: 100%;
+  height: 100%;
+  padding: 0 14px;
+}
+
+.PostCardHead .TextBox .Dday {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #00b7ff;
+  text-align: right;
+}
+
+.PostCardHead .TextBox .Date {
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 300;
+  color: #868686;
+}
+
+.PostCardHead .TextBox .Name {
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #000;
+}
+
+.PostCardBody {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  height: 100%;
+  padding-left: 15px;
+}
+
+.PostCardBody .TextBox {
+  width: 100%;
+  height: 100%;
+}
+
+.PostCardBody .TextBox .TitleBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: 2px;
+}
+
+.PostCardBody .TextBox .TitleBox h5 {
+  width: 323px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 15px;
+  font-weight: 700;
+  color: #000;
+}
+
+.PostCardBody .TextBox .TitleBox .Star {
+  width: 24px;
+  height: 24px;
+  background: url("../../src/assets/images/StarOff.png") 50% 50% no-repeat;
+  background-size: 20px !important;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.PostCardBody .TextBox .TitleBox .Star.On {
+  background: url("../../src/assets/images/StarOn.png") 50% 50% no-repeat;
+}
+
+.PostCardBody .TextBox .TextList {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 14px;
+}
+
+.PostCardBody .TextBox .TextList p {
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.PostCardBody .TextBox .TextList p:not(:last-child) {
+  margin-right: 20px;
+}
+
+.PostCardBody .TextBox .TextList .Category {
+  font-weight: 700;
+}
+
+.PostCardBody .TextBox .TextList .Category.Study {
+  color: #005ec5;
+}
+
+.PostCardBody .TextBox .TextList .Category.Hobby {
+  color: #F7971E;
+}
+
+.PostCardBody .ButtonBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  min-width: 214px;
+  height: 50px;
+}
+
+.PostCardBody .ButtonBox button {
+  width: 100px;
+  height: 100%;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.PostCardBody .ButtonBox button.Detail {
+  background-color: #c4c4c4;
+}
+
+.PostCardBody .ButtonBox button.Participate {
+  background-color: #00b7ff;
+}
+
+@media screen and (max-width: 768px) {
+  .PostCard {
+    height: 108px;
+    padding: 10px 12px 14px 12px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    position: relative;
+  }
+  .PostCardHead {
+    width: 100%;
+    height: 16px;
+    border: none;
+  }
+  .PostCardHead .ProfileBox {
+    display: none;
+  }
+  .PostCardHead .TextBox {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding: 0;
+  }
+  .PostCardHead .TextBox p.Dday, .PostCardHead .TextBox p.Date, .PostCardHead .TextBox p.Name {
+    margin: 0;
+  }
+  .PostCardHead .TextBox p.Dday {
+    margin-right: auto;
+  }
+  .PostCardHead .TextBox p.Date {
+    -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+            order: 1;
+    margin-left: 14px;
+    padding-right: 32px;
+  }
+  .PostCardHead .TextBox p.Name {
+    font-size: 10px;
+    font-weight: 300;
+    color: #868686;
+  }
+  .PostCardBody {
+    padding: 0;
+  }
+  .PostCardBody .TextBox .TitleBox {
+    margin-top: 18px;
+  }
+  .PostCardBody .TextBox .TitleBox h5 {
+    font-size: 13px;
+  }
+  .PostCardBody .TextBox .TitleBox .Star {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+  }
+  .PostCardBody .TextBox .TextList {
+    margin-top: 17px;
+  }
+  .PostCardBody .TextBox .TextList p:not(:last-child) {
+    margin-right: 12px;
+  }
+  .PostCardBody .ButtonBox {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .PostCardBody .TextBox .TextList p {
+    font-size: 10px;
+  }
+}
 /*# sourceMappingURL=style.css.map */

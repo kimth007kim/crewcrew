@@ -7,6 +7,7 @@ import matchTeam.crewcrew.config.security.JwtProvider;
 import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.security.TokenRequestDto;
 import matchTeam.crewcrew.dto.user.LocalSignUpRequestDto;
+import matchTeam.crewcrew.dto.user.LocalSignUp_RequestDto;
 import matchTeam.crewcrew.dto.user.UserLoginRequestDto;
 import matchTeam.crewcrew.dto.user.UserSignUpRequestDto;
 import matchTeam.crewcrew.entity.security.RefreshToken;
@@ -46,6 +47,11 @@ public class UserService {
             throw new EmailSignUpFailedCException();
         return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();
     }
+    public Long signup(LocalSignUp_RequestDto localSignUpRequestDto) {
+        if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(),"local").isPresent())
+            throw new EmailSignUpFailedCException();
+        return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();
+    }
 
 
     public TokenDto login(UserLoginRequestDto userLoginRequestDto) {
@@ -58,15 +64,15 @@ public class UserService {
         if (!passwordEncoder.matches(userLoginRequestDto.getPassword(), user.getPassword()))
             throw new LoginFailedByPasswordException();
 
-        log.info(userLoginRequestDto.getEmail(), userLoginRequestDto.getPassword());
+        log.info(userLoginRequestDto.getEmail(), userLoginRequestDto.getPassword(),userLoginRequestDto.isMaintain());
         // AccessToken ,Refresh Token 발급
 
         Long id = user.getUid();
 //        if (jwtProvider.validateToken()==True)
         Optional<RefreshToken> refreshToken =refreshTokenJpaRepository.findByPkey(id);
-
+        boolean maintain = userLoginRequestDto.isMaintain();
         if (refreshToken.isPresent() && (jwtProvider.validateToken(refreshToken.get().getToken())==true)){
-                TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles());
+                TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles(),maintain);
                 RefreshToken updateRefreshToken = refreshToken.get().updateToken(newCreatedToken.getRefreshToken());
                 refreshTokenJpaRepository.save(updateRefreshToken);
                 return newCreatedToken;
@@ -76,7 +82,7 @@ public class UserService {
 
 //        2. Refresh 토큰 없으면 새로 Refresh토큰 발급후 그걸 토대로 accesss토큰 발급
 
-        TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles());
+        TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles(),maintain);
 
         // RefreshToken 저장
         RefreshToken refresh_Token = RefreshToken.builder()
@@ -112,7 +118,7 @@ public class UserService {
         //입력받은 Refresh 토큰이 DB에 저장된 Refresh 토큰과 다릅니다.
 
         //AccessToken , refreshToken 토큰 재발급 ,리프레시 토큰 저장
-        TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles());
+        TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles(),false);
         RefreshToken updateRefreshToken = refreshToken.updateToken(newCreatedToken.getRefreshToken());
         refreshTokenJpaRepository.save(updateRefreshToken);
 
@@ -133,6 +139,18 @@ public class UserService {
         return userRepository.save(userSignUpRequestDto.toEntity("naver")).getUid();
     }
 
+    public void passwordCheck(User user,String previous){
+        System.out.println("---------         " +previous+"     ------------ "+user.getPassword());
+        if(!passwordEncoder.matches(previous,user.getPassword())){
+            throw new CPasswordNotMatchException();
+        }
+    }
+
+    public void changePassword(User user, String password){
+        String new_password=passwordEncoder.encode(password);
+        user.setPassword(new_password);
+    }
+
     public List<User> findUsers() {
         return userRepository.findAll();
     }
@@ -143,11 +161,7 @@ public class UserService {
 
 //    public boolean validateDuplicateMember(String email) {
 //        if (userRepository.findByEmail(email).isEmpty()) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
+//            return tr
 
     public User tokenChecker(String accessToken){
         if(!jwtProvider.validateToken(accessToken)){

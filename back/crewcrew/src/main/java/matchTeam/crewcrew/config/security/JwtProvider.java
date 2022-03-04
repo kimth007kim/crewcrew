@@ -33,8 +33,9 @@ public class JwtProvider {
 //    private String secretKey="lalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefala";
 //    private SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private String ROLES="roles";
-    private final long accessTokenValidMillisecond =60 * 60 * 1000L;           // 1일
-    private final long refreshTokenValidMillisecond =14* 24 *60 * 60 * 1000L;  // 14일
+    private final long accessTokenValidMillisecond =3*60 * 60 * 1000L;           // 3시간
+    private final long accessTokenLongValidMillisecond =3*24*60 * 60 * 1000L;           // 3일
+    private final long refreshTokenValidMillisecond =14* 24 *60 * 60 * 1000L;  // 7일
     private final CustomUserDetailService userDetailsService;
 
     // 객체 초기화, secretKey를 Base64로 인코딩한다.
@@ -48,16 +49,21 @@ public class JwtProvider {
     }
 
     //JWT 토큰 생성
-    public TokenDto createTokenDto(Long userPk , List<String> roles){
+    public TokenDto createTokenDto(Long userPk , List<String> roles, boolean maintain){
         Claims claims = Jwts.claims().setSubject(String.valueOf(userPk));
         claims.put(ROLES,roles);
         Date now = new Date();
-
+        Long duration;
+        if (maintain ==true){
+            duration= accessTokenLongValidMillisecond;
+        }else{
+            duration=accessTokenValidMillisecond;
+        }
         String accessToken =Jwts.builder().
                 setHeaderParam(Header.TYPE,Header.JWT_TYPE)
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() +accessTokenValidMillisecond))
+                .setExpiration(new Date(now.getTime() +duration))
                 .signWith(SignatureAlgorithm.HS256,secretKey)
 //                .signWith(key)
                 .compact();

@@ -23,6 +23,7 @@ public enum ErrorCode {
 
     EMAIL_CODE_NOT_VERIFIED(1004,"EMAIL_002","이메일 인증이 되지않은 이메일 주소입니다."),
     SIGN_UP_EMAIL_ALREADY_EXIST_FAILED(1005,"EMAIL_001","현재 입력한 이메일을 가진 유저가 이미 존재합니다. "),
+    PASSWORD_NOT_MATCH(1006,"EMAIL_003"," 입력한 비밀번호가 원래 비밀번호가 일치하지않습니다. "),
 
     //1100~1199 이메일 로그인 대한 예외
 

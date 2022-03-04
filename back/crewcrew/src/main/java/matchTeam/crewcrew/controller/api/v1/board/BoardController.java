@@ -29,7 +29,7 @@ public class BoardController {
             @ApiResponse(
                     code = 200,
                     message = "게시글 번호로 수정 성공",
-                    response = BoardResponseDTO.class
+                    response = BoardSaveResponseDTO.class
             ),
             @ApiResponse(
                     code = 2101,
@@ -57,15 +57,11 @@ public class BoardController {
             ),
             @ApiResponse(
                     code = 2106,
-                    message = "모집인원이 0이하입니다."
+                    message = "모집인원이 0보다 작습니다."
             ),
             @ApiResponse(
                     code = 2107,
                     message = "총인원이 0이하입니다."
-            ),
-            @ApiResponse(
-                    code = 2108,
-                    message = "모집인원이 총인원보다 많습니다."
             ),
             @ApiResponse(
                     code = 2109,
