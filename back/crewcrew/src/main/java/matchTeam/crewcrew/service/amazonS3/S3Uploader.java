@@ -37,8 +37,11 @@ public class S3Uploader {
         removeNewFile(uploadFile);
         return uploadImageUrl;
     }
+    private void deleteS3(String source) {
+        amazonS3Client.deleteObject(bucket, source);
+    }
 
-    private void removeNewFile(File targetFile) {
+    private void removeNewFile(File targetFile) {       //로컬에서 삭제하기
         if (targetFile.delete()) {
             log.info("파일 삭제 성공");
             return;

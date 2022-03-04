@@ -54,7 +54,27 @@ public class EmailService {
         return code;
     }
 
-    public String codeForPasswordFinder(String code,String email){
+    public void sendNewPassword(String email,String password,String name){
+        SimpleMailMessage mailMessage  = new SimpleMailMessage();
+        mailMessage.setTo(email);
+        String setfrom = "kimth00700kim@google.com";
+        mailMessage.setSubject("[크루크루] 회원님의 새로운 비밀번호 입니다.");
+        String content=System.getProperty("line.separator")+
+                System.getProperty("line.separator")+
+                "안녕하세요 "+name+"님 저희 홈페이지를 찾아주셔서 감사합니다"
+                +System.getProperty("line.separator")+
+                System.getProperty("line.separator")+
+                "새로 발급되는 비밀번호는 " +password+ " 입니다. "
+                +System.getProperty("line.separator")+
+                System.getProperty("line.separator")+
+                "추후에 홈페이지에서 비밀번호 변경하고 사용하는것을 권장드립니다.";
+        mailMessage.setFrom(setfrom); // 보내는사람 생략하면 정상작동을 안함
+        mailMessage.setTo(email); // 받는사람 이메일
+        mailMessage.setText(content); // 메일 내용
+        emailSenderService.sendEmail(mailMessage);
+    }
+
+    public String codeForPasswordFinder(String email,String code){
         StringBuilder sb = new StringBuilder();
         sb.append("passwordFinder_");
         sb.append(email);
@@ -89,7 +109,7 @@ public class EmailService {
 
 
 
-    public String sendEmailMessage(String email){
+    public String sendVerifyCode(String email){
         String code=createCode();
         SimpleMailMessage mailMessage  = new SimpleMailMessage();
         mailMessage.setTo(email);

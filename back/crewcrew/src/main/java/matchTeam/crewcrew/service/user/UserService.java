@@ -7,6 +7,7 @@ import matchTeam.crewcrew.config.security.JwtProvider;
 import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.security.TokenRequestDto;
 import matchTeam.crewcrew.dto.user.LocalSignUpRequestDto;
+import matchTeam.crewcrew.dto.user.LocalSignUp_RequestDto;
 import matchTeam.crewcrew.dto.user.UserLoginRequestDto;
 import matchTeam.crewcrew.dto.user.UserSignUpRequestDto;
 import matchTeam.crewcrew.entity.security.RefreshToken;
@@ -42,6 +43,11 @@ public class UserService {
     }
 
     public Long signup(LocalSignUpRequestDto localSignUpRequestDto) {
+        if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(),"local").isPresent())
+            throw new EmailSignUpFailedCException();
+        return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();
+    }
+    public Long signup(LocalSignUp_RequestDto localSignUpRequestDto) {
         if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(),"local").isPresent())
             throw new EmailSignUpFailedCException();
         return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();
@@ -133,6 +139,13 @@ public class UserService {
         return userRepository.save(userSignUpRequestDto.toEntity("naver")).getUid();
     }
 
+    public void passwordCheck(User user,String previous){
+        System.out.println("---------         " +previous+"     ------------ "+user.getPassword());
+        if(!passwordEncoder.matches(previous,user.getPassword())){
+            throw new CPasswordNotMatchException();
+        }
+    }
+
     public void changePassword(User user, String password){
         String new_password=passwordEncoder.encode(password);
         user.setPassword(new_password);
@@ -148,11 +161,7 @@ public class UserService {
 
 //    public boolean validateDuplicateMember(String email) {
 //        if (userRepository.findByEmail(email).isEmpty()) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
+//            return tr
 
     public User tokenChecker(String accessToken){
         if(!jwtProvider.validateToken(accessToken)){

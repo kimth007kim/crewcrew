@@ -68,6 +68,16 @@ public class AuthExceptionHandler {
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.SIGN_UP_EMAIL_ALREADY_EXIST_FAILED);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    /**
+     * 1006
+     * 비밀번호 변경시 패스워드가 일치하지 않을때
+     * signup
+     */
+    @ExceptionHandler(CPasswordNotMatchException.class)
+    protected ResponseEntity<ErrorResponseHandler> passwordNotMatchException(CPasswordNotMatchException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.PASSWORD_NOT_MATCH);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     // 1100~1199 이메일 로그인에 대한 예외
 
