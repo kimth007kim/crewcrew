@@ -17,9 +17,7 @@ import matchTeam.crewcrew.service.user.NaverService;
 import matchTeam.crewcrew.service.user.UserService;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Api(tags = "1. Auth")
@@ -95,32 +93,32 @@ public class AuthController {
 
     }
 
-    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
-    @PostMapping("/signup")
-    @ApiResponses({
-            @ApiResponse(
-                    code = 200
-                    , message = "회원가입 성공"
-            )
-            , @ApiResponse(
-            code = 1004
-            , message ="이메일 인증이 되지않은 이메일 주소입니다."
-    )
-            , @ApiResponse(
-            code = 1005
-            , message ="현재 입력한 이메일을 가진 유저가 이미 존재합니다. "
-    )
-    })
-
-    public ResponseEntity<Object> signup(
-            @ApiParam(value = "회원 가입 요청", required = true)
-            @RequestBody LocalSignUpRequestDto localSignUpRequestDto) {
-        emailService.checkVerifiedEmail(localSignUpRequestDto.getEmail());
-        //1004 이메일인증이 안된 이메일
-        Long signupId = userService.signup(localSignUpRequestDto);
-        //1005 현재 입력한 이메일로 이미 존재할 경우
-        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signupId);
-    }
+//    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
+//    @PostMapping("/signup")
+//    @ApiResponses({
+//            @ApiResponse(
+//                    code = 200
+//                    , message = "회원가입 성공"
+//            )
+//            , @ApiResponse(
+//            code = 1004
+//            , message ="이메일 인증이 되지않은 이메일 주소입니다."
+//    )
+//            , @ApiResponse(
+//            code = 1005
+//            , message ="현재 입력한 이메일을 가진 유저가 이미 존재합니다. "
+//    )
+//    })
+//
+//    public ResponseEntity<Object> signup(
+//            @ApiParam(value = "회원 가입 요청", required = true)
+//            @RequestBody LocalSignUpRequestDto localSignUpRequestDto) {
+//        emailService.checkVerifiedEmail(localSignUpRequestDto.getEmail());
+//        //1004 이메일인증이 안된 이메일
+//        Long signupId = userService.signup(localSignUpRequestDto);
+//        //1005 현재 입력한 이메일로 이미 존재할 경우
+//        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signupId);
+//    }
 
 
 
@@ -145,10 +143,10 @@ public class AuthController {
 
     public ResponseEntity<Object> signupImage(
             @ApiParam(value = "회원 가입 요청 + 프로필 이미지까지", required = true)
-            @RequestBody LocalSignUp_RequestDto localSignUpRequestDto) {
-        emailService.checkVerifiedEmail(localSignUpRequestDto.getEmail());
+            @RequestBody SignUpRequestDto signUpRequestDto, MultipartFile image) {
+        emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
         //1004 이메일인증이 안된 이메일
-        Long signupId = userService.signup(localSignUpRequestDto);
+        Long signupId = userService.signup(signUpRequestDto);
         //1005 현재 입력한 이메일로 이미 존재할 경우
         return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signupId);
     }

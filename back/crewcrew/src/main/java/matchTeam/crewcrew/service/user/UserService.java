@@ -7,7 +7,7 @@ import matchTeam.crewcrew.config.security.JwtProvider;
 import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.security.TokenRequestDto;
 import matchTeam.crewcrew.dto.user.LocalSignUpRequestDto;
-import matchTeam.crewcrew.dto.user.LocalSignUp_RequestDto;
+import matchTeam.crewcrew.dto.user.SignUpRequestDto;
 import matchTeam.crewcrew.dto.user.UserLoginRequestDto;
 import matchTeam.crewcrew.dto.user.UserSignUpRequestDto;
 import matchTeam.crewcrew.entity.security.RefreshToken;
@@ -42,12 +42,12 @@ public class UserService {
         return userRepository.findByEmailAndProvider(email, provider);
     }
 
-    public Long signup(LocalSignUpRequestDto localSignUpRequestDto) {
-        if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(),"local").isPresent())
-            throw new EmailSignUpFailedCException();
-        return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();
-    }
-    public Long signup(LocalSignUp_RequestDto localSignUpRequestDto) {
+//    public Long signup(LocalSignUpRequestDto localSignUpRequestDto) {
+//        if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(),"local").isPresent())
+//            throw new EmailSignUpFailedCException();
+//        return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();
+//    }
+    public Long signup(SignUpRequestDto localSignUpRequestDto) {
         if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(),"local").isPresent())
             throw new EmailSignUpFailedCException();
         return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();

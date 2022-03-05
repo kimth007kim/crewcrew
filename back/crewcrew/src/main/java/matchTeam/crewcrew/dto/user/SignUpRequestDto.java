@@ -14,13 +14,11 @@ import java.util.Collections;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LocalSignUp_RequestDto {
+public class SignUpRequestDto {
     private String email;
     private String password;
     private String name;
     private String nickName;
-    private String image;
-    private MultipartFile eimage;
 
 
 
@@ -29,7 +27,7 @@ public class LocalSignUp_RequestDto {
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .nickname(nickName)
-                .profileImage(image)
+//                .profileImage(image)
                 .provider("local")
                 .name(name)
                 .roles(Collections.singletonList("ROLE_USER"))
