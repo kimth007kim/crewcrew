@@ -28,7 +28,7 @@ public class CategoryController {
             )
     })
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping("/categorylist")
+    @GetMapping("/category/list")
     public ResponseEntity<Object> getAllCategories(){
 
         return ResponseHandler.generateResponse("전체 카테고리 조회 성공", HttpStatus.OK, categoryService.readAll());
@@ -51,7 +51,7 @@ public class CategoryController {
             )
     })
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping("/categorylist/{categoryId}")
+    @GetMapping("/category/list/{categoryId}")
     public ResponseEntity<Object> getEachCategory(@ApiParam(value = "상세 카테고리 id", required = true) @PathVariable Long categoryId){
         EachCategoryResponseDTO result = categoryService.findById(categoryId);
         return ResponseHandler.generateResponse("개별 카테고리 조회 성공", HttpStatus.OK, result);

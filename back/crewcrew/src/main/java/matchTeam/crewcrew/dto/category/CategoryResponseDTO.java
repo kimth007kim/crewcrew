@@ -24,10 +24,13 @@ public class CategoryResponseDTO {
     @ApiModelProperty(value = "하위 카테고리 조회", notes = "하위 카테고리를 전부 조회")
     private List<CategoryResponseDTO> children;
 
+    @ApiModelProperty(value = "카테고리 상세 설명", notes = "카테고리 상세 부가 설명", example = "(토플/토익)")
+    private String description;
+
     public static List<CategoryResponseDTO> toDtoList(List<Category> categories) {
         NestedConvertHelper helper = NestedConvertHelper.newInstance(
                 categories,
-                c -> new CategoryResponseDTO(c.getId(), c.getCategoryName(), new ArrayList<>()),
+                c -> new CategoryResponseDTO(c.getId(), c.getCategoryName(), new ArrayList<>(), c.getDescription()),
                 c -> c.getCategoryParent(),
                 c -> c.getId(),
                 d -> d.getChildren());
