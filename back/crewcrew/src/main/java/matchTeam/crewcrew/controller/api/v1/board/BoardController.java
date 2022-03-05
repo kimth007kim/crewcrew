@@ -57,11 +57,11 @@ public class BoardController {
             ),
             @ApiResponse(
                     code = 2106,
-                    message = "모집인원이 0보다 작습니다."
+                    message = "총모집인원이 0보다 작습니다."
             ),
             @ApiResponse(
                     code = 2107,
-                    message = "총인원이 0이하입니다."
+                    message = "집모집인원이 10명보다 큽니다."
             ),
             @ApiResponse(
                     code = 2109,
@@ -158,11 +158,11 @@ public class BoardController {
             ),
             @ApiResponse(
                     code = 2106,
-                    message = "모집인원이 0이하입니다."
+                    message = "총모집인원이 0보다 작습니다."
             ),
             @ApiResponse(
                     code = 2107,
-                    message = "총인원이 0이하입니다."
+                    message = "총모집인원이 10명보다 큽니다."
             ),
             @ApiResponse(
                     code = 2108,
