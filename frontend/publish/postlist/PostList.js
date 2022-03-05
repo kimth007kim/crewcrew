@@ -102,10 +102,12 @@ window.addEventListener("DOMContentLoaded", function(){
             pagination.removeChild(pagination.firstChild);
         }
 
-        if(window.innerWidth>=768){ //페이지네이션 갯수 설정
+        if(window.innerWidth>768){ //페이지네이션 갯수 설정
             divLength = 14;
-        } else {
+        } else if(window.innerWidth>320) {
             divLength = 9;
+        } else {
+            divLength = 7;
         }
 
         for(i; i<divLength; i++){ //페이지네이션 생성
