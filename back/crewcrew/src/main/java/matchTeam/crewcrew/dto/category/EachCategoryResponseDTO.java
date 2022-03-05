@@ -22,11 +22,15 @@ public class EachCategoryResponseDTO {
     @ApiModelProperty(value = "하위 카테고리 이름", notes = "상세 카테고리 제목", example = "어학(토익/토플)")
     private String categoryName;
 
+    @ApiModelProperty(value = "카테고리 상세 설명", notes = "카테고리 상세 부가 설명", example = "(토플/토익)")
+    private String description;
+
     @Builder
     public EachCategoryResponseDTO(Category res) {
         this.categoryParentId = res.getCategoryParent().getId();
         this.categoryId = res.getId();
         this.categoryName = res.getCategoryName();
         this.categoryParentName = res.getCategoryParent().getCategoryName();
+        this.description = res.getDescription();
     }
 }

@@ -52,7 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                             .antMatchers("/exception/**","/s3/**").permitAll()
                             .antMatchers("/board/**").permitAll()
                             .antMatchers("/boardlist/**").permitAll()
-                            .antMatchers("/categorylist/**").permitAll()
+                            .antMatchers("/category/**").permitAll()
                             .anyRequest().hasRole("USER")
                 .and()
                 .exceptionHandling()
