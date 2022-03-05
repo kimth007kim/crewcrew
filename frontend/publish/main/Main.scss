@@ -53,7 +53,7 @@
             margin-top: 10px;
         }
     
-        @media screen and (max-width:768px){
+        @media screen and (max-width:820px){
     
             &>h4{
                 font-size: 18px;
@@ -333,7 +333,79 @@
     }
 }
 
-@media screen and (max-width:768px) {
+footer{
+    background-color: #2D3338;
+    padding: 30px 0 57px;
+}
+
+.FooterTop{
+    display: flex;
+    align-items: flex-end;
+
+    img{
+        width: 162px;
+    }
+
+    ul{
+        display: flex;
+        margin-left: 40px;
+        margin-bottom: 2px;
+
+        li{
+            display: flex;
+            align-items: center;
+            height: 20px;
+            padding: 0 40px;
+            border-left: 1px solid $white;
+            
+            a{
+                color: $white;
+                font-weight: 500;
+                font-size: 13px;
+                line-height: 1;
+            }
+        }
+    }
+}
+
+.FooterBody{
+    display: flex;
+    align-items: center;
+    margin: 30px 0;
+    color: $white;
+    font-size: 13px;
+
+    h4{
+        font-weight: 500;
+        margin-right: 20px;
+    }
+
+    ul{
+        display: flex;
+        border-left: 1px solid $white;
+
+        li{
+            padding-left: 20px;
+            font-weight: 400;
+        }
+    }
+}
+
+.FooterBottom{
+
+    p{
+        font-size: 10px;
+        color: $white;
+        font-weight: 300;
+        line-height: 14px;
+    }
+
+    br.m{
+        display: none;
+    }
+}
+
+@media screen and (max-width:820px) {
 
 
     .TopWave{
@@ -454,6 +526,56 @@
             display: none;
         }
     }
+
+    .FooterTop{
+        flex-direction: column;
+        align-items: center;
+    
+        ul{
+            margin: 10px 0;
+    
+            li{
+                padding: 0 10px;
+    
+                &:first-child{
+                    border: none;
+                }
+            }
+        }
+    }
+    
+    .FooterBody{
+        margin: 20px 0 30px;
+        flex-direction: column;
+        align-items: center;
+    
+        h4{
+            font-size: 16px;
+            margin: 0;
+        }
+    
+        ul{
+            margin-top: 10px;
+            border: none;
+    
+            li{
+                padding-left: 4px;
+                font-size: 12px;
+                font-weight: 300;
+            }
+        }
+    }
+    
+    .FooterBottom{
+    
+        p{
+            text-align: center;
+        }
+    
+        br.m{
+            display: block;
+        }
+    }
 }
 
 @media screen and (max-width:300px) {
@@ -476,6 +598,27 @@
         .WriteButton h5{
             font-size: 18px;
             line-height: 24px;
+        }
+    }
+
+    .FooterTop{
+
+        ul{
+            flex-direction: column;
+            align-items: center;
+
+            li{
+                border: none;
+            }
+        }
+    }
+
+    .FooterBottom{
+        br.m{
+
+            &:first-of-type{
+                display: none;
+            }
         }
     }
 }

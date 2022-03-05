@@ -31,7 +31,7 @@ const studyArray = [
   },
   {
     id: 's4',
-    name: '사이드프로젝트',
+    name: '프로젝트',
     sub: '(디자인/개발)',
   },
   {
@@ -40,7 +40,6 @@ const studyArray = [
     sub: '(이중에 없어요!)',
   },
 ];
-
 const hobbyArray = [
   {
     id: 'h1',

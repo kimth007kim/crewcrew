@@ -40,7 +40,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath password = createString("password");
 
-    public final ArrayPath<byte[], Byte> profileImage = createArray("profileImage", byte[].class);
+    public final StringPath profileImage = createString("profileImage");
 
     public final StringPath provider = createString("provider");
 

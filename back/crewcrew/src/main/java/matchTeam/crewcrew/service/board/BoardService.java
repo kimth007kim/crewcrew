@@ -52,8 +52,6 @@ public class BoardService {
         Category category = categoryRepository.findById(req.getCategoryId())
                         .orElseThrow(NotExistCategoryException::new);
 
-        beforeExpiredDate(req.getExpiredDate());
-
         board.update(req.getTitle(), req.getBoardContent(),
                 req.getRecruitedCrew(), req.getTotalCrew(), req.getApproachCode(),
                category, req.getExpiredDate(), checkViewableInDate(req.getExpiredDate()));
@@ -91,6 +89,8 @@ public class BoardService {
             throw new NotSelectChildCategoryException();
         } else if(saveRequestDTO.getTotalCrew() <= 0){
             throw new NotValidTotalCrewException();
+        } else if(saveRequestDTO.getTotalCrew() > 10){
+            throw new OverTotalCrewException();
         }
         categoryRepository.findById(saveRequestDTO.getCategoryId())
                     .orElseThrow(NotExistCategoryException::new);
@@ -112,8 +112,8 @@ public class BoardService {
             throw new NotSelectCategoryException();
         } else if (updateRequestDTO.getCategoryId() == 1 || updateRequestDTO.getCategoryId() == 2) {
             throw new NotSelectChildCategoryException();
-        } else if (updateRequestDTO.getRecruitedCrew() < 0){
-            throw new NotValidRecruitedCrewException();
+        } else if (updateRequestDTO.getTotalCrew() > 10){
+            throw new OverTotalCrewException();
         } else if(updateRequestDTO.getTotalCrew() <= 0){
             throw new NotValidTotalCrewException();
         }else if (updateRequestDTO.getRecruitedCrew() >= updateRequestDTO.getTotalCrew()){

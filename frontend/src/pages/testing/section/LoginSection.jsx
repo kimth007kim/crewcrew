@@ -4,8 +4,9 @@
 
 import React, { useCallback, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
-
+import { debounce } from 'lodash';
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
 import CheckOff from '../../../assets/images/LogInCheck_off.png';
 import CheckOn from '../../../assets/images/LogInCheck_on.png';
 import Naver from '../../../assets/images/Naver.png';
@@ -14,13 +15,55 @@ import Kakao from '../../../assets/images/Kakao.png';
 import Button from '../../../components/common/Button';
 import Textfield from '../../../components/common/TextfieldEmail';
 import TextfieldPW from '../../../components/common/TextfieldPW';
+import { emojiSlice, isCheckPassword, isEmail, spaceSlice } from '../../../utils';
 
-function LoginSection({ IsClick, HandleClick }) {
+function LoginSection({ IsClick, HandleClick, closeModal }) {
   const [IsChecked, setIsChecked] = useState(false);
   const [email, setEmail] = useState('');
+  const [emailValid, setEmailValid] = useState(false);
+  const [emailMsg, setEmailMsg] = useState('가입된 이메일 주소를 입력해주세요');
   const [password, setPassword] = useState('');
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [passwordMsg, setPasswordMsg] = useState('숫자/영문/특수문자 포함 8~20글자');
   const [BtnLoading, setBtnLoading] = useState(false);
-  const [Valid, setValid] = useState(true);
+
+  const [cookies, setCookie, removeCookie] = useCookies(['user-cookie']);
+
+  const EmailValidCheck = useCallback((value) => {
+    if (!isEmail(value)) {
+      setEmailValid(true);
+      setEmailMsg('잘못된 이메일 형식입니다');
+    } else {
+      setEmailValid(false);
+      setEmailMsg('가입된 이메일 주소를 입력해주세요');
+    }
+    if (value === '') {
+      setEmailValid(false);
+      setEmailMsg('가입된 이메일 주소를 입력해주세요');
+    }
+  }, []);
+
+  const debounceEmail = debounce((value) => {
+    EmailValidCheck(value);
+  }, 700);
+
+  const PasswordValidCheck = useCallback((value) => {
+    if (!isCheckPassword(value)) {
+      setPasswordValid(true);
+      setPasswordMsg('잘못된 비밀번호 형식입니다');
+    } else {
+      setPasswordValid(false);
+      setPasswordMsg('숫자/영문/특수문자 포함 8~20글자');
+    }
+    if (value === '') {
+      setPasswordValid(false);
+      setPasswordMsg('숫자/영문/특수문자 포함 8~20글자');
+    }
+  }, []);
+
+  const debouncePwd = debounce((value) => {
+    PasswordValidCheck(value);
+  }, 700);
 
   const MovePasswordFind = useCallback(() => {
     HandleClick(5);
@@ -31,21 +74,29 @@ function LoginSection({ IsClick, HandleClick }) {
   }, []);
 
   const HandleEmailChange = (e) => {
-    setEmail(e.target.value);
-    setValid(false);
+    let value = emojiSlice(e.target.value);
+    value = spaceSlice(value);
+    setEmail(value);
+    debounceEmail(value);
   };
 
   const HandleEmailDelete = useCallback(() => {
     setEmail('');
+    setEmailValid(false);
+    setEmailMsg('가입된 이메일 주소를 입력해주세요');
   }, []);
 
   const HandlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    setValid(false);
+    let value = emojiSlice(e.target.value);
+    value = spaceSlice(value);
+    setPassword(value);
+    debouncePwd(value);
   };
 
   const HandlePasswordDelete = useCallback(() => {
     setPassword('');
+    setPasswordValid(false);
+    setPasswordMsg('숫자/영문/특수문자 포함 8~20글자');
   }, []);
 
   const HandleSubmitLogin = useCallback(
@@ -57,13 +108,44 @@ function LoginSection({ IsClick, HandleClick }) {
           const context = {
             email,
             password,
+            maintain: IsChecked,
           };
-          console.log(context);
-          // const { data } = await axios.post(`${process.env.API_URL}auth/login/cookie`, context,{
-            const { data } = await axios.post(`http://localhost:8080/auth/login/cookie`,context,{
-            // const { data } = await axios.post(`http://localhost:8080/auth/cookie`, context,{
-            withCredential: true,});
-          console.log(data);
+
+          const { data } = await axios.post('/auth/login', context, {
+            withCredentials: true,
+          });
+          const now = new Date();
+          const afterh = new Date();
+
+          switch (data.status) {
+            case 200:
+              if (IsChecked) {
+                afterh.setHours(now.getHours() + 3);
+                setCookie('user-token', data.data.accessToken, {
+                  path: '/',
+                  expires: afterh,
+                });
+              } else {
+                afterh.setHours(now.getHours() + 72);
+                setCookie('user-token', data.data.accessToken, {
+                  path: '/',
+                  expires: afterh,
+                });
+              }
+              closeModal();
+              break;
+            case 400:
+            case 1101:
+              setEmailMsg(data.error);
+              setEmailValid(true);
+              break;
+            case 1102:
+              setPasswordMsg(data.error);
+              setPasswordValid(true);
+              break;
+            default:
+              break;
+          }
         } catch (error) {
           console.dir(error);
         } finally {
@@ -81,12 +163,12 @@ function LoginSection({ IsClick, HandleClick }) {
         <InputList>
           <InputLi>
             <Textfield
-              type="email"
+              type="text"
               onChange={HandleEmailChange}
               value={email}
               label="이메일"
-              validMessage="가입된 이메일 주소를 입력해주세요"
-              valid={false}
+              validMessage={emailMsg}
+              valid={emailValid}
               onDelete={HandleEmailDelete}
             />
           </InputLi>
@@ -95,13 +177,13 @@ function LoginSection({ IsClick, HandleClick }) {
               onChange={HandlePasswordChange}
               value={password}
               label="비밀번호"
-              validMessage="숫자/영문/특수문자 포함 8~20글자"
-              valid={false}
+              validMessage={passwordMsg}
+              valid={passwordValid}
               onDelete={HandlePasswordDelete}
             />
           </InputLi>
         </InputList>
-        <Button size="fullregular" color="darkblue">
+        <Button size="fullregular" color="darkblue" loadings={BtnLoading}>
           로그인
         </Button>
 

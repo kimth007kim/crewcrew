@@ -25,8 +25,12 @@ public class Category {
     @JoinColumn(name = "category_parent_id")
     private Category categoryParent;
 
-    public Category(String categoryName, Category categoryParent){
+    @Column(name = "description")
+    private String description;
+
+    public Category(String categoryName, Category categoryParent, String description){
         this.categoryName = categoryName;
         this.categoryParent = categoryParent;
+        this.description = description;
     }
 }

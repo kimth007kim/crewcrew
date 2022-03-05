@@ -169,7 +169,7 @@ em {
   background: url("../../src/assets/images/ButtonArrowGhost.png") 50% 50% no-repeat;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 820px) {
   .ButtonFull2, .ButtonFull2Ghost {
     padding: 8px 0;
     height: 30px;
@@ -728,7 +728,7 @@ ul.InputList > li {
   margin-left: 20px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 820px) {
   .CardHead {
     padding: 10px 5px 10px 15px;
   }
@@ -958,7 +958,7 @@ ul.InputList > li {
   background-color: #00b7ff;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 820px) {
   .PostCard {
     height: 108px;
     padding: 10px 12px 14px 12px;
@@ -1477,7 +1477,7 @@ main {
   overflow-x: hidden;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 820px) {
   .ModalWrapper.Modal .ModalBox {
     margin-top: 40px;
     height: calc(100vh - 40px);
@@ -1690,7 +1690,7 @@ main {
   color: #a8a8a8;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 820px) {
   .ScrollButton {
     display: none;
   }
