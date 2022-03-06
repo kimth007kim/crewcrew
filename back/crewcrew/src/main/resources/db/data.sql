@@ -1,24 +1,14 @@
-delete from category where category_id=1;
-delete from category where category_id=2;
-delete from category where category_id=3;
-delete from category where category_id=4;
-delete from category where category_id=5;
-delete from category where category_id=6;
-delete from category where category_id=7;
-delete from category where category_id=8;
-delete from category where category_id=9;
-delete from category where category_id=10;
-delete from category where category_id=11;
-delete from category where category_id=12;
-delete from category where category_id=13;
-delete from category where category_id=14;
-INSERT INTO category
-    (category_id,category_name,category_parent_id)VALUES
-  (1,'스터디',NULL ),
-  (2,'취미',NULL ),
+
+
+
+delete from category;
+INSERT INTO Category
+    (category_id,category_name,category_parent_id,description)VALUES
+  (1,'스터디',NULL,NULL ),
+  (2,'취미',NULL,NULL),
   (3,'어학',1, '(토플/토익)'),
   (4,'취업',1, '(면접/자소서)'),
-  (5,'고시/공무원',1, null ),
+  (5,'고시/공무원',1, NULL ),
   (6,'프로젝트',1, '(디자인/개발)'),
   (7,'기타',1, '(여기에 없어요!)'),
   (8,'예술',2, '(공예/회화)'),

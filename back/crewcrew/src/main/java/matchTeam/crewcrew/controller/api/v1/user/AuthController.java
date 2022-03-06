@@ -11,6 +11,7 @@ import matchTeam.crewcrew.dto.user.*;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.response.exception.auth.*;
+import matchTeam.crewcrew.service.amazonS3.S3Uploader;
 import matchTeam.crewcrew.service.user.EmailService;
 import matchTeam.crewcrew.service.user.KakaoService;
 import matchTeam.crewcrew.service.user.NaverService;
@@ -18,6 +19,9 @@ import matchTeam.crewcrew.service.user.UserService;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
 
 
 @Api(tags = "1. Auth")
@@ -33,6 +37,7 @@ public class AuthController {
     private final KakaoService kakaoService;
     private final NaverService naverService;
     private final JwtProvider jwtProvider;
+    private final S3Uploader s3Uploader;
 
 
 
@@ -144,6 +149,16 @@ public class AuthController {
     public ResponseEntity<Object> signupImage(
             @ApiParam(value = "회원 가입 요청 + 프로필 이미지까지", required = true)
             @RequestBody SignUpRequestDto signUpRequestDto, MultipartFile image) {
+
+            StringBuilder sb = new StringBuilder();
+//        uploadProfileImage(File uploadFile, String dirName,String email,String provider)
+            String filename="";
+            try {
+                filename =s3Uploader.upload(image,"aaa","aaaa");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
         //1004 이메일인증이 안된 이메일
         Long signupId = userService.signup(signUpRequestDto);
