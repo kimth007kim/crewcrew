@@ -98,36 +98,36 @@ public class AuthController {
 
     }
 
-//    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
-//    @PostMapping("/signup")
-//    @ApiResponses({
-//            @ApiResponse(
-//                    code = 200
-//                    , message = "회원가입 성공"
-//            )
-//            , @ApiResponse(
-//            code = 1004
-//            , message ="이메일 인증이 되지않은 이메일 주소입니다."
-//    )
-//            , @ApiResponse(
-//            code = 1005
-//            , message ="현재 입력한 이메일을 가진 유저가 이미 존재합니다. "
-//    )
-//    })
-//
-//    public ResponseEntity<Object> signup(
-//            @ApiParam(value = "회원 가입 요청", required = true)
-//            @RequestBody LocalSignUpRequestDto localSignUpRequestDto) {
-//        emailService.checkVerifiedEmail(localSignUpRequestDto.getEmail());
-//        //1004 이메일인증이 안된 이메일
-//        Long signupId = userService.signup(localSignUpRequestDto);
-//        //1005 현재 입력한 이메일로 이미 존재할 경우
-//        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signupId);
-//    }
+    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
+    @PostMapping("/signup")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "회원가입 성공"
+            )
+            , @ApiResponse(
+            code = 1004
+            , message ="이메일 인증이 되지않은 이메일 주소입니다."
+    )
+            , @ApiResponse(
+            code = 1005
+            , message ="현재 입력한 이메일을 가진 유저가 이미 존재합니다. "
+    )
+    })
+
+    public ResponseEntity<Object> signup(
+            @ApiParam(value = "회원 가입 요청", required = true)
+            @RequestBody SignUpRequestDto signUpRequestDto) {
+        emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
+        //1004 이메일인증이 안된 이메일
+        Long signupId = userService.signup(signUpRequestDto);
+        //1005 현재 입력한 이메일로 이미 존재할 경우
+        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signupId);
+    }
 
 
 
-    @PostMapping("/signup_image")
+    @PostMapping(value = "/signup_image",consumes = {"multipart/form-data"})
     @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
     @ApiResponses({
             @ApiResponse(
@@ -148,22 +148,50 @@ public class AuthController {
 
     public ResponseEntity<Object> signupImage(
             @ApiParam(value = "회원 가입 요청 + 프로필 이미지까지", required = true)
-            @RequestBody SignUpRequestDto signUpRequestDto, MultipartFile image) {
+            @RequestParam MultipartFile files, SignUpRequestDto signUpRequestDto) {
 
-            StringBuilder sb = new StringBuilder();
-//        uploadProfileImage(File uploadFile, String dirName,String email,String provider)
-            String filename="";
-            try {
-                filename =s3Uploader.upload(image,"aaa","aaaa");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+        System.out.println(signUpRequestDto.getEmail());
         emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
         //1004 이메일인증이 안된 이메일
         Long signupId = userService.signup(signUpRequestDto);
         //1005 현재 입력한 이메일로 이미 존재할 경우
+
+        String filename="";
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(signUpRequestDto.getEmail());
+        sb.append("_local");
+
+        try {
+            filename =s3Uploader.upload(files,sb.toString(),"profile");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        User user = userService.findByUid(signupId);
+        user.setProfileImage(filename);
+
+
         return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signupId);
+    }
+
+    @PostMapping("/user/changeProfileImage")
+    public ResponseEntity<Object> changeProfileImage( @RequestParam MultipartFile files,String email,String provider) {
+        String filename="";
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(email);
+        sb.append("_local");
+
+        try {
+            filename =s3Uploader.upload(files,sb.toString(),"profile");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        User user=userService.findByEmailAndProvider(email,"local").orElseThrow(CUserNotFoundException::new);
+
+        user.setProfileImage(filename);
+
+        return ResponseHandler.generateResponse("성공", HttpStatus.OK,email);
     }
 
     @ApiOperation(value = "이메일 로그인", notes = "이메일로 로그인")

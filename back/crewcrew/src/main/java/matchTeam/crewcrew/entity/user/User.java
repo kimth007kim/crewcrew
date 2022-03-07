@@ -54,8 +54,8 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
-    @Column
-    private String Category;
+    @OneToMany(mappedBy = "user")
+    private List<LikedCategory> likedCategories= new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import matchTeam.crewcrew.config.security.JwtProvider;
 import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.security.TokenRequestDto;
-import matchTeam.crewcrew.dto.user.LocalSignUpRequestDto;
 import matchTeam.crewcrew.dto.user.SignUpRequestDto;
 import matchTeam.crewcrew.dto.user.UserLoginRequestDto;
 import matchTeam.crewcrew.dto.user.UserSignUpRequestDto;
@@ -42,11 +41,6 @@ public class UserService {
         return userRepository.findByEmailAndProvider(email, provider);
     }
 
-//    public Long signup(LocalSignUpRequestDto localSignUpRequestDto) {
-//        if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(),"local").isPresent())
-//            throw new EmailSignUpFailedCException();
-//        return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();
-//    }
     public Long signup(SignUpRequestDto localSignUpRequestDto) {
         if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(),"local").isPresent())
             throw new EmailSignUpFailedCException();

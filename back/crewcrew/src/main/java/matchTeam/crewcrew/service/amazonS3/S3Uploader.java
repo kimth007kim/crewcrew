@@ -24,27 +24,21 @@ public class S3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     public String bucket;
 
-    public String upload(MultipartFile multipartFile, String dirName ,String filesName) throws IOException{
+    public String upload(MultipartFile multipartFile, String dirName,String filename ) throws IOException{
         File uploadFile = convert(multipartFile).orElseThrow(()-> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
-        return upload(uploadFile, dirName,filesName);
+        return upload(uploadFile, dirName,filename);
 
     }
 
-    private String upload(File uploadFile, String dirName,String filesName){
+    private String upload(File uploadFile, String dirName,String filename){
 //        String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();
-        String fileName = dirName + "/"+ uploadFile.getName();
+        String fileName = dirName + "/"+filename;
+//        String fileName = dirName + "/"+ uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile,fileName);
         removeNewFile(uploadFile);
         return uploadImageUrl;
     }
 
-//    private String uploadProfileImage(File uploadFile, String dirName,String email,String provider){
-////        String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();
-//        String fileName = dirName + "/"+ uploadFile.getName();
-//        String uploadImageUrl = putS3(uploadFile,fileName);
-//        removeNewFile(uploadFile);
-//        return uploadImageUrl;
-//    }
     private void deleteS3(String source) {
         amazonS3Client.deleteObject(bucket, source);
     }

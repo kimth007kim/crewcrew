@@ -137,7 +137,9 @@ public class EmailService {
     }
 
     public void checkVerifiedEmail(String email){
+        System.out.println("+_+_+_++_+_+++_+_+_+_+_+_++_+_+_++_+_+++_+_+_+_+_+_++_+_+_++_+_+++_+_+_+_+_+_+"+email);
         String check=redisUtil.getData(email);
+        System.out.println("+_+_+_++_+_+++_+_+_+_+_+_++_+_+_++_+_+++_+_+_+_+_+_++_+_+_++_+_+++_+_+_+_+_+_+"+check);
         if (check == null){
             throw new CNotVerifiedEmailException();
         }

@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import matchTeam.crewcrew.entity.user.LikedCategory;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -27,6 +28,9 @@ public class Category {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "category")
+    private List<LikedCategory> likedCategories= new ArrayList<>();
 
     public Category(String categoryName, Category categoryParent, String description){
         this.categoryName = categoryName;
