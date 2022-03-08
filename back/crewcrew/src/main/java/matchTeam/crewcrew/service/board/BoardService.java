@@ -1,24 +1,26 @@
 package matchTeam.crewcrew.service.board;
 
 import lombok.RequiredArgsConstructor;
-import matchTeam.crewcrew.dto.board.BoardResponseDTO;
-import matchTeam.crewcrew.dto.board.BoardSaveRequestDTO;
-import matchTeam.crewcrew.dto.board.BoardSaveResponseDTO;
-import matchTeam.crewcrew.dto.board.BoardUpdateRequestDTO;
+import matchTeam.crewcrew.dto.board.*;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.entity.user.User;
+import matchTeam.crewcrew.repository.board.BoardSearchRepository;
+import matchTeam.crewcrew.specification.BoardSpecs;
 import matchTeam.crewcrew.repository.board.BoardRepository;
 import matchTeam.crewcrew.repository.board.CategoryRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
 import matchTeam.crewcrew.response.exception.board.*;
 import matchTeam.crewcrew.response.exception.category.NotExistCategoryException;
 import matchTeam.crewcrew.util.customException.UserNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -27,6 +29,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
+    private final BoardSearchRepository boardQueryRepository;
     private final Integer[] approachCode = {0, 1};
 
     @Transactional
@@ -67,11 +70,28 @@ public class BoardService {
         boardRepository.delete(board);
     }
 
+    @Transactional(readOnly = true)
     public BoardResponseDTO findById(Long id){
         Board findBoard = boardRepository.findById(id)
                 .orElseThrow(NotExistBoardInIdException::new);
 
         return new BoardResponseDTO(findBoard);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<BoardResponseDTO> search(BoardSpecs boardSpecs, Pageable pageable) {
+        /*List<Board> findBoards = boardRepository.findAllByKeyword(keyword);
+        List<BoardResponseDTO> findBoardDTOs = new ArrayList<>();
+
+        if (findBoards.isEmpty()) return findBoardDTOs;
+
+        for (Board board: findBoards) {
+            findBoardDTOs.add(board.toDTO(board));
+        }
+
+        return findBoardDTOs;*/
+
+        return  boardQueryRepository.search(boardSpecs, pageable);
     }
 
     public void checkValidSave(BoardSaveRequestDTO saveRequestDTO){

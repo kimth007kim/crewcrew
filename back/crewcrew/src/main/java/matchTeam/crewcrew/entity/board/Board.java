@@ -1,6 +1,8 @@
 package matchTeam.crewcrew.entity.board;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
+import matchTeam.crewcrew.dto.board.BoardResponseDTO;
 import matchTeam.crewcrew.entity.BaseTimeEntity;
 import matchTeam.crewcrew.entity.user.User;
 import org.hibernate.annotations.OnDelete;
@@ -12,6 +14,7 @@ import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.Optional;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "board")
@@ -102,5 +105,10 @@ public class Board extends BaseTimeEntity {
         this.category = category;
         this.expiredDate = expiredDate;
         this.viewable = viewable;
+    }
+
+    public BoardResponseDTO toDTO(Board board){
+        return BoardResponseDTO.builder()
+                .res(board).build();
     }
 }
