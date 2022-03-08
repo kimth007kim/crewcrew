@@ -1799,53 +1799,116 @@ main {
   }
 }
 
-.InputList.Sign {
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: 320px;
-  position: relative;
-  scroll-behavior: smooth;
-}
-
-.InputList.Sign::-webkit-scrollbar {
-  display: none;
-}
-
-li.MailList {
+.ModalBoxPost {
+  max-width: 850px;
+  max-height: 850px;
+  width: calc(100% - 40px);
+  height: calc(100% - 40px);
+  background-color: #fff;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   z-index: 1;
+  -webkit-transition: .5s;
+  transition: .5s;
+  -webkit-box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.16);
+          box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.16);
+  border-radius: 20px;
+  padding: 40px;
 }
 
-ul.MailList {
+.HeaderContent {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 30px;
+}
+
+.HeaderContent h4 {
+  font-size: 13px;
+  font-weight: 500;
+  color: #a8a8a8;
+  margin-bottom: 8px;
+}
+
+.HeaderContent > div:last-of-type {
   width: 100%;
+}
+
+.ContentFlex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.ContentFlex div {
+  width: 100%;
+}
+
+.ContentFlex div:first-of-type {
+  margin-right: 24px;
+}
+
+.PostListFlex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-right: 24px;
+}
+
+.PostListFlex li {
+  width: 112px;
+}
+
+.PostListFlex li:not(:last-child) {
+  margin-right: 15px;
+}
+
+ul.PostListDrop {
+  width: 100%;
+  height: 50px;
   border: 1px solid #e2e2e2;
   border-radius: 10px;
-  height: 50px;
-  -webkit-transition: height .5s;
-  transition: height .5s;
+  -webkit-transition-property: height, border-color;
+  transition-property: height, border-color;
+  -webkit-transition-duration: .5s, .3s;
+          transition-duration: .5s, .3s;
   overflow: hidden;
   background-color: #fff;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
 
-ul.MailList:hover {
-  border: 1px solid #707070;
+ul.PostListDrop:hover {
+  border-color: #00b7ff;
 }
 
-ul.MailList.On {
-  border: 1px solid #00b7ff;
+ul.PostListDrop:hover li:first-child .Arrow {
+  background: url("/frontend/src/assets/images/ArrowDownOn.png") no-repeat;
 }
 
-ul.MailList li {
+ul.PostListDrop.On {
+  border-color: #00b7ff;
+}
+
+ul.PostListDrop.On li:first-child .Arrow {
+  background: url("/frontend/src/assets/images/ArrowUpOn.png") no-repeat;
+}
+
+ul.PostListDrop li {
   width: 100%;
   position: relative;
+  padding-left: 6px;
+  cursor: pointer;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
-ul.MailList li:first-child {
+ul.PostListDrop li:first-child {
   height: 50px;
+  padding: 0;
 }
 
-ul.MailList li:first-child::after {
+ul.PostListDrop li:first-child::after {
   content: '';
   display: block;
   height: 1px;
@@ -1854,562 +1917,235 @@ ul.MailList li:first-child::after {
   margin: 0 auto;
 }
 
-ul.MailList li {
-  cursor: pointer;
+ul.PostListDrop li:first-child span.Arrow {
+  display: block;
+  width: 11px;
+  height: 6px;
+  background: url("/frontend/src/assets/images/ArrowDown.png") no-repeat;
+  background-size: 11px !important;
+  position: absolute;
+  top: calc(50% - 3px);
+  right: 12px;
+  -webkit-transition: .3s;
+  transition: .3s;
 }
 
-ul.MailList li:not(:first-child) {
-  height: 21px;
-  padding: 3px 35px;
-  padding-right: 0;
+ul.PostListDrop li:nth-child(2) {
+  padding-top: 5px;
 }
 
-ul.MailList li:hover p {
-  background-color: #e2e2e2;
+.PostListDrop.PostListPeople li:nth-child(2) {
+  padding: 10px 12px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
 }
 
-ul.MailList p {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-  padding: 5px 10px 5px 4px;
-  border-radius: 4px;
-  font-size: 13px;
-  color: #000;
-  -webkit-transition: .2s;
-  transition: .2s;
+.PostListDrop.PostListPeople li:nth-child(2) span {
+  display: block;
+  width: 15px;
+  height: 20px;
+  margin-right: 8px;
+  margin-bottom: 10px;
+  text-align: center;
+  line-height: 20px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #707070;
+  -webkit-transition: .3s;
+  transition: .3s;
 }
 
-.InputMail {
+.PostListDrop.PostListPeople li:nth-child(2) span:hover {
+  color: #00b7ff;
+}
+
+.PostListDrop.PostListPeople.On {
+  height: 124px;
+}
+
+.InputPostCatDet {
   width: 100%;
+  height: 50px;
   border: none;
   outline: none;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   font-size: 13px;
-  line-height: 1;
-  color: #868686;
-  /*fontsize, color*/
-  padding: 15px 37px 17px;
-}
-
-.InputMail.On {
-  caret-color: #00b7ff;
-}
-
-.LabelMail {
-  position: absolute;
-  font-size: 13px;
-  line-height: 13px;
-  top: 18px;
-  left: 16px;
-  color: #e2e2e2;
-  -webkit-transition: .5s;
-  transition: .5s;
-}
-
-.LabelMail.On {
-  color: #00b7ff;
-}
-
-button.SignStep {
-  margin: 30px 0 10px;
-}
-
-ul.SignStep1 {
-  margin-bottom: 70px;
-}
-
-.StepSlide {
-  width: 100%;
-  height: 5px;
-  border: 1px solid #e2e2e2;
-  border-radius: 4px;
-  position: relative;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-}
-
-.StepSlide .Stepbar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  border-radius: 4px;
-  border: none;
-  -webkit-transition: .5s;
-  transition: .5s;
-  width: 0;
-  background-color: #00b7ff;
-}
-
-.InputList li.ProfileSection {
-  height: 230px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-}
-
-.ProfileBox {
-  height: 100%;
-  border: 1px solid #e2e2e2;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.ProfileBox.On {
-  border: 1px solid #00b7ff;
-}
-
-.ProfileShow {
-  height: 160px;
-  background-color: #e2e2e2;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  position: relative;
-  overflow: hidden;
-  -webkit-transition: .5s;
-  transition: .5s;
-}
-
-.ProfileShow .ProfileTitle {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  font-size: 13px;
-  color: #fff;
-  z-index: 1;
-  opacity: 0;
-  -webkit-transition: .3s;
-  transition: .3s;
-}
-
-.ProfileShow .ProfileChange {
-  font-size: 10px;
-  color: #fff;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  width: 48px;
-  height: 20px;
-  background-color: #707070;
-  border-radius: 10px;
-  position: absolute;
-  display: none;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-  /*width, height, fontsize, top, right*/
-  z-index: 1;
-}
-
-.ProfileShow .ProfileChange.On {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.ProfileShow .ProfileImg {
-  height: 160px;
-  width: 160px;
-}
-
-.ProfileShow .ProfileImg img {
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  -webkit-filter: grayscale(0);
-          filter: grayscale(0);
-  -webkit-transition: .5s;
-  transition: .5s;
-  opacity: 1;
-}
-
-.ProfileShow .ProfileImg.Grayed img {
-  -webkit-filter: grayscale(100%);
-          filter: grayscale(100%);
-  opacity: .5;
-}
-
-.ProfileShow .ProfileBg {
-  width: 148px;
-  height: 148px;
-  top: calc(50% - (148px/2));
-  left: calc(50% - (148px/2));
-  position: absolute;
-  border-radius: 50%;
-  background: transparent;
-  -webkit-box-shadow: 0 0 0 300px #000;
-          box-shadow: 0 0 0 300px #000;
-  opacity: .3;
-}
-
-.SelectWrapper {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  height: 70px;
-}
-
-.SelectWrapper > li {
-  height: 100%;
-}
-
-.SelectWrapper > li:first-child {
-  width: 88px;
-  height: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.SelectWrapper > li:first-child label {
-  width: 50px;
-  height: 50px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  cursor: pointer;
-  border-radius: 3px;
-  background-color: #fff;
-  -webkit-transition: .3s;
-  transition: .3s;
-}
-
-.SelectWrapper > li:first-child span {
-  display: block;
-  width: 23px;
-  height: 16px;
-  background: url("../../src/assets/images/Camera.png") 50% 50%;
-  background-size: 100%;
-  -webkit-transition: .3s;
-  transition: .3s;
-}
-
-.SelectWrapper > li:first-child p {
-  font-size: 13px;
-  font-weight: 300;
-  color: #000;
-  margin-top: 5px;
-  -webkit-transition: .3s;
-  transition: .3s;
-}
-
-.SelectWrapper > li:first-child.On label, .SelectWrapper > li:first-child:hover label {
-  background-color: #00b7ff;
-}
-
-.SelectWrapper > li:first-child.On span, .SelectWrapper > li:first-child:hover span {
-  background: url("../../src/assets/images/Camera_on.png") 50% 50%;
-  background-size: 100%;
-}
-
-.SelectWrapper > li:first-child.On p, .SelectWrapper > li:first-child:hover p {
-  color: #fff;
-}
-
-.SelectWrapper > li:last-child {
-  width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-}
-
-.SelectWrapper > li:last-child::before {
-  content: '';
-  display: block;
-  width: 1px;
-  height: 50px;
-  background-color: #e2e2e2;
-  margin-top: 10px;
-}
-
-.ProfileList {
-  width: 100%;
-  height: 100%;
-  overflow-x: auto;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  position: relative;
-}
-
-.ProfileList::-webkit-scrollbar {
-  display: none;
-}
-
-.ProfileList li {
-  width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.ProfileList li label {
-  cursor: pointer;
-}
-
-.ProfileList li:nth-child(1) .OuterCircle.On {
-  border-color: #00b7ff;
-}
-
-.ProfileList li:nth-child(1) .OuterCircle:hover {
-  border-color: #00b7ff;
-}
-
-.ProfileList li:nth-child(1) .OuterCircle .InnerCircle {
-  background-color: #00b7ff;
-}
-
-.ProfileList li:nth-child(2) .OuterCircle.On {
-  border-color: #8ED819;
-}
-
-.ProfileList li:nth-child(2) .OuterCircle:hover {
-  border-color: #8ED819;
-}
-
-.ProfileList li:nth-child(2) .OuterCircle .InnerCircle {
-  background-color: #8ED819;
-}
-
-.ProfileList li:nth-child(3) .OuterCircle.On {
-  border-color: #ff0045;
-}
-
-.ProfileList li:nth-child(3) .OuterCircle:hover {
-  border-color: #ff0045;
-}
-
-.ProfileList li:nth-child(3) .OuterCircle .InnerCircle {
-  background-color: #ff0045;
-}
-
-.ProfileList li:nth-child(4) .OuterCircle.On {
-  border-color: #8d2bf5;
-}
-
-.ProfileList li:nth-child(4) .OuterCircle:hover {
-  border-color: #8d2bf5;
-}
-
-.ProfileList li:nth-child(4) .OuterCircle .InnerCircle {
-  background-color: #8d2bf5;
-}
-
-.ProfileList li:nth-child(5) .OuterCircle.On {
-  border-color: #ffd458;
-}
-
-.ProfileList li:nth-child(5) .OuterCircle:hover {
-  border-color: #ffd458;
-}
-
-.ProfileList li:nth-child(5) .OuterCircle .InnerCircle {
-  background-color: #ffd458;
-}
-
-.OuterCircle {
-  width: 54px;
-  height: 54px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  border-radius: 50%;
-  border: 1px solid #e2e2e2;
-  -webkit-transition: .3s;
-  transition: .3s;
-}
-
-.OuterCircle .InnerCircle {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.OuterCircle .InnerCircle img {
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-}
-
-.ModalHeader.SignStep4 {
-  height: 108px;
-  padding-bottom: 10px;
-}
-
-.ModalContents.ContentSignStep4 {
-  position: relative;
-}
-
-.ResultProfileWrapper {
-  overflow-y: auto;
-  overflow-x: hidden;
-  position: relative;
-  scroll-behavior: smooth;
-}
-
-.ResultProfile {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: #00b7ff;
-  z-index: 1;
-  margin: 0 auto;
-}
-
-.ResultProfile img {
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-}
-
-.ResultFlag {
-  width: 27px;
-  position: absolute;
-  top: 27px;
-  left: calc(50% - 2px);
-  -webkit-animation: Flag 1s forwards;
-          animation: Flag 1s forwards;
-}
-
-@-webkit-keyframes Flag {
-  0% {
-    top: 27px;
-  }
-  100% {
-    top: -33px;
-  }
-}
-
-@keyframes Flag {
-  0% {
-    top: 27px;
-  }
-  100% {
-    top: -33px;
-  }
-}
-
-.ResultTitle {
-  font-size: 32px;
-  text-align: center;
-  margin: 22px 0 29px;
-  font-weight: 300;
-  color: #000;
-}
-
-.ResultTitle b {
-  font-weight: 700;
-}
-
-.ResultTxt {
-  font-size: 13px;
-  text-align: center;
-  margin-bottom: 60px;
   font-weight: 400;
-  line-height: 24px;
-  color: #000;
+  cursor: pointer;
+  color: #868686;
+  padding: 0 12px 0 18px;
+}
+
+.InputPostPeople {
+  width: 100%;
+  height: 50px;
+  border: none;
+  outline: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #707070;
+  text-align: center;
+}
+
+.InputPostPeople::-webkit-inner-spin-button {
+  display: none;
+}
+
+.ArrowNum {
+  display: block;
+  width: 24px;
+  height: 16px;
+  background-size: 11px;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  right: 8px;
+  -webkit-transition: .3s;
+  transition: .3s;
+  cursor: pointer;
+}
+
+.ArrowNum.Up {
+  background-image: url("/frontend/src/assets/images/ArrowUp.png");
+  top: 9px;
+}
+
+.ArrowNum.Up:hover {
+  background-image: url("/frontend/src/assets/images/ArrowUpOn.png");
+}
+
+.ArrowNum.Down {
+  background-image: url("/frontend/src/assets/images/ArrowDown.png");
+  bottom: 9px;
+}
+
+.ArrowNum.Down:hover {
+  background-image: url("/frontend/src/assets/images/ArrowDownOn.png");
+}
+
+.InputDate {
+  -webkit-transition: .3s;
+  transition: .3s;
+  font-weight: 500;
+  cursor: pointer;
+  color: #707070;
+  padding: 0 12px;
+}
+
+.InputDate:hover {
+  border-color: #00b7ff;
+}
+
+.InputDate::-webkit-calendar-picker-indicator {
+  height: 100%;
+  background: url("/frontend/src/assets/images/IconCalendar.png") no-repeat 50% 50%;
+  background-size: 26px;
+  cursor: pointer;
+}
+
+.ModalPostBody {
+  height: calc(100% - 81px);
+  overflow-y: auto;
+}
+
+.ModalPostBody::-webkit-scrollbar {
+  display: none;
+}
+
+.ModalPostBody h4 {
+  font-size: 13px;
+  font-weight: 500;
+  color: #a8a8a8;
+  margin-bottom: 8px;
+}
+
+.ModalPostBody .InputBox {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.ModalPostBody .InputTitle {
+  -webkit-transition: .3s;
+  transition: .3s;
+  font-weight: 500;
+}
+
+.ModalPostBody .InputTitle:hover {
+  border-color: #00b7ff;
+}
+
+.ModalPostBody .TextArea {
+  height: 350px;
+}
+
+.ModalPostBody .TextArea textarea {
+  width: 100%;
+  height: 100%;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid #e2e2e2;
+  padding: 20px 12px;
+  resize: none;
+  outline: none;
+  -webkit-transition: .3s;
+  transition: .3s;
+  font-weight: 500;
+}
+
+.ModalPostBody .TextArea textarea:hover {
+  border-color: #00b7ff;
+}
+
+.ModalPostFooter {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin-top: 34px;
+  margin-left: auto;
+}
+
+.ModalPostFooter ul.PostListFlex {
+  margin-right: 0;
+}
+
+.ModalPostFooter ul.PostListFlex li:last-of-type .ButtonPost {
+  background-color: #00b7ff;
+  border-color: transparent;
+  color: #fff;
+}
+
+.ModalPostFooter ul.PostListFlex li:last-of-type .ButtonPost:hover {
+  border-color: transparent;
+  color: #fff;
+  background-color: #005ec5;
 }
 
 @media screen and (max-width: 820px) {
-  .InputList.Sign {
-    height: calc(100vh - 393px);
+  .ModalBoxPost {
+    padding: 18px;
   }
-  button.SignStep {
-    margin-top: 15px;
+  .HeaderContent {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
   }
-  .InputList li.ProfileSection {
-    height: 290px;
+  .PostListFlex {
+    margin-right: 0;
   }
-  .ProfileShow {
-    height: 218px;
+  .PostListFlex li {
+    width: 100%;
   }
-  .ProfileShow .ProfileImg {
-    width: 218px;
-    height: 218px;
-  }
-  .ProfileShow .ProfileBg {
-    width: 202px;
-    height: 202px;
-    top: calc(50% - (202px/2));
-    left: calc(50% - (202px/2));
-  }
-  .ProfileList li {
-    min-width: 62px;
-  }
-  .ProfileList li:first-child {
-    margin-left: 8px;
-  }
-  .ProfileList li:last-child {
+  .PostListFlex li:not(:last-child) {
     margin-right: 8px;
   }
-  ul.MailList li:not(:first-child) {
-    padding: 7px 35px;
-  }
-  ul.MailList p {
-    padding: 5px 10px 5px 4px;
-  }
-  .ResultProfileWrapper {
-    height: calc(100vh - 338px);
-  }
-  .ResultProfile {
-    position: relative;
-    width: 150px;
-    height: 150px;
-  }
-  .ResultTitle {
-    margin: 29px 0 30px;
-    font-size: 20px;
-    line-height: 28px;
-    letter-spacing: 0.05em;
-    word-break: keep-all;
-  }
-  .ResultTxt {
-    margin-bottom: 0;
-  }
-  .ButtonFull.Sign4 {
-    margin-top: 20px;
-  }
 }
-/*# sourceMappingURL=Sign.css.map */
+/*# sourceMappingURL=PostModal.css.map */

@@ -1,0 +1,320 @@
+@import "../common";
+
+.ModalBoxPost{
+    max-width: 850px;
+    max-height: 850px;
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+    background-color: $white;
+    box-sizing: border-box;
+    z-index: 1;
+    transition: .5s;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.16);
+    border-radius: 20px;
+    padding: 40px;
+}
+
+.HeaderContent{
+     display: flex;
+     margin-bottom: 30px;
+
+     h4{
+         font-size: 13px;
+         font-weight: 500;
+         color: $black4;
+         margin-bottom: 8px;
+     }
+
+     &>div:last-of-type{
+         width: 100%;
+     }
+}
+
+.ContentFlex{
+    display: flex;
+
+    div{
+        width: 100%;
+
+        &:first-of-type{
+            margin-right: 24px;
+        }
+    }
+}
+
+.PostListFlex{
+    display: flex;
+    margin-right: 24px;
+
+    li{
+        width: 112px;
+
+        &:not(:last-child){
+            margin-right: 15px;
+        }
+    }
+}
+
+ul.PostListDrop{
+    width: 100%;
+    height: 50px;
+    border: 1px solid $black5;
+    border-radius: 10px;
+    transition-property: height, border-color;
+    transition-duration: .5s, .3s;
+    overflow: hidden;
+    background-color: $white;
+    box-sizing: border-box;
+
+    &:hover{
+        border-color: $blue3;
+
+        li:first-child .Arrow{
+            background: url("/frontend/src/assets/images/ArrowDownOn.png") no-repeat;
+        }
+    }
+
+    &.On{
+        border-color: $blue3;
+
+        li:first-child .Arrow{
+            background: url("/frontend/src/assets/images/ArrowUpOn.png") no-repeat;
+        }
+    }
+
+    li{
+        width: 100%;
+        position: relative;
+        padding-left: 6px;
+        cursor: pointer;
+        box-sizing: border-box;
+
+        &:first-child{
+            height: 50px;
+            padding: 0;
+
+            &::after{
+               content: '';
+               display: block;
+               height: 1px;
+               width: calc(100% - 24px);
+               background-color: $black5;
+               margin: 0 auto; 
+            }
+
+            span.Arrow{
+                display: block;
+                width: 11px;
+                height: 6px;
+                background: url("/frontend/src/assets/images/ArrowDown.png") no-repeat;
+                background-size: 11px !important;
+                position: absolute;
+                top: calc(50% - 3px);
+                right: 12px;
+                transition: .3s;
+            }
+        }
+
+        &:nth-child(2){
+            padding-top: 5px;
+        }
+    }
+}
+
+.PostListDrop.PostListPeople{
+
+    li:nth-child(2){
+        padding: 10px 12px;
+        display: flex;
+        flex-wrap: wrap;
+        
+        span{
+            display: block;
+            width: 15px;
+            height: 20px;
+            margin-right: 8px;
+            margin-bottom: 10px;
+            text-align: center;
+            line-height: 20px;
+            font-size: 15px;
+            font-weight: 500;
+            color: $black2;
+            transition: .3s;
+
+            &:hover{
+                color: $blue3;
+            }
+        }
+    }
+
+    &.On{
+        height: 124px;
+    }
+}
+
+@mixin InputPost($fs, $fw, $col) {
+    width: 100%;
+    height: 50px;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    font-size: $fs;
+    font-weight: $fw;
+    cursor: pointer;
+    color: $col;
+
+}
+
+.InputPostCatDet{
+    @include InputPost(13px, 400, $black3);
+    padding: 0 12px 0 18px;
+}
+
+.InputPostPeople{
+    @include InputPost(15px, 500, $black2);
+    text-align: center;
+    
+    &::-webkit-inner-spin-button{
+        display: none;
+    }
+}
+
+.ArrowNum{
+    display: block;
+    width: 24px;
+    height: 16px;
+    background-size: 11px;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    right: 8px;
+    transition: .3s;
+    cursor: pointer;
+
+    &.Up{
+        background-image: url("/frontend/src/assets/images/ArrowUp.png");
+        top: 9px;
+
+        &:hover{
+            background-image: url("/frontend/src/assets/images/ArrowUpOn.png");
+        }
+    }
+
+    &.Down{
+        background-image: url("/frontend/src/assets/images/ArrowDown.png");
+        bottom: 9px;
+
+        &:hover{
+            background-image: url("/frontend/src/assets/images/ArrowDownOn.png");
+        }
+    }
+}
+
+@mixin Input {
+    transition: .3s;
+    font-weight: 500;
+
+    &:hover{
+        border-color: $blue3;
+    }
+}
+
+.InputDate{
+    @include Input;
+    cursor: pointer;
+    color: $black2;
+    padding: 0 12px;
+
+    &::-webkit-calendar-picker-indicator{
+        height: 100%;
+        background: url("/frontend/src/assets/images/IconCalendar.png") no-repeat 50% 50%;
+        background-size: 26px;
+        cursor: pointer;
+    }
+}
+
+.ModalPostBody{
+    height: calc(100% - 81px);
+    overflow-y: auto;
+
+    &::-webkit-scrollbar{
+        display: none;
+    }
+
+    h4 {
+        font-size: 13px;
+        font-weight: 500;
+        color: $black4;
+        margin-bottom: 8px;
+    }
+
+    .InputBox{
+        position: relative;
+        margin-bottom: 30px
+    }
+
+    .InputTitle{
+        @include Input;
+    }
+
+    .TextArea{
+        height: 350px;
+
+        textarea{
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            border-radius: 10px;
+            border: 1px solid $black5;
+            padding: 20px 12px;
+            resize: none;
+            outline: none;
+            @include Input;
+        }
+    }
+}
+
+.ModalPostFooter{
+    width: fit-content;
+    margin-top: 34px;
+    margin-left: auto;
+
+    ul.PostListFlex{
+        margin-right: 0;
+
+        li:last-of-type .ButtonPost {
+            background-color: $blue3;
+            border-color: transparent;
+            color: $white;
+
+            &:hover {
+                border-color: transparent;
+                color: $white;
+                background-color: $blue2;
+            }
+        }
+    }
+}
+
+@media screen and (max-width:820px) {
+    
+    .ModalBoxPost{
+        padding: 18px;
+    }
+
+    .HeaderContent{
+        flex-direction: column;
+    }
+
+    .PostListFlex{
+        margin-right: 0;
+        
+        li{
+            width: 100%;
+
+            &:not(:last-child){
+                margin-right: 8px;
+            }
+        }
+    }
+}
