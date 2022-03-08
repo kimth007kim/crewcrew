@@ -20,4 +20,18 @@ public class LikedCategory {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="uid")
     private User user;
+
+    public void setUser(User user){
+        this.user=user;
+        user.getLikedCategories().add(this);
+    }
+
+
+    public static LikedCategory createLikedCategory(User user, Category category){
+        LikedCategory likedCategory= new LikedCategory();
+        likedCategory.setUser(user);
+        likedCategory.setCategory(category);
+        return likedCategory;
+    }
+
 }

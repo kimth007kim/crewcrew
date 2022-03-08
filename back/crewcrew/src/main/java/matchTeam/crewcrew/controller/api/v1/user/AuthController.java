@@ -12,10 +12,7 @@ import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.response.exception.auth.*;
 import matchTeam.crewcrew.service.amazonS3.S3Uploader;
-import matchTeam.crewcrew.service.user.EmailService;
-import matchTeam.crewcrew.service.user.KakaoService;
-import matchTeam.crewcrew.service.user.NaverService;
-import matchTeam.crewcrew.service.user.UserService;
+import matchTeam.crewcrew.service.user.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,6 +34,7 @@ public class AuthController {
     private final KakaoService kakaoService;
     private final NaverService naverService;
     private final JwtProvider jwtProvider;
+    private final LikedCategoryService likedCategoryService;
     private final S3Uploader s3Uploader;
 
 
@@ -371,6 +369,15 @@ public class AuthController {
         userService.passwordCheck(user,previous);
         userService.changePassword(user,change_password);
         return ResponseHandler.generateResponse("성공", HttpStatus.OK,change_password);
+    }
+
+    @PostMapping("/user/addCategory")
+    public ResponseEntity<Object> affCategory(String email, String provider,Long categoryId) {
+        User user= userService.findByEmailAndProvider(email,provider).orElseThrow(LoginFailedByEmailNotExistException::new);
+        Long likedCategoryId=likedCategoryService.addLikedCategory(user.getUid(),categoryId);
+
+
+        return ResponseHandler.generateResponse("성공", HttpStatus.OK,likedCategoryId);
     }
 
 
