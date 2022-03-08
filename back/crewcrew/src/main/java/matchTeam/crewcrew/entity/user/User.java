@@ -40,7 +40,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column(length=100)
     private String password;
 
-    @Column(name = "profile_image")
+    @Column
     private String profileImage;
 
     @Column
@@ -92,5 +92,9 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 }

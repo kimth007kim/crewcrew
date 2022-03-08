@@ -173,23 +173,18 @@ public class AuthController {
     }
 
     @PostMapping("/user/changeProfileImage")
-    public ResponseEntity<Object> changeProfileImage( @RequestParam MultipartFile files,String email,String provider) {
-        String filename="";
+    public ResponseEntity<Object> changeProfileImage( @RequestParam MultipartFile files,String email,String provider) throws IOException {
+        User user=userService.findByEmailAndProvider(email,"local").orElseThrow(CUserNotFoundException::new);
 
         StringBuilder sb = new StringBuilder();
         sb.append(email);
         sb.append("_local");
 
-        try {
-            filename =s3Uploader.upload(files,sb.toString(),"profile");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        User user=userService.findByEmailAndProvider(email,"local").orElseThrow(CUserNotFoundException::new);
+            String filename =s3Uploader.upload(files,sb.toString(),"profile");
+            userService.setProfileImage(user,filename);
 
-        user.setProfileImage(filename);
 
-        return ResponseHandler.generateResponse("성공", HttpStatus.OK,email);
+        return ResponseHandler.generateResponse("성공", HttpStatus.OK,filename);
     }
 
     @ApiOperation(value = "이메일 로그인", notes = "이메일로 로그인")
