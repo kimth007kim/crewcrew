@@ -13,9 +13,9 @@ delete from category where category_id=12;
 delete from category where category_id=13;
 delete from category where category_id=14;
 INSERT INTO category
-    (category_id,category_name,category_parent_id)VALUES
-  (1,'스터디',NULL ),
-  (2,'취미',NULL ),
+    (category_id,category_name,category_parent_id, description)VALUES
+  (1,'스터디',NULL, NULL ),
+  (2,'취미',NULL, NULL ),
   (3,'어학',1, '(토플/토익)'),
   (4,'취업',1, '(면접/자소서)'),
   (5,'고시/공무원',1, null ),

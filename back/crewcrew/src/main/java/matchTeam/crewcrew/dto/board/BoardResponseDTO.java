@@ -1,15 +1,19 @@
 package matchTeam.crewcrew.dto.board;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.querydsl.core.annotations.QueryProjection;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import matchTeam.crewcrew.entity.board.Board;
+import matchTeam.crewcrew.util.helper.NestedConvertHelper;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -59,6 +63,7 @@ public class BoardResponseDTO {
     @ApiModelProperty(value = "만료여부", notes = "만료여부를 true(만료x) or false(만료됨)로 표현", example = "1")
     private Boolean viewable;
 
+    @QueryProjection
     @Builder
     public BoardResponseDTO(Board res) {
         this.boardId = res.getId();
@@ -76,6 +81,7 @@ public class BoardResponseDTO {
         this.hit = res.getHit() + 1;
         this.viewable = res.getViewable();
     }
+
 
     public static BoardResponseDTO toDTO(Board board){
         return BoardResponseDTO.builder()

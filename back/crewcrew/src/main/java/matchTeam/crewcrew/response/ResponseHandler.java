@@ -1,5 +1,8 @@
 package matchTeam.crewcrew.response;
 
+import matchTeam.crewcrew.dto.board.BoardResponseDTO;
+import matchTeam.crewcrew.dto.board.PageResponseDTO;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -28,5 +31,15 @@ public class ResponseHandler {
 
         return  new ResponseEntity<Object>(map,HttpStatus.OK);
 
+    }
+
+    public static ResponseEntity<Object> generatePageResponse(String message, HttpStatus status, Page<BoardResponseDTO> pageObj){
+        Map<String, Object> map = new HashMap<>();
+        map.put("status", 200);
+        map.put("message", message);
+        map.put("data", PageResponseDTO.toDTO(pageObj));
+        map.put("error", false);
+
+        return new ResponseEntity<Object>(map, status);
     }
 }
