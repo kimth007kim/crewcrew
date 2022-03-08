@@ -1,6 +1,7 @@
 package matchTeam.crewcrew.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,11 +12,11 @@ import javax.persistence.PersistenceContext;
 public class QuerydslConfig {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private EntityManager em;
 
     @Bean
     public JPAQueryFactory jpaQueryFactory() {
-        return new JPAQueryFactory(entityManager);
+        return new JPAQueryFactory(em);
     }
 
 }
