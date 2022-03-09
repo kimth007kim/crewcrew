@@ -19,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 @Api(tags = "1. Auth")
@@ -125,7 +127,7 @@ public class AuthController {
 
 
 
-    @PostMapping(value = "/signup_image",consumes = {"multipart/form-data"})
+    @PostMapping(value = "/signup_image",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
     @ApiResponses({
             @ApiResponse(
@@ -146,7 +148,7 @@ public class AuthController {
 
     public ResponseEntity<Object> signupImage(
             @ApiParam(value = "회원 가입 요청 + 프로필 이미지까지", required = true)
-            @RequestParam MultipartFile files, SignUpRequestDto signUpRequestDto) {
+            SignUpRequestDto signUpRequestDto) {
 
         System.out.println(signUpRequestDto.getEmail());
         emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
@@ -161,7 +163,7 @@ public class AuthController {
         sb.append("_local");
 
         try {
-            filename =s3Uploader.upload(files,sb.toString(),"profile");
+            filename =s3Uploader.upload(signUpRequestDto.getFile(),sb.toString(),"profile");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -186,6 +188,9 @@ public class AuthController {
 
         return ResponseHandler.generateResponse("성공", HttpStatus.OK,filename);
     }
+
+
+
 
     @ApiOperation(value = "이메일 로그인", notes = "이메일로 로그인")
     @PostMapping("/login")
@@ -367,12 +372,16 @@ public class AuthController {
     }
 
     @PostMapping("/user/addCategory")
-    public ResponseEntity<Object> affCategory(String email, String provider,Long categoryId) {
+    public ResponseEntity<Object> affCategory(String email, String provider, Long[] categoryId) {
         User user= userService.findByEmailAndProvider(email,provider).orElseThrow(LoginFailedByEmailNotExistException::new);
-        Long likedCategoryId=likedCategoryService.addLikedCategory(user.getUid(),categoryId);
+//        Long likedCategoryId=likedCategoryService.addLikedCategory(user.getUid(),categoryId);
+//        System.out.println(Arrays.toString(categoryId));
+        for (int i=0; i<categoryId.length;i++){
+            likedCategoryService.findLikedCategory(user,categoryId[i]);
+        }
 
-
-        return ResponseHandler.generateResponse("성공", HttpStatus.OK,likedCategoryId);
+//        likedCategoryService.findLikedCategory();
+        return ResponseHandler.generateResponse("성공", HttpStatus.OK,1);
     }
 
 

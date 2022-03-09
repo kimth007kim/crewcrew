@@ -30,4 +30,12 @@ public class LikedCategoryService {
 
         return likedCategory.getLikeId();
     }
+
+    public boolean findLikedCategory(User user ,Long category_id){
+        Category category = categoryRepository.findById(category_id).orElseThrow(NotExistCategoryException::new);
+        if(likedCategoryRepository.findByUserAndCategory(user,category).isEmpty()){
+            return true;
+        }
+        return false;
+    }
 }
