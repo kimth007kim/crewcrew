@@ -99,4 +99,9 @@ public class BoardExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @ExceptionHandler(NotExistOrderKeywordException.class)
+    protected ResponseEntity<ErrorResponseHandler> notExistOrderKeywordException(NotExistOrderKeywordException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.NOT_EXIST_ORDER_KEYWORD);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

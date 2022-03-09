@@ -9,6 +9,7 @@ import matchTeam.crewcrew.dto.board.BoardResponseDTO;
 import matchTeam.crewcrew.dto.board.QBoardResponseDTO;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.board.Category;
+import matchTeam.crewcrew.response.exception.board.NotExistOrderKeywordException;
 import matchTeam.crewcrew.response.exception.category.NotExistCategoryException;
 import matchTeam.crewcrew.specification.BoardSpecs;
 import matchTeam.crewcrew.specification.OrderByNull;
@@ -75,7 +76,7 @@ public class BoardSearchRepository{
             return board.totalCrew.subtract(board.recruitedCrew).asc();
         }
         else {
-            return OrderByNull.DEFAULT;
+            throw new NotExistOrderKeywordException();
         }
     }
 

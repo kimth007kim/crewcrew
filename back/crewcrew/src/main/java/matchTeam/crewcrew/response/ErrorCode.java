@@ -76,9 +76,10 @@ public enum ErrorCode {
 
 
     // 3. 2201~2299 게시판 삭제에 대한 예외
-    NOT_EXIST_BOARD_IN_ID(2301, "NOT EXIST_BOARD IN ID", "존재하지 않는 게시글 번호입니다.");
+    NOT_EXIST_BOARD_IN_ID(2201, "NOT EXIST_BOARD IN ID", "존재하지 않는 게시글 번호입니다."),
 
-    // 4. 2300~2399 게시판 조회에 대한 예외
+    // 4. 2300~2399 게시판 조건 조회에 대한 예외
+    NOT_EXIST_ORDER_KEYWORD(2301, "NOT EXIST ORDR KEYWORD", "올바른 정렬 조건이 아닙니다.");
 
 
 
