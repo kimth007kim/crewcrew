@@ -33,6 +33,7 @@ public class ResponseHandler {
 
     }
 
+    /*
     public static ResponseEntity<Object> generatePageResponse(String message, HttpStatus status, Page<BoardResponseDTO> pageObj){
         Map<String, Object> map = new HashMap<>();
         map.put("status", 200);
@@ -41,5 +42,5 @@ public class ResponseHandler {
         map.put("error", false);
 
         return new ResponseEntity<Object>(map, status);
-    }
+    }*/
 }
