@@ -121,13 +121,51 @@ public class BoardController {
     }
 
     @ApiOperation(value = "다중 조건에 의한 게시글 리스트 조회", notes = "조건에 따라 게시글 목록을 조회한다.")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200,
+                    message = "게시글 리스트 다중 조건 조회 성공",
+                    response = PageResponseDTO.class
+            ),
+            @ApiResponse(
+                    code = 2001,
+                    message = "존재하지 않는 카테고리 번호입니다."
+            ),
+            @ApiResponse(
+                    code = 2301,
+                    message = "올바른 정렬 조건이 아닙니다."
+            )
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name = "approach",
+                    value = "0은 오프라인, 1은 온라인 0%2C1 = [0, 1], 값 구분은 %2C"
+            ),
+            @ApiImplicitParam(
+                    name = "categoryIds",
+                    value = "상세 카테고리 아이디들, 3%2C4%2C5 = [3, 4, 5], 값 구분은 %2C"
+            ),
+            @ApiImplicitParam(
+                    name = "keyword",
+                    value = "제목+내용으로 검색할 키워드"
+            ),
+            @ApiImplicitParam(
+                    name = "order",
+                    value = "정렬 기준 키워드, recent=최신, popular=조회수, expired-date=만료날짜, expired-crew=남은 인원",
+                    defaultValue = "recent"
+            ),
+            @ApiImplicitParam(
+                    name = "page",
+                    value = "페이지 번호, 0부터 시작"
+            )
+    })
     @GetMapping("/board/list")
     public ResponseEntity<Object> getBoardList(@ModelAttribute BoardSpecs boardSpecs,
                                                @PageableDefault(size = 10) Pageable pageable){
 
         Page<BoardResponseDTO> result = boardService.search(boardSpecs, pageable);
-
-        return ResponseHandler.generatePageResponse("게시글 리스트 다중 조건 조회 성공", HttpStatus.OK, result);
+        PageResponseDTO pageResponseDTO = PageResponseDTO.toDTO(result);
+        return ResponseHandler.generateResponse("게시글 리스트 다중 조건 조회 성공", HttpStatus.OK, pageResponseDTO);
     }
 
 
