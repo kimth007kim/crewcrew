@@ -30,6 +30,8 @@ public class QCategory extends EntityPathBase<Category> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final ListPath<matchTeam.crewcrew.entity.user.LikedCategory, matchTeam.crewcrew.entity.user.QLikedCategory> likedCategories = this.<matchTeam.crewcrew.entity.user.LikedCategory, matchTeam.crewcrew.entity.user.QLikedCategory>createList("likedCategories", matchTeam.crewcrew.entity.user.LikedCategory.class, matchTeam.crewcrew.entity.user.QLikedCategory.class, PathInits.DIRECT2);
+
     public QCategory(String variable) {
         this(Category.class, forVariable(variable), INITS);
     }
