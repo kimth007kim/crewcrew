@@ -30,7 +30,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
 
@@ -50,7 +49,6 @@ dependencies {
 	implementation 'io.springfox:springfox-bean-validators:2.9.2'
 
 	compileOnly 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'
-
 
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
 	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
