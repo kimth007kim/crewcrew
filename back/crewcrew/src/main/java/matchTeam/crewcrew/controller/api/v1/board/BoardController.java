@@ -117,7 +117,7 @@ public class BoardController {
     public ResponseEntity<Object> findByboardId(@ApiParam(value = "게시글 번호", required = true)@PathVariable Long boardId){
         BoardResponseDTO findBoard = boardService.findById(boardId);
         boardHitService.updateHit(boardId);
-        return ResponseHandler.generateResponse("게시글 번호로 조회 성공",HttpStatus.OK, findBoard);
+        return ResponseHandler.generateResponse("게시글 번호로 상세 조회 성공",HttpStatus.OK, findBoard);
     }
 
     @ApiOperation(value = "다중 조건에 의한 게시글 리스트 조회", notes = "조건에 따라 게시글 목록을 조회한다.")

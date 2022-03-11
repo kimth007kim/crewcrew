@@ -22,14 +22,14 @@ public class QUser extends EntityPathBase<User> {
 
     public final matchTeam.crewcrew.entity.QBaseTimeEntity _super = new matchTeam.crewcrew.entity.QBaseTimeEntity(this);
 
-    public final StringPath Category = createString("Category");
-
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
     public final StringPath email = createString("email");
 
     public final StringPath introduce = createString("introduce");
+
+    public final ListPath<LikedCategory, QLikedCategory> likedCategories = this.<LikedCategory, QLikedCategory>createList("likedCategories", LikedCategory.class, QLikedCategory.class, PathInits.DIRECT2);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;

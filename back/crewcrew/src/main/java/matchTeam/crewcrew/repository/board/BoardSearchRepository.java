@@ -70,12 +70,9 @@ public class BoardSearchRepository{
             return board.createdDate.desc();
         }else if (order.equals("popular")){
             return board.hit.desc();
-        }else if (order.equals("expired-date")){
+        }else if (order.equals("expired")){
             return board.expiredDate.asc();
-        }else if (order.equals("expired-crew")){
-            return board.totalCrew.subtract(board.recruitedCrew).asc();
-        }
-        else {
+        } else {
             throw new NotExistOrderKeywordException();
         }
     }
