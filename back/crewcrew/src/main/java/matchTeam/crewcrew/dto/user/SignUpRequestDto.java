@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
+import java.util.List;
 
 @Builder
 @Getter
@@ -20,6 +21,7 @@ public class SignUpRequestDto {
     private String name;
     private String nickName;
     private MultipartFile file;
+    private List<Long> categoryId;
 
 
 

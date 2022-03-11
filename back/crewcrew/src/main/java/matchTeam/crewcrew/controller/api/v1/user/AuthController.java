@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 @Api(tags = "1. Auth")
@@ -171,8 +172,41 @@ public class AuthController {
         user.setProfileImage(filename);
 
 
+        List<Long> input=likedCategoryService.deleteDuplicateCategory(signUpRequestDto.getCategoryId());
+        List<Long> usersLike=   likedCategoryService.findUsersLike(user);
+        List<Long> result =likedCategoryService.addLikedCategory(user,input,usersLike);
+
         return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signupId);
     }
+
+
+
+//    @PostMapping(value = "/signUp/Category",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+//    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
+//
+//
+//    public ResponseEntity<Object> signupCategory(
+//            @ApiParam(value = "회원 가입 요청 + 프로필 이미지까지", required = true)
+//                    SignUpRequestDto signUpRequestDto) {
+//
+//        System.out.println(signUpRequestDto.getEmail());
+//        emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
+//        //1004 이메일인증이 안된 이메일
+//        Long signupId = userService.signup(signUpRequestDto);
+//        //1005 현재 입력한 이메일로 이미 존재할 경우
+//
+//
+//        User user = userService.findByUid(signupId);
+//
+//
+//        List<Long> input=likedCategoryService.deleteDuplicateCategory(signUpRequestDto.getCategoryId());
+//        List<Long> usersLike=   likedCategoryService.findUsersLike(user);
+//        List<Long> result =likedCategoryService.addLikedCategory(user,input,usersLike);
+//
+//        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signupId);
+//    }
+
+
 
     @PostMapping("/user/changeProfileImage")
     public ResponseEntity<Object> changeProfileImage( @RequestParam MultipartFile files,String email,String provider) throws IOException {
@@ -372,16 +406,13 @@ public class AuthController {
     }
 
     @PostMapping("/user/addCategory")
-    public ResponseEntity<Object> affCategory(String email, String provider, Long[] categoryId) {
-        User user= userService.findByEmailAndProvider(email,provider).orElseThrow(LoginFailedByEmailNotExistException::new);
-//        Long likedCategoryId=likedCategoryService.addLikedCategory(user.getUid(),categoryId);
-//        System.out.println(Arrays.toString(categoryId));
-        for (int i=0; i<categoryId.length;i++){
-            likedCategoryService.findLikedCategory(user,categoryId[i]);
-        }
-
-//        likedCategoryService.findLikedCategory();
-        return ResponseHandler.generateResponse("성공", HttpStatus.OK,1);
+    public ResponseEntity<Object> addCategory(@RequestBody LikedCategoryDto likedCategoryDto) {
+        System.out.println(likedCategoryDto.getEmail()+"      -     "+likedCategoryDto.getProvider());
+        User user= userService.findByEmailAndProvider(likedCategoryDto.getEmail(),likedCategoryDto.getProvider()).orElseThrow(LoginFailedByEmailNotExistException::new);
+        List<Long> input=likedCategoryService.deleteDuplicateCategory(likedCategoryDto.getCategoryId());
+        List<Long> usersLike=   likedCategoryService.findUsersLike(user);
+        List<Long> result =likedCategoryService.addLikedCategory(user,input,usersLike);
+        return ResponseHandler.generateResponse("성공", HttpStatus.OK,result);
     }
 
 
