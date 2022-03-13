@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -114,10 +115,21 @@ public class BoardController {
     })
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/board/{boardId}")
-    public ResponseEntity<Object> findByboardId(@ApiParam(value = "게시글 번호", required = true)@PathVariable Long boardId){
+    public ResponseEntity<Object> findByboardId(@ApiParam(value = "게시글 번호", required = true)@PathVariable Long boardId,
+                                                @ModelAttribute BoardSpecs boardSpecs,
+                                                @PageableDefault(size = 5) Pageable pageable){
+
         BoardResponseDTO findBoard = boardService.findById(boardId);
         boardHitService.updateHit(boardId);
-        return ResponseHandler.generateResponse("게시글 번호로 상세 조회 성공",HttpStatus.OK, findBoard);
+
+        Page<BoardResponseDTO> page = boardService.search(boardSpecs, pageable);
+        PageResponseDTO pageResponseDTO = PageResponseDTO.toDTO(page);
+
+        List<Object> result = new ArrayList<>();
+        result.add(findBoard);
+        result.add(pageResponseDTO);
+
+        return ResponseHandler.generateResponse("게시글 번호로 상세 조회 성공",HttpStatus.OK, result);
     }
 
     @ApiOperation(value = "다중 조건에 의한 게시글 리스트 조회", notes = "조건에 따라 게시글 목록을 조회한다.")

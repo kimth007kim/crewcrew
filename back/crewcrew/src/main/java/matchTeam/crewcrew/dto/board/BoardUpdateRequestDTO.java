@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
@@ -50,10 +51,15 @@ public class BoardUpdateRequestDTO {
     @NotNull(message = "만료 날짜를 선택해주세요.")
     private LocalDate expiredDate;
 
+    @ApiModelProperty(value = "오픈채팅 링크", notes = "오픈채팅 링크를 입력해주세요", required = true)
+    @NotNull(message = "오픈채팅 링크를 입력해주세요.")
+    @Column(name = "kakao_chat", nullable = false)
+    private String kakao_chat;
+
     @Builder
     public BoardUpdateRequestDTO(Long uid, String title, String boardContent,
                                  Integer recruitedCrew, Integer totalCrew,
-                                 Integer approachCode, Long categoryId, LocalDate expiredDate) {
+                                 Integer approachCode, Long categoryId, LocalDate expiredDate, String kakao_chat) {
         this.uid = uid;
         this.title = title;
         this.boardContent = boardContent;
@@ -62,5 +68,6 @@ public class BoardUpdateRequestDTO {
         this.approachCode = approachCode;
         this.categoryId = categoryId;
         this.expiredDate = expiredDate;
+        this.kakao_chat = kakao_chat;
     }
 }

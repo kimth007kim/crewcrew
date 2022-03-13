@@ -41,6 +41,8 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final StringPath kakao_chat = createString("kakao_chat");
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 

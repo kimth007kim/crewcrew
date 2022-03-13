@@ -62,6 +62,9 @@ public class Board extends BaseTimeEntity {
     @Column(name = "hit", columnDefinition = "bigint default 0")
     private Long hit;
 
+    @Column(name = "kakao_chat", nullable = false)
+    private String kakao_chat;
+
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     @Column(name = "expired_date")
     private LocalDate expiredDate;
@@ -80,7 +83,7 @@ public class Board extends BaseTimeEntity {
     @Builder
     public Board(String title, String boardContent,
                  User user, Category category, Integer totalCrew, Integer approach,
-                 LocalDate expiredDate) {
+                 LocalDate expiredDate, String kakao_chat) {
         this.title = title;
         this.boardContent = boardContent;
         this.user = user;
@@ -92,6 +95,7 @@ public class Board extends BaseTimeEntity {
         this.expiredDate = expiredDate;
         this.hit = 0L;
         this.viewable = true;
+        this.kakao_chat = kakao_chat;
     }
 
     public void update(String title, String boardContent,

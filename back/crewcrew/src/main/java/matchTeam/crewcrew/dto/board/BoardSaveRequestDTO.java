@@ -12,6 +12,7 @@ import matchTeam.crewcrew.response.exception.category.NotExistCategoryException;
 import matchTeam.crewcrew.util.customException.UserNotFoundException;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
@@ -52,10 +53,15 @@ public class BoardSaveRequestDTO {
     @NotNull(message = "만료 날짜를 선택해주세요.(오늘의 날짜보다 커야합니다.) 만료는 매일 자정에 이루어집니다.")
     private LocalDate expiredDate;
 
+    @ApiModelProperty(value = "오픈채팅 링크", notes = "오픈채팅 링크를 입력해주세요", required = true)
+    @NotNull(message = "오픈채팅 링크를 입력해주세요.")
+    @Column(name = "kakao_chat", nullable = false)
+    private String kakao_chat;
+
     @Builder
     public BoardSaveRequestDTO(String title, String boardContent,
                                Integer totalCrew, Integer approachCode,
-                               Long uid, Long categoryId, LocalDate expiredDate) {
+                               Long uid, Long categoryId, LocalDate expiredDate, String kakao_chat) {
         this.title = title;
         this.boardContent = boardContent;
         this.totalCrew = totalCrew;
@@ -63,6 +69,7 @@ public class BoardSaveRequestDTO {
         this.uid = uid;
         this.categoryId = categoryId;
         this.expiredDate = expiredDate;
+        this.kakao_chat = kakao_chat;
     }
 
     public Board toEntity(BoardSaveRequestDTO req, UserRepository userRepository, CategoryRepository categoryRepository){
@@ -75,6 +82,7 @@ public class BoardSaveRequestDTO {
                 .user(userRepository.findById(req.getUid()).orElseThrow(UserNotFoundException::new))
                 .category(categoryRepository.findById(req.getCategoryId()).orElseThrow(NotExistCategoryException::new))
                 .expiredDate(req.expiredDate)
+                .kakao_chat(req.getKakao_chat())
                 .build();
     }
 }

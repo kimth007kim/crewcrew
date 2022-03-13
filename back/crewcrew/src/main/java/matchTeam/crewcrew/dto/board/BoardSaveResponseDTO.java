@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import matchTeam.crewcrew.entity.board.Board;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -53,6 +55,10 @@ public class BoardSaveResponseDTO {
     @ApiModelProperty(value = "조회수", notes = "초깃값은 0")
     private Long hit;
 
+    @ApiModelProperty(value = "오픈채팅 링크", notes = "오픈채팅 링크", required = true)
+    @Column(name = "kakao_chat", nullable = false)
+    private String kakao_chat;
+
     @Builder
     public BoardSaveResponseDTO(Board res) {
         this.uid = res.getUser().getUid();
@@ -67,5 +73,6 @@ public class BoardSaveResponseDTO {
         this.expiredDate = res.getExpiredDate();
         this.createdDate = res.getCreatedDate();
         this.hit = res.getHit();
+        this.kakao_chat = res.getKakao_chat();
     }
 }
