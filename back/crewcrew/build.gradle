@@ -54,6 +54,8 @@ dependencies {
 	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
 	implementation 'com.querydsl:querydsl-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
+	implementation 'com.amazonaws:aws-java-sdk-s3'
 
 
 
