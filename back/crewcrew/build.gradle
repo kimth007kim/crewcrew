@@ -46,9 +46,11 @@ dependencies {
 	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 	implementation 'io.swagger:swagger-annotations:1.5.21'
 	implementation 'io.swagger:swagger-models:1.5.21'
+
 	implementation 'io.springfox:springfox-bean-validators:2.9.2'
 
-	compileOnly 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'
+//	compileOnly 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'
+	compileOnly 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
 	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
