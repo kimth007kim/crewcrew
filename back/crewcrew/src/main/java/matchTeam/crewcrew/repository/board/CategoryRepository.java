@@ -13,7 +13,10 @@ import java.util.Optional;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
 
-    @Query("select c from Category c left join c.categoryParent p order by p.id asc nulls first, c.id asc")
+    @Query("select c from category c left join c.categoryParent p order by p.id asc nulls first, c.id asc")
     List<Category> findAllOrderByParentIdAscNullsFirstCategoryIdAsc();
+
+    @Query("select c from category c where c.categoryParent.id = ?1")
+    List<Category> findAllByCategoryParentId(Long parentId);
 
 }

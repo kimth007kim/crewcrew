@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import matchTeam.crewcrew.entity.board.Category;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @NoArgsConstructor
 @Getter
 public class EachCategoryResponseDTO {
@@ -32,5 +35,15 @@ public class EachCategoryResponseDTO {
         this.categoryName = res.getCategoryName();
         this.categoryParentName = res.getCategoryParent().getCategoryName();
         this.description = res.getDescription();
+    }
+
+    public static List<EachCategoryResponseDTO> toDtoList(List<Category> categories){
+        List<EachCategoryResponseDTO> result = new ArrayList<>();
+
+        for (Category category: categories) {
+            result.add(EachCategoryResponseDTO.builder().res(category).build());
+        }
+
+        return result;
     }
 }

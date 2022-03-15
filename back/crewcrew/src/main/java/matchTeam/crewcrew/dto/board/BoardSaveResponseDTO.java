@@ -20,6 +20,9 @@ public class BoardSaveResponseDTO {
     @ApiModelProperty(value = "유저의 uid", notes = "게시글 저장에 성공한 유저의 uid")
     private Long uid;
 
+    @ApiModelProperty(value = "유저의 닉네임", notes = "게시글 저장에 성공한 유저의 닉네임")
+    private String nickname;
+
     @ApiModelProperty(value = "게시글의 id", notes = "저장에 성공한 게시글 id")
     private Long boardId;
 
@@ -62,6 +65,7 @@ public class BoardSaveResponseDTO {
     @Builder
     public BoardSaveResponseDTO(Board res) {
         this.uid = res.getUser().getUid();
+        this.nickname = res.getUser().getNickname();
         this.boardId = res.getId();
         this.title = res.getTitle();
         this.boardContent = res.getBoardContent();
