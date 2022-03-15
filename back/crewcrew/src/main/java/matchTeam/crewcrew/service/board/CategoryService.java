@@ -34,4 +34,17 @@ public class CategoryService {
         return EachCategoryResponseDTO.builder().res(category).build();
     }
 
+    public List<EachCategoryResponseDTO> readAllbyParent(Long parentId) {
+        Category category = categoryRepository.findById(parentId)
+                .orElseThrow(NotExistCategoryException::new);
+        
+        if (category.getCategoryParent() != null){
+            throw new NotExistCategoryException();
+        }
+
+        List<Category> categories = categoryRepository.findAllByCategoryParentId(parentId);
+        return EachCategoryResponseDTO.toDtoList(categories);
+    }
+
+
 }
