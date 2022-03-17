@@ -125,4 +125,44 @@ window.addEventListener("DOMContentLoaded", function(){
         });
     });
 
+    const ToolTipDt = document.querySelector(".ToolTipDt");
+    let opacity = 0, Fade;
+    document.querySelector(".ToolTip").addEventListener("mouseover", function(){
+        clearInterval(Fade);
+        Fade = setInterval(show, 20);
+    });
+    document.querySelector(".ToolTip").addEventListener("mouseout", function(){
+        clearInterval(Fade);
+        Fade = setInterval(hide, 20);
+        
+    });
+
+    function hide(){
+       
+		opacity = Number(window.getComputedStyle(ToolTipDt).getPropertyValue("opacity"));
+		
+		if(opacity>0){
+			opacity = opacity-0.1;
+			ToolTipDt.style.opacity=opacity;
+		}
+		else{
+			clearInterval(Fade);
+            ToolTipDt.style.display = "none";
+		}
+	}
+	
+	function show(){
+        ToolTipDt.style.display = "block";
+		opacity = Number(window.getComputedStyle(ToolTipDt).getPropertyValue("opacity"));
+		
+		if(opacity<1){
+			opacity = opacity+0.1;
+			ToolTipDt.style.opacity=opacity;
+		}
+		else{
+			clearInterval(Fade);
+		}
+	}	 
+       
+
 });
