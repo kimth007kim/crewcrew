@@ -62,8 +62,10 @@ public class UserService {
         // AccessToken ,Refresh Token 발급
 
         Long id = user.getUid();
+        System.out.println( user.getUid());
 //        if (jwtProvider.validateToken()==True)
         Optional<RefreshToken> refreshToken =refreshTokenJpaRepository.findByPkey(id);
+        System.out.println(refreshToken);
         boolean maintain = userLoginRequestDto.isMaintain();
         if (refreshToken.isPresent() && (jwtProvider.validateToken(refreshToken.get().getToken())==true)){
                 TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles(),maintain);
@@ -76,7 +78,8 @@ public class UserService {
 
 //        2. Refresh 토큰 없으면 새로 Refresh토큰 발급후 그걸 토대로 accesss토큰 발급
 
-        TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles(),maintain);
+//        TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles(),maintain);
+        TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles(),userLoginRequestDto.isMaintain());
 
         // RefreshToken 저장
         RefreshToken refresh_Token = RefreshToken.builder()

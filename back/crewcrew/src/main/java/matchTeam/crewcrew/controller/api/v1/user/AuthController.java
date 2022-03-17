@@ -8,6 +8,8 @@ import matchTeam.crewcrew.dto.social.*;
 import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.security.TokenRequestDto;
 import matchTeam.crewcrew.dto.user.*;
+import matchTeam.crewcrew.dto.user.example.EmailSendDto;
+import matchTeam.crewcrew.dto.user.example.SignUpResponseDto;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.response.exception.auth.*;
@@ -17,10 +19,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -49,7 +48,7 @@ public class AuthController {
             @ApiResponse(
                     code = 200
                     , message = "인증번호 발송 성공"
-                    ,response = String.class
+                    ,response = EmailSendDto.class
             )
             , @ApiResponse(
             code = 1001
@@ -99,32 +98,32 @@ public class AuthController {
 
     }
 
-    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
-    @PostMapping("/signup")
-    @ApiResponses({
-            @ApiResponse(
-                    code = 200
-                    , message = "회원가입 성공"
-            )
-            , @ApiResponse(
-            code = 1004
-            , message ="이메일 인증이 되지않은 이메일 주소입니다."
-    )
-            , @ApiResponse(
-            code = 1005
-            , message ="현재 입력한 이메일을 가진 유저가 이미 존재합니다. "
-    )
-    })
+//    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
+//    @PostMapping("/signup")
+//    @ApiResponses({
+//            @ApiResponse(
+//                    code = 200
+//                    , message = "회원가입 성공"
+//            )
+//            , @ApiResponse(
+//            code = 1004
+//            , message ="이메일 인증이 되지않은 이메일 주소입니다."
+//    )
+//            , @ApiResponse(
+//            code = 1005
+//            , message ="현재 입력한 이메일을 가진 유저가 이미 존재합니다. "
+//    )
+//    })
 
-    public ResponseEntity<Object> signup(
-            @ApiParam(value = "회원 가입 요청", required = true)
-            @RequestBody SignUpRequestDto signUpRequestDto) {
-        emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
-        //1004 이메일인증이 안된 이메일
-        Long signupId = userService.signup(signUpRequestDto);
-        //1005 현재 입력한 이메일로 이미 존재할 경우
-        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signupId);
-    }
+//    public ResponseEntity<Object> signup(
+//            @ApiParam(value = "회원 가입 요청", required = true)
+//            @RequestBody SignUpRequestDto signUpRequestDto) {
+//        emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
+//        //1004 이메일인증이 안된 이메일
+//        Long signupId = userService.signup(signUpRequestDto);
+//        //1005 현재 입력한 이메일로 이미 존재할 경우
+//        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signupId);
+//    }
 
 
 
@@ -134,6 +133,7 @@ public class AuthController {
             @ApiResponse(
                     code = 200
                     , message = "회원가입 성공"
+                    ,response = SignUpResponseDto.class
             )
             , @ApiResponse(
             code = 1004
@@ -147,9 +147,15 @@ public class AuthController {
 
 
 
+//    public ResponseEntity<Object> signupImage(
+//            @ApiParam(value = "회원 가입 요청 + 프로필 이미지까지", required = true)
+//            @RequestParam SignUpRequestDto signUpRequestDto) {
     public ResponseEntity<Object> signupImage(
-            @ApiParam(value = "회원 가입 요청 + 프로필 이미지까지", required = true)
-            SignUpRequestDto signUpRequestDto) {
+                @ApiParam(value = "회원 가입 요청 + 프로필 이미지까지", required = true)
+                @RequestParam String email, @RequestParam String password, @RequestParam String name, @RequestParam String nickName,@RequestParam  MultipartFile file,@RequestParam List<Long> categoryId) {
+//                 String email,  String password, String name, String nickName, MultipartFile file, List<Long> categoryId) {
+        SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email,password,name,nickName,file,categoryId);
+
 
         System.out.println(signUpRequestDto.getEmail());
         emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
@@ -168,15 +174,25 @@ public class AuthController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("유저 uid"+signupId);
         User user = userService.findByUid(signupId);
         user.setProfileImage(filename);
 
 
-        List<Long> input=likedCategoryService.deleteDuplicateCategory(signUpRequestDto.getCategoryId());
-        List<Long> usersLike=   likedCategoryService.findUsersLike(user);
-        List<Long> result =likedCategoryService.addLikedCategory(user,input,usersLike);
 
-        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signupId);
+//        User user= userService.findByEmailAndProvider(likedCategoryDto.getEmail(),likedCategoryDto.getProvider()).orElseThrow(LoginFailedByEmailNotExistException::new);
+//        List<Long> input=likedCategoryService.deleteDuplicateCategory(likedCategoryDto.getCategoryId());
+        List<Long> usersLike=   likedCategoryService.findUsersLike(user);
+//        List<Long> result =likedCategoryService.addLikedCategory(user,input,usersLike);
+
+        List<Long> input=likedCategoryService.deleteDuplicateCategory(signUpRequestDto.getCategoryId());
+        System.out.println("중복을 제거한 카테고리"+input);
+        List<Long> result =likedCategoryService.addLikedCategory(user,input);
+        System.out.println("유저가 등록한 후의 카테고리"+result);
+
+        SignUpResponseDto signUpResponseDto = new SignUpResponseDto(signupId,signUpRequestDto.getEmail(), signUpRequestDto.getName(), signUpRequestDto.getNickName());
+
+        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signUpResponseDto);
     }
 
 
@@ -207,8 +223,8 @@ public class AuthController {
 //    }
 
 
-
     @PostMapping("/user/changeProfileImage")
+    @ApiOperation(value ="프로필 이미지 변경" ,notes="이미지를 입력받아서 s3에 등록하고 db에 그 url을 저장합니다.")
     public ResponseEntity<Object> changeProfileImage( @RequestParam MultipartFile files,String email,String provider) throws IOException {
         User user=userService.findByEmailAndProvider(email,"local").orElseThrow(CUserNotFoundException::new);
 
@@ -231,8 +247,8 @@ public class AuthController {
     @ApiResponses({
             @ApiResponse(
                     code = 200
-                    , message = "회원가입 성공"
-                    ,response = TokenDto.class
+                    , message = "로그인 성공"
+                    ,response = AccessTokenDto.class
             )
             , @ApiResponse(
             code = 1101
@@ -245,8 +261,7 @@ public class AuthController {
     })
     public ResponseEntity<Object> login(
             @ApiParam(value = "로그인 요청 DTO", required = true) @RequestBody UserLoginRequestDto userLoginRequestDto) throws JsonProcessingException {
-
-
+        System.out.println(userLoginRequestDto.getEmail()+" "+userLoginRequestDto.getPassword());
         TokenDto tokenDto = userService.login(userLoginRequestDto);
 
         return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK, new AccessTokenDto(tokenDto.getAccessToken()));
@@ -405,15 +420,15 @@ public class AuthController {
         return ResponseHandler.generateResponse("성공", HttpStatus.OK,change_password);
     }
 
-    @PostMapping("/user/addCategory")
-    public ResponseEntity<Object> addCategory(@RequestBody LikedCategoryDto likedCategoryDto) {
-        System.out.println(likedCategoryDto.getEmail()+"      -     "+likedCategoryDto.getProvider());
-        User user= userService.findByEmailAndProvider(likedCategoryDto.getEmail(),likedCategoryDto.getProvider()).orElseThrow(LoginFailedByEmailNotExistException::new);
-        List<Long> input=likedCategoryService.deleteDuplicateCategory(likedCategoryDto.getCategoryId());
-        List<Long> usersLike=   likedCategoryService.findUsersLike(user);
-        List<Long> result =likedCategoryService.addLikedCategory(user,input,usersLike);
-        return ResponseHandler.generateResponse("성공", HttpStatus.OK,result);
-    }
+//    @PostMapping("/user/addCategory")
+//    public ResponseEntity<Object> addCategory(@RequestBody LikedCategoryDto likedCategoryDto) {
+//        System.out.println(likedCategoryDto.getEmail()+"      -     "+likedCategoryDto.getProvider());
+//        User user= userService.findByEmailAndProvider(likedCategoryDto.getEmail(),likedCategoryDto.getProvider()).orElseThrow(LoginFailedByEmailNotExistException::new);
+//        List<Long> input=likedCategoryService.deleteDuplicateCategory(likedCategoryDto.getCategoryId());
+//        List<Long> usersLike=   likedCategoryService.findUsersLike(user);
+//        List<Long> result =likedCategoryService.addLikedCategory(user,input,usersLike);
+//        return ResponseHandler.generateResponse("성공", HttpStatus.OK,result);
+//    }
 
 
 }

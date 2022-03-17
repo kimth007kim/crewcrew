@@ -49,8 +49,7 @@ dependencies {
 
 	implementation 'io.springfox:springfox-bean-validators:2.9.2'
 
-//	compileOnly 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'
-	compileOnly 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+	compileOnly 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'
 
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
 	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
@@ -58,7 +57,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
 	implementation 'com.amazonaws:aws-java-sdk-s3'
-
 
 
 

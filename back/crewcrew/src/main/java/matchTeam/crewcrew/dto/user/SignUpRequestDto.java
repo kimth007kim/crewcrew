@@ -1,5 +1,6 @@
 package matchTeam.crewcrew.dto.user;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,11 +17,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SignUpRequestDto {
+    @ApiModelProperty(example = "abc@naver.com")
     private String email;
+    @ApiModelProperty(example = "abcd12345678")
     private String password;
+    @ApiModelProperty(example = "김경동")
     private String name;
+    @ApiModelProperty(example = "momo")
     private String nickName;
+    @ApiModelProperty(example = "profileImage.jpg")
     private MultipartFile file;
+    @ApiModelProperty(example = "[3,4,5]")
     private List<Long> categoryId;
 
 

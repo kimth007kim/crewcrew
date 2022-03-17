@@ -57,7 +57,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     private List<String> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<LikedCategory> likedCategories= new ArrayList<>();
+    private final List<LikedCategory> likedCategories= new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -99,4 +99,6 @@ public class User extends BaseTimeEntity implements UserDetails {
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
+
+
 }

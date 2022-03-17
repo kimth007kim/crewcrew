@@ -25,8 +25,9 @@ public class LikedCategoryService {
     private final CategoryRepository categoryRepository;
     private final LikedCategoryRepository likedCategoryRepository;
 
-    public List<Long> addLikedCategory(User user, List<Long> input, List<Long> userLike){
-
+    public List<Long> addLikedCategory(User user, List<Long> input){
+        List<Long> userLike= findUsersLike(user);
+        System.out.println("-------------------"+userLike);
         for(int i=0;i <input.size();i++){
             if (!userLike.contains(input.get(i))){
                 Category category = categoryRepository.findById(input.get(i)).orElseThrow(NotExistCategoryException::new);
@@ -37,6 +38,17 @@ public class LikedCategoryService {
 
         return likedCategoryRepository.findByUser(user);
     }
+//    public List<Long> SignUpCategory(User user, List<Long> input, List<Long> userLike){
+//        for(int i=0;i <input.size();i++){
+//            if (!userLike.contains(input.get(i))){
+//                Category category = categoryRepository.findById(input.get(i)).orElseThrow(NotExistCategoryException::new);
+//                LikedCategory likedCategory = LikedCategory.createLikedCategory(user,category);
+//                likedCategoryRepository.save(likedCategory);
+//            }
+//        }
+//
+//        return likedCategoryRepository.findByUser(user);
+//    }
 
     public List<Long> findUsersLike(User user) {
         List<Long> categoryList = likedCategoryRepository.findByUser(user);
