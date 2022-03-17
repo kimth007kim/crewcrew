@@ -1,6 +1,8 @@
 /* eslint-disable indent */
+import axios from 'axios';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { toast } from 'react-toastify';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { css, keyframes } from 'styled-components';
 import CloseWhite from '../../../assets/images/CloseWhite.png';
 import {
@@ -8,6 +10,12 @@ import {
   studyListState,
   hobbyListState,
   messageState,
+  nameState,
+  emailIdState,
+  emailState,
+  passwordState,
+  nickNameState,
+  uploadFileImgState,
 } from '../../../atom/register';
 import Button from '../../../components/common/Button';
 import MTextfield from './MTextfield';
@@ -87,6 +95,8 @@ function SignupSection3({ IsClick, HandleClick }) {
   const [studyList, setStudyList] = useRecoilState(studyListState);
   const [hobbyList, setHobbyList] = useRecoilState(hobbyListState);
 
+  const [btnLoading, setBtnLoading] = useState(false);
+
   const [StepActive, setStepActive] = useState(false);
 
   const [message, setMessage] = useRecoilState(messageState);
@@ -94,6 +104,14 @@ function SignupSection3({ IsClick, HandleClick }) {
   const [messageValidMsg, setMessageValidMsg] = useState(
     '나를 소개하는 한 줄 메세지를 입력해주세요.(30자 이내)',
   );
+
+  // Recoil State
+  const name = useRecoilValue(nameState);
+  const emailId = useRecoilValue(emailIdState);
+  const email = useRecoilValue(emailState);
+  const password = useRecoilValue(passwordState);
+  const nickname = useRecoilValue(nickNameState);
+  const uploadFileImg = useRecoilValue(uploadFileImgState);
 
   const [ProgressF, setProgressF] = useRecoilState(sectionProgress3);
   const scrollRef = useRef(null);
@@ -219,10 +237,67 @@ function SignupSection3({ IsClick, HandleClick }) {
     [hobbyList],
   );
 
-  const HandleRegister = useCallback((e) => {
-    e.preventDefault();
-    HandleClick(4);
-  }, []);
+  const HandleRegister = useCallback(
+    (e) => {
+      e.preventDefault();
+      async function axiosPost() {
+        try {
+          setBtnLoading(true);
+          const completeEmail = `${emailId}@${email}`;
+
+          const context = {
+            name,
+            password,
+            nickname,
+            file: uploadFileImg,
+            email: completeEmail,
+            categoryId: [1, 2, 3],
+          };
+
+          const formData = new FormData();
+          formData.append('name', context.name);
+          formData.append('password', context.password);
+          formData.append('nickName', context.nickname);
+          formData.append('file', context.file);
+          formData.append('email', context.email);
+          formData.append('categoryId', context.categoryId);
+          // eslint-disable-next-line no-restricted-syntax
+          for (const pair of formData.entries()) {
+            console.log(`${pair[0]}, ${pair[1]}`);
+          }
+
+          console.log(context);
+          const { data } = await axios.post('/auth/signup_image', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+
+          console.log(data);
+          switch (data.status) {
+            case 200:
+              // HandleClick(4);
+              break;
+            case 1004:
+            case 1005:
+              toast.error(data.message);
+              break;
+            default:
+              break;
+          }
+        } catch (error) {
+          console.dir(error);
+        } finally {
+          setBtnLoading(false);
+        }
+      }
+
+      if (!btnLoading) {
+        axiosPost();
+      }
+    },
+    [name, password, uploadFileImg, emailId, email],
+  );
 
   const CheckProgressF = useCallback(
     (index) => {

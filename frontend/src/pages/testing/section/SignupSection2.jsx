@@ -56,7 +56,6 @@ function SignupSection2({ IsClick, HandleClick }) {
   const [myFileImg, setMyFileImg] = useState(null);
 
   const [StepActive, setStepActive] = useState(false);
-
   const uploadRef = useRef(null);
   const bgShowRef = useRef(null);
   const myImgRef = useRef(null);

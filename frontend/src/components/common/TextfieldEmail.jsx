@@ -141,13 +141,13 @@ const InputText = styled.div`
   opacity: 0;
   transition: 0.5s;
   user-select: none;
+  color: #00b7ff;
 
   ${(props) =>
     props.Focused &&
     css`
       opacity: 1;
       top: 54px;
-      color: #00b7ff;
     `};
   ${(props) =>
     props.Valid &&
