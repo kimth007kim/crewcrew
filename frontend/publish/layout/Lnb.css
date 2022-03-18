@@ -2215,6 +2215,20 @@ main {
   display: none;
 }
 
+.ProfileWrapper {
+  position: relative;
+}
+
+.Aram {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #FF0045;
+  position: absolute;
+  right: -4px;
+  top: 32px;
+}
+
 @media screen and (max-width: 820px) {
   .NavPC, .NavArrow, .NavCont h1 {
     display: none;
@@ -2452,6 +2466,11 @@ main {
   }
   .MobileNav li:nth-of-type(4).Active span.Icon {
     background: url("../../src/assets/images/NavIcon4_Active.png");
+  }
+  .Aram {
+    width: 6px;
+    height: 6px;
+    top: 0;
   }
 }
 /*# sourceMappingURL=Lnb.css.map */
