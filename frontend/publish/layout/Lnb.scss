@@ -312,6 +312,19 @@ $Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
     display: none;
 }
 
+.ProfileWrapper{
+    position: relative;
+}
+.Aram{
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #FF0045;
+    position: absolute;
+    right: -4px;
+    top: 32px;
+}
+
 @media screen and (max-width:820px) {
     .NavPC, .NavArrow, .NavCont h1{
         display: none;
@@ -503,5 +516,11 @@ $Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
                 }
             }
         }
+    }
+
+    .Aram{
+        width: 6px;
+        height: 6px;
+        top: 0;
     }
 }
