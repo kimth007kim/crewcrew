@@ -255,11 +255,11 @@ function SignupSection3({ IsClick, HandleClick }) {
           };
 
           const formData = new FormData();
-          formData.append('name', context.name);
+          formData.append('email', context.email);
           formData.append('password', context.password);
+          formData.append('name', context.name);
           formData.append('nickName', context.nickname);
           formData.append('file', context.file);
-          formData.append('email', context.email);
           formData.append('categoryId', context.categoryId);
           // eslint-disable-next-line no-restricted-syntax
           for (const pair of formData.entries()) {

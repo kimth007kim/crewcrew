@@ -133,6 +133,9 @@ public class EmailService {
         if (result == null){
             throw new CEmailCodeNotMatchException();
         }
+        if (!result.equals(code)){
+            throw new CEmailCodeNotMatchException();
+        }
         redisUtil.setDataExpire(email,"true",60*30L);
     }
 

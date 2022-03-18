@@ -78,6 +78,17 @@ public class AuthExceptionHandler {
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.PASSWORD_NOT_MATCH);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    /**
+     * 1007
+     * 이미 존재하는 닉네임을 사용할때
+     * signup
+     */
+    @ExceptionHandler(NickNameAlreadyExistException.class)
+    protected ResponseEntity<ErrorResponseHandler> userNameAlreadyExistException(NickNameAlreadyExistException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.USERNAME_ALREADY_EXIST);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
     // 1100~1199 이메일 로그인에 대한 예외
 

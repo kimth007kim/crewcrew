@@ -162,6 +162,11 @@ public class UserService {
 //    public boolean validateDuplicateMember(String email) {
 //        if (userRepository.findByEmail(email).isEmpty()) {
 //            return tr
+    public void validateDuplicateByNickname(String nickname){
+        if (userRepository.findByNickname(nickname).isPresent()){
+            throw new CPasswordNotMatchException();
+        }
+    }
 
     public User tokenChecker(String accessToken){
         if(!jwtProvider.validateToken(accessToken)){

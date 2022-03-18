@@ -60,8 +60,9 @@ public class AuthController {
             )
     })
     @PostMapping("/email/send")
-    public ResponseEntity<Object> SendEmail(String email) {
+    public ResponseEntity<Object> SendEmail(@RequestBody UserEmailCodeDto userEmailCodeDto) {
         //email 주소 형식 에  맞는지 확인하는 메서드
+        String email = userEmailCodeDto.getEmail();
         if (emailService.isValidEmailAddress(email)==false){
             throw new CNotValidEmailException();
 //            1001 이메일이 유효하지 않다.
@@ -75,8 +76,7 @@ public class AuthController {
         // 이메일 전송하는메서드
         String code = emailService.sendVerifyCode(email);
 
-        return ResponseHandler.generateResponse("인증번호 발송 성공", HttpStatus.OK, code);
-
+        return ResponseHandler.generateResponse("인증번호 발송 성공", HttpStatus.OK,null);
     }
     @ApiOperation(value ="이메일 인증코드 유효성 검사" ,notes="이메일로 발송한 인증코드와 사용자가 입력한 인증코드가 맞는지 확인합니다.")
     @PostMapping("/email/verify")
@@ -90,12 +90,11 @@ public class AuthController {
             , message ="발급된 인증 코드가 이메일과 다릅니다."
     )
     })
-    public ResponseEntity<Object> CodeVerify(String code,String email) {
-        emailService.getUserIdByCode(code,email);
+    public ResponseEntity<Object> CodeVerify(@RequestBody UserEmailVerifyDto userEmailVerifyDto) {
+        emailService.getUserIdByCode(userEmailVerifyDto.getCode(),userEmailVerifyDto.getEmail());
         //1003 발급된 인증 코드가 이메일과 일치하지않는다.
-        System.out.println(code);
+//        System.out.println(code);
         return ResponseHandler.generateResponse("인증번호 인증 성공", HttpStatus.OK, null);
-
     }
 
 //    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
@@ -114,7 +113,7 @@ public class AuthController {
 //            , message ="현재 입력한 이메일을 가진 유저가 이미 존재합니다. "
 //    )
 //    })
-
+//
 //    public ResponseEntity<Object> signup(
 //            @ApiParam(value = "회원 가입 요청", required = true)
 //            @RequestBody SignUpRequestDto signUpRequestDto) {
@@ -127,7 +126,7 @@ public class AuthController {
 
 
 
-    @PostMapping(value = "/signup_image",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/signup_image",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
     @ApiResponses({
             @ApiResponse(
@@ -147,15 +146,17 @@ public class AuthController {
 
 
 
-//    public ResponseEntity<Object> signupImage(
-//            @ApiParam(value = "회원 가입 요청 + 프로필 이미지까지", required = true)
-//            @RequestParam SignUpRequestDto signUpRequestDto) {
     public ResponseEntity<Object> signupImage(
                 @ApiParam(value = "회원 가입 요청 + 프로필 이미지까지", required = true)
-                @RequestParam String email, @RequestParam String password, @RequestParam String name, @RequestParam String nickName,@RequestParam  MultipartFile file,@RequestParam List<Long> categoryId) {
+//                @RequestPart String email, @RequestPart String password, @RequestPart String name, @RequestPart(required = false) String nickName,@RequestPart  MultipartFile file,@RequestPart List<Long> categoryId) {
+                @RequestParam String email, @RequestParam String password, @RequestParam String name, @RequestParam(required = false) String nickName,@RequestParam  MultipartFile file,@RequestParam List<Long> categoryId) {
 //                 String email,  String password, String name, String nickName, MultipartFile file, List<Long> categoryId) {
+//                @ModelAttribute SignUpRequestDto signUpRequestDto) {
         SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email,password,name,nickName,file,categoryId);
 
+
+//        System.out.println("email: "+signUpRequestDto.getEmail()+ "password: "+ signUpRequestDto.getPassword()+ "name: "+signUpRequestDto.getName()+"nickname"+signUpRequestDto.getNickName()+"file: "+signUpRequestDto.getFile()+"categoryId"+ signUpRequestDto.getCategoryId());
+        System.out.println("email: "+email+ "password: "+ password+ "name: "+name+"nickname"+"file: "+file+"categoryId"+ categoryId);
 
         System.out.println(signUpRequestDto.getEmail());
         emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
@@ -194,33 +195,6 @@ public class AuthController {
 
         return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signUpResponseDto);
     }
-
-
-
-//    @PostMapping(value = "/signUp/Category",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-//    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
-//
-//
-//    public ResponseEntity<Object> signupCategory(
-//            @ApiParam(value = "회원 가입 요청 + 프로필 이미지까지", required = true)
-//                    SignUpRequestDto signUpRequestDto) {
-//
-//        System.out.println(signUpRequestDto.getEmail());
-//        emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
-//        //1004 이메일인증이 안된 이메일
-//        Long signupId = userService.signup(signUpRequestDto);
-//        //1005 현재 입력한 이메일로 이미 존재할 경우
-//
-//
-//        User user = userService.findByUid(signupId);
-//
-//
-//        List<Long> input=likedCategoryService.deleteDuplicateCategory(signUpRequestDto.getCategoryId());
-//        List<Long> usersLike=   likedCategoryService.findUsersLike(user);
-//        List<Long> result =likedCategoryService.addLikedCategory(user,input,usersLike);
-//
-//        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signupId);
-//    }
 
 
     @PostMapping("/user/changeProfileImage")
