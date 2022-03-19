@@ -266,17 +266,15 @@ function SignupSection3({ IsClick, HandleClick }) {
             console.log(`${pair[0]}, ${pair[1]}`);
           }
 
-          console.log(context);
           const { data } = await axios.post('/auth/signup_image', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
 
-          console.log(data);
           switch (data.status) {
             case 200:
-              // HandleClick(4);
+              HandleClick(4);
               break;
             case 1004:
             case 1005:
@@ -522,6 +520,7 @@ function SignupSection3({ IsClick, HandleClick }) {
             color="darkblue"
             disabled={!StepActive}
             onClick={HandleRegister}
+            loadings={btnLoading}
           >
             회원가입 완료!
           </Button>

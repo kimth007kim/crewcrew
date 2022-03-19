@@ -5,7 +5,7 @@ import PWshow from '../../assets/images/PasswordShow.png';
 import PWon from '../../assets/images/PasswordShow_On.png';
 import PWError from '../../assets/images/PasswordShow_Error.png';
 
-function TextfieldPW({ onChange, value, valid, validMessage, label, onDelete }) {
+function TextfieldPW({ onChange, value, valid, validMessage, label, onDelete, disabled }) {
   const [Focused, setFocused] = useState(false);
   const [Hover, setHover] = useState(false);
   const InputRef = useRef(null);
@@ -48,6 +48,7 @@ function TextfieldPW({ onChange, value, valid, validMessage, label, onDelete }) 
         Hover={Hover}
         TextIn={!!value}
         autoComplete="off"
+        disabled={disabled}
       />
       <Label Focused={Focused} TextIn={!!value} Valid={valid}>
         {label}

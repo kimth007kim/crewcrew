@@ -11,6 +11,7 @@ import Textfield from '../../../components/common/TextfieldEmail';
 import TextfieldSU from './SignupTextfield';
 import TextfieldPW from '../../../components/common/TextfieldPW';
 import delImage from '../../../assets/images/InputDel.png';
+import CheckImg from '../../../assets/images/Checked_on.png';
 import Progress from './Progress';
 import {
   sectionProgress1,
@@ -74,7 +75,8 @@ function SignupSection({ IsClick, HandleClick }) {
 
   const HandleEmailIdChange = useCallback((e) => {
     setEmailId(e.target.value);
-    if (e.target.value.length >= 4 || e.target.value === 0) {
+
+    if (e.target.value.length >= 4 || e.target.value.length === 0) {
       return setEmailIdValid(false);
     }
     if (e.target.value) {
@@ -89,6 +91,7 @@ function SignupSection({ IsClick, HandleClick }) {
 
   const HandleEmailChange = useCallback((e) => {
     setEmail(e.target.value);
+
     if (e.target.value.length >= 5) {
       setEmailValid(false);
     } else {
@@ -116,13 +119,11 @@ function SignupSection({ IsClick, HandleClick }) {
           code: e.target.value,
         };
 
-        console.log(context);
-
         const { data } = await axios.post('/auth/email/verify', context);
 
-        console.log(data);
         switch (data.status) {
           case 200:
+            setCodeComplete(true);
             break;
           case 1003:
             setCodeValidMsg(data.message);
@@ -233,6 +234,7 @@ function SignupSection({ IsClick, HandleClick }) {
 
         switch (data.status) {
           case 200:
+            setCodeValidMsg('코드를 이메일로 전송했습니다! 확인해주세요.');
             console.log(data);
             break;
           case 1001:
@@ -361,6 +363,7 @@ function SignupSection({ IsClick, HandleClick }) {
                 valid={emailIdValid}
                 onDelete={HandleEmailIdDelete}
                 setFocus={setIDFocus}
+                disabled={CodeComplete}
               />
             </div>
             <MailList>
@@ -379,6 +382,7 @@ function SignupSection({ IsClick, HandleClick }) {
                     value={email}
                     active={EmailFocus || !!email}
                     Valid={emailValid}
+                    disabled={CodeComplete}
                   />
                   <LabelMail htmlFor="SignEmailDomain" active={EmailFocus || !!email}>
                     @
@@ -392,6 +396,7 @@ function SignupSection({ IsClick, HandleClick }) {
                     }}
                     TextIn={!!email}
                   />
+                  <InputChecked active={CodeComplete} />
                 </div>
                 {emailList.map((m) => (
                   <li key={m} onMouseDown={(e) => ClickMailList(e, m)}>
@@ -407,7 +412,11 @@ function SignupSection({ IsClick, HandleClick }) {
         </InputLi>
         <InputLi>
           <ListFlex>
-            <div>
+            <div
+              style={{
+                position: 'relative',
+              }}
+            >
               <TextfieldSU
                 type="text"
                 onChange={HandleCodeChange}
@@ -417,13 +426,15 @@ function SignupSection({ IsClick, HandleClick }) {
                 valid={false}
                 onDelete={HandleCodeDelete}
                 setFocus={setCodeFocus}
+                disabled={CodeComplete}
               />
+              <InputChecked active={CodeComplete} />
             </div>
             <div>
               <Button
                 size="fullregular"
                 color="darkblue"
-                disabled={!CodeActive}
+                disabled={!CodeActive || CodeComplete}
                 loadings={btnLoading}
                 onClick={HandleSend}
               >
@@ -628,6 +639,23 @@ const LabelMail = styled.label`
     `}
 `;
 
+const InputChecked = styled.div`
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  position: absolute;
+  display: none;
+  top: 15px;
+  right: 15px;
+  background: url(${CheckImg});
+  background-size: 100%;
+  cursor: default;
+  ${(props) =>
+    props.active &&
+    css`
+      display: flex;
+    `}
+`;
 const InputDel = styled.i`
   width: 18px;
   height: 18px;
