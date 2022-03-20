@@ -21,32 +21,32 @@ public class  GlobalExceptionHandler {
      *  주로 @RequestBody, @RequestPart 어노테이션에서 발생
      */
 
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    protected ResponseEntity<ErrorResponseHandler> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-//        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.INVALID_INPUT_VALUE, e.getBindingResult());
-//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-//    }
-//
-//    /**
-//     * @ModelAttribut 으로 binding error 발생시 BindException 발생한다.
-//     * ref https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-modelattrib-method-args
-//     */
-//    @ExceptionHandler(BindException.class)
-//    protected ResponseEntity<ErrorResponseHandler> handleBindException(BindException e) {
-//        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.INVALID_INPUT_VALUE, e.getBindingResult());
-//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-//    }
-//
-//    /**
-//     * enum type 일치하지 않아 binding 못할 경우 발생
-//     * 주로 @RequestParam enum으로 binding 못했을 경우 발생
-//     */
-//    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-//    protected ResponseEntity<ErrorResponseHandler> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
-//
-//        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.INVALID_INPUT_VALUE);
-//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-//    }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    protected ResponseEntity<ErrorResponseHandler> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.INVALID_INPUT_VALUE, e.getBindingResult());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * @ModelAttribut 으로 binding error 발생시 BindException 발생한다.
+     * ref https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-modelattrib-method-args
+     */
+    @ExceptionHandler(BindException.class)
+    protected ResponseEntity<ErrorResponseHandler> handleBindException(BindException e) {
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.INVALID_INPUT_VALUE, e.getBindingResult());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * enum type 일치하지 않아 binding 못할 경우 발생
+     * 주로 @RequestParam enum으로 binding 못했을 경우 발생
+     */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    protected ResponseEntity<ErrorResponseHandler> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.INVALID_INPUT_VALUE);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 
     /**
      * 지원하지 않은 HTTP method 호출 할 경우 발생

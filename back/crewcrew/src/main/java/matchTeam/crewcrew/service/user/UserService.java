@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -159,14 +160,14 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-//    public boolean validateDuplicateMember(String email) {
-//        if (userRepository.findByEmail(email).isEmpty()) {
-//            return tr
+
     public void validateDuplicateByNickname(String nickname){
         if (userRepository.findByNickname(nickname).isPresent()){
-            throw new CPasswordNotMatchException();
+            throw new NickNameAlreadyExistException();
         }
     }
+
+
 
     public User tokenChecker(String accessToken){
         if(!jwtProvider.validateToken(accessToken)){

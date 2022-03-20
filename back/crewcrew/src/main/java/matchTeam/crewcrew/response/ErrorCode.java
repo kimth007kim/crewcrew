@@ -41,7 +41,12 @@ public enum ErrorCode {
     // 1400~1499 네이버 로그인 회원가입에 대한 예외
     NAVER_COMMUNICATION_FAILED(1400,"NAVER_01","네이버와 http통신이 실패하였습니다."),
     NAVER_USER_ALREADY_EXIST(1401,"NAVER_USER ALREADY EXIST","이미 존재하는 네이버 유저입니다."),
+    
+    //1500~1599 S3에 관련된 예외
+    S3_UPLOAD_FAIL(1501,"S3 UPLOAD FAIL","S3에 업로드하는것을 실패하였습니다."),
+    S3_FILE_NOT_FOUND(1502,"S3 FILE NOT FOUND","S3에 업로드할 파일을 찾을 수 없습니다."),
 
+    
 
 
 
