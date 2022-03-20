@@ -16,7 +16,7 @@ import java.util.List;
 public class CategoryResponseDTO {
 
     @ApiModelProperty(value = "카테고리 id", notes = "카테고리 번호", example = "1")
-    private Long categoyId;
+    private Long categoryId;
 
     @ApiModelProperty(value = "카테고리 이름", notes = "상위 카테고리 제목", example = "스터디")
     private String categoryName;
