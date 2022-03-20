@@ -160,6 +160,29 @@ public class AuthExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * 1501
+     * S3 에 파일을 업로드 할수 없을경우에
+     * s3Uploader
+     */
+    @ExceptionHandler(S3UploadException.class)
+    protected ResponseEntity<ErrorResponseHandler> s3UploadFailException(S3UploadException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.S3_UPLOAD_FAIL);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    /**
+     * 1501
+     * S3에  올릴 파일이 없을떄
+     * s3Uploader
+     */
+    @ExceptionHandler(S3FileNotFoundException.class)
+    protected ResponseEntity<ErrorResponseHandler> s3FileNotFoundException(S3FileNotFoundException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.S3_FILE_NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+
     // 1900~1999 토큰 관련 예외
     /**
      * 1900

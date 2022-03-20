@@ -22,17 +22,17 @@ import java.io.IOException;
 public class S3Controller {
     private final S3Uploader s3Uploader;
 
-//    @PostMapping("/s3/upload")
-//    public ResponseEntity<Object> uploadImage(MultipartFile multipartFile, String dirname) {
-//        String filename="";
-//        try {
-//           filename =s3Uploader.upload(multipartFile, dirname,"sad");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return ResponseHandler.generateResponse("이미지 등록 성공", HttpStatus.OK, filename);
-//
-//    }
+    @PostMapping("/s3/upload")
+    public ResponseEntity<Object> uploadImage(MultipartFile multipartFile, String dirname) {
+        String filename="";
+        try {
+           filename =s3Uploader.upload(multipartFile, dirname,"sad");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseHandler.generateResponse("이미지 등록 성공", HttpStatus.OK, filename);
+
+    }
 //    @PostMapping("/s3/upload")
 //    public ResponseEntity<Object> uploadImage(MultipartFile multipartFile, String email) {
 //        String filename="";
@@ -49,6 +49,6 @@ public class S3Controller {
 //                e.printStackTrace();
 //            }
 //        return ResponseHandler.generateResponse("이미지 등록 성공", HttpStatus.OK, filename);
-//
+
 //    }
 }

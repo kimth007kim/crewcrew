@@ -16,6 +16,7 @@ import matchTeam.crewcrew.response.exception.auth.*;
 import matchTeam.crewcrew.service.amazonS3.S3Uploader;
 import matchTeam.crewcrew.service.user.*;
 import org.springframework.http.*;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -97,33 +98,6 @@ public class AuthController {
         return ResponseHandler.generateResponse("인증번호 인증 성공", HttpStatus.OK, null);
     }
 
-//    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
-//    @PostMapping("/signup")
-//    @ApiResponses({
-//            @ApiResponse(
-//                    code = 200
-//                    , message = "회원가입 성공"
-//            )
-//            , @ApiResponse(
-//            code = 1004
-//            , message ="이메일 인증이 되지않은 이메일 주소입니다."
-//    )
-//            , @ApiResponse(
-//            code = 1005
-//            , message ="현재 입력한 이메일을 가진 유저가 이미 존재합니다. "
-//    )
-//    })
-//
-//    public ResponseEntity<Object> signup(
-//            @ApiParam(value = "회원 가입 요청", required = true)
-//            @RequestBody SignUpRequestDto signUpRequestDto) {
-//        emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
-//        //1004 이메일인증이 안된 이메일
-//        Long signupId = userService.signup(signUpRequestDto);
-//        //1005 현재 입력한 이메일로 이미 존재할 경우
-//        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signupId);
-//    }
-
 
 
     @PostMapping(value = "/signup_image",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -142,44 +116,40 @@ public class AuthController {
             code = 1005
             , message ="현재 입력한 이메일을 가진 유저가 이미 존재합니다. "
     )
+            , @ApiResponse(
+            code = 1007
+            , message ="이미 존재하는 닉네임 입니다. "
+    )
     })
 
 
 
     public ResponseEntity<Object> signupImage(
                 @ApiParam(value = "회원 가입 요청 + 프로필 이미지까지", required = true)
-//                @RequestPart String email, @RequestPart String password, @RequestPart String name, @RequestPart(required = false) String nickName,@RequestPart  MultipartFile file,@RequestPart List<Long> categoryId) {
-                @RequestParam String email, @RequestParam String password, @RequestParam String name, @RequestParam(required = false) String nickName,@RequestParam  MultipartFile file,@RequestParam List<Long> categoryId) {
+                @RequestParam String email, @RequestParam String password, @RequestParam String name, @RequestParam String nickName,@RequestParam  MultipartFile file,@RequestParam List<Long> categoryId,@RequestParam(required = false) String message, @RequestParam(required = false) Integer Default) {
 //                 String email,  String password, String name, String nickName, MultipartFile file, List<Long> categoryId) {
 //                @ModelAttribute SignUpRequestDto signUpRequestDto) {
         SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email,password,name,nickName,file,categoryId);
-
-
-//        System.out.println("email: "+signUpRequestDto.getEmail()+ "password: "+ signUpRequestDto.getPassword()+ "name: "+signUpRequestDto.getName()+"nickname"+signUpRequestDto.getNickName()+"file: "+signUpRequestDto.getFile()+"categoryId"+ signUpRequestDto.getCategoryId());
         System.out.println("email: "+email+ "password: "+ password+ "name: "+name+"nickname"+"file: "+file+"categoryId"+ categoryId);
 
+        userService.validateDuplicateByNickname(nickName);
         System.out.println(signUpRequestDto.getEmail());
         emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
         //1004 이메일인증이 안된 이메일
         Long signupId = userService.signup(signUpRequestDto);
         //1005 현재 입력한 이메일로 이미 존재할 경우
 
-        String filename="";
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(signUpRequestDto.getEmail());
-        sb.append("_local");
-
-        try {
-            filename =s3Uploader.upload(signUpRequestDto.getFile(),sb.toString(),"profile");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("유저 uid"+signupId);
+        String filename=s3Uploader.addImageWhenSignUp(email,file,Default);
         User user = userService.findByUid(signupId);
         user.setProfileImage(filename);
+        user.setMessage(message);
 
 
+
+        if (StringUtils.isEmpty(message)){
+            System.out.println("message 가 비어있음");
+        }
 
 //        User user= userService.findByEmailAndProvider(likedCategoryDto.getEmail(),likedCategoryDto.getProvider()).orElseThrow(LoginFailedByEmailNotExistException::new);
 //        List<Long> input=likedCategoryService.deleteDuplicateCategory(likedCategoryDto.getCategoryId());
@@ -196,6 +166,27 @@ public class AuthController {
         return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signUpResponseDto);
     }
 
+    @GetMapping("/user/checkNickName")
+    @ApiOperation(value ="닉네임 중복 체크" ,notes="닉네임이 중복인지 체크한다. 사용가능하면 True를 반환하고 사용이 불가능하면 False를 반환한다.")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "닉네임 중복 확인 성공"
+                    , response=boolean.class
+            )
+            , @ApiResponse(
+            code = 1007
+            , message ="이미 존재하는 닉네임 입니다."
+    )
+
+    })
+    public ResponseEntity<Object> checkNickName( @RequestParam String nickName){
+        userService.validateDuplicateByNickname(nickName);
+        return ResponseHandler.generateResponse("닉네임 중복 확인 성공", HttpStatus.OK,true);
+    }
+
+
+
 
     @PostMapping("/user/changeProfileImage")
     @ApiOperation(value ="프로필 이미지 변경" ,notes="이미지를 입력받아서 s3에 등록하고 db에 그 url을 저장합니다.")
@@ -209,6 +200,17 @@ public class AuthController {
             String filename =s3Uploader.upload(files,sb.toString(),"profile");
             userService.setProfileImage(user,filename);
 
+
+        return ResponseHandler.generateResponse("성공", HttpStatus.OK,filename);
+    }
+
+
+    @PostMapping("/user/changeDefaultImage")
+    @ApiOperation(value ="프로필 이미지 변경" ,notes="기본이미지로 변경하기")
+    public ResponseEntity<Object> changeDefaultImage( Integer number, String email) throws IOException {
+        User user=userService.findByEmailAndProvider(email,"local").orElseThrow(CUserNotFoundException::new);
+
+        String filename =s3Uploader.setDefaultImage(email,number);
 
         return ResponseHandler.generateResponse("성공", HttpStatus.OK,filename);
     }
