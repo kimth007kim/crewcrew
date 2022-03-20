@@ -21,76 +21,14 @@ import Button from '../../../components/common/Button';
 import MTextfield from './MTextfield';
 import Progress from './Progress';
 
-const studyArray = [
-  {
-    id: 's1',
-    name: '어학',
-    sub: '(토플/토익)',
-  },
-  {
-    id: 's2',
-    name: '취업',
-    sub: '(면접/자소서)',
-  },
-  {
-    id: 's3',
-    name: '고시/공무원',
-    sub: '',
-  },
-  {
-    id: 's4',
-    name: '프로젝트',
-    sub: '(디자인/개발)',
-  },
-  {
-    id: 's5',
-    name: '기타',
-    sub: '(이중에 없어요!)',
-  },
-];
-const hobbyArray = [
-  {
-    id: 'h1',
-    name: '예술',
-    sub: '(공예/회화)',
-  },
-  {
-    id: 'h2',
-    name: '요리',
-    sub: '(요리/맛집탐방/카페탐방)',
-  },
-  {
-    id: 'h3',
-    name: '운동',
-    sub: '(헬스/구기종목)',
-  },
-  {
-    id: 'h4',
-    name: '게임',
-    sub: '(보드게임/온라인게임)',
-  },
-  {
-    id: 'h5',
-    name: '덕질',
-    sub: '(코스프레/콘서트/프라모델)',
-  },
-  {
-    id: 'h6',
-    name: '트렌드',
-    sub: '(뷰티/패션)',
-  },
-  {
-    id: 'h7',
-    name: '기타',
-    sub: '(이중에 없어요!)',
-  },
-];
-
 function SignupSection3({ IsClick, HandleClick }) {
   const [studyClick, setStudyClick] = useState(false);
   const [studyCheck, setStudyCheck] = useState(false);
   const [hobbyClick, setHobbyClick] = useState(false);
   const [hobbyCheck, setHobbyCheck] = useState(false);
+
+  const [studyArr, setStudyArr] = useState([]);
+  const [hobbyArr, setHobbyArr] = useState([]);
 
   const [studyList, setStudyList] = useRecoilState(studyListState);
   const [hobbyList, setHobbyList] = useRecoilState(hobbyListState);
@@ -203,12 +141,15 @@ function SignupSection3({ IsClick, HandleClick }) {
     [hobbyClick],
   );
 
+  const checkId = (arr, id) => arr.some((value) => value.categoryId === id);
+
   const toggleStudyList = useCallback(
     (e, data) => {
       e.preventDefault();
       e.stopPropagation();
-      if (studyList.includes(data)) {
-        return setStudyList(studyList.filter((el) => el !== data));
+
+      if (checkId(studyList, data.categoryId)) {
+        return setStudyList(studyList.filter((el) => el.categoryId !== data.categoryId));
       }
       setStudyList(studyList.concat(data));
     },
@@ -216,7 +157,7 @@ function SignupSection3({ IsClick, HandleClick }) {
   );
 
   const studyFilterItems = useCallback(
-    (query) => studyList.filter((el) => el.indexOf(query) > -1),
+    (data) => studyList.filter((el) => el.categoryId === data.categoryId),
     [studyList],
   );
 
@@ -224,8 +165,9 @@ function SignupSection3({ IsClick, HandleClick }) {
     (e, data) => {
       e.preventDefault();
       e.stopPropagation();
-      if (hobbyList.includes(data)) {
-        return setHobbyList(hobbyList.filter((el) => el !== data));
+
+      if (checkId(hobbyList, data.categoryId)) {
+        return setHobbyList(hobbyList.filter((el) => el.categoryId !== data.categoryId));
       }
       setHobbyList(hobbyList.concat(data));
     },
@@ -233,7 +175,7 @@ function SignupSection3({ IsClick, HandleClick }) {
   );
 
   const HobbyFilterItems = useCallback(
-    (query) => hobbyList.filter((el) => el.indexOf(query) > -1),
+    (data) => hobbyList.filter((el) => el.categoryId === data.categoryId),
     [hobbyList],
   );
 
@@ -244,6 +186,8 @@ function SignupSection3({ IsClick, HandleClick }) {
         try {
           setBtnLoading(true);
           const completeEmail = `${emailId}@${email}`;
+          const tmpCategory = [...studyList, ...hobbyList];
+          const categoryId = tmpCategory.map((data) => data.categoryId);
 
           const context = {
             name,
@@ -251,20 +195,30 @@ function SignupSection3({ IsClick, HandleClick }) {
             nickname,
             file: uploadFileImg,
             email: completeEmail,
-            categoryId: [1, 2, 3],
+            categoryId,
           };
 
           const formData = new FormData();
-          formData.append('name', context.name);
-          formData.append('password', context.password);
-          formData.append('nickName', context.nickname);
-          formData.append('file', context.file);
-          formData.append('email', context.email);
-          formData.append('categoryId', context.categoryId);
-          // eslint-disable-next-line no-restricted-syntax
-          for (const pair of formData.entries()) {
-            console.log(`${pair[0]}, ${pair[1]}`);
+          if (typeof uploadFileImg === 'number') {
+            formData.append('name', context.name);
+            formData.append('password', context.password);
+            formData.append('nickName', context.nickname);
+            formData.append('default', context.file);
+            formData.append('email', context.email);
+            formData.append('categoryId', context.categoryId);
+          } else {
+            formData.append('name', context.name);
+            formData.append('password', context.password);
+            formData.append('nickName', context.nickname);
+            formData.append('file', context.file);
+            formData.append('email', context.email);
+            formData.append('categoryId', context.categoryId);
           }
+
+          // eslint-disable-next-line no-restricted-syntax
+          // for (const pair of formData.entries()) {
+          //   console.log(`${pair[0]}, ${pair[1]}`);
+          // }
 
           const { data } = await axios.post('/auth/signup_image', formData, {
             headers: {
@@ -294,7 +248,7 @@ function SignupSection3({ IsClick, HandleClick }) {
         axiosPost();
       }
     },
-    [name, password, uploadFileImg, emailId, email],
+    [name, password, uploadFileImg, emailId, email, studyList, hobbyList],
   );
 
   const CheckProgressF = useCallback(
@@ -402,6 +356,34 @@ function SignupSection3({ IsClick, HandleClick }) {
   }, [IsClick]);
 
   useEffect(() => {
+    async function axiosGet() {
+      try {
+        setBtnLoading(true);
+        const { data } = await axios.get('/category/list');
+
+        switch (data.status) {
+          case 200:
+            console.log(data.data);
+            setStudyArr(data.data[0].children);
+            setHobbyArr(data.data[1].children);
+            break;
+          case 1004:
+          case 1005:
+            toast.error(data.message);
+            break;
+          default:
+            break;
+        }
+      } catch (error) {
+        console.dir(error);
+      } finally {
+        setBtnLoading(false);
+      }
+    }
+    axiosGet();
+  }, []);
+
+  useEffect(() => {
     if (IsClick !== 3) {
       return;
     }
@@ -423,35 +405,36 @@ function SignupSection3({ IsClick, HandleClick }) {
       <form>
         <InputList ref={scrollRef}>
           <ChooseList className="ChooseList" ref={studyRef}>
-            <ChooseListDetail active={studyClick} hLength={studyArray.length}>
+            <ChooseListDetail active={studyClick} hLength={studyArr.length > 0 && studyArr.length}>
               <div>
                 <ChooseTitle readOnly id="SignStudy" type="text" />
                 <LabelAttached htmlFor="SignStudy">어떤 스터디 크루원이 필요하세요?</LabelAttached>
                 {!studyClick && studyList.length > 0 && <InputAdd>추가</InputAdd>}
               </div>
-              {studyArray.map((m) => (
-                <div key={m.name + m.id}>
-                  <InputChoose />
-                  <LabelChoose
-                    onClick={(e) => toggleStudyList(e, m.name)}
-                    active={studyFilterItems(m.name).length > 0}
-                  >
-                    <Choose active={studyFilterItems(m.name).length > 0}>
-                      <em>{m.name}</em>
-                      {m.sub}
-                      <ChooseCancel active={studyFilterItems(m.name).length > 0} />
-                    </Choose>
-                  </LabelChoose>
-                </div>
-              ))}
+              {studyArr.length > 0 &&
+                studyArr.map((m, i) => (
+                  <div key={m.categoryName + m.categoryId + m.description}>
+                    <InputChoose />
+                    <LabelChoose
+                      onClick={(e) => toggleStudyList(e, m)}
+                      active={studyFilterItems(m).length > 0}
+                    >
+                      <Choose active={studyFilterItems(m).length > 0}>
+                        <em>{m.categoryName}</em>
+                        {m.description}
+                        <ChooseCancel active={studyFilterItems(m).length > 0} />
+                      </Choose>
+                    </LabelChoose>
+                  </div>
+                ))}
               {studyClick && <ChooseComplete active={studyList.length > 0}>완료</ChooseComplete>}
             </ChooseListDetail>
             <ChooseListUnder active={!studyClick && studyList.length > 0} ref={studyUnderRef}>
               {studyList.map((m, i) => (
-                <div key={m}>
+                <div key={m.categoryName + m.categoryId}>
                   <LabelChoose onClick={(e) => toggleStudyList(e, m)}>
                     <ChooseUnder>
-                      <em>{m}</em>
+                      <em>{m.categoryName}</em>
                       <ChooseCancel active={studyFilterItems(m).length > 0} />
                     </ChooseUnder>
                   </LabelChoose>
@@ -464,36 +447,37 @@ function SignupSection3({ IsClick, HandleClick }) {
             <ChooseListDetail
               active={hobbyClick}
               onClick={HandleHobbyInputClick}
-              hLength={hobbyArray.length}
+              hLength={hobbyArr.length > 0 && hobbyArr.length}
             >
               <div>
                 <ChooseTitle readOnly id="SignHobby" type="text" />
                 <LabelAttached htmlFor="SignHobby">어떤 취미를 가지고 계신가요?</LabelAttached>
                 {!hobbyClick && hobbyList.length > 0 && <InputAdd>추가</InputAdd>}
               </div>
-              {hobbyArray.map((m) => (
-                <div key={m.name + m.id}>
-                  <InputChoose />
-                  <LabelChoose
-                    onClick={(e) => toggleHobbyList(e, m.name)}
-                    active={HobbyFilterItems(m.name).length > 0}
-                  >
-                    <Choose active={HobbyFilterItems(m.name).length > 0}>
-                      <em>{m.name}</em>
-                      {m.sub}
-                      <ChooseCancel active={HobbyFilterItems(m.name).length > 0} />
-                    </Choose>
-                  </LabelChoose>
-                </div>
-              ))}
+              {hobbyArr.length > 0 &&
+                hobbyArr.map((m) => (
+                  <div key={m.categoryName + m.categoryId + m.description}>
+                    <InputChoose />
+                    <LabelChoose
+                      onClick={(e) => toggleHobbyList(e, m)}
+                      active={HobbyFilterItems(m).length > 0}
+                    >
+                      <Choose active={HobbyFilterItems(m).length > 0}>
+                        <em>{m.categoryName}</em>
+                        {m.description}
+                        <ChooseCancel active={HobbyFilterItems(m).length > 0} />
+                      </Choose>
+                    </LabelChoose>
+                  </div>
+                ))}
               {hobbyClick && <ChooseComplete active={hobbyList.length > 0}>완료</ChooseComplete>}
             </ChooseListDetail>
             <ChooseListUnder active={!hobbyClick && hobbyList.length > 0} ref={hobbyUnderRef}>
               {hobbyList.map((m, i) => (
-                <div key={m}>
+                <div key={m.categoryName + m.categoryId}>
                   <LabelChoose onClick={(e) => toggleHobbyList(e, m)}>
                     <ChooseUnder>
-                      <em>{m}</em>
+                      <em>{m.categoryName}</em>
                       <ChooseCancel active={HobbyFilterItems(m).length > 0} />
                     </ChooseUnder>
                   </LabelChoose>

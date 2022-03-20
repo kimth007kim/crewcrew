@@ -49,11 +49,11 @@ function SignupSection2({ IsClick, HandleClick }) {
     '앞으로 사용할 닉네임을 입력해주세요. (10자 이내)',
   );
   const [doubleCheck, setDoubleCheck] = useState(false);
-  const [uploadFileImg, setUploadFileImg] = useRecoilState(uploadFileImgState);
+  const [uploadFileImg, setUploadFileImg] = useState(null);
   const [grayed, setGrayed] = useState(true);
   const [isUpload, setIsUpload] = useState(false);
   const [isImg, setIsImg] = useState(false);
-  const [myFileImg, setMyFileImg] = useState(null);
+  const [myFileImg, setMyFileImg] = useRecoilState(uploadFileImgState);
 
   const [StepActive, setStepActive] = useState(false);
   const uploadRef = useRef(null);
@@ -95,7 +95,7 @@ function SignupSection2({ IsClick, HandleClick }) {
         setIsImg(true);
       }
     },
-    [isUpload],
+    [isUpload, uploadFileImg],
   );
 
   const deleteFiles = useCallback(() => {
