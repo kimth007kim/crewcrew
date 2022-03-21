@@ -1,0 +1,141 @@
+@import "../common";
+
+.ModalHeader{
+    border-bottom: 1px solid $black1;
+}
+
+.ModalTop{
+    margin-bottom: 16px;
+}
+
+.PartTitle{
+
+    h4{
+        font-size: 18px;
+        color: $black1;
+        font-weight: 700;
+    }
+
+    ul{
+        display: flex;
+        margin: 12px 0 32px;
+
+        li{
+            font-size: 13px;
+            font-weight: 500;
+            color: $black3;
+
+            &:not(:last-child){
+                margin-right: 25px;
+            }
+
+            &:first-child{
+                color: $blue2;
+                font-weight: 700;
+            }
+        }
+    }
+}
+
+.ModalBody{
+    height: calc(100% - 206px);
+}
+
+.ModalContents{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    h5{
+        font-size: 13px;
+        font-weight: 700;
+        color: $black1;
+        text-align: center;
+        margin: 48px 0 20px;
+    }
+
+    .TxtAreaInput{
+        height: 100px;
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+    .ButtonFull{
+        margin-top: auto;
+    }
+
+    img{
+        width: 170px;
+        margin: 70px auto 38px;
+    }
+
+    p{
+        text-align: center;
+
+        &:first-of-type{
+            font-size: 32px;
+            font-weight: 700;
+            color: $black1;
+        }
+
+        &:nth-of-type(2){
+            font-size: 13px;
+            font-weight: 400;
+            margin-top: auto;
+            line-height: 22px;
+
+            span:first-child{
+                color: $blue3;
+            }
+        }
+    }
+}
+
+@media screen and (max-width:820px) {
+    
+
+    .PartTitle{
+
+        ul {
+            margin-bottom: 18px;
+
+            li:not(:last-child){
+            margin-right: 10px;
+            }
+        }
+    }
+    
+    .ModalContents{
+
+        h5{
+            margin: 70px 0 30px;
+        }
+
+        img{
+            width: 170px;
+            margin: auto auto 30px;
+        }
+
+        p{
+
+            &:nth-of-type(1){
+                font-size: 28px;
+            }
+
+            &:nth-of-type(2){
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width:300px){
+
+    .ModalContents{
+
+        img{
+            width: 120px;
+        }
+    }
+}
+
