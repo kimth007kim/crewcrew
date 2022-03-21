@@ -1897,203 +1897,200 @@ main {
   }
 }
 
-* {
-  scroll-behavior: smooth;
-}
-
-.MainTop {
-  background: -webkit-gradient(linear, left top, left bottom, from(#008BE2), to(#0F3FA6));
-  background: linear-gradient(180deg, #008BE2 0%, #0F3FA6 100%);
-}
-
-.MainTop .TopCont h2 {
-  margin-top: 102px;
-}
-
-.MainTop .TopCont h3 {
-  margin-top: 12px;
-}
-
-.MainTop .TopCont .InputWrapper {
-  margin-top: 32px;
-}
-
-.MainTop .TopBgCharacter {
-  position: absolute;
-  max-width: 1075px;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-          transform: translateX(-50%);
-  mix-blend-mode: soft-light;
-  background-image: url("/frontend/src/assets/images/Profile1.png"), url("/frontend/src/assets/images/Profile3.png");
-  background-size: 400px 400px;
-  background-repeat: no-repeat;
-  background-position: left, right;
-}
-
-.PostList {
-  background-color: #F6F7FB;
-  padding-bottom: 80px;
-}
-
-.PostList h4 {
-  padding-top: 174px;
-  padding-bottom: 10px;
-  font-size: 20px;
-  font-weight: 700;
-  color: #000;
-}
-
-.PostList p {
-  font-size: 13px;
-  font-weight: 400;
-  color: #868686;
-}
-
 .SectionWrap850 {
   max-width: 850px;
   margin: auto;
   position: relative;
 }
 
-.FilterWrapper {
-  position: absolute;
-  top: -42px;
-  width: 100%;
-  max-width: 850px;
-  padding: 20px 10px 34px 25px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+section.MainTop {
+  height: 130px;
   background-color: #fff;
-  border-radius: 10px;
-  -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
-          box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
-  z-index: 1;
+  border-bottom: 1px solid #e2e2e2;
 }
 
-.FilterWrapper.Fixed {
-  position: fixed;
-  top: 10px;
+section.MainTop .ButtonIntro {
+  top: 42px;
 }
 
-.FilterWrapper button {
-  width: 120px;
-  height: 30px;
-  font-size: 14px;
-  padding: 0;
-  position: absolute;
-  bottom: -15px;
-  left: calc(50% - 60px);
-  -ms-grid-column-align: end;
-      justify-self: end;
+div.TopCont {
+  max-width: 850px;
+  width: 100%;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
-.FliterListWrapper {
+div.TopCont h2 {
+  font-size: 24px;
+  font-weight: 700;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-}
-
-.FilterPostBox, .FilterCategoryBox {
-  display: inline-block;
-  height: 60px;
-}
-
-.FilterPostBox {
-  width: 328px;
-  border-right: 1px solid #e2e2e2;
-}
-
-.FilterPostBox .FilterLabel {
-  width: 88px;
-}
-
-.FilterCategoryBox {
-  width: calc(100% - 375px);
-  padding-left: 42px;
-}
-
-.FilterCategoryBox .FilterLabel {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-  padding: 0 16px;
-}
-
-.FilterList {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-}
-
-.FilterList li {
-  margin-right: 8px;
-  margin-bottom: 14px;
-}
-
-.FilterInput:checked ~ .FilterLabel.Common {
-  background-color: #00b7ff;
-  border-color: transparent;
-  color: #fff;
-}
-
-.FilterInput:checked ~ .FilterLabel.Study {
-  background-color: #001881;
-  border-color: transparent;
-  color: #fff;
-}
-
-.FilterInput:checked ~ .FilterLabel.Hobby {
-  background-color: #F7971E;
-  border-color: transparent;
-  color: #fff;
-}
-
-.FilterLabel {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  height: 24px;
-  border: 1px solid #e2e2e2;
-  border-radius: 14px;
-  font-size: 12px;
-  font-weight: 500;
-  color: #868686;
-  cursor: pointer;
-  -webkit-transition: .2s;
-  transition: .2s;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
 }
 
-.FilterLabel:hover.Common {
-  border-color: #000;
+div.TopCont h2 a {
   color: #000;
 }
 
-.FilterLabel:hover.Study {
-  border-color: #001881;
-  color: #001881;
+div.TopCont h2::before {
+  content: '';
+  display: block;
+  background-image: url("/frontend/src/assets/images/IconNavArrow_Big.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: 0 1px;
+  width: 8px;
+  height: 18px;
+  margin-right: 20px;
 }
 
-.FilterLabel:hover.Hobby {
-  border-color: #F7971E;
-  color: #F7971E;
+div.TopCont .InputWrapper {
+  margin: 60px 0;
+}
+
+.PostDetail {
+  padding: 60px 0 94px;
+  background-color: #F6F7FB;
+}
+
+.PostDetail .SectionWrap850 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.PostDetail ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.PostDetail ul li {
+  color: #a8a8a8;
+  font-weight: 400;
+}
+
+.PostDetail ul:nth-of-type(1) {
+  gap: 24px;
+}
+
+.PostDetail ul:nth-of-type(1) li {
+  font-size: 15px;
+}
+
+.PostDetail ul:nth-of-type(1) li:first-child {
+  margin-right: 10px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #00b7ff;
+}
+
+.PostDetail ul:nth-of-type(1) li:nth-child(2) {
+  color: #000;
+}
+
+.PostDetail ul:nth-of-type(2) {
+  margin: 10px 0 18px;
+  gap: 8px;
+}
+
+.PostDetail ul:nth-of-type(2) li:first-child {
+  margin-right: auto;
+}
+
+.PostDetail ul:nth-of-type(2) li:first-child h4 {
+  font-size: 20px;
+  color: #000;
+}
+
+.PostDetail ul:nth-of-type(2) li:not(:first-child) {
+  width: 78px;
+}
+
+.PostDetail ul:nth-of-type(2) li:not(:first-child) .ButtonStar {
+  background-image: url("/frontend/src/assets/images/ButtonStar.png");
+  background-repeat: no-repeat;
+  background-size: 30px;
+  background-position: 50%;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.PostDetail ul:nth-of-type(2) li:not(:first-child) .ButtonStar:hover, .PostDetail ul:nth-of-type(2) li:not(:first-child) .ButtonStar.On {
+  background-image: url("/frontend/src/assets/images/ButtonStarOn.png");
+}
+
+.PostDetail ul:nth-of-type(3) {
+  gap: 15px;
+}
+
+.PostDetail ul:nth-of-type(3) li {
+  font-size: 15px;
+}
+
+.PostDetail ul:nth-of-type(3) li:nth-child(1) {
+  color: #005ec5;
+  font-weight: 700;
+}
+
+.PostDetail .textarea {
+  margin-top: 60px;
+  height: 768px;
+}
+
+.PostDetail .textarea textarea {
+  font-size: 18px;
+}
+
+.PostDetail .textarea textarea:hover {
+  border: 1px solid #e2e2e2;
+}
+
+.FilterWrapper {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.FilterWrapper h4 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.FilterWrapper h4 a {
+  color: #000;
+}
+
+.FilterWrapper h4::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  margin-left: 8px;
+  background-image: url("/frontend/src/assets/images/IconNavArrow.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  margin-right: 15px;
 }
 
 .FilterChecked {
-  padding-top: 20px;
+  padding-top: 10px;
   padding-bottom: 42px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2135,6 +2132,11 @@ main {
 
 .FilterChecked span.Hobby, .FilterCheckedMobile span.Hobby {
   background-color: #F7971E;
+}
+
+.PostList {
+  background-color: #F6F7FB;
+  padding-bottom: 90px;
 }
 
 .PostWrapper li {
@@ -2220,183 +2222,131 @@ aside {
   background-color: #a8a8a8;
 }
 
-.FilterHead {
+.TitleMobile {
   display: none;
 }
 
 @media screen and (max-width: 820px) {
-  .MainTop .TopCont h2 {
-    margin-top: 70px;
+  .SectionWrap850 {
+    padding: 0 20px;
   }
-  .MainTop .TopBgCharacter {
-    background-image: url("/frontend/src/assets/images/Profile3.png");
-    background-size: 240px;
-    background-position: right;
+  section.MainTop .ButtonIntro {
+    top: 17px;
   }
-  .FilterChecked {
-    display: none;
-  }
-  .FilterWrapper {
-    top: 0;
-    left: 0;
-    display: block;
-    background-color: #fff;
-    padding: 0%;
-    border-radius: 0;
-  }
-  .FilterWrapper.Fixed {
-    top: 60px;
-  }
-  .FilterHead {
-    border-bottom: 1px solid #e2e2e2;
-    height: 68px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-  }
-  .FilterHead .FilterButton {
-    min-width: 100px;
-    border-right: 1px solid #e2e2e2;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    font-size: 16px;
-    font-weight: 700;
-  }
-  .FilterHead .FilterButton .FilterArrow {
-    display: block;
-    background: url("/frontend/src/assets/images/FilterArrow.png") no-repeat;
-    background-size: 100%;
-    width: 11px;
-    height: 6px;
-    margin-left: 15px;
-  }
-  .FilterHead .FilterButton .FilterArrow.On {
-    -webkit-transform: rotate(180deg);
-            transform: rotate(180deg);
-  }
-  .FilterHead .FilterCheckedWrapper {
-    width: 100%;
-    overflow-x: auto;
-  }
-  .FilterHead .FilterCheckedWrapper::-webkit-scrollbar {
-    display: none;
-  }
-  .FilterHead .FilterCheckedMobile {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    border: none;
-    padding-left: 8px;
-    width: auto;
-    height: 100%;
-    -ms-flex-wrap: nowrap;
-        flex-wrap: nowrap;
-  }
-  .FilterHead .FilterCheckedMobile li {
-    margin-right: 8px;
-  }
-  .FilterHead .FilterCheckedMobile span {
-    white-space: nowrap;
-  }
-  .FliterListWrapper {
-    height: 0;
-    overflow: hidden;
-    position: relative;
-    -webkit-transition: 1s;
-    transition: 1s;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+  div.TopCont {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    width: calc(100% - 40px);
   }
-  .FliterListWrapper.On {
-    height: 322px;
-  }
-  .FliterListWrapper .FilterLabel {
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
-    width: fit-content;
-    background: none !important;
-    border-radius: 0;
-    border: none;
-    font-size: 13px;
-    margin-right: 24px;
-    margin-bottom: 0;
-  }
-  .FilterPostBox, .FilterCategoryBox {
-    display: block;
-    width: 100%;
-    padding: 0 20px;
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-    height: auto;
-  }
-  .FilterPostBox .FilterList {
-    height: 60px;
-    border-bottom: 1px solid #e2e2e2;
-  }
-  .FilterCategoryBox .FilterLabel {
-    padding: 0;
-    margin-top: 18px;
-  }
-  .FilterCategoryBox .FilterLabel:hover {
-    color: #868686;
-  }
-  .FilterList {
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-  }
-  .FilterList li {
-    margin-bottom: 0;
-    margin-right: 0;
-  }
-  .FilterInput:checked ~ .FilterLabel.Common {
-    color: #00b7ff;
-  }
-  .FilterInput:checked ~ .FilterLabel.Study {
-    color: #001881;
-  }
-  .FilterInput:checked ~ .FilterLabel.Hobby {
-    color: #F7971E;
-  }
-  .FilterWrapper button {
-    width: 100%;
-    height: 50px;
-    bottom: 0;
-    left: 0;
-    border-radius: 0;
-    font-size: 15px;
-  }
-  .PostList .SectionWrap850 > h4 {
-    padding-top: 136px;
+  div.TopCont h2 {
+    -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+            order: 1;
     font-size: 18px;
   }
-  .PostList .SectionWrap850 > p {
-    margin-bottom: 24px;
-    font-size: 12px;
+  div.TopCont h2::before {
+    background-position: 0 1px;
   }
-  .SectionWrap850 {
+  div.TopCont .InputWrapper {
+    margin: 14px 0 34px;
+    width: calc(100% - 50px);
+  }
+  div.TopCont .InputWrapper img {
+    margin-left: 16px;
+  }
+  .PostDetail {
+    padding: 42px 0 66px;
+  }
+  .PostDetail .TitleMobile {
+    font-size: 18px;
+    margin-bottom: 14px;
+    display: block;
+  }
+  .PostDetail ul:nth-of-type(1) {
+    margin-bottom: 12px;
+  }
+  .PostDetail ul:nth-of-type(1) li {
+    font-size: 13px;
+  }
+  .PostDetail ul:nth-of-type(1) li:first-child {
+    font-size: 13px;
+  }
+  .PostDetail ul:nth-of-type(2) {
+    -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+            order: 1;
+    margin: 14px 0;
+    gap: 10px;
+  }
+  .PostDetail ul:nth-of-type(2) li:first-child {
+    display: none;
+  }
+  .PostDetail ul:nth-of-type(2) li:not(:first-child) {
     width: 100%;
-    padding: 0 20px;
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
+  }
+  .PostDetail .textarea {
+    margin-top: 20px;
+    height: 320px;
+  }
+  .PostDetail .textarea textarea {
+    font-size: 16px;
+  }
+  .FilterWrapper {
+    padding: 0;
+    background-color: #fff;
+    margin-bottom: 30px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    border-top: 1px solid #e2e2e2;
+    border-bottom: 1px solid #e2e2e2;
+    height: 66px;
+  }
+  .FilterWrapper h4 {
+    text-indent: -9999em;
+    min-width: 64px;
+    height: 64px;
+    border-right: 1px solid #e2e2e2;
+  }
+  .FilterWrapper h4::before {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    margin: 0;
+  }
+  .FilterCheckedWrapper {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .FilterCheckedWrapper::-webkit-scrollbar {
+    display: none;
+  }
+  .FilterChecked {
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding: 0 8px;
+    width: auto;
+    height: 100%;
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+    gap: 10px;
+  }
+  .FilterChecked li {
+    margin: 0;
+  }
+  .FilterChecked span {
+    white-space: nowrap;
   }
   .PaginationWrapper {
     width: 100%;
@@ -2411,4 +2361,19 @@ aside {
     background-position: center;
   }
 }
-/*# sourceMappingURL=PostList.css.map */
+
+@media screen and (max-width: 300px) {
+  .SectionWrap850 {
+    padding: 0 10px;
+  }
+  .PostDetail ul:nth-of-type(1) {
+    gap: 14px;
+  }
+  .PostDetail ul:nth-of-type(3) {
+    gap: 10px;
+  }
+  .PostDetail ul:nth-of-type(3) li {
+    font-size: 13px;
+  }
+}
+/*# sourceMappingURL=PostDetail.css.map */
