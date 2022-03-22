@@ -31,7 +31,7 @@ public class Board extends BaseTimeEntity {
     private User user;
 
     @NotBlank
-    @Column(name = "title", length = 50, nullable = false)
+    @Column(name = "title", length = 30, nullable = false)
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
