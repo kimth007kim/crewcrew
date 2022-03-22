@@ -31,7 +31,7 @@ function Modal({
 
   return ReactDOM.createPortal(
     <Wrapper>
-      <ModalBg onClick={handleClose} disappear={!visible} />
+      <ModalBg onClick={close ? handleClose : () => {}} disappear={!visible} />
       <ModalBox disappear={!visible} size={size} heightSize={heightSize}>
         {header && header}
         {body && body}

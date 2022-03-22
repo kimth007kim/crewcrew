@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import Spinner from './Spinner';
 
@@ -12,6 +12,8 @@ function Button({
   widthSize,
   heightSize,
   children,
+  fontSize,
+  paddings,
 }) {
   return (
     <ButtonStyled
@@ -23,6 +25,8 @@ function Button({
       onClick={onClick}
       widthSize={widthSize}
       heightSize={heightSize}
+      fontSize={fontSize}
+      paddings={paddings}
     >
       {loadings && (
         <ButtonSpinner>
@@ -38,11 +42,12 @@ const handleSize = ({ size }) => {
   switch (size) {
     case 'supersmall':
       return `
-            min-width: 68px;
-            min-height: 36px;
-            padding: 6px;
-            font-size: var(--fs-b2);
-            line-height: var(--lh-b2);
+            min-width: 120px;
+            min-height: 30px;
+            padding: 0px;
+            font-size: 14px;
+            line-height: 26px;
+            border-radius: 10px;
               `;
     case 'small':
       return `
@@ -80,6 +85,8 @@ const handleSize = ({ size }) => {
               padding: 14px;
               font-size: var(--fs-b1);
               line-height: var(--lh-b1);
+              border-radius: 10px;
+
           `;
 
     case 'fulllarge':
@@ -89,6 +96,8 @@ const handleSize = ({ size }) => {
               padding: 14px;
               font-size: var(--fs-b1);
               line-height: var(--lh-b1);
+              border-radius: 10px;
+
           `;
     case 'regular':
     default:
@@ -361,6 +370,8 @@ const ButtonStyled = styled.button`
   }
   ${(props) => props.widthSize && `min-width: ${props.widthSize}px;`}
   ${(props) => props.heightSize && `min-height: ${props.heightSize}px;`}
+  ${(props) => props.fontSize && `font-size: ${props.fontSize}px;`}
+  ${(props) => props.paddings && `padding: ${props.paddings};`}
 `;
 
 const ButtonSpinner = styled.div`

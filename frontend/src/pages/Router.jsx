@@ -4,6 +4,7 @@ import Home from './home';
 import Testing from './testing';
 import NotFound from './notfound';
 import Register from './register';
+import Post from './post';
 
 function Router() {
   return (
@@ -12,6 +13,7 @@ function Router() {
         <Route path="/" element={<Home />} />
         <Route path="/testing" element={<Testing />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/post" element={<Post />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
