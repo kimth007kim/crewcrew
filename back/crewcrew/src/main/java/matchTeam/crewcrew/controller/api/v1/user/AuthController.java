@@ -100,8 +100,8 @@ public class AuthController {
 
 
 
-    @PostMapping(value = "/signup_image",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
+    @PostMapping(value = "/signup",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다. \n"+ "1. 프로필 이미지로 가입시  file=Multipartfile, default 는 사용하지않습니다. \n"+ "2. 기본이미지로 회원가입시  file을 사용하지않고 default =1~5  를 사용합니다.")
     @ApiResponses({
             @ApiResponse(
                     code = 200
@@ -124,9 +124,23 @@ public class AuthController {
 
 
 
-    public ResponseEntity<Object> signupImage(
-                @ApiParam(value = "회원 가입 요청 + 프로필 이미지까지", required = true)
-                @RequestParam String email, @RequestParam String password, @RequestParam String name, @RequestParam String nickName,@RequestParam  MultipartFile file,@RequestParam List<Long> categoryId,@RequestParam(required = false) String message, @RequestParam(required = false) Integer Default) {
+    public ResponseEntity<Object> signUp(
+                @ApiParam(value = "email 주소", required = true)
+                @RequestParam String email,
+                @ApiParam(value = "비밀번호", required = true)
+                @RequestParam String password,
+                @ApiParam(value = "회원 이름", required = true)
+                @RequestParam String name,
+                @ApiParam(value = "회원 닉네임", required = true)
+                @RequestParam String nickName,
+                @ApiParam(value = "프로필 이미지")
+                @RequestParam  MultipartFile file,
+                @ApiParam(value = "회원이 좋아하는 카테고리 ID", required = true)
+                @RequestParam List<Long> categoryId,
+                @ApiParam(value = "한줄 메세지", required = true)
+                @RequestParam String message,
+                @ApiParam(value = "디폴트 이미지 선택")
+                @RequestParam(required = false) Integer Default) {
 //                 String email,  String password, String name, String nickName, MultipartFile file, List<Long> categoryId) {
 //                @ModelAttribute SignUpRequestDto signUpRequestDto) {
         SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email,password,name,nickName,file,categoryId);
