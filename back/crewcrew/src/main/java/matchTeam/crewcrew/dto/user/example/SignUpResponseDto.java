@@ -19,5 +19,7 @@ public class SignUpResponseDto {
     private String name;
     @ApiModelProperty(example = "momo")
     private String nickName;
+    @ApiModelProperty(example = "s3://2kdwldw.com/abc@naver.com_local/profile")
+    private String file;
 
 }

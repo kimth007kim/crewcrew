@@ -175,7 +175,7 @@ public class AuthController {
         List<Long> result =likedCategoryService.addLikedCategory(user,input);
         System.out.println("유저가 등록한 후의 카테고리"+result);
 
-        SignUpResponseDto signUpResponseDto = new SignUpResponseDto(signupId,signUpRequestDto.getEmail(), signUpRequestDto.getName(), signUpRequestDto.getNickName());
+        SignUpResponseDto signUpResponseDto = new SignUpResponseDto(signupId,signUpRequestDto.getEmail(), signUpRequestDto.getName(), signUpRequestDto.getNickName(),filename);
 
         return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signUpResponseDto);
     }
