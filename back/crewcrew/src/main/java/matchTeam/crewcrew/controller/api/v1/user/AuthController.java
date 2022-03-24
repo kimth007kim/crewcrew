@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.List;
 
@@ -379,7 +380,7 @@ public class AuthController {
     }
 
     @PostMapping("/user/findPassword")
-    public ResponseEntity<Object> findPassword(String email,String name) {
+    public ResponseEntity<Object> findPassword(String email,String name) throws MessagingException, IOException{
         User user = userService.findByEmailAndProvider(email,"local").orElseThrow(LoginFailedByEmailNotExistException::new);
         String code =emailService.findPassword(email,name);
         // 나중에 이름이나 닉네임으로 추가 인증

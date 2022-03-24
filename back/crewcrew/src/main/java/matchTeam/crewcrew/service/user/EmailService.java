@@ -5,12 +5,17 @@ import matchTeam.crewcrew.config.RedisUtil;
 import matchTeam.crewcrew.response.exception.auth.CEmailCodeNotMatchException;
 import matchTeam.crewcrew.response.exception.auth.CNotVerifiedEmailException;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
 import java.util.Random;
 
 @AllArgsConstructor
@@ -18,10 +23,43 @@ import java.util.Random;
 public class EmailService {
     private final RedisUtil redisUtil;
     private final EmailSenderService emailSenderService;
+    private JavaMailSender javaMailSender;
+    private TemplateEngine templateEngine;
 
+    public String findPassword(String email,String name) throws MessagingException, IOException {
+        Random r = new Random();
+        int dice = r.nextInt(157211)+48721;
+        String code= Integer.toString(dice);
 
+        Context context = new Context();   //thymeleaf Context에 변수세팅
+        context.setVariable("nickname", name);
+        context.setVariable("code", code);
 
-    public String findPassword(String email,String name){
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setSubject("스프링 부트 메일 전송");
+        //수신자 설정
+        helper.setTo(email);
+
+        //메일 내용 설정 : 템플릿 프로세스
+        String html = templateEngine.process("mailform/passwordcheck1", context);  //html에 변수세팅
+        helper.setText(html, true);
+
+        //메일 보내기
+        javaMailSender.send(message);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("passwordFinder_");
+        sb.append(email);
+        sb.append("_");
+        sb.append(dice);
+        String verifier= sb.toString();
+        redisUtil.setDataExpire(verifier,code,60*3L);
+        return code;
+    }
+
+    /*public String findPassword(String email,String name){
         Random r = new Random();
         int dice = r.nextInt(157211)+48721;
         String setfrom = "kimth00700kim@google.com";
@@ -52,7 +90,27 @@ public class EmailService {
         String code= Integer.toString(dice);
         redisUtil.setDataExpire(verifier,code,60*3L);
         return code;
-    }
+    }*/
+
+    /*public String findPassword(String email,String name){
+        Context context = new Context();   //thymeleaf Context에 변수세팅
+        context.setVariable("link", "/check-email-token?token=" + account.getEmailCheckToken() +
+                "&email=" + account.getEmail());
+        context.setVariable("nickname", account.getNickname());
+        context.setVariable("linkName", "이메일 인증하기");
+        context.setVariable("message", "서비스를 사용하려면 링크를 클릭하세요.");
+        context.setVariable("host", appProperties.getHost());
+
+        String message = templateEngine.process("email/simple-link", context);  //html에 변수세팅
+
+        EmailMessage emailMessage = EmailMessage.builder()
+                .to(account.getEmail())
+                .subject("회원가입 인증")
+                .content(message)
+                .build();
+
+        emailService.sendEmail(emailMessage);
+    }*/
 
     public void sendNewPassword(String email,String password,String name){
         SimpleMailMessage mailMessage  = new SimpleMailMessage();
