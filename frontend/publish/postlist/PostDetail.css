@@ -673,17 +673,18 @@ textarea.TxtAreaInput {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   border-radius: 10px;
-  border: 1px solid #e2e2e2;
   padding: 20px 12px;
   resize: none;
   outline: none;
   -webkit-transition: .3s;
   transition: .3s;
   font-weight: 500;
+  font-size: 16px;
+  border: 1px solid #e2e2e2;
 }
 
-textarea.TxtAreaInput:hover {
-  border-color: #00b7ff;
+textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
+  border: 1px solid #00b7ff;
 }
 
 .CardPost {

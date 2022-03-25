@@ -109,6 +109,78 @@ em {
   background: url("../../src/assets/images/ButtonArrow.png") 50% 50% no-repeat;
 }
 
+.ButtonFull3 {
+  width: 100%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transition: .3s;
+  transition: .3s;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 10px;
+  line-height: 26px;
+  background-color: #00b7ff;
+  height: 50px;
+  color: #fff;
+}
+
+.ButtonFull3:hover {
+  background-color: #005ec5;
+}
+
+.ButtonFull3.Disable {
+  background-color: #e2e2e2;
+  cursor: default;
+}
+
+.ButtonFull3.Disable:hover {
+  background-color: #e2e2e2;
+}
+
+.ButtonFullGhost {
+  width: 100%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transition: .3s;
+  transition: .3s;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 20px;
+  font-weight: 500;
+  border-radius: 10px;
+  line-height: 26px;
+  background-color: #fff;
+  height: 50px;
+  color: #fff;
+  border: 1px solid #e2e2e2;
+  color: #868686;
+}
+
+.ButtonFullGhost:hover {
+  background-color: #fff;
+}
+
+.ButtonFullGhost.Disable {
+  background-color: #e2e2e2;
+  cursor: default;
+}
+
+.ButtonFullGhost.Disable:hover {
+  background-color: #e2e2e2;
+}
+
+.ButtonFullGhost:hover {
+  border: 1px solid #a8a8a8;
+}
+
 .ButtonFull2Ghost {
   width: 100%;
   border: none;
@@ -593,6 +665,26 @@ ul.InputList > li {
 .InputHide:checked ~ .LabelCheck span {
   background: url("../../src/assets/images/LogInCheck_on.png");
   background-size: 100%;
+}
+
+textarea.TxtAreaInput {
+  width: 100%;
+  height: 100%;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 10px;
+  padding: 20px 12px;
+  resize: none;
+  outline: none;
+  -webkit-transition: .3s;
+  transition: .3s;
+  font-weight: 500;
+  font-size: 16px;
+  border: 1px solid #e2e2e2;
+}
+
+textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
+  border: 1px solid #00b7ff;
 }
 
 .CardPost {

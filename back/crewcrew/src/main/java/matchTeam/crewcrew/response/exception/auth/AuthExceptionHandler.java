@@ -88,6 +88,16 @@ public class AuthExceptionHandler {
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.USERNAME_ALREADY_EXIST);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    /**
+     * 1008
+     * 존재하지않는 uid를 사용할때
+     * signup
+     */
+    @ExceptionHandler(UidNotExistException.class)
+    protected ResponseEntity<ErrorResponseHandler> uidUserNotExist(UidNotExistException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.UID_NOT_EXIST);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 
     // 1100~1199 이메일 로그인에 대한 예외
