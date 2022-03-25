@@ -137,8 +137,8 @@ public class AuthController {
                 @RequestParam  MultipartFile file,
                 @ApiParam(value = "회원이 좋아하는 카테고리 ID", required = true)
                 @RequestParam List<Long> categoryId,
-                @ApiParam(value = "한줄 메세지", required = true)
-                @RequestParam String message,
+                @ApiParam(value = "한줄 메세지")
+                @RequestParam(required =false) String message,
                 @ApiParam(value = "디폴트 이미지 선택")
                 @RequestParam(required = false) Integer Default) {
 //                 String email,  String password, String name, String nickName, MultipartFile file, List<Long> categoryId) {
@@ -146,7 +146,7 @@ public class AuthController {
         SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email,password,name,nickName,file,categoryId);
         System.out.println("email: "+email+ "password: "+ password+ "name: "+name+"nickname"+"file: "+file+"categoryId"+ categoryId);
 
-        userService.validateDuplicateByNickname(nickName);
+//        userService.validateDuplicateByNickname(nickName);
         System.out.println(signUpRequestDto.getEmail());
         emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
         //1004 이메일인증이 안된 이메일

@@ -267,7 +267,7 @@ function SignupSection3({ IsClick, HandleClick }) {
           }
 
           console.log(context);
-          const { data } = await axios.post('/auth/signup_image', formData, {
+          const { data } = await axios.post('/auth/signup', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
