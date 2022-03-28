@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -44,11 +44,11 @@
                             </tr>
                             <tr style="height: 15px;"></tr>
                             <tr>
-                                <td style="text-align: center; font-size: 15px; font-weight: 700; color: #000;">유재영</td>
+                                <td style="text-align: center; font-size: 15px; font-weight: 700; color: #000"; th:text="${nickname}" >유재영</td>
                             </tr>
                             <tr style="height: 26px;"></tr>
                             <tr>
-                                <td style="text-align: center; font-size: 15px; font-weight: 400; color: #A8A8A8;"><span style="color:#00B7FF;">"디자인 파트로 지원하고 싶습니다!</span><br>한줄메세지 없음</td>
+                                <td style="text-align: center; font-size: 15px; font-weight: 400; color: #A8A8A8;"><span style="color:#00B7FF;" th:text="${introduce}">"디자인 파트로 지원하고 싶습니다!</span><br>한줄메세지 없음</td>
                             </tr>
                             <tr style="height: 26px;"></tr>
                         </tbody>
@@ -59,7 +59,7 @@
                             </tr>
                             <tr style="height: 10px;"></tr>
                             <tr>
-                                <td style="font-size:15px; font-weight:600; color: #000; text-align: center;">취업, 고시/공무원, 어학, 프로젝트, 기타</td>
+                                <td style="font-size:15px; font-weight:600; color: #000; text-align: center;" th:text="${study}">취업, 고시/공무원, 어학, 프로젝트, 기타</td>
                             </tr>
                             <tr style="height: 20px;"></tr>
                             <tr>
@@ -67,7 +67,7 @@
                             </tr>
                             <tr style="height: 10px;"></tr>
                             <tr>
-                                <td style="font-size:15px; font-weight:600; color: #000; text-align: center;">운동, 게임, 덕질, 트렌드, 기타</td>
+                                <td style="font-size:15px; font-weight:600; color: #000; text-align: center;" th:text="${hobby}">운동, 게임, 덕질, 트렌드, 기타</td>
                             </tr>
                             <tr style="height: 26px;"></tr>
                         </tbody>
@@ -76,7 +76,7 @@
             </tr>
             <tr style="height: 40px;"></tr>
             <tr>
-                <td><div style="width: 126px; height: 50px; background-color: #00b7ff; border-radius: 10px; margin: 0 auto;"><a href="" style="text-decoration: none; color: #fff; font-size: 15px; font-weight: 700; width: 100%; text-align: center; display: block; line-height: 16px; padding: 17px 0;">확인하러 가기</a></div></td>
+                <td><div style="width: 126px; height: 50px; background-color: #00b7ff; border-radius: 10px; margin: 0 auto;"><a href="" style="text-decoration: none; color: #fff; font-size: 15px; font-weight: 700; width: 100%; text-align: center; display: block; line-height: 16px; padding: 17px 0;" th:href="${url}">확인하러 가기</a></div></td>
             </tr>
             <tr style="height: 96px;"></tr>
             <tr style="height: 30px; background-color: #2D3338;">

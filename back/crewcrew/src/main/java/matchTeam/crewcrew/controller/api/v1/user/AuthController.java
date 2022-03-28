@@ -61,7 +61,7 @@ public class AuthController {
             )
     })
     @PostMapping("/email/send")
-    public ResponseEntity<Object> SendEmail(@RequestBody UserEmailCodeDto userEmailCodeDto) {
+    public ResponseEntity<Object> SendEmail(@RequestBody UserEmailCodeDto userEmailCodeDto) throws MessagingException {
         //email 주소 형식 에  맞는지 확인하는 메서드
         String email = userEmailCodeDto.getEmail();
         if (emailService.isValidEmailAddress(email)==false){
@@ -419,12 +419,12 @@ public class AuthController {
     }
 
     @PostMapping("/user/findPassword/verify")
-    public ResponseEntity<Object> passwordSet(String email,String code) {
-        userService.findByEmailAndProvider(email,"local").orElseThrow(LoginFailedByEmailNotExistException::new);
+    public ResponseEntity<Object> passwordSet(String email, String code) throws MessagingException, IOException {
+        //userService.findByEmailAndProvider(email,"local").orElseThrow(LoginFailedByEmailNotExistException::new);
         String password=emailService.codeForPasswordFinder(email,code);
         User user = userService.findByEmailAndProvider(email,"local").get();
         userService.changePassword(user,password);
-        emailService.sendNewPassword(email,password,user.getName());
+        emailService.sendNewPassword(email,password,user.getName()) ;
         // 나중에 이름이나 닉네임으로 추가 인증
 //        if(user.getName().equals(name)){
 //        }
