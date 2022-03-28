@@ -19,6 +19,10 @@ repositories {
 }
 
 dependencies {
+	// thymeleaf
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
 	// 카카오 로그인 위한 뷰 템플릿
 	implementation 'org.springframework.boot:spring-boot-starter-freemarker'
 
