@@ -431,7 +431,7 @@ public class AuthController {
         return ResponseHandler.generateResponse("성공", HttpStatus.OK,password);
     }
 
-    @PostMapping("/user/changePassword")
+    @PostMapping("/user/change-password")
     public ResponseEntity<Object> changePwd(String email,String previous ,String change_password) {
         userService.findByEmailAndProvider(email,"local").orElseThrow(LoginFailedByEmailNotExistException::new);
         User user = userService.findByEmailAndProvider(email,"local").get();
