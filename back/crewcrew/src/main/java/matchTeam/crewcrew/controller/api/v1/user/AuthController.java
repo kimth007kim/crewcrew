@@ -42,7 +42,6 @@ public class AuthController {
     private final S3Uploader s3Uploader;
 
 
-
     @ApiOperation(value ="이메일 인증코드 발송" ,notes="1. 유효한 이메일 인지 확인합니다.\n " +
             "2. 이미 같은 이메일로 가입되어있는지 확인합니다\n" +
             "3. 1,2번 조건을 만족했다면 해당 메일로 인증코드를 보냅니다.")

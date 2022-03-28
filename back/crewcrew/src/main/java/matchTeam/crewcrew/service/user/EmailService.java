@@ -31,18 +31,17 @@ public class EmailService {
         int dice = r.nextInt(157211)+48721;
         String code= Integer.toString(dice);
 
-        Context context = new Context();   //thymeleaf Context에 변수세팅
+        //thymeleaf Context에 변수세팅
+        Context context = new Context();
         context.setVariable("nickname", name);
         context.setVariable("code", code);
 
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        helper.setSubject("스프링 부트 메일 전송");
-        //수신자 설정
-        helper.setTo(email);
+        helper.setSubject("이메일 인증 코드 발송"); // 제목
+        helper.setTo(email); // 받는 이
 
-        //메일 내용 설정 : 템플릿 프로세스
         String html = templateEngine.process("mailform/passwordcheck1", context);  //html에 변수세팅
         helper.setText(html, true);
 
@@ -55,62 +54,12 @@ public class EmailService {
         sb.append("_");
         sb.append(dice);
         String verifier= sb.toString();
+
+        // 3시간 후 만료
         redisUtil.setDataExpire(verifier,code,60*3L);
+
         return code;
     }
-
-    /*public String findPassword(String email,String name){
-        Random r = new Random();
-        int dice = r.nextInt(157211)+48721;
-        String setfrom = "kimth00700kim@google.com";
-        String content=System.getProperty("line.separator")+
-                System.getProperty("line.separator")+
-                "안녕하세요 "+name+"님 저희 홈페이지를 찾아주셔서 감사합니다"
-                +System.getProperty("line.separator")+
-                System.getProperty("line.separator")+
-                "비밀번호 찾기 인증번호는 " +dice+ " 입니다. "
-                +System.getProperty("line.separator")+
-                System.getProperty("line.separator")+
-                "받으신 인증번호를 홈페이지에 입력해 주시면 다음으로 넘어갑니다.";
-
-
-        SimpleMailMessage mailMessage  = new SimpleMailMessage();
-        mailMessage.setFrom(setfrom); // 보내는사람 생략하면 정상작동을 안함
-        mailMessage.setTo(email); // 받는사람 이메일
-        mailMessage.setSubject("비밀번호 찾기 기능입니다!"); // 메일제목은 생략이 가능하다
-        mailMessage.setText(content); // 메일 내용
-        emailSenderService.sendEmail(mailMessage);
-        StringBuilder sb = new StringBuilder();
-        sb.append("passwordFinder_");
-        sb.append(email);
-        sb.append("_");
-        sb.append(dice);
-        String verifier= sb.toString();
-        emailSenderService.sendEmail(mailMessage);
-        String code= Integer.toString(dice);
-        redisUtil.setDataExpire(verifier,code,60*3L);
-        return code;
-    }*/
-
-    /*public String findPassword(String email,String name){
-        Context context = new Context();   //thymeleaf Context에 변수세팅
-        context.setVariable("link", "/check-email-token?token=" + account.getEmailCheckToken() +
-                "&email=" + account.getEmail());
-        context.setVariable("nickname", account.getNickname());
-        context.setVariable("linkName", "이메일 인증하기");
-        context.setVariable("message", "서비스를 사용하려면 링크를 클릭하세요.");
-        context.setVariable("host", appProperties.getHost());
-
-        String message = templateEngine.process("email/simple-link", context);  //html에 변수세팅
-
-        EmailMessage emailMessage = EmailMessage.builder()
-                .to(account.getEmail())
-                .subject("회원가입 인증")
-                .content(message)
-                .build();
-
-        emailService.sendEmail(emailMessage);
-    }*/
 
     public void sendNewPassword(String email,String password,String name){
         SimpleMailMessage mailMessage  = new SimpleMailMessage();
