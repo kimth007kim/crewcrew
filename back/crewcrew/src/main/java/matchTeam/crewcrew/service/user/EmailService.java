@@ -26,7 +26,7 @@ public class EmailService {
     private JavaMailSender javaMailSender;
     private TemplateEngine templateEngine;
 
-    public String findPassword(String email,String name) throws MessagingException, IOException {
+    public String findPassword(String email, String name) throws MessagingException, IOException {
         Random r = new Random();
         int dice = r.nextInt(157211)+48721;
         String code= Integer.toString(dice);
@@ -36,17 +36,7 @@ public class EmailService {
         context.setVariable("nickname", name);
         context.setVariable("code", code);
 
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-        helper.setSubject("이메일 인증 코드 발송"); // 제목
-        helper.setTo(email); // 받는 이
-
-        String html = templateEngine.process("mailform/passwordcheck1", context);  //html에 변수세팅
-        helper.setText(html, true);
-
-        //메일 보내기
-        javaMailSender.send(message);
+        sendJavaMail("[크루크루] 이메일 인증 코드 발송", email, "mailform/passwordcheck1", context);
 
         StringBuilder sb = new StringBuilder();
         sb.append("passwordFinder_");
@@ -61,24 +51,14 @@ public class EmailService {
         return code;
     }
 
-    public void sendNewPassword(String email,String password,String name){
-        SimpleMailMessage mailMessage  = new SimpleMailMessage();
-        mailMessage.setTo(email);
-        String setfrom = "kimth00700kim@google.com";
-        mailMessage.setSubject("[크루크루] 회원님의 새로운 비밀번호 입니다.");
-        String content=System.getProperty("line.separator")+
-                System.getProperty("line.separator")+
-                "안녕하세요 "+name+"님 저희 홈페이지를 찾아주셔서 감사합니다"
-                +System.getProperty("line.separator")+
-                System.getProperty("line.separator")+
-                "새로 발급되는 비밀번호는 " +password+ " 입니다. "
-                +System.getProperty("line.separator")+
-                System.getProperty("line.separator")+
-                "추후에 홈페이지에서 비밀번호 변경하고 사용하는것을 권장드립니다.";
-        mailMessage.setFrom(setfrom); // 보내는사람 생략하면 정상작동을 안함
-        mailMessage.setTo(email); // 받는사람 이메일
-        mailMessage.setText(content); // 메일 내용
-        emailSenderService.sendEmail(mailMessage);
+    public void sendNewPassword(String email,String password,String name) throws MessagingException, IOException {
+
+        //thymeleaf Context에 변수세팅
+        Context context = new Context();
+        context.setVariable("nickname", name);
+        context.setVariable("password", password);
+
+        sendJavaMail("[크루크루] 회원님의 새로운 비밀번호", email, "mailform/passwordcheck2", context);
     }
 
     public String codeForPasswordFinder(String email,String code){
@@ -114,22 +94,48 @@ public class EmailService {
         return new_password.toString();
     }
 
-
-
-    public String sendVerifyCode(String email){
+    public String sendVerifyCode(String email) throws MessagingException {
         String code=createCode();
-        SimpleMailMessage mailMessage  = new SimpleMailMessage();
-        mailMessage.setTo(email);
-        mailMessage.setSubject("크루크루 회원가입 이메일 인증코드입니다.");
-        mailMessage.setText("[인증 코드]: "+code);
+
+        Context context = new Context();
+        context.setVariable("code", code);
+
+        sendJavaMail("[크루크루] 회원가입 이메일 인증코드", email, "mailform/SignSerti", context);
+
         StringBuilder sb = new StringBuilder();
         sb.append("code_");
         sb.append(email);
         String verifier= sb.toString();
-        emailSenderService.sendEmail(mailMessage);
+
         redisUtil.setDataExpire(verifier,code,60*3L);
         return code;
     }
+
+    public void sendWhenApply(String email, String applicantName, String introduce, String study, String hobby, String profileURL) throws MessagingException, IOException {
+        // profiledto가 있다면 더 간결하게도 표현이 가능할듯?
+
+        //thymeleaf Context에 변수세팅
+        Context context = new Context();
+        context.setVariable("nickname", applicantName);
+        context.setVariable("introduce", introduce);
+        context.setVariable("study", study);
+        context.setVariable("hobby", hobby);
+        context.setVariable("url", profileURL);
+        //th:href="@{/profile(id=${applicantID})}" 와 같은 방식으로 변수 세팅해줄수도 있음, 일단 url 매핑
+
+        sendJavaMail("[크루크루] 새로운 지원자가 있습니다", email, "mailform/apply", context);
+    }
+
+    public void sendWhenAccepted(String email, String name, String chatURL) throws MessagingException, IOException {
+
+        //thymeleaf Context에 변수세팅
+        Context context = new Context();
+        context.setVariable("nickname", name);
+        context.setVariable("chatURL", chatURL);
+
+        sendJavaMail("[크루크루] 회원님의 요청이 수락되었습니다", email, "mailform/accepted", context);
+    }
+
 
     public void getUserIdByCode(String code,String email){
         StringBuilder sb = new StringBuilder();
@@ -166,6 +172,7 @@ public class EmailService {
                 .toString();
         return code;
     }
+
     public static boolean isValidEmailAddress(String email){
         boolean result = true;
         try{
@@ -175,5 +182,19 @@ public class EmailService {
             result = false;
         }
         return result;
+    }
+
+    public void sendJavaMail(String title, String receiverEmail, String template, Context context) throws MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setSubject(title); // 제목
+        helper.setTo(receiverEmail); // 받는 이
+
+        String html = templateEngine.process(template, context);  //html에 변수세팅
+        helper.setText(html, true);
+
+        //메일 보내기
+        javaMailSender.send(message);
     }
 }
