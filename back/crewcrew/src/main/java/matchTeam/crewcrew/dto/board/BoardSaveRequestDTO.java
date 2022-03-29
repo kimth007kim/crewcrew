@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import matchTeam.crewcrew.entity.board.Board;
+import matchTeam.crewcrew.entity.board.Category;
+import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.repository.board.CategoryRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
 import matchTeam.crewcrew.response.exception.category.NotExistCategoryException;
@@ -56,12 +58,12 @@ public class BoardSaveRequestDTO {
     @ApiModelProperty(value = "오픈채팅 링크", notes = "오픈채팅 링크를 입력해주세요", required = true)
     @NotNull(message = "오픈채팅 링크를 입력해주세요.")
     @Column(name = "kakao_chat", nullable = false)
-    private String kakao_chat;
+    private String kakaoChat;
 
     @Builder
     public BoardSaveRequestDTO(String title, String boardContent,
                                Integer totalCrew, Integer approachCode,
-                               Long uid, Long categoryId, LocalDate expiredDate, String kakao_chat) {
+                               Long uid, Long categoryId, LocalDate expiredDate, String kakaoChat) {
         this.title = title;
         this.boardContent = boardContent;
         this.totalCrew = totalCrew;
@@ -69,20 +71,20 @@ public class BoardSaveRequestDTO {
         this.uid = uid;
         this.categoryId = categoryId;
         this.expiredDate = expiredDate;
-        this.kakao_chat = kakao_chat;
+        this.kakaoChat = kakaoChat;
     }
 
-    public Board toEntity(BoardSaveRequestDTO req, UserRepository userRepository, CategoryRepository categoryRepository){
+    public Board toEntity(BoardSaveRequestDTO req, User user, Category category){
 
         return Board.builder()
                 .title(req.title)
                 .boardContent(req.boardContent)
                 .totalCrew(req.totalCrew)
                 .approach(req.approachCode)
-                .user(userRepository.findById(req.getUid()).orElseThrow(UserNotFoundException::new))
-                .category(categoryRepository.findById(req.getCategoryId()).orElseThrow(NotExistCategoryException::new))
+                .user(user)
+                .category(category)
                 .expiredDate(req.expiredDate)
-                .kakao_chat(req.getKakao_chat())
+                .kakaoChat(req.getKakaoChat())
                 .build();
     }
 }
