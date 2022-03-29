@@ -6,8 +6,14 @@ export const isEmail = (email) => {
   return emailRegex.test(email);
 };
 
+export const isEmailBack = (email) => {
+  const emailRegex = /^(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+
+  return emailRegex.test(email);
+};
+
 export const isCheckPassword = (password) => {
-  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
   return passwordRegex.test(password);
 };
 

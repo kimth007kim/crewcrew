@@ -5,6 +5,7 @@ import styled, { css, keyframes } from 'styled-components';
 import { toast } from 'react-toastify';
 import { useRecoilState } from 'recoil';
 
+import axios from 'axios';
 import Textfield from '../../../components/common/TextfieldEmail';
 import Button from '../../../components/common/Button';
 import CameraImg from '../../../assets/images/Camera.png';
@@ -76,11 +77,37 @@ function SignupSection2({ IsClick, HandleClick }) {
     setDoubleCheck(false);
   }, []);
 
-  const HandleCheckNickname = useCallback((e) => {
-    e.preventDefault();
-    setDoubleCheck(true);
-    setValidMessage('사용 가능한 닉네임입니다.');
-  }, []);
+  const HandleCheckNickname = useCallback(
+    (e) => {
+      e.preventDefault();
+      async function axiosPost() {
+        try {
+          const context = new URLSearchParams({
+            nickName: nickname,
+          });
+
+          const { data } = await axios.get('/auth/user/checkNickName', context);
+          console.log(data);
+          switch (data.status) {
+            case 200:
+              setDoubleCheck(true);
+              setValidMessage('사용 가능한 닉네임입니다.');
+              break;
+            case 1007:
+              setValidMessage(data.message);
+              setNicknameValid(true);
+              break;
+            default:
+              break;
+          }
+        } catch (error) {
+          console.dir(error);
+        }
+      }
+      axiosPost();
+    },
+    [nickname],
+  );
 
   const HandleImgUpload = useCallback(
     (e) => {

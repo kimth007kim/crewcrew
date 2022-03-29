@@ -21,12 +21,13 @@ import {
   codeState,
   passwordState,
 } from '../../../atom/register';
+import { emojiSlice, isCheckPassword, isEmailBack, spaceSlice } from '../../../utils';
 
 const emailList = ['naver.com', 'gmail.com', 'daum.net', 'hanmail.net'];
 
 function SignupSection({ IsClick, HandleClick }) {
   const [name, setName] = useRecoilState(nameState);
-  const [nameValid, setNameValid] = useState(true);
+  const [nameValid, setNameValid] = useState(false);
   const [nameValidMsg, setNameValidMsg] = useState('이름을 입력해주세요');
 
   const [emailId, setEmailId] = useRecoilState(emailIdState);
@@ -57,11 +58,15 @@ function SignupSection({ IsClick, HandleClick }) {
   const [StepActive, setStepActive] = useState(false);
 
   const EmailRef = useRef(null);
+  const codeBtnRef = useRef(null);
   const MailListRef = useRef(null);
 
+  // 이름
+
   const HandleNameChange = useCallback((e) => {
-    setName(e.target.value);
-    if (e.target.value.length >= 2) {
+    const value = emojiSlice(e.target.value);
+    setName(value);
+    if (value.length >= 2) {
       setNameValid(false);
     } else {
       setNameValid(true);
@@ -73,13 +78,17 @@ function SignupSection({ IsClick, HandleClick }) {
     setNameValid(false);
   }, []);
 
-  const HandleEmailIdChange = useCallback((e) => {
-    setEmailId(e.target.value);
+  // 이메일
 
-    if (e.target.value.length >= 4 || e.target.value.length === 0) {
+  const HandleEmailIdChange = useCallback((e) => {
+    let value = emojiSlice(e.target.value);
+    value = spaceSlice(value);
+    setEmailId(value);
+
+    if (value.length >= 4 || value.length === 0) {
       return setEmailIdValid(false);
     }
-    if (e.target.value) {
+    if (value) {
       return setEmailIdValid(true);
     }
   }, []);
@@ -89,10 +98,21 @@ function SignupSection({ IsClick, HandleClick }) {
     setEmailIdValid(false);
   }, []);
 
-  const HandleEmailChange = useCallback((e) => {
-    setEmail(e.target.value);
+  const HandleKeyPress = useCallback(
+    (e) => {
+      if (e.key === 'Enter') {
+        EmailRef.current.blur();
+      }
+    },
+    [emailId, emailIdValid, email, emailValid],
+  );
 
-    if (e.target.value.length >= 5) {
+  const HandleEmailChange = useCallback((e) => {
+    let value = emojiSlice(e.target.value);
+    value = spaceSlice(value);
+    setEmail(value);
+
+    if (isEmailBack(value)) {
       setEmailValid(false);
     } else {
       setEmailValid(true);
@@ -104,9 +124,33 @@ function SignupSection({ IsClick, HandleClick }) {
     setEmailValid(false);
   }, []);
 
+  const HandleInputFocus = useCallback(() => {
+    setEmailFocus(true);
+    const MailListLength = emailList.length;
+    MailListRef.current.style.height = `${58 + 29 * MailListLength}px`;
+  }, []);
+
+  const HandleInputBlur = useCallback(() => {
+    setEmailFocus(false);
+    MailListRef.current.style.height = '50px';
+  }, []);
+
+  const ClickMailList = useCallback((e, m) => {
+    e.preventDefault();
+    setEmail(m);
+    setEmailValid(false);
+    EmailRef.current.blur();
+  }, []);
+
+  // 코드
+
   const HandleCodeChange = (e) => {
-    setCode(e.target.value);
-    if (e.target.value.length >= 5) {
+    let value = emojiSlice(e.target.value);
+    value = spaceSlice(value);
+    value = value.slice(0, 8);
+
+    setCode(value);
+    if (value.length >= 5) {
       setCodeValid(false);
     } else {
       setCodeValid(true);
@@ -116,7 +160,7 @@ function SignupSection({ IsClick, HandleClick }) {
         const completeEmail = `${emailId}@${email}`;
         const context = {
           email: completeEmail,
-          code: e.target.value,
+          code: value,
         };
 
         const { data } = await axios.post('/auth/email/verify', context);
@@ -124,6 +168,7 @@ function SignupSection({ IsClick, HandleClick }) {
         switch (data.status) {
           case 200:
             setCodeComplete(true);
+            setCodeValidMsg(data.message);
             break;
           case 1003:
             setCodeValidMsg(data.message);
@@ -144,9 +189,21 @@ function SignupSection({ IsClick, HandleClick }) {
     setCodeValid(false);
   }, []);
 
+  const CodeButtonTextRender = useCallback(() => {
+    if (CodeComplete) {
+      return '인증완료';
+    }
+    if (SendCode) {
+      return '코드 재전송';
+    }
+    return '코드 전송';
+  }, [CodeComplete, SendCode]);
+
+  // 패스워드
+
   const HandlePasswordChange = (e) => {
     setPassword(e.target.value);
-    if (e.target.value.length >= 8) {
+    if (isCheckPassword(e.target.value)) {
       setPasswordValid(false);
     } else {
       setPasswordValid(true);
@@ -158,23 +215,7 @@ function SignupSection({ IsClick, HandleClick }) {
     setPasswordValid(false);
   }, []);
 
-  const HandleInputFocus = useCallback(() => {
-    setEmailFocus(true);
-    const MailListLength = emailList.length;
-    MailListRef.current.style.height = `${58 + 29 * MailListLength}px`;
-  }, []);
-
-  const HandleInputBlur = useCallback(() => {
-    setEmailFocus(false);
-    MailListRef.current.style.height = '50px';
-  }, []);
-
-  const ClickMailList = useCallback((e, m) => {
-    e.preventDefault();
-    setEmail(m);
-    setEmailValid(false);
-    EmailRef.current.blur();
-  }, []);
+  // 스텝바 체크
 
   const CheckProgressF = useCallback(
     (index) => {
@@ -208,15 +249,7 @@ function SignupSection({ IsClick, HandleClick }) {
     [ProgressF],
   );
 
-  const CodeButtonTextRender = useCallback(() => {
-    if (CodeComplete) {
-      return '인증완료';
-    }
-    if (SendCode) {
-      return '코드 재전송';
-    }
-    return '코드 전송';
-  }, [CodeComplete, SendCode]);
+  // 코드 전송
 
   const HandleSend = useCallback(() => {
     async function axiosPost() {
@@ -226,16 +259,12 @@ function SignupSection({ IsClick, HandleClick }) {
         const context = {
           email: completeEmail,
         };
-
-        console.log(context);
-
         setSendCode(true);
         const { data } = await axios.post('/auth/email/send', context);
 
         switch (data.status) {
           case 200:
             setCodeValidMsg('코드를 이메일로 전송했습니다! 확인해주세요.');
-            console.log(data);
             break;
           case 1001:
           case 1002:
@@ -347,7 +376,7 @@ function SignupSection({ IsClick, HandleClick }) {
             value={name}
             label="이름"
             validMessage={nameValidMsg}
-            valid={false}
+            valid={nameValid}
             onDelete={HandleNameDelete}
           />
         </InputLi>
@@ -367,7 +396,7 @@ function SignupSection({ IsClick, HandleClick }) {
               />
             </div>
             <MailList>
-              <MailUList active={EmailFocus || !!email} ref={MailListRef}>
+              <MailUList active={EmailFocus || !!email} ref={MailListRef} Valid={emailValid}>
                 <div>
                   <InputMail
                     type="text"
@@ -383,8 +412,13 @@ function SignupSection({ IsClick, HandleClick }) {
                     active={EmailFocus || !!email}
                     Valid={emailValid}
                     disabled={CodeComplete}
+                    onKeyPress={HandleKeyPress}
                   />
-                  <LabelMail htmlFor="SignEmailDomain" active={EmailFocus || !!email}>
+                  <LabelMail
+                    htmlFor="SignEmailDomain"
+                    active={EmailFocus || !!email}
+                    Valid={emailValid}
+                  >
                     @
                   </LabelMail>
                   <InputDel
@@ -406,7 +440,10 @@ function SignupSection({ IsClick, HandleClick }) {
               </MailUList>
             </MailList>
           </ListFlex>
-          <InputText Focused={EmailFocus || IDFocus || emailValid} Valid={emailValid}>
+          <InputText
+            Focused={EmailFocus || IDFocus || emailValid}
+            Valid={emailValid || emailIdValid}
+          >
             {emailValidMsg}
           </InputText>
         </InputLi>
@@ -423,7 +460,7 @@ function SignupSection({ IsClick, HandleClick }) {
                 value={code}
                 label="코드입력"
                 validMessage=""
-                valid={false}
+                valid={codeValid}
                 onDelete={HandleCodeDelete}
                 setFocus={setCodeFocus}
                 disabled={CodeComplete}
@@ -452,7 +489,7 @@ function SignupSection({ IsClick, HandleClick }) {
             value={password}
             label="비밀번호"
             validMessage={passwordValidMsg}
-            valid={false}
+            valid={passwordValid}
             onDelete={HandlePasswordDelete}
           />
         </InputLi>
@@ -551,10 +588,15 @@ const MailUList = styled.ul`
   background-color: #fff;
 
   &:hover {
-    border: 1px solid #000; // black1
+    ${(props) =>
+      !props.Valid &&
+      css`
+        border: 1px solid #000;
+      `}
 
     ${(props) =>
       props.active &&
+      !props.Valid &&
       css`
         border: 1px solid #00b7ff;
       `}
@@ -565,6 +607,12 @@ const MailUList = styled.ul`
     css`
       border: 1px solid #00b7ff;
     `}
+
+  ${(props) =>
+    props.Valid &&
+    css`
+      border-color: #ff0045;
+    `};
 
   li {
     width: 100%;
@@ -620,6 +668,11 @@ const InputMail = styled.input`
     css`
       caret-color: #00b7ff;
     `}
+  ${(props) =>
+    props.Valid &&
+    css`
+      caret-color: #ff0045;
+    `};
 `;
 
 const LabelMail = styled.label`
@@ -637,6 +690,11 @@ const LabelMail = styled.label`
     css`
       color: #00b7ff;
     `}
+  ${(props) =>
+    props.Valid &&
+    css`
+      color: #ff0045;
+    `};
 `;
 
 const InputChecked = styled.div`
