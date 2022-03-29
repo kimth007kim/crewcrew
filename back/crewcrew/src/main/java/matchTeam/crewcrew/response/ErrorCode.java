@@ -24,6 +24,8 @@ public enum ErrorCode {
     EMAIL_CODE_NOT_VERIFIED(1004,"EMAIL_002","이메일 인증이 되지않은 이메일 주소입니다."),
     SIGN_UP_EMAIL_ALREADY_EXIST_FAILED(1005,"EMAIL_001","현재 입력한 이메일을 가진 유저가 이미 존재합니다. "),
     PASSWORD_NOT_MATCH(1006,"EMAIL_003"," 입력한 비밀번호가 원래 비밀번호가 일치하지않습니다. "),
+    USERNAME_ALREADY_EXIST(1007,"USER NAME ALREADY EXIST","이미 존재하는 닉네임 입니다. "),
+    UID_NOT_EXIST(1008,"UID NOT EXIST","존재하지 않는 id 값입니다. "),
 
     //1100~1199 이메일 로그인 대한 예외
 
@@ -40,7 +42,12 @@ public enum ErrorCode {
     // 1400~1499 네이버 로그인 회원가입에 대한 예외
     NAVER_COMMUNICATION_FAILED(1400,"NAVER_01","네이버와 http통신이 실패하였습니다."),
     NAVER_USER_ALREADY_EXIST(1401,"NAVER_USER ALREADY EXIST","이미 존재하는 네이버 유저입니다."),
+    
+    //1500~1599 S3에 관련된 예외
+    S3_UPLOAD_FAIL(1501,"S3 UPLOAD FAIL","S3에 업로드하는것을 실패하였습니다."),
+    S3_FILE_NOT_FOUND(1502,"S3 FILE NOT FOUND","S3에 업로드할 파일을 찾을 수 없습니다."),
 
+    
 
 
 

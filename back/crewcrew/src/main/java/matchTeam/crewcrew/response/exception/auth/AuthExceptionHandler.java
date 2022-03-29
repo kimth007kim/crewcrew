@@ -78,6 +78,27 @@ public class AuthExceptionHandler {
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.PASSWORD_NOT_MATCH);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    /**
+     * 1007
+     * 이미 존재하는 닉네임을 사용할때
+     * signup
+     */
+    @ExceptionHandler(NickNameAlreadyExistException.class)
+    protected ResponseEntity<ErrorResponseHandler> userNameAlreadyExistException(NickNameAlreadyExistException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.USERNAME_ALREADY_EXIST);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    /**
+     * 1008
+     * 존재하지않는 uid를 사용할때
+     * signup
+     */
+    @ExceptionHandler(UidNotExistException.class)
+    protected ResponseEntity<ErrorResponseHandler> uidUserNotExist(UidNotExistException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.UID_NOT_EXIST);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
     // 1100~1199 이메일 로그인에 대한 예외
 
@@ -148,6 +169,29 @@ public class AuthExceptionHandler {
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.NAVER_USER_ALREADY_EXIST);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    /**
+     * 1501
+     * S3 에 파일을 업로드 할수 없을경우에
+     * s3Uploader
+     */
+    @ExceptionHandler(S3UploadException.class)
+    protected ResponseEntity<ErrorResponseHandler> s3UploadFailException(S3UploadException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.S3_UPLOAD_FAIL);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    /**
+     * 1501
+     * S3에  올릴 파일이 없을떄
+     * s3Uploader
+     */
+    @ExceptionHandler(S3FileNotFoundException.class)
+    protected ResponseEntity<ErrorResponseHandler> s3FileNotFoundException(S3FileNotFoundException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.S3_FILE_NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
 
     // 1900~1999 토큰 관련 예외
     /**

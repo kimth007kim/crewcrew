@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByUid(Long id);
     Optional<User> findByUidAndProvider(Long uid,String provider);
     Optional<User> findByEmailAndProvider(String email, String provider);
-
+    Optional<User> findByNickname(String Nickname);
 //    @Query("select u.likedCategories from User u where  u.uid=:uid")
 //    List<LikedCategory> findByUserCategory(@Param("uid") Long uid);
 

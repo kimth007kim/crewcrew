@@ -9,16 +9,18 @@ import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.security.TokenRequestDto;
 import matchTeam.crewcrew.dto.user.*;
 import matchTeam.crewcrew.dto.user.example.EmailSendDto;
-import matchTeam.crewcrew.dto.user.example.SignUpResponseDto;
+import matchTeam.crewcrew.dto.user.example.UserResponseDto;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.response.exception.auth.*;
 import matchTeam.crewcrew.service.amazonS3.S3Uploader;
 import matchTeam.crewcrew.service.user.*;
 import org.springframework.http.*;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.List;
 
@@ -40,7 +42,6 @@ public class AuthController {
     private final S3Uploader s3Uploader;
 
 
-
     @ApiOperation(value ="이메일 인증코드 발송" ,notes="1. 유효한 이메일 인지 확인합니다.\n " +
             "2. 이미 같은 이메일로 가입되어있는지 확인합니다\n" +
             "3. 1,2번 조건을 만족했다면 해당 메일로 인증코드를 보냅니다.")
@@ -60,8 +61,9 @@ public class AuthController {
             )
     })
     @PostMapping("/email/send")
-    public ResponseEntity<Object> SendEmail(String email) {
+    public ResponseEntity<Object> SendEmail(@RequestBody UserEmailCodeDto userEmailCodeDto) throws MessagingException {
         //email 주소 형식 에  맞는지 확인하는 메서드
+        String email = userEmailCodeDto.getEmail();
         if (emailService.isValidEmailAddress(email)==false){
             throw new CNotValidEmailException();
 //            1001 이메일이 유효하지 않다.
@@ -75,9 +77,38 @@ public class AuthController {
         // 이메일 전송하는메서드
         String code = emailService.sendVerifyCode(email);
 
-        return ResponseHandler.generateResponse("인증번호 발송 성공", HttpStatus.OK, code);
-
+        return ResponseHandler.generateResponse("인증번호 발송 성공", HttpStatus.OK,null);
     }
+
+
+
+    @ApiOperation(value ="UID로 유저 정보 조회하기" ,notes="uid 로 유저의 정보를 찾아봅니다")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "유저 정보 찾기완료"
+                    ,response = UserResponseDto.class
+            )
+            , @ApiResponse(
+            code = 1008
+            , message ="존재하지 않는 id 값입니다."
+    )
+    })
+    @PostMapping("/uid/{id}")
+    public ResponseEntity<Object> findByUid(@PathVariable Long id) {
+        //email 주소 형식 에  맞는지 확인하는 메서드
+        User user =  userService.findByUid(id);
+        if (user==null){
+            throw new UidNotExistException();
+        }
+        UserResponseDto userResponseDto = new UserResponseDto(id,user.getEmail(),user.getName(),user.getNickname(),user.getProfileImage(),likedCategoryService.findUsersLike(user),user.getMessage());
+
+        return ResponseHandler.generateResponse("유저 조회 성공", HttpStatus.OK,userResponseDto);
+    }
+
+
+
+
     @ApiOperation(value ="이메일 인증코드 유효성 검사" ,notes="이메일로 발송한 인증코드와 사용자가 입력한 인증코드가 맞는지 확인합니다.")
     @PostMapping("/email/verify")
     @ApiResponses({
@@ -90,50 +121,22 @@ public class AuthController {
             , message ="발급된 인증 코드가 이메일과 다릅니다."
     )
     })
-    public ResponseEntity<Object> CodeVerify(String code,String email) {
-        emailService.getUserIdByCode(code,email);
+    public ResponseEntity<Object> CodeVerify(@RequestBody UserEmailVerifyDto userEmailVerifyDto) {
+        emailService.getUserIdByCode(userEmailVerifyDto.getCode(),userEmailVerifyDto.getEmail());
         //1003 발급된 인증 코드가 이메일과 일치하지않는다.
-        System.out.println(code);
+//        System.out.println(code);
         return ResponseHandler.generateResponse("인증번호 인증 성공", HttpStatus.OK, null);
-
     }
 
-//    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
-//    @PostMapping("/signup")
-//    @ApiResponses({
-//            @ApiResponse(
-//                    code = 200
-//                    , message = "회원가입 성공"
-//            )
-//            , @ApiResponse(
-//            code = 1004
-//            , message ="이메일 인증이 되지않은 이메일 주소입니다."
-//    )
-//            , @ApiResponse(
-//            code = 1005
-//            , message ="현재 입력한 이메일을 가진 유저가 이미 존재합니다. "
-//    )
-//    })
-
-//    public ResponseEntity<Object> signup(
-//            @ApiParam(value = "회원 가입 요청", required = true)
-//            @RequestBody SignUpRequestDto signUpRequestDto) {
-//        emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
-//        //1004 이메일인증이 안된 이메일
-//        Long signupId = userService.signup(signUpRequestDto);
-//        //1005 현재 입력한 이메일로 이미 존재할 경우
-//        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signupId);
-//    }
 
 
-
-    @PostMapping(value = "/signup_image",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
+    @PostMapping(value = "/signup",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다. \n"+ "1. 프로필 이미지로 가입시  file=Multipartfile, default 는 사용하지않습니다. \n"+ "2. 기본이미지로 회원가입시  file을 사용하지않고 default =1~5  를 사용합니다.")
     @ApiResponses({
             @ApiResponse(
                     code = 200
                     , message = "회원가입 성공"
-                    ,response = SignUpResponseDto.class
+                    ,response = UserResponseDto.class
             )
             , @ApiResponse(
             code = 1004
@@ -143,42 +146,54 @@ public class AuthController {
             code = 1005
             , message ="현재 입력한 이메일을 가진 유저가 이미 존재합니다. "
     )
+            , @ApiResponse(
+            code = 1007
+            , message ="이미 존재하는 닉네임 입니다. "
+    )
     })
 
 
 
-//    public ResponseEntity<Object> signupImage(
-//            @ApiParam(value = "회원 가입 요청 + 프로필 이미지까지", required = true)
-//            @RequestParam SignUpRequestDto signUpRequestDto) {
-    public ResponseEntity<Object> signupImage(
-                @ApiParam(value = "회원 가입 요청 + 프로필 이미지까지", required = true)
-                @RequestParam String email, @RequestParam String password, @RequestParam String name, @RequestParam String nickName,@RequestParam  MultipartFile file,@RequestParam List<Long> categoryId) {
+    public ResponseEntity<Object> signUp(
+                @ApiParam(value = "email 주소", required = true)
+                @RequestParam String email,
+                @ApiParam(value = "비밀번호", required = true)
+                @RequestParam String password,
+                @ApiParam(value = "회원 이름", required = true)
+                @RequestParam String name,
+                @ApiParam(value = "회원 닉네임", required = true)
+                @RequestParam String nickName,
+                @ApiParam(value = "프로필 이미지")
+                @RequestParam  MultipartFile file,
+                @ApiParam(value = "회원이 좋아하는 카테고리 ID", required = true)
+                @RequestParam List<Long> categoryId,
+                @ApiParam(value = "한줄 메세지")
+                @RequestParam(required =false) String message,
+                @ApiParam(value = "디폴트 이미지 선택")
+                @RequestParam(required = false) Integer Default) {
 //                 String email,  String password, String name, String nickName, MultipartFile file, List<Long> categoryId) {
+//                @ModelAttribute SignUpRequestDto signUpRequestDto) {
         SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email,password,name,nickName,file,categoryId);
+        System.out.println("email: "+email+ "password: "+ password+ "name: "+name+"nickname"+"file: "+file+"categoryId"+ categoryId);
 
-
+//        userService.validateDuplicateByNickname(nickName);
         System.out.println(signUpRequestDto.getEmail());
         emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
         //1004 이메일인증이 안된 이메일
         Long signupId = userService.signup(signUpRequestDto);
         //1005 현재 입력한 이메일로 이미 존재할 경우
 
-        String filename="";
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(signUpRequestDto.getEmail());
-        sb.append("_local");
-
-        try {
-            filename =s3Uploader.upload(signUpRequestDto.getFile(),sb.toString(),"profile");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("유저 uid"+signupId);
+        String filename=s3Uploader.addImageWhenSignUp(email,file,Default);
         User user = userService.findByUid(signupId);
         user.setProfileImage(filename);
+        user.setMessage(message);
 
 
+
+        if (StringUtils.isEmpty(message)){
+            System.out.println("message 가 비어있음");
+        }
 
 //        User user= userService.findByEmailAndProvider(likedCategoryDto.getEmail(),likedCategoryDto.getProvider()).orElseThrow(LoginFailedByEmailNotExistException::new);
 //        List<Long> input=likedCategoryService.deleteDuplicateCategory(likedCategoryDto.getCategoryId());
@@ -190,37 +205,31 @@ public class AuthController {
         List<Long> result =likedCategoryService.addLikedCategory(user,input);
         System.out.println("유저가 등록한 후의 카테고리"+result);
 
-        SignUpResponseDto signUpResponseDto = new SignUpResponseDto(signupId,signUpRequestDto.getEmail(), signUpRequestDto.getName(), signUpRequestDto.getNickName());
+        UserResponseDto userResponseDto = new UserResponseDto(signupId,signUpRequestDto.getEmail(), signUpRequestDto.getName(), signUpRequestDto.getNickName(),filename,result,user.getMessage());
 
-        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signUpResponseDto);
+        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, userResponseDto);
+    }
+
+    @GetMapping("/user/checkNickName")
+    @ApiOperation(value ="닉네임 중복 체크" ,notes="닉네임이 중복인지 체크한다. 사용가능하면 True를 반환하고 사용이 불가능하면 False를 반환한다.")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "닉네임 중복 확인 성공"
+                    , response=boolean.class
+            )
+            , @ApiResponse(
+            code = 1007
+            , message ="이미 존재하는 닉네임 입니다."
+    )
+
+    })
+    public ResponseEntity<Object> checkNickName( @RequestParam String nickName){
+        userService.validateDuplicateByNickname(nickName);
+        return ResponseHandler.generateResponse("닉네임 중복 확인 성공", HttpStatus.OK,true);
     }
 
 
-
-//    @PostMapping(value = "/signUp/Category",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-//    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다.")
-//
-//
-//    public ResponseEntity<Object> signupCategory(
-//            @ApiParam(value = "회원 가입 요청 + 프로필 이미지까지", required = true)
-//                    SignUpRequestDto signUpRequestDto) {
-//
-//        System.out.println(signUpRequestDto.getEmail());
-//        emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
-//        //1004 이메일인증이 안된 이메일
-//        Long signupId = userService.signup(signUpRequestDto);
-//        //1005 현재 입력한 이메일로 이미 존재할 경우
-//
-//
-//        User user = userService.findByUid(signupId);
-//
-//
-//        List<Long> input=likedCategoryService.deleteDuplicateCategory(signUpRequestDto.getCategoryId());
-//        List<Long> usersLike=   likedCategoryService.findUsersLike(user);
-//        List<Long> result =likedCategoryService.addLikedCategory(user,input,usersLike);
-//
-//        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, signupId);
-//    }
 
 
     @PostMapping("/user/changeProfileImage")
@@ -235,6 +244,17 @@ public class AuthController {
             String filename =s3Uploader.upload(files,sb.toString(),"profile");
             userService.setProfileImage(user,filename);
 
+
+        return ResponseHandler.generateResponse("성공", HttpStatus.OK,filename);
+    }
+
+
+    @PostMapping("/user/changeDefaultImage")
+    @ApiOperation(value ="프로필 이미지 변경" ,notes="기본이미지로 변경하기")
+    public ResponseEntity<Object> changeDefaultImage( Integer number, String email) throws IOException {
+        User user=userService.findByEmailAndProvider(email,"local").orElseThrow(CUserNotFoundException::new);
+
+        String filename =s3Uploader.setDefaultImage(email,number);
 
         return ResponseHandler.generateResponse("성공", HttpStatus.OK,filename);
     }
@@ -389,7 +409,7 @@ public class AuthController {
     }
 
     @PostMapping("/user/findPassword")
-    public ResponseEntity<Object> findPassword(String email,String name) {
+    public ResponseEntity<Object> findPassword(String email,String name) throws MessagingException, IOException{
         User user = userService.findByEmailAndProvider(email,"local").orElseThrow(LoginFailedByEmailNotExistException::new);
         String code =emailService.findPassword(email,name);
         // 나중에 이름이나 닉네임으로 추가 인증
@@ -399,19 +419,19 @@ public class AuthController {
     }
 
     @PostMapping("/user/findPassword/verify")
-    public ResponseEntity<Object> passwordSet(String email,String code) {
-        userService.findByEmailAndProvider(email,"local").orElseThrow(LoginFailedByEmailNotExistException::new);
+    public ResponseEntity<Object> passwordSet(String email, String code) throws MessagingException, IOException {
+        //userService.findByEmailAndProvider(email,"local").orElseThrow(LoginFailedByEmailNotExistException::new);
         String password=emailService.codeForPasswordFinder(email,code);
         User user = userService.findByEmailAndProvider(email,"local").get();
         userService.changePassword(user,password);
-        emailService.sendNewPassword(email,password,user.getName());
+        emailService.sendNewPassword(email,password,user.getName()) ;
         // 나중에 이름이나 닉네임으로 추가 인증
 //        if(user.getName().equals(name)){
 //        }
         return ResponseHandler.generateResponse("성공", HttpStatus.OK,password);
     }
 
-    @PostMapping("/user/changePassword")
+    @PostMapping("/user/change-password")
     public ResponseEntity<Object> changePwd(String email,String previous ,String change_password) {
         userService.findByEmailAndProvider(email,"local").orElseThrow(LoginFailedByEmailNotExistException::new);
         User user = userService.findByEmailAndProvider(email,"local").get();

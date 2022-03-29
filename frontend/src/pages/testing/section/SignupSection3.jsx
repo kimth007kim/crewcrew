@@ -363,7 +363,6 @@ function SignupSection3({ IsClick, HandleClick }) {
 
         switch (data.status) {
           case 200:
-            console.log(data.data);
             setStudyArr(data.data[0].children);
             setHobbyArr(data.data[1].children);
             break;

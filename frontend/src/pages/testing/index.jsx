@@ -40,10 +40,10 @@ function Testing() {
     try {
       const { data } = await axios.get('/users', {
         headers: {
-          // 'X-AUTH-TOKEN': `${cookies.get('user-token')}`,
+          'X-AUTH-TOKEN': `${cookies.get('user-token')}`,
         },
       });
-      console.log(data);
+
       switch (data.status) {
         case 200:
           break;
@@ -55,7 +55,9 @@ function Testing() {
         default:
           break;
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   return (
