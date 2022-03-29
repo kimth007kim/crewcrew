@@ -51,9 +51,8 @@ public class EmailService {
         StringBuilder sb = new StringBuilder();
         sb.append("passwordFinder_");
         sb.append(email);
-        sb.append("_");
-        sb.append(dice);
         String verifier= sb.toString();
+
 
         // 3시간 후 만료
         redisUtil.setDataExpire(verifier,code,60*3L);
@@ -61,57 +60,37 @@ public class EmailService {
         return code;
     }
 
-    public void sendNewPassword(String email,String password,String name){
-        SimpleMailMessage mailMessage  = new SimpleMailMessage();
-        mailMessage.setTo(email);
-        String setfrom = "kimth00700kim@google.com";
-        mailMessage.setSubject("[크루크루] 회원님의 새로운 비밀번호 입니다.");
-        String content=System.getProperty("line.separator")+
-                System.getProperty("line.separator")+
-                "안녕하세요 "+name+"님 저희 홈페이지를 찾아주셔서 감사합니다"
-                +System.getProperty("line.separator")+
-                System.getProperty("line.separator")+
-                "새로 발급되는 비밀번호는 " +password+ " 입니다. "
-                +System.getProperty("line.separator")+
-                System.getProperty("line.separator")+
-                "추후에 홈페이지에서 비밀번호 변경하고 사용하는것을 권장드립니다.";
-        mailMessage.setFrom(setfrom); // 보내는사람 생략하면 정상작동을 안함
-        mailMessage.setTo(email); // 받는사람 이메일
-        mailMessage.setText(content); // 메일 내용
-        emailSenderService.sendEmail(mailMessage);
-    }
+//    public void sendNewPassword(String email,String password,String name){
+//        SimpleMailMessage mailMessage  = new SimpleMailMessage();
+//        mailMessage.setTo(email);
+//        String setfrom = "kimth00700kim@google.com";
+//        mailMessage.setSubject("[크루크루] 회원님의 새로운 비밀번호 입니다.");
+//        String content=System.getProperty("line.separator")+
+//                System.getProperty("line.separator")+
+//                "안녕하세요 "+name+"님 저희 홈페이지를 찾아주셔서 감사합니다"
+//                +System.getProperty("line.separator")+
+//                System.getProperty("line.separator")+
+//                "새로 발급되는 비밀번호는 " +password+ " 입니다. "
+//                +System.getProperty("line.separator")+
+//                System.getProperty("line.separator")+
+//                "추후에 홈페이지에서 비밀번호 변경하고 사용하는것을 권장드립니다.";
+//        mailMessage.setFrom(setfrom); // 보내는사람 생략하면 정상작동을 안함
+//        mailMessage.setTo(email); // 받는사람 이메일
+//        mailMessage.setText(content); // 메일 내용
+//        emailSenderService.sendEmail(mailMessage);
+//    }
 
-    public String codeForPasswordFinder(String email,String code){
+    public void codeForPasswordFinder(String email,String code){
         StringBuilder sb = new StringBuilder();
         sb.append("passwordFinder_");
         sb.append(email);
-        sb.append("_");
-        sb.append(code);
         String result=redisUtil.getData(sb.toString());
         if (result == null){
             throw new CEmailCodeNotMatchException();
         }
-        Random random = new Random();
-        int length = random.nextInt(5)+5;
-
-        StringBuffer new_password = new StringBuffer();
-        for (int i = 0; i < length; i++) {
-            int choice = random.nextInt(3);
-            switch(choice) {
-                case 0:
-                    new_password.append((char)((int)random.nextInt(25)+97));
-                    break;
-                case 1:
-                    new_password.append((char)((int)random.nextInt(25)+65));
-                    break;
-                case 2:
-                    new_password.append((char)((int)random.nextInt(10)+48));
-                    break;
-                default:
-                    break;
-            }
+        if (result.equals(code)){
+            throw new CEmailCodeNotMatchException();
         }
-        return new_password.toString();
     }
 
 
