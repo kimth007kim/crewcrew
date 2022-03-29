@@ -162,7 +162,7 @@ public class UserService {
 
 
     public void validateDuplicateByNickname(String nickname){
-        if (userRepository.findByNickname(nickname).isPresent()){
+        if (!userRepository.findByNickname(nickname).isEmpty()){
             throw new NickNameAlreadyExistException();
         }
     }

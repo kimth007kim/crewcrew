@@ -45,7 +45,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column
     private String profileImage;
 
-    @Column
+    @Column(unique = true)
     private String nickname;
     @Column
     private String message;
