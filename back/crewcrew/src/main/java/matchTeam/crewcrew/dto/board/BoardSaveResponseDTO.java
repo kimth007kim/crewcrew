@@ -77,6 +77,6 @@ public class BoardSaveResponseDTO {
         this.expiredDate = res.getExpiredDate();
         this.createdDate = res.getCreatedDate();
         this.hit = res.getHit();
-        this.kakao_chat = res.getKakao_chat();
+        this.kakao_chat = res.getKakaoChat();
     }
 }

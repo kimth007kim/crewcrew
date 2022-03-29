@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import matchTeam.crewcrew.dto.application.ApplicationSaveResponseDTO;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.user.User;
 
@@ -30,7 +31,7 @@ public class Application {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uid")
-    private User uid;
+    private User user;
 
     @Column(name = "commentary")
     private String commentary;
@@ -39,10 +40,15 @@ public class Application {
     private Integer progress;
 
     @Builder
-    public Application(Board board, User uid, String progress) {
+    public Application(Board board, User user, String commentary, String progress) {
         this.board = board;
-        this.uid = uid;
+        this.user = user;
         this.commentary = commentary;
         this.progress= 1;
+    }
+
+    public ApplicationSaveResponseDTO toDTO(Application application){
+        return ApplicationSaveResponseDTO.builder()
+                .res(application).build();
     }
 }

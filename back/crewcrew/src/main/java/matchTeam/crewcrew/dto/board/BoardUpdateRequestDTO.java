@@ -54,12 +54,12 @@ public class BoardUpdateRequestDTO {
     @ApiModelProperty(value = "오픈채팅 링크", notes = "오픈채팅 링크를 입력해주세요", required = true)
     @NotNull(message = "오픈채팅 링크를 입력해주세요.")
     @Column(name = "kakao_chat", nullable = false)
-    private String kakao_chat;
+    private String kakaoChat;
 
     @Builder
     public BoardUpdateRequestDTO(Long uid, String title, String boardContent,
                                  Integer recruitedCrew, Integer totalCrew,
-                                 Integer approachCode, Long categoryId, LocalDate expiredDate, String kakao_chat) {
+                                 Integer approachCode, Long categoryId, LocalDate expiredDate, String kakaoChat) {
         this.uid = uid;
         this.title = title;
         this.boardContent = boardContent;
@@ -68,6 +68,6 @@ public class BoardUpdateRequestDTO {
         this.approachCode = approachCode;
         this.categoryId = categoryId;
         this.expiredDate = expiredDate;
-        this.kakao_chat = kakao_chat;
+        this.kakaoChat = kakaoChat;
     }
 }

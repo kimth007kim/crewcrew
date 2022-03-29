@@ -39,7 +39,7 @@ public class BoardService {
         Category category = categoryRepository.findById(req.getCategoryId()).orElseThrow(NotExistCategoryException::new);
 
         Board board = boardRepository.save(
-                req.toEntity(req, userRepository, categoryRepository)
+                req.toEntity(req, user, category)
         );
 
         return BoardSaveResponseDTO.builder()
@@ -57,7 +57,7 @@ public class BoardService {
 
         board.update(req.getTitle(), req.getBoardContent(),
                 req.getRecruitedCrew(), req.getTotalCrew(), req.getApproachCode(),
-               category, req.getExpiredDate(), checkViewableInDate(req.getExpiredDate()));
+               category, req.getExpiredDate(), checkViewableInDate(req.getExpiredDate()), req.getKakaoChat());
 
         return id;
     }
