@@ -160,8 +160,8 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
   return (
     <LoginContents active={IsClick === 0}>
       <form onSubmit={HandleSubmitLogin}>
-        <InputList>
-          <InputLi>
+        <LogInputList>
+          <LogInputLi>
             <Textfield
               type="text"
               onChange={HandleEmailChange}
@@ -171,8 +171,8 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
               valid={emailValid}
               onDelete={HandleEmailDelete}
             />
-          </InputLi>
-          <InputLi>
+          </LogInputLi>
+          <LogInputLi>
             <TextfieldPW
               onChange={HandlePasswordChange}
               value={password}
@@ -181,8 +181,8 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
               valid={passwordValid}
               onDelete={HandlePasswordDelete}
             />
-          </InputLi>
-        </InputList>
+          </LogInputLi>
+        </LogInputList>
         <Button size="fullregular" color="darkblue" loadings={BtnLoading}>
           로그인
         </Button>
@@ -256,7 +256,7 @@ const LoginContents = styled.div`
     `}
 `;
 
-const InputList = styled.ul`
+const LogInputList = styled.ul`
   padding: 25px 0 20px;
   @media screen and (max-width: 768px) {
     overflow-y: auto;
@@ -314,7 +314,7 @@ const CheckBox = styled.span`
     `}
 `;
 
-const InputLi = styled.li`
+const LogInputLi = styled.li`
   position: relative;
   height: 75px;
 `;

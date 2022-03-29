@@ -2,7 +2,16 @@ import React, { useCallback, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import delImage from '../../assets/images/InputDel.png';
 
-function Textfield({ type = 'text', onChange, value, valid, validMessage, label, onDelete }) {
+function Textfield({
+  type = 'text',
+  onChange,
+  value,
+  valid,
+  validMessage,
+  label,
+  onDelete,
+  disabled,
+}) {
   const [Focused, setFocused] = useState(false);
   const [Hover, setHover] = useState(false);
   const InputRef = useRef(null);
@@ -37,6 +46,7 @@ function Textfield({ type = 'text', onChange, value, valid, validMessage, label,
         Hover={Hover}
         TextIn={!!value}
         autoComplete="off"
+        disabled={disabled}
       />
       <Label Focused={Focused} TextIn={!!value} Valid={valid}>
         {label}

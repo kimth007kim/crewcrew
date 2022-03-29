@@ -11,6 +11,7 @@ function TextfieldSU({
   label,
   onDelete,
   setFocus,
+  disabled,
 }) {
   const [Focused, setFocused] = useState(false);
   const [Hover, setHover] = useState(false);
@@ -48,6 +49,7 @@ function TextfieldSU({
         Hover={Hover}
         TextIn={!!value}
         autoComplete="off"
+        disabled={disabled}
       />
       <Label Focused={Focused} TextIn={!!value} Valid={valid}>
         {label}
@@ -59,7 +61,7 @@ function TextfieldSU({
           onDelete();
           InputRef.current.focus();
         }}
-        TextIn={!!value}
+        TextIn={!!value && !disabled}
       />
       <InputText Focused={Focused} Valid={valid}>
         {validMessage}
