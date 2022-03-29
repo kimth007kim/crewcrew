@@ -6,6 +6,9 @@ const GlobalStyle = createGlobalStyle`
   *, *::before, *::after {
     box-sizing: border-box;
   }
+  * {
+    scroll-behavior: smooth;
+}
 
     * {
     margin: 0;

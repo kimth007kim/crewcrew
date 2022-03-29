@@ -54,6 +54,7 @@ module.exports = {
     'no-useless-return': 'warn',
     'operator-linebreak': ['error', 'after'],
     'implicit-arrow-linebreak': ['warn', 'below'],
+    indent: ['warn', 2],
     'jsx-a11y/no-noninteractive-element-interactions': [
       'warn',
       {

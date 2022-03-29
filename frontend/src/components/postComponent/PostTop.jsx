@@ -30,6 +30,9 @@ const MainTop = styled.section`
   background-color: #005ec5;
   position: relative;
   overflow: hidden;
+  @media screen and (max-width: 820px) {
+    height: 240px;
+  }
 `;
 
 const TopBgCharacter = styled.div`
@@ -45,6 +48,11 @@ const TopBgCharacter = styled.div`
   background-size: 400px 400px;
   background-repeat: no-repeat;
   background-position: left, right;
+  @media screen and (max-width: 820px) {
+    background-image: url(${BgProfile3});
+    background-size: 240px;
+    background-position: right;
+  }
 `;
 
 const TopCont = styled.div`
@@ -73,6 +81,22 @@ const TopCont = styled.div`
     font-weight: 300;
     line-height: 36px;
     margin-top: 12px;
+  }
+
+  @media screen and (max-width: 820px) {
+    width: calc(100vw - 40px);
+    left: 50%;
+    transform: translateX(-50%);
+    h2 {
+      font-size: 28px;
+      line-height: 36px;
+      margin-top: 70px;
+    }
+
+    h3 {
+      font-size: 13px;
+      line-height: 26px;
+    }
   }
 `;
 
@@ -103,6 +127,26 @@ const InputWrapper = styled.div`
     margin-left: 14px;
     font-size: 13px;
     font-weight: 400;
+
+    &::placeholder {
+      color: #a8a8a8;
+    }
+  }
+  @media screen and (max-width: 820px) {
+    width: calc(100vw - 40px);
+    height: 36px;
+    border-radius: 18px;
+    margin-top: 32px;
+
+    img {
+      width: 24px;
+      height: 24px;
+      margin-left: 24px;
+    }
+
+    input {
+      font-size: 10px;
+    }
   }
 `;
 
@@ -117,4 +161,14 @@ const ButtonIntro = styled.div`
   right: 45px;
   opacity: 0.5;
   transition: 0.3s;
+  :hover {
+    opacity: 1;
+  }
+  @media screen and (max-width: 820px) {
+    width: 30px;
+    height: 30px;
+    top: 17px;
+    right: 20px;
+    opacity: 1;
+  }
 `;
