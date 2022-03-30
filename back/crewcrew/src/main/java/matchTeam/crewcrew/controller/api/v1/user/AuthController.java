@@ -436,7 +436,6 @@ public class AuthController {
         userService.changePassword(user,change_password);
         return ResponseHandler.generateResponse("성공", HttpStatus.OK,change_password);
     }
-
 //    @PostMapping("/user/addCategory")
 //    public ResponseEntity<Object> addCategory(@RequestBody LikedCategoryDto likedCategoryDto) {
 //        System.out.println(likedCategoryDto.getEmail()+"      -     "+likedCategoryDto.getProvider());

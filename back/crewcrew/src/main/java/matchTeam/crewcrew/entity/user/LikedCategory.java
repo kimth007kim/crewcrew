@@ -1,5 +1,6 @@
 package matchTeam.crewcrew.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 import matchTeam.crewcrew.entity.board.Category;
@@ -15,10 +16,12 @@ public class LikedCategory {
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="category_id")
+    @JsonBackReference
     private Category category;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="uid")
+    @JsonBackReference
     private User user;
 
     public void setUser(User user){

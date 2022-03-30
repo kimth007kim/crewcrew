@@ -1,6 +1,7 @@
 package matchTeam.crewcrew.entity.board;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,6 +33,7 @@ public class Category {
     private String description;
 
     @OneToMany(mappedBy = "category")
+    @JsonManagedReference
     private List<LikedCategory> likedCategories= new ArrayList<>();
 
     public Category(String categoryName, Category categoryParent, String description){

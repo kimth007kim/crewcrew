@@ -1,6 +1,7 @@
 package matchTeam.crewcrew.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
 @Entity
 public class User extends BaseTimeEntity implements UserDetails {
 //public class User{
@@ -59,6 +61,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     private List<String> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private final List<LikedCategory> likedCategories= new ArrayList<>();
 
     @Override
