@@ -82,12 +82,7 @@ function SignupSection2({ IsClick, HandleClick }) {
       e.preventDefault();
       async function axiosPost() {
         try {
-          const context = new URLSearchParams({
-            nickName: nickname,
-          });
-
-          const { data } = await axios.get('/auth/user/checkNickName', context);
-          console.log(data);
+          const { data } = await axios.get(`/auth/user/nickname/${nickname}`);
           switch (data.status) {
             case 200:
               setDoubleCheck(true);
@@ -101,6 +96,7 @@ function SignupSection2({ IsClick, HandleClick }) {
               break;
           }
         } catch (error) {
+          toast.error('알 수 없는 오류가 발생했습니다. 새로고침 후 다시 시도해주시길 바랍니다');
           console.dir(error);
         }
       }

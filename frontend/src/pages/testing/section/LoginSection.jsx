@@ -7,6 +7,7 @@ import styled, { css, keyframes } from 'styled-components';
 import { debounce } from 'lodash';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
+import { toast } from 'react-toastify';
 import CheckOff from '../../../assets/images/LogInCheck_off.png';
 import CheckOn from '../../../assets/images/LogInCheck_on.png';
 import Naver from '../../../assets/images/Naver.png';
@@ -147,6 +148,8 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
               break;
           }
         } catch (error) {
+          toast.error('알 수 없는 오류가 발생했습니다. 새로고침 후 다시 시도해주시길 바랍니다');
+
           console.dir(error);
         } finally {
           setBtnLoading(false);

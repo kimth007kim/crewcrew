@@ -6,6 +6,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { useRecoilState } from 'recoil';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import Button from '../../../components/common/Button';
 import Textfield from '../../../components/common/TextfieldEmail';
 import TextfieldSU from './SignupTextfield';
@@ -178,6 +179,8 @@ function SignupSection({ IsClick, HandleClick }) {
             break;
         }
       } catch (error) {
+        toast.error('알 수 없는 오류가 발생했습니다. 새로고침 후 다시 시도해주시길 바랍니다');
+
         console.dir(error);
       }
     }

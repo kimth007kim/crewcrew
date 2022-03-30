@@ -196,6 +196,7 @@ function SignupSection3({ IsClick, HandleClick }) {
             file: uploadFileImg,
             email: completeEmail,
             categoryId,
+            message,
           };
 
           const formData = new FormData();
@@ -203,9 +204,10 @@ function SignupSection3({ IsClick, HandleClick }) {
             formData.append('name', context.name);
             formData.append('password', context.password);
             formData.append('nickName', context.nickname);
-            formData.append('default', context.file);
+            formData.append('Default', context.file);
             formData.append('email', context.email);
             formData.append('categoryId', context.categoryId);
+            formData.append('message', context.message);
           } else {
             formData.append('name', context.name);
             formData.append('password', context.password);
@@ -213,14 +215,10 @@ function SignupSection3({ IsClick, HandleClick }) {
             formData.append('file', context.file);
             formData.append('email', context.email);
             formData.append('categoryId', context.categoryId);
+            formData.append('message', context.message);
           }
 
-          // eslint-disable-next-line no-restricted-syntax
-          // for (const pair of formData.entries()) {
-          //   console.log(`${pair[0]}, ${pair[1]}`);
-          // }
-
-          const { data } = await axios.post('/auth/signup_image', formData, {
+          const { data } = await axios.post('/auth/signup', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
@@ -238,6 +236,7 @@ function SignupSection3({ IsClick, HandleClick }) {
               break;
           }
         } catch (error) {
+          toast.error('알 수 없는 오류가 발생했습니다. 새로고침 후 다시 시도해주시길 바랍니다');
           console.dir(error);
         } finally {
           setBtnLoading(false);
@@ -248,7 +247,7 @@ function SignupSection3({ IsClick, HandleClick }) {
         axiosPost();
       }
     },
-    [name, password, uploadFileImg, emailId, email, studyList, hobbyList],
+    [name, password, uploadFileImg, emailId, email, studyList, hobbyList, message],
   );
 
   const CheckProgressF = useCallback(

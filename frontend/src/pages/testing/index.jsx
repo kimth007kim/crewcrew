@@ -38,7 +38,7 @@ function Testing() {
 
   const handleTestCookie = useCallback(async () => {
     try {
-      const { data } = await axios.get('/users', {
+      const { data } = await axios.get(`/user/token/${cookies.get('user-token')}`, {
         headers: {
           'X-AUTH-TOKEN': `${cookies.get('user-token')}`,
         },
