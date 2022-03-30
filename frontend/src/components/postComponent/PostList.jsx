@@ -1,23 +1,48 @@
 import React from 'react';
-import styled from 'styled-components';
-import FilterBox from './FilterBox';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import styled, { css } from 'styled-components';
+import { approachFilterState, arrayFilterState, articleFilterState } from '../../atom/post';
 import Pagination from './Pagination';
+import FilterBox from './FilterBox';
 import PostCard from './PostCard';
 
 function PostList() {
+  const approach = useRecoilValue(approachFilterState);
+  const article = useRecoilValue(articleFilterState);
+  const filterData = useRecoilValue(arrayFilterState);
+
+  // 필터 리스트 렌더
+  const renderFilterList = () => {
+    if (!filterData || filterData.length === 0) {
+      return null;
+    }
+
+    const renderFilter = filterData.map((item) => (
+      <li key={`${item.htmlId} + ${item.name}`}>
+        <FilterSpan textColor={item.color}>{item.name}</FilterSpan>
+      </li>
+    ));
+    return renderFilter;
+  };
+
   return (
     <Container>
       <Wrapper>
         <FilterBox />
         <PostTitle>최근 크루원 모집글</PostTitle>
-        <PostDesc>이번주 새롭게 크루원을 모집하는 모집글을 소개해드려요.</PostDesc>
+        <PostDesc>새롭게 크루원을 모집하는 글을 소개해드려요.</PostDesc>
         <FilterChecked>
-          <li>
-            <span>최신 글</span>
-          </li>
-          <li>
-            <span>온라인</span>
-          </li>
+          {article && approach && (
+            <>
+              <li>
+                <FilterSpan textColor={article.color}>{article.name}</FilterSpan>
+              </li>
+              <li>
+                <FilterSpan textColor={approach.color}>{approach.name}</FilterSpan>
+              </li>
+            </>
+          )}
+          {renderFilterList()}
         </FilterChecked>
         <PostWrapper>
           <ul>
@@ -90,6 +115,24 @@ const PostDesc = styled.p`
   }
 `;
 
+const FilterSpan = styled.span`
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  height: 24px;
+  padding: 0 16px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 300;
+  border-radius: 14px;
+
+  ${(props) =>
+    props.textColor &&
+    css`
+      background-color: ${props.textColor};
+    `}
+`;
+
 const FilterChecked = styled.ul`
   padding-top: 20px;
   padding-bottom: 42px;
@@ -99,18 +142,6 @@ const FilterChecked = styled.ul`
   li {
     margin-right: 6px;
     margin-bottom: 6px;
-    span {
-      display: flex;
-      align-items: center;
-      width: fit-content;
-      height: 24px;
-      padding: 0 16px;
-      color: #fff;
-      font-size: 13px;
-      font-weight: 300;
-      border-radius: 14px;
-      background-color: #00b7ff;
-    }
   }
   @media screen and (max-width: 820px) {
     display: none;

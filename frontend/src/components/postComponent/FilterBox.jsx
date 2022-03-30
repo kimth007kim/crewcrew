@@ -1,116 +1,16 @@
 /* eslint-disable indent */
 import React, { useCallback, useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
 import FilterArrowImg from '../../assets/images/FilterArrow.png';
-import Button from '../common/Button';
-
-const articleArr = [
-  {
-    htmlId: 'postRecent',
-    name: '최신 글',
-    color: '#00b7ff',
-    value: 'recent',
-  },
-  {
-    htmlId: 'postPopular',
-    name: '많이 본 글',
-    color: '#00b7ff',
-    value: 'popular',
-  },
-  {
-    htmlId: 'postDeadline',
-    name: '마감임박 글',
-    color: '#00b7ff',
-    value: 'expired-date',
-  },
-];
-
-const approachArr = [
-  {
-    htmlId: 'postOnline',
-    name: '온라인',
-    color: '#00b7ff',
-    value: '1',
-  },
-  {
-    htmlId: 'postOffline',
-    name: '오프라인',
-    color: '#00b7ff',
-    value: '0',
-  },
-];
-
-const studyFilterArr = [
-  {
-    htmlId: 'CategoryStudy1',
-    name: '어학',
-    color: '#001881',
-    value: '1',
-  },
-  {
-    htmlId: 'CategoryStudy2',
-    name: '취업',
-    color: '#001881',
-    value: '2',
-  },
-  {
-    htmlId: 'CategoryStudy3',
-    name: '고시/공무원',
-    color: '#001881',
-    value: '3',
-  },
-  {
-    htmlId: 'CategoryStudy4',
-    name: '프로젝트',
-    color: '#001881',
-    value: '4',
-  },
-  {
-    htmlId: 'CategoryStudy5',
-    name: '기타',
-    color: '#001881',
-    value: '5',
-  },
-];
-
-const hobbyFilterArr = [
-  {
-    htmlId: 'CategoryHobby1',
-    name: '요리',
-    color: '#F7971E',
-    value: '6',
-  },
-  {
-    htmlId: 'CategoryHobby2',
-    name: '운동',
-    color: '#F7971E',
-    value: '7',
-  },
-  {
-    htmlId: 'CategoryHobby3',
-    name: '게임',
-    color: '#F7971E',
-    value: '8',
-  },
-  {
-    htmlId: 'CategoryHobby4',
-    name: '덕질',
-    color: '#F7971E',
-    value: '9',
-  },
-  {
-    htmlId: 'CategoryHobby5',
-    name: '트렌드',
-    color: '#F7971E',
-    value: '10',
-  },
-  {
-    htmlId: 'CategoryHobby6',
-    name: '기타',
-    color: '#F7971E',
-    value: '11',
-  },
-];
+import { approachFilterState, arrayFilterState, articleFilterState } from '../../atom/post';
+import {
+  allFilter,
+  approachArr,
+  articleArr,
+  hobbyFilterArr,
+  studyFilterArr,
+} from '../../frontDB/filterDB';
 
 function FilterBox() {
   const [FixedBox, setFixedBox] = useState(false);
@@ -119,6 +19,9 @@ function FilterBox() {
   const [selectedApproach, setSelectedApproach] = useState(approachArr[0]);
   const [checkedAll, setCheckedAll] = useState(true);
   const [checkedList, setCheckedList] = useState([]);
+  const [approach, setApproach] = useRecoilState(approachFilterState);
+  const [article, setArticle] = useRecoilState(articleFilterState);
+  const [filterData, setFilterData] = useRecoilState(arrayFilterState);
 
   // 전체 카테고리 클릭 시 발생하는 함수
   const onCheckedAll = useCallback(() => {
@@ -172,6 +75,69 @@ function FilterBox() {
     }
   }, [BtnActive]);
 
+  // 필터 버튼 클릭 시 발생하는 함수
+  const handleClickFilterBtn = useCallback(() => {
+    const filterContext = {
+      article: selectedArticle,
+      approach: selectedApproach,
+      categorylist: checkedList,
+    };
+    if (checkedList.length === 0) {
+      filterContext.categorylist = [...allFilter];
+    }
+    localStorage.postFilter = JSON.stringify(filterContext);
+    setArticle({
+      ...filterContext.article,
+    });
+    setApproach({
+      ...filterContext.approach,
+    });
+    setFilterData([...filterContext.categorylist]);
+    setCheckedList([]);
+    setCheckedAll(true);
+    setSelectedArticle(articleArr[0]);
+    setSelectedApproach(approachArr[0]);
+  }, [checkedAll, selectedArticle, selectedApproach, checkedList]);
+
+  // 필터 리스트 렌더
+  const renderFilterList = () => {
+    if (!filterData || filterData.length === 0) {
+      return null;
+    }
+
+    const renderFilter = filterData.map((item) => (
+      <li key={`${item.htmlId} + ${item.name}`}>
+        <FilterSpan textColor={item.color}>{item.name}</FilterSpan>
+      </li>
+    ));
+    return renderFilter;
+  };
+
+  useEffect(() => {
+    const postFilter = JSON.parse(localStorage.getItem('postFilter'));
+
+    const filterContext = {
+      article: postFilter.article,
+      approach: postFilter.approach,
+      categorylist: postFilter.categorylist,
+    };
+
+    if (!postFilter) {
+      filterContext.article = selectedArticle;
+      filterContext.approach = selectedApproach;
+      filterContext.categorylist = [...allFilter];
+    }
+
+    localStorage.postFilter = JSON.stringify(filterContext);
+    setArticle({
+      ...filterContext.article,
+    });
+    setApproach({
+      ...filterContext.approach,
+    });
+    setFilterData([...filterContext.categorylist]);
+  }, []);
+
   // 필터 스크롤 픽스 함수
   const isSticky = () => {
     const { innerWidth } = window;
@@ -188,7 +154,6 @@ function FilterBox() {
       setFixedBox(false);
     }
   };
-  useEffect(() => {}, []);
 
   // Sticky Menu Area
   useEffect(() => {
@@ -207,33 +172,17 @@ function FilterBox() {
         </FilterButton>
         <FilterCheckedWrapper>
           <FilterCheckedMobile>
-            <li>
-              <FilterSpan textColor="#00b7ff">최신 글</FilterSpan>
-            </li>
-            <li>
-              <FilterSpan textColor="#00b7ff">최신 글</FilterSpan>
-            </li>
-            <li>
-              <FilterSpan textColor="#00b7ff">최신 글</FilterSpan>
-            </li>
-            <li>
-              <FilterSpan textColor="#00b7ff">최신 글</FilterSpan>
-            </li>
-            <li>
-              <FilterSpan textColor="#00b7ff">최신 글</FilterSpan>
-            </li>
-            <li>
-              <FilterSpan textColor="#00b7ff">최신 글</FilterSpan>
-            </li>
-            <li>
-              <FilterSpan textColor="#00b7ff">최신 글</FilterSpan>
-            </li>
-            <li>
-              <FilterSpan textColor="#00b7ff">최신 글</FilterSpan>
-            </li>
-            <li>
-              <FilterSpan textColor="#00b7ff">최신 글</FilterSpan>
-            </li>
+            {article && approach && (
+              <>
+                <li>
+                  <FilterSpan textColor={article.color}>{article.name}</FilterSpan>
+                </li>
+                <li>
+                  <FilterSpan textColor={approach.color}>{approach.name}</FilterSpan>
+                </li>
+              </>
+            )}
+            {renderFilterList()}
           </FilterCheckedMobile>
         </FilterCheckedWrapper>
       </FilterHead>
@@ -272,16 +221,19 @@ function FilterBox() {
         </FilterPostBox>
         <FilterCategoryBox>
           <FilterList>
-            <li>
-              <InputHide
-                type="checkbox"
-                id="PostAll"
-                checked={checkedAll}
-                bgColor="#00b7ff"
-                onChange={onCheckedAll}
-              />
-              <FilterCategoryLabel htmlFor="PostAll">전체</FilterCategoryLabel>
-            </li>
+            {allFilter.map((item) => (
+              <li key={`${item.htmlId}`}>
+                <InputHide
+                  type="checkbox"
+                  id={item.htmlId}
+                  checked={checkedAll}
+                  bgColor={item.color}
+                  value={item.value}
+                  onChange={onCheckedAll}
+                />
+                <FilterCategoryLabel htmlFor={item.htmlId}>{item.name}</FilterCategoryLabel>
+              </li>
+            ))}
             {studyFilterArr.map((item) => (
               <li key={`${item.htmlId}`}>
                 <InputHide
@@ -310,7 +262,7 @@ function FilterBox() {
             ))}
           </FilterList>
         </FilterCategoryBox>
-        <ButtonFilter>적용하기</ButtonFilter>
+        <ButtonFilter onClick={handleClickFilterBtn}>적용하기</ButtonFilter>
       </FilterListWrapper>
     </Container>
   );
