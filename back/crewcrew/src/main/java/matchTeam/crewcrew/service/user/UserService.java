@@ -9,6 +9,7 @@ import matchTeam.crewcrew.dto.security.TokenRequestDto;
 import matchTeam.crewcrew.dto.user.SignUpRequestDto;
 import matchTeam.crewcrew.dto.user.UserLoginRequestDto;
 import matchTeam.crewcrew.dto.user.UserSignUpRequestDto;
+import matchTeam.crewcrew.dto.user.example.UserResponseDto;
 import matchTeam.crewcrew.entity.security.RefreshToken;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.repository.security.RefreshTokenJpaRepository;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,6 +34,7 @@ public class UserService {
     //email 발송기능
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
+    private final LikedCategoryService likedCategoryService;
     private final JwtProvider jwtProvider;
 
 
@@ -152,8 +155,17 @@ public class UserService {
         user.setPassword(new_password);
     }
 
-    public List<User> findUsers() {
-        return userRepository.findAll();
+    public List<UserResponseDto> findUsers() {
+        List<User> result=userRepository.findAll();
+        int length =result.size();
+        List<UserResponseDto> users =new ArrayList<>();
+        for (int i=0; i<length; i++) {
+            User user = result.get(i);
+            System.out.println("ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅋㅎ------------------------"+user.getUid());
+            UserResponseDto userResponseDto = new UserResponseDto(user.getUid(),user.getEmail(),user.getName(),user.getNickname(),user.getProfileImage(),likedCategoryService.findUsersLike(user),user.getMessage());
+            users.add(userResponseDto);
+        }
+        return users;
     }
 
     public Optional<User> findByEmail(String email) {
@@ -162,7 +174,7 @@ public class UserService {
 
 
     public void validateDuplicateByNickname(String nickname){
-        if (userRepository.findByNickname(nickname).isPresent()){
+        if (!userRepository.findByNickname(nickname).isEmpty()){
             throw new NickNameAlreadyExistException();
         }
     }

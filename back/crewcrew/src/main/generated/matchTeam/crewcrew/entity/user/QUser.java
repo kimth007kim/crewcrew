@@ -31,6 +31,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final ListPath<LikedCategory, QLikedCategory> likedCategories = this.<LikedCategory, QLikedCategory>createList("likedCategories", LikedCategory.class, QLikedCategory.class, PathInits.DIRECT2);
 
+    public final StringPath message = createString("message");
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 

@@ -41,9 +41,8 @@ public class EmailService {
         StringBuilder sb = new StringBuilder();
         sb.append("passwordFinder_");
         sb.append(email);
-        sb.append("_");
-        sb.append(dice);
         String verifier= sb.toString();
+
 
         // 3시간 후 만료
         redisUtil.setDataExpire(verifier,code,60*3L);
@@ -51,47 +50,27 @@ public class EmailService {
         return code;
     }
 
-    public void sendNewPassword(String email,String password,String name) throws MessagingException, IOException {
+//    public void sendNewPassword(String email,String password,String name) throws MessagingException, IOException {
+//
+//        //thymeleaf Context에 변수세팅
+//        Context context = new Context();
+//        context.setVariable("nickname", name);
+//        context.setVariable("password", password);
+//
+//        sendJavaMail("[크루크루] 회원님의 새로운 비밀번호", email, "mailform/passwordcheck2", context);
+//    }
 
-        //thymeleaf Context에 변수세팅
-        Context context = new Context();
-        context.setVariable("nickname", name);
-        context.setVariable("password", password);
-
-        sendJavaMail("[크루크루] 회원님의 새로운 비밀번호", email, "mailform/passwordcheck2", context);
-    }
-
-    public String codeForPasswordFinder(String email,String code){
+    public void codeForPasswordFinder(String email,String code){
         StringBuilder sb = new StringBuilder();
         sb.append("passwordFinder_");
         sb.append(email);
-        sb.append("_");
-        sb.append(code);
         String result=redisUtil.getData(sb.toString());
         if (result == null){
             throw new CEmailCodeNotMatchException();
         }
-        Random random = new Random();
-        int length = random.nextInt(5)+5;
-
-        StringBuffer new_password = new StringBuffer();
-        for (int i = 0; i < length; i++) {
-            int choice = random.nextInt(3);
-            switch(choice) {
-                case 0:
-                    new_password.append((char)((int)random.nextInt(25)+97));
-                    break;
-                case 1:
-                    new_password.append((char)((int)random.nextInt(25)+65));
-                    break;
-                case 2:
-                    new_password.append((char)((int)random.nextInt(10)+48));
-                    break;
-                default:
-                    break;
-            }
+        if (result.equals(code)){
+            throw new CEmailCodeNotMatchException();
         }
-        return new_password.toString();
     }
 
     public String sendVerifyCode(String email) throws MessagingException {

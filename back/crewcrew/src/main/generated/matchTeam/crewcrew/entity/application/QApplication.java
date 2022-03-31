@@ -22,15 +22,15 @@ public class QApplication extends EntityPathBase<Application> {
 
     public static final QApplication application = new QApplication("application");
 
-    public final BooleanPath acceptance = createBoolean("acceptance");
-
     public final matchTeam.crewcrew.entity.board.QBoard board;
 
-    public final StringPath commetary = createString("commetary");
+    public final StringPath commentary = createString("commentary");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final matchTeam.crewcrew.entity.user.QUser uid;
+    public final NumberPath<Integer> progress = createNumber("progress", Integer.class);
+
+    public final matchTeam.crewcrew.entity.user.QUser user;
 
     public QApplication(String variable) {
         this(Application.class, forVariable(variable), INITS);
@@ -51,7 +51,7 @@ public class QApplication extends EntityPathBase<Application> {
     public QApplication(Class<? extends Application> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.board = inits.isInitialized("board") ? new matchTeam.crewcrew.entity.board.QBoard(forProperty("board"), inits.get("board")) : null;
-        this.uid = inits.isInitialized("uid") ? new matchTeam.crewcrew.entity.user.QUser(forProperty("uid")) : null;
+        this.user = inits.isInitialized("user") ? new matchTeam.crewcrew.entity.user.QUser(forProperty("user")) : null;
     }
 
 }

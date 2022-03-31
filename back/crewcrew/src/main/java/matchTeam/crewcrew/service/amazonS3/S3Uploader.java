@@ -49,10 +49,11 @@ public class S3Uploader {
         return destination;
     }
 
-    public String addImageWhenSignUp(String email,MultipartFile file,Integer Default){
+    public String addImageWhenSignUp(String email,MultipartFile file,Integer Default,String provider){
         StringBuilder sb = new StringBuilder();
         sb.append(email);
         sb.append("_local");
+        sb.append(provider);
         if( file.isEmpty() ){
             if (Default==null || 0>=Default || Default>5){
                 throw new S3FileNotFoundException();
@@ -87,7 +88,8 @@ public class S3Uploader {
     }
 
     public String upload(MultipartFile multipartFile, String dirName,String filename ) throws IOException{
-        File uploadFile = convert(multipartFile).orElseThrow(()-> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
+//        File uploadFile = convert(multipartFile).orElseThrow(()-> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
+        File uploadFile =convert(multipartFile);
         return upload(uploadFile, dirName,filename);
 
     }
@@ -118,15 +120,23 @@ public class S3Uploader {
         return amazonS3Client.getUrl(bucket,fileName).toString();
     }
 
-    private Optional<File> convert(MultipartFile file) throws IOException {
-        File convertFile = new File(file.getOriginalFilename());
-        if(convertFile.createNewFile()) {
-            try (FileOutputStream fos = new FileOutputStream(convertFile)) {
-                fos.write(file.getBytes());
-            }
-            return Optional.of(convertFile);
-        }
-        return Optional.empty();
+//    private Optional<File> convert(MultipartFile file) throws IOException {
+//        File convertFile = new File(file.getOriginalFilename());
+//        if(convertFile.createNewFile()) {
+//            try (FileOutputStream fos = new FileOutputStream(convertFile)) {
+//                fos.write(file.getBytes());
+//            }
+//            return Optional.of(convertFile);
+//        }
+//        return Optional.empty();
+//    }
+    private File convert(MultipartFile mfile) throws IOException {
+        File file = new File(mfile.getOriginalFilename());
+        file.createNewFile();
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(mfile.getBytes());
+        fos.close();
+        return file;
     }
     public void copy(String source,String destination){
         try{
