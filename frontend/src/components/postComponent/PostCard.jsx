@@ -320,4 +320,18 @@ const CardBody = styled.div`
       }
     }
   }
+
+  @media screen and (max-width: 300px) {
+    ${TextBox} {
+      ${TextList} {
+        p {
+          font-size: 10px;
+          font-weight: 400;
+        }
+        ${CategoryText} {
+          font-size: 10px;
+        }
+      }
+    }
+  }
 `;

@@ -98,6 +98,26 @@ const TopCont = styled.div`
       line-height: 26px;
     }
   }
+
+  @media screen and (max-width: 300px) {
+    width: calc(100vw - 40px);
+    left: 50%;
+    transform: translateX(-50%);
+    h2 {
+      font-size: 22px;
+      line-height: 30px;
+    }
+
+    h3 {
+      font-size: 12px;
+      line-height: 24px;
+    }
+
+    h2 h3 {
+      text-align: center;
+      word-break: keep-all;
+    }
+  }
 `;
 
 const InputWrapper = styled.div`
