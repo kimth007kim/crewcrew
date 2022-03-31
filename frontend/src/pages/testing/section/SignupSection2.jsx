@@ -590,6 +590,10 @@ const ProfileList = styled.ul`
     align-items: center;
   }
 
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
   @media screen and (max-width: 820px) {
     & > li:first-child {
       margin-left: 8px;
