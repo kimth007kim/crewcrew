@@ -117,15 +117,15 @@ function FilterBox() {
     const postFilter = JSON.parse(localStorage.getItem('postFilter'));
 
     const filterContext = {
-      article: postFilter.article,
-      approach: postFilter.approach,
-      categorylist: postFilter.categorylist,
+      article,
+      approach,
+      categorylist: [...allFilter],
     };
 
-    if (!postFilter) {
-      filterContext.article = selectedArticle;
-      filterContext.approach = selectedApproach;
-      filterContext.categorylist = [...allFilter];
+    if (postFilter) {
+      filterContext.article = postFilter.article;
+      filterContext.approach = postFilter.approach;
+      filterContext.categorylist = [...postFilter.categorylist];
     }
 
     localStorage.postFilter = JSON.stringify(filterContext);
