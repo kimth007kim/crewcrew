@@ -128,7 +128,7 @@ const Header = styled.div`
   color: #868686;
   border-radius: 20px 20px 0 0;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     animation-duration: 0.5s;
     animation-timing-function: ease-out;
     animation-name: ${SizeUp};
@@ -148,7 +148,7 @@ const CompleteHeader = styled.div`
   padding: 0 40px;
   padding-bottom: 10px;
   box-sizing: content-box;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     padding: 0 20px;
     padding-bottom: 10px;
   }
@@ -164,7 +164,7 @@ const Top = styled.div`
   margin-bottom: 35px;
   margin-top: 48px;
   height: 18px;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     margin-top: 40px;
     margin-bottom: 45px;
   }
@@ -178,7 +178,7 @@ const ModalClose = styled.span`
   background-size: 100%;
   cursor: pointer;
   margin-right: 10px;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     margin-right: 0;
   }
 `;
@@ -212,7 +212,7 @@ const Body = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     padding: 0 20px;
     width: 100%;
     margin-top: -1px;

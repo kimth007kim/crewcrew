@@ -72,7 +72,7 @@ const handleSize = ({ size }) => {
       return `
               min-width: 100%;
               min-height: 50px;
-              padding: 10px 14px;
+              padding: 10px 0px;
               font-size: 20px;
               line-height: 26px;
               border-radius: 10px;

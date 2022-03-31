@@ -380,8 +380,11 @@ const InputList = styled.ul`
   box-sizing: content-box;
   padding: 25px 0 20px;
   scroll-behavior: smooth;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     height: calc(100vh - 393px);
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 `;
 
@@ -433,7 +436,7 @@ const ProfileSection = styled.li`
   position: relative;
   height: 230px;
   box-sizing: border-box;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     height: 290px;
   }
 `;
@@ -455,7 +458,7 @@ const ProfileShow = styled.div`
   overflow: hidden;
 
   transition: 0.5s;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     height: 218px;
   }
 `;
@@ -516,7 +519,7 @@ const ProfileImg = styled.div`
         opacity: 0.5;
       `}
   }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     width: 218px;
     height: 218px;
   }
@@ -533,7 +536,7 @@ const ProfileBg = styled.div`
   -webkit-box-shadow: 0 0 0 300px #000;
   box-shadow: 0 0 0 300px #000;
   opacity: 0.3;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     width: 202px;
     height: 202px;
     top: calc(50% - (202px / 2));
@@ -587,7 +590,7 @@ const ProfileList = styled.ul`
     align-items: center;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     & > li:first-child {
       margin-left: 8px;
     }
@@ -709,7 +712,7 @@ const InputLabel = styled.label`
 
 const ButtonWrap = styled.div`
   margin: 30px 0 10px;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     margin-top: 15px;
   }
 `;

@@ -88,8 +88,11 @@ const ResultProfileWrapper = styled.div`
   overflow-x: hidden;
   position: relative;
   scroll-behavior: smooth;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     height: calc(100vh - 338px);
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 `;
 
@@ -114,7 +117,7 @@ const ResultProfile = styled.div`
     height: 100%;
     object-fit: cover;
   }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     width: 150px;
     height: 150px;
     position: relative;
@@ -131,7 +134,7 @@ const ResultTitle = styled.h2`
   b {
     font-weight: 700;
   }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     margin: 29px 0 30px;
     font-size: 20px;
     line-height: 28px;
@@ -147,13 +150,13 @@ const ResultTxt = styled.p`
   font-weight: 400;
   line-height: 24px;
   color: #000;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     margin-bottom: 0;
   }
 `;
 
 const ButtonWrap = styled.div`
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     margin-top: 20px;
   }
 `;

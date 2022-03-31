@@ -550,8 +550,11 @@ const InputList = styled.ul`
   }
   padding: 25px 0 20px;
   scroll-behavior: smooth;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     height: calc(100vh - 393px);
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 `;
 
@@ -649,7 +652,7 @@ const ChooseListDetail = styled.div`
       margin: 0 auto;
     }
   }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     div:not(:first-child) {
       padding: 8px 0;
     }
@@ -796,7 +799,7 @@ const ChooseComplete = styled.label`
     css`
       background-color: #00b7ff;
     `}
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     bottom: 14px;
     right: 9px;
     width: 40px;
@@ -807,7 +810,7 @@ const ChooseComplete = styled.label`
 
 const ButtonWrap = styled.div`
   margin: 30px 0 10px;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     margin-top: 15px;
   }
 `;

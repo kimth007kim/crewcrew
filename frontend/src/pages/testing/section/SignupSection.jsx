@@ -59,7 +59,6 @@ function SignupSection({ IsClick, HandleClick }) {
   const [StepActive, setStepActive] = useState(false);
 
   const EmailRef = useRef(null);
-  const codeBtnRef = useRef(null);
   const MailListRef = useRef(null);
 
   // 이름
@@ -81,18 +80,24 @@ function SignupSection({ IsClick, HandleClick }) {
 
   // 이메일
 
-  const HandleEmailIdChange = useCallback((e) => {
-    let value = emojiSlice(e.target.value);
-    value = spaceSlice(value);
-    setEmailId(value);
-
-    if (value.length >= 4 || value.length === 0) {
-      return setEmailIdValid(false);
-    }
-    if (value) {
-      return setEmailIdValid(true);
-    }
-  }, []);
+  const HandleEmailIdChange = useCallback(
+    (e) => {
+      let value = emojiSlice(e.target.value);
+      value = spaceSlice(value);
+      setEmailId(value);
+      if (isEmailBack(email)) {
+        setEmailValid(false);
+      }
+      if (value.length >= 4 || value.length === 0) {
+        setEmailValidMsg('가입할 이메일 주소를 입력해주세요');
+        return setEmailIdValid(false);
+      }
+      if (value) {
+        return setEmailIdValid(true);
+      }
+    },
+    [email],
+  );
 
   const HandleEmailIdDelete = useCallback((e) => {
     setEmailId('');
@@ -108,17 +113,24 @@ function SignupSection({ IsClick, HandleClick }) {
     [emailId, emailIdValid, email, emailValid],
   );
 
-  const HandleEmailChange = useCallback((e) => {
-    let value = emojiSlice(e.target.value);
-    value = spaceSlice(value);
-    setEmail(value);
+  const HandleEmailChange = useCallback(
+    (e) => {
+      let value = emojiSlice(e.target.value);
+      value = spaceSlice(value);
+      setEmail(value);
 
-    if (isEmailBack(value)) {
-      setEmailValid(false);
-    } else {
-      setEmailValid(true);
-    }
-  }, []);
+      if (isEmailBack(value)) {
+        setEmailValid(false);
+      } else {
+        setEmailValid(true);
+      }
+      if (emailId.length >= 4) {
+        setEmailIdValid(false);
+        setEmailValidMsg('가입할 이메일 주소를 입력해주세요');
+      }
+    },
+    [emailId],
+  );
 
   const HandleEmailDelete = useCallback(() => {
     setEmail('');
@@ -136,12 +148,19 @@ function SignupSection({ IsClick, HandleClick }) {
     MailListRef.current.style.height = '50px';
   }, []);
 
-  const ClickMailList = useCallback((e, m) => {
-    e.preventDefault();
-    setEmail(m);
-    setEmailValid(false);
-    EmailRef.current.blur();
-  }, []);
+  const ClickMailList = useCallback(
+    (e, m) => {
+      e.preventDefault();
+      setEmail(m);
+      setEmailValid(false);
+      if (emailId.length >= 4) {
+        setEmailIdValid(false);
+        setEmailValidMsg('가입할 이메일 주소를 입력해주세요');
+      }
+      EmailRef.current.blur();
+    },
+    [emailId],
+  );
 
   // 코드
 
@@ -306,7 +325,7 @@ function SignupSection({ IsClick, HandleClick }) {
   }, [nameValid, name]);
 
   useEffect(() => {
-    if (emailId.length >= 5 && !emailIdValid && email.length >= 5 && !emailValid) {
+    if (emailId.length >= 4 && !emailIdValid && !emailValid && email) {
       setCodeActive(true);
       CheckProgressF(1);
     } else {
@@ -324,7 +343,7 @@ function SignupSection({ IsClick, HandleClick }) {
   }, [codeValid, code]);
 
   useEffect(() => {
-    if (password.length >= 8 && !passwordValid) {
+    if (password && !passwordValid && isCheckPassword(password)) {
       CheckProgressF(3);
     } else {
       NotCheckProgressF(3);
@@ -385,19 +404,18 @@ function SignupSection({ IsClick, HandleClick }) {
         </InputLi>
         <InputLi>
           <ListFlex>
-            <div>
-              <TextfieldSU
-                type="text"
-                onChange={HandleEmailIdChange}
-                value={emailId}
-                label="이메일"
-                validMessage=""
-                valid={emailIdValid}
-                onDelete={HandleEmailIdDelete}
-                setFocus={setIDFocus}
-                disabled={CodeComplete}
-              />
-            </div>
+            <TextfieldSU
+              type="text"
+              onChange={HandleEmailIdChange}
+              value={emailId}
+              label="이메일"
+              validMessage=""
+              valid={emailIdValid}
+              onDelete={HandleEmailIdDelete}
+              setFocus={setIDFocus}
+              disabled={CodeComplete}
+            />
+
             <MailList>
               <MailUList active={EmailFocus || !!email} ref={MailListRef} Valid={emailValid}>
                 <div>
@@ -541,8 +559,11 @@ const InputList = styled.ul`
   box-sizing: content-box;
   padding: 25px 0 20px;
   scroll-behavior: smooth;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     height: calc(100vh - 393px);
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 `;
 
@@ -555,23 +576,40 @@ const ButtonWrap = styled.div`
   display: inline-block;
   width: 100%;
   margin: 30px 0 10px;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     margin-top: 15px;
   }
 `;
 
+const InputDiv = styled.div``;
+
 const ListFlex = styled.div`
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
+  box-sizing: content-box;
 
   & > div {
     width: 100%;
-    margin-right: 10px;
+    margin-right: 16px;
   }
 
   & > div:last-child {
     margin-right: 0;
+  }
+
+  @media screen and (max-width: 820px) {
+    & > div {
+      margin-right: 10px;
+    }
+
+    & > div:last-child {
+      margin-right: 0;
+    }
+  }
+
+  @media screen and (max-width: 280px) {
+    ${InputDiv} {
+      /* width: 100px; */
+    }
   }
 `;
 
@@ -665,6 +703,7 @@ const InputMail = styled.input`
   box-sizing: border-box;
   font-size: 13px;
   line-height: 1;
+  min-width: 156px;
 
   ${(props) =>
     props.active &&

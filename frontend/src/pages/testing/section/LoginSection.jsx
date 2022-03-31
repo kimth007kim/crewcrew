@@ -261,7 +261,7 @@ const LoginContents = styled.div`
 
 const LogInputList = styled.ul`
   padding: 25px 0 20px;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     overflow-y: auto;
     overflow-x: hidden;
   }
@@ -275,10 +275,12 @@ const SubList = styled.ul`
     width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
     font-size: 15px;
     font-weight: 300;
     color: #868686;
     user-select: none;
+    white-space: nowrap;
   }
 
   & > li > p {
@@ -366,7 +368,7 @@ const SnsList = styled.ul`
   & > li {
     width: 100%;
   }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     gap: 10px;
   }
 `;

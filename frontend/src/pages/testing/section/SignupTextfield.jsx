@@ -7,7 +7,6 @@ function TextfieldSU({
   onChange,
   value,
   valid,
-  validMessage,
   label,
   onDelete,
   setFocus,
@@ -63,9 +62,6 @@ function TextfieldSU({
         }}
         TextIn={!!value && !disabled}
       />
-      <InputText Focused={Focused} Valid={valid}>
-        {validMessage}
-      </InputText>
     </Wrapper>
   );
 }
@@ -75,6 +71,7 @@ export default TextfieldSU;
 const Wrapper = styled.div`
   position: relative;
   height: 64px;
+  width: 100%;
 `;
 
 const Input = styled.input`
@@ -86,7 +83,6 @@ const Input = styled.input`
   padding: 16px 12px;
   box-sizing: border-box;
   font-size: 13px;
-  padding-right: 48px;
 
   ${(props) =>
     props.Hover &&
@@ -144,31 +140,6 @@ const Label = styled.label`
     `}
 `;
 
-const InputText = styled.div`
-  font-size: 10px;
-  text-align: center;
-  font-weight: 300;
-  position: absolute;
-  width: 100%;
-  top: 50px;
-  opacity: 0;
-  transition: 0.5s;
-  user-select: none;
-
-  ${(props) =>
-    props.Focused &&
-    css`
-      opacity: 1;
-      top: 54px;
-      color: #00b7ff;
-    `};
-  ${(props) =>
-    props.Valid &&
-    css`
-      color: #ff0045;
-    `}
-`;
-
 const InputDel = styled.div`
   width: 18px;
   height: 18px;
@@ -186,4 +157,8 @@ const InputDel = styled.div`
     css`
       display: block;
     `};
+
+  @media screen and (max-width: 290px) {
+    display: none;
+  }
 `;

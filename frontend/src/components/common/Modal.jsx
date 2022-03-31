@@ -140,7 +140,7 @@ const ModalBox = styled.div`
       width: 980px;
     `}
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     width: 100%;
     border-radius: 20px 20px 0 0;
     margin-top: 40px;
@@ -170,7 +170,7 @@ const Wrapper = styled.section`
   justify-content: center;
   align-items: center;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 820px) {
     -webkit-box-pack: end;
     -ms-flex-pack: end;
     justify-content: flex-end;
