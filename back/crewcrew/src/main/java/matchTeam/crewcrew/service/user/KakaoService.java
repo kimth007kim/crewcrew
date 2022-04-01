@@ -66,7 +66,7 @@ public class KakaoService {
         params.add("code",code);
 
         String requestUri = env.getProperty("social.kakao.url.token");
-        if(requestUri==null) throw new CCommunicationException();
+        if(requestUri==null) throw new CKakaoCommunicationException();
         HttpEntity<MultiValueMap<String,String>> request = new HttpEntity<>(params,headers);
         ResponseEntity<String> response= restTemplate.postForEntity(requestUri,request,String.class);
 
