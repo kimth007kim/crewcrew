@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { css } from 'styled-components';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import { approachFilterState, arrayFilterState, articleFilterState } from '../../atom/post';
 import Pagination from './Pagination';
 import FilterBox from './FilterBox';
@@ -10,6 +12,7 @@ function PostList() {
   const approach = useRecoilValue(approachFilterState);
   const article = useRecoilValue(articleFilterState);
   const filterData = useRecoilValue(arrayFilterState);
+  const [PostListData, setPostListData] = useState([]);
 
   // 필터 리스트 렌더
   const renderFilterList = () => {
@@ -25,12 +28,41 @@ function PostList() {
     return renderFilter;
   };
 
+  useEffect(() => {
+    async function axiosGet() {
+      try {
+        const context = {
+          params: {},
+        };
+        const { data } = await axios.get('/board/list', context);
+        console.log(data.data);
+
+        switch (data.status) {
+          case 200:
+            setPostListData(data.data.contents);
+            break;
+          case 2001:
+          case 2301:
+            toast.error(data.message);
+            break;
+
+          default:
+            break;
+        }
+      } catch (error) {
+        toast.error(error);
+        console.dir(error);
+      }
+    }
+    axiosGet();
+  }, []);
+
   return (
     <Container>
       <Wrapper>
         <FilterBox />
         <PostTitle>최근 크루원 모집글</PostTitle>
-        <PostDesc>새롭게 크루원을 모집하는 글을 소개해드려요.</PostDesc>
+        <PostDesc>새롭게 크루원을 모집하는 글을 소개해드려요!</PostDesc>
         <FilterChecked>
           {article && approach && (
             <>
@@ -46,27 +78,12 @@ function PostList() {
         </FilterChecked>
         <PostWrapper>
           <ul>
-            <li>
-              <PostCard />
-            </li>
-            <li>
-              <PostCard isDeadline />
-            </li>
-            <li>
-              <PostCard />
-            </li>
-            <li>
-              <PostCard />
-            </li>
-            <li>
-              <PostCard />
-            </li>
-            <li>
-              <PostCard />
-            </li>
-            <li>
-              <PostCard />
-            </li>
+            {PostListData.length > 0 &&
+              PostListData.map((post) => (
+                <li key={post.boardId}>
+                  <PostCard data={post} />
+                </li>
+              ))}
           </ul>
           <Pagination />
         </PostWrapper>
@@ -90,6 +107,9 @@ const Wrapper = styled.div`
     width: 100%;
     padding: 0 20px;
     box-sizing: border-box;
+  }
+  @media screen and (max-width: 820px) {
+    padding: 0 10px;
   }
 `;
 

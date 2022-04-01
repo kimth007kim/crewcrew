@@ -1,40 +1,44 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
+import { format } from 'date-fns';
 import StarOffImg from '../../assets/images/StarOff.png';
 import StarOnImg from '../../assets/images/StarOn.png';
 import Profile4 from '../../assets/images/Profile4.png';
 
-function PostCard({ isDeadline }) {
+function PostCard({ data }) {
   return (
     <Wrapper>
-      <CardHead isDisabled={isDeadline}>
+      <CardHead isDisabled={!data.viewable}>
         <ProfileBox>
           <img src={`${Profile4}`} alt="" />
         </ProfileBox>
         <TextBox>
-          <Dday>{isDeadline ? '마감' : 'D-2'}</Dday>
+          <Dday>{!data.viewable ? '마감' : 'D-2'}</Dday>
           <CardDate>2/4 (목)</CardDate>
-          <CardName>세상은요지경</CardName>
+          <CardName>{data.nickname}</CardName>
         </TextBox>
       </CardHead>
-      <CardBody isDisabled={isDeadline}>
+      <CardBody isDisabled={!data.viewable}>
         <TextBox>
           <TitleBox>
-            <h5>함께 크루원 모집 플랫폼 작업하실 분 모십니다~! 크루크루</h5>
+            <h5>{data.title}</h5>
             <Star />
           </TitleBox>
           <TextList>
-            <CategoryText textColor="#005ec5" isDisabled={isDeadline}>
+            <CategoryText textColor="#005ec5" isDisabled={!data.viewable}>
               고시/공무원
             </CategoryText>
-            <p>오프라인</p>
-            <p>10/10명</p>
-            <p>조회수 50</p>
+            <p>{data.approachCode ? '온라인' : '오프라인'}</p>
+            <p>{`${data.recruitedCrew}/${data.totalCrew}`}</p>
+            <p>
+              조회수
+              {` ${data.hit}`}
+            </p>
           </TextList>
         </TextBox>
         <ButtonBox>
           <ButtonDetail>상세보기</ButtonDetail>
-          <ButtonParticipate disabled={isDeadline}>참여하기</ButtonParticipate>
+          <ButtonParticipate disabled={!data.viewable}>참여하기</ButtonParticipate>
         </ButtonBox>
       </CardBody>
     </Wrapper>
@@ -131,7 +135,7 @@ const ButtonParticipate = styled.button`
   }
 
   :disabled {
-    background-color: #f0f0f0;
+    background-color: #e2e2e2;
     cursor: default;
   }
 `;
