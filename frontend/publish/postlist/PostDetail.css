@@ -1898,6 +1898,10 @@ main {
   }
 }
 
+* {
+  scroll-behavior: smooth;
+}
+
 .SectionWrap850 {
   max-width: 850px;
   margin: auto;
