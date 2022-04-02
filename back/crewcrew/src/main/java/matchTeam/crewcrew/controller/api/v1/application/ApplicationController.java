@@ -9,6 +9,7 @@ import matchTeam.crewcrew.dto.application.ApplicationSaveResponseDTO;
 import matchTeam.crewcrew.dto.board.BoardSaveRequestDTO;
 import matchTeam.crewcrew.repository.board.BoardRepository;
 import matchTeam.crewcrew.response.ResponseHandler;
+import matchTeam.crewcrew.service.announcement.AnnouncementService;
 import matchTeam.crewcrew.service.application.ApplicationProgressService;
 import matchTeam.crewcrew.service.application.ApplicationService;
 import org.springframework.http.HttpStatus;
@@ -22,14 +23,16 @@ import org.springframework.web.bind.annotation.*;
 
     private final ApplicationService applicationService;
     private final ApplicationProgressService applicationProgressService;
+    private final AnnouncementService announcementService;
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping(value = "/board/{boardId}/application")
     public ResponseEntity<Object> fillInApplication(@ApiParam(value = "지원서를 작성하는려는 게시판 번호", required = true)
                                                     @PathVariable Long boardId,
-                                                    @ApiParam(value = "게시글 생성 요청 DTO", required = true)@RequestBody ApplicationSaveRequestDTO req){
+                                                    @ApiParam(value = "지원서 작성 요청 DTO", required = true)@RequestBody ApplicationSaveRequestDTO req){
 
         ApplicationSaveResponseDTO result = applicationService.save(req, boardId);
+        announcementService.save(result);
         applicationProgressService.increaseApply(boardId);
         return ResponseHandler.generateResponse("지원서 작성 성공",HttpStatus.OK, result);
     }
