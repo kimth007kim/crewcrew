@@ -1,7 +1,7 @@
 
 
 
-delete from category;
+
 INSERT INTO category
     (category_id,category_name,category_parent_id,description)VALUES
   (1,'스터디',NULL,NULL ),

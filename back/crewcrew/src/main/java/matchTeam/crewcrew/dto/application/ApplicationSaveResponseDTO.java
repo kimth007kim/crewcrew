@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import matchTeam.crewcrew.entity.announcement.Announcement;
 import matchTeam.crewcrew.entity.application.Application;
 
 @NoArgsConstructor
@@ -19,7 +20,7 @@ public class ApplicationSaveResponseDTO {
     @ApiModelProperty(value = "한줄소개", notes = "지원시 한줄소개")
     private String commentary;
 
-    @ApiModelProperty(value = "채팅방 링크", notes = "대화할 수 있느 오픈채팅방 링크")
+    @ApiModelProperty(value = "채팅방 링크", notes = "대화할 수 있는 오픈채팅방 링크")
     private String kakaoChat;
 
     @Builder

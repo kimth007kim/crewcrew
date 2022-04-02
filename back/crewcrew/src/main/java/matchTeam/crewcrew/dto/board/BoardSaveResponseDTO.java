@@ -59,7 +59,6 @@ public class BoardSaveResponseDTO {
     private Long hit;
 
     @ApiModelProperty(value = "오픈채팅 링크", notes = "오픈채팅 링크", required = true)
-    @Column(name = "kakao_chat", nullable = false)
     private String kakao_chat;
 
     @Builder
