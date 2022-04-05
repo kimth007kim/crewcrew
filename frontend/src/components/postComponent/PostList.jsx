@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { css } from 'styled-components';
 import axios from 'axios';
@@ -9,18 +9,45 @@ import FilterBox from './FilterBox';
 import PostCard from './PostCard';
 
 function PostList() {
-  const approach = useRecoilValue(approachFilterState);
   const article = useRecoilValue(articleFilterState);
+  const approach = useRecoilValue(approachFilterState);
   const filterData = useRecoilValue(arrayFilterState);
   const [PostListData, setPostListData] = useState([]);
 
+  const renderTitle = useCallback(() => {
+    if (article.htmlId === 'postRecent') {
+      return (
+        <>
+          <PostTitle>최근 크루원 모집글</PostTitle>
+          <PostDesc>새롭게 크루원을 모집하는 글을 소개해드려요!</PostDesc>
+        </>
+      );
+    }
+    if (article.htmlId === 'postPopular') {
+      return (
+        <>
+          <PostTitle>많이 조회된 크루원 모집글</PostTitle>
+          <PostDesc>유저들이 많이 찾은 모집글을 소개해드려요!</PostDesc>
+        </>
+      );
+    }
+    if (article.htmlId === 'postDeadline') {
+      return (
+        <>
+          <PostTitle>마감임박! 크루원 모집글</PostTitle>
+          <PostDesc>마감이 임박한 모집글을 소개해드려요!</PostDesc>
+        </>
+      );
+    }
+  }, [article]);
   // 필터 리스트 렌더
-  const renderFilterList = () => {
-    if (!filterData || filterData.length === 0) {
+  const renderFilterList = (data) => {
+    if (!data || data.length === 0) {
       return null;
     }
+    const filterArray = data;
 
-    const renderFilter = filterData.map((item) => (
+    const renderFilter = filterArray.map((item) => (
       <li key={`${item.htmlId} + ${item.name}`}>
         <FilterSpan textColor={item.color}>{item.name}</FilterSpan>
       </li>
@@ -61,20 +88,17 @@ function PostList() {
     <Container>
       <Wrapper>
         <FilterBox />
-        <PostTitle>최근 크루원 모집글</PostTitle>
-        <PostDesc>새롭게 크루원을 모집하는 글을 소개해드려요!</PostDesc>
+        {renderTitle()}
         <FilterChecked>
           {article && approach && (
             <>
               <li>
                 <FilterSpan textColor={article.color}>{article.name}</FilterSpan>
               </li>
-              <li>
-                <FilterSpan textColor={approach.color}>{approach.name}</FilterSpan>
-              </li>
+              {renderFilterList(approach)}
             </>
           )}
-          {renderFilterList()}
+          {renderFilterList(filterData)}
         </FilterChecked>
         <PostWrapper>
           <ul>

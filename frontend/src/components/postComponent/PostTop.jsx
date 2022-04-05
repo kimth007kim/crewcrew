@@ -1,11 +1,23 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useCallback, useRef, useState } from 'react';
+import styled, { css } from 'styled-components';
 import BgProfile1 from '../../assets/images/Profile1.png';
 import BgProfile3 from '../../assets/images/Profile3.png';
 import IconLinkIntro from '../../assets/images/IconLinkIntro.png';
 import IconSearch from '../../assets/images/IconSearch.png';
+import delImage from '../../assets/images/InputDel.png';
 
 function PostTop() {
+  const [searchText, setSearchText] = useState('');
+  const InputRef = useRef(null);
+
+  const onChangeSearchText = useCallback((e) => {
+    setSearchText(e.target.value);
+  }, []);
+
+  const HandleSearchTextDelete = useCallback(() => {
+    setSearchText('');
+  }, []);
+
   return (
     <MainTop>
       <TopBgCharacter />
@@ -14,7 +26,21 @@ function PostTop() {
         <h3>나에게 딱 맞는 크루, 여기서 찾아요!</h3>
         <InputWrapper>
           <img src={`${IconSearch}`} alt="" />
-          <input type="text" placeholder="참여하고 싶은 모임을 검색해보세요!" />
+          <input
+            type="text"
+            placeholder="참여하고 싶은 모임을 검색해보세요!"
+            onChange={onChangeSearchText}
+            ref={InputRef}
+            value={searchText}
+          />
+          <InputDel
+            onMouseDown={(e) => {
+              e.preventDefault();
+              HandleSearchTextDelete();
+              InputRef.current.focus();
+            }}
+            TextIn={!!searchText}
+          />
         </InputWrapper>
       </TopCont>
       <ButtonIntro />
@@ -121,6 +147,7 @@ const TopCont = styled.div`
 `;
 
 const InputWrapper = styled.div`
+  position: relative;
   width: 506px;
   height: 50px;
   border: 1px solid #e2e2e2;
@@ -170,6 +197,24 @@ const InputWrapper = styled.div`
   }
 `;
 
+const InputDel = styled.div`
+  width: 18px;
+  height: 18px;
+  background-image: url(${delImage});
+  background-size: 100%;
+  cursor: pointer;
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  display: none;
+  user-select: none;
+
+  ${(props) =>
+    props.TextIn &&
+    css`
+      display: block;
+    `};
+`;
 const ButtonIntro = styled.div`
   width: 45px;
   height: 45px;

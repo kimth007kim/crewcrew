@@ -15,7 +15,5 @@ export const articleFilterState = atom({
 
 export const approachFilterState = atom({
   key: 'approachFilter',
-  default: {
-    ...approachArr[0],
-  },
+  default: [...approachArr],
 });

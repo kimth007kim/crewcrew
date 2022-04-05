@@ -1,20 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { format } from 'date-fns';
+import { format, getDay, differenceInDays } from 'date-fns';
 import StarOffImg from '../../assets/images/StarOff.png';
 import StarOnImg from '../../assets/images/StarOn.png';
-import Profile4 from '../../assets/images/Profile4.png';
+import { cateogoryAll } from '../../frontDB/filterDB';
+import { viewDay } from '../../utils';
 
 function PostCard({ data }) {
+  console.log(data);
+  const renderDate = () => {
+    const date = new Date(data.createdDate);
+    return `${format(date, 'M/d')} (${viewDay(getDay(date))})`;
+  };
+
+  const renderDay = () => {
+    const date = new Date(data.expiredDate);
+    const nowDate = new Date();
+    return differenceInDays(date, nowDate) + 1;
+  };
+
   return (
     <Wrapper>
       <CardHead isDisabled={!data.viewable}>
         <ProfileBox>
-          <img src={`${Profile4}`} alt="" />
+          <img src={`${data.profileImage}`} alt="" />
         </ProfileBox>
         <TextBox>
-          <Dday>{!data.viewable ? '마감' : 'D-2'}</Dday>
-          <CardDate>2/4 (목)</CardDate>
+          <Dday>{!data.viewable ? '마감' : `D-${renderDay()}`}</Dday>
+          <CardDate>{renderDate()}</CardDate>
           <CardName>{data.nickname}</CardName>
         </TextBox>
       </CardHead>
@@ -25,8 +38,11 @@ function PostCard({ data }) {
             <Star />
           </TitleBox>
           <TextList>
-            <CategoryText textColor="#005ec5" isDisabled={!data.viewable}>
-              고시/공무원
+            <CategoryText
+              textColor={data.categoryParentId === 1 ? '#005ec5' : '#F7971E'}
+              isDisabled={!data.viewable}
+            >
+              {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
             </CategoryText>
             <p>{data.approachCode ? '온라인' : '오프라인'}</p>
             <p>{`${data.recruitedCrew}/${data.totalCrew}`}</p>
