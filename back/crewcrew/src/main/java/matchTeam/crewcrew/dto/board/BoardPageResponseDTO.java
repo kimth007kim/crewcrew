@@ -5,20 +5,18 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
 @NoArgsConstructor
 @Getter
-public class PageResponseDTO {
+public class BoardPageResponseDTO {
 
     @ApiModelProperty(value = "조회 결과 존재 여부", dataType = "boolean", example = "true")
     private Boolean hasContent;
 
     @ApiModelProperty(value = "조회 결과", dataType = "List<BoardResponseDTO>")
-    private List<BoardResponseDTO> contents;
+    private List<BoardPageDetailResponseDTO> contents;
 
     @ApiModelProperty(value = "페이징이 되어있는지에 대한 여부", dataType = "boolean")
     private Boolean paged;
@@ -54,7 +52,7 @@ public class PageResponseDTO {
     private Boolean empty;
 
     @Builder
-    public PageResponseDTO(Page<BoardResponseDTO> res){
+    public BoardPageResponseDTO(Page<BoardPageDetailResponseDTO> res){
         this.contents = res.getContent();
         this.paged = res.getPageable().isPaged();
         this.unpaged = res.getPageable().isUnpaged();
@@ -70,8 +68,8 @@ public class PageResponseDTO {
         this.hasContent = res.hasContent();
     }
 
-    public static PageResponseDTO toDTO(Page<BoardResponseDTO> page){
-        return PageResponseDTO.builder()
+    public static BoardPageResponseDTO toDTO(Page<BoardPageDetailResponseDTO> page){
+        return BoardPageResponseDTO.builder()
                 .res(page).build();
     }
 }

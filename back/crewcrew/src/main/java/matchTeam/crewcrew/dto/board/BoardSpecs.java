@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.specification;
+package matchTeam.crewcrew.dto.board;
 
 
 import lombok.Getter;
