@@ -1,8 +1,5 @@
 package matchTeam.crewcrew.response;
 
-import matchTeam.crewcrew.dto.board.BoardResponseDTO;
-import matchTeam.crewcrew.dto.board.PageResponseDTO;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

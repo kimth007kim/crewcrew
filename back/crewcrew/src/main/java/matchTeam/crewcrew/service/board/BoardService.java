@@ -6,7 +6,7 @@ import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.repository.board.BoardSearchRepository;
-import matchTeam.crewcrew.specification.BoardSpecs;
+import matchTeam.crewcrew.dto.board.BoardSpecs;
 import matchTeam.crewcrew.repository.board.BoardRepository;
 import matchTeam.crewcrew.repository.board.CategoryRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

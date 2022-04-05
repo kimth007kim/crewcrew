@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import matchTeam.crewcrew.dto.application.ApplicationSaveResponseDTO;
+import matchTeam.crewcrew.entity.BaseTimeEntity;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.user.User;
 
@@ -19,7 +20,7 @@ import javax.persistence.*;
         @Index(name = "fk_application_user_idx", columnList = "uid")
 })
 @Entity
-public class Application {
+public class Application extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "application_id", nullable = false)

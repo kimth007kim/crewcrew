@@ -22,11 +22,19 @@ public class QApplication extends EntityPathBase<Application> {
 
     public static final QApplication application = new QApplication("application");
 
+    public final matchTeam.crewcrew.entity.QBaseTimeEntity _super = new matchTeam.crewcrew.entity.QBaseTimeEntity(this);
+
     public final matchTeam.crewcrew.entity.board.QBoard board;
 
     public final StringPath commentary = createString("commentary");
 
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
     public final NumberPath<Integer> progress = createNumber("progress", Integer.class);
 

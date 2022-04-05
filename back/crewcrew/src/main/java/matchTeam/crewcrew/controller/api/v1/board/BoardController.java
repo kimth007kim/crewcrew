@@ -3,24 +3,19 @@ package matchTeam.crewcrew.controller.api.v1.board;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.board.*;
-import matchTeam.crewcrew.entity.board.Board;
-import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.service.board.BoardHitService;
 import matchTeam.crewcrew.service.board.BoardService;
-import matchTeam.crewcrew.specification.BoardSpecs;
+import matchTeam.crewcrew.dto.board.BoardSpecs;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Api(value = "Board Controller", tags = "5. board")
 @ApiOperation(value = "게시판 생성, 삭제, 수정, 조회")
@@ -123,7 +118,7 @@ public class BoardController {
         boardHitService.updateHit(boardId);
 
         Page<BoardResponseDTO> page = boardService.search(boardSpecs, pageable);
-        PageResponseDTO pageResponseDTO = PageResponseDTO.toDTO(page);
+        BoardPageResponseDTO pageResponseDTO = BoardPageResponseDTO.toDTO(page);
 
         List<Object> result = new ArrayList<>();
         result.add(findBoard);
@@ -137,7 +132,7 @@ public class BoardController {
             @ApiResponse(
                     code = 200,
                     message = "게시글 리스트 다중 조건 조회 성공",
-                    response = PageResponseDTO.class
+                    response = BoardPageResponseDTO.class
             ),
             @ApiResponse(
                     code = 2001,
@@ -176,7 +171,7 @@ public class BoardController {
                                                @PageableDefault(size = 10) Pageable pageable){
 
         Page<BoardResponseDTO> result = boardService.search(boardSpecs, pageable);
-        PageResponseDTO pageResponseDTO = PageResponseDTO.toDTO(result);
+        BoardPageResponseDTO pageResponseDTO = BoardPageResponseDTO.toDTO(result);
         return ResponseHandler.generateResponse("게시글 리스트 다중 조건 조회 성공", HttpStatus.OK, pageResponseDTO);
     }
 

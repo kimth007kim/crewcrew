@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.specification;
+package matchTeam.crewcrew.util.customException;
 
 import com.querydsl.core.types.NullExpression;
 import com.querydsl.core.types.Order;
