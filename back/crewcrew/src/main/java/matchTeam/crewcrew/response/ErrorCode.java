@@ -86,22 +86,27 @@ public enum ErrorCode {
     NOT_EXIST_BOARD_IN_ID(2201, "NOT EXIST_BOARD IN ID", "존재하지 않는 게시글 번호입니다."),
 
     // 4. 2300~2399 게시판 조건 조회에 대한 예외
-    NOT_EXIST_ORDER_KEYWORD(2301, "NOT EXIST ORDR KEYWORD", "올바른 정렬 조건이 아닙니다.");
+    NOT_EXIST_ORDER_KEYWORD(2301, "NOT EXIST ORDER KEYWORD", "올바른 정렬 조건이 아닙니다."),
 
 
+    // 5. 2400~2499 지원서 조회 및 조회에 대한 예외
+    NOT_EXIST_UID_TO_APPLY(2400, "NOT EXIST UID TO APPLY", "존재하지 않는 회원이 지원했습니다."),
+    NOT_EXIST_BOARD_TO_APPLY(2401, "NOT EXIST BOARD TO APPLY", "존재하지 않는 게시판에 지원했습니다."),
+    APPLY_TO_EXPIRED_BOARD(2402, "APPLY TO EXPIRED BOARD", "만료된 게시판에 지원헀습니다."),
+    DUPLICATE_APPLIER(2403, "DUPLICATE APPLIER", "중복 지원했습니다."),
+    APPLY_TO_BOARD_WRITER(2404, "APPLY TO BOARD WRITER", "게시판 작성자가 지원했습니다."),
+    NOT_CATEGORY_PARENT_ID(2405, "NOT_CATEGORY_PARENT_ID", "부모 카테고리로 지원서 조회를 요청하지 않았습니다.");
 
     private int status;
     private final String code;
     private final String message;
     private final String error;
 
-
     ErrorCode( int status,String code, String message) {
         this.status = status;
         this.code = code;
         this.message = message;
         this.error = "True";
-
     }
 
     public String getError() {

@@ -1,10 +1,12 @@
 package matchTeam.crewcrew.repository.board;
 
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import matchTeam.crewcrew.dto.board.BoardPageDetailResponseDTO;
 import matchTeam.crewcrew.dto.board.BoardResponseDTO;
 import matchTeam.crewcrew.dto.board.QBoardResponseDTO;
 import matchTeam.crewcrew.entity.board.Board;
@@ -33,9 +35,9 @@ public class BoardSearchRepository{
     private final JPAQueryFactory queryFactory;
     private final CategoryRepository categoryRepository;
 
-    public Page<BoardResponseDTO> search(BoardSpecs boardSpecs, Pageable pageable) {
-        List<BoardResponseDTO> content = queryFactory
-                .select(new QBoardResponseDTO(board))
+    public Page<BoardPageDetailResponseDTO> search(BoardSpecs boardSpecs, Pageable pageable) {
+        List<BoardPageDetailResponseDTO> content = queryFactory
+                .select(Projections.constructor(BoardPageDetailResponseDTO.class, board))
                 .from(board)
                 .where(
                         board.viewable.eq(true),

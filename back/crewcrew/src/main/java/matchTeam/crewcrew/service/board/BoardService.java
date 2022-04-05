@@ -78,7 +78,7 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public Page<BoardResponseDTO> search(BoardSpecs boardSpecs, Pageable pageable) {
+    public Page<BoardPageDetailResponseDTO> search(BoardSpecs boardSpecs, Pageable pageable) {
         /*List<Board> findBoards = boardRepository.findAllByKeyword(keyword);
         List<BoardResponseDTO> findBoardDTOs = new ArrayList<>();
 

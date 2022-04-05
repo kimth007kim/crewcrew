@@ -73,6 +73,15 @@ public class ApplicationQueryRepository {
         return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchCount);
     }
 
+    public Long checkDuplicateApply(ApplicationSaveRequestDTO req){
+        return queryFactory
+                .select(application)
+                .from(application)
+                .where(application.user.uid.eq(req.getUid())
+                        .and(application.board.id.eq(req.getBoardId())))
+                .fetchCount();
+    }
+
     private BooleanExpression approachCodeIn(List<Integer> approach){
         return isEmpty(approach) ? null : board.approach.in(approach);
     }

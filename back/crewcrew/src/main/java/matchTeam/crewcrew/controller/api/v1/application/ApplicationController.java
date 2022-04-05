@@ -26,14 +26,12 @@ import org.springframework.web.bind.annotation.*;
     private final AnnouncementService announcementService;
 
     @ResponseStatus(value = HttpStatus.CREATED)
-    @PostMapping(value = "/board/{boardId}/application")
-    public ResponseEntity<Object> fillInApplication(@ApiParam(value = "지원서를 작성하는려는 게시판 번호", required = true)
-                                                    @PathVariable Long boardId,
-                                                    @ApiParam(value = "지원서 작성 요청 DTO", required = true)@RequestBody ApplicationSaveRequestDTO req){
+    @PostMapping(value = "/board/application")
+    public ResponseEntity<Object> fillInApplication(@ApiParam(value = "지원서 작성 요청 DTO", required = true)@RequestBody ApplicationSaveRequestDTO req){
 
-        ApplicationSaveResponseDTO result = applicationService.save(req, boardId);
+        ApplicationSaveResponseDTO result = applicationService.save(req);
         announcementService.save(result);
-        applicationProgressService.increaseApply(boardId);
+        applicationProgressService.increaseApply(req.getBoardId());
         return ResponseHandler.generateResponse("지원서 작성 성공",HttpStatus.OK, result);
     }
 
@@ -48,7 +46,6 @@ import org.springframework.web.bind.annotation.*;
     @GetMapping(value = "/myPage/myApplication/details")
     public ResponseEntity<Object> findMyApplication(@ModelAttribute ApplicationDetailSpecs detailSpecs,
                                                     @PageableDefault(size = 5)Pageable pageable){
-
 
         Page<ApplicationDetailResponseDTO> result = applicationService.findMyApplicationDetails(detailSpecs, pageable);
         ApplicationDetailsPageResponseDTO pageResponseDTO = ApplicationDetailsPageResponseDTO.toDTO(result);

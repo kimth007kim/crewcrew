@@ -10,6 +10,7 @@ import matchTeam.crewcrew.entity.application.Application;
 import matchTeam.crewcrew.entity.board.Board;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -48,6 +49,9 @@ public class ApplicationDetailResponseDTO {
     @ApiModelProperty(value = "참여요청한 날짜", notes = "참여요청한 날짜(년월일)")
     private LocalDateTime appliedDate;
 
+    @ApiModelProperty(value = "만료날짜", notes = "년원일", example = "2023-02-27")
+    private LocalDate expiredDate;
+
     @ApiModelProperty(value = "만료여부", notes = "만료여부를 true(만료x) or false(만료됨)로 표현", example = "1")
     private Boolean viewable;
 
@@ -60,12 +64,14 @@ public class ApplicationDetailResponseDTO {
         this.uid = res.getUser().getUid();
         this.profileImage = res.getUser().getProfileImage();
         this.title = res.getTitle();
+        this.approachCode = res.getApproach();
         this.categoryParentId = res.getCategory().getCategoryParent().getId();
         this.categoryId = res.getCategory().getId();
         this.appliedCrew = res.getAppliedCrew();
         this.recruitedCrew = res.getRecruitedCrew();
         this.totalCrew = res.getTotalCrew();
         this.appliedDate = application.getCreatedDate();
+        this.expiredDate = res.getExpiredDate();
         this.viewable = res.getViewable();
         this.progress = application.getProgress();
     }

@@ -110,14 +110,14 @@ public class BoardController {
     })
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/board/{boardId}")
-    public ResponseEntity<Object> findByboardId(@ApiParam(value = "게시글 번호", required = true)@PathVariable Long boardId,
+    public ResponseEntity<Object> findByBoardId(@ApiParam(value = "게시글 번호", required = true)@PathVariable Long boardId,
                                                 @ModelAttribute BoardSpecs boardSpecs,
                                                 @PageableDefault(size = 5) Pageable pageable){
 
         BoardResponseDTO findBoard = boardService.findById(boardId);
         boardHitService.updateHit(boardId);
 
-        Page<BoardResponseDTO> page = boardService.search(boardSpecs, pageable);
+        Page<BoardPageDetailResponseDTO> page = boardService.search(boardSpecs, pageable);
         BoardPageResponseDTO pageResponseDTO = BoardPageResponseDTO.toDTO(page);
 
         List<Object> result = new ArrayList<>();
@@ -170,7 +170,7 @@ public class BoardController {
     public ResponseEntity<Object> getBoardList(@ModelAttribute BoardSpecs boardSpecs,
                                                @PageableDefault(size = 10) Pageable pageable){
 
-        Page<BoardResponseDTO> result = boardService.search(boardSpecs, pageable);
+        Page<BoardPageDetailResponseDTO> result = boardService.search(boardSpecs, pageable);
         BoardPageResponseDTO pageResponseDTO = BoardPageResponseDTO.toDTO(result);
         return ResponseHandler.generateResponse("게시글 리스트 다중 조건 조회 성공", HttpStatus.OK, pageResponseDTO);
     }

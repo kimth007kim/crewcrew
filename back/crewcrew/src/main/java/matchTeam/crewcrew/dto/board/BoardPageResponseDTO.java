@@ -16,7 +16,7 @@ public class BoardPageResponseDTO {
     private Boolean hasContent;
 
     @ApiModelProperty(value = "조회 결과", dataType = "List<BoardResponseDTO>")
-    private List<BoardResponseDTO> contents;
+    private List<BoardPageDetailResponseDTO> contents;
 
     @ApiModelProperty(value = "페이징이 되어있는지에 대한 여부", dataType = "boolean")
     private Boolean paged;
@@ -52,7 +52,7 @@ public class BoardPageResponseDTO {
     private Boolean empty;
 
     @Builder
-    public BoardPageResponseDTO(Page<BoardResponseDTO> res){
+    public BoardPageResponseDTO(Page<BoardPageDetailResponseDTO> res){
         this.contents = res.getContent();
         this.paged = res.getPageable().isPaged();
         this.unpaged = res.getPageable().isUnpaged();
@@ -68,7 +68,7 @@ public class BoardPageResponseDTO {
         this.hasContent = res.hasContent();
     }
 
-    public static BoardPageResponseDTO toDTO(Page<BoardResponseDTO> page){
+    public static BoardPageResponseDTO toDTO(Page<BoardPageDetailResponseDTO> page){
         return BoardPageResponseDTO.builder()
                 .res(page).build();
     }

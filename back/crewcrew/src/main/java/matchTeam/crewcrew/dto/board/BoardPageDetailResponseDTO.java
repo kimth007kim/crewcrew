@@ -7,17 +7,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import matchTeam.crewcrew.entity.board.Board;
-import matchTeam.crewcrew.util.helper.NestedConvertHelper;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @Getter
-public class BoardResponseDTO {
+public class BoardPageDetailResponseDTO {
 
     @ApiModelProperty(value = "유저의 uid", notes = "게시글 저장에 성공한 유저의 uid", example = "1")
     private Long uid;
@@ -71,7 +68,7 @@ public class BoardResponseDTO {
 
     @QueryProjection
     @Builder
-    public BoardResponseDTO(Board res) {
+    public BoardPageDetailResponseDTO(Board res) {
         this.boardId = res.getId();
         this.title = res.getTitle();
         this.uid = res.getUser().getUid();
@@ -86,13 +83,13 @@ public class BoardResponseDTO {
         this.categoryParentId = res.getCategory().getCategoryParent().getId();
         this.createdDate = res.getCreatedDate();
         this.expiredDate = res.getExpiredDate();
-        this.hit = res.getHit()+1;
+        this.hit = res.getHit();
         this.viewable = res.getViewable();
     }
 
 
-    public static BoardResponseDTO toDTO(Board board){
-        return BoardResponseDTO.builder()
+    public static BoardPageDetailResponseDTO toDTO(Board board){
+        return BoardPageDetailResponseDTO.builder()
                 .res(board).build();
     }
 }
