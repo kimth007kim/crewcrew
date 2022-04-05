@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import matchTeam.crewcrew.dto.social.NaverProfile;
 import matchTeam.crewcrew.dto.social.RetNaverOAuth;
 import matchTeam.crewcrew.response.exception.auth.CCommunicationException;
-import matchTeam.crewcrew.response.exception.auth.CKakaoCommunicationException;
+//import matchTeam.crewcrew.response.exception.auth.CKakaoCommunicationException;
 import matchTeam.crewcrew.response.exception.auth.CNaverCommunicationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;

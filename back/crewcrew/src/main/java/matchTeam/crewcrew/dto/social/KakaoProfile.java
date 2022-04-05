@@ -1,5 +1,6 @@
 package matchTeam.crewcrew.dto.social;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.ToString;
 

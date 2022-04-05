@@ -131,11 +131,11 @@ public class AuthExceptionHandler {
      * 카카오와 통신을 실패했을때 예외
      * kakaoService
      */
-    @ExceptionHandler(CKakaoCommunicationException.class)
-    protected ResponseEntity<ErrorResponseHandler> kakaoCommunicationException(CKakaoCommunicationException e){
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.KAKAO_COMMUNICATION_FAILED);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+//    @ExceptionHandler(CKakaoCommunicationException.class)
+//    protected ResponseEntity<ErrorResponseHandler> kakaoCommunicationException(CKakaoCommunicationException e){
+//        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.KAKAO_COMMUNICATION_FAILED);
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
     /**
      * 1301
      * 카카오 회원가입을 할때 이미 해당이메일로 카카오 회원가입이 되어있을경우 예외
@@ -151,7 +151,7 @@ public class AuthExceptionHandler {
     // 1400~1499 네이버 로그인 회원가입에 대한 예외
     /**
      * 1400
-     * 카카오와 통신을 실패했을때 예외
+     * 네이버와 통신을 실패했을때 예외
      * naverService
      */
     @ExceptionHandler(CNaverCommunicationException.class)
@@ -210,7 +210,7 @@ public class AuthExceptionHandler {
      * reissue
      */
     @ExceptionHandler(CInvalidRefreshTokenException.class)
-    protected ResponseEntity<ErrorResponseHandler> invalidRefreshToken(CUserNotFoundException e){
+    protected ResponseEntity<ErrorResponseHandler> invalidRefreshToken(CInvalidRefreshTokenException e){
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.INVALID_REFRESH_TOKEN);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
