@@ -1,10 +1,12 @@
 package matchTeam.crewcrew.repository.application;
 
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import matchTeam.crewcrew.dto.application.ApplicationCountResponseDTO;
 import matchTeam.crewcrew.dto.application.ApplicationResponseDTO;
 import matchTeam.crewcrew.dto.board.BoardResponseDTO;
 import matchTeam.crewcrew.dto.board.QBoardResponseDTO;
@@ -31,21 +33,23 @@ public class ApplicationQueryRepository {
     private final JPAQueryFactory queryFactory;
     private final CategoryRepository categoryRepository;
 
-    public void getMyApplication(Long myUid) {
-        queryFactory
-                .select()
+    public ApplicationCountResponseDTO getMyApplication(Long myUid) {
+        List<ApplicationResponseDTO> fetch = queryFactory
+                .select(Projections.constructor(ApplicationResponseDTO.class, category.categoryParent.id, category.categoryParent.id.count()))
                 .from(category)
-                    .innerJoin(board)
-                        .on(category.id.eq(board.category.id))
-                    .innerJoin(application)
-                        .on(application.board.id.eq(board.id))
-                    .where(application.user.uid.eq(myUid))
+                .innerJoin(board)
+                .on(category.id.eq(board.category.id))
+                .innerJoin(application)
+                .on(application.board.id.eq(board.id))
+                .where(application.user.uid.eq(myUid))
                 .groupBy(category.categoryParent.id)
                 .orderBy(category.categoryParent.id.asc())
                 .fetch();
 
+        ApplicationCountResponseDTO result = ApplicationCountResponseDTO.builder()
+                .results(fetch).build();
 
-
+        return result;
     }
 
     private BooleanExpression titleContentLike(String keyword){

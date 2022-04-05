@@ -1,11 +1,13 @@
 package matchTeam.crewcrew.service.application;
 
 import lombok.RequiredArgsConstructor;
+import matchTeam.crewcrew.dto.application.ApplicationCountResponseDTO;
 import matchTeam.crewcrew.dto.application.ApplicationSaveRequestDTO;
 import matchTeam.crewcrew.dto.application.ApplicationSaveResponseDTO;
 import matchTeam.crewcrew.entity.application.Application;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.user.User;
+import matchTeam.crewcrew.repository.application.ApplicationQueryRepository;
 import matchTeam.crewcrew.repository.application.ApplicationRepository;
 import matchTeam.crewcrew.repository.board.BoardRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ApplicationService {
     private final ApplicationRepository applicationRepository;
+    private final ApplicationQueryRepository queryRepository;
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
@@ -32,6 +35,12 @@ public class ApplicationService {
         );
         return ApplicationSaveResponseDTO.builder()
                 .res(application).build();
+    }
+
+    @Transactional
+    public ApplicationCountResponseDTO findMyApplication(Long myUid){
+        ApplicationCountResponseDTO result = queryRepository.getMyApplication(myUid);
+        return result;
     }
 
 }

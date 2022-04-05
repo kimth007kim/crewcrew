@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import matchTeam.crewcrew.dto.application.ApplicationCountResponseDTO;
 import matchTeam.crewcrew.dto.application.ApplicationSaveRequestDTO;
 import matchTeam.crewcrew.dto.application.ApplicationSaveResponseDTO;
 import matchTeam.crewcrew.dto.board.BoardSaveRequestDTO;
@@ -35,6 +36,13 @@ import org.springframework.web.bind.annotation.*;
         announcementService.save(result);
         applicationProgressService.increaseApply(boardId);
         return ResponseHandler.generateResponse("지원서 작성 성공",HttpStatus.OK, result);
+    }
+
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/mypage/myApplication")
+    public ResponseEntity<Object> findMyApplication(@ApiParam(value = "내가 참여요청한 지원서를 찾으려는 유저 uid", required = true)@RequestParam Long myUid){
+        ApplicationCountResponseDTO result = applicationService.findMyApplication(myUid);
+        return ResponseHandler.generateResponse("내가 참여요청한 지원서 갯수 세기 요청 성공",HttpStatus.OK, result);
     }
 
 }
