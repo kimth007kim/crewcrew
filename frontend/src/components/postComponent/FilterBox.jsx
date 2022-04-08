@@ -12,11 +12,11 @@ import {
   studyFilterArr,
 } from '../../frontDB/filterDB';
 
-function FilterBox() {
+function FilterBox({ handleGetAxios }) {
   const [FixedBox, setFixedBox] = useState(false);
   const [BtnActive, setBtnActive] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(articleArr[0]);
-  const [selectedApproach, setSelectedApproach] = useState(approachArr[0]);
+  const [selectedApproach, setSelectedApproach] = useState([...approachArr]);
   const [checkedAll, setCheckedAll] = useState(true);
   const [checkedList, setCheckedList] = useState([]);
   const [approach, setApproach] = useRecoilState(approachFilterState);
@@ -58,13 +58,16 @@ function FilterBox() {
   }, []);
 
   // 온라인, 오프라인 클릭 시 발생하는 함수
-  const onChangeApproach = useCallback((e) => {
-    const { value } = e.target;
-    const selected = approachArr.filter((item) => item.value === value);
-    if (selected) {
-      setSelectedApproach(selected[0]);
-    }
-  }, []);
+  const onChangeApproach = useCallback(
+    (checked, item) => {
+      if (checked) {
+        setSelectedApproach([...selectedApproach, item]);
+      } else {
+        setSelectedApproach(selectedApproach.filter((el) => el.value !== item.value));
+      }
+    },
+    [selectedApproach],
+  );
 
   // 모바일 필터 버튼 클릭 시 아래 드롭다운 발생하는 함수
   const handleClickFilterListBtn = useCallback(() => {
@@ -85,27 +88,36 @@ function FilterBox() {
     if (checkedList.length === 0) {
       filterContext.categorylist = [...allFilter];
     }
+    if (selectedApproach.length === 0) {
+      filterContext.approach = [...approachArr];
+    }
+    if (selectedApproach.length > 0) {
+      filterContext.approach = filterContext.approach.sort((a, b) => a.index - b.index);
+    }
+    if (checkedList.length > 0) {
+      filterContext.categorylist = filterContext.categorylist.sort((a, b) => a.index - b.index);
+    }
     localStorage.postFilter = JSON.stringify(filterContext);
     setArticle({
       ...filterContext.article,
     });
-    setApproach({
-      ...filterContext.approach,
-    });
+    setApproach([...filterContext.approach]);
     setFilterData([...filterContext.categorylist]);
     setCheckedList([]);
     setCheckedAll(true);
     setSelectedArticle(articleArr[0]);
-    setSelectedApproach(approachArr[0]);
+    setSelectedApproach([...approachArr]);
+    handleGetAxios();
   }, [checkedAll, selectedArticle, selectedApproach, checkedList]);
 
   // 필터 리스트 렌더
-  const renderFilterList = () => {
-    if (!filterData || filterData.length === 0) {
+  const renderFilterList = (data) => {
+    if (!data || data.length === 0) {
       return null;
     }
+    const filterArray = data;
 
-    const renderFilter = filterData.map((item) => (
+    const renderFilter = filterArray.map((item) => (
       <li key={`${item.htmlId} + ${item.name}`}>
         <FilterSpan textColor={item.color}>{item.name}</FilterSpan>
       </li>
@@ -123,18 +135,18 @@ function FilterBox() {
     };
 
     if (postFilter) {
+      const approaches = postFilter.approach.sort((a, b) => a.index - b.index);
+      const categories = postFilter.categorylist.sort((a, b) => a.index - b.index);
       filterContext.article = postFilter.article;
-      filterContext.approach = postFilter.approach;
-      filterContext.categorylist = [...postFilter.categorylist];
+      filterContext.approach = [...approaches];
+      filterContext.categorylist = [...categories];
     }
 
     localStorage.postFilter = JSON.stringify(filterContext);
     setArticle({
       ...filterContext.article,
     });
-    setApproach({
-      ...filterContext.approach,
-    });
+    setApproach([...filterContext.approach]);
     setFilterData([...filterContext.categorylist]);
   }, []);
 
@@ -177,12 +189,10 @@ function FilterBox() {
                 <li>
                   <FilterSpan textColor={article.color}>{article.name}</FilterSpan>
                 </li>
-                <li>
-                  <FilterSpan textColor={approach.color}>{approach.name}</FilterSpan>
-                </li>
+                {renderFilterList(approach)}
               </>
             )}
-            {renderFilterList()}
+            {renderFilterList(filterData)}
           </FilterCheckedMobile>
         </FilterCheckedWrapper>
       </FilterHead>
@@ -207,12 +217,12 @@ function FilterBox() {
             {approachArr.map((item) => (
               <li key={`${item.htmlId}`}>
                 <InputHide
-                  type="radio"
+                  type="checkbox"
                   id={item.htmlId}
-                  checked={selectedApproach.name === item.name}
+                  checked={checkValue(selectedApproach, item.value)}
                   bgColor={item.color}
                   value={item.value}
-                  onChange={onChangeApproach}
+                  onChange={(e) => onChangeApproach(e.target.checked, item)}
                 />
                 <FilterPostLabel htmlFor={item.htmlId}>{item.name}</FilterPostLabel>
               </li>
@@ -244,7 +254,9 @@ function FilterBox() {
                   value={item.value}
                   onChange={(e) => onCheckedElement(e.target.checked, item)}
                 />
-                <FilterCategoryLabel htmlFor={item.htmlId}>{item.name}</FilterCategoryLabel>
+                <FilterCategoryLabel htmlFor={item.htmlId} hColor={item.color}>
+                  {item.name}
+                </FilterCategoryLabel>
               </li>
             ))}
             {hobbyFilterArr.map((item) => (
@@ -257,7 +269,9 @@ function FilterBox() {
                   value={item.value}
                   onChange={(e) => onCheckedElement(e.target.checked, item)}
                 />
-                <FilterCategoryLabel htmlFor={item.htmlId}>{item.name}</FilterCategoryLabel>
+                <FilterCategoryLabel htmlFor={item.htmlId} hColor={item.color}>
+                  {item.name}
+                </FilterCategoryLabel>
               </li>
             ))}
           </FilterList>
@@ -450,8 +464,8 @@ const FilterPostBox = styled.div`
 const FilterCategoryBox = styled.div`
   display: inline-block;
   height: 60px;
-  width: calc(100% - 375px);
-  padding-left: 42px;
+  width: calc(100% - 300px);
+  padding-left: 25px;
   box-sizing: content-box;
   @media screen and (max-width: 820px) {
     display: block;
@@ -476,6 +490,8 @@ const FilterPostLabel = styled.label`
   transition: 0.2s;
   box-sizing: border-box;
   width: 88px;
+  user-select: none;
+
   :hover {
     border-color: #000;
     color: #000;
@@ -507,9 +523,15 @@ const FilterCategoryLabel = styled.label`
   box-sizing: border-box;
   width: fit-content;
   padding: 0 16px;
+  user-select: none;
+
   :hover {
-    border-color: #000;
-    color: #000;
+    ${(props) =>
+      props.hColor &&
+      css`
+        border-color: ${props.hColor};
+        color: ${props.hColor};
+      `}
   }
 
   @media screen and (max-width: 820px) {
@@ -579,6 +601,8 @@ const ButtonFilter = styled.button`
   bottom: -15px;
   left: calc(50% - 60px);
   justify-self: end;
+  user-select: none;
+
   @media screen and (max-width: 820px) {
     width: 100%;
     height: 50px;
