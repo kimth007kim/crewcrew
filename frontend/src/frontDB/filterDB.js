@@ -15,7 +15,7 @@ export const articleArr = [
     htmlId: 'postDeadline',
     name: '마감임박 글',
     color: '#00b7ff',
-    value: 'expired-date',
+    value: 'expired',
   },
 ];
 

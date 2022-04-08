@@ -3,16 +3,30 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { css } from 'styled-components';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useLocation } from 'react-router-dom';
 import { approachFilterState, arrayFilterState, articleFilterState } from '../../atom/post';
 import Pagination from './Pagination';
 import FilterBox from './FilterBox';
 import PostCard from './PostCard';
 
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
 function PostList() {
   const article = useRecoilValue(articleFilterState);
   const approach = useRecoilValue(approachFilterState);
   const filterData = useRecoilValue(arrayFilterState);
+  const [pageData, setPageData] = useState(null);
+
   const [PostListData, setPostListData] = useState([]);
+
+  const query = useQuery();
+  const [totalPage, setTotalPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(query.get('page'));
+  const [postsPerPage, setPostsPerPage] = useState(10);
 
   const renderTitle = useCallback(() => {
     if (article.htmlId === 'postRecent') {
@@ -55,39 +69,79 @@ function PostList() {
     return renderFilter;
   };
 
-  useEffect(() => {
-    async function axiosGet() {
-      try {
-        const context = {
-          params: {},
-        };
-        const { data } = await axios.get('/board/list', context);
-        console.log(data.data);
+  const axiosGet = useCallback(async () => {
+    try {
+      const postFilter = JSON.parse(localStorage.getItem('postFilter'));
 
-        switch (data.status) {
-          case 200:
-            setPostListData(data.data.contents);
-            break;
-          case 2001:
-          case 2301:
-            toast.error(data.message);
-            break;
+      const order = postFilter.article.value;
+      const access = postFilter.approach.map((data) => data.value);
+      const categoryIds = postFilter.categorylist.map((data) => data.value);
 
-          default:
-            break;
-        }
-      } catch (error) {
-        toast.error(error);
-        console.dir(error);
+      const params = new URLSearchParams();
+      params.append('order', order);
+      params.append('approach', access);
+      if (categoryIds[0] !== '0') {
+        params.append('categoryIds', categoryIds);
       }
+      const context = {
+        params,
+      };
+      const { data } = await axios.get('/board/list', context);
+
+      switch (data.status) {
+        case 200:
+          setPageData({
+            ...data.data,
+          });
+          setPostListData([...data.data.contents]);
+          setTotalPage(data.data.totalPages);
+          break;
+        case 2001:
+        case 2301:
+          toast.error(data.message);
+          break;
+
+        default:
+          break;
+      }
+    } catch (error) {
+      toast.error(error);
+      console.dir(error);
     }
+  }, []);
+
+  useEffect(() => {
     axiosGet();
+  }, []);
+
+  const handleResize = () => {
+    if (window.innerWidth > 768) {
+      setPostsPerPage(10);
+    } else if (window.innerWidth > 320) {
+      setPostsPerPage(5);
+    } else {
+      setPostsPerPage(3);
+    }
+  };
+
+  useEffect(() => {
+    const pageNum = query.get('page');
+    setCurrentPage(pageNum || 1);
+  }, [query.get('page')]);
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (
     <Container>
       <Wrapper>
-        <FilterBox />
+        <FilterBox handleGetAxios={axiosGet} />
         {renderTitle()}
         <FilterChecked>
           {article && approach && (
@@ -109,8 +163,13 @@ function PostList() {
                 </li>
               ))}
           </ul>
-          <Pagination />
         </PostWrapper>
+        <Pagination
+          data={pageData}
+          currentPage={currentPage}
+          postsPerPage={postsPerPage}
+          totalPage={totalPage}
+        />
       </Wrapper>
     </Container>
   );

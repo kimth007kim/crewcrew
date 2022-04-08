@@ -12,7 +12,7 @@ import {
   studyFilterArr,
 } from '../../frontDB/filterDB';
 
-function FilterBox() {
+function FilterBox({ handleGetAxios }) {
   const [FixedBox, setFixedBox] = useState(false);
   const [BtnActive, setBtnActive] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState(articleArr[0]);
@@ -107,6 +107,7 @@ function FilterBox() {
     setCheckedAll(true);
     setSelectedArticle(articleArr[0]);
     setSelectedApproach([...approachArr]);
+    handleGetAxios();
   }, [checkedAll, selectedArticle, selectedApproach, checkedList]);
 
   // 필터 리스트 렌더

@@ -7,7 +7,6 @@ import { cateogoryAll } from '../../frontDB/filterDB';
 import { viewDay } from '../../utils';
 
 function PostCard({ data }) {
-  console.log(data);
   const renderDate = () => {
     const date = new Date(data.createdDate);
     return `${format(date, 'M/d')} (${viewDay(getDay(date))})`;
