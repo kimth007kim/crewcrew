@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.AccessDeniedException;
 
 @RestControllerAdvice
@@ -119,6 +121,17 @@ public class  GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @ExceptionHandler(IOException.class)
+    protected ResponseEntity<ErrorResponseHandler> ioException(IOException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.ACCESS_DENIED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @ExceptionHandler(MalformedURLException.class)
+    protected ResponseEntity<ErrorResponseHandler> malformedUrlException(MalformedURLException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.URL_MALFORMED_EXCEPTION);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 //
 

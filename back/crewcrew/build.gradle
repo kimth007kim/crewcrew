@@ -61,8 +61,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
 	implementation 'com.amazonaws:aws-java-sdk-s3'
-
-
+	implementation 'commons-io:commons-io:2.6'
 
 	compileOnly 'org.projectlombok:lombok'
 

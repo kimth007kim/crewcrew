@@ -183,8 +183,10 @@ public class AuthController {
         Long signupId = userService.signup(signUpRequestDto);
         //1005 현재 입력한 이메일로 이미 존재할 경우
 
+        String email_url = email.replace("@","_");
 
-        String filename=s3Uploader.addImageWhenSignUp(email,file,Default,"local");
+
+        String filename=s3Uploader.addImageWhenSignUp(email_url,file,Default);
         User user = userService.findByUid(signupId);
         user.setProfileImage(filename);
         user.setMessage(message);

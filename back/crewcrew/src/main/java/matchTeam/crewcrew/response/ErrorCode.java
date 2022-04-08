@@ -2,10 +2,11 @@ package matchTeam.crewcrew.response;
 
 public enum ErrorCode {
     INVALID_INPUT_VALUE(400, "COMMON_001", " Invalid Input Value"),
-    METHOD_NOT_ALLOWED(405, "COMMON_002", "Method not allowed"),
-    HANDLE_ACCESS_DENIED(403, "COMMON_003", "Access is Denied"),
-    INVALID_REQUEST_DATA(404,"INVALID_REQUEST","invalid Access"),
+    METHOD_NOT_ALLOWED(401, "COMMON_002", "Method not allowed"),
+    HANDLE_ACCESS_DENIED(402, "COMMON_003", "Access is Denied"),
+    INVALID_REQUEST_DATA(403,"INVALID_REQUEST","invalid Access"),
     TOKEN_NOT_FOUND(404,"TOKEN_NOT_FOUND","invalidToken"),
+    IOEXCEPTION(405,"IO_EXCEPTION","입출력에서 예외가 발생하였습니다."),
 
     // Standard
     ILLEGAL_STATE(400, "STANDARD_001", "illegal state"),
@@ -32,9 +33,9 @@ public enum ErrorCode {
     LOGIN_FAILED_BY_EMAIL(1101,"EMAIL NOT EXIST","존재하지 않는 이메일 입니다."),
     LOGIN_FAILED_BY_PASSWORD(1102,"PASSWORD INCORRECT","비밀번호가 이메일과 일치하지않습니다."),
 
+    URL_MALFORMED_EXCEPTION(1200,"URL NOT VALID EXCEPTION","유효하지 않은 소셜 로그인 URL입니다."),
     // 1300~1399 카카오 로그인 회원가입에 대한 예외
     KAKAO_COMMUNICATION_FAILED(1300,"KAKAO_01","카카오와 http통신이 실패하였습니다."),
-
     KAKAKO_USER_ALREADY_EXIST(1301,"KAKAKO_USER ALREADY EXIST","이미 존재하는 카카오 유저입니다."),
 
 

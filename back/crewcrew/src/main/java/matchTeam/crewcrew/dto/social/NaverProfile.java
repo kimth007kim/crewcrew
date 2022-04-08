@@ -21,5 +21,6 @@ public class NaverProfile {
         private String email;
         private String nickname;
         private String name;
+        private String profile_image;
     }
 }

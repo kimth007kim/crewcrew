@@ -12,9 +12,12 @@ import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.response.exception.auth.CSocialAgreementException;
 import matchTeam.crewcrew.response.exception.auth.CUserNotFoundException;
+import matchTeam.crewcrew.service.amazonS3.S3Uploader;
 import matchTeam.crewcrew.service.user.KakaoService;
+import matchTeam.crewcrew.service.user.LikedCategoryService;
 import matchTeam.crewcrew.service.user.NaverService;
 import matchTeam.crewcrew.service.user.UserService;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -24,6 +27,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 
 @Api(tags=" 5. Oauth 2.0 컨트롤러 ")
@@ -33,11 +44,13 @@ import java.util.Optional;
 public class OauthController {
 
     private final RestTemplate restTemplate;
+    private final S3Uploader s3Uploader;
     private final Environment env;
     private final KakaoService kakaoService;
     private final UserService userService;
     private final NaverService naverService;
     private final JwtProvider jwtProvider;
+    private final LikedCategoryService likedCategoryService;
 
     @Value("${url.base}")
     private String baseUrl;
@@ -62,7 +75,7 @@ public class OauthController {
             )
     })
     @GetMapping("/url")
-    public ResponseEntity<Object> socialLogin() {
+    public ResponseEntity<Object> showUrl() {
         StringBuilder kakaoLoginUri = new StringBuilder()
                 .append(env.getProperty("social.kakao.url.login"))
                 .append("?response_type=code")
@@ -177,20 +190,30 @@ public class OauthController {
     @PostMapping("/kakao/signup")
     public ResponseEntity<Object> signupByKakao(
             @ApiParam(value = "소셜 카카오 회원가입 dto", required = true)
-            @RequestBody KakaoSignupRequestDto kakaoSignupRequestDto) {
+            @RequestBody KakaoSignupRequestDto kakaoSignupRequestDto) throws IOException {
         KakaoProfile kakaoProfile = kakaoService.getKakaoProfile(kakaoSignupRequestDto.getAccessToken());
         if (kakaoProfile == null) throw new CUserNotFoundException();
         if (kakaoProfile.getKakao_account().getEmail()==null){
             kakaoService.kakaoUnlink(kakaoSignupRequestDto.getAccessToken());
             throw new CSocialAgreementException();
         }
+        userService.validateDuplicateByNickname(kakaoSignupRequestDto.getNickName());
         Long userId = userService.kakaoSignup(UserSignUpRequestDto.builder()
                 .email(kakaoProfile.getKakao_account().getEmail())
                 .name(kakaoProfile.getProperties().getNickname())
-                .nickName(kakaoProfile.getProperties().getNickname())
+                .nickName(kakaoSignupRequestDto.getNickName())
                 .provider("kakao")
                 .build());
+
+        User NEW_USER=userService.findByUid(userId);
+        List<Long> input=likedCategoryService.deleteDuplicateCategory(kakaoSignupRequestDto.getCategoryId());
+        List<Long> result =likedCategoryService.addLikedCategory(NEW_USER,input);
+        userService.setMessage(NEW_USER,kakaoSignupRequestDto.getMessage());
+        String email_url=s3Uploader.nameFile(kakaoProfile.getKakao_account().getEmail(),"kakao");
+        s3Uploader.urlConvert(email_url, kakaoProfile.getKakao_account().getProfile().getProfile_image_url(), NEW_USER);
+
         User user = userService.findByUid(userId);
+
         return ResponseHandler.generateResponse("카카오 회원가입 성공", HttpStatus.OK, jwtProvider.createTokenDto(userId,user.getRoles(),false));
 
     }
@@ -217,7 +240,7 @@ public class OauthController {
     @PostMapping("/naver/signup")
     public ResponseEntity<Object> signupByNaver(
             @ApiParam(value = "소셜 네이버 회원가입 dto", required = true)
-            @RequestBody NaverSignupRequestDto naverSignupRequestDto) {
+            @RequestBody NaverSignupRequestDto naverSignupRequestDto) throws IOException {
         NaverProfile naverProfile = naverService.getNaverProfile(naverSignupRequestDto.getAccessToken());
         if (naverProfile == null) throw new CUserNotFoundException();
 //        if (kakaoProfile.getKakao_account().getEmail()==null){
@@ -230,6 +253,12 @@ public class OauthController {
                 .nickName(naverProfile.getResponse().getName())
                 .provider("naver")
                 .build());
+        User NEW_USER=userService.findByUid(userId);
+        List<Long> input=likedCategoryService.deleteDuplicateCategory(naverSignupRequestDto.getCategoryId());
+        List<Long> result =likedCategoryService.addLikedCategory(NEW_USER,input);
+        userService.setMessage(NEW_USER,naverSignupRequestDto.getMessage());
+        String email_url=s3Uploader.nameFile(naverProfile.getResponse().getEmail(),"naver");
+        s3Uploader.urlConvert(email_url, naverProfile.getResponse().getProfile_image(), NEW_USER);
         User user = userService.findByUid(userId);
         return ResponseHandler.generateResponse("네이버 회원가입 성공", HttpStatus.OK, jwtProvider.createTokenDto(userId,user.getRoles(),false));
     }
@@ -254,8 +283,8 @@ public class OauthController {
     @PostMapping("/naver/total")
     public ResponseEntity<Object> naverTotal(
             @ApiParam(value = "소셜 네이버 회원가입 dto", required = true)
-            @RequestBody NaverSignupRequestDto naverSignupRequestDto) {
-        NaverProfile naverProfile = naverService.getNaverProfile(naverSignupRequestDto.getAccessToken());
+            @RequestBody NaverLoginRequestDto naverLoginRequestDto) throws IOException {
+        NaverProfile naverProfile = naverService.getNaverProfile(naverLoginRequestDto.getAccessToken());
         if (naverProfile == null) throw new CUserNotFoundException();
 
 
@@ -270,6 +299,9 @@ public class OauthController {
                     .provider("naver")
                     .build());
             User NEW_USER=userService.findByUid(userId);
+            String email_url=s3Uploader.nameFile(naverProfile.getResponse().getEmail(),"naver");
+            s3Uploader.urlConvert(email_url, naverProfile.getResponse().getProfile_image(), NEW_USER);
+
             return ResponseHandler.generateResponse("네이버 회원가입 성공", HttpStatus.OK, jwtProvider.createTokenDto(userId,NEW_USER.getRoles(),false));
 
         }
@@ -281,11 +313,11 @@ public class OauthController {
     @PostMapping("/kakao/total")
     public ResponseEntity<Object> kakaoTotal(
             @ApiParam(value = "1. 카카오에서 받은 AccessToken을 매개변수로 삼아서 , \n 2-1. db에 회원가입이 되어있지 않으면 회원가입을하고 로그인을 해서 AccessToken을 반환합니다. \n 2-2. db에 있는 회원이면 바로 로그인을 해서 AccessToken을 반환합니다.", required = true)
-            @RequestBody KakaoSignupRequestDto kakaoSignupRequestDto) {
-        KakaoProfile kakaoProfile = kakaoService.getKakaoProfile(kakaoSignupRequestDto.getAccessToken());
+            @RequestBody KakaoLoginRequestDto kakaoLoginRequestDto) throws IOException {
+        KakaoProfile kakaoProfile = kakaoService.getKakaoProfile(kakaoLoginRequestDto.getAccessToken());
         if (kakaoProfile == null) throw new CUserNotFoundException();
         if (kakaoProfile.getKakao_account().getEmail()==null){
-            kakaoService.kakaoUnlink(kakaoSignupRequestDto.getAccessToken());
+            kakaoService.kakaoUnlink(kakaoLoginRequestDto.getAccessToken());
             throw new CSocialAgreementException();
         }
         Optional<User> user = userService.findByEmailAndProvider(kakaoProfile.getKakao_account().getEmail(),"kakao");
@@ -299,6 +331,11 @@ public class OauthController {
                 .provider("kakao")
                 .build());
             User NEW_USER=userService.findByUid(userId);
+            String email_url=s3Uploader.nameFile(kakaoProfile.getKakao_account().getEmail(),"kakao");
+            s3Uploader.urlConvert(email_url, kakaoProfile.getKakao_account().getProfile().getProfile_image_url(), NEW_USER);
+
+
+
             return ResponseHandler.generateResponse("카카오 회원가입 성공", HttpStatus.OK, jwtProvider.createTokenDto(userId,NEW_USER.getRoles(),false));
 
         }

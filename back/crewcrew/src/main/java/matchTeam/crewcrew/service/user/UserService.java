@@ -150,6 +150,10 @@ public class UserService {
     public void setProfileImage(User user, String image){
         user.setProfileImage(image);
     }
+    public void setMessage(User user, String message){
+        user.setMessage(message);
+    }
+
     public void changePassword(User user, String password){
         String new_password=passwordEncoder.encode(password);
         user.setPassword(new_password);

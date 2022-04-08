@@ -14,6 +14,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -92,4 +100,5 @@ public class KakaoService {
         }
         throw new CKakaoCommunicationException();
     }
+
 }

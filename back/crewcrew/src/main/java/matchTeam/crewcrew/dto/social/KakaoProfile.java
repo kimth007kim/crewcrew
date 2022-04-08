@@ -16,6 +16,7 @@ public class KakaoProfile {
     @ToString
     public static class KakaoAccount {
         private String email;
+        private Profile profile;
     }
 
     @Getter
@@ -23,4 +24,13 @@ public class KakaoProfile {
     public static class Properties{
         private String nickname;
     }
+
+    @Getter
+    @ToString
+    public static class Profile{
+        private String thumbnail_image_url;
+        private String profile_image_url;
+
+    }
+
 }
