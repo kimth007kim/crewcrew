@@ -158,7 +158,7 @@ public class BoardController {
             ),
             @ApiImplicitParam(
                     name = "order",
-                    value = "정렬 기준 키워드, recent=최신, popular=조회수, expired-date=만료날짜, expired-crew=남은 인원",
+                    value = "정렬 기준 키워드, recent=최신, popular=조회수, expired=만료순",
                     defaultValue = "recent"
             ),
             @ApiImplicitParam(
