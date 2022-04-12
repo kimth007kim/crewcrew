@@ -3,6 +3,7 @@ package matchTeam.crewcrew.controller.api.v1.user;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.config.security.JwtProvider;
+import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.social.*;
 import matchTeam.crewcrew.dto.user.AccessTokenDto;
 import matchTeam.crewcrew.dto.user.UserSignUpRequestDto;
@@ -146,7 +147,16 @@ public class OauthController {
     }
 
 
-
+//    @ApiOperation(value = "랜덤테스트"
+//            , notes = "랜덤 테스트!")
+//    @GetMapping("/randomtest")
+//    public ResponseEntity<Object> randomTest(
+////            @ApiParam(value = "소셜 네이버 로그인 dto", required = true)
+//            ) {
+//        String hello="김경동";
+//        String nickName = userService.nickNameGenerator(hello);
+//        return ResponseHandler.generateResponse("네이버 로그인 성공 ", HttpStatus.OK, nickName);
+//    }
 
 
 
@@ -197,24 +207,26 @@ public class OauthController {
             kakaoService.kakaoUnlink(kakaoSignupRequestDto.getAccessToken());
             throw new CSocialAgreementException();
         }
-        userService.validateDuplicateByNickname(kakaoSignupRequestDto.getNickName());
+        String nickName=userService.nickNameGenerator(kakaoProfile.getProperties().getNickname());
         Long userId = userService.kakaoSignup(UserSignUpRequestDto.builder()
                 .email(kakaoProfile.getKakao_account().getEmail())
                 .name(kakaoProfile.getProperties().getNickname())
-                .nickName(kakaoSignupRequestDto.getNickName())
+                .nickName(nickName)
                 .provider("kakao")
                 .build());
 
         User NEW_USER=userService.findByUid(userId);
-        List<Long> input=likedCategoryService.deleteDuplicateCategory(kakaoSignupRequestDto.getCategoryId());
-        List<Long> result =likedCategoryService.addLikedCategory(NEW_USER,input);
-        userService.setMessage(NEW_USER,kakaoSignupRequestDto.getMessage());
+//        List<Long> input=likedCategoryService.deleteDuplicateCategory(kakaoSignupRequestDto.getCategoryId());
+//        List<Long> result =likedCategoryService.addLikedCategory(NEW_USER,input);
+        userService.setRandomMessage(NEW_USER);
         String email_url=s3Uploader.nameFile(kakaoProfile.getKakao_account().getEmail(),"kakao");
         s3Uploader.urlConvert(email_url, kakaoProfile.getKakao_account().getProfile().getProfile_image_url(), NEW_USER);
 
         User user = userService.findByUid(userId);
+        TokenDto token = jwtProvider.createTokenDto(user.getUid(),user.getRoles(),false);
+        SocialLoginAccessTokenDto accessTokenDto = new SocialLoginAccessTokenDto(token.getAccessToken(),true);
 
-        return ResponseHandler.generateResponse("카카오 회원가입 성공", HttpStatus.OK, jwtProvider.createTokenDto(userId,user.getRoles(),false));
+        return ResponseHandler.generateResponse("카카오 회원가입 성공", HttpStatus.OK, accessTokenDto);
 
     }
 
@@ -229,9 +241,10 @@ public class OauthController {
         if (kakaoProfile == null) throw new CUserNotFoundException();
 
         User user = userService.findByEmailAndProvider(kakaoProfile.getKakao_account().getEmail(),"kakao").orElseThrow(CUserNotFoundException::new);
+        TokenDto token = jwtProvider.createTokenDto(user.getUid(),user.getRoles(),false);
+        SocialLoginAccessTokenDto accessTokenDto = new SocialLoginAccessTokenDto(token.getAccessToken(),false);
 
-
-        return ResponseHandler.generateResponse("카카오 로그인 성공", HttpStatus.OK, jwtProvider.createTokenDto(user.getUid(),user.getRoles(),false));
+        return ResponseHandler.generateResponse("카카오 로그인 성공", HttpStatus.OK,accessTokenDto);
     }
 
 
@@ -247,20 +260,24 @@ public class OauthController {
 //            kakaoService.kakaoUnlink(naverSignupRequestDto.getAccessToken());
 //            throw new CSocialAgreementException();
 //        }
+        String nickName=userService.nickNameGenerator(naverProfile.getResponse().getName());
         Long userId = userService.naverSignup(UserSignUpRequestDto.builder()
                 .email(naverProfile.getResponse().getEmail())
                 .name(naverProfile.getResponse().getName())
-                .nickName(naverProfile.getResponse().getName())
+                .nickName(nickName)
                 .provider("naver")
                 .build());
         User NEW_USER=userService.findByUid(userId);
-        List<Long> input=likedCategoryService.deleteDuplicateCategory(naverSignupRequestDto.getCategoryId());
-        List<Long> result =likedCategoryService.addLikedCategory(NEW_USER,input);
-        userService.setMessage(NEW_USER,naverSignupRequestDto.getMessage());
+//        List<Long> input=likedCategoryService.deleteDuplicateCategory(naverSignupRequestDto.getCategoryId());
+//        List<Long> result =likedCategoryService.addLikedCategory(NEW_USER,input);
+        userService.setRandomMessage(NEW_USER);
+//        userService.setMessage(NEW_USER,naverSignupRequestDto.getMessage());
         String email_url=s3Uploader.nameFile(naverProfile.getResponse().getEmail(),"naver");
         s3Uploader.urlConvert(email_url, naverProfile.getResponse().getProfile_image(), NEW_USER);
         User user = userService.findByUid(userId);
-        return ResponseHandler.generateResponse("네이버 회원가입 성공", HttpStatus.OK, jwtProvider.createTokenDto(userId,user.getRoles(),false));
+        TokenDto token = jwtProvider.createTokenDto(userId,user.getRoles(),false);
+        SocialLoginAccessTokenDto accessTokenDto = new SocialLoginAccessTokenDto(token.getAccessToken(),true);
+        return ResponseHandler.generateResponse("네이버 회원가입 성공", HttpStatus.OK, accessTokenDto);
     }
 
     @ApiOperation(value = "네이버 소셜 로그인"
@@ -274,7 +291,10 @@ public class OauthController {
 
         User user = userService.findByEmailAndProvider(naverProfile.getResponse().getEmail(),"naver").orElseThrow(CUserNotFoundException::new);
 
-        return ResponseHandler.generateResponse("네이버 로그인 성공 ", HttpStatus.OK, jwtProvider.createTokenDto(user.getUid(),user.getRoles(),false));
+        TokenDto token = jwtProvider.createTokenDto(user.getUid(),user.getRoles(),false);
+        SocialLoginAccessTokenDto accessTokenDto = new SocialLoginAccessTokenDto(token.getAccessToken(),false);
+
+        return ResponseHandler.generateResponse("네이버 로그인 성공 ", HttpStatus.OK, accessTokenDto);
     }
 
 
@@ -290,19 +310,27 @@ public class OauthController {
 
         Optional<User> user = userService.findByEmailAndProvider(naverProfile.getResponse().getEmail(),"naver");
         if (user.isPresent()){
-            return ResponseHandler.generateResponse("네이버 로그인 성공", HttpStatus.OK, jwtProvider.createTokenDto(user.get().getUid(),user.get().getRoles(),false));
+            TokenDto token = jwtProvider.createTokenDto(user.get().getUid(),user.get().getRoles(),false);
+            SocialLoginAccessTokenDto accessTokenDto = new SocialLoginAccessTokenDto(token.getAccessToken(),false);
+
+            return ResponseHandler.generateResponse("네이버 로그인 성공", HttpStatus.OK, accessTokenDto);
         }else{
+            String nickName=userService.nickNameGenerator(naverProfile.getResponse().getName());
             Long userId = userService.naverSignup(UserSignUpRequestDto.builder()
                     .email(naverProfile.getResponse().getEmail())
                     .name(naverProfile.getResponse().getName())
-                    .nickName(naverProfile.getResponse().getName())
+                    .nickName(nickName)
                     .provider("naver")
                     .build());
             User NEW_USER=userService.findByUid(userId);
             String email_url=s3Uploader.nameFile(naverProfile.getResponse().getEmail(),"naver");
             s3Uploader.urlConvert(email_url, naverProfile.getResponse().getProfile_image(), NEW_USER);
 
-            return ResponseHandler.generateResponse("네이버 회원가입 성공", HttpStatus.OK, jwtProvider.createTokenDto(userId,NEW_USER.getRoles(),false));
+
+            TokenDto token = jwtProvider.createTokenDto(userId,NEW_USER.getRoles(),false);
+            SocialLoginAccessTokenDto accessTokenDto = new SocialLoginAccessTokenDto(token.getAccessToken(),true);
+
+            return ResponseHandler.generateResponse("네이버 회원가입 성공", HttpStatus.OK,accessTokenDto);
 
         }
     }
@@ -322,21 +350,25 @@ public class OauthController {
         }
         Optional<User> user = userService.findByEmailAndProvider(kakaoProfile.getKakao_account().getEmail(),"kakao");
         if (user.isPresent()){
-            return ResponseHandler.generateResponse("카카오 로그인 성공", HttpStatus.OK, jwtProvider.createTokenDto(user.get().getUid(),user.get().getRoles(),false));
+            TokenDto token = jwtProvider.createTokenDto(user.get().getUid(),user.get().getRoles(),false);
+            SocialLoginAccessTokenDto accessTokenDto = new SocialLoginAccessTokenDto(token.getAccessToken(),false);
+            return ResponseHandler.generateResponse("카카오 로그인 성공", HttpStatus.OK, accessTokenDto);
         }else{
+            String nickName=userService.nickNameGenerator(kakaoProfile.getProperties().getNickname());
             Long userId = userService.kakaoSignup(UserSignUpRequestDto.builder()
                 .email(kakaoProfile.getKakao_account().getEmail())
                 .name(kakaoProfile.getProperties().getNickname())
-                .nickName(kakaoProfile.getProperties().getNickname())
+                .nickName(nickName)
                 .provider("kakao")
                 .build());
             User NEW_USER=userService.findByUid(userId);
             String email_url=s3Uploader.nameFile(kakaoProfile.getKakao_account().getEmail(),"kakao");
             s3Uploader.urlConvert(email_url, kakaoProfile.getKakao_account().getProfile().getProfile_image_url(), NEW_USER);
 
+            TokenDto token = jwtProvider.createTokenDto(userId,NEW_USER.getRoles(),false);
+            SocialLoginAccessTokenDto accessTokenDto = new SocialLoginAccessTokenDto(token.getAccessToken(),true);
 
-
-            return ResponseHandler.generateResponse("카카오 회원가입 성공", HttpStatus.OK, jwtProvider.createTokenDto(userId,NEW_USER.getRoles(),false));
+            return ResponseHandler.generateResponse("카카오 회원가입 성공", HttpStatus.OK, accessTokenDto);
 
         }
     }

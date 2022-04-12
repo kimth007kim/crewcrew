@@ -8,6 +8,7 @@ import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.security.TokenRequestDto;
 import matchTeam.crewcrew.dto.user.SignUpRequestDto;
 import matchTeam.crewcrew.dto.user.UserLoginRequestDto;
+import matchTeam.crewcrew.dto.user.UserMessage;
 import matchTeam.crewcrew.dto.user.UserSignUpRequestDto;
 import matchTeam.crewcrew.dto.user.example.UserResponseDto;
 import matchTeam.crewcrew.entity.security.RefreshToken;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Slf4j
 @Service
@@ -159,13 +161,47 @@ public class UserService {
         user.setPassword(new_password);
     }
 
+    public void setRandomMessage(User user){
+        StringBuilder sb = new StringBuilder();
+        sb.append("M");
+        int random=(int)((Math.random()*5));
+        sb.append(random);
+        String message=UserMessage.valueOf(sb.toString()).getMessage();
+        user.setMessage(message);
+
+    }
+    public String nickNameGenerator(String nickName){
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 6;
+        Random random = new Random();
+        while(true) {
+            String generated = random.ints(leftLimit, rightLimit + 1)
+                    .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                    .limit(targetStringLength)
+                    .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                    .toString();
+
+            StringBuilder sb = new StringBuilder();
+            sb.append(nickName);
+            sb.append("#");
+            sb.append(generated);
+            if (userRepository.findByNickname(sb.toString()).isEmpty()){
+                return sb.toString();
+            }
+
+        }
+
+
+    }
+
     public List<UserResponseDto> findUsers() {
         List<User> result=userRepository.findAll();
         int length =result.size();
         List<UserResponseDto> users =new ArrayList<>();
         for (int i=0; i<length; i++) {
             User user = result.get(i);
-            System.out.println("ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅋㅎ------------------------"+user.getUid());
+//            System.out.println("ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅋㅎ------------------------"+user.getUid());
             UserResponseDto userResponseDto = new UserResponseDto(user.getUid(),user.getEmail(),user.getName(),user.getNickname(),user.getProfileImage(),likedCategoryService.findUsersLike(user),user.getMessage());
             users.add(userResponseDto);
         }
@@ -182,6 +218,7 @@ public class UserService {
             throw new NickNameAlreadyExistException();
         }
     }
+
 
 
 
