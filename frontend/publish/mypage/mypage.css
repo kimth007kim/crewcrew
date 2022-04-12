@@ -2549,8 +2549,10 @@ section.TimeLineSect {
 
 .TimeLine .Content .ContentBottom p {
   font-size: 13px;
+  line-height: 20px;
   font-weight: 400;
   color: #868686;
+  max-width: 210px;
 }
 
 .TimeLine .Content .ContentBottom p span.Name {
