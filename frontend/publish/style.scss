@@ -146,7 +146,7 @@ em {
     .ButtonFull2, .ButtonFull2Ghost{
         padding: 8px 0;
         height: 30px;
-        font-size: 10px;
+        font-size: 11px;
         justify-content: center;
 
         span{
@@ -333,7 +333,7 @@ ul.InputList>li{
 }
 
 .InputTxt{
-    font-size: 10px;
+    font-size: 11px;
     text-align: center;
     font-weight: 300;
     position: absolute;
@@ -517,7 +517,7 @@ textarea.TxtAreaInput{
     }
 
     p{
-        font-size: 10px;
+        font-size: 11px;
         font-weight: 400;
         color: $black3;
     }
@@ -665,7 +665,7 @@ textarea.TxtAreaInput{
         padding: 5px 5px 5px 5px;
 
         .CardTag{
-            font-size: 10px;
+            font-size: 11px;
             line-height: 1;
             border-radius: 12px;
             padding: 7px 8px;
@@ -758,7 +758,7 @@ textarea.TxtAreaInput{
         }
 
         .Date{
-            @include TextBox(2px, 10px, 300, $black3);
+            @include TextBox(0, 12px, 300, $black3);
         }
 
         .Name{
@@ -911,7 +911,7 @@ textarea.TxtAreaInput{
                 }
 
                 &.Name{
-                    font-size: 10px;
+                    font-size: 12px;
                     font-weight: 300;
                     color: $black3;
                 }
@@ -957,6 +957,6 @@ textarea.TxtAreaInput{
 @media screen and (max-width:300px) {
 
     .PostCardBody .TextBox .TextList p{
-        font-size: 10px;
+        font-size: 11px;
     }
 }
