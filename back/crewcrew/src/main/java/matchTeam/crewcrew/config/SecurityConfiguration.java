@@ -53,7 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                             .antMatchers("/board/**").permitAll()
                             .antMatchers("/boardlist/**").permitAll()
                             .antMatchers("/category/**").permitAll()
-                            .antMatchers("/myPage/**").permitAll()
+                            .antMatchers("/status/**").permitAll()
                             .anyRequest().hasRole("USER")
                 .and()
                 .exceptionHandling()

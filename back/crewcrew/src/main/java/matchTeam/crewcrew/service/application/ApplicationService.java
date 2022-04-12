@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.application.*;
 import matchTeam.crewcrew.entity.application.Application;
 import matchTeam.crewcrew.entity.board.Board;
-import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.repository.application.ApplicationQueryRepository;
 import matchTeam.crewcrew.repository.application.ApplicationRepository;
@@ -14,11 +13,12 @@ import matchTeam.crewcrew.repository.user.UserRepository;
 import matchTeam.crewcrew.response.exception.application.*;
 import matchTeam.crewcrew.response.exception.board.NotExistBoardInIdException;
 import matchTeam.crewcrew.response.exception.category.NotExistCategoryException;
-import matchTeam.crewcrew.util.customException.UserNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -47,10 +47,10 @@ public class ApplicationService {
     }
 
     @Transactional(readOnly = true)
-    public ApplicationCountResponseDTO findMyApplication(Long myUid){
+    public ApplicationCountResponseDTO findMyApplication(Long reqUid){
 
-        userRepository.findById(myUid).orElseThrow(NotExistUidToApplyException::new);
-        return queryRepository.getMyApplication(myUid);
+        userRepository.findById(reqUid).orElseThrow(NotExistUidToApplyException::new);
+        return queryRepository.getMyApplication(reqUid);
     }
 
     @Transactional(readOnly = true)
@@ -59,6 +59,27 @@ public class ApplicationService {
         validCategoryParentId(detailSpecs.getCategoryParentId());
         return queryRepository.getMyApplicationDetails(detailSpecs, pageable);
     }
+
+    @Transactional(readOnly = true)
+    public ApplicationCountResponseDTO findArrivedApplication(Long reqUid){
+
+        userRepository.findById(reqUid).orElseThrow(NotExistUidToApplyException::new);
+        return queryRepository.getArrivedApplication(reqUid);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ApplicationDetailResponseDTO> findArrivedApplicationDetails(ApplicationDetailSpecs detailSpecs, Pageable pageable){
+        userRepository.findById(detailSpecs.getUid()).orElseThrow(NotExistUidToApplyException::new);
+        validCategoryParentId(detailSpecs.getCategoryParentId());
+        return queryRepository.getArrivedApplicationDetails(detailSpecs, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ApplicationUserDetailsResponseDTO> findArrivedApplicationApplier(ApplicationApplierSpecs specs){
+        boardRepository.findById(specs.getBoardId()).orElseThrow(NotExistBoardInIdException::new);
+        return queryRepository.getArrivedApplier(specs);
+    }
+
 
     //중복 지원했을때
     public void checkDuplicateApplier(ApplicationSaveRequestDTO req){
