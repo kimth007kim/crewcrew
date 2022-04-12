@@ -1,27 +1,64 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import PageArrow2Prev from '../../assets/images/PageArrow2Prev.png';
 import PageArrowPrev from '../../assets/images/PageArrowPrev.png';
 import PageArrowNext from '../../assets/images/PageArrowNext.png';
 import PageArrow2Next from '../../assets/images/PageArrow2Next.png';
 
-function Pagination() {
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
+function Pagination({ data, currentPage, postsPerPage, totalPage }) {
+  const query = useQuery();
+  const navigate = useNavigate();
+  const [page, setPage] = useState(0);
+
+  const indexOfLast = currentPage * postsPerPage;
+  const indexOfFirst = indexOfLast - postsPerPage;
+
+  const handleClickPageNavi = useCallback(
+    (i) => {
+      if (query.get('search')) {
+        return navigate(`/post?page=${i + 1}&search=${query.get('search')}`);
+      }
+      navigate(`/post?page=${i + 1}`);
+    },
+    [query.get('search')],
+  );
+
+  const renderNumberDiv = () => {
+    const renderArr = [];
+    const limitPage = postsPerPage > totalPage ? totalPage : postsPerPage;
+
+    for (let i = 0; i < limitPage; i += 1) {
+      renderArr.push(
+        <NumberDiv
+          active={`${i + 1}` === currentPage}
+          key={i}
+          onClick={() => handleClickPageNavi(i)}
+        >
+          {i + 1}
+        </NumberDiv>,
+      );
+    }
+    return renderArr;
+  };
+
   return (
     <PaginationWrapper>
-      <Prev2 />
-      <Prev1 />
-      <NumberDiv active={1}>1</NumberDiv>
-      <NumberDiv>2</NumberDiv>
-      <NumberDiv>3</NumberDiv>
-      <NumberDiv>4</NumberDiv>
-      <NumberDiv>5</NumberDiv>
-      <NumberDiv>6</NumberDiv>
-      <NumberDiv>7</NumberDiv>
-      <NumberDiv>8</NumberDiv>
-      <NumberDiv>9</NumberDiv>
-      <NumberDiv>10</NumberDiv>
-      <Next />
-      <Next2 />
+      {data && totalPage > 1 && (
+        <>
+          <Prev2 />
+          <Prev1 />
+          {renderNumberDiv()}
+          <Next />
+          <Next2 />
+        </>
+      )}
     </PaginationWrapper>
   );
 }
