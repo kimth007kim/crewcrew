@@ -1,0 +1,589 @@
+@import "../common";
+
+*{
+    scroll-behavior: smooth;
+}
+section.MainTop{
+    height: 130px;
+    background-color: $white;
+    border-bottom: 1px solid $black5;
+
+    .ButtonIntro{
+        top: 42px;
+    }
+}
+
+div.TopCont{
+    max-width: 850px;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+
+    h2{
+        font-size: 24px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        color: $black1;
+        
+        a{
+            display: block;
+            background-image: url('/frontend/src/assets/images/IconNavArrow_Big.png');
+            background-size: 9px;
+            background-repeat: no-repeat;
+            background-position: 0 1px;
+            width: 9px;
+            height: 20px;
+            padding-right: 20px;
+        }
+    }
+}
+
+.MypageTop, .TimeLineSect, .PostListSect{
+    background-color: #F6F7FB;
+}
+
+section.MypageTop{
+    padding: 20px 0 58px;
+
+    .SectionWrap850{
+        display: flex;
+        gap: 30px;
+    }
+}
+
+.myBox{
+    background-color: $white;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.myInfoBox{
+    padding: 20px;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 428px;
+    height: 480px;
+    position: relative;
+}
+
+.myInfoTop{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.myInfoBtnList{
+    display: flex;
+    gap: 12px;
+}
+
+.myInfoBtn{
+    background-color: $white;
+    border: 1px solid $black1;
+    border-radius: 5px;
+    padding: 6px 8px;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+
+    &.On{
+        color: $blue3;
+        border: 1px solid $blue3;
+        cursor: default;
+    }
+}
+
+@mixin Setting() {
+    min-width: 16px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    text-indent: -9999em;
+    background: url("/frontend/src/assets/images/SettingGray.png") 50% 50% / 100%;
+}
+
+.myInfoInputList .InputTop{
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 25px;
+
+    .Profile{
+        min-width: 50px;
+        height: 50px;
+        background-color: $purple1;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-right: 2px;
+
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .Setting{
+        @include Setting();
+        margin-right: 18px;
+    }
+}
+
+.InputFull:disabled{
+    background-color: $white;
+
+    &:hover{
+        border: 1px solid $black5;
+    }
+}
+
+.InputWrap{
+    width: 100%;
+    height: 50px;
+    position: relative;
+
+    input:disabled{
+        color: $black4;
+    }
+
+    .SettingGray{
+        @include Setting();
+        position: absolute;
+        right: 16px;
+        top: calc(50% - 8px);
+    }
+
+    p{
+        position: absolute;
+        font-size: 11px;
+        line-height: 11px;
+        font-weight: 500;
+        color: $blue3;
+        text-align: center;
+        width: 100%;
+        bottom: -17px;
+        opacity: 0;
+        transition: .5s;
+
+        &.On{
+            opacity: 1;
+        }
+    }
+}
+
+textarea.TxtAreaInput.InputSetting{
+    padding: 15px 16px;
+    font-size: 13px;
+    font-weight: 500;
+
+    &:disabled{
+        background-color: $white;
+        color: $black4;
+
+        &:hover{
+            border: 1px solid $black5;
+        }
+    }
+}
+
+.myInfoCat{
+    display: flex;
+    margin-top: 35px;
+}
+
+.CatBox{
+    width: 100%;
+
+    &:nth-child(1){
+
+        .CatList{
+            border-right: 1px solid $black5;
+        }
+    }
+
+    &:nth-child(2){
+        padding-left: 20px;
+    }
+
+    h5{
+        color: $black4;
+        font-size: 13px;
+        font-weight: 500;
+    }
+}
+
+.CatList{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 8px;
+    margin-top: 16px;
+}
+
+.FilterLabel{
+    padding: 4px 36px 4px 6px;
+    background-color: $black4;
+    border-radius: 13px;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 16px;
+    color: $white;
+    position: relative;
+    cursor: pointer;
+    transition: .3s;
+
+    &::after{
+        content: '';
+        display: block;
+        width: 12px;
+        height: 12px;
+        background: url("/frontend/src/assets/images/FilterIconX.png") 50% 50% / 100%;
+        position: absolute;
+        right: 10px;
+        top: 6px;
+        transform: rotate(45deg);
+        transition: .3s;
+    }
+}
+
+.FilterCategory:checked ~ .FilterLabel{
+
+    &.Study{
+        background-color: #0F3FA6;
+    }
+
+    &.Hobby{
+        background-color: #F7971E;
+    }
+
+    &::after{
+        transform: rotate(0deg);
+    }
+}
+
+.ButtonFull3{
+    position: absolute;
+    width: 112px !important;
+    bottom: 20px;
+    right: 20px;
+}
+
+.myCrewBox{
+    width: 100%;
+
+    h3{
+        margin-top: 20px;
+    }
+
+    &>p{
+        margin-top: 8px;
+        font-size: 13px;
+        color: $black3;
+        font-weight: 400;
+    }
+}
+
+.CrewBoxWrap{
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+}
+
+.CrewBox{
+    height: 182px;
+    cursor: pointer;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .Num{
+        margin: 18px 0 6px;
+        text-align: center;
+        font-size: 32px;
+        font-weight: 700;
+        color: $blue3;
+    }
+
+    .Tit{
+        margin-bottom: 35px;
+        font-size: 13px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &::after{
+            content: '';
+            display: block;
+            margin-left: 8px;
+            width: 6px;
+            height: 14px;
+            background: url("/frontend/src/assets/images/PageArrowNext.png") 50% 50% /6px no-repeat;
+        }
+    }
+}
+
+.CrewCat{
+    display: flex;
+    gap: 12px;
+
+    li{
+        width: 100%;
+        height: 50px;
+        border-radius: 10px;
+        color: $white;
+
+        &:first-child{
+            background-color: #0F3FA6;
+        }
+
+        &:last-child{
+            background-color: #F7971E;
+        }
+
+        &.Gray{
+            background-color: $black4;
+        }
+
+        h4{
+            font-size: 13px;
+            font-weight: 400;
+            text-align: center;
+            margin-top: 4px;
+        }
+
+        p{
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1;
+            margin-top: 4px;
+        }
+    }
+}
+
+section.TimeLineSect{
+    padding-bottom: 88px;
+}
+
+.TimeLineBox{
+    height: 394px;
+    padding: 22px 25px 38px;
+    box-sizing: border-box;
+
+    h4{
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 30px;
+
+        a{
+            color: $black1;
+        }
+
+        span{
+            display: inline-block;
+            margin-left: 30px;
+            width: 6px;
+            height: 14px;
+            background: url("/frontend/src/assets/images/PageArrowNext.png") 50% 50% / 6px no-repeat;
+        }
+    }
+}
+
+.TimeLine{
+    padding: 0 20px;
+    height: 278px;
+    position: relative;
+    display: flex;
+
+
+    &::before{
+        content: '';
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        height: 1px;
+        width: 100%;
+        background-color: $black2;
+    }
+
+    .Content{
+        width: 100%;
+        height: 50%;
+        box-sizing: border-box;
+        border-left: 1px solid $black2;
+        position: relative;
+        padding-left: 10px;
+
+        &::before{
+            content: '';
+            display: block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            box-sizing: border-box;
+            position: absolute;
+            background-color: $white;
+            left: -10px;
+        }
+
+        &:nth-child(odd){
+
+            &::before{
+                border: 3px solid $blue3;
+                bottom: -10px;
+            }
+        }
+
+        &:nth-child(even){
+            padding-top: 20px;
+            margin-top: 139px;
+
+            &::before{
+                border: 3px solid $red1;
+                top: -10px;
+            }
+        }
+
+        .ContentTop{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 4px;
+
+            h5{
+                font-size: 15px;
+                font-weight: 700;
+                
+                &.Study{
+                    color: #0F3FA6;
+                }
+
+                &.Hobby{
+                    color: #F7971E;
+                }
+            }
+
+            p{
+                font-size: 12px;
+                font-weight: 500;
+                color: $black4;
+            }
+        }
+
+        .ContentBottom{
+            
+            p{
+                font-size: 13px;
+                font-weight: 400;
+                color: $black3;
+
+                span{
+
+                    &.Name{
+                        color: $black1;
+                        font-weight: 700;
+                    }
+
+                    &.Positive{
+                        color: $blue3;
+                    }
+
+                    &.Negative{
+                        color: $red1;
+                    }
+                }
+            }
+
+            ul{
+                display: flex;
+                gap: 8px;
+                margin-top: 10px;
+
+                li{
+                    width: 50px;
+                    height: 30px;
+
+                    button{
+                        width: 100%;
+                        height: 100%;
+                        border: none;
+                        outline: none;
+                        background-color: #C4C4C4;
+                        border-radius: 5px;
+                        color: $white;
+                        font-size: 13px;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: .3s;
+
+                        &:hover{
+                            background-color: #B0B0B0;
+                        }
+                    }
+
+                    &:nth-child(2){
+                        button{
+                            background-color: $blue3;
+
+                            &:hover{
+                                background-color: #00A3E3;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.PostListSect{
+    padding-bottom: 40px;
+}
+
+.ListTap{
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+
+    li{
+        
+        button{
+            width: 186px;
+            height: 56px;
+            background-color: $white;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid $white;
+            box-sizing: border-box;
+            font-size: 20px;
+            font-weight: 400;
+            color: $black3;
+            cursor: pointer;
+            transition: .3s;
+
+            &:hover{
+                border: 2px solid $black3;
+            }
+
+            &.On{
+                border: 2px solid $blue3;
+                color: $blue3;
+                font-weight: 500;
+            }
+        }
+    }
+}
+
+.PostWrapper{
+
+    li{
+        padding-bottom: 14px;
+    }
+}

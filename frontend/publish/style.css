@@ -1053,6 +1053,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
 .PostCardBody .TextBox .TextList p {
   font-size: 13px;
   font-weight: 400;
+  color: #868686;
 }
 
 .PostCardBody .TextBox .TextList p:not(:last-child) {
@@ -1090,14 +1091,24 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   outline: none;
   color: #fff;
   cursor: pointer;
+  -webkit-transition: .3s;
+  transition: .3s;
 }
 
 .PostCardBody .ButtonBox button.Detail {
   background-color: #c4c4c4;
 }
 
+.PostCardBody .ButtonBox button.Detail:hover {
+  background-color: #B0B0B0;
+}
+
 .PostCardBody .ButtonBox button.Participate {
   background-color: #00b7ff;
+}
+
+.PostCardBody .ButtonBox button.Participate:hover {
+  background-color: #00A3E3;
 }
 
 @media screen and (max-width: 820px) {

@@ -814,6 +814,7 @@ textarea.TxtAreaInput{
             p{
                 font-size: 13px;
                 font-weight: 400;
+                color: $black3;
 
                 &:not(:last-child){
                     margin-right: 20px;
@@ -848,13 +849,22 @@ textarea.TxtAreaInput{
             outline: none;
             color: $white;
             cursor: pointer;
+            transition: .3s;
 
             &.Detail{
                 background-color: #c4c4c4;
+
+                &:hover{
+                    background-color: #B0B0B0;
+                }
             }
 
             &.Participate{
                 background-color: $blue3;
+
+                &:hover{
+                    background-color: #00A3E3;
+                }
             }
         }
     }
