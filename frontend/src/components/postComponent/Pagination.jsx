@@ -17,9 +17,6 @@ function Pagination({ data, currentPage, postsPerPage, totalPage }) {
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
 
-  const indexOfLast = currentPage * postsPerPage;
-  const indexOfFirst = indexOfLast - postsPerPage;
-
   const handleClickPageNavi = useCallback(
     (i) => {
       if (query.get('search')) {
@@ -32,31 +29,61 @@ function Pagination({ data, currentPage, postsPerPage, totalPage }) {
 
   const renderNumberDiv = () => {
     const renderArr = [];
-    const limitPage = postsPerPage > totalPage ? totalPage : postsPerPage;
+    // const pages = Math.floor(currentPage / postsPerPage);
 
-    for (let i = 0; i < limitPage; i += 1) {
-      renderArr.push(
-        <NumberDiv
-          active={`${i + 1}` === currentPage}
-          key={i}
-          onClick={() => handleClickPageNavi(i)}
-        >
-          {i + 1}
-        </NumberDiv>,
-      );
+    const limitPage = postsPerPage * (page + 1) > totalPage ? totalPage : postsPerPage * (page + 1);
+
+    for (let i = page * postsPerPage; i < limitPage; i += 1) {
+      renderArr.push(i);
     }
     return renderArr;
   };
+
+  useEffect(() => {
+    setPage(Math.floor(currentPage / postsPerPage));
+  }, [currentPage, postsPerPage]);
+
+  const handleClickPrevFirst = useCallback(() => {
+    navigate(`/post?page=${1}`);
+  }, []);
+
+  const handleClickPrev = useCallback(() => {
+    if ((page - 1) * postsPerPage + 1 < 2) {
+      return null;
+    }
+
+    navigate(`/post?page=${(page - 1) * postsPerPage + 1}`);
+  }, [page]);
+
+  const handleClickNext = useCallback(() => {
+    if ((page + 1) * postsPerPage + 1 > totalPage) {
+      return null;
+    }
+
+    navigate(`/post?page=${(page + 1) * postsPerPage + 1}`);
+  }, [page]);
+
+  const handleClickNextLast = useCallback(() => {
+    navigate(`/post?page=${totalPage}`);
+  }, [totalPage]);
 
   return (
     <PaginationWrapper>
       {data && totalPage > 1 && (
         <>
-          <Prev2 />
-          <Prev1 />
-          {renderNumberDiv()}
-          <Next />
-          <Next2 />
+          <Prev2 onClick={handleClickPrevFirst} />
+          <Prev1 onClick={handleClickPrev} />
+          {renderNumberDiv().map((i) => (
+            <NumberDiv
+              active={`${i + 1}` === currentPage}
+              key={i}
+              onClick={() => handleClickPageNavi(i)}
+            >
+              {i + 1}
+            </NumberDiv>
+          ))}
+          <Next onClick={handleClickNext} />
+          <Next2 onClick={handleClickNextLast} />
         </>
       )}
     </PaginationWrapper>
