@@ -29,7 +29,6 @@ function Pagination({ data, currentPage, postsPerPage, totalPage }) {
 
   const renderNumberDiv = () => {
     const renderArr = [];
-    // const pages = Math.floor(currentPage / postsPerPage);
 
     const limitPage = postsPerPage * (page + 1) > totalPage ? totalPage : postsPerPage * (page + 1);
 
@@ -44,28 +43,40 @@ function Pagination({ data, currentPage, postsPerPage, totalPage }) {
   }, [currentPage, postsPerPage]);
 
   const handleClickPrevFirst = useCallback(() => {
+    if (query.get('search')) {
+      return navigate(`/post?page=1&search=${query.get('search')}`);
+    }
     navigate(`/post?page=${1}`);
-  }, []);
+  }, [query.get('search')]);
 
   const handleClickPrev = useCallback(() => {
     if ((page - 1) * postsPerPage + 1 < 2) {
       return null;
     }
+    if (query.get('search')) {
+      return navigate(`/post?page=${(page - 1) * postsPerPage + 1}&search=${query.get('search')}`);
+    }
 
     navigate(`/post?page=${(page - 1) * postsPerPage + 1}`);
-  }, [page]);
+  }, [page, query.get('search')]);
 
   const handleClickNext = useCallback(() => {
     if ((page + 1) * postsPerPage + 1 > totalPage) {
       return null;
     }
+    if (query.get('search')) {
+      return navigate(`/post?page=${(page + 1) * postsPerPage + 1}&search=${query.get('search')}`);
+    }
 
     navigate(`/post?page=${(page + 1) * postsPerPage + 1}`);
-  }, [page]);
+  }, [page, query.get('search')]);
 
   const handleClickNextLast = useCallback(() => {
+    if (query.get('search')) {
+      return navigate(`/post?page=${totalPage}&search=${query.get('search')}`);
+    }
     navigate(`/post?page=${totalPage}`);
-  }, [totalPage]);
+  }, [totalPage, query.get('search')]);
 
   return (
     <PaginationWrapper>
