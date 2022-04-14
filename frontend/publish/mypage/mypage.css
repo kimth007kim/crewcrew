@@ -2314,10 +2314,17 @@ textarea.TxtAreaInput.InputSetting:disabled:hover {
           transform: rotate(0deg);
 }
 
-.ButtonFull3 {
+.myInfoBox .ButtonFull3 {
   width: 112px !important;
   margin-top: auto;
   margin-left: auto;
+}
+
+.ButtonFull3.ButtonSmall {
+  width: 74px;
+  height: 30px;
+  padding: 0;
+  border-radius: 5px;
 }
 
 .myCrewBox {
@@ -2484,6 +2491,23 @@ section.TimeLineSect {
   background-color: #707070;
 }
 
+.TimeLine.Nocontent {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.TimeLine.Nocontent::before {
+  display: none;
+}
+
 .TimeLine .Content {
   width: 100%;
   height: 50%;
@@ -2613,6 +2637,25 @@ section.TimeLineSect {
   background-color: #00A3E3;
 }
 
+p.Nocontent {
+  font-size: 15px;
+  line-height: 22px;
+  text-align: center;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+p.Nocontent em {
+  font-weight: 700;
+}
+
+.NocontentButtonWrap {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 10px;
+}
+
 .PostListSect {
   padding-bottom: 40px;
 }
@@ -2662,6 +2705,25 @@ section.TimeLineSect {
 
 .PostWrapper li {
   padding-bottom: 14px;
+}
+
+.PostWrapper.Nocontent {
+  border-top: 1px solid #868686;
+  padding: 100px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+br.fold {
+  display: none;
 }
 
 @media screen and (max-width: 820px) {
@@ -2716,10 +2778,10 @@ section.TimeLineSect {
   .CatBox:nth-child(2) {
     padding: 34px 0 36px;
   }
-  .ButtonFull3 {
+  .myInfoBox .ButtonFull3 {
     width: 100% !important;
   }
-  .ButtonFull3:hover {
+  .myInfoBox .ButtonFull3:hover {
     background-color: #00b7ff !important;
   }
   .myCrewBox {
@@ -2802,11 +2864,17 @@ section.TimeLineSect {
     margin-top: 0;
     margin-left: 18px;
   }
+  .TimeLine.Nocontent {
+    padding-bottom: 30px;
+  }
   .ListTap {
     width: 100%;
   }
   .ListTap li, .ListTap button {
     width: 100% !important;
+  }
+  .PostWrapper.Nocontent {
+    padding: 48px 0;
   }
 }
 
@@ -2851,6 +2919,9 @@ section.TimeLineSect {
   .TimeLine .Content .ContentBottom ul {
     margin-left: 6px;
     gap: 6px;
+  }
+  br.fold {
+    display: block;
   }
 }
 /*# sourceMappingURL=mypage.css.map */
