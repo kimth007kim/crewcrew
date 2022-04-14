@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./mypage.css">
     <script src="/frontend/publish/layout/Include.js"></script> <!--퍼블단 인클루드용/개발때는 무시-->
     <script type="module"src="../Common.js"></script>
+    <script src="./mypage.js"></script>
 </head>
 <body>
     <div data-include="/frontend/publish/layout/Lnb.html"></div> <!--퍼블단 인클루드용/개발때는 무시-->
@@ -19,7 +20,6 @@
         </div>
 
         <section class="MainTop">
-            <div class="TopBgCharacter"></div>
             <div class="TopCont">
                 <h2><a href="#"></a>마이페이지</h2>
             </div>
@@ -37,7 +37,7 @@
                             <li><button class="myInfoBtn">기본정보</button></li>
                         </ul>
                     </div>
-                    <form action="">
+                    <div class="myInfoBody">
                         <div class="myInfoInputList">
                             <div class="InputTop">
                                 <div class="Profile">
@@ -62,23 +62,28 @@
                                 <h5>관심분야(스터디)</h5>
                                 <ul class="CatList">
                                     <li>
-                                        <input type="checkbox" class="InputHide FilterInput FilterCategory" id="CategoryStudy1" name="FilterCategory" checked>
+                                        <input type="checkbox" class="InputHide FilterInput FilterCategory"
+                                            id="CategoryStudy1" name="FilterCategory" checked>
                                         <label for="CategoryStudy1" class="FilterLabel Study">어학</label>
                                     </li>
                                     <li>
-                                        <input type="checkbox" class="InputHide FilterInput FilterCategory" id="CategoryStudy2" name="FilterCategory">
+                                        <input type="checkbox" class="InputHide FilterInput FilterCategory"
+                                            id="CategoryStudy2" name="FilterCategory">
                                         <label for="CategoryStudy2" class="FilterLabel Study">취업</label>
                                     </li>
                                     <li>
-                                        <input type="checkbox" class="InputHide FilterInput FilterCategory" id="CategoryStudy3" name="FilterCategory">
+                                        <input type="checkbox" class="InputHide FilterInput FilterCategory"
+                                            id="CategoryStudy3" name="FilterCategory">
                                         <label for="CategoryStudy3" class="FilterLabel Study">고시/공무원</label>
                                     </li>
                                     <li>
-                                        <input type="checkbox" class="InputHide FilterInput FilterCategory" id="CategoryStudy4" name="FilterCategory">
+                                        <input type="checkbox" class="InputHide FilterInput FilterCategory"
+                                            id="CategoryStudy4" name="FilterCategory">
                                         <label for="CategoryStudy4" class="FilterLabel Study">프로젝트</label>
                                     </li>
                                     <li>
-                                        <input type="checkbox" class="InputHide FilterInput FilterCategory" id="CategoryStudy5" name="FilterCategory">
+                                        <input type="checkbox" class="InputHide FilterInput FilterCategory"
+                                            id="CategoryStudy5" name="FilterCategory">
                                         <label for="CategoryStudy5" class="FilterLabel Study">기타</label>
                                     </li>
                                 </ul>
@@ -87,38 +92,45 @@
                                 <h5>관심분야(취미)</h5>
                                 <ul class="CatList">
                                     <li>
-                                        <input type="checkbox" class="InputHide FilterInput FilterCategory" id="CategoryHobby1" name="FilterCategory" checked>
+                                        <input type="checkbox" class="InputHide FilterInput FilterCategory"
+                                            id="CategoryHobby1" name="FilterCategory" checked>
                                         <label for="CategoryHobby1" class="FilterLabel Hobby">요리</label>
                                     </li>
                                     <li>
-                                        <input type="checkbox" class="InputHide FilterInput FilterCategory" id="CategoryHobby2" name="FilterCategory">
+                                        <input type="checkbox" class="InputHide FilterInput FilterCategory"
+                                            id="CategoryHobby2" name="FilterCategory">
                                         <label for="CategoryHobby2" class="FilterLabel Hobby">운동</label>
                                     </li>
                                     <li>
-                                        <input type="checkbox" class="InputHide FilterInput FilterCategory" id="CategoryHobby3" name="FilterCategory">
+                                        <input type="checkbox" class="InputHide FilterInput FilterCategory"
+                                            id="CategoryHobby3" name="FilterCategory">
                                         <label for="CategoryHobby3" class="FilterLabel Hobby">게임</label>
                                     </li>
                                     <li>
-                                        <input type="checkbox" class="InputHide FilterInput FilterCategory" id="CategoryHobby4" name="FilterCategory">
+                                        <input type="checkbox" class="InputHide FilterInput FilterCategory"
+                                            id="CategoryHobby4" name="FilterCategory">
                                         <label for="CategoryHobby4" class="FilterLabel Hobby">덕질</label>
                                     </li>
                                     <li>
-                                        <input type="checkbox" class="InputHide FilterInput FilterCategory" id="CategoryHobby5" name="FilterCategory">
+                                        <input type="checkbox" class="InputHide FilterInput FilterCategory"
+                                            id="CategoryHobby5" name="FilterCategory">
                                         <label for="CategoryHobby5" class="FilterLabel Hobby">트렌드</label>
                                     </li>
                                     <li>
-                                        <input type="checkbox" class="InputHide FilterInput FilterCategory" id="CategoryHobby6" name="FilterCategory">
+                                        <input type="checkbox" class="InputHide FilterInput FilterCategory"
+                                            id="CategoryHobby6" name="FilterCategory">
                                         <label for="CategoryHobby6" class="FilterLabel Hobby">예술</label>
                                     </li>
                                     <li>
-                                        <input type="checkbox" class="InputHide FilterInput FilterCategory" id="CategoryHobby7" name="FilterCategory">
+                                        <input type="checkbox" class="InputHide FilterInput FilterCategory"
+                                            id="CategoryHobby7" name="FilterCategory">
                                         <label for="CategoryHobby7" class="FilterLabel Hobby">기타</label>
                                     </li>
                                 </ul>
                             </div>
-                            <button type="submit" class="ButtonFull3">저장</button>
-                        </form>
+                        </div>
                     </div>
+                    <button type="button" class="ButtonFull3">저장</button>
                 </div>
 
                 <div class="myCrewBox">
@@ -213,6 +225,7 @@
                                 <p><span class="Name">'함께 크루원 모집 플랫폼 작업하실 분 모십니다~!000'</span>에서 회원님의 <span class="Negative">참여요청을 거절</span> 하였습니다.</p>
                                 <ul>
                                     <li><button>상세</button></li>
+                                    <li></li>
                                 </ul>
                             </div>
                         </div>
@@ -238,6 +251,7 @@
                                 <p><span class="Name">'함께 크루원 모집 플랫폼 작업하실 분 모십니다~!000'</span>에서 회원님의 <span class="Negative">참여를 취소</span> 하였습니다.</p>
                                 <ul>
                                     <li><button>상세</button></li>
+                                    <li></li>
                                 </ul>
                             </div>
                         </div>

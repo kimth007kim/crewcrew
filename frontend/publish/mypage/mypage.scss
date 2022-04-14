@@ -64,7 +64,8 @@ section.MypageTop{
     width: 100%;
     min-width: 428px;
     height: 480px;
-    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .myInfoTop{
@@ -262,10 +263,9 @@ textarea.TxtAreaInput.InputSetting{
 }
 
 .ButtonFull3{
-    position: absolute;
     width: 112px !important;
-    bottom: 20px;
-    right: 20px;
+    margin-top: auto;
+    margin-left: auto;
 }
 
 .myCrewBox{
@@ -588,4 +588,235 @@ section.TimeLineSect{
     li{
         padding-bottom: 14px;
     }
+}
+
+@media screen and (max-width: 820px) {
+    
+    section.MainTop{
+        height: 64px;
+
+        .ButtonIntro{
+            top: 18px;
+        }
+    }
+
+    div.TopCont{
+        width: calc(100vw - 40px);
+
+        h2{
+           font-size: 16px; 
+
+           a {
+               background-size: 8px;
+               padding-right: 16px;
+           }
+        }
+    }
+
+    section.MypageTop{
+        padding: 20px 0 70px;
+
+        .SectionWrap850{
+            padding: 0;
+            flex-direction: column;
+        }
+    }
+
+    .myInfoBox{
+        min-width: 100%;
+        height: auto;
+    }
+
+    .myInfoTop{
+        margin-bottom: 20px;
+    }
+
+    .myInfoBody{
+        margin-top: 12px;
+        overflow: hidden;
+        transition: .5s;
+    }
+
+    .myInfoCat{
+        flex-direction: column;
+    }
+
+    .CatBox{
+
+        &:nth-child(1){
+
+            .CatList{
+                border: none;
+            }
+        }
+
+        &:nth-child(2){
+            padding: 34px 0 36px;
+        }
+    }
+
+    .ButtonFull3{
+        width: 100% !important;
+
+        &:hover{
+            background-color: $blue3 !important;
+        }
+    }
+
+    .myCrewBox{
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+
+    .CrewBoxWrap{
+        gap: 16px;
+    }
+
+    .CrewBox{
+        height: calc((100vw - 56px)/2);
+        justify-content: flex-start;
+        padding: 8px;
+
+        .Num{
+            margin: 10px 0 10px;
+        }
+
+        .Tit{
+            margin-bottom: 0;
+        }
+    }
+
+    .CrewCat{
+        margin-top: auto;
+        gap: 10px;
+
+        li{
+            height: 42px;
+
+            p{
+                margin-top: 0;
+            }
+        }
+    }
+
+    section.TimeLineSect{
+        padding-bottom: 70px;
+
+        .SectionWrap850{
+            padding: 0;
+        }
+    }
+
+    .TimeLineBox{
+        height: auto;
+        padding: 20px 20px 0;
+
+        h4{
+            margin-bottom: 34px;
+        }
+    }
+
+    .TimeLine{
+        flex-direction: column;
+        height: auto;
+        padding: 0;
+
+        &::before{
+            display: none;
+        }
+
+        .Content{
+            height: auto;
+            margin-top: 0 !important;
+            padding:0 !important;
+            border: none;
+
+            &::before{
+                display: none;
+            }
+
+            .ContentBottom{
+                margin-bottom: 26px;
+                display: flex;
+                align-items: center;
+
+                p{
+                    max-width: 100%;
+                }
+
+                ul{
+                    margin-top: 0;
+                    margin-left: 18px;
+                }
+            }
+        }
+    }
+
+    .ListTap{
+        width: 100%;
+
+        li, button{
+            width: 100% !important;
+        }
+    } 
+}
+
+@media screen and (max-width: 300px) {
+    
+    div.TopCont{
+        width: calc(100vw - 20px);
+    }
+
+    .myInfoBox{
+        padding: 20px 10px 10px;
+    }
+
+    .myCrewBox{
+        padding: 0 10px;
+    }
+
+    .CrewBoxWrap{
+        gap: 12px;
+    }
+
+    .CrewBox{
+        padding: 4px;
+        height: calc((100vw - 32px)/2);
+
+        .Num{
+            margin: 0 0 4px;
+        }
+        
+        .Tit{
+            letter-spacing: -0.03em;
+
+            &::after{
+                margin-left: 3px;
+            }
+        }
+    }
+
+    .TimeLineBox{
+        padding: 20px 10px 0;
+
+        h4{
+            margin-bottom: 20px;
+        }
+    }
+
+    .TimeLine .Content .ContentBottom{
+        margin-bottom: 16px;
+    }
+
+    .TimeLine .Content .ContentBottom{
+
+        p{
+            font-size: 12px;
+        }
+
+        ul{
+            margin-left: 6px;
+            gap: 6px;
+        }
+    } 
 }
