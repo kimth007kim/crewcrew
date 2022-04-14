@@ -22,6 +22,17 @@ public class ApplicationQueryTest {
 
         //when
 
+        //then
+
+    }
+
+    @Test
+    void getArrivedApplication() throws Exception{
+        //given
+        queryRepository.getArrivedApplication(6L);
+
+        //when
+
 
         //then
 

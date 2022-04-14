@@ -2,12 +2,6 @@
 *{
     scroll-behavior: smooth;
 }
-.SectionWrap850{
-    max-width: 850px;
-    margin: auto;
-    position: relative;
-}
-
 section.MainTop{
     height: 130px;
     background-color: $white;
@@ -304,10 +298,6 @@ aside{
 
 @media screen and (max-width:820px) {
 
-    .SectionWrap850{
-        padding: 0 20px;
-    }
-
     section.MainTop .ButtonIntro{
         top: 17px;
     }
@@ -456,10 +446,6 @@ aside{
 }
 
 @media screen and (max-width:300px) {
-
-    .SectionWrap850{
-        padding: 0 10px;
-    }
 
     .PostDetail{
 

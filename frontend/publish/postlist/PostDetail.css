@@ -245,7 +245,7 @@ em {
   .ButtonFull2, .ButtonFull2Ghost {
     padding: 8px 0;
     height: 30px;
-    font-size: 10px;
+    font-size: 11px;
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
@@ -476,7 +476,7 @@ ul.InputList > li {
 }
 
 .InputTxt {
-  font-size: 10px;
+  font-size: 11px;
   text-align: center;
   font-weight: 300;
   position: absolute;
@@ -715,7 +715,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
 }
 
 .CardPost p {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 400;
   color: #868686;
 }
@@ -888,7 +888,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
     padding: 5px 5px 5px 5px;
   }
   .CardFooter .CardTag {
-    font-size: 10px;
+    font-size: 11px;
     line-height: 1;
     border-radius: 12px;
     padding: 7px 8px;
@@ -980,8 +980,8 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
 }
 
 .PostCardHead .TextBox .Date {
-  margin-top: 2px;
-  font-size: 10px;
+  margin-top: 0;
+  font-size: 12px;
   font-weight: 300;
   color: #868686;
 }
@@ -1053,6 +1053,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
 .PostCardBody .TextBox .TextList p {
   font-size: 13px;
   font-weight: 400;
+  color: #868686;
 }
 
 .PostCardBody .TextBox .TextList p:not(:last-child) {
@@ -1090,14 +1091,24 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   outline: none;
   color: #fff;
   cursor: pointer;
+  -webkit-transition: .3s;
+  transition: .3s;
 }
 
 .PostCardBody .ButtonBox button.Detail {
   background-color: #c4c4c4;
 }
 
+.PostCardBody .ButtonBox button.Detail:hover {
+  background-color: #B0B0B0;
+}
+
 .PostCardBody .ButtonBox button.Participate {
   background-color: #00b7ff;
+}
+
+.PostCardBody .ButtonBox button.Participate:hover {
+  background-color: #00A3E3;
 }
 
 @media screen and (max-width: 820px) {
@@ -1144,7 +1155,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
     padding-right: 32px;
   }
   .PostCardHead .TextBox p.Name {
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 300;
     color: #868686;
   }
@@ -1175,7 +1186,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
 
 @media screen and (max-width: 300px) {
   .PostCardBody .TextBox .TextList p {
-    font-size: 10px;
+    font-size: 11px;
   }
 }
 
@@ -1898,14 +1909,114 @@ main {
   }
 }
 
-* {
-  scroll-behavior: smooth;
-}
-
 .SectionWrap850 {
   max-width: 850px;
   margin: auto;
   position: relative;
+}
+
+@media screen and (max-width: 820px) {
+  .SectionWrap850 {
+    padding: 0 20px;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .SectionWrap850 {
+    padding: 0 10px;
+  }
+}
+
+.PaginationWrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 598px;
+  margin: 48px auto 124px;
+}
+
+.PaginationWrapper div {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #fff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #000;
+  border: 1px solid transparent;
+  -webkit-transition: .2s;
+  transition: .2s;
+  cursor: pointer;
+}
+
+.PaginationWrapper div:hover {
+  border-color: #a8a8a8;
+}
+
+.PaginationWrapper div.On {
+  background-color: #00b7ff;
+  color: #fff;
+  border-color: transparent;
+  cursor: default;
+}
+
+.PaginationWrapper div.Prev2 {
+  background-repeat: no-repeat;
+  background-size: 13px;
+  background-position: 9px;
+  background-image: url("/frontend/src/assets/images/PageArrow2Prev.png");
+}
+
+.PaginationWrapper div.Prev {
+  background-repeat: no-repeat;
+  background-size: 6px;
+  background-position: 12px;
+  background-image: url("/frontend/src/assets/images/PageArrowPrev.png");
+}
+
+.PaginationWrapper div.Next {
+  background-repeat: no-repeat;
+  background-size: 6px;
+  background-position: 14px;
+  background-image: url("/frontend/src/assets/images/PageArrowNext.png");
+}
+
+.PaginationWrapper div.Next2 {
+  background-repeat: no-repeat;
+  background-size: 13px;
+  background-position: 10px;
+  background-image: url("/frontend/src/assets/images/PageArrow2Next.png");
+}
+
+@media screen and (max-width: 820px) {
+  .PaginationWrapper {
+    width: 100%;
+    margin: 28px auto 80px;
+  }
+  .PaginationWrapper div {
+    width: 24px;
+    height: 24px;
+    font-size: 13px;
+  }
+  .PaginationWrapper div.Prev, .PaginationWrapper div.Next, .PaginationWrapper div.Prev2, .PaginationWrapper div.Next2 {
+    background-position: center;
+  }
+}
+
+* {
+  scroll-behavior: smooth;
 }
 
 section.MainTop {
@@ -2232,9 +2343,6 @@ aside {
 }
 
 @media screen and (max-width: 820px) {
-  .SectionWrap850 {
-    padding: 0 20px;
-  }
   section.MainTop .ButtonIntro {
     top: 17px;
   }
@@ -2368,9 +2476,6 @@ aside {
 }
 
 @media screen and (max-width: 300px) {
-  .SectionWrap850 {
-    padding: 0 10px;
-  }
   .PostDetail ul:nth-of-type(1) {
     gap: 14px;
   }

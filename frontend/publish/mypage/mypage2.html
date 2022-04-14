@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>크루크루</title>
+    <link rel="stylesheet" href="./mypage.css">
+    <script src="/frontend/publish/layout/Include.js"></script> <!--퍼블단 인클루드용/개발때는 무시-->
+    <script type="module"src="../Common.js"></script>
+    <script src="./mypage.js"></script>
+</head>
+<body>
+    <div data-include="/frontend/publish/layout/Lnb.html"></div> <!--퍼블단 인클루드용/개발때는 무시-->
+
+    <main>
+        <div class="ScrollButton">
+            <div class="ScrollTop"></div>
+            <div class="ScrollBottom"></div>
+        </div>
+
+        <section class="MainTop">
+            <div class="TopCont">
+                <h2><a href="#"></a>마이페이지</h2>
+            </div>
+            </div>
+            <div class="ButtonIntro"></div>
+        </section>
+
+        <section class="MypageTop">
+            <div class="SectionWrap850">
+                <div class="myInfoBox myBox">
+                    <div class="myInfoTop">
+                        <h3>내 정보 관리</h3>
+                        <ul class="myInfoBtnList">
+                            <li><button class="myInfoBtn">프로필</button></li>
+                            <li><button class="myInfoBtn On">기본정보</button></li>
+                        </ul>
+                    </div>
+                    <div class="myInfoBody">
+                        <div class="myInfoInputList">
+                            <div class="InputTop">
+                                <div class="InputWrap">
+                                    <input type="text" class="InputFull InputSetting" disabled value="닉네임">
+                                    <div class="SettingGray"></div>
+                                    <p>앞으로 사용할 닉네임을 입력해주세요.(10자 이내)</p>
+                                </div>
+                            </div>
+                            <div class="InputTop InputWrap">
+                                <input type="text" class="InputFull" disabled value="bigseal@naver.com">
+                                <div class="SettingGray"></div>
+                                <p>이메일</p>
+                            </div>
+                            <div class="InputTop InputWrap">
+                                <input type="password" class="InputFull" id="NewPassword">
+                                <label for="NewPassword" class="LabelFull">새 비밀번호</label>
+                                <p>새 비밀번호</p>
+                            </div>
+                            <div class="InputTop InputWrap">
+                                <input type="password" class="InputFull" id="PasswordCheck">
+                                <label for="PasswordCheck" class="LabelFull">비밀번호 확인</label>
+                                <p>비밀번호 확인</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="ButtonFull3">저장</button>
+                </div>
+
+                <div class="myCrewBox">
+                    <h3>내 크루 현황 관리</h3>
+                    <p>나와 관련된 크루들의 현황을 이곳에서 관리하세요!</p>
+                    <div class="CrewBoxWrap">
+                        <div class="CrewBox myBox">
+                            <p class="Num"><span>3</span>개</p>
+                            <p class="Tit">내가 참여요청한 크루</p>
+                            <ul class="CrewCat">
+                                <li>
+                                    <h4>스터디</h4>
+                                    <p>2</p>
+                                </li>
+                                <li>
+                                    <h4>취미</h4>
+                                    <p>2</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="CrewBox myBox">
+                            <p class="Num"><span>3</span>개</p>
+                            <p class="Tit">내가 모집중인 크루</p>
+                            <ul class="CrewCat">
+                                <li>
+                                    <h4>스터디</h4>
+                                    <p>2</p>
+                                </li>
+                                <li>
+                                    <h4>취미</h4>
+                                    <p>2</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="CrewBox myBox">
+                            <p class="Num"><span>3</span>개</p>
+                            <p class="Tit">내게 도착한 참여요청</p>
+                            <ul class="CrewCat">
+                                <li>
+                                    <h4>스터디</h4>
+                                    <p>2</p>
+                                </li>
+                                <li>
+                                    <h4>취미</h4>
+                                    <p>2</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="CrewBox myBox">
+                            <p class="Num"><span>3</span>개</p>
+                            <p class="Tit">나의 활동 크루</p>
+                            <ul class="CrewCat">
+                                <li class="Gray">
+                                    <h4>내 마감글</h4>
+                                    <p>2</p>
+                                </li>
+                                <li class="Gray">
+                                    <h4>참여중</h4>
+                                    <p>2</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="TimeLineSect">
+            <div class="SectionWrap850">
+                <div class="TimeLineBox myBox">
+                    <h4><a href="#">크루 타임라인<span></span></a></h4>
+                    <div class="TimeLine Nocontent">
+                        <p class="Nocontent"><em>최근 30일간의 활동이 없습니다.</em><br>
+                        크루에 참여하셔서 활동 이력을 남겨보세요!</p>
+                        <ul class="NocontentButtonWrap">
+                            <li><button class="ButtonFull3 ButtonSmall">크루참여</button></li>
+                            <li><button class="ButtonFull3 ButtonSmall">팀원모집</button></li>
+                        </ul>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="PostListSect">
+            <div class="SectionWrap850">
+                <ul class="ListTap">
+                    <li><button class="On">스크랩한 글</button></li>
+                    <li><button>최근 본 글</button></li>
+                </ul>
+                <div class="PostWrapper Nocontent">
+                    <p class="Nocontent"><em>스크랩한 모집글이 없습니다.</em><br>
+                        모집글을 둘러보고 <br class="fold">관심가는 크루에 참여해보세요!</p>
+                        <button class="ButtonFull3 ButtonSmall">크루참여</button>
+                </div>
+            </div>
+            
+        </section>
+    </main>
+</body>
+</html>

@@ -203,12 +203,8 @@ window.addEventListener("DOMContentLoaded", function(){
 
         isOn = !isOn;
     });
-
-    
-    
-    //export ProgressTransition;
-
 });
+
 const SignLength = document.querySelectorAll(".InputList>li")?.length;
 const Signwidth = 100 / SignLength; //회원가입 진행도 1개당 올라가는 width
 let SignProgress = 0; //회원가입 진행도
@@ -231,5 +227,3 @@ export const ProgressTransition = () => { //입력 완료된 input의 수에 따
         }
     }
 }
-
-console.log(document.querySelector(".StepSlide")===null);

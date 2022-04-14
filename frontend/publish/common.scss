@@ -634,3 +634,99 @@ main{
         }
     }
 }
+
+.SectionWrap850{
+    max-width: 850px;
+    margin: auto;
+    position: relative;
+}
+
+@media screen and (max-width:820px){
+    .SectionWrap850{
+        padding: 0 20px;
+    }
+}
+
+@media screen and (max-width:300px){
+    .SectionWrap850{
+        padding: 0 10px;
+    }
+}
+
+.PaginationWrapper{
+    display: flex;
+    justify-content: space-between;
+    width: 598px;
+    margin: 48px auto 124px;
+
+    div{
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: $white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 15px;
+        font-weight: 700;
+        color: $black1;
+        border: 1px solid transparent;
+        transition: .2s;
+        cursor: pointer;
+
+        &:hover{
+            border-color: $black4;
+        }
+
+        &.On{
+            background-color: $blue3;
+            color: $white;
+            border-color: transparent;
+            cursor: default;
+        }
+
+        @mixin PageArrow($bs, $bp) {
+            background-repeat: no-repeat;
+            background-size: $bs;
+            background-position: $bp;
+        }
+
+        &.Prev2{
+            @include PageArrow(13px, 9px);
+            background-image: url("/frontend/src/assets/images/PageArrow2Prev.png");
+        }
+        
+        &.Prev{
+            @include PageArrow(6px, 12px);
+            background-image: url("/frontend/src/assets/images/PageArrowPrev.png");
+        }
+
+        &.Next{
+            @include PageArrow(6px, 14px);
+            background-image: url("/frontend/src/assets/images/PageArrowNext.png");
+        }
+
+        &.Next2{
+            @include PageArrow(13px, 10px);
+            background-image: url("/frontend/src/assets/images/PageArrow2Next.png");
+        }
+    }
+}
+
+@media screen and (max-width:820px) {
+    
+    .PaginationWrapper{
+        width: 100%;
+        margin: 28px auto 80px;
+
+        div{
+            width: 24px;
+            height: 24px;
+            font-size: 13px;
+
+            &.Prev, &.Next, &.Prev2, &.Next2{
+                background-position: center;
+            }
+        }
+    }
+}
