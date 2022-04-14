@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable react/jsx-one-expression-per-line */
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { css } from 'styled-components';
@@ -29,6 +31,20 @@ function PostList() {
   const [postsPerPage, setPostsPerPage] = useState(10);
 
   const renderTitle = useCallback(() => {
+    if (query.get('search')) {
+      return (
+        <>
+          <PostTitle>
+            '{query.get('search')}
+            '에 대한 모집글
+          </PostTitle>
+          <PostDesc>
+            검색하신 '{query.get('search')}
+            '을 포함하는 제목과 내용을 검색했어요!
+          </PostDesc>
+        </>
+      );
+    }
     if (article.htmlId === 'postRecent') {
       return (
         <>
@@ -53,7 +69,7 @@ function PostList() {
         </>
       );
     }
-  }, [article]);
+  }, [article, query.get('search')]);
   // 필터 리스트 렌더
   const renderFilterList = (data) => {
     if (!data || data.length === 0) {
@@ -69,7 +85,7 @@ function PostList() {
     return renderFilter;
   };
 
-  const axiosGet = useCallback(async () => {
+  const axiosGetFilter = useCallback(async (page, search) => {
     try {
       const postFilter = JSON.parse(localStorage.getItem('postFilter'));
 
@@ -78,10 +94,17 @@ function PostList() {
       const categoryIds = postFilter.categorylist.map((data) => data.value);
 
       const params = new URLSearchParams();
-      params.append('order', order);
-      params.append('approach', access);
-      if (categoryIds[0] !== '0') {
-        params.append('categoryIds', categoryIds);
+      if (search) {
+        params.append('keyword', search);
+      } else {
+        params.append('order', order);
+        params.append('approach', access);
+        if (categoryIds[0] !== '0') {
+          params.append('categoryIds', categoryIds);
+        }
+      }
+      if (page) {
+        params.append('page', page - 1);
       }
       const context = {
         params,
@@ -110,10 +133,6 @@ function PostList() {
     }
   }, []);
 
-  useEffect(() => {
-    axiosGet();
-  }, []);
-
   const handleResize = () => {
     if (window.innerWidth > 768) {
       setPostsPerPage(10);
@@ -126,8 +145,19 @@ function PostList() {
 
   useEffect(() => {
     const pageNum = query.get('page');
+    const pageSearch = query.get('search');
     setCurrentPage(pageNum || 1);
-  }, [query.get('page')]);
+    if (pageSearch && pageNum) {
+      return axiosGetFilter(pageNum, pageSearch);
+    }
+    if (pageSearch) {
+      return axiosGetFilter(1, pageSearch);
+    }
+    if (pageNum) {
+      return axiosGetFilter(pageNum);
+    }
+    axiosGetFilter();
+  }, [query.get('page'), query.get('search')]);
 
   useEffect(() => {
     handleResize();
@@ -141,10 +171,10 @@ function PostList() {
   return (
     <Container>
       <Wrapper>
-        <FilterBox handleGetAxios={axiosGet} />
+        <FilterBox handleGetAxios={axiosGetFilter} />
         {renderTitle()}
         <FilterChecked>
-          {article && approach && (
+          {!query.get('search') && article && approach && (
             <>
               <li>
                 <FilterSpan textColor={article.color}>{article.name}</FilterSpan>
@@ -152,7 +182,7 @@ function PostList() {
               {renderFilterList(approach)}
             </>
           )}
-          {renderFilterList(filterData)}
+          {!query.get('search') && renderFilterList(filterData)}
         </FilterChecked>
         <PostWrapper>
           <ul>

@@ -1,5 +1,6 @@
 /* eslint-disable indent */
 import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
 import FilterArrowImg from '../../assets/images/FilterArrow.png';
@@ -22,6 +23,7 @@ function FilterBox({ handleGetAxios }) {
   const [approach, setApproach] = useRecoilState(approachFilterState);
   const [article, setArticle] = useRecoilState(articleFilterState);
   const [filterData, setFilterData] = useRecoilState(arrayFilterState);
+  const navigate = useNavigate();
 
   // 전체 카테고리 클릭 시 발생하는 함수
   const onCheckedAll = useCallback(() => {
@@ -108,6 +110,7 @@ function FilterBox({ handleGetAxios }) {
     setSelectedArticle(articleArr[0]);
     setSelectedApproach([...approachArr]);
     handleGetAxios();
+    navigate('/post?page=1');
   }, [checkedAll, selectedArticle, selectedApproach, checkedList]);
 
   // 필터 리스트 렌더

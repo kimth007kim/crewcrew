@@ -1,27 +1,102 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import PageArrow2Prev from '../../assets/images/PageArrow2Prev.png';
 import PageArrowPrev from '../../assets/images/PageArrowPrev.png';
 import PageArrowNext from '../../assets/images/PageArrowNext.png';
 import PageArrow2Next from '../../assets/images/PageArrow2Next.png';
 
-function Pagination() {
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
+function Pagination({ data, currentPage, postsPerPage, totalPage }) {
+  const query = useQuery();
+  const navigate = useNavigate();
+  const [page, setPage] = useState(0);
+
+  const handleClickPageNavi = useCallback(
+    (i) => {
+      if (query.get('search')) {
+        return navigate(`/post?page=${i + 1}&search=${query.get('search')}`);
+      }
+      navigate(`/post?page=${i + 1}`);
+    },
+    [query.get('search')],
+  );
+
+  const renderNumberDiv = () => {
+    const renderArr = [];
+
+    const limitPage = postsPerPage * (page + 1) > totalPage ? totalPage : postsPerPage * (page + 1);
+
+    for (let i = page * postsPerPage; i < limitPage; i += 1) {
+      renderArr.push(i);
+    }
+    return renderArr;
+  };
+
+  useEffect(() => {
+    setPage(Math.floor(currentPage / postsPerPage));
+  }, [currentPage, postsPerPage]);
+
+  const handleClickPrevFirst = useCallback(() => {
+    if (query.get('search')) {
+      return navigate(`/post?page=1&search=${query.get('search')}`);
+    }
+    navigate(`/post?page=${1}`);
+  }, [query.get('search')]);
+
+  const handleClickPrev = useCallback(() => {
+    if ((page - 1) * postsPerPage + 1 < 2) {
+      return null;
+    }
+    if (query.get('search')) {
+      return navigate(`/post?page=${(page - 1) * postsPerPage + 1}&search=${query.get('search')}`);
+    }
+
+    navigate(`/post?page=${(page - 1) * postsPerPage + 1}`);
+  }, [page, query.get('search')]);
+
+  const handleClickNext = useCallback(() => {
+    if ((page + 1) * postsPerPage + 1 > totalPage) {
+      return null;
+    }
+    if (query.get('search')) {
+      return navigate(`/post?page=${(page + 1) * postsPerPage + 1}&search=${query.get('search')}`);
+    }
+
+    navigate(`/post?page=${(page + 1) * postsPerPage + 1}`);
+  }, [page, query.get('search')]);
+
+  const handleClickNextLast = useCallback(() => {
+    if (query.get('search')) {
+      return navigate(`/post?page=${totalPage}&search=${query.get('search')}`);
+    }
+    navigate(`/post?page=${totalPage}`);
+  }, [totalPage, query.get('search')]);
+
   return (
     <PaginationWrapper>
-      <Prev2 />
-      <Prev1 />
-      <NumberDiv active={1}>1</NumberDiv>
-      <NumberDiv>2</NumberDiv>
-      <NumberDiv>3</NumberDiv>
-      <NumberDiv>4</NumberDiv>
-      <NumberDiv>5</NumberDiv>
-      <NumberDiv>6</NumberDiv>
-      <NumberDiv>7</NumberDiv>
-      <NumberDiv>8</NumberDiv>
-      <NumberDiv>9</NumberDiv>
-      <NumberDiv>10</NumberDiv>
-      <Next />
-      <Next2 />
+      {data && totalPage > 1 && (
+        <>
+          <Prev2 onClick={handleClickPrevFirst} />
+          <Prev1 onClick={handleClickPrev} />
+          {renderNumberDiv().map((i) => (
+            <NumberDiv
+              active={`${i + 1}` === currentPage}
+              key={i}
+              onClick={() => handleClickPageNavi(i)}
+            >
+              {i + 1}
+            </NumberDiv>
+          ))}
+          <Next onClick={handleClickNext} />
+          <Next2 onClick={handleClickNextLast} />
+        </>
+      )}
     </PaginationWrapper>
   );
 }

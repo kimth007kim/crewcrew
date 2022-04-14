@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import BgProfile1 from '../../assets/images/Profile1.png';
 import BgProfile3 from '../../assets/images/Profile3.png';
 import IconLinkIntro from '../../assets/images/IconLinkIntro.png';
@@ -8,15 +9,25 @@ import delImage from '../../assets/images/InputDel.png';
 
 function PostTop() {
   const [searchText, setSearchText] = useState('');
+  const navigate = useNavigate();
   const InputRef = useRef(null);
 
   const onChangeSearchText = useCallback((e) => {
     setSearchText(e.target.value);
   }, []);
 
-  const HandleSearchTextDelete = useCallback(() => {
+  const handleSearchTextDelete = useCallback(() => {
     setSearchText('');
   }, []);
+
+  const handleSearchTextSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      navigate(`/post?page=1&search=${searchText}`);
+      setSearchText('');
+    },
+    [searchText],
+  );
 
   return (
     <MainTop>
@@ -24,24 +35,26 @@ function PostTop() {
       <TopCont>
         <h2>크루 참여하고 목표 이루기</h2>
         <h3>나에게 딱 맞는 크루, 여기서 찾아요!</h3>
-        <InputWrapper>
-          <img src={`${IconSearch}`} alt="" />
-          <input
-            type="text"
-            placeholder="참여하고 싶은 모임을 검색해보세요!"
-            onChange={onChangeSearchText}
-            ref={InputRef}
-            value={searchText}
-          />
-          <InputDel
-            onMouseDown={(e) => {
-              e.preventDefault();
-              HandleSearchTextDelete();
-              InputRef.current.focus();
-            }}
-            TextIn={!!searchText}
-          />
-        </InputWrapper>
+        <form onSubmit={handleSearchTextSubmit}>
+          <InputWrapper>
+            <img src={`${IconSearch}`} alt="" />
+            <input
+              type="text"
+              placeholder="참여하고 싶은 모임을 검색해보세요!"
+              onChange={onChangeSearchText}
+              ref={InputRef}
+              value={searchText}
+            />
+            <InputDel
+              onMouseDown={(e) => {
+                e.preventDefault();
+                handleSearchTextDelete();
+                InputRef.current.focus();
+              }}
+              TextIn={!!searchText}
+            />
+          </InputWrapper>
+        </form>
       </TopCont>
       <ButtonIntro />
     </MainTop>
