@@ -311,8 +311,23 @@ public class AuthController {
 
     @ApiOperation(value = "이메일 인증코드확인후 비밀번호 변경"
             , notes = "이메일 인증코드확인후 비밀번호 변경")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "비밀 번호 변경 성공"
+                    , response = AccessTokenDto.class
+            )
+            , @ApiResponse(
+            code = 1101
+            , message = "존재하지 않는 이메일 입니다."
+    )
+            , @ApiResponse(
+            code = 1003
+            , message = "발급된 인증 코드가 이메일과 다릅니다."
+    )
+    })
     @PostMapping("/user/password/find/confirm")
-    public ResponseEntity<Object> passwordSet(
+    public ResponseEntity<Object> passwordConfirm(
             @ApiParam(value = "PasswordFindDTO", required = true)
             @RequestBody PasswordConfirmDTO passwordConfirmDTO) {
         userService.findByEmailAndProvider(passwordConfirmDTO.getEmail(), "local").orElseThrow(LoginFailedByEmailNotExistException::new);
@@ -320,7 +335,41 @@ public class AuthController {
         User user = userService.findByEmailAndProvider(passwordConfirmDTO.getEmail(), "local").get();
         userService.changePassword(user, passwordConfirmDTO.getChange_password());
         // 나중에 이름이나 닉네임으로 추가 인증
-        return ResponseHandler.generateResponse("성공", HttpStatus.OK, null);
+        return ResponseHandler.generateResponse("비밀 번호 변경 성공", HttpStatus.OK, null);
+    }
+
+
+    @ApiOperation(value = "이메일과 인증코드 확인"
+            , notes = "이메일 인증코드가 일치하는지 확인 합니다.")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "인증 코드 일치"
+            ),
+            @ApiResponse(
+            code = 200
+            , message = "인증 코드 불일치"
+            )
+            , @ApiResponse(
+            code = 1101
+            , message = "존재하지 않는 이메일 입니다."
+    )
+            , @ApiResponse(
+            code = 1003
+            , message = "발급된 인증 코드가 이메일과 다릅니다."
+    )
+    })
+    @PostMapping("/user/password/find/check")
+    public ResponseEntity<Object> passwordCheck(
+            @ApiParam(value = "PasswordCheckDTO", required = true)
+            @RequestBody PasswordCheckDTO passwordCheckDTO) {
+        userService.findByEmailAndProvider(passwordCheckDTO.getEmail(), "local").orElseThrow(LoginFailedByEmailNotExistException::new);
+        boolean check =emailService.codeForPasswordCheck(passwordCheckDTO.getEmail(),passwordCheckDTO.getCode());
+        // 나중에 이름이나 닉네임으로 추가 인증
+        if (check==true){
+            return ResponseHandler.generateResponse("인증 코드 일치", HttpStatus.OK, check);
+        }
+        return ResponseHandler.generateResponse("인증 코드 불일치", HttpStatus.OK, check);
     }
 
 //    @PostMapping("/user/password/change")

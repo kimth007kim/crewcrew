@@ -45,7 +45,7 @@ public class EmailService {
 
 
         // 3시간 후 만료
-        redisUtil.setDataExpire(verifier,code,60*3L);
+        redisUtil.setDataExpire(verifier,code,60*10L);
 
         return code;
     }
@@ -68,9 +68,20 @@ public class EmailService {
         if (result == null){
             throw new CEmailCodeNotMatchException();
         }
-        if (result.equals(code)){
+        if (!result.equals(code)){
             throw new CEmailCodeNotMatchException();
         }
+    }
+
+    public boolean codeForPasswordCheck(String email,String code){
+        StringBuilder sb = new StringBuilder();
+        sb.append("passwordFinder_");
+        sb.append(email);
+        String result=redisUtil.getData(sb.toString());
+        if (result == null || !result.equals(code)) {
+            return false;
+        }
+        return true;
     }
 
     public String sendVerifyCode(String email) throws MessagingException {
