@@ -73,16 +73,16 @@ public class EmailService {
         }
     }
 
-    public boolean codeForPasswordCheck(String email,String code){
-        StringBuilder sb = new StringBuilder();
-        sb.append("passwordFinder_");
-        sb.append(email);
-        String result=redisUtil.getData(sb.toString());
-        if (result == null || !result.equals(code)) {
-            return false;
-        }
-        return true;
-    }
+//    public boolean codeForPasswordCheck(String email,String code){
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("passwordFinder_");
+//        sb.append(email);
+//        String result=redisUtil.getData(sb.toString());
+//        if (result == null || !result.equals(code)) {
+//            return false;
+//        }
+//        return true;
+//    }
 
     public String sendVerifyCode(String email) throws MessagingException {
         String code=createCode();

@@ -364,13 +364,10 @@ public class AuthController {
             @ApiParam(value = "PasswordCheckDTO", required = true)
             @RequestBody PasswordCheckDTO passwordCheckDTO) {
         userService.findByEmailAndProvider(passwordCheckDTO.getEmail(), "local").orElseThrow(LoginFailedByEmailNotExistException::new);
-        boolean check =emailService.codeForPasswordCheck(passwordCheckDTO.getEmail(),passwordCheckDTO.getCode());
+        emailService.codeForPasswordFinder(passwordCheckDTO.getEmail(),passwordCheckDTO.getCode());
         // 나중에 이름이나 닉네임으로 추가 인증
-        if (check==true){
-            return ResponseHandler.generateResponse("인증 코드 일치", HttpStatus.OK, check);
+        return ResponseHandler.generateResponse("인증 코드 일치", HttpStatus.OK, null);
         }
-        return ResponseHandler.generateResponse("인증 코드 불일치", HttpStatus.OK, check);
-    }
 
 //    @PostMapping("/user/password/change")
 //    public ResponseEntity<Object> changePwd(@PathVariable String email, String previous, String change_password) {
