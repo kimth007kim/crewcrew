@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.dto.user;
+package matchTeam.crewcrew.dto.user.example;
 
 import lombok.Getter;
 import matchTeam.crewcrew.entity.user.User;
