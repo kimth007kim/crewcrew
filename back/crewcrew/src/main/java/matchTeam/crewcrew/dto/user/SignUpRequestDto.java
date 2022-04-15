@@ -17,17 +17,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SignUpRequestDto {
-    @ApiModelProperty(example = "abc@naver.com")
+    @ApiModelProperty(value="이메일 주소", example = "abc@naver.com",dataType = "String")
     private String email;
-    @ApiModelProperty(example = "abcd12345678")
+    @ApiModelProperty(value="비밀번호",example = "abcd12345678",dataType = "String")
     private String password;
-    @ApiModelProperty(example = "김경동")
+    @ApiModelProperty(value="이름",example = "김경동",dataType = "String")
     private String name;
-    @ApiModelProperty(example = "momo")
+    @ApiModelProperty(value="닉네임",example = "momo",dataType = "String")
     private String nickName;
-    @ApiModelProperty(example = "profileImage.jpg")
+    @ApiModelProperty(value="프로필 이미지",example = "profileImage.jpg",dataType = "MultipartFile")
     private MultipartFile file;
-    @ApiModelProperty(example = "[3,4,5]")
+    @ApiModelProperty(value="카테고리 아이디",example = "[3,4,5]",dataType = "Array[Long]")
     private List<Long> categoryId;
 
 

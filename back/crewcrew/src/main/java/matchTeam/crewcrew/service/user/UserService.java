@@ -43,12 +43,13 @@ public class UserService {
     public User findByUid(Long id) {
         return userRepository.findByUid(id);
     }
+
     public Optional<User> findByEmailAndProvider(String email, String provider) {
         return userRepository.findByEmailAndProvider(email, provider);
     }
 
     public Long signup(SignUpRequestDto localSignUpRequestDto) {
-        if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(),"local").isPresent())
+        if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(), "local").isPresent())
             throw new EmailSignUpFailedCException();
         return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();
     }
@@ -56,7 +57,7 @@ public class UserService {
 
     public TokenDto login(UserLoginRequestDto userLoginRequestDto) {
         //회원 정보 존재하는지 확인
-        User user = userRepository.findByEmailAndProvider(userLoginRequestDto.getEmail(),"local").
+        User user = userRepository.findByEmailAndProvider(userLoginRequestDto.getEmail(), "local").
                 orElseThrow(LoginFailedByEmailNotExistException::new);
         // 회원 패스워드 일치하는지 확인
         System.out.println(userLoginRequestDto.getPassword() + "  " + user.getPassword());
@@ -64,28 +65,28 @@ public class UserService {
         if (!passwordEncoder.matches(userLoginRequestDto.getPassword(), user.getPassword()))
             throw new LoginFailedByPasswordException();
 
-        log.info(userLoginRequestDto.getEmail(), userLoginRequestDto.getPassword(),userLoginRequestDto.isMaintain());
+        log.info(userLoginRequestDto.getEmail(), userLoginRequestDto.getPassword(), userLoginRequestDto.isMaintain());
         // AccessToken ,Refresh Token 발급
 
         Long id = user.getUid();
-        System.out.println( user.getUid());
+        System.out.println(user.getUid());
 //        if (jwtProvider.validateToken()==True)
-        Optional<RefreshToken> refreshToken =refreshTokenJpaRepository.findByPkey(id);
+        Optional<RefreshToken> refreshToken = refreshTokenJpaRepository.findByPkey(id);
         System.out.println(refreshToken);
         boolean maintain = userLoginRequestDto.isMaintain();
-        if (refreshToken.isPresent() && (jwtProvider.validateToken(refreshToken.get().getToken())==true)){
-                TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles(),maintain);
-                RefreshToken updateRefreshToken = refreshToken.get().updateToken(newCreatedToken.getRefreshToken());
-                refreshTokenJpaRepository.save(updateRefreshToken);
-                return newCreatedToken;
-            }
+        if (refreshToken.isPresent() && (jwtProvider.validateToken(refreshToken.get().getToken()) == true)) {
+            TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles(), maintain);
+            RefreshToken updateRefreshToken = refreshToken.get().updateToken(newCreatedToken.getRefreshToken());
+            refreshTokenJpaRepository.save(updateRefreshToken);
+            return newCreatedToken;
+        }
 
 //       1. Refresh 토큰이 존재하면 그걸 토대로 access토큰 발급
 
 //        2. Refresh 토큰 없으면 새로 Refresh토큰 발급후 그걸 토대로 accesss토큰 발급
 
 //        TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles(),maintain);
-        TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles(),userLoginRequestDto.isMaintain());
+        TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles(), userLoginRequestDto.isMaintain());
 
         // RefreshToken 저장
         RefreshToken refresh_Token = RefreshToken.builder()
@@ -121,61 +122,65 @@ public class UserService {
         //입력받은 Refresh 토큰이 DB에 저장된 Refresh 토큰과 다릅니다.
 
         //AccessToken , refreshToken 토큰 재발급 ,리프레시 토큰 저장
-        TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles(),false);
+        TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles(), false);
         RefreshToken updateRefreshToken = refreshToken.updateToken(newCreatedToken.getRefreshToken());
         refreshTokenJpaRepository.save(updateRefreshToken);
 
         return newCreatedToken;
     }
-    public Long kakaoSignup(UserSignUpRequestDto userSignUpRequestDto){
-        Optional<User> user=userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(),userSignUpRequestDto.getProvider());
+
+    public Long kakaoSignup(UserSignUpRequestDto userSignUpRequestDto) {
+        Optional<User> user = userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider());
         System.out.println(user);
-        if (userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(),userSignUpRequestDto.getProvider())
+        if (userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider())
                 .isPresent()) throw new CKakaoUserAlreadyExistException();
         return userRepository.save(userSignUpRequestDto.toEntity("kakao")).getUid();
     }
-    public Long naverSignup(UserSignUpRequestDto userSignUpRequestDto){
-        Optional<User> user=userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(),userSignUpRequestDto.getProvider());
+
+    public Long naverSignup(UserSignUpRequestDto userSignUpRequestDto) {
+        Optional<User> user = userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider());
         System.out.println(user);
-        if (userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(),userSignUpRequestDto.getProvider())
+        if (userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider())
                 .isPresent()) throw new CUserAlreadyExistException();
         return userRepository.save(userSignUpRequestDto.toEntity("naver")).getUid();
     }
 
-    public void passwordCheck(User user,String previous){
-        System.out.println("---------         " +previous+"     ------------ "+user.getPassword());
-        if(!passwordEncoder.matches(previous,user.getPassword())){
+    public void passwordCheck(User user, String previous) {
+        System.out.println("---------         " + previous + "     ------------ " + user.getPassword());
+        if (!passwordEncoder.matches(previous, user.getPassword())) {
             throw new CPasswordNotMatchException();
         }
     }
 
-    public void setProfileImage(User user, String image){
+    public void setProfileImage(User user, String image) {
         user.setProfileImage(image);
     }
-    public void setMessage(User user, String message){
+
+    public void setMessage(User user, String message) {
         user.setMessage(message);
     }
 
-    public void changePassword(User user, String password){
-        String new_password=passwordEncoder.encode(password);
+    public void changePassword(User user, String password) {
+        String new_password = passwordEncoder.encode(password);
         user.setPassword(new_password);
     }
 
-    public void setRandomMessage(User user){
+    public void setRandomMessage(User user) {
         StringBuilder sb = new StringBuilder();
         sb.append("M");
-        int random=(int)((Math.random()*5));
+        int random = (int) ((Math.random() * 5));
         sb.append(random);
-        String message=UserMessage.valueOf(sb.toString()).getMessage();
+        String message = UserMessage.valueOf(sb.toString()).getMessage();
         user.setMessage(message);
 
     }
-    public String nickNameGenerator(String nickName){
+
+    public String nickNameGenerator(String nickName) {
         int leftLimit = 48; // numeral '0'
         int rightLimit = 122; // letter 'z'
         int targetStringLength = 6;
         Random random = new Random();
-        while(true) {
+        while (true) {
             String generated = random.ints(leftLimit, rightLimit + 1)
                     .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
                     .limit(targetStringLength)
@@ -186,7 +191,7 @@ public class UserService {
             sb.append(nickName);
             sb.append("#");
             sb.append(generated);
-            if (userRepository.findByNickname(sb.toString()).isEmpty()){
+            if (userRepository.findByNickname(sb.toString()).isEmpty()) {
                 return sb.toString();
             }
 
@@ -196,13 +201,13 @@ public class UserService {
     }
 
     public List<UserResponseDto> findUsers() {
-        List<User> result=userRepository.findAll();
-        int length =result.size();
-        List<UserResponseDto> users =new ArrayList<>();
-        for (int i=0; i<length; i++) {
+        List<User> result = userRepository.findAll();
+        int length = result.size();
+        List<UserResponseDto> users = new ArrayList<>();
+        for (int i = 0; i < length; i++) {
             User user = result.get(i);
 //            System.out.println("ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅋㅎ------------------------"+user.getUid());
-            UserResponseDto userResponseDto = new UserResponseDto(user.getUid(),user.getEmail(),user.getName(),user.getNickname(),user.getProfileImage(),likedCategoryService.findUsersLike(user),user.getMessage());
+            UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), likedCategoryService.findUsersLike(user), user.getMessage());
             users.add(userResponseDto);
         }
         return users;
@@ -213,22 +218,20 @@ public class UserService {
     }
 
 
-    public void validateDuplicateByNickname(String nickname){
-        if (!userRepository.findByNickname(nickname).isEmpty()){
+    public void validateDuplicateByNickname(String nickname) {
+        if (!userRepository.findByNickname(nickname).isEmpty()) {
             throw new NickNameAlreadyExistException();
         }
     }
 
 
-
-
-    public User tokenChecker(String accessToken){
-        if(!jwtProvider.validateToken(accessToken)){
+    public User tokenChecker(String accessToken) {
+        if (!jwtProvider.validateToken(accessToken)) {
             throw new CInvalidTokenException();
         }
         Claims c = jwtProvider.parseClaims(accessToken);
-        String uid =c.getSubject();
-        System.out.println("Claims=  "+c+"  uid= "+uid);
+        String uid = c.getSubject();
+        System.out.println("Claims=  " + c + "  uid= " + uid);
         User user = userRepository.findByUid(Long.valueOf(uid));
 
         return user;
