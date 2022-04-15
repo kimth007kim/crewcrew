@@ -168,13 +168,12 @@ function SignupSection({ IsClick, HandleClick }) {
     let value = emojiSlice(e.target.value);
     value = spaceSlice(value);
     value = value.slice(0, 8);
+    if (!SendCode) {
+      value = value.slice(0, 0);
+    }
 
     setCode(value);
-    if (value.length >= 5) {
-      setCodeValid(false);
-    } else {
-      setCodeValid(true);
-    }
+
     async function axiosPost() {
       try {
         const completeEmail = `${emailId}@${email}`;
@@ -189,6 +188,7 @@ function SignupSection({ IsClick, HandleClick }) {
           case 200:
             setCodeComplete(true);
             setCodeValidMsg(data.message);
+            setCodeValid(false);
             break;
           case 1003:
             setCodeValidMsg(data.message);
@@ -203,7 +203,9 @@ function SignupSection({ IsClick, HandleClick }) {
         console.dir(error);
       }
     }
-    axiosPost();
+    if (SendCode) {
+      axiosPost();
+    }
   };
 
   const HandleCodeDelete = useCallback(() => {
@@ -367,6 +369,9 @@ function SignupSection({ IsClick, HandleClick }) {
       setEmail('');
       setPassword('');
       setCodeActive(false);
+      setCodeComplete(false);
+      setSendCode(false);
+      setCodeValidMsg('코드 전송 후, 입력창에 코드를 입력해주세요');
       setProgressF([
         {
           index: 0,

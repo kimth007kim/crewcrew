@@ -14,6 +14,7 @@ function Button({
   children,
   fontSize,
   paddings,
+  type = 'button',
 }) {
   return (
     <ButtonStyled
@@ -27,6 +28,7 @@ function Button({
       heightSize={heightSize}
       fontSize={fontSize}
       paddings={paddings}
+      type={type}
     >
       {loadings && (
         <ButtonSpinner>

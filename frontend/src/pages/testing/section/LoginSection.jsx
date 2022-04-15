@@ -157,7 +157,7 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
       }
       axiosPost();
     },
-    [email, password],
+    [email, password, IsChecked],
   );
 
   return (
@@ -186,7 +186,7 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
             />
           </LogInputLi>
         </LogInputList>
-        <Button size="fullregular" color="darkblue" loadings={BtnLoading}>
+        <Button size="fullregular" color="darkblue" loadings={BtnLoading} type="submit">
           로그인
         </Button>
 

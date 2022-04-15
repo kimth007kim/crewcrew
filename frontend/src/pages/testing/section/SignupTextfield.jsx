@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import delImage from '../../../assets/images/InputDel.png';
 
@@ -33,6 +33,12 @@ function TextfieldSU({
   const HandleOutHover = useCallback(() => {
     setHover(false);
   }, []);
+
+  useEffect(() => {
+    if (disabled) {
+      HandleOnBlur();
+    }
+  }, [disabled]);
 
   return (
     <Wrapper onMouseEnter={HandleOnHover} onMouseLeave={HandleOutHover}>

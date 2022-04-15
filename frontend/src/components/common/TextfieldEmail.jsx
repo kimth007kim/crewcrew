@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import delImage from '../../assets/images/InputDel.png';
 
@@ -32,6 +32,11 @@ function Textfield({
     setHover(false);
   }, []);
 
+  useEffect(() => {
+    if (disabled) {
+      HandleOnBlur();
+    }
+  }, [disabled]);
   return (
     <Wrapper onMouseEnter={HandleOnHover} onMouseLeave={HandleOutHover}>
       <Input
@@ -134,6 +139,7 @@ const Label = styled.label`
     css`
       color: #00b7ff;
     `}
+
   ${(props) =>
     props.Valid &&
     css`
@@ -158,7 +164,8 @@ const InputText = styled.div`
     css`
       opacity: 1;
       top: 54px;
-    `};
+    `}
+
   ${(props) =>
     props.Valid &&
     css`
