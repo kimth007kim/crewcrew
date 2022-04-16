@@ -27,7 +27,7 @@ function PostList() {
 
   const query = useQuery();
   const [totalPage, setTotalPage] = useState(0);
-  const [currentPage, setCurrentPage] = useState(query.get('page'));
+  const [currentPage, setCurrentPage] = useState(query.get('page') || 1);
   const [postsPerPage, setPostsPerPage] = useState(10);
 
   const renderTitle = useCallback(() => {

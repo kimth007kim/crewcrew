@@ -38,19 +38,15 @@ function Pagination({ data, currentPage, postsPerPage, totalPage }) {
     return renderArr;
   };
 
-  useEffect(() => {
-    setPage(Math.floor(currentPage / postsPerPage));
-  }, [currentPage, postsPerPage]);
-
   const handleClickPrevFirst = useCallback(() => {
     if (query.get('search')) {
       return navigate(`/post?page=1&search=${query.get('search')}`);
     }
     navigate(`/post?page=${1}`);
-  }, [query.get('search')]);
+  }, [query.get('search'), totalPage, postsPerPage]);
 
   const handleClickPrev = useCallback(() => {
-    if ((page - 1) * postsPerPage + 1 < 2) {
+    if ((page - 1) * postsPerPage + 1 < 1) {
       return null;
     }
     if (query.get('search')) {
@@ -58,7 +54,7 @@ function Pagination({ data, currentPage, postsPerPage, totalPage }) {
     }
 
     navigate(`/post?page=${(page - 1) * postsPerPage + 1}`);
-  }, [page, query.get('search')]);
+  }, [page, query.get('search'), totalPage, postsPerPage]);
 
   const handleClickNext = useCallback(() => {
     if ((page + 1) * postsPerPage + 1 > totalPage) {
@@ -69,14 +65,22 @@ function Pagination({ data, currentPage, postsPerPage, totalPage }) {
     }
 
     navigate(`/post?page=${(page + 1) * postsPerPage + 1}`);
-  }, [page, query.get('search')]);
+  }, [page, query.get('search'), totalPage, postsPerPage]);
 
   const handleClickNextLast = useCallback(() => {
     if (query.get('search')) {
       return navigate(`/post?page=${totalPage}&search=${query.get('search')}`);
     }
     navigate(`/post?page=${totalPage}`);
-  }, [totalPage, query.get('search')]);
+  }, [totalPage, query.get('search'), totalPage, postsPerPage]);
+
+  useEffect(() => {
+    let pageNum = Math.floor((Number(currentPage) - 1) / postsPerPage);
+    if (pageNum < 0) {
+      pageNum = 0;
+    }
+    setPage(pageNum);
+  }, [currentPage, postsPerPage]);
 
   return (
     <PaginationWrapper>
@@ -86,7 +90,7 @@ function Pagination({ data, currentPage, postsPerPage, totalPage }) {
           <Prev1 onClick={handleClickPrev} />
           {renderNumberDiv().map((i) => (
             <NumberDiv
-              active={`${i + 1}` === currentPage}
+              active={i + 1 === Number(currentPage)}
               key={i}
               onClick={() => handleClickPageNavi(i)}
             >
@@ -135,6 +139,7 @@ const PaginationWrapper = styled.div`
 
 const NumberDiv = styled('div')`
   cursor: pointer;
+  user-select: none;
 
   background-color: #fff;
   color: #000;
@@ -163,6 +168,7 @@ const Prev2 = styled.div`
   background-position: 9px;
   background-image: url(${PageArrow2Prev});
   cursor: pointer;
+  user-select: none;
 
   :hover {
     border-color: #a8a8a8;
@@ -180,6 +186,7 @@ const Prev1 = styled.div`
   background-position: 12px;
   background-image: url(${PageArrowPrev});
   cursor: pointer;
+  user-select: none;
 
   :hover {
     border-color: #a8a8a8;
@@ -198,6 +205,7 @@ const Next = styled.div`
   background-position: 14px;
   background-image: url(${PageArrowNext});
   cursor: pointer;
+  user-select: none;
 
   :hover {
     border-color: #a8a8a8;
@@ -216,6 +224,7 @@ const Next2 = styled.div`
   background-position: 10px;
   background-image: url(${PageArrow2Next});
   cursor: pointer;
+  user-select: none;
 
   :hover {
     border-color: #a8a8a8;

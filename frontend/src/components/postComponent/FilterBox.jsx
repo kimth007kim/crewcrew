@@ -109,6 +109,7 @@ function FilterBox({ handleGetAxios }) {
     setCheckedAll(true);
     setSelectedArticle(articleArr[0]);
     setSelectedApproach([...approachArr]);
+    setBtnActive(false);
     handleGetAxios();
     navigate('/post?page=1');
   }, [checkedAll, selectedArticle, selectedApproach, checkedList]);
@@ -605,6 +606,10 @@ const ButtonFilter = styled.button`
   left: calc(50% - 60px);
   justify-self: end;
   user-select: none;
+
+  :hover {
+    background-color: #005ec5;
+  }
 
   @media screen and (max-width: 820px) {
     width: 100%;
