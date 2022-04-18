@@ -75,11 +75,10 @@ public class ApplicationService {
     }
 
     @Transactional(readOnly = true)
-    public List<ApplicationUserDetailsResponseDTO> findArrivedApplicationApplier(ApplicationApplierSpecs specs){
+    public ArrivedApplicationUserDetailsResponseDTO findArrivedApplicationApplier(ApplicationApplierSpecs specs){
         boardRepository.findById(specs.getBoardId()).orElseThrow(NotExistBoardInIdException::new);
-        return queryRepository.getArrivedApplier(specs);
+        return ArrivedApplicationUserDetailsResponseDTO.toDTO(queryRepository.getArrivedApplier(specs), queryRepository.getTheNumberOfWaiting(specs));
     }
-
 
     //중복 지원했을때
     public void checkDuplicateApplier(ApplicationSaveRequestDTO req){
