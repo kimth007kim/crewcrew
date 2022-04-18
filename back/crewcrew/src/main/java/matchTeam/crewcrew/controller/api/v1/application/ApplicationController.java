@@ -16,8 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Api(value = "Application Controller", tags = "6. application")
 @ApiOperation(value = "크루 지원, 수락, 거절 / 신청서 조회")
 @RequiredArgsConstructor //생성자 주입
@@ -50,7 +48,7 @@ import java.util.List;
                                                     @PageableDefault(size = 5)Pageable pageable){
 
         Page<ApplicationDetailResponseDTO> result = applicationService.findMyApplicationDetails(detailSpecs, pageable);
-        ApplicationDetailsPageResponseDTO pageResponseDTO = ApplicationDetailsPageResponseDTO.toDTO(result);
+        ApplicationDetailsPageResponseDTO pageResponseDTO =ApplicationDetailsPageResponseDTO.toDTO(result);
         return ResponseHandler.generateResponse("내가 참여요청한 지원서 부모 카테고리 별로 보기 조회 성공", HttpStatus.OK, pageResponseDTO);
     }
 
@@ -76,7 +74,7 @@ import java.util.List;
     @GetMapping(value = "/status/applications/arrive/details/applier")
     public ResponseEntity<Object> findArrivedApplicationApplier(@ModelAttribute ApplicationApplierSpecs specs){
 
-        List<ApplicationUserDetailsResponseDTO> result = applicationService.findArrivedApplicationApplier(specs);
+        ArrivedApplicationUserDetailsResponseDTO result = applicationService.findArrivedApplicationApplier(specs);
         return ResponseHandler.generateResponse("내게 도착한 지원서의 지원자 상세 조회 성공", HttpStatus.OK, result);
     }
 

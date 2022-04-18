@@ -120,7 +120,7 @@ public class ApplicationQueryRepository {
                 .on(board.category.id.eq(category.id))
                 .innerJoin(application)
                 .on(application.board.id.eq(board.id))
-                .where(board.user.uid.eq(detailSpecs.getUid()).and(category.categoryParent.id.eq(detailSpecs.getCategoryParentId())))
+                .where(application.progress.eq(1).and(board.user.uid.eq(detailSpecs.getUid()).and(category.categoryParent.id.eq(detailSpecs.getCategoryParentId()))))
                 .orderBy(application.createdDate.desc())
                 .fetch();
 
@@ -131,11 +131,17 @@ public class ApplicationQueryRepository {
                 .on(board.category.id.eq(category.id))
                 .innerJoin(application)
                 .on(application.board.id.eq(board.id))
-                .where(board.user.uid.eq(detailSpecs.getUid()).and(category.categoryParent.id.eq(detailSpecs.getCategoryParentId())))
+                .where(application.progress.eq(1).and(board.user.uid.eq(detailSpecs.getUid()).and(category.categoryParent.id.eq(detailSpecs.getCategoryParentId()))))
                 .orderBy(application.createdDate.desc());
 
         return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchCount);
     }
+
+    /***
+     * 도착한 신청서를 작성한 사람을 조회
+     * @param specs - 검색 조건
+     * @return
+     */
     public List<ApplicationUserDetailsResponseDTO> getArrivedApplier(ApplicationApplierSpecs specs){
         return queryFactory
                 .selectDistinct(Projections.constructor(ApplicationUserDetailsResponseDTO.class, user, application))
@@ -144,7 +150,7 @@ public class ApplicationQueryRepository {
                     .on(application.user.uid.eq(user.uid))
                     .innerJoin(board)
                     .on(board.id.eq(application.board.id))
-                .where(board.id.eq(specs.getBoardId()).and(board.user.uid.eq(specs.getUid())))
+                .where(application.progress.eq(1).and(board.id.eq(specs.getBoardId()).and(board.user.uid.eq(specs.getUid()))))
                 .orderBy(application.createdDate.desc())
                 .fetch();
     }
@@ -160,6 +166,20 @@ public class ApplicationQueryRepository {
                 .where(application.user.uid.eq(req.getUid())
                         .and(application.board.id.eq(req.getBoardId())))
                 .fetchCount();
+    }
+
+
+    public Long getTheNumberOfWaiting(ApplicationApplierSpecs specs){
+        return queryFactory
+                .select(board.id.count())
+                .from(user)
+                .innerJoin(application)
+                .on(application.user.uid.eq(user.uid))
+                .innerJoin(board)
+                .on(board.id.eq(application.board.id))
+                .where(application.progress.eq(1).and(board.id.eq(specs.getBoardId()).and(board.user.uid.eq(specs.getUid()))))
+                .groupBy(board.id)
+                .fetchOne();
     }
 
     private BooleanExpression approachCodeIn(List<Integer> approach){
