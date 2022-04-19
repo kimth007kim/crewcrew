@@ -2465,7 +2465,7 @@ section.TimeLineSect {
 
 .TimeLineBox h4 span {
   display: inline-block;
-  margin-left: 30px;
+  margin-left: 16px;
   width: 6px;
   height: 14px;
   background: url("/frontend/src/assets/images/PageArrowNext.png") 50% 50%/6px no-repeat;
@@ -2828,6 +2828,9 @@ br.fold {
   .TimeLineBox h4 {
     margin-bottom: 34px;
   }
+  .TimeLineBox h4 span {
+    margin-left: 12px;
+  }
   .TimeLine {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
@@ -2889,11 +2892,11 @@ br.fold {
     padding: 0 10px;
   }
   .CrewBoxWrap {
-    gap: 12px;
+    gap: 8px;
   }
   .CrewBox {
     padding: 4px;
-    height: calc((100vw - 32px)/2);
+    height: calc((100vw - 28px)/2);
   }
   .CrewBox .Num {
     margin: 0 0 4px;
@@ -2903,6 +2906,9 @@ br.fold {
   }
   .CrewBox .Tit::after {
     margin-left: 3px;
+  }
+  .CrewCat {
+    gap: 4px;
   }
   .TimeLineBox {
     padding: 20px 10px 0;
