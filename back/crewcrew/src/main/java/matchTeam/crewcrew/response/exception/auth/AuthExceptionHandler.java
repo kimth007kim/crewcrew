@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.net.MalformedURLException;
+
 @RestControllerAdvice
 
 public class AuthExceptionHandler {
@@ -124,6 +126,17 @@ public class AuthExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    /**
+     * 1200
+     * 망가진 URL일때 리턴하는 예외
+     * 
+     */
+    @ExceptionHandler(MalformedURLImageException.class)
+    protected ResponseEntity<ErrorResponseHandler> malformedUrlException(MalformedURLImageException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.URL_MALFORMED_EXCEPTION);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
     // 1301~1399 카카오 로그인 회원가입에 대한 예외
     /**
@@ -131,11 +144,11 @@ public class AuthExceptionHandler {
      * 카카오와 통신을 실패했을때 예외
      * kakaoService
      */
-//    @ExceptionHandler(CKakaoCommunicationException.class)
-//    protected ResponseEntity<ErrorResponseHandler> kakaoCommunicationException(CKakaoCommunicationException e){
-//        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.KAKAO_COMMUNICATION_FAILED);
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
+    @ExceptionHandler(CKakaoCommunicationException.class)
+    protected ResponseEntity<ErrorResponseHandler> kakaoCommunicationException(CKakaoCommunicationException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.KAKAO_COMMUNICATION_FAILED);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
     /**
      * 1301
      * 카카오 회원가입을 할때 이미 해당이메일로 카카오 회원가입이 되어있을경우 예외
@@ -144,6 +157,16 @@ public class AuthExceptionHandler {
     @ExceptionHandler(CKakaoUserAlreadyExistException.class)
     protected ResponseEntity<ErrorResponseHandler> kakaoUserAlreadyExistException(CKakaoUserAlreadyExistException e){
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.KAKAKO_USER_ALREADY_EXIST);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    /**
+     * 1402
+     * 카카오 회원정보가 존재하지 않을경우
+     * naverSignUp
+     */
+    @ExceptionHandler(KakaoUserNotExistException.class)
+    protected ResponseEntity<ErrorResponseHandler> kakaoUserNotExistException(KakaoUserNotExistException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.KAKAO_NOT_EXIST);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -169,6 +192,17 @@ public class AuthExceptionHandler {
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.NAVER_USER_ALREADY_EXIST);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    /**
+     * 1402
+     * 네이버 회원정보가 존재하지 않을경우
+     * naverSignUp
+     */
+    @ExceptionHandler(NaverUserNotExistException.class)
+    protected ResponseEntity<ErrorResponseHandler> naverUserNotExistException(NaverUserNotExistException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.NAVER_NOT_EXIST);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
     /**
      * 1501
@@ -181,8 +215,8 @@ public class AuthExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     /**
-     * 1501
-     * S3에  올릴 파일이 없을떄
+     * 1502
+     * S3에 업로드할 파일을 찾을 수 없습니다
      * s3Uploader
      */
     @ExceptionHandler(S3FileNotFoundException.class)
@@ -216,7 +250,7 @@ public class AuthExceptionHandler {
     }
     /**
      * 1902
-     * Refresh토큰이 DB에 저장되어있지않을때
+     * 토큰의 pk로 유저를 찾을수 없습니다.
      * reissue
      */
     @ExceptionHandler(CUserNotFoundException.class)

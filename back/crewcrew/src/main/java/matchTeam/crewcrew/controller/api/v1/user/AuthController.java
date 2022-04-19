@@ -46,7 +46,6 @@ public class AuthController {
             @ApiResponse(
                     code = 200
                     , message = "인증번호 발송 성공"
-                    , response = EmailSendDto.class
             )
             , @ApiResponse(
             code = 1001
@@ -82,7 +81,7 @@ public class AuthController {
     @ApiResponses({
             @ApiResponse(
                     code = 200
-                    , message = "유저 정보 찾기완료"
+                    , message = "유저 조회 성공"
                     , response = UserResponseDto.class
             )
             , @ApiResponse(
@@ -142,6 +141,18 @@ public class AuthController {
             , @ApiResponse(
             code = 1007
             , message = "이미 존재하는 닉네임 입니다. "
+    )
+            , @ApiResponse(
+            code = 1501
+            , message = "S3에 업로드하는것을 실패하였습니다."
+    )
+            , @ApiResponse(
+            code = 1502
+            , message = "S3에 업로드할 파일을 찾을 수 없습니다."
+    )
+            , @ApiResponse(
+            code = 2001
+            , message = "존재하지 않는 카테고리 번호입니다."
     )
     })
 
@@ -223,32 +234,6 @@ public class AuthController {
     }
 
 
-//    @PostMapping("/user/changeProfileImage")
-//    @ApiOperation(value ="프로필 이미지 변경" ,notes="이미지를 입력받아서 s3에 등록하고 db에 그 url을 저장합니다.")
-//    public ResponseEntity<Object> changeProfileImage( @RequestParam MultipartFile files,String email,String provider) throws IOException {
-//        User user=userService.findByEmailAndProvider(email,"local").orElseThrow(CUserNotFoundException::new);
-//
-//        StringBuilder sb = new StringBuilder();
-//        sb.append(email);
-//        sb.append("_local");
-//
-//            String filename =s3Uploader.upload(files,sb.toString(),"profile");
-//            userService.setProfileImage(user,filename);
-//
-//
-//        return ResponseHandler.generateResponse("성공", HttpStatus.OK,filename);
-//    }
-//
-//
-//    @PostMapping("/user/changeDefaultImage")
-//    @ApiOperation(value ="프로필 이미지 변경" ,notes="기본이미지로 변경하기")
-//    public ResponseEntity<Object> changeDefaultImage( Integer number, String email) throws IOException {
-//        User user=userService.findByEmailAndProvider(email,"local").orElseThrow(CUserNotFoundException::new);
-//
-//        String filename =s3Uploader.setDefaultImage(email,number);
-//
-//        return ResponseHandler.generateResponse("성공", HttpStatus.OK,filename);
-//    }
 
 
     @ApiOperation(value = "이메일 로그인", notes = "이메일로 로그인")
@@ -287,15 +272,52 @@ public class AuthController {
 
     @ApiOperation(value = "엑세스,리프레시 토큰 재발급"
             , notes = "엑세스 리프레시 토큰 만료시 회원 검증 후 리프레시 토큰을 검증해서 엑세스 토큰과 리프레시 토큰을 재발급한다.")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "리프레시 토큰 재발급 성공"
+                    , response = TokenDto.class
+            )
+            , @ApiResponse(
+            code = 1901
+            , message = "유효하지않은 리프레시 토큰입니다."
+    )
+            , @ApiResponse(
+            code = 1902
+            , message = "토큰의 pk로 유저를 찾을수 없습니다."
+    )
+            , @ApiResponse(
+            code = 1903
+            , message = "DB에 해당 Refresh 토큰이 존재하지않습니다."
+    )
+            , @ApiResponse(
+            code = 1904
+            , message = "입력받은 Refresh토큰이 DB에 저장된 Refresh토큰과 다릅니다."
+    )
+            , @ApiResponse(
+            code = 9999
+            , message = "권한이 부족한 토큰의 접근입니다."
+    )
+    })
     @PostMapping("/reissue")
     public ResponseEntity<Object> check(
 //            @ApiParam(value = "토큰 재발급 요청 DTO", required = true)
             @RequestBody TokenRequestDto tokenRequestDto) {
-        return ResponseHandler.generateResponse("Login Page", HttpStatus.OK, userService.reissue(tokenRequestDto).getAccessToken());
+        return ResponseHandler.generateResponse("리프레시 토큰 재발급 성공", HttpStatus.OK, userService.reissue(tokenRequestDto).getAccessToken());
     }
 
     @ApiOperation(value = "비밀 번호 변경을 위해서 이메일 인증번호를 이메일로 발송하기"
             , notes = "이메일에 비밀번호를 바꾸기 위한 인증번호를 발송한다.")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "비밀번호 변경을 위한 코드 성공"
+            )
+            , @ApiResponse(
+            code = 1101
+            , message = "존재하지 않는 이메일 입니다."
+    )
+    })
     @PostMapping("/user/password/find")
     public ResponseEntity<Object> findPassword(
 //            @ApiParam(value = "PasswordFindDTO", required = true)
@@ -315,7 +337,6 @@ public class AuthController {
             @ApiResponse(
                     code = 200
                     , message = "비밀 번호 변경 성공"
-                    , response = AccessTokenDto.class
             )
             , @ApiResponse(
             code = 1101
@@ -369,23 +390,6 @@ public class AuthController {
         return ResponseHandler.generateResponse("인증 코드 일치", HttpStatus.OK, null);
         }
 
-//    @PostMapping("/user/password/change")
-//    public ResponseEntity<Object> changePwd(@PathVariable String email, String previous, String change_password) {
-//        userService.findByEmailAndProvider(email, "local").orElseThrow(LoginFailedByEmailNotExistException::new);
-//        User user = userService.findByEmailAndProvider(email, "local").get();
-//        userService.passwordCheck(user, previous);
-//        userService.changePassword(user, change_password);
-//        return ResponseHandler.generateResponse("성공", HttpStatus.OK, change_password);
-//    }
-//    @PostMapping("/user/addCategory")
-//    public ResponseEntity<Object> addCategory(@RequestBody LikedCategoryDto likedCategoryDto) {
-//        System.out.println(likedCategoryDto.getEmail()+"      -     "+likedCategoryDto.getProvider());
-//        User user= userService.findByEmailAndProvider(likedCategoryDto.getEmail(),likedCategoryDto.getProvider()).orElseThrow(LoginFailedByEmailNotExistException::new);
-//        List<Long> input=likedCategoryService.deleteDuplicateCategory(likedCategoryDto.getCategoryId());
-//        List<Long> usersLike=   likedCategoryService.findUsersLike(user);
-//        List<Long> result =likedCategoryService.addLikedCategory(user,input,usersLike);
-//        return ResponseHandler.generateResponse("성공", HttpStatus.OK,result);
-//    }
 
 
 }
