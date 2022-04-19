@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import matchTeam.crewcrew.entity.user.User;
+import matchTeam.crewcrew.response.exception.auth.MalformedURLImageException;
 import matchTeam.crewcrew.response.exception.auth.S3FileNotFoundException;
 import matchTeam.crewcrew.response.exception.auth.S3UploadException;
 import matchTeam.crewcrew.service.user.UserService;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -32,43 +34,40 @@ public class S3Uploader {
     public String bucket;
 
 
-
-
-    public String setDefaultImage(String email,Integer number){
+    public String setDefaultImage(String email, Integer number) {
         StringBuilder sb = new StringBuilder();
         sb.append(email);
         sb.append("_local");
 
 
-        StringBuilder start=new StringBuilder();
+        StringBuilder start = new StringBuilder();
         start.append("default/");
         start.append(Integer.toString(number));
         start.append(".png");
-        String source=start.toString();
+        String source = start.toString();
 
 //                도착경로 만드는 메서드
-        String destination=sb.toString()+"/profile";
-        copy(source,destination);
+        String destination = sb.toString() + "/profile";
+        copy(source, destination);
 
         return destination;
     }
 
-    public String addImageWhenSignUp(String email,MultipartFile file,Integer Default){
-        if( file.isEmpty() ){
-            if (Default==null || 0>=Default || Default>5){
+    public String addImageWhenSignUp(String email, MultipartFile file, Integer Default) {
+        if (file.isEmpty()) {
+            if (Default == null || 0 >= Default || Default > 5) {
                 throw new S3FileNotFoundException();
-            }
-            else{
+            } else {
 //                시작경로 만든 메서드
-                StringBuilder start=new StringBuilder();
+                StringBuilder start = new StringBuilder();
                 start.append("default/");
                 start.append(Integer.toString(Default));
                 start.append(".png");
-                String source=start.toString();
+                String source = start.toString();
 
 //                도착경로 만드는 메서드
-                String destination=email+"/profile";
-                copy(source,destination);
+                String destination = email + "/profile";
+                copy(source, destination);
 
                 return destination;
             }
@@ -77,10 +76,9 @@ public class S3Uploader {
         String filename;
 
 
-
         try {
-            String email_url = nameFile(email,"local");
-            filename=upload(file,email_url,"profile");
+            String email_url = nameFile(email, "local");
+            filename = upload(file, email_url, "profile");
         } catch (IOException e) {
             throw new S3UploadException();
         }
@@ -88,26 +86,27 @@ public class S3Uploader {
         return filename;
     }
 
-    public String upload(MultipartFile multipartFile, String dirName,String filename ) throws IOException{
+    public String upload(MultipartFile multipartFile, String dirName, String filename) throws IOException {
 //        File uploadFile = convert(multipartFile).orElseThrow(()-> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
-        File uploadFile =convert(multipartFile);
-        return upload(uploadFile, dirName,filename);
+        File uploadFile = convert(multipartFile);
+        return upload(uploadFile, dirName, filename);
 
     }
 
-    public String upload(File uploadFile, String dirName,String filename){
+    public String upload(File uploadFile, String dirName, String filename) {
 //        String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();
-        String fileName = dirName + "/"+filename;
+        String fileName = dirName + "/" + filename;
 //        String fileName = dirName + "/"+ uploadFile.getName();
-        String uploadImageUrl = putS3(uploadFile,fileName);
+        String uploadImageUrl = putS3(uploadFile, fileName);
         removeNewFile(uploadFile);
         return uploadImageUrl;
     }
-    public String uploadURL(String uploadFile, String dirName,String filename){
+
+    public String uploadURL(String uploadFile, String dirName, String filename) {
 //        String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();
-        String fileName = dirName + "/"+filename;
+        String fileName = dirName + "/" + filename;
 //        String fileName = dirName + "/"+ uploadFile.getName();
-        String uploadImageUrl = putS3(uploadFile,fileName);
+        String uploadImageUrl = putS3(uploadFile, fileName);
         return uploadImageUrl;
     }
 
@@ -124,15 +123,16 @@ public class S3Uploader {
     }
 
     private String putS3(File uploadFile, String fileName) {
-        amazonS3Client.putObject(new PutObjectRequest(bucket,fileName,uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
-        return amazonS3Client.getUrl(bucket,fileName).toString();
-    }
-    private String putS3(String uploadFile, String fileName) {
-        amazonS3Client.putObject(new PutObjectRequest(bucket,fileName,uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
-        return amazonS3Client.getUrl(bucket,fileName).toString();
+        amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
+        return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
-//    private Optional<File> convert(MultipartFile file) throws IOException {
+    private String putS3(String uploadFile, String fileName) {
+        amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
+        return amazonS3Client.getUrl(bucket, fileName).toString();
+    }
+
+    //    private Optional<File> convert(MultipartFile file) throws IOException {
 //        File convertFile = new File(file.getOriginalFilename());
 //        if(convertFile.createNewFile()) {
 //            try (FileOutputStream fos = new FileOutputStream(convertFile)) {
@@ -142,41 +142,53 @@ public class S3Uploader {
 //        }
 //        return Optional.empty();
 //    }
-    private File convert(MultipartFile mfile) throws IOException {
-        File file = new File(mfile.getOriginalFilename());
-        file.createNewFile();
-        FileOutputStream fos = new FileOutputStream(file);
-        fos.write(mfile.getBytes());
-        fos.close();
-        return file;
+    private File convert(MultipartFile mfile) {
+        try {
+            File file = new File(mfile.getOriginalFilename());
+            file.createNewFile();
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(mfile.getBytes());
+            fos.close();
+            return file;
+        } catch (FileNotFoundException e) {
+            throw new S3UploadException();
+        } catch (IOException e) {
+            throw new S3UploadException();
+        }
     }
 
 
-    public String nameFile(String email,String provider){
+    public String nameFile(String email, String provider) {
         StringBuilder sb = new StringBuilder();
-        String email_url = email.replace("@","_");
+        String email_url = email.replace("@", "_");
         sb.append(email_url);
         sb.append("_");
         sb.append(provider);
         return sb.toString();
     }
 
-    public void copy(String source,String destination){
-        try{
-            CopyObjectRequest copyObjectRequest =new CopyObjectRequest(this.bucket,source,this.bucket,destination);
+    public void copy(String source, String destination) {
+        try {
+            CopyObjectRequest copyObjectRequest = new CopyObjectRequest(this.bucket, source, this.bucket, destination);
             this.amazonS3Client.copyObject(copyObjectRequest);
-        }
-        catch (S3UploadException s3UploadException){
+        } catch (S3UploadException s3UploadException) {
             throw new S3UploadException();
         }
     }
-    public void urlConvert(String emailUrl, String imageUrl, User user) throws MalformedURLException,IOException {
 
+    public void urlConvert(String emailUrl, String imageUrl, User user) {
+        try {
             URL url = new URL(imageUrl);
             File file = new File("temp.jpg");
             FileUtils.copyURLToFile(url, file);
-            String filename =upload(file,emailUrl,"profile");
-            userService.setProfileImage(user,filename);
-    }
+            String filename = upload(file, emailUrl, "profile");
+            userService.setProfileImage(user, filename);
 
+        } catch (MalformedURLException e) {
+            throw new MalformedURLImageException();
+        } catch (IOException e) {
+            throw new S3UploadException();
+        }
+
+    }
 }

@@ -13,6 +13,8 @@ import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.response.exception.auth.CSocialAgreementException;
 import matchTeam.crewcrew.response.exception.auth.CUserNotFoundException;
+import matchTeam.crewcrew.response.exception.auth.KakaoUserNotExistException;
+import matchTeam.crewcrew.response.exception.auth.NaverUserNotExistException;
 import matchTeam.crewcrew.service.amazonS3.S3Uploader;
 import matchTeam.crewcrew.service.user.KakaoService;
 import matchTeam.crewcrew.service.user.LikedCategoryService;
@@ -109,12 +111,16 @@ public class OauthController {
             code = 1300
             , message = "카카오와 http통신이 실패하였습니다."
     )
+            , @ApiResponse(
+            code = 1302
+            , message = "카카오 유저가 아닙니다."
+    )
     })
     public ResponseEntity<Object> redirectKakao(@ApiParam(value = "Authorization Code", required = true)
                                                 @RequestParam String code) {
         RetKakaoOAuth kakaoResult = kakaoService.getKakaoTokenInfo(code);
         KakaoProfile kakaoProfile = kakaoService.getKakaoProfile(kakaoResult.getAccess_token());
-        if (kakaoProfile == null) throw new CUserNotFoundException();
+        if (kakaoProfile == null) throw new KakaoUserNotExistException();
         Optional<User> user = userService.findByEmailAndProvider(kakaoProfile.getKakao_account().getEmail(), "kakao");
         if (user.isPresent()) {
             return ResponseHandler.generateResponse("Kakao에서 발행한 AccessToken 발급 성공", HttpStatus.OK, new OauthRedirectDto("kakao", true, kakaoResult.getAccess_token()));
@@ -128,11 +134,15 @@ public class OauthController {
             @ApiResponse(
                     code = 200
                     , message = "Naver에서 발행한 AccessToken 발급 성공"
-                    , response = AccessTokenDto.class
+                    , response = OauthRedirectDto.class
             )
             , @ApiResponse(
             code = 1400
             , message = "네이버와 http통신이 실패하였습니다."
+    )
+            , @ApiResponse(
+            code = 1402
+            , message = "네이버 유저가 아닙니다."
     )
     })
 
@@ -140,7 +150,7 @@ public class OauthController {
                                                 @RequestParam String code) {
         RetNaverOAuth naverResult = naverService.getNaverTokenInfo(code);
         NaverProfile naverProfile = naverService.getNaverProfile(naverResult.getAccess_token());
-        if (naverProfile == null) throw new CUserNotFoundException();
+        if (naverProfile == null) throw new NaverUserNotExistException();
         Optional<User> user = userService.findByEmailAndProvider(naverProfile.getResponse().getEmail(), "naver");
         if (user.isPresent()) {
             return ResponseHandler.generateResponse("Naver에서 발행한 AccessToken 발급 성공", HttpStatus.OK, new OauthRedirectDto("naver", true, naverResult.getAccess_token()));
@@ -148,6 +158,7 @@ public class OauthController {
         return ResponseHandler.generateResponse("Naver에서 발행한 AccessToken 발급 성공", HttpStatus.OK, new OauthRedirectDto("naver", false, naverResult.getAccess_token()));
     }
 
+    @GetMapping("/kakao/token/{accessToken}")
     @ApiOperation(value = "카카오 토큰 정보확인"
             , notes = "카카오에서 받아온 인가 코드로 유저 정보를 확인합니다.")
     @ApiResponses({
@@ -158,40 +169,84 @@ public class OauthController {
             )
             , @ApiResponse(
             code = 1300
-            , message = "카카오와 http통신이 실패하였습니다.")
+            , message = "카카오와 http통신이 실패하였습니다."
+    )
+            , @ApiResponse(
+            code = 1302
+            , message = "카카오 유저가 아닙니다."
+    )
     })
-    @GetMapping("/kakao/token/{accessToken}")
+
 
     public ResponseEntity<Object> tokenCheckKakao(
             @ApiParam(value = "카카오에서 받은 Access 토큰", required = true)
             @RequestParam String accessToken) {
         KakaoProfile kakaoProfile = kakaoService.getKakaoProfile(accessToken);
-        if (kakaoProfile == null) throw new CUserNotFoundException();
+        if (kakaoProfile == null) throw new KakaoUserNotExistException();
 
         return ResponseHandler.generateResponse("카카오 에서 받은 AcessToken 확인 성공", HttpStatus.OK, kakaoProfile);
     }
 
+
     @ApiOperation(value = "네이버 토큰 정보확인"
             , notes = "네이버에서 받아온 인가 코드로 유저 정보를 확인합니다.")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "Naver에서 발행한 AccessToken 발급 성공"
+                    , response = NaverProfile.class
+            )
+            , @ApiResponse(
+            code = 1400
+            , message = "네이버와 http통신이 실패하였습니다."
+    )
+            , @ApiResponse(
+            code = 1402
+            , message = "네이버 유저가 아닙니다."
+    )
+    })
     @GetMapping("/naver/token/{accessToken}")
     public ResponseEntity<Object> tokenCheckNaver(
             @ApiParam(value = "네이버에서 받은 Access 토큰", required = true)
             @RequestParam String accessToken) {
-        KakaoProfile kakaoProfile = kakaoService.getKakaoProfile(accessToken);
-        if (kakaoProfile == null) throw new CUserNotFoundException();
+        NaverProfile naverProfile = naverService.getNaverProfile(accessToken);
+        if (naverProfile == null) throw new CUserNotFoundException();
 
-        return ResponseHandler.generateResponse("네이버 에서 받은 AcessToken 확인 성공", HttpStatus.OK, kakaoProfile);
+        return ResponseHandler.generateResponse("네이버 에서 받은 AcessToken 확인 성공", HttpStatus.OK, naverProfile);
     }
 
 
     @ApiOperation(value = "네이버 통합 회원가입,로그인"
             , notes = "1. 네이버에서 받은 AccessToken을 매개변수로 삼아서 , \n 2-1. db에 회원가입이 되어있지 않으면 회원가입을하고 로그인을 해서 AccessToken을 반환합니다. \n 2-2. db에 있는 회원이면 바로 로그인을 해서 AccessToken을 반환합니다.")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "네이버 로그인 성공"
+                    , response = SocialLoginAccessTokenDto.class
+            )
+            , @ApiResponse(
+            code = 1200
+            , message = "유효하지 않은 이미지 URL입니다."
+    )
+            , @ApiResponse(
+            code = 1400
+            , message = "네이버와 http통신이 실패하였습니다."
+    )
+            , @ApiResponse(
+            code = 1402
+            , message = "네이버 유저가 아닙니다."
+    )
+            , @ApiResponse(
+            code = 1501
+            , message = "S3에 업로드하는것을 실패하였습니다."
+    )
+    })
     @PostMapping("/naver/total")
     public ResponseEntity<Object> naverTotal(
             @ApiParam(value = "소셜 네이버 회원가입 dto", required = true)
             @RequestBody NaverLoginRequestDto naverLoginRequestDto) throws IOException {
         NaverProfile naverProfile = naverService.getNaverProfile(naverLoginRequestDto.getAccessToken());
-        if (naverProfile == null) throw new CUserNotFoundException();
+        if (naverProfile == null) throw new NaverUserNotExistException();
 
 
         Optional<User> user = userService.findByEmailAndProvider(naverProfile.getResponse().getEmail(), "naver");
@@ -224,6 +279,29 @@ public class OauthController {
 
     @ApiOperation(value = "카카오 통합 회원가입,로그인"
             , notes = "카카오로 회원가입 ,로그인을 합니다.")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "카카오 로그인 성공"
+                    , response = SocialLoginAccessTokenDto.class
+            )
+            , @ApiResponse(
+            code = 1200
+            , message = "유효하지 않은 이미지 URL입니다."
+    )
+            , @ApiResponse(
+            code = 1300
+            , message = "카카오와 http통신이 실패하였습니다."
+    )
+            , @ApiResponse(
+            code = 1302
+            , message = "카카오 유저가 아닙니다."
+    )
+            , @ApiResponse(
+            code = 1501
+            , message = "S3에 업로드하는것을 실패하였습니다."
+    )
+    })
     @PostMapping("/kakao/total")
     public ResponseEntity<Object> kakaoTotal(
             @ApiParam(value = "1. 카카오에서 받은 AccessToken을 매개변수로 삼아서 , \n 2-1. db에 회원가입이 되어있지 않으면 회원가입을하고 로그인을 해서 AccessToken을 반환합니다. \n 2-2. db에 있는 회원이면 바로 로그인을 해서 AccessToken을 반환합니다.", required = true)

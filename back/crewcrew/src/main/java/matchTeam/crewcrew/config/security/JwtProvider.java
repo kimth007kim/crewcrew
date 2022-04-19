@@ -82,38 +82,16 @@ public class JwtProvider {
                 .accessTokenExpireDate(accessTokenValidMillisecond)
                 .build();
     }
-    public Authentication getAuthentication(String token){
+    public Authentication getAuthentication(String token) {
 
         Claims claims = parseClaims(token);
-        if(claims.get(ROLES)==null){
+        if (claims.get(ROLES) == null) {
             throw new CAuthenticationEntryPointException();
         }
 
-        UserDetails userDetails =userDetailsService.loadUserByUsername(claims.getSubject());
-        return new UsernamePasswordAuthenticationToken(userDetails,"",userDetails.getAuthorities());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 
-    }
-
-    public ResponseCookie createTokenCookie( String token){
-      return ResponseCookie.from("refreshToken",token)
-//              .httpOnly(true)
-              .secure(true)
-              .domain("localhost")
-              .sameSite("None")
-              .path("/")
-              .maxAge(60*30L)
-              .build();
-    }
-
-    public Cookie provideCookie(String token) {
-        Cookie cookie = new Cookie("Set-Cookie", token);
-        cookie.setPath("/");
-        cookie.setSecure(true);
-        cookie.setDomain("localhost");
-//        cookie.setDomain(".127.0.0.0.1:3000");
-        cookie.setMaxAge(7 * 24 * 60 * 60);
-        cookie.setHttpOnly(false);
-        return cookie;
     }
 
 
