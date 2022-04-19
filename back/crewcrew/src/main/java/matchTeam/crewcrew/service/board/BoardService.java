@@ -115,7 +115,6 @@ public class BoardService {
                     .orElseThrow(NotExistCategoryException::new);
 
         beforeExpiredDate(saveRequestDTO.getExpiredDate());
-
     }
 
     public void checkValidUpdate(BoardUpdateRequestDTO updateRequestDTO){
