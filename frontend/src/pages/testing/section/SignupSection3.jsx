@@ -1,6 +1,7 @@
 /* eslint-disable indent */
 import axios from 'axios';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { css, keyframes } from 'styled-components';
@@ -43,6 +44,7 @@ function SignupSection3({ IsClick, HandleClick }) {
     '나를 소개하는 한 줄 메세지를 입력해주세요.(30자 이내)',
   );
 
+  const [cookies, setCookie, removeCookie] = useCookies(['user-cookie']);
   // Recoil State
   const name = useRecoilValue(nameState);
   const emailId = useRecoilValue(emailIdState);
@@ -179,6 +181,44 @@ function SignupSection3({ IsClick, HandleClick }) {
     [hobbyList],
   );
 
+  const HandleLogin = useCallback(async (emailParam, passwordParam) => {
+    try {
+      setBtnLoading(true);
+      const context = {
+        email: emailParam,
+        password: passwordParam,
+        maintain: false,
+      };
+
+      const { data } = await axios.post('/auth/login', context, {
+        withCredentials: true,
+      });
+      const now = new Date();
+      const afterh = new Date();
+
+      switch (data.status) {
+        case 200:
+          afterh.setHours(now.getHours() + 3);
+          setCookie('user-token', data.data.accessToken, {
+            path: '/',
+            expires: afterh,
+          });
+
+          break;
+        case 400:
+        case 1101:
+        case 1102:
+        default:
+          toast.error('회원가입 후 로그인에 대해 실패했습니다. 다시 시도해주시길 바랍니다.');
+          break;
+      }
+    } catch (error) {
+      toast.error('알 수 없는 오류가 발생했습니다. 새로고침 후 다시 시도해주시길 바랍니다');
+
+      console.dir(error);
+    }
+  }, []);
+
   const HandleRegister = useCallback(
     (e) => {
       e.preventDefault();
@@ -227,6 +267,7 @@ function SignupSection3({ IsClick, HandleClick }) {
           switch (data.status) {
             case 200:
               HandleClick(4);
+              HandleLogin(data.email, password);
               break;
             case 1004:
             case 1005:
