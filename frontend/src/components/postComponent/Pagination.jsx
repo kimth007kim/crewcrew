@@ -16,6 +16,7 @@ function Pagination({ data, currentPage, postsPerPage, totalPage }) {
   const query = useQuery();
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
+  const [btnDeactive, setbtnDeactive] = useState(null);
 
   const handleClickPageNavi = useCallback(
     (i) => {
@@ -39,13 +40,19 @@ function Pagination({ data, currentPage, postsPerPage, totalPage }) {
   };
 
   const handleClickPrevFirst = useCallback(() => {
+    if (btnDeactive && btnDeactive.prev2) {
+      return null;
+    }
     if (query.get('search')) {
       return navigate(`/post?page=1&search=${query.get('search')}`);
     }
     navigate(`/post?page=${1}`);
-  }, [query.get('search'), totalPage, postsPerPage]);
+  }, [query.get('search'), totalPage, postsPerPage, btnDeactive]);
 
   const handleClickPrev = useCallback(() => {
+    if (btnDeactive && btnDeactive.prev1) {
+      return null;
+    }
     if ((page - 1) * postsPerPage + 1 < 1) {
       return null;
     }
@@ -54,9 +61,12 @@ function Pagination({ data, currentPage, postsPerPage, totalPage }) {
     }
 
     navigate(`/post?page=${(page - 1) * postsPerPage + 1}`);
-  }, [page, query.get('search'), totalPage, postsPerPage]);
+  }, [page, query.get('search'), totalPage, postsPerPage, btnDeactive]);
 
   const handleClickNext = useCallback(() => {
+    if (btnDeactive && btnDeactive.next1) {
+      return null;
+    }
     if ((page + 1) * postsPerPage + 1 > totalPage) {
       return null;
     }
@@ -65,29 +75,71 @@ function Pagination({ data, currentPage, postsPerPage, totalPage }) {
     }
 
     navigate(`/post?page=${(page + 1) * postsPerPage + 1}`);
-  }, [page, query.get('search'), totalPage, postsPerPage]);
+  }, [page, query.get('search'), totalPage, postsPerPage, btnDeactive]);
 
   const handleClickNextLast = useCallback(() => {
+    if (btnDeactive && btnDeactive.next2) {
+      return null;
+    }
     if (query.get('search')) {
       return navigate(`/post?page=${totalPage}&search=${query.get('search')}`);
     }
     navigate(`/post?page=${totalPage}`);
-  }, [totalPage, query.get('search'), totalPage, postsPerPage]);
+  }, [totalPage, query.get('search'), totalPage, postsPerPage, btnDeactive]);
 
   useEffect(() => {
     let pageNum = Math.floor((Number(currentPage) - 1) / postsPerPage);
+    let tmpBtnActiveObj = {
+      prev1: false,
+      prev2: false,
+      next1: false,
+      next2: false,
+    };
+
     if (pageNum < 0) {
       pageNum = 0;
     }
+
+    if (pageNum < 1) {
+      tmpBtnActiveObj = {
+        ...tmpBtnActiveObj,
+        prev1: true,
+      };
+    }
+
+    if (Number(currentPage) === 1) {
+      tmpBtnActiveObj = {
+        ...tmpBtnActiveObj,
+        prev2: true,
+      };
+    }
+
+    if (Number(totalPage) === Number(currentPage)) {
+      tmpBtnActiveObj = {
+        ...tmpBtnActiveObj,
+        next2: true,
+      };
+    }
+
+    if ((pageNum + 1) * postsPerPage + 1 > totalPage) {
+      tmpBtnActiveObj = {
+        ...tmpBtnActiveObj,
+        next1: true,
+      };
+    }
+
+    setbtnDeactive({
+      ...tmpBtnActiveObj,
+    });
     setPage(pageNum);
-  }, [currentPage, postsPerPage]);
+  }, [currentPage, postsPerPage, totalPage]);
 
   return (
     <PaginationWrapper>
       {data && totalPage > 1 && (
         <>
-          <Prev2 onClick={handleClickPrevFirst} />
-          <Prev1 onClick={handleClickPrev} />
+          <Prev2 onClick={handleClickPrevFirst} deActive={btnDeactive.prev2} />
+          <Prev1 onClick={handleClickPrev} deActive={btnDeactive.prev1} />
           {renderNumberDiv().map((i) => (
             <NumberDiv
               active={i + 1 === Number(currentPage)}
@@ -97,8 +149,8 @@ function Pagination({ data, currentPage, postsPerPage, totalPage }) {
               {i + 1}
             </NumberDiv>
           ))}
-          <Next onClick={handleClickNext} />
-          <Next2 onClick={handleClickNextLast} />
+          <Next1 onClick={handleClickNext} deActive={btnDeactive.next1} />
+          <Next2 onClick={handleClickNextLast} deActive={btnDeactive.next2} />
         </>
       )}
     </PaginationWrapper>
@@ -171,8 +223,20 @@ const Prev2 = styled.div`
   user-select: none;
 
   :hover {
-    border-color: #a8a8a8;
+    ${(props) =>
+      !props.deActive &&
+      css`
+        border-color: #a8a8a8;
+      `}
   }
+
+  ${(props) =>
+    props.deActive &&
+    css`
+      opacity: 0.6;
+      cursor: default;
+    `}
+
   @media screen and (max-width: 820px) {
     background-position: center;
   }
@@ -189,15 +253,26 @@ const Prev1 = styled.div`
   user-select: none;
 
   :hover {
-    border-color: #a8a8a8;
+    ${(props) =>
+      !props.deActive &&
+      css`
+        border-color: #a8a8a8;
+      `}
   }
+
+  ${(props) =>
+    props.deActive &&
+    css`
+      cursor: default;
+      opacity: 0.6;
+    `}
 
   @media screen and (max-width: 820px) {
     background-position: center;
   }
 `;
 
-const Next = styled.div`
+const Next1 = styled.div`
   background-color: #fff;
   color: #000;
   background-repeat: no-repeat;
@@ -208,8 +283,19 @@ const Next = styled.div`
   user-select: none;
 
   :hover {
-    border-color: #a8a8a8;
+    ${(props) =>
+      !props.deActive &&
+      css`
+        border-color: #a8a8a8;
+      `}
   }
+
+  ${(props) =>
+    props.deActive &&
+    css`
+      cursor: default;
+      opacity: 0.6;
+    `}
 
   @media screen and (max-width: 820px) {
     background-position: center;
@@ -227,8 +313,19 @@ const Next2 = styled.div`
   user-select: none;
 
   :hover {
-    border-color: #a8a8a8;
+    ${(props) =>
+      !props.deActive &&
+      css`
+        border-color: #a8a8a8;
+      `}
   }
+
+  ${(props) =>
+    props.deActive &&
+    css`
+      cursor: default;
+      opacity: 0.6;
+    `}
 
   @media screen and (max-width: 820px) {
     background-position: center;
