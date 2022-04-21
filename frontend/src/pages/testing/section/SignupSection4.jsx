@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled, { css, keyframes } from 'styled-components';
 import IconFlag from '../../../assets/images/IconFlag.png';
@@ -17,6 +17,8 @@ function SignupSection4({ IsClick, closeModal, HandleClick }) {
     }, 200);
     closeModal();
   }, []);
+
+  useEffect(() => {}, []);
 
   return (
     <SignupContents active={IsClick === 4}>
