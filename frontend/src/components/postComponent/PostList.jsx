@@ -110,7 +110,6 @@ function PostList() {
         params,
       };
       const { data } = await axios.get('/board/list', context);
-
       switch (data.status) {
         case 200:
           setPageData({
@@ -221,7 +220,7 @@ const Wrapper = styled.div`
     padding: 0 20px;
     box-sizing: border-box;
   }
-  @media screen and (max-width: 820px) {
+  @media screen and (max-width: 300px) {
     padding: 0 10px;
   }
 `;

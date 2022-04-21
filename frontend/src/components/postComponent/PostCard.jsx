@@ -239,7 +239,7 @@ const CardHead = styled.div`
 
       ${CardName} {
         margin: 0;
-        font-size: 10px;
+        font-size: 12px;
         font-weight: 300;
         color: #868686;
       }
