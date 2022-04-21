@@ -22,7 +22,7 @@ function Button({
       size={size}
       color={color}
       loadings={loadings}
-      disabled={disabled}
+      disabled={disabled || loadings}
       onClick={onClick}
       widthSize={widthSize}
       heightSize={heightSize}

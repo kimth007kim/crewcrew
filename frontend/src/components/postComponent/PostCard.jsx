@@ -7,6 +7,7 @@ import { cateogoryAll } from '../../frontDB/filterDB';
 import { viewDay } from '../../utils';
 
 function PostCard({ data }) {
+  const [IsDisable, setIsDisable] = useState(false);
   const renderDate = () => {
     const date = new Date(data.createdDate);
     return `${format(date, 'M/d')} (${viewDay(getDay(date))})`;
@@ -18,19 +19,24 @@ function PostCard({ data }) {
     return differenceInDays(date, nowDate) + 1;
   };
 
+  useEffect(() => {
+    const bool = !data.viewable || renderDay() < 0;
+    setIsDisable(bool);
+  }, []);
+
   return (
     <Wrapper>
-      <CardHead isDisabled={!data.viewable}>
+      <CardHead isDisabled={IsDisable}>
         <ProfileBox>
           <img src={`${data.profileImage}`} alt="" />
         </ProfileBox>
         <TextBox>
-          <Dday>{!data.viewable ? '마감' : `D-${renderDay()}`}</Dday>
+          <Dday>{IsDisable ? '마감' : `D-${renderDay()}`}</Dday>
           <CardDate>{renderDate()}</CardDate>
           <CardName>{data.nickname}</CardName>
         </TextBox>
       </CardHead>
-      <CardBody isDisabled={!data.viewable}>
+      <CardBody isDisabled={IsDisable}>
         <TextBox>
           <TitleBox>
             <h5>{data.title}</h5>
@@ -39,7 +45,7 @@ function PostCard({ data }) {
           <TextList>
             <CategoryText
               textColor={data.categoryParentId === 1 ? '#005ec5' : '#F7971E'}
-              isDisabled={!data.viewable}
+              isDisabled={IsDisable}
             >
               {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
             </CategoryText>
@@ -53,7 +59,7 @@ function PostCard({ data }) {
         </TextBox>
         <ButtonBox>
           <ButtonDetail>상세보기</ButtonDetail>
-          <ButtonParticipate disabled={!data.viewable}>참여하기</ButtonParticipate>
+          <ButtonParticipate disabled={IsDisable}>참여하기</ButtonParticipate>
         </ButtonBox>
       </CardBody>
     </Wrapper>
@@ -194,7 +200,7 @@ const CardHead = styled.div`
 
     ${CardDate} {
       margin-top: 2px;
-      font-size: 10px;
+      font-size: 12px;
       font-weight: 300;
       color: #868686;
     }
@@ -233,7 +239,7 @@ const CardHead = styled.div`
 
       ${CardName} {
         margin: 0;
-        font-size: 10px;
+        font-size: 12px;
         font-weight: 300;
         color: #868686;
       }
