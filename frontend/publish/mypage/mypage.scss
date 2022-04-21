@@ -392,7 +392,7 @@ section.TimeLineSect{
 
         span{
             display: inline-block;
-            margin-left: 30px;
+            margin-left: 16px;
             width: 6px;
             height: 14px;
             background: url("/frontend/src/assets/images/PageArrowNext.png") 50% 50% / 6px no-repeat;
@@ -759,6 +759,10 @@ br.fold{
 
         h4{
             margin-bottom: 34px;
+
+            span{
+                margin-left: 12px;
+            }
         }
     }
 
@@ -804,6 +808,7 @@ br.fold{
 
     .ListTap{
         width: 100%;
+        gap: 16px;
 
         li, button{
             width: 100% !important;
@@ -830,12 +835,12 @@ br.fold{
     }
 
     .CrewBoxWrap{
-        gap: 12px;
+        gap: 8px;
     }
 
     .CrewBox{
         padding: 4px;
-        height: calc((100vw - 32px)/2);
+        height: calc((100vw - 28px)/2);
 
         .Num{
             margin: 0 0 4px;
@@ -848,6 +853,10 @@ br.fold{
                 margin-left: 3px;
             }
         }
+    }
+
+    .CrewCat{
+        gap: 4px;
     }
 
     .TimeLineBox{

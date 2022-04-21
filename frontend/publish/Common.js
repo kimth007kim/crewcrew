@@ -24,6 +24,43 @@ window.addEventListener("DOMContentLoaded", function(){
         }
     });
 
+    function lnbOpen(e){
+        if(e.classList.contains("NavArrow")){
+            if(!e.closest("header").classList.contains('On')){
+                e.closest("header").classList.add("On");
+                e.classList.add('On');
+                e.nextElementSibling.classList.add('On');
+                e.parentNode.nextElementSibling.classList.add('On');
+            } else {
+                e.closest("header").classList.remove('On');
+                e.classList.remove('On');
+                e.nextElementSibling.classList.remove('On');
+                e.parentNode.nextElementSibling.classList.remove('On');
+            }
+        } else {
+            if(!e.closest("header").classList.contains('On')){
+                e.closest("header").classList.add("On");
+                e.previousElementSibling.children[1].classList.add('On');
+                e.previousElementSibling.children[2].classList.add('On');
+                e.classList.add('On');
+                
+            } else {
+                e.closest("header").classList.remove("On");
+                e.previousElementSibling.children[1].classList.remove('On');
+                e.previousElementSibling.children[2].classList.remove('On');
+                e.classList.remove('On');
+            }
+        }
+        
+    }
+    document.addEventListener("click", function(e){
+        const thisclass = e.target.classList;
+        if(thisclass.contains("NavArrow") || thisclass.contains("NavHam")) {
+            const navArrow = e.target;
+            lnbOpen(navArrow);
+        }
+    });
+
     const pagination = document.querySelector(".PaginationWrapper");
     function paginationAppend(){ //브라우저 사이즈에 따른 페이지네이션 생성
 

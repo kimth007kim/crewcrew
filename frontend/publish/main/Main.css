@@ -2885,13 +2885,16 @@ footer {
 }
 
 @media screen and (max-width: 300px) {
+  .SectionWrap {
+    max-width: calc(100vw - 20px);
+  }
   .GridWrap {
     -ms-grid-columns: 1fr 1fr;
         grid-template-columns: 1fr 1fr;
   }
   .Category {
-    width: calc((100vw - 55px)/2);
-    height: calc((100vw - 55px)/2);
+    width: calc((100vw - 38px)/2);
+    height: calc((100vw - 38px)/2);
   }
   .WriteButtonList li:nth-child(1) {
     margin-right: 15px;
