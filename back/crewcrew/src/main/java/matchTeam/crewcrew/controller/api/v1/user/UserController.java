@@ -98,9 +98,9 @@ public class UserController {
 
     })
     @ApiOperation(value ="엑세스토큰 으로 유저 정보 조회." ,notes="엑세스 토큰으로 유저정보를 조회합니다.\n"+ "※주의: kakao,naver에서 받은 인가코드로는 불가능합니다.\n"+" 카카오와 네이버에서 인가코드를 받고 로그인후 받은 Access Token는 가능합니다.")
-    @GetMapping("/user/token/{accessToken}")
-    public ResponseEntity<Object> checkToken(@ApiParam(value = "access 토큰",required =true)  @PathVariable String accessToken) {
-        User user = userService.tokenChecker(accessToken);
+    @GetMapping("/user/token")
+    public ResponseEntity<Object> checkToken(@RequestHeader("X-AUTH-TOKEN") String token) {
+        User user = userService.tokenChecker(token);
         List<Long> liked =likedCategoryService.findUsersLike(user);
         System.out.println("=================================================="+liked.toString());
         UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(),user.getName(),user.getNickname(),user.getProfileImage(),liked,user.getMessage());

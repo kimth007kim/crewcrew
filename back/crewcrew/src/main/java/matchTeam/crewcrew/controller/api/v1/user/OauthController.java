@@ -438,5 +438,13 @@ public class OauthController {
 //        return ResponseHandler.generateResponse("네이버 로그인 성공 ", HttpStatus.OK, accessTokenDto);
 //    }
 
+    @GetMapping("/test")
+    public ResponseEntity<Object> passwordTest(String word) {
+        userService.validationPasswd(word);
+        return ResponseHandler.generateResponse("엑세스토큰 으로 유저 정보 조회 성공", HttpStatus.OK, null );
+
+    }
+
+
 
 }
