@@ -1,7 +1,14 @@
 import React from 'react';
+import Lnb from '../../components/common/Lnb';
+import Main from './Main';
 
 function Home() {
-  return <div>Home</div>;
+  return (
+    <div>
+      <Lnb path="home" />
+      <Main />
+    </div>
+  );
 }
 
 export default Home;
