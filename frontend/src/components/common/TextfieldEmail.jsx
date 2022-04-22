@@ -10,7 +10,7 @@ function Textfield({
   validMessage,
   label,
   onDelete,
-  disabled,
+  disabled = false,
 }) {
   const [Focused, setFocused] = useState(false);
   const [Hover, setHover] = useState(false);
@@ -37,6 +37,7 @@ function Textfield({
       HandleOnBlur();
     }
   }, [disabled]);
+
   return (
     <Wrapper onMouseEnter={HandleOnHover} onMouseLeave={HandleOutHover}>
       <Input
@@ -109,6 +110,10 @@ const Input = styled.input`
       border-color: #ff0045;
       caret-color: #ff0045;
     `};
+
+  &:disabled {
+    color: #a8a8a8;
+  }
 `;
 
 const Label = styled.label`

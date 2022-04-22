@@ -1,20 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import PostList from '../../components/post/PostList';
-import PostTop from '../../components/post/PostTop';
-import ScrollButton from '../../components/post/ScrollButton';
+import MypageMainTop from '../../components/mypage/MypageMainTop';
+import MypageTop from '../../components/mypage/MypageTop';
 
-function Post() {
+function MyPage() {
   return (
     <MainContainer>
-      <ScrollButton />
-      <PostTop />
-      <PostList />
+      <MypageTop />
+      <MypageMainTop />
     </MainContainer>
   );
 }
 
-export default Post;
+export default MyPage;
 
 const MainContainer = styled('main')`
   margin-left: 142px;
