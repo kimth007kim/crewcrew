@@ -141,6 +141,15 @@ public class AuthController {
             , @ApiResponse(
             code = 1007
             , message = "이미 존재하는 닉네임 입니다. "
+    ), @ApiResponse(
+            code = 1009
+            , message = "비밀번호에 이모지가 존재합니다.  "
+    ), @ApiResponse(
+            code = 1010
+            , message = "비밀번호가 8~25자 가 아니거나 특수문자나 영어 숫자가 최소 1개 이상 포함되어있지 않습니다."
+    ), @ApiResponse(
+            code = 1011
+            , message = "비밀번호에 공백이 발견되었습니다."
     )
             , @ApiResponse(
             code = 1501
@@ -186,6 +195,7 @@ public class AuthController {
         Long signupId = userService.signup(signUpRequestDto);
         //1005 현재 입력한 이메일로 이미 존재할 경우
 
+        userService.validationPasswd(password);
         String email_url = email.replace("@", "_");
 
 
@@ -232,8 +242,6 @@ public class AuthController {
         userService.validateDuplicateByNickname(nickName);
         return ResponseHandler.generateResponse("닉네임 중복 확인 성공", HttpStatus.OK, true);
     }
-
-
 
 
     @ApiOperation(value = "이메일 로그인", notes = "이메일로 로그인")
@@ -327,7 +335,7 @@ public class AuthController {
         // 나중에 이름이나 닉네임으로 추가 인증
 //        if(user.getName().equals(name)){
 //        }
-        return ResponseHandler.generateResponse("비밀번호 변경을 위한 코드 성공", HttpStatus.OK,null);
+        return ResponseHandler.generateResponse("비밀번호 변경을 위한 코드 성공", HttpStatus.OK, null);
     }
 
 
@@ -346,14 +354,27 @@ public class AuthController {
             code = 1003
             , message = "발급된 인증 코드가 이메일과 다릅니다."
     )
+            , @ApiResponse(
+            code = 1009
+            , message = "비밀번호에 이모지가 존재합니다.  "
+    )
+            , @ApiResponse(
+            code = 1010
+            , message = "비밀번호가 8~25자 가 아니거나 특수문자나 영어 숫자가 최소 1개 이상 포함되어있지 않습니다."
+    )
+            , @ApiResponse(
+            code = 1011
+            , message = "비밀번호에 공백이 발견되었습니다."
+    )
     })
     @PostMapping("/user/password/find/confirm")
     public ResponseEntity<Object> passwordConfirm(
             @ApiParam(value = "PasswordFindDTO", required = true)
             @RequestBody PasswordConfirmDTO passwordConfirmDTO) {
         userService.findByEmailAndProvider(passwordConfirmDTO.getEmail(), "local").orElseThrow(LoginFailedByEmailNotExistException::new);
-        emailService.codeForPasswordFinder(passwordConfirmDTO.getEmail(),passwordConfirmDTO.getCode());
+        emailService.codeForPasswordFinder(passwordConfirmDTO.getEmail(), passwordConfirmDTO.getCode());
         User user = userService.findByEmailAndProvider(passwordConfirmDTO.getEmail(), "local").get();
+        userService.validationPasswd(passwordConfirmDTO.getChange_password());
         userService.changePassword(user, passwordConfirmDTO.getChange_password());
         // 나중에 이름이나 닉네임으로 추가 인증
         return ResponseHandler.generateResponse("비밀 번호 변경 성공", HttpStatus.OK, null);
@@ -368,8 +389,8 @@ public class AuthController {
                     , message = "인증 코드 일치"
             ),
             @ApiResponse(
-            code = 200
-            , message = "인증 코드 불일치"
+                    code = 200
+                    , message = "인증 코드 불일치"
             )
             , @ApiResponse(
             code = 1101
@@ -385,11 +406,10 @@ public class AuthController {
             @ApiParam(value = "PasswordCheckDTO", required = true)
             @RequestBody PasswordCheckDTO passwordCheckDTO) {
         userService.findByEmailAndProvider(passwordCheckDTO.getEmail(), "local").orElseThrow(LoginFailedByEmailNotExistException::new);
-        emailService.codeForPasswordFinder(passwordCheckDTO.getEmail(),passwordCheckDTO.getCode());
+        emailService.codeForPasswordFinder(passwordCheckDTO.getEmail(), passwordCheckDTO.getCode());
         // 나중에 이름이나 닉네임으로 추가 인증
         return ResponseHandler.generateResponse("인증 코드 일치", HttpStatus.OK, null);
-        }
-
+    }
 
 
 }

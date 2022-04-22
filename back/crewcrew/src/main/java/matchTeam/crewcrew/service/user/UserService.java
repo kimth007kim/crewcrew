@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Service
@@ -145,13 +147,48 @@ public class UserService {
         return userRepository.save(userSignUpRequestDto.toEntity("naver")).getUid();
     }
 
-    public void passwordCheck(User user, String previous) {
-        System.out.println("---------         " + previous + "     ------------ " + user.getPassword());
-        if (!passwordEncoder.matches(previous, user.getPassword())) {
-            throw new CPasswordNotMatchException();
+//    public void passwordCheck(User user, String previous) {
+//        System.out.println("---------         " + previous + "     ------------ " + user.getPassword());
+//        if (!passwordEncoder.matches(previous, user.getPassword())) {
+//            throw new CPasswordNotMatchException();
+//        }
+//    }
+
+    public void validationPasswd(String pw){
+        Pattern p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
+        Matcher m = p.matcher(pw);
+
+        Pattern blank = Pattern.compile("(\\s)");
+        Matcher m_blank =blank.matcher(pw);
+
+        Pattern emoji_m=Pattern.compile("[\\x{10000}-\\x{10ffff}\ud800-\udfff]");
+        Matcher emoji_p = emoji_m.matcher(pw);
+
+
+        if(m_blank.find()){
+           throw new PasswordBlankException();
+        }
+        if (emoji_p.find()) {
+           throw new PasswordEmojiException();
+        }
+        if (!m.matches()){
+            throw new PasswordInvalidException();
         }
     }
 
+
+
+
+//    public void emojiFinder(String pw){
+//        Pattern p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
+//        Matcher m = p.matcher(pw);
+//        if (!m.matches()){
+//            throw new PasswordInvalidException();
+//        }
+//    }
+
+    //https://cmelcmel.tistory.com/113 이모지 제거
+    
     public void setProfileImage(User user, String image) {
         user.setProfileImage(image);
     }

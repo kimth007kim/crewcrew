@@ -27,6 +27,11 @@ public enum ErrorCode {
     PASSWORD_NOT_MATCH(1006,"EMAIL_003"," 입력한 비밀번호가 원래 비밀번호가 일치하지않습니다. "),
     USERNAME_ALREADY_EXIST(1007,"USER NAME ALREADY EXIST","이미 존재하는 닉네임 입니다. "),
     UID_NOT_EXIST(1008,"UID NOT EXIST","존재하지 않는 id 값입니다. "),
+    PASSWORD_EMOJI_EXCEPTION(1009,"PASSWORD_EMOJI_EXCEPTION","비밀번호에 이모지가 존재합니다. "),
+    PASSWORD_INVALID_EXCEPTION(1010,"PASSWORD_INVALID_EXCEPTION","비밀번호가 8~25자 가 아니거나 특수문자나 영어 숫자가 최소 1개 이상 포함되어있지 않습니다. "),
+    PASSWORD_BLANK_EXCEPTION(1011,"BLANK_FOUNDED_EXCEPTION","비밀번호에 공백이 발견되었습니다."),
+
+
 
     //1100~1199 이메일 로그인 대한 예외
 

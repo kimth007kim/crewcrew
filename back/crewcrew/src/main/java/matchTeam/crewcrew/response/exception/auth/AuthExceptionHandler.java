@@ -102,6 +102,37 @@ public class AuthExceptionHandler {
     }
 
 
+    /**
+     * 1009
+     * 비밀번호에 이모지가 포함되어있을때
+     *
+     */
+    @ExceptionHandler(PasswordEmojiException.class)
+    protected ResponseEntity<ErrorResponseHandler> passwordEmojiException(PasswordEmojiException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.PASSWORD_EMOJI_EXCEPTION);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    /**
+     * 1010
+     * 비밀번호가 8,25자리 특수문자 1개포함 알파벳 1개포함 영어 로 이루어지지않았을때
+     *
+     */
+    @ExceptionHandler(PasswordInvalidException.class)
+    protected ResponseEntity<ErrorResponseHandler> PasswordInvalidException(PasswordInvalidException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.PASSWORD_INVALID_EXCEPTION);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    /**
+     * 1011
+     * 비밀번호가 8,25자리 특수문자 1개포함 알파벳 1개포함 영어 로 이루어지지않았을때
+     *
+     */
+    @ExceptionHandler(PasswordBlankException.class)
+    protected ResponseEntity<ErrorResponseHandler> PasswordBlankException(PasswordBlankException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.PASSWORD_BLANK_EXCEPTION);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     // 1100~1199 이메일 로그인에 대한 예외
 
     /**
