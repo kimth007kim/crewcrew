@@ -57,7 +57,7 @@ public class ApplicationDetailResponseDTO {
     @ApiModelProperty(value = "만료여부", notes = "만료여부를 true(만료x) or false(만료됨)로 표현", example = "1")
     private Boolean viewable;
 
-    @ApiModelProperty(value = "모집진행상태", notes = "(0: 참여거절, 1: 참여요청중, 2: 참여완료, 3: 참여취소)")
+    @ApiModelProperty(value = "모집진행상태(0: 참여거절, 1: 참여요청중, 2: 참여완료, 3: 참여취소)", notes = "")
     private Integer progress;
 
     @QueryProjection

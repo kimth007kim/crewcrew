@@ -1,6 +1,8 @@
 package matchTeam.crewcrew.dto.application;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import matchTeam.crewcrew.dto.board.BoardSaveRequestDTO;
@@ -14,17 +16,18 @@ import matchTeam.crewcrew.response.exception.board.NotExistBoardInIdException;
 import matchTeam.crewcrew.response.exception.category.NotExistCategoryException;
 import matchTeam.crewcrew.util.customException.UserNotFoundException;
 
+
 @NoArgsConstructor
 @Getter
 public class ApplicationSaveRequestDTO {
 
-    @ApiModelProperty(value = "접속한 유저의 uid", notes = "지원을 요청한 유저의 uid")
+    @ApiParam(value = "해당 게시판에 지원하기를 요청한 유저의 uid")
     private Long uid;
 
-    @ApiModelProperty(value = "지원하기를 요청한 게시글의 id", notes = "지원하기 요청을 받은 게시글의 id")
+    @ApiParam(value = "지원하기를 요청받은 게시판의 id")
     private Long boardId;
 
-    @ApiModelProperty(value = "한줄소개", notes = "지원시 한줄소개")
+    @ApiParam(value = "한줄소개")
     private String commentary;
 
     public Application toEntity(ApplicationSaveRequestDTO req,
