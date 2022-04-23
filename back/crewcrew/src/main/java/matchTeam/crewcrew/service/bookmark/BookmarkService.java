@@ -15,6 +15,7 @@ import matchTeam.crewcrew.repository.board.BoardRepository;
 import matchTeam.crewcrew.repository.bookmark.BookmarkRepository;
 import matchTeam.crewcrew.repository.bookmark.BookmarkSearchRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
+import matchTeam.crewcrew.response.exception.board.NotExistBoardInIdException;
 import matchTeam.crewcrew.response.exception.board.NotMatchBoardIdException;
 import matchTeam.crewcrew.response.exception.category.NotExistCategoryException;
 import matchTeam.crewcrew.util.customException.UserNotFoundException;
@@ -36,7 +37,7 @@ public class BookmarkService {
     @Transactional
     public BookmarkSaveResponseDTO save(Long boardId, Long uid){
 
-        User user = userRepository.findById(boardId).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findById(uid).orElseThrow(UserNotFoundException::new);
         Board board = boardRepository.findById(boardId).orElseThrow(NotMatchBoardIdException::new);
 
         BookmarkSaveRequestDTO req = new BookmarkSaveRequestDTO(boardId, uid);
@@ -50,12 +51,14 @@ public class BookmarkService {
     }
 
     public void checkValidSave(Long boardId, Long uid){
+        System.out.println("boardId = " + boardId);
+        System.out.println("uid = " + uid);
         userRepository.findById(uid).orElseThrow(UserNotFoundException::new);
-        boardRepository.findById(boardId).orElseThrow(NotMatchBoardIdException::new);
+        boardRepository.findById(boardId).orElseThrow(NotExistBoardInIdException::new);
     }
 
     @Transactional(readOnly = true)
     public Page<BoardPageDetailResponseDTO> search(Long userId, Pageable pageable) {
-        return  bookmarkQueryRepository.search(userId, pageable);
+        return bookmarkQueryRepository.search(userId, pageable);
     }
 }

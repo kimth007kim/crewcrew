@@ -20,7 +20,6 @@ import matchTeam.crewcrew.repository.user.UserRepository;
 import matchTeam.crewcrew.response.exception.board.*;
 import matchTeam.crewcrew.response.exception.category.NotExistCategoryException;
 import matchTeam.crewcrew.response.exception.message.NoMessageContentException;
-import matchTeam.crewcrew.specification.BoardSpecs;
 import matchTeam.crewcrew.util.customException.UserNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

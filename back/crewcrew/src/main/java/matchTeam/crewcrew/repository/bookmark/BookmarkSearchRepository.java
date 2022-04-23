@@ -18,7 +18,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static matchTeam.crewcrew.entity.board.QBoard.board;
-//import static matchTeam.crewcrew.entity.bookmark.QBookmark.bookmark;
+import static matchTeam.crewcrew.entity.bookmark.QBookmark.bookmark;
 import static org.springframework.util.StringUtils.hasText;
 
 @RequiredArgsConstructor
@@ -27,24 +27,23 @@ public class BookmarkSearchRepository {
 
     private final JPAQueryFactory queryFactory;
     public Page<BoardPageDetailResponseDTO> search(Long userId, Pageable pageable) {
-        // select board from board where boardid.eq(select boardid from bookmark
-        // where userid.eq(bookmark.uid)) ??????!!!
         List<BoardPageDetailResponseDTO> content = queryFactory
                 .select(Projections.constructor(BoardPageDetailResponseDTO.class, board))
                 .from(board)
+                .innerJoin(bookmark)
+                .on(board.id.eq(bookmark.boardId.id))
                 .where(
-                        //board.id.eq(queryFactory.select(board.id).from(bookmark))
+                        board.user.uid.eq(userId)
                 ).offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(findOrder("recent"),
-                        board.createdDate.desc())
+                .orderBy(findOrder("recent"), board.createdDate.desc())
                 .fetch();
 
         JPAQuery<Board> countQuery = queryFactory
                 .select(board)
                 .from(board)
                 .where(
-
+                        board.viewable.eq(true)
                 ).orderBy(findOrder("recent"),
                         board.createdDate.desc());
 

@@ -27,7 +27,7 @@ public class Bookmark {
     private User uid;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_seq")
+    @JoinColumn(name = "board_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Board boardId;
 

@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.board.BoardResponseDTO;
 import matchTeam.crewcrew.dto.message.MessageResponseDTO;
 import matchTeam.crewcrew.entity.board.Board;
-import matchTeam.crewcrew.specification.BoardSpecs;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;

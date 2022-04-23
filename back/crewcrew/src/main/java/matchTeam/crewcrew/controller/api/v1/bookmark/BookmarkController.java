@@ -1,5 +1,6 @@
 package matchTeam.crewcrew.controller.api.v1.bookmark;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.board.*;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Api(value = "Bookmark Controller", tags = "8. bookmark")
 @RequiredArgsConstructor
 @RestController
 public class BookmarkController {
