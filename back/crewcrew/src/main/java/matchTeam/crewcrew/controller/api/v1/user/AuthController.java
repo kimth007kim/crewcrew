@@ -96,7 +96,7 @@ public class AuthController {
         if (user == null) {
             throw new UidNotExistException();
         }
-        UserResponseDto userResponseDto = new UserResponseDto(id, user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), likedCategoryService.findUsersLike(user), user.getMessage());
+        UserResponseDto userResponseDto = new UserResponseDto(id, user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), likedCategoryService.findUsersLike(user), user.getMessage(),user.getProvider());
 
         return ResponseHandler.generateResponse("유저 조회 성공", HttpStatus.OK, userResponseDto);
     }
@@ -199,7 +199,7 @@ public class AuthController {
         String email_url = email.replace("@", "_");
 
 
-        String filename = s3Uploader.addImageWhenSignUp(email_url, file, Default);
+        String filename = s3Uploader.addImageWhenSignUp(email_url, file, Default,"local");
         User user = userService.findByUid(signupId);
         user.setProfileImage(filename);
         user.setMessage(message);
@@ -219,7 +219,7 @@ public class AuthController {
         List<Long> result = likedCategoryService.addLikedCategory(user, input);
         System.out.println("유저가 등록한 후의 카테고리" + result);
 
-        UserResponseDto userResponseDto = new UserResponseDto(signupId, signUpRequestDto.getEmail(), signUpRequestDto.getName(), signUpRequestDto.getNickName(), filename, result, user.getMessage());
+        UserResponseDto userResponseDto = new UserResponseDto(signupId, signUpRequestDto.getEmail(), signUpRequestDto.getName(), signUpRequestDto.getNickName(), filename, result, user.getMessage(),user.getProvider());
 
         return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, userResponseDto);
     }

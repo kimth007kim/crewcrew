@@ -16,10 +16,12 @@ import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.repository.security.RefreshTokenJpaRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
 import matchTeam.crewcrew.response.exception.auth.*;
+import matchTeam.crewcrew.util.customException.UserNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,6 +46,9 @@ public class UserService {
 
     public User findByUid(Long id) {
         return userRepository.findByUid(id);
+    }
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
     }
 
     public Optional<User> findByEmailAndProvider(String email, String provider) {
@@ -130,6 +135,35 @@ public class UserService {
 
         return newCreatedToken;
     }
+    public boolean stringCheck(String str){
+        return str == null || str.isBlank();
+
+    }
+
+    public void profileChange(User user, String password, String name, String nickName, List<Long> categoryId, String message){
+
+        if (categoryId!=null){
+            System.out.println("--------------- 카테고리 id있음");
+            List<Long> usersLike = likedCategoryService.findUsersLike(user);
+//        List<Long> result =likedCategoryService.addLikedCategory(user,input,usersLike);
+
+            List<Long> input = likedCategoryService.deleteDuplicateCategory(categoryId);
+            List<Long> result = likedCategoryService.addLikedCategory(user, input);
+        }
+        if (!stringCheck(password)){
+            validationPasswd(password);
+            changePassword(user,password);
+        }
+
+        if (!stringCheck(nickName)){
+            validateDuplicateByNickname(nickName);
+            user.setNickname(nickName);
+        }
+        if (!stringCheck(name)) {
+            user.setNickname(name);
+        }
+
+    }
 
     public Long kakaoSignup(UserSignUpRequestDto userSignUpRequestDto) {
         Optional<User> user = userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider());
@@ -179,15 +213,7 @@ public class UserService {
 
 
 
-//    public void emojiFinder(String pw){
-//        Pattern p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
-//        Matcher m = p.matcher(pw);
-//        if (!m.matches()){
-//            throw new PasswordInvalidException();
-//        }
-//    }
 
-    //https://cmelcmel.tistory.com/113 이모지 제거
     
     public void setProfileImage(User user, String image) {
         user.setProfileImage(image);
@@ -244,7 +270,7 @@ public class UserService {
         for (int i = 0; i < length; i++) {
             User user = result.get(i);
 //            System.out.println("ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅋㅎ------------------------"+user.getUid());
-            UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), likedCategoryService.findUsersLike(user), user.getMessage());
+            UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), likedCategoryService.findUsersLike(user), user.getMessage(),user.getProvider());
             users.add(userResponseDto);
         }
         return users;
@@ -269,7 +295,11 @@ public class UserService {
         Claims c = jwtProvider.parseClaims(accessToken);
         String uid = c.getSubject();
         System.out.println("Claims=  " + c + "  uid= " + uid);
+        if (userRepository.findById(Long.valueOf(uid)).isEmpty()){
+            throw new UidNotExistException();
+        }
         User user = userRepository.findByUid(Long.valueOf(uid));
+
 
         return user;
     }
