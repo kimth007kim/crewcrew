@@ -1,17 +1,46 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import InfoCat from './InfoCat';
+import InfoInputList from './InfoInputList';
 import InfoProfile from './InfoProfile';
 
 function InfoBox() {
   const [openBtn, setOpenBtn] = useState(false);
+  const [myInfoTab, setMyInfoTab] = useState(1);
 
   const HandleOpenBtn = useCallback(() => {
     setOpenBtn(true);
   }, []);
 
   const HandleCloseBtn = useCallback(() => {
+    if (window.innerWidth > 768) {
+      return null;
+    }
     setOpenBtn(false);
+  }, []);
+
+  const HandleInfoTab = useCallback(() => {
+    if (myInfoTab === 1) {
+      return setMyInfoTab(2);
+    }
+    return setMyInfoTab(1);
+  }, [myInfoTab]);
+
+  const handleResize = () => {
+    if (window.innerWidth > 768) {
+      setOpenBtn(true);
+    } else if (!openBtn) {
+      setOpenBtn(false);
+    }
+  };
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (
@@ -19,13 +48,23 @@ function InfoBox() {
       <InfoTop>
         <h3>내 정보 관리</h3>
         <InfoBtnList>
-          <InfoBtn active>프로필</InfoBtn>
-          <InfoBtn>기본정보</InfoBtn>
+          <InfoBtn active={myInfoTab === 1} onClick={HandleInfoTab}>
+            프로필
+          </InfoBtn>
+          <InfoBtn active={myInfoTab === 2} onClick={HandleInfoTab}>
+            기본정보
+          </InfoBtn>
         </InfoBtnList>
       </InfoTop>
-      <InfoBody open={openBtn}>
-        <InfoProfile />
-        <InfoCat />
+      <InfoBody open={openBtn} size={myInfoTab}>
+        {myInfoTab === 1 ? (
+          <>
+            <InfoProfile />
+            <InfoCat />
+          </>
+        ) : (
+          <InfoInputList />
+        )}
       </InfoBody>
       {openBtn ? (
         <ButtonSave onClick={HandleCloseBtn}>저장</ButtonSave>
@@ -104,7 +143,7 @@ const InfoBody = styled('div')`
     ${(props) =>
       props.open &&
       css`
-        height: 470px;
+        height: ${props.size === 1 ? '470px' : '300px'};
       `}
   }
 `;

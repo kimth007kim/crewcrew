@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import MypageMainTop from '../../components/mypage/MypageMainTop';
+import MypageTimeline from '../../components/mypage/MypageTimeline';
 import MypageTop from '../../components/mypage/MypageTop';
 
 function MyPage() {
@@ -8,6 +9,7 @@ function MyPage() {
     <MainContainer>
       <MypageTop />
       <MypageMainTop />
+      <MypageTimeline />
     </MainContainer>
   );
 }
