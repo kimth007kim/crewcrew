@@ -116,4 +116,6 @@ public class Board extends BaseTimeEntity {
         return BoardResponseDTO.builder()
                 .res(board).build();
     }
+
+
 }

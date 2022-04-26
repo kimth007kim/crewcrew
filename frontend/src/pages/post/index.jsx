@@ -1,16 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import Lnb from '../../components/common/Lnb';
 import PostList from '../../components/postComponent/PostList';
 import PostTop from '../../components/postComponent/PostTop';
 import ScrollButton from '../../components/postComponent/ScrollButton';
 
 function Post() {
   return (
-    <MainContainer>
-      <ScrollButton />
-      <PostTop />
-      <PostList />
-    </MainContainer>
+    <>
+      <Lnb path="post" />
+      <MainContainer>
+        <ScrollButton />
+        <PostTop />
+        <PostList />
+      </MainContainer>
+    </>
   );
 }
 
