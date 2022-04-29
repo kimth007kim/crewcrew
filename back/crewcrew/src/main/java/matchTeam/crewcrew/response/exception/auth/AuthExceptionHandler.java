@@ -118,7 +118,7 @@ public class AuthExceptionHandler {
      *
      */
     @ExceptionHandler(PasswordInvalidException.class)
-    protected ResponseEntity<ErrorResponseHandler> PasswordInvalidException(PasswordInvalidException e){
+    protected ResponseEntity<ErrorResponseHandler> passwordInvalidException(PasswordInvalidException e){
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.PASSWORD_INVALID_EXCEPTION);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -128,8 +128,38 @@ public class AuthExceptionHandler {
      *
      */
     @ExceptionHandler(PasswordBlankException.class)
-    protected ResponseEntity<ErrorResponseHandler> PasswordBlankException(PasswordBlankException e){
+    protected ResponseEntity<ErrorResponseHandler> passwordBlankException(PasswordBlankException e){
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.PASSWORD_BLANK_EXCEPTION);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    /**
+     * 1012
+     * 이름이 0자이거나 10자보다 길때 발생
+     *
+     */
+    @ExceptionHandler(NameInvalidException.class)
+    protected ResponseEntity<ErrorResponseHandler> nameNotValidException(NameInvalidException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.NAME_INVALID_EXCEPTION);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    /**
+     * 1013
+     * 닉네임이 0자이거나 10자보다 길때 발생
+     *
+     */
+    @ExceptionHandler(NickNameInvalidException.class)
+    protected ResponseEntity<ErrorResponseHandler> nickNameNotValidException(NickNameInvalidException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.NICKNAME_INVALID_EXCEPTION);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    /**
+     * 1014
+     * 닉네임이 0자이거나 10자보다 길때 발생
+     *
+     */
+    @ExceptionHandler(MessageInvalidException.class)
+    protected ResponseEntity<ErrorResponseHandler> messageNotValidException(MessageInvalidException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.MESSAGE_INVALID_EXCEPTION);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

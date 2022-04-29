@@ -55,24 +55,7 @@ public class S3Uploader {
     }
 
 
-    public String addImageWhenSignUp(String email, Integer Default,String provider) {
-            if (Default == null || 0 >= Default || Default > 5) {
-                throw new S3FileNotFoundException();
-            }
-//                시작경로 만든 메서드
-                StringBuilder start = new StringBuilder();
-                start.append("default/");
-                start.append(Integer.toString(Default));
-                start.append(".png");
-                String source = start.toString();
 
-//                도착경로 만드는 메서드
-                String destination = nameFile(email, provider);
-                copy(source, destination);
-
-                return destination;
-
-    }
 
     public String addImageWhenSignUp(String email, MultipartFile file, Integer Default,String provider) {
         if (file.isEmpty()) {

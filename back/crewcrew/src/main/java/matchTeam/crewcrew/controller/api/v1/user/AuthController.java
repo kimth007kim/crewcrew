@@ -150,6 +150,12 @@ public class AuthController {
     ), @ApiResponse(
             code = 1011
             , message = "비밀번호에 공백이 발견되었습니다."
+    ), @ApiResponse(
+            code = 1012
+            , message = "이름이 0자이거나 10자를 초과하였습니다."
+    ), @ApiResponse(
+            code = 1013
+            , message = "닉네임이 0자이거나 16자를 초과하였습니다."
     )
             , @ApiResponse(
             code = 1501
@@ -194,15 +200,16 @@ public class AuthController {
         //1004 이메일인증이 안된 이메일
         Long signupId = userService.signup(signUpRequestDto);
         //1005 현재 입력한 이메일로 이미 존재할 경우
-
+        userService.validationNickName(nickName);
+        userService.validationName(name);
         userService.validationPasswd(password);
         String email_url = email.replace("@", "_");
 
 
         String filename = s3Uploader.addImageWhenSignUp(email_url, file, Default,"local");
         User user = userService.findByUid(signupId);
-        user.setProfileImage(filename);
-        user.setMessage(message);
+        userService.setProfileImage(user,filename);
+        userService.setMessage(user,message);
 
 
 //        if (StringUtils.isEmpty(message)) {
