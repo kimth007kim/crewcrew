@@ -8,15 +8,15 @@ import { debounce } from 'lodash';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
-import CheckOff from '../../../assets/images/LogInCheck_off.png';
-import CheckOn from '../../../assets/images/LogInCheck_on.png';
-import Naver from '../../../assets/images/Naver.png';
-import Kakao from '../../../assets/images/Kakao.png';
+import CheckOff from '../../../../assets/images/LogInCheck_off.png';
+import CheckOn from '../../../../assets/images/LogInCheck_on.png';
+import Naver from '../../../../assets/images/Naver.png';
+import Kakao from '../../../../assets/images/Kakao.png';
 
-import Button from '../../../components/common/Button';
-import Textfield from '../../../components/common/TextfieldEmail';
-import TextfieldPW from '../../../components/common/TextfieldPW';
-import { emojiSlice, isCheckPassword, isEmail, spaceSlice } from '../../../utils';
+import Button from '../../Button';
+import Textfield from '../../TextfieldEmail';
+import TextfieldPW from '../../TextfieldPW';
+import { emojiSlice, isCheckPassword, isEmail, spaceSlice } from '../../../../utils';
 
 function LoginSection({ IsClick, HandleClick, closeModal }) {
   const [IsChecked, setIsChecked] = useState(false);

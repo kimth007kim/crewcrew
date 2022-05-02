@@ -1,10 +1,11 @@
 /* eslint-disable indent */
 /* eslint-disable react/jsx-wrap-multilines */
+// eslint-disable-next-line react/jsx-wrap-multilines
 import React, { useCallback, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
-import Modal from '../../components/common/Modal';
-import Close from '../../assets/images/ModalClose.png';
-import Arrow from '../../assets/images/Arrow.png';
+import Modal from '../Modal';
+import Close from '../../../assets/images/ModalClose.png';
+import Arrow from '../../../assets/images/Arrow.png';
 
 import LoginSection from './section/LoginSection';
 import SignupSection from './section/SignupSection';
@@ -14,7 +15,6 @@ import SignupSection2 from './section/SignupSection2';
 import SignupSection3 from './section/SignupSection3';
 import SignupSection4 from './section/SignupSection4';
 
-// eslint-disable-next-line react/jsx-wrap-multilines
 function AuthModal({ closeModal, visible }) {
   const [IsClick, setIsClick] = useState(0);
 
