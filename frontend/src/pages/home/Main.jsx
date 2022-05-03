@@ -638,6 +638,7 @@ const MainMain = styled.main`
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   overflow-x: hidden;
+  word-break: keep-all;
 
   @media screen and (max-width: 820px) {
     width: 100%;
@@ -727,6 +728,10 @@ const GridWrap = styled.ul`
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
   }
+  @media screen and (max-width: 300px) {
+    -ms-grid-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
+  }
 `;
 
 const GridWrapliStudy = styled.li`
@@ -784,6 +789,10 @@ const SectionWrap = styled.section`
   margin: auto;
   @media screen and (max-width: 820px) {
     max-width: calc(100vw - 40px);
+  }
+
+  @media screen and (max-width: 300px) {
+    max-width: calc(100vw - 20px);
   }
 `;
 
@@ -1004,7 +1013,8 @@ const MobileGnb = styled.div`
 
 const TopWave = styled.div`
   height: 160px;
-  width: 3200px;max-width: 820px
+  width: 3200px;
+  max-width: 820px;
   bottom: 0;
   left: 0;
 `;
@@ -1117,7 +1127,11 @@ const CategoryStudy = styled.div`
     width: calc((100vw - 70px) / 3);
     height: calc((100vw - 70px) / 3);
     padding: 10px;
-  } ;
+  };
+  @media screen and (max-width: 300px) {
+    width: calc((100vw - 38px)/2);
+    height: calc((100vw - 38px)/2);
+  };
 `;
 
 const CategoryHobby = styled.div`
@@ -1145,7 +1159,10 @@ transition: .3s;
     height: calc((100vw - 70px)/3);
     padding: 10px;
 };
-}
+@media screen and (max-width: 300px) {
+    width: calc((100vw - 38px)/2);
+    height: calc((100vw - 38px)/2);
+};
 `;
 
 const CategoryIcon = styled.img`
@@ -1385,6 +1402,16 @@ const FooterTop = styled.div`
     @media screen and (max-width: 820px) {
       margin: 10px 0;
     }
+    @media screen and (max-width: 300px) {
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+    }
+
 
     li {
       color: #fff;
@@ -1702,9 +1729,9 @@ const CardPostStudy = styled.div`
   background-color: #fff;
   border-radius: 2px 2px 15px 15px;
   -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
   -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+        box-sizing: border-box;
   cursor: pointer;
   p {
     font-size: 10px;
@@ -1714,21 +1741,21 @@ const CardPostStudy = styled.div`
 `;
 
 const CardPostHobby = styled.div`
-  border-top: 6px solid #f7971e;
+  border-top: 6px solid #F7971E;
   width: 100%;
   background-color: #fff;
   border-radius: 2px 2px 15px 15px;
   -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
   -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+        box-sizing: border-box;
   cursor: pointer;
   p {
     font-size: 10px;
     font-weight: 400;
     color: #868686;
-  }
-`;
+  };
+  `;
 
 const CardHead = styled.div`
   padding: 10px 12px 10px 15px;
