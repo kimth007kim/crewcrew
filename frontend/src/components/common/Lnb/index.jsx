@@ -52,20 +52,27 @@ function Lnb({ path }) {
                   <p>크루참여</p>
                 </PartIcon>
               </NavLink>
-              <RecruIcon selected={pathname.startsWith('/crew')}>
-                <span />
-                <p>팀원모집</p>
-              </RecruIcon>
-              <ChatIcon selected={pathname.startsWith('/chat')}>
-                <span />
-                <p>채팅</p>
-              </ChatIcon>
+              <NavLink to="/">
+                <RecruIcon selected={pathname.startsWith('/crew')}>
+                  <span />
+                  <p>팀원모집</p>
+                </RecruIcon>
+              </NavLink>
+              <NavLink to="/">
+                <ChatIcon selected={pathname.startsWith('/chat')}>
+                  <span />
+                  <p>채팅</p>
+                </ChatIcon>
+              </NavLink>
             </NavPCBodyUl>
           </NavPCBody>
           <NavPCFooter>
-            <NavPCFooterA to="/mypage">
-              <ProfileNullImg src={ProfileNull} alt="마이페이지" />
-            </NavPCFooterA>
+            <NavProfileWrapper>
+              <NavPCFooterA to="/mypage">
+                <ProfileNullImg src={ProfileNull} alt="마이페이지" />
+              </NavPCFooterA>
+              <Alarm />
+            </NavProfileWrapper>
           </NavPCFooter>
         </NavPC>
         <NavArrow active={on} onClick={() => changeOn(!on)} />
@@ -194,6 +201,13 @@ const NavPCBodyLi = styled.li`
 `;
 
 const HomeIcon = styled(NavPCBodyLi)`
+  p {
+    ${(props) =>
+      props.selected &&
+      css`
+        color: #00b7ff;
+      `}
+  }
   span {
     display: block;
     width: 46px;
@@ -205,7 +219,6 @@ const HomeIcon = styled(NavPCBodyLi)`
     ${(props) =>
       props.selected &&
       css`
-        color: #00b7ff;
         background: url(${IconNavHomeActive});
       `}
 
@@ -230,6 +243,13 @@ const HomeIcon = styled(NavPCBodyLi)`
 `;
 
 const PartIcon = styled(NavPCBodyLi)`
+  p {
+    ${(props) =>
+      props.selected &&
+      css`
+        color: #00b7ff;
+      `}
+  }
   span {
     display: block;
     width: 46px;
@@ -266,6 +286,13 @@ const PartIcon = styled(NavPCBodyLi)`
 `;
 
 const RecruIcon = styled(NavPCBodyLi)`
+  p {
+    ${(props) =>
+      props.selected &&
+      css`
+        color: #00b7ff;
+      `}
+  }
   span {
     display: block;
     width: 46px;
@@ -302,6 +329,13 @@ const RecruIcon = styled(NavPCBodyLi)`
 `;
 
 const ChatIcon = styled(NavPCBodyLi)`
+  p {
+    ${(props) =>
+      props.selected &&
+      css`
+        color: #00b7ff;
+      `}
+  }
   span {
     display: block;
     width: 46px;
@@ -341,6 +375,27 @@ const NavPCFooter = styled.section`
   display: flex;
   justify-content: center;
 `;
+
+const NavProfileWrapper = styled.div`
+  position: relative;
+`;
+
+const Alarm = styled.div`
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ff0045;
+  position: absolute;
+  right: -4px;
+  top: 32px;
+
+  @media screen and (max-width: 820px) {
+    width: 6px;
+    height: 6px;
+    top: 0;
+  }
+`;
+
 const LogoCircleImg = styled.img`
   width: 49px;
 `;

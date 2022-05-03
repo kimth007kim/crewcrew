@@ -46,9 +46,12 @@ function NavMobile({ path }) {
             </h2>
           </MobileGnbLogoli>
           <MobileGnbli>
-            <MobileGnba to="/mypage">
-              <MobileProfileimg src={ProfileNull} alt="마이페이지" />
-            </MobileGnba>
+            <NavProfileWrapper>
+              <MobileGnba to="/mypage">
+                <MobileProfileimg src={ProfileNull} alt="마이페이지" />
+              </MobileGnba>
+              <Alarm />
+            </NavProfileWrapper>
           </MobileGnbli>
         </MobileGnbul>
       </MobileGnb>
@@ -69,13 +72,13 @@ function NavMobile({ path }) {
           <MobileNavButton
             icon={<RecruIcon selected={pathname.startsWith('/crew')} />}
             title="팀원모집"
-            link="/crew"
+            link="/"
             selected={pathname.startsWith('/crew')}
           />
           <MobileNavButton
             icon={<ChatIcon selected={pathname.startsWith('/chat')} />}
             title="채팅"
-            link="/chat"
+            link="/"
             selected={pathname.startsWith('/chat')}
           />
         </MobileNavUl>
@@ -248,6 +251,26 @@ const MobileGnbli = styled.li`
 `;
 
 const MobileGnbLogoli = styled.li``;
+
+const NavProfileWrapper = styled.div`
+  position: relative;
+`;
+
+const Alarm = styled.div`
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ff0045;
+  position: absolute;
+  right: -4px;
+  top: 32px;
+
+  @media screen and (max-width: 820px) {
+    width: 6px;
+    height: 6px;
+    top: 0;
+  }
+`;
 
 const MobileGnba = styled(NavLink)`
   display: block;
