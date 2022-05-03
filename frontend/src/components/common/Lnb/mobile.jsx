@@ -3,27 +3,36 @@
 /* eslint-disable indent */
 import React from 'react';
 import styled, { css } from 'styled-components';
+import { NavLink, useLocation } from 'react-router-dom';
 import ProfileNull from '../../../assets/images/ProfileNull.png';
 import LogoTxt from '../../../assets/images/LogoTxt.png';
 import IconNavHome from '../../../assets/images/NavIcon1.png';
 import IconNavHomeHover from '../../../assets/images/NavIcon1_Hover.png';
+import IconNavHomeActive from '../../../assets/images/NavIcon1_Active.png';
 import IconNavParti from '../../../assets/images/NavIcon2.png';
 import IconNavPartiHover from '../../../assets/images/NavIcon2_Hover.png';
+import IconNavPartiActive from '../../../assets/images/NavIcon2_Active.png';
 import IconNavRecru from '../../../assets/images/NavIcon3.png';
 import IconNavRecruHover from '../../../assets/images/NavIcon3_Hover.png';
+import IconNavRecruActive from '../../../assets/images/NavIcon3_Active.png';
 import IconNavChat from '../../../assets/images/NavIcon4.png';
 import IconNavChatHover from '../../../assets/images/NavIcon4_Hover.png';
+import IconNavChatActive from '../../../assets/images/NavIcon4_Active.png';
 
-function MobileNavButton({ icon, title }) {
+function MobileNavButton({ icon, title, link = '/', selected }) {
   return (
-    <MobileNavLi>
-      {icon}
-      {title}
-    </MobileNavLi>
+    <NavLink to={link}>
+      <MobileNavLi selected={selected}>
+        {icon}
+        {title}
+      </MobileNavLi>
+    </NavLink>
   );
 }
 
-function NavMobile() {
+function NavMobile({ path }) {
+  const { pathname } = useLocation();
+
   return (
     <>
       <MobileGnb>
@@ -31,13 +40,13 @@ function NavMobile() {
           <MobileGnbli />
           <MobileGnbLogoli>
             <h2>
-              <MobileGnba href="/">
+              <MobileGnba to="/">
                 <MobileLogoimg src={LogoTxt} alt="CrewCrew" />
               </MobileGnba>
             </h2>
           </MobileGnbLogoli>
           <MobileGnbli>
-            <MobileGnba href="/mypage">
+            <MobileGnba to="/mypage">
               <MobileProfileimg src={ProfileNull} alt="마이페이지" />
             </MobileGnba>
           </MobileGnbli>
@@ -45,10 +54,30 @@ function NavMobile() {
       </MobileGnb>
       <MobileNav>
         <MobileNavUl>
-          <MobileNavButton icon={<HomeIcon />} title="홈" />
-          <MobileNavButton icon={<PartIcon />} title="크루참여" />
-          <MobileNavButton icon={<RecruIcon />} title="팀원모집" />
-          <MobileNavButton icon={<ChatIcon />} title="채팅" />
+          <MobileNavButton
+            icon={<HomeIcon selected={path === 'home'} />}
+            title="홈"
+            link="/"
+            selected={path === 'home'}
+          />
+          <MobileNavButton
+            icon={<PartIcon selected={pathname.startsWith('/post')} />}
+            title="크루참여"
+            link="/post"
+            selected={pathname.startsWith('/post')}
+          />
+          <MobileNavButton
+            icon={<RecruIcon selected={pathname.startsWith('/crew')} />}
+            title="팀원모집"
+            link="/crew"
+            selected={pathname.startsWith('/crew')}
+          />
+          <MobileNavButton
+            icon={<ChatIcon selected={pathname.startsWith('/chat')} />}
+            title="채팅"
+            link="/chat"
+            selected={pathname.startsWith('/chat')}
+          />
         </MobileNavUl>
       </MobileNav>
     </>
@@ -67,6 +96,14 @@ const HomeIcon = styled.span`
   :hover {
     background: url(${IconNavHomeHover});
   }
+  ${(props) =>
+    props.selected &&
+    css`
+      background: url(${IconNavHomeActive});
+      :hover {
+        background: url(${IconNavHomeActive});
+      }
+    `}
   @media screen and (max-width: 820px) {
     display: block;
     width: 36px;
@@ -85,6 +122,14 @@ const PartIcon = styled.span`
   :hover {
     background: url(${IconNavPartiHover});
   }
+  ${(props) =>
+    props.selected &&
+    css`
+      background: url(${IconNavPartiActive});
+      :hover {
+        background: url(${IconNavPartiActive});
+      }
+    `}
   @media screen and (max-width: 820px) {
     display: block;
     width: 36px;
@@ -103,6 +148,14 @@ const RecruIcon = styled.span`
   :hover {
     background: url(${IconNavRecruHover});
   }
+  ${(props) =>
+    props.selected &&
+    css`
+      background: url(${IconNavRecruActive});
+      :hover {
+        background: url(${IconNavRecruActive});
+      }
+    `}
   @media screen and (max-width: 820px) {
     display: block;
     width: 36px;
@@ -121,6 +174,14 @@ const ChatIcon = styled.span`
   :hover {
     background: url(${IconNavChatHover});
   }
+  ${(props) =>
+    props.selected &&
+    css`
+      background: url(${IconNavChatActive});
+      :hover {
+        background: url(${IconNavChatActive});
+      }
+    `}
   @media screen and (max-width: 820px) {
     display: block;
     width: 36px;
@@ -188,7 +249,7 @@ const MobileGnbli = styled.li`
 
 const MobileGnbLogoli = styled.li``;
 
-const MobileGnba = styled.a`
+const MobileGnba = styled(NavLink)`
   display: block;
   height: 30px;
 `;
@@ -219,4 +280,10 @@ const MobileNavLi = styled.li`
   font-size: 10px;
   font-weight: 400;
   color: #000;
+
+  ${(props) =>
+    props.selected &&
+    css`
+      color: #00b7ff;
+    `}
 `;

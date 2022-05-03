@@ -41,22 +41,22 @@ function Lnb({ path }) {
           <NavPCBody>
             <NavPCBodyUl>
               <NavLink to="/">
-                <HomeIcon active={path === 'home'}>
+                <HomeIcon selected={path === 'home'}>
                   <span />
                   <p>홈</p>
                 </HomeIcon>
               </NavLink>
               <NavLink to="/post">
-                <PartIcon active={pathname.startsWith('/post')}>
+                <PartIcon selected={pathname.startsWith('/post')}>
                   <span />
                   <p>크루참여</p>
                 </PartIcon>
               </NavLink>
-              <RecruIcon active={pathname.startsWith('/crew')}>
+              <RecruIcon selected={pathname.startsWith('/crew')}>
                 <span />
                 <p>팀원모집</p>
               </RecruIcon>
-              <ChatIcon active={pathname.startsWith('/chat')}>
+              <ChatIcon selected={pathname.startsWith('/chat')}>
                 <span />
                 <p>채팅</p>
               </ChatIcon>
@@ -74,7 +74,7 @@ function Lnb({ path }) {
         </NavContWrapper>
       </LnbWrapper>
       <NavHam active={on} onClick={() => changeOn(!on)} />
-      <NavMobile />
+      <NavMobile path={path} />
     </header>
   );
 }
@@ -203,7 +203,7 @@ const HomeIcon = styled(NavPCBodyLi)`
     background: url(${IconNavHome});
 
     ${(props) =>
-      props.active &&
+      props.selected &&
       css`
         color: #00b7ff;
         background: url(${IconNavHomeActive});
@@ -221,7 +221,7 @@ const HomeIcon = styled(NavPCBodyLi)`
     span {
       background: url(${IconNavHomeHover});
       ${(props) =>
-        props.active &&
+        props.selected &&
         css`
           background: url(${IconNavHomeActive});
         `}
@@ -239,7 +239,7 @@ const PartIcon = styled(NavPCBodyLi)`
     background: url(${IconNavParti});
 
     ${(props) =>
-      props.active &&
+      props.selected &&
       css`
         color: #00b7ff;
         background: url(${IconNavPartiActive});
@@ -257,7 +257,7 @@ const PartIcon = styled(NavPCBodyLi)`
     span {
       background: url(${IconNavPartiHover});
       ${(props) =>
-        props.active &&
+        props.selected &&
         css`
           background: url(${IconNavPartiActive});
         `}
@@ -275,7 +275,7 @@ const RecruIcon = styled(NavPCBodyLi)`
     background: url(${IconNavRecru});
 
     ${(props) =>
-      props.active &&
+      props.selected &&
       css`
         color: #00b7ff;
         background: url(${IconNavRecruActive});
@@ -293,7 +293,7 @@ const RecruIcon = styled(NavPCBodyLi)`
     span {
       background: url(${IconNavRecruHover});
       ${(props) =>
-        props.active &&
+        props.selected &&
         css`
           background: url(${IconNavRecruActive});
         `}
@@ -311,7 +311,7 @@ const ChatIcon = styled(NavPCBodyLi)`
     background: url(${IconNavChat});
 
     ${(props) =>
-      props.active &&
+      props.selected &&
       css`
         color: #00b7ff;
         background: url(${IconNavChatActive});
@@ -328,7 +328,7 @@ const ChatIcon = styled(NavPCBodyLi)`
     span {
       background: url(${IconNavChatHover});
       ${(props) =>
-        props.active &&
+        props.selected &&
         css`
           background: url(${IconNavChatActive});
         `}

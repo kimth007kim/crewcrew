@@ -1,16 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import Lnb from '../../components/common/Lnb';
 import MypageMainTop from '../../components/mypage/MypageMainTop';
 import MypageTimeline from '../../components/mypage/MypageTimeline';
 import MypageTop from '../../components/mypage/MypageTop';
 
 function MyPage() {
   return (
-    <MainContainer>
-      <MypageTop />
-      <MypageMainTop />
-      <MypageTimeline />
-    </MainContainer>
+    <>
+      <Lnb path="mypage" />
+      <MainContainer>
+        <MypageTop />
+        <MypageMainTop />
+        <MypageTimeline />
+      </MainContainer>
+    </>
   );
 }
 
