@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Lnb from '../../components/common/Lnb';
+import Lnb from '../../components/common/Lnb/Lnb';
 import PostList from '../../components/post/PostList';
 import PostTop from '../../components/post/PostTop';
 import ScrollButton from '../../components/post/ScrollButton';
