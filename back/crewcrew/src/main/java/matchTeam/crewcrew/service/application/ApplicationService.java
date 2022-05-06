@@ -13,6 +13,7 @@ import matchTeam.crewcrew.repository.user.UserRepository;
 import matchTeam.crewcrew.response.exception.application.*;
 import matchTeam.crewcrew.response.exception.board.NotExistBoardInIdException;
 import matchTeam.crewcrew.response.exception.category.NotExistCategoryException;
+import matchTeam.crewcrew.util.customException.UserNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -76,7 +77,13 @@ public class ApplicationService {
 
     @Transactional(readOnly = true)
     public ArrivedApplicationUserDetailsResponseDTO findArrivedApplicationApplier(ApplicationApplierSpecs specs){
-        boardRepository.findById(specs.getBoardId()).orElseThrow(NotExistBoardInIdException::new);
+        User user = userRepository.findById(specs.getUid()).orElseThrow(NotExistUidToApplyException::new);
+        Board board = boardRepository.findById(specs.getBoardId()).orElseThrow(NotExistBoardInIdException::new);
+
+        if (! user.getUid().equals(board.getUser().getUid())){
+            throw new NotMatchBoardOwnerException();
+        }
+
         return ArrivedApplicationUserDetailsResponseDTO.toDTO(queryRepository.getArrivedApplier(specs), queryRepository.getTheNumberOfWaiting(specs));
     }
 
@@ -91,6 +98,8 @@ public class ApplicationService {
     //만료된 게시판에 지원했을때
     public void checkExpired(Board board){
         if ( !board.getViewable()){
+            throw new ApplyToExpiredBoardException();
+        } else if (board.getRecruitedCrew().equals(board.getTotalCrew())){
             throw new ApplyToExpiredBoardException();
         }
     }

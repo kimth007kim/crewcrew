@@ -47,4 +47,9 @@ public class ApplicationExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @ExceptionHandler(NotMatchBoardOwnerException.class)
+    protected ResponseEntity<ErrorResponseHandler> notCategoryParentIdException(NotMatchBoardOwnerException e) {
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.NOT_MATCH_BOARD_OWNER);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

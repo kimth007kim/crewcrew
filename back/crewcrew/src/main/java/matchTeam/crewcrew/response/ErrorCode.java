@@ -30,6 +30,9 @@ public enum ErrorCode {
     PASSWORD_EMOJI_EXCEPTION(1009,"PASSWORD_EMOJI_EXCEPTION","비밀번호에 이모지가 존재합니다. "),
     PASSWORD_INVALID_EXCEPTION(1010,"PASSWORD_INVALID_EXCEPTION","비밀번호가 8~25자 가 아니거나 특수문자나 영어 숫자가 최소 1개 이상 포함되어있지 않습니다. "),
     PASSWORD_BLANK_EXCEPTION(1011,"BLANK_FOUNDED_EXCEPTION","비밀번호에 공백이 발견되었습니다."),
+    NAME_INVALID_EXCEPTION(1012,"NAME NOT VALID EXCEPTION","이름이 0자이거나 10자를 초과하였습니다."),
+    NICKNAME_INVALID_EXCEPTION(1013,"NICKNAME NOT VALID EXCEPTION","닉네임이 0자이거나 16자를 초과하였습니다."),
+    MESSAGE_INVALID_EXCEPTION(1014,"MESSAGE NOT VALID EXCEPTION","한줄 메세지가 0자이거나 25자를 초과하였습니다."),
 
 
 
@@ -100,10 +103,20 @@ public enum ErrorCode {
     // 5. 2400~2499 지원서 조회 및 조회에 대한 예외
     NOT_EXIST_UID_TO_APPLY(2400, "NOT EXIST UID TO APPLY", "존재하지 않는 회원이 지원했습니다."),
     NOT_EXIST_BOARD_TO_APPLY(2401, "NOT EXIST BOARD TO APPLY", "존재하지 않는 게시판에 지원했습니다."),
-    APPLY_TO_EXPIRED_BOARD(2402, "APPLY TO EXPIRED BOARD", "만료된 게시판에 지원헀습니다."),
+    APPLY_TO_EXPIRED_BOARD(2402, "APPLY TO EXPIRED BOARD", "만료된 게시판(날짜 혹은 인원만료)에 지원헀습니다."),
     DUPLICATE_APPLIER(2403, "DUPLICATE APPLIER", "중복 지원했습니다."),
     APPLY_TO_BOARD_WRITER(2404, "APPLY TO BOARD WRITER", "게시판 작성자가 지원했습니다."),
-    NOT_CATEGORY_PARENT_ID(2405, "NOT_CATEGORY_PARENT_ID", "부모 카테고리로 지원서 조회를 요청하지 않았습니다.");
+    NOT_CATEGORY_PARENT_ID(2405, "NOT_CATEGORY_PARENT_ID", "부모 카테고리로 지원서 조회를 요청하지 않았습니다."),
+    NOT_MATCH_BOARD_OWNER(2406, "NOT_MATCH_BOARD_OWNER", "게시판 작성자가 조회하지 않았습니다."),
+
+    
+    // 3000~3100 마이페이지 예외
+    EMPTY_CATEGORY_EXCEPTION(3001, "CATEGORY IS EMPTY", "카테고리가 선택되지 않았습니다."),
+    EMPTY_NICKNAME_EXCEPTION(3002, "NICKNAME IS EMPTY", "닉네임이 입력되지 않았습니다."),
+    EMPTY_NAME_EXCEPTION(3003, "NAME IS EMPTY", "이름이 입력되지 않았습니다."),
+    EMPTY_MESSAGE_EXCEPTION(3004, "MESSAGE IS EMPTY", "메세지가 입력되지 않았습니다.");
+
+
 
     private int status;
     private final String code;

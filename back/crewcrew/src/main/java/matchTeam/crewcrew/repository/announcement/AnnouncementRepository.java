@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.config.announcement;
+package matchTeam.crewcrew.repository.announcement;
 
 import matchTeam.crewcrew.entity.announcement.Announcement;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -10,10 +10,10 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ApplicationApplierSpecs {
-    @ApiModelProperty(value = "유저의 uid", notes = "내게 도착한 참여요청을 확인하기를 조회하려는 유저의 uid")
+    @ApiModelProperty(value = "유저의 uid", notes = "(내게 도착한 참여요청)을 조회하려는 유저의 uid", required = true)
     private Long uid;
 
-    @ApiModelProperty(value = "게시판 번호 id", notes = "내게 도착한 참여요청의 상세를 보려는 게시판 번호 id")
+    @ApiModelProperty(value = "게시판 번호 id", notes = "(내게 도착한 참여요청)의 참여요청자 상세보기를 조회하려는 게시판 번호 id", required = true)
     private Long boardId;
 
     @Builder
