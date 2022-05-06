@@ -5,16 +5,22 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.application.*;
+import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.service.announcement.AnnouncementService;
 import matchTeam.crewcrew.service.application.ApplicationProgressService;
 import matchTeam.crewcrew.service.application.ApplicationService;
+import matchTeam.crewcrew.service.mail.TotalEmailService;
+import matchTeam.crewcrew.service.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.context.Context;
+
+import javax.mail.MessagingException;
 
 @Api(value = "Application Controller", tags = "6. application")
 @ApiOperation(value = "크루 지원, 수락, 거절 / 신청서 조회")
@@ -24,14 +30,26 @@ import org.springframework.web.bind.annotation.*;
     private final ApplicationService applicationService;
     private final ApplicationProgressService applicationProgressService;
     private final AnnouncementService announcementService;
+    private final TotalEmailService totalEmailService;
+    private final UserService userService;
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping(value = "/board/application")
-    public ResponseEntity<Object> fillInApplication(@ApiParam(value = "지원서 작성 요청 DTO", required = true)@RequestBody ApplicationSaveRequestDTO req){
+    public ResponseEntity<Object> fillInApplication(@ApiParam(value = "지원서 작성 요청 DTO", required = true)@RequestBody ApplicationSaveRequestDTO req) throws MessagingException {
 
         ApplicationSaveResponseDTO result = applicationService.save(req);
         announcementService.save(result);
         applicationProgressService.increaseApply(req.getBoardId());
+
+        User user = userService.findByUid(result.getUid());
+
+        Context context = new Context();
+        context.setVariable("nickname", user.getNickname());
+        context.setVariable("introduce", user.getIntroduce());
+        context.setVariable("hobby", user.getLikedCategories());
+        //context.setVariable("url", url);
+
+        totalEmailService.sendJavaMail("[크루크루] 지원서 도착", user.getEmail(), "mailform/apply", context);
         return ResponseHandler.generateResponse("지원서 작성 성공",HttpStatus.OK, result);
     }
 

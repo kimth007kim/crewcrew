@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import matchTeam.crewcrew.config.RedisUtil;
 import matchTeam.crewcrew.response.exception.auth.CEmailCodeNotMatchException;
 import matchTeam.crewcrew.response.exception.auth.CNotVerifiedEmailException;
+import matchTeam.crewcrew.service.mail.TotalEmailService;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -26,6 +27,8 @@ public class EmailService {
     private JavaMailSender javaMailSender;
     private TemplateEngine templateEngine;
 
+    private final TotalEmailService totalEmailService;
+
     public String findPassword(String email, String name) throws MessagingException, IOException {
         Random r = new Random();
         int dice = r.nextInt(157211)+48721;
@@ -36,13 +39,12 @@ public class EmailService {
         context.setVariable("nickname", name);
         context.setVariable("code", code);
 
-        sendJavaMail("[크루크루] 이메일 인증 코드 발송", email, "mailform/passwordcheck1", context);
+        totalEmailService.sendJavaMail("[크루크루] 이메일 인증 코드 발송", email, "mailform/passwordcheck1", context);
 
         StringBuilder sb = new StringBuilder();
         sb.append("passwordFinder_");
         sb.append(email);
         String verifier= sb.toString();
-
 
         // 3시간 후 만료
         redisUtil.setDataExpire(verifier,code,60*10L);
@@ -50,15 +52,15 @@ public class EmailService {
         return code;
     }
 
-//    public void sendNewPassword(String email,String password,String name) throws MessagingException, IOException {
-//
-//        //thymeleaf Context에 변수세팅
-//        Context context = new Context();
-//        context.setVariable("nickname", name);
-//        context.setVariable("password", password);
-//
-//        sendJavaMail("[크루크루] 회원님의 새로운 비밀번호", email, "mailform/passwordcheck2", context);
-//    }
+    public void sendNewPassword(String email,String password,String name) throws MessagingException, IOException {
+
+        //thymeleaf Context에 변수세팅
+        Context context = new Context();
+        context.setVariable("nickname", name);
+        context.setVariable("password", password);
+
+        totalEmailService.sendJavaMail("[크루크루] 회원님의 새로운 비밀번호", email, "mailform/passwordcheck2", context);
+    }
 
     public void codeForPasswordFinder(String email,String code){
         StringBuilder sb = new StringBuilder();
@@ -90,7 +92,7 @@ public class EmailService {
         Context context = new Context();
         context.setVariable("code", code);
 
-        sendJavaMail("[크루크루] 회원가입 이메일 인증코드", email, "mailform/SignSerti", context);
+        totalEmailService.sendJavaMail("[크루크루] 회원가입 이메일 인증코드", email, "mailform/SignSerti", context);
 
         StringBuilder sb = new StringBuilder();
         sb.append("code_");
@@ -113,7 +115,7 @@ public class EmailService {
         context.setVariable("url", profileURL);
         //th:href="@{/profile(id=${applicantID})}" 와 같은 방식으로 변수 세팅해줄수도 있음, 일단 url 매핑
 
-        sendJavaMail("[크루크루] 새로운 지원자가 있습니다", email, "mailform/apply", context);
+        totalEmailService.sendJavaMail("[크루크루] 새로운 지원자가 있습니다", email, "mailform/apply", context);
     }
 
     public void sendWhenAccepted(String email, String name, String chatURL) throws MessagingException, IOException {
@@ -123,7 +125,7 @@ public class EmailService {
         context.setVariable("nickname", name);
         context.setVariable("chatURL", chatURL);
 
-        sendJavaMail("[크루크루] 회원님의 요청이 수락되었습니다", email, "mailform/accepted", context);
+        totalEmailService.sendJavaMail("[크루크루] 회원님의 요청이 수락되었습니다", email, "mailform/accepted", context);
     }
 
 
@@ -172,19 +174,5 @@ public class EmailService {
             result = false;
         }
         return result;
-    }
-
-    public void sendJavaMail(String title, String receiverEmail, String template, Context context) throws MessagingException {
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-
-        helper.setSubject(title); // 제목
-        helper.setTo(receiverEmail); // 받는 이
-
-        String html = templateEngine.process(template, context);  //html에 변수세팅
-        helper.setText(html, true);
-
-        //메일 보내기
-        javaMailSender.send(message);
     }
 }
