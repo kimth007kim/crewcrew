@@ -14,24 +14,24 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 public class ApplicationUserDetailsResponseDTO {
-    @ApiModelProperty(value = "유저의 uid" )
+    @ApiModelProperty(value = "Long", notes = "유저의 uid")
     private Long uid;
 
-    @ApiModelProperty(value = "유저의 닉네임")
+    @ApiModelProperty(value = "String", notes = "유저의 닉네임")
     private String nickName;
 
-    @ApiModelProperty(value = "프로필 사진 url")
+    @ApiModelProperty(value = "String", notes = "프로필 사진 url")
     private String profileImage;
 
-    @ApiModelProperty(value = "지원서의 한마디")
+    @ApiModelProperty(value = "String", notes = "지원서의 한마디")
     private String commentary;
 
-    @ApiModelProperty(value = "지원서의 현재 상태(0: 참여거절, 1: 참여요청중, 2: 참여완료, 3: 참여취소)")
+    @ApiModelProperty(value = "Integer", notes = "지원서의 현재 상태")
     private Integer progress;
 
     @DateTimeFormat(pattern = "MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd")
-    @ApiModelProperty(value = "신청날짜", notes = "월일", example = "03-28")
+    @ApiModelProperty(value = "작성날짜", notes = "월일", example = "03-28")
     private LocalDateTime createdDate;
 
     @Builder

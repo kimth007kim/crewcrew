@@ -16,15 +16,10 @@ import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.repository.security.RefreshTokenJpaRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
 import matchTeam.crewcrew.response.exception.auth.*;
-import matchTeam.crewcrew.response.exception.profile.ProfileEmptyCategoryException;
-import matchTeam.crewcrew.response.exception.profile.ProfileEmptyNameException;
-import matchTeam.crewcrew.response.exception.profile.ProfileEmptyNickNameException;
-import matchTeam.crewcrew.util.customException.UserNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,10 +44,6 @@ public class UserService {
 
     public User findByUid(Long id) {
         return userRepository.findByUid(id);
-    }
-
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
     }
 
     public Optional<User> findByEmailAndProvider(String email, String provider) {
@@ -140,46 +131,6 @@ public class UserService {
         return newCreatedToken;
     }
 
-    public boolean stringCheck(String str) {
-        return str == null || str.isBlank();
-
-    }
-
-    public void profileChange(User user, String password, String name, String nickName, List<Long> categoryId, String message) {
-
-        if (categoryId == null || categoryId.size() == 0) {
-            throw new ProfileEmptyCategoryException();
-        }
-        List<Long> usersLike = likedCategoryService.findUsersLike(user);
-        likedCategoryService.ChangeUsersLike(user, categoryId, usersLike);
-        if (!stringCheck(password)) {
-            validationPasswd(password);
-            changePassword(user, password);
-        }
-//
-        if (stringCheck(nickName)) {
-            throw new ProfileEmptyNickNameException();
-        } else if (!nickName.equals(user.getNickname())) {
-            validationNickName(nickName);
-            validateDuplicateByNickname(nickName);
-            user.setNickname(nickName);
-
-        }
-
-        if (stringCheck(name)) {
-            throw new ProfileEmptyNameException();
-        } else if (!name.equals(user.getName())) {
-            validationName(name);
-            user.setNickname(name);
-        }
-        if (stringCheck(message)) {
-            throw new ProfileEmptyNameException();
-        } else if (!message.equals(user.getMessage())) {
-            validationMessage(message);
-            user.setMessage(message);
-        }
-    }
-
     public Long kakaoSignup(UserSignUpRequestDto userSignUpRequestDto) {
         Optional<User> user = userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider());
         System.out.println(user);
@@ -203,29 +154,41 @@ public class UserService {
 //        }
 //    }
 
-    public void validationPasswd(String pw) {
+    public void validationPasswd(String pw){
         Pattern p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
         Matcher m = p.matcher(pw);
 
         Pattern blank = Pattern.compile("(\\s)");
-        Matcher m_blank = blank.matcher(pw);
+        Matcher m_blank =blank.matcher(pw);
 
-        Pattern emoji_m = Pattern.compile("[\\x{10000}-\\x{10ffff}\ud800-\udfff]");
+        Pattern emoji_m=Pattern.compile("[\\x{10000}-\\x{10ffff}\ud800-\udfff]");
         Matcher emoji_p = emoji_m.matcher(pw);
 
 
-        if (m_blank.find()) {
-            throw new PasswordBlankException();
+        if(m_blank.find()){
+           throw new PasswordBlankException();
         }
         if (emoji_p.find()) {
-            throw new PasswordEmojiException();
+           throw new PasswordEmojiException();
         }
-        if (!m.matches()) {
+        if (!m.matches()){
             throw new PasswordInvalidException();
         }
     }
 
 
+
+
+//    public void emojiFinder(String pw){
+//        Pattern p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
+//        Matcher m = p.matcher(pw);
+//        if (!m.matches()){
+//            throw new PasswordInvalidException();
+//        }
+//    }
+
+    //https://cmelcmel.tistory.com/113 이모지 제거
+    
     public void setProfileImage(User user, String image) {
         user.setProfileImage(image);
     }
@@ -237,43 +200,6 @@ public class UserService {
     public void changePassword(User user, String password) {
         String new_password = passwordEncoder.encode(password);
         user.setPassword(new_password);
-    }
-
-    public void validationNickName(String nickName) {
-
-        System.out.println("-------------길이-------" + nickName.length());
-        System.out.println(nickName);
-        if (nickName.length()<=0){
-            System.out.println(nickName.length()+"에러 짧아서 발생");
-
-            throw new NickNameInvalidException();
-        }else if (nickName.length()>15){
-            System.out.println(nickName.length()+"에러 길어서 발생");
-            throw new NickNameInvalidException();
-        }
-    }
-
-    public void validationName(String name) {
-        System.out.println("-------------길이-------" + name.length());
-        if (name.length()<=0){
-            System.out.println(name.length()+"에러 짧아서 발생");
-
-            throw new NameInvalidException();
-        }else if (name.length()>10){
-            System.out.println(name.length()+"에러 길어서 발생");
-            throw new NameInvalidException();
-        }
-    }
-    public void validationMessage(String message) {
-        System.out.println("-------------길이-------" + message.length());
-        if (message.length()<=0){
-            System.out.println(message.length()+"에러 짧아서 발생");
-
-            throw new MessageInvalidException();
-        }else if (message.length()>25){
-            System.out.println(message.length()+"에러 길어서 발생");
-            throw new MessageInvalidException();
-        }
     }
 
     public void setRandomMessage(User user) {
@@ -318,7 +244,7 @@ public class UserService {
         for (int i = 0; i < length; i++) {
             User user = result.get(i);
 //            System.out.println("ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅋㅎ------------------------"+user.getUid());
-            UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), likedCategoryService.findUsersLike(user), user.getMessage(), user.getProvider());
+            UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), likedCategoryService.findUsersLike(user), user.getMessage());
             users.add(userResponseDto);
         }
         return users;
@@ -343,11 +269,7 @@ public class UserService {
         Claims c = jwtProvider.parseClaims(accessToken);
         String uid = c.getSubject();
         System.out.println("Claims=  " + c + "  uid= " + uid);
-        if (userRepository.findById(Long.valueOf(uid)).isEmpty()) {
-            throw new UidNotExistException();
-        }
         User user = userRepository.findByUid(Long.valueOf(uid));
-
 
         return user;
     }

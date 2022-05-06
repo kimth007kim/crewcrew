@@ -73,7 +73,7 @@ public class UserController {
             @ApiParam(value = "회원 email",required =true)@PathVariable String email) {
         User user= userService.findByEmail(email).orElseThrow(LoginFailedByEmailNotExistException::new);
         List<Long> liked =likedCategoryService.findUsersLike(user);
-        UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(),user.getName(),user.getNickname(),user.getProfileImage(),liked,user.getMessage(),user.getProvider());
+        UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(),user.getName(),user.getNickname(),user.getProfileImage(),liked,user.getMessage());
         return ResponseHandler.generateResponse("회원 단건 검색 성공", HttpStatus.OK, userResponseDto);
 
     }
@@ -103,7 +103,7 @@ public class UserController {
         User user = userService.tokenChecker(token);
         List<Long> liked =likedCategoryService.findUsersLike(user);
         System.out.println("=================================================="+liked.toString());
-        UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(),user.getName(),user.getNickname(),user.getProfileImage(),liked,user.getMessage(),user.getProvider());
+        UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(),user.getName(),user.getNickname(),user.getProfileImage(),liked,user.getMessage());
         return ResponseHandler.generateResponse("엑세스토큰 으로 유저 정보 조회 성공", HttpStatus.OK,userResponseDto );
 
     }

@@ -8,13 +8,13 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { debounce } from 'lodash';
-import Naver from '../../../../assets/images/Naver.png';
-import Kakao from '../../../../assets/images/Kakao.png';
-import CheckImg from '../../../../assets/images/Checked_on.png';
-import { emojiSlice, isCheckPassword, isEmail, spaceSlice } from '../../../../utils';
-import Button from '../../Button';
-import Textfield from '../../TextfieldEmail';
-import TextfieldPW from '../../TextfieldPW';
+import Naver from '../../../assets/images/Naver.png';
+import Kakao from '../../../assets/images/Kakao.png';
+import Button from '../../../components/common/Button';
+import CheckImg from '../../../assets/images/Checked_on.png';
+import { emojiSlice, isCheckPassword, isEmail, spaceSlice } from '../../../utils';
+import Textfield from '../../../components/common/TextfieldEmail';
+import TextfieldPW from '../../../components/common/TextfieldPW';
 
 function PasswordSection({ HandleClick, IsClick }) {
   const [email, setEmail] = useState('');

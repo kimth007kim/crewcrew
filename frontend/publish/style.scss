@@ -517,7 +517,7 @@ textarea.TxtAreaInput{
     }
 
     p{
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 400;
         color: $black3;
     }
@@ -531,7 +531,7 @@ textarea.TxtAreaInput{
     justify-content: space-between;
 
     h5{
-        font-size: 16px;
+        font-size: 13px;
         font-weight: 700;
     }
 
@@ -753,7 +753,7 @@ textarea.TxtAreaInput{
         }
 
         .Dday{
-            @include TextBox(4px, 16px, 700, $blue3);
+            @include TextBox(8px, 13px, 700, $blue3);
             text-align: right;
         }
 
@@ -762,7 +762,7 @@ textarea.TxtAreaInput{
         }
 
         .Name{
-            @include TextBox(2px, 13px, 500, $black1);
+            @include TextBox(4px, 13px, 500, $black1);
         }
     }
 }
@@ -809,10 +809,10 @@ textarea.TxtAreaInput{
 
         .TextList{
             display: flex;
-            margin-top: 15px;
+            margin-top: 14px;
 
             p{
-                font-size: 12px;
+                font-size: 13px;
                 font-weight: 400;
                 color: $black3;
 
@@ -929,7 +929,7 @@ textarea.TxtAreaInput{
                 margin-top: 18px;
 
                 h5{
-                    font-size: 14px;
+                    font-size: 13px;
                 }
 
                 .Star{

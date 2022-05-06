@@ -715,7 +715,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
 }
 
 .CardPost p {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 400;
   color: #868686;
 }
@@ -736,7 +736,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
 }
 
 .CardHead h5 {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 700;
 }
 
@@ -972,8 +972,8 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
 }
 
 .PostCardHead .TextBox .Dday {
-  margin-top: 4px;
-  font-size: 16px;
+  margin-top: 8px;
+  font-size: 13px;
   font-weight: 700;
   color: #00b7ff;
   text-align: right;
@@ -987,7 +987,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
 }
 
 .PostCardHead .TextBox .Name {
-  margin-top: 2px;
+  margin-top: 4px;
   font-size: 13px;
   font-weight: 500;
   color: #000;
@@ -1047,11 +1047,11 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  margin-top: 15px;
+  margin-top: 14px;
 }
 
 .PostCardBody .TextBox .TextList p {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   color: #868686;
 }
@@ -1166,7 +1166,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
     margin-top: 18px;
   }
   .PostCardBody .TextBox .TitleBox h5 {
-    font-size: 14px;
+    font-size: 13px;
   }
   .PostCardBody .TextBox .TitleBox .Star {
     position: absolute;
@@ -1884,12 +1884,10 @@ main {
   .TopCont .InputWrapper img {
     width: 24px;
     height: 24px;
-    margin-left: 12px;
+    margin-left: 24px;
   }
   .TopCont .InputWrapper input {
-    width: calc(100% - 65px);
-    font-size: 12px;
-    margin-left: 12px;
+    font-size: 10px;
   }
 }
 

@@ -102,6 +102,7 @@ const ModalBox = styled.div`
   box-sizing: content-box;
   box-shadow: 0 0 30px rgb(0 0 0 / 16%);
 
+  z-index: 1;
   position: relative;
   overflow: hidden;
   border-radius: 20px;
@@ -162,10 +163,12 @@ const Wrapper = styled.section`
   top: 0;
   left: 0;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 2000;
 
   @media screen and (max-width: 820px) {
     -webkit-box-pack: end;

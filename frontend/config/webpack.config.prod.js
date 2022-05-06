@@ -1,35 +1,21 @@
-// webpack.config.dev.js
+// webpack.config.prod.js
+
+const port = process.env.PORT || 3000;
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // 추가 코드
-const Dotenv = require('dotenv-webpack');
-const path = require('path');
-
-const port = process.env.PORT || 3000;
 
 module.exports = {
   mode: process.env.NODE_ENV, // 개발 환경
   entry: './src/index.js', // 애플리케이션 시작 경로
   // 번들된 파일 경로
   output: {
-    path: path.resolve(__dirname, '../build/'),
+    path: path.resolve(__dirname, 'dist/'),
     publicPath: '/',
   },
-  devServer: {
-    open: true,
-    port: 3000,
-    historyApiFallback: true,
-  },
-
   module: {
     rules: [
-      {
-        test: /\.(png|jpe?g|gif|svg)$/i,
-        loader: 'file-loader',
-        options: {
-          name: 'assets/[contenthash].[ext]',
-        },
-      },
       {
         test: /\.(js|jsx)$/, // 빌드할 파일 확장자 정규식
         exclude: /node_modules/, // 제외할 파일 정규식
@@ -50,28 +36,11 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              publicPath: '',
-            },
-          },
-          'css-loader',
-        ],
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.scss$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              publicPath: '',
-            },
-          },
-          'css-loader',
-          'sass-loader',
-        ],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
     ],
   },
@@ -80,13 +49,12 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html',
+      template: './public/index.html',
       filename: 'index.html',
     }),
     new MiniCssExtractPlugin({
       filename: 'style.css',
     }),
     new CleanWebpackPlugin(),
-    new Dotenv(),
   ],
 };

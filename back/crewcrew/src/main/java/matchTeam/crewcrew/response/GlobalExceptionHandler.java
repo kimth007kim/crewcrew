@@ -72,11 +72,11 @@ public class  GlobalExceptionHandler {
     /**
      * 비즈니스 로직 수행 도중, 사용자의 요청 파라미터가 적절하지 않을 때 발생
      */
-//    @ExceptionHandler(IllegalStateException.class)
-//    protected ResponseEntity<ErrorResponseHandler> handleIllegalStatementException(IllegalStateException e){
-//        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.ILLEGAL_STATE, e.getMessage());
-//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-//    }
+    @ExceptionHandler(IllegalStateException.class)
+    protected ResponseEntity<ErrorResponseHandler> handleIllegalStatementException(IllegalStateException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.ILLEGAL_STATE, e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 
     /**
      * 비즈니스 로직 수행 도중, 해당 도메인 객체의 상태가 로직을 수행할 수 없을 때 발생
@@ -134,8 +134,6 @@ public class  GlobalExceptionHandler {
     }
 
 //
-
-
 
 
 

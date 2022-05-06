@@ -225,7 +225,7 @@ $Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
 
         .CardIntro{
             height: 120px;
-            padding: 30px 0 16px;
+            padding: 35px 0 16px;
             box-sizing: border-box;
             background-size: 120px !important;
             background-repeat: no-repeat !important;
@@ -234,7 +234,7 @@ $Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
             box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
 
             h3{
-                font-size: 12px;
+                font-size: 10px;
                 color: $white;
                 font-weight: 500;
                 width: fit-content;
@@ -243,7 +243,7 @@ $Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
             p{
                 font-size: 18px;
                 color: $white;
-                margin: 10px 0;
+                margin: 8px 0;
                 line-height: 24px;
             }
 
@@ -251,10 +251,10 @@ $Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                font-size: 12px;
+                font-size: 10px;
                 color: $white;
-                width: 18px;
-                height: 18px;
+                width: 15px;
+                height: 15px;
                 border-radius: 50% ;
                 background-color: rgba(0, 0, 0, 0.3);
                 position: absolute;
@@ -276,7 +276,7 @@ $Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
                     background-position: calc(100% - 20px) 50%;
 
                     h3, p{
-                        margin-left: 24px;
+                        margin-left: 20px;
                     }
                 }
 
