@@ -4,6 +4,8 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useLocation, NavLink } from 'react-router-dom';
+import useSWR from 'swr';
+import { Cookies } from 'react-cookie';
 import NavMobile from './mobile';
 import NavContainer from './container';
 import LogoCircle from '../../../assets/images/LogoCircle.png';
@@ -24,8 +26,13 @@ import IconNavRecruActive from '../../../assets/images/NavIcon3_Active.png';
 import IconNavChat from '../../../assets/images/NavIcon4.png';
 import IconNavChatHover from '../../../assets/images/NavIcon4_Hover.png';
 import IconNavChatActive from '../../../assets/images/NavIcon4_Active.png';
+import fetcher from '../../../utils/fetcher';
 
 function Lnb({ path }) {
+  const cookies = new Cookies();
+  const { data, error, mutate } = useSWR(['/user/token', cookies.get('user-token')], fetcher);
+  console.log(data);
+
   const [on, changeOn] = useState(false);
   const { pathname } = useLocation();
 
