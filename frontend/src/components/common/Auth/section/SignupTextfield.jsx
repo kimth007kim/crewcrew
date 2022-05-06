@@ -1,31 +1,29 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
-import delImage from '../../../assets/images/InputDel.png';
+import delImage from '../../../../assets/images/InputDel.png';
 
-function MTextfield({
+function TextfieldSU({
   type = 'text',
   onChange,
   value,
   valid,
-  validMessage,
   label,
   onDelete,
-  HandleScrollTop,
+  setFocus,
+  disabled,
 }) {
   const [Focused, setFocused] = useState(false);
   const [Hover, setHover] = useState(false);
   const InputRef = useRef(null);
 
-  const HandleOnFocus = useCallback((e) => {
+  const HandleOnFocus = useCallback(() => {
     setFocused(true);
-    HandleScrollTop(e);
+    setFocus(true);
   }, []);
 
-  const HandleOnBlur = useCallback((e) => {
+  const HandleOnBlur = useCallback(() => {
     setFocused(false);
-    setTimeout(() => {
-      e.target.closest('.ChooseList').style.marginBottom = 0;
-    }, 200);
+    setFocus(false);
   }, []);
 
   const HandleOnHover = useCallback(() => {
@@ -35,6 +33,12 @@ function MTextfield({
   const HandleOutHover = useCallback(() => {
     setHover(false);
   }, []);
+
+  useEffect(() => {
+    if (disabled) {
+      HandleOnBlur();
+    }
+  }, [disabled]);
 
   return (
     <Wrapper onMouseEnter={HandleOnHover} onMouseLeave={HandleOutHover}>
@@ -50,6 +54,7 @@ function MTextfield({
         Hover={Hover}
         TextIn={!!value}
         autoComplete="off"
+        disabled={disabled}
       />
       <Label Focused={Focused} TextIn={!!value} Valid={valid}>
         {label}
@@ -61,20 +66,18 @@ function MTextfield({
           onDelete();
           InputRef.current.focus();
         }}
-        TextIn={!!value}
+        TextIn={!!value && !disabled}
       />
-      <InputText Focused={Focused} Valid={valid}>
-        {validMessage}
-      </InputText>
     </Wrapper>
   );
 }
 
-export default MTextfield;
+export default TextfieldSU;
 
 const Wrapper = styled.div`
   position: relative;
   height: 64px;
+  width: 100%;
 `;
 
 const Input = styled.input`
@@ -86,12 +89,11 @@ const Input = styled.input`
   padding: 16px 12px;
   box-sizing: border-box;
   font-size: 13px;
-  padding-right: 48px;
 
   ${(props) =>
     props.Hover &&
     css`
-      border-color: #707070;
+      border-color: #000;
     `};
 
   ${(props) =>
@@ -144,31 +146,6 @@ const Label = styled.label`
     `}
 `;
 
-const InputText = styled.div`
-  font-size: 10px;
-  text-align: center;
-  font-weight: 300;
-  position: absolute;
-  width: 100%;
-  top: 50px;
-  opacity: 0;
-  transition: 0.5s;
-  user-select: none;
-
-  ${(props) =>
-    props.Focused &&
-    css`
-      opacity: 1;
-      top: 54px;
-      color: #00b7ff;
-    `};
-  ${(props) =>
-    props.Valid &&
-    css`
-      color: #ff0045;
-    `}
-`;
-
 const InputDel = styled.div`
   width: 18px;
   height: 18px;
@@ -186,4 +163,8 @@ const InputDel = styled.div`
     css`
       display: block;
     `};
+
+  @media screen and (max-width: 290px) {
+    display: none;
+  }
 `;

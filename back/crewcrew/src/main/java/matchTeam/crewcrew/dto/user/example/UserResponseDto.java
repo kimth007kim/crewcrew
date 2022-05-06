@@ -27,6 +27,8 @@ public class UserResponseDto {
     private List<Long> categoryId;
     @ApiModelProperty(example = "안녕하세요 김경동입니다! 잘부탁 드립니다")
     private String message;
+    @ApiModelProperty(example = "local")
+    private String provider;
     
 
 }
