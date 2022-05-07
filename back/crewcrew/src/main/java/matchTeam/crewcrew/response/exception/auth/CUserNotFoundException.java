@@ -2,10 +2,6 @@ package matchTeam.crewcrew.response.exception.auth;
 
 public class CUserNotFoundException extends RuntimeException {
 
-    public CUserNotFoundException() {
-        super();
-    }
-
     public CUserNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
@@ -14,5 +10,7 @@ public class CUserNotFoundException extends RuntimeException {
         super(message);
     }
 
-
+    public CUserNotFoundException() {
+    super();
+}
 }

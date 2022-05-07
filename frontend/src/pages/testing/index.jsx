@@ -5,10 +5,24 @@ import { Cookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/common/Button';
 import Textfield from '../../components/common/TextfieldEmail';
+import AuthModal from './AuthModal';
 
 function Testing() {
+  const [Dialog, setDialog] = useState(false);
   const cookies = new Cookies();
   const navigate = useNavigate();
+
+  const openModal = useCallback(() => {
+    setDialog(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setDialog(false);
+  }, []);
+
+  const handleClick = useCallback(() => {
+    openModal();
+  }, []);
 
   const [state, setstate] = useState('');
   const [Valid, setValid] = useState(true);
@@ -48,6 +62,10 @@ function Testing() {
 
   return (
     <div>
+      <button type="button" onClick={handleClick}>
+        로그인
+      </button>
+      <AuthModal closeModal={closeModal} visible={Dialog} size="large" />
       <Cont>
         <Textfield
           type="email"

@@ -1,7 +1,8 @@
 package matchTeam.crewcrew.service.announcement;
 
 import lombok.RequiredArgsConstructor;
-import matchTeam.crewcrew.repository.announcement.AnnouncementRepository;
+import matchTeam.crewcrew.config.announcement.AnnouncementRepository;
+import matchTeam.crewcrew.dto.announcement.AnnounceResponseDTO;
 import matchTeam.crewcrew.dto.application.ApplicationSaveResponseDTO;
 import matchTeam.crewcrew.entity.announcement.Announcement;
 import matchTeam.crewcrew.entity.board.Board;

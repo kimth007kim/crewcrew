@@ -62,8 +62,6 @@ dependencies {
 	implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
 	implementation 'com.amazonaws:aws-java-sdk-s3'
 	implementation 'commons-io:commons-io:2.6'
-	implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
-
 
 	compileOnly 'org.projectlombok:lombok'
 
@@ -83,10 +81,6 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
-
-
-
-
 }
 
 test {

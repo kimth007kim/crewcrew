@@ -7,12 +7,12 @@ import styled, { css, keyframes } from 'styled-components';
 import { useRecoilState } from 'recoil';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import Button from '../../Button';
-import Textfield from '../../TextfieldEmail';
+import Button from '../../../components/common/Button';
+import Textfield from '../../../components/common/TextfieldEmail';
 import TextfieldSU from './SignupTextfield';
-import TextfieldPW from '../../TextfieldPW';
-import delImage from '../../../../assets/images/InputDel.png';
-import CheckImg from '../../../../assets/images/Checked_on.png';
+import TextfieldPW from '../../../components/common/TextfieldPW';
+import delImage from '../../../assets/images/InputDel.png';
+import CheckImg from '../../../assets/images/Checked_on.png';
 import Progress from './Progress';
 import {
   sectionProgress1,
@@ -21,8 +21,8 @@ import {
   emailState,
   codeState,
   passwordState,
-} from '../../../../atom/register';
-import { emojiSlice, isCheckPassword, isEmailBack, spaceSlice } from '../../../../utils';
+} from '../../../atom/register';
+import { emojiSlice, isCheckPassword, isEmailBack, spaceSlice } from '../../../utils';
 
 const emailList = ['naver.com', 'gmail.com', 'daum.net', 'hanmail.net'];
 

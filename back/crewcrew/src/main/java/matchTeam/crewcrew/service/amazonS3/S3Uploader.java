@@ -51,13 +51,9 @@ public class S3Uploader {
         copy(source, destination);
 
         return destination;
-
     }
 
-
-
-
-    public String addImageWhenSignUp(String email, MultipartFile file, Integer Default,String provider) {
+    public String addImageWhenSignUp(String email, MultipartFile file, Integer Default) {
         if (file.isEmpty()) {
             if (Default == null || 0 >= Default || Default > 5) {
                 throw new S3FileNotFoundException();
@@ -70,7 +66,7 @@ public class S3Uploader {
                 String source = start.toString();
 
 //                도착경로 만드는 메서드
-                String destination = nameFile(email, provider);
+                String destination = email + "/profile";
                 copy(source, destination);
 
                 return destination;
@@ -81,7 +77,7 @@ public class S3Uploader {
 
 
         try {
-            String email_url = nameFile(email, provider);
+            String email_url = nameFile(email, "local");
             filename = upload(file, email_url, "profile");
         } catch (IOException e) {
             throw new S3UploadException();

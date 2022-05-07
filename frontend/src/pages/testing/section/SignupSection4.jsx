@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import styled, { css, keyframes } from 'styled-components';
-import IconFlag from '../../../../assets/images/IconFlag.png';
-import Profile1 from '../../../../assets/images/Profile1.png';
-import { nickNameState, uploadFileImgState } from '../../../../atom/register';
-import Button from '../../Button';
+import IconFlag from '../../../assets/images/IconFlag.png';
+import Profile1 from '../../../assets/images/Profile1.png';
+import { nickNameState, uploadFileImgState } from '../../../atom/register';
+import Button from '../../../components/common/Button';
 
 function SignupSection4({ IsClick, closeModal, HandleClick }) {
   const nickName = useRecoilValue(nickNameState);
