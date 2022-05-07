@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.application.*;
 import matchTeam.crewcrew.entity.user.User;
+import matchTeam.crewcrew.dto.board.BoardPageResponseDTO;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.service.announcement.AnnouncementService;
 import matchTeam.crewcrew.service.application.ApplicationProgressService;
