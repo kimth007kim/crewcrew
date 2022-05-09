@@ -1,13 +1,14 @@
 package matchTeam.crewcrew.service.mail;
 
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-
+@Service
 public class TotalEmailService {
     private JavaMailSender javaMailSender;
     private TemplateEngine templateEngine;
