@@ -101,7 +101,7 @@ import javax.mail.MessagingException;
             )
     })
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(value = "/status/applications")
+    @GetMapping(value = "/apply-status-list")
     public ResponseEntity<Object> findMyApplication(@ApiParam(value = "내 지원서(스터디, 취미별 지원서 개수 조회)를 조회하려는 uid", required = true)@RequestParam Long reqUid){
         ApplicationCountResponseDTO result = applicationService.findMyApplication(reqUid);
         return ResponseHandler.generateResponse("내 지원서 조회(스터디, 취미별 지원서 개수 조회)",HttpStatus.OK, result);
@@ -128,7 +128,7 @@ import javax.mail.MessagingException;
             )
     })
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(value = "/status/applications/details")
+    @GetMapping(value = "/apply-status-list/details")
     public ResponseEntity<Object> findMyApplication(@ModelAttribute ApplicationDetailSpecs detailSpecs,
                                                     @PageableDefault(size = 5)Pageable pageable){
 
@@ -152,7 +152,7 @@ import javax.mail.MessagingException;
             )
     })
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(value = "/status/applications/arrive")
+    @GetMapping(value = "/apply-status-list/arrived")
     public ResponseEntity<Object> findArrivedApplication(@ApiParam(value = "내게 도착한 지원서(스터디, 취미별 지원서 개수) 조회를 요청한 유저 uid", required = true)@RequestParam Long reqUid){
 
         ApplicationCountResponseDTO result = applicationService.findArrivedApplication(reqUid);
@@ -180,7 +180,7 @@ import javax.mail.MessagingException;
             )
     })
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(value = "/status/applications/arrive/details")
+    @GetMapping(value = "/apply-status-list/arrived/details")
     public ResponseEntity<Object> findArrivedApplicationDetails(@ModelAttribute ApplicationDetailSpecs detailSpecs,
                                                     @PageableDefault(size = 5)Pageable pageable){
 
@@ -213,12 +213,13 @@ import javax.mail.MessagingException;
             )
     })
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(value = "/status/applications/arrive/details/applier")
+    @GetMapping(value = "/apply-status-list/arrived/details/applier")
     public ResponseEntity<Object> findArrivedApplicationApplier(@ModelAttribute ApplicationApplierSpecs specs){
 
         ArrivedApplicationUserDetailsResponseDTO result = applicationService.findArrivedApplicationApplier(specs);
         return ResponseHandler.generateResponse("내게 도착한 지원서의 지원자 상세 조회 성공", HttpStatus.OK, result);
     }
+
 
 
 }
