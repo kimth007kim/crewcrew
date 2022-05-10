@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class ErrorResponseHandler {
 //    private String code;
     private String message;
-    private String error;
+    private boolean error;
     private int status;
 //    private List<CustomFieldError> errors;
 
@@ -87,7 +87,7 @@ public class ErrorResponseHandler {
         return status;
     }
 
-    public String getError() {
+    public boolean getError() {
         return error;
     }
 //    public List<CustomFieldError> getErrors() {
