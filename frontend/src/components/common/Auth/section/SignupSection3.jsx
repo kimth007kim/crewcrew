@@ -1,10 +1,11 @@
 /* eslint-disable indent */
 import axios from 'axios';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useCookies } from 'react-cookie';
+import { Cookies, useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { css, keyframes } from 'styled-components';
+import useSWR from 'swr';
 import CloseWhite from '../../../../assets/images/CloseWhite.png';
 import {
   sectionProgress3,
@@ -18,6 +19,7 @@ import {
   nickNameState,
   uploadFileImgState,
 } from '../../../../atom/register';
+import fetcher from '../../../../utils/fetcher';
 import Button from '../../Button';
 import MTextfield from './MTextfield';
 import Progress from './Progress';
@@ -44,7 +46,14 @@ function SignupSection3({ IsClick, HandleClick }) {
     '나를 소개하는 한 줄 메세지를 입력해주세요.(30자 이내)',
   );
 
-  const [cookies, setCookie, removeCookie] = useCookies(['user-cookie']);
+  const [cookies, setCookie, removeCookie] = useCookies(['user-token']);
+  const myCookies = new Cookies();
+  const {
+    data: myData,
+    error: myError,
+    mutate,
+  } = useSWR(['/user/token', myCookies.get('user-token')], fetcher);
+
   // Recoil State
   const name = useRecoilValue(nameState);
   const emailId = useRecoilValue(emailIdState);
@@ -203,6 +212,7 @@ function SignupSection3({ IsClick, HandleClick }) {
             path: '/',
             expires: afterh,
           });
+          mutate();
 
           break;
         case 400:

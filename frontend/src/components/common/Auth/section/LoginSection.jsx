@@ -6,8 +6,9 @@ import React, { useCallback, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { debounce } from 'lodash';
 import axios from 'axios';
-import { useCookies } from 'react-cookie';
+import { Cookies, useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
+import useSWR from 'swr';
 import CheckOff from '../../../../assets/images/LogInCheck_off.png';
 import CheckOn from '../../../../assets/images/LogInCheck_on.png';
 import Naver from '../../../../assets/images/Naver.png';
@@ -17,18 +18,27 @@ import Button from '../../Button';
 import Textfield from '../../TextfieldEmail';
 import TextfieldPW from '../../TextfieldPW';
 import { emojiSlice, isCheckPassword, isEmail, spaceSlice } from '../../../../utils';
+import fetcher from '../../../../utils/fetcher';
 
 function LoginSection({ IsClick, HandleClick, closeModal }) {
   const [IsChecked, setIsChecked] = useState(false);
   const [email, setEmail] = useState('');
   const [emailValid, setEmailValid] = useState(false);
   const [emailMsg, setEmailMsg] = useState('가입된 이메일 주소를 입력해주세요');
+
   const [password, setPassword] = useState('');
   const [passwordValid, setPasswordValid] = useState(false);
   const [passwordMsg, setPasswordMsg] = useState('숫자/영문/특수문자 포함 8~20글자');
   const [BtnLoading, setBtnLoading] = useState(false);
 
   const [cookies, setCookie, removeCookie] = useCookies(['user-cookie']);
+  const myCookies = new Cookies();
+
+  const {
+    data: myData,
+    error: myError,
+    mutate,
+  } = useSWR(['/user/token', myCookies.get('user-token')], fetcher);
 
   const EmailValidCheck = useCallback((value) => {
     if (!isEmail(value)) {
@@ -46,7 +56,7 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
 
   const debounceEmail = debounce((value) => {
     EmailValidCheck(value);
-  }, 700);
+  }, 400);
 
   const PasswordValidCheck = useCallback((value) => {
     if (!isCheckPassword(value)) {
@@ -64,7 +74,7 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
 
   const debouncePwd = debounce((value) => {
     PasswordValidCheck(value);
-  }, 700);
+  }, 400);
 
   const MovePasswordFind = useCallback(() => {
     HandleClick(5);
@@ -112,9 +122,7 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
             maintain: IsChecked,
           };
 
-          const { data } = await axios.post('/auth/login', context, {
-            withCredentials: true,
-          });
+          const { data } = await axios.post('/auth/login', context);
           const now = new Date();
           const afterh = new Date();
 
@@ -133,15 +141,16 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
                   expires: afterh,
                 });
               }
+              mutate();
               closeModal();
               break;
             case 400:
             case 1101:
-              setEmailMsg(data.error);
+              setEmailMsg(data.message);
               setEmailValid(true);
               break;
             case 1102:
-              setPasswordMsg(data.error);
+              setPasswordMsg(data.message);
               setPasswordValid(true);
               break;
             default:

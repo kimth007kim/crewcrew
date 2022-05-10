@@ -143,11 +143,14 @@ function NavContainer() {
                 number={i + 1}
                 img={ele.img}
                 color={ele.color}
+                key={ele.title + ele.number}
               />
             ))}
           </NavCardList>
         </NavContInner>
       </NavCont>
+
+      {/* 모달 영역 */}
       <AuthModal closeModal={closeModal} visible={Dialog} size="large" />
     </>
   );

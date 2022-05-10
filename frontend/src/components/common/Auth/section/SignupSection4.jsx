@@ -1,12 +1,22 @@
 import React, { useCallback, useEffect } from 'react';
+import { Cookies } from 'react-cookie';
 import { useRecoilValue } from 'recoil';
 import styled, { css, keyframes } from 'styled-components';
+import useSWR from 'swr';
 import IconFlag from '../../../../assets/images/IconFlag.png';
 import Profile1 from '../../../../assets/images/Profile1.png';
 import { nickNameState, uploadFileImgState } from '../../../../atom/register';
+import fetcher from '../../../../utils/fetcher';
 import Button from '../../Button';
 
 function SignupSection4({ IsClick, closeModal, HandleClick }) {
+  const cookies = new Cookies();
+  const {
+    data: myData,
+    error,
+    mutate,
+  } = useSWR(['/user/token', cookies.get('user-token')], fetcher);
+
   const nickName = useRecoilValue(nickNameState);
   const fileimg = useRecoilValue(uploadFileImgState);
 
@@ -25,7 +35,11 @@ function SignupSection4({ IsClick, closeModal, HandleClick }) {
       <ResultFlag src={IconFlag} alt="IconFlag" />
       <ResultProfileWrapper>
         <ResultProfile>
-          <img src={Profile1} alt="" />
+          {myData && myData.data ? (
+            <img src={myData.data.file} alt="" />
+          ) : (
+            <img src={Profile1} alt="" />
+          )}
         </ResultProfile>
         <ResultTitle>
           <b>
