@@ -421,11 +421,15 @@ public class AuthController {
     }
 
 
-    @PostMapping("/cookieTest")
+    @PostMapping("/cookie/test")
     public ResponseEntity<Object> cookieTest(HttpServletResponse response) {
         System.out.println("안녕");
         // 나중에 이름이나 닉네임으로 추가 인증
         Cookie myCookie = new Cookie("AccessToken","hello");
+        myCookie.setDomain("www.crewcrew.org");
+        myCookie.setPath("/");
+        myCookie.setHttpOnly(true);
+        myCookie.setSecure(true);
         response.addCookie(myCookie);
         return ResponseHandler.generateResponse("인증 코드 일치", HttpStatus.OK, null);
     }
