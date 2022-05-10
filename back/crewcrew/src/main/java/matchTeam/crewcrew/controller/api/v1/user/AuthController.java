@@ -426,7 +426,7 @@ public class AuthController {
         System.out.println("안녕");
         // 나중에 이름이나 닉네임으로 추가 인증
         Cookie myCookie = new Cookie("AccessToken","hello");
-        myCookie.setDomain("www.crewcrew.org");
+        myCookie.setDomain("crewcrew.org");
         myCookie.setPath("/");
         myCookie.setHttpOnly(true);
         myCookie.setSecure(true);
