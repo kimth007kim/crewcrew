@@ -36,4 +36,11 @@ public class BookmarkController {
         BoardPageResponseDTO pageResponseDTO = BoardPageResponseDTO.toDTO(result);
         return ResponseHandler.generateResponse("북마크된 게시글 리스트 조회 성공", HttpStatus.OK, pageResponseDTO);
     }
+
+    /*@GetMapping("/bookmark/test")
+    public ResponseEntity<Object> getBookmarked(@RequestParam Long userId, @RequestParam Long boardId){
+        boolean result = bookmarkService.checkIsBookmarked(userId, boardId);
+        System.out.println(result);
+        return ResponseHandler.generateResponse("북마크 체크 기능 작동 확인", HttpStatus.OK, result);
+    }*/
 }

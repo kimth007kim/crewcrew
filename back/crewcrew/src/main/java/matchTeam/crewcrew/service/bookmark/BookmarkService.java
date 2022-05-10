@@ -51,14 +51,19 @@ public class BookmarkService {
     }
 
     public void checkValidSave(Long boardId, Long uid){
-        System.out.println("boardId = " + boardId);
-        System.out.println("uid = " + uid);
         userRepository.findById(uid).orElseThrow(UserNotFoundException::new);
         boardRepository.findById(boardId).orElseThrow(NotExistBoardInIdException::new);
+    }
+
+    public boolean checkIsBookmarked(Long uid, Long boardId){
+        userRepository.findById(uid).orElseThrow(UserNotFoundException::new);
+        boardRepository.findById(boardId).orElseThrow(NotExistBoardInIdException::new);
+        return bookmarkQueryRepository.isBookmarked(uid, boardId);
     }
 
     @Transactional(readOnly = true)
     public Page<BoardPageDetailResponseDTO> search(Long userId, Pageable pageable) {
         return bookmarkQueryRepository.search(userId, pageable);
     }
+
 }

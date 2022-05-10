@@ -7,7 +7,10 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.board.BoardPageDetailResponseDTO;
 import matchTeam.crewcrew.dto.board.BoardSpecs;
+import matchTeam.crewcrew.dto.bookmark.BookmarkResponseDTO;
 import matchTeam.crewcrew.entity.board.Board;
+import matchTeam.crewcrew.entity.bookmark.Bookmark;
+import matchTeam.crewcrew.entity.bookmark.QBookmark;
 import matchTeam.crewcrew.response.exception.board.NotExistOrderKeywordException;
 import matchTeam.crewcrew.util.customException.OrderByNull;
 import org.springframework.data.domain.Page;
@@ -48,6 +51,15 @@ public class BookmarkSearchRepository {
                         board.createdDate.desc());
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
+    public boolean isBookmarked(Long userId, Long boardId){
+        List<BookmarkResponseDTO> bm = queryFactory
+                .select(Projections.constructor(BookmarkResponseDTO.class, bookmark))
+                .from(bookmark)
+                .where(bookmark.boardId.id.eq(boardId).and(bookmark.uid.uid.eq(userId)))
+                .fetch();
+        return !bm.isEmpty();
     }
 
     private OrderSpecifier<?> findOrder(String order){
