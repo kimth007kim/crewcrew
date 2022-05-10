@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -418,5 +420,14 @@ public class AuthController {
         return ResponseHandler.generateResponse("인증 코드 일치", HttpStatus.OK, null);
     }
 
+
+    @PostMapping("/cookieTest")
+    public ResponseEntity<Object> cookieTest(HttpServletResponse response) {
+        System.out.println("안녕");
+        // 나중에 이름이나 닉네임으로 추가 인증
+        Cookie myCookie = new Cookie("AccessToken","hello");
+        response.addCookie(myCookie);
+        return ResponseHandler.generateResponse("인증 코드 일치", HttpStatus.OK, null);
+    }
 
 }
