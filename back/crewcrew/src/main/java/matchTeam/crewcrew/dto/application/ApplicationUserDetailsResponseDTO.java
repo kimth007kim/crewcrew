@@ -14,6 +14,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 public class ApplicationUserDetailsResponseDTO {
+    @ApiModelProperty(value = "신청서의 id")
+    private Long apId;
+
     @ApiModelProperty(value = "유저의 uid" )
     private Long uid;
 
@@ -36,6 +39,7 @@ public class ApplicationUserDetailsResponseDTO {
 
     @Builder
     public ApplicationUserDetailsResponseDTO(User res, Application ap) {
+        this.apId = ap.getId();
         this.uid = ap.getUser().getUid();
         this.nickName = res.getNickname();
         this.profileImage = res.getProfileImage();
