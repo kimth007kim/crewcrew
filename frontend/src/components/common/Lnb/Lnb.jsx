@@ -1,9 +1,11 @@
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable prettier/prettier */
 /* eslint-disable indent */
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useLocation, NavLink } from 'react-router-dom';
+import useSWR from 'swr';
+import { Cookies } from 'react-cookie';
 import NavMobile from './mobile';
 import NavContainer from './container';
 import LogoCircle from '../../../assets/images/LogoCircle.png';
@@ -24,10 +26,33 @@ import IconNavRecruActive from '../../../assets/images/NavIcon3_Active.png';
 import IconNavChat from '../../../assets/images/NavIcon4.png';
 import IconNavChatHover from '../../../assets/images/NavIcon4_Hover.png';
 import IconNavChatActive from '../../../assets/images/NavIcon4_Active.png';
+import fetcher from '../../../utils/fetcher';
+import AuthModal from '../Auth/AuthModal';
 
 function Lnb({ path }) {
+  const cookies = new Cookies();
+  const {
+    data: myData,
+    error,
+    mutate,
+  } = useSWR(['/user/token', cookies.get('user-token')], fetcher);
+
   const [on, changeOn] = useState(false);
   const { pathname } = useLocation();
+
+  const [Dialog, setDialog] = useState(false);
+
+  const openModal = useCallback(() => {
+    setDialog(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setDialog(false);
+  }, []);
+
+  const handleClick = useCallback(() => {
+    openModal();
+  }, []);
 
   return (
     <header>
@@ -68,10 +93,18 @@ function Lnb({ path }) {
           </NavPCBody>
           <NavPCFooter>
             <NavProfileWrapper>
-              <NavPCFooterA to="/mypage">
-                <ProfileNullImg src={ProfileNull} alt="마이페이지" />
-              </NavPCFooterA>
-              <Alarm />
+              {myData && myData.data ? (
+                <>
+                  <NavPCFooterA to="/mypage">
+                    <ProfileNullImg src={myData.data.file} alt="마이페이지" />
+                  </NavPCFooterA>
+                  <Alarm />
+                </>
+              ) : (
+                <NavPCFooterB onClick={handleClick}>
+                  <ProfileNullImg src={ProfileNull} alt="blank" />
+                </NavPCFooterB>
+              )}
             </NavProfileWrapper>
           </NavPCFooter>
         </NavPC>
@@ -82,6 +115,7 @@ function Lnb({ path }) {
       </LnbWrapper>
       <NavHam active={on} onClick={() => changeOn(!on)} />
       <NavMobile path={path} />
+      <AuthModal closeModal={closeModal} visible={Dialog} size="large" />
     </header>
   );
 }
@@ -406,6 +440,16 @@ const NavPCFooterA = styled(NavLink)`
   border-radius: 50%;
   overflow: hidden;
   margin-top: 32px;
+`;
+
+const NavPCFooterB = styled.div`
+  display: block;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-top: 32px;
+  cursor: pointer;
 `;
 
 const ProfileNullImg = styled.img`

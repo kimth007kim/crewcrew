@@ -171,6 +171,8 @@ const InputText = styled.div`
   ${(props) =>
     props.Valid &&
     css`
+      opacity: 1;
+      top: 54px;
       color: #ff0045;
     `}
 `;
