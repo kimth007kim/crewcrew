@@ -86,7 +86,7 @@ public class UserService {
         System.out.println(refreshToken);
         boolean maintain = userLoginRequestDto.isMaintain();
         if (refreshToken.isPresent() && (jwtProvider.validateToken(refreshToken.get().getToken()) == true)) {
-            TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles(), maintain);
+//            TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles(), maintain);
             refreshTokenJpaRepository.deleteByPkey(refreshToken.get().getPkey());
         }
             //       1. Refresh 토큰이 존재하면 그걸 토대로 access토큰 발급

@@ -249,6 +249,7 @@ public class AuthController {
     })
     public ResponseEntity<Object> checkNickName(@PathVariable String nickName) {
         userService.validateDuplicateByNickname(nickName);
+        userService.validateDuplicateByNickname(nickName);
         return ResponseHandler.generateResponse("닉네임 중복 확인 성공", HttpStatus.OK, true);
     }
 
