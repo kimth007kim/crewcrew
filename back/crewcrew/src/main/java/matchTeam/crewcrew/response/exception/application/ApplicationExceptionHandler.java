@@ -52,4 +52,10 @@ public class ApplicationExceptionHandler {
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.NOT_MATCH_BOARD_OWNER);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @ExceptionHandler(NotExistApIdException.class)
+    protected ResponseEntity<ErrorResponseHandler> notExistApIdException(NotExistApIdException e) {
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.NOT_EXIST_APPLY);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

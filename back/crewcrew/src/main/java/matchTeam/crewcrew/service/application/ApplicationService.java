@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 @Service
 public class ApplicationService {
     private final ApplicationRepository applicationRepository;
@@ -85,6 +84,16 @@ public class ApplicationService {
         }
 
         return ArrivedApplicationUserDetailsResponseDTO.toDTO(queryRepository.getArrivedApplier(specs), queryRepository.getTheNumberOfWaiting(specs));
+    }
+
+    @Transactional
+    public ApplicationUserDetailsResponseDTO updateApply(UpdateApplyRequestDTO request){
+        User user = userRepository.findByUid(request.getUid());
+        Application ap = applicationRepository.findById(request.getApId())
+                .orElseThrow(NotExistApIdException::new);
+
+        ap.updateProgress(request.getStatus());
+        return ApplicationUserDetailsResponseDTO.builder().ap(ap).res(user).build();
     }
 
     //중복 지원했을때

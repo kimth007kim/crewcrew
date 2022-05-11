@@ -6,12 +6,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import matchTeam.crewcrew.dto.application.ApplicationSaveResponseDTO;
+import matchTeam.crewcrew.dto.application.ApplicationStatus;
 import matchTeam.crewcrew.entity.BaseTimeEntity;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.user.User;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
+@EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -46,6 +49,10 @@ public class Application extends BaseTimeEntity {
         this.user = user;
         this.commentary = commentary;
         this.progress= 1;
+    }
+
+    public void updateProgress(String requestStatus){
+        this.progress = ApplicationStatus.from(requestStatus).getStatusCode();
     }
 
     public ApplicationSaveResponseDTO toDTO(Application application){

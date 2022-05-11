@@ -1,17 +1,21 @@
 package matchTeam.crewcrew.repository.application;
 
 
+import com.querydsl.core.dml.UpdateClause;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.application.*;
+import matchTeam.crewcrew.entity.application.QApplication;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static matchTeam.crewcrew.entity.board.QBoard.board;
@@ -169,6 +173,15 @@ public class ApplicationQueryRepository {
     }
 
 
+    @Transactional
+    public void updateApply(UpdateApplyRequestDTO request){
+        queryFactory
+                .update(application)
+                .set(application.progress, ApplicationStatus.from(request.getStatus()).getStatusCode())
+                .where(application.id.eq(request.getApId()))
+                .execute();
+    }
+
     public Long getTheNumberOfWaiting(ApplicationApplierSpecs specs){
         return queryFactory
                 .select(board.id.count())
@@ -185,5 +198,6 @@ public class ApplicationQueryRepository {
     private BooleanExpression approachCodeIn(List<Integer> approach){
         return isEmpty(approach) ? null : board.approach.in(approach);
     }
+
 
 }
