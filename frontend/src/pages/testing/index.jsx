@@ -24,18 +24,18 @@ function Testing() {
 
   const handleTestCookie = useCallback(async () => {
     try {
-      const { data } = await axios.get(`/user/token/${cookies.get('user-token')}`, {
-        headers: {
-          'X-AUTH-TOKEN': `${cookies.get('user-token')}`,
+      const { data } = await axios.post(
+        '/auth/cookie/test',
+        {},
+        {
+          withCredentials: true,
         },
-      });
+      );
 
       switch (data.status) {
         case 200:
           break;
         case 9999:
-          cookies.remove('user-token');
-          navigate('../');
           break;
 
         default:

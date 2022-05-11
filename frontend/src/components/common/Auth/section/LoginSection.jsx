@@ -122,7 +122,9 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
             maintain: IsChecked,
           };
 
-          const { data } = await axios.post('/auth/login', context);
+          const { data } = await axios.post('/auth/login', context, {
+            withCredentials: true,
+          });
           const now = new Date();
           const afterh = new Date();
 
@@ -141,7 +143,7 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
                   expires: afterh,
                 });
               }
-              mutate();
+              mutate('/user/token');
               closeModal();
               break;
             case 400:

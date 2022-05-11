@@ -212,8 +212,7 @@ function SignupSection3({ IsClick, HandleClick }) {
             path: '/',
             expires: afterh,
           });
-          mutate();
-
+          mutate('/user/token');
           break;
         case 400:
         case 1101:

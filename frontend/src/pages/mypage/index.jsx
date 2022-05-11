@@ -17,7 +17,6 @@ function MyPage() {
     error,
     mutate,
   } = useSWR(['/user/token', cookies.get('user-token')], fetcher);
-  const navigate = useNavigate();
 
   if (myData === undefined) {
     return null;

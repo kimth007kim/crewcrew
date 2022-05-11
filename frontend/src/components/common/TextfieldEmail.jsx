@@ -11,6 +11,7 @@ function Textfield({
   label,
   onDelete,
   disabled = false,
+  focus,
 }) {
   const [Focused, setFocused] = useState(false);
   const [Hover, setHover] = useState(false);
@@ -35,8 +36,12 @@ function Textfield({
   useEffect(() => {
     if (disabled) {
       HandleOnBlur();
+      InputRef.current.blur();
     }
-  }, [disabled]);
+    if (focus) {
+      InputRef.current.focus();
+    }
+  }, [disabled, focus]);
 
   return (
     <Wrapper onMouseEnter={HandleOnHover} onMouseLeave={HandleOutHover}>
@@ -113,6 +118,8 @@ const Input = styled.input`
 
   &:disabled {
     color: #a8a8a8;
+    border-color: #e2e2e2;
+    background-color: #fff;
   }
 `;
 

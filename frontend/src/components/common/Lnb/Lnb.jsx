@@ -1,7 +1,7 @@
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable prettier/prettier */
 /* eslint-disable indent */
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useLocation, NavLink } from 'react-router-dom';
 import useSWR from 'swr';

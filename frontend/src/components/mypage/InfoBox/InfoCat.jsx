@@ -1,66 +1,96 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Cookies } from 'react-cookie';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import styled, { css } from 'styled-components';
+import useSWR from 'swr';
 import FilterIconX from '../../../assets/images/FilterIconX.png';
+import { infoCancelState, infoCategoryState, infoSaveState } from '../../../atom/mypage/info';
+import { hobbyFilterArr, studyFilterArr } from '../../../frontDB/filterDB';
+import fetcher from '../../../utils/fetcher';
 
 function InfoCat() {
+  const cookies = new Cookies();
+  const {
+    data: myData,
+    error: myError,
+    mutate,
+  } = useSWR(['/user/token', cookies.get('user-token')], fetcher);
+
+  const [recoilCheckedList, setRecoilCheckedList] = useRecoilState(infoCategoryState);
+  const recoilSave = useRecoilValue(infoSaveState);
+  const recoilCancel = useRecoilValue(infoCancelState);
+
+  // 각 필터 체크 여부 확인 함수
+  const checkValue = useCallback((arr, value) => arr.some((item) => item.value === value), []);
+
+  // 개별 체크 클릭 시 발생하는 함수
+  const onCheckedElement = useCallback(
+    (checked, item) => {
+      if (checked) {
+        setRecoilCheckedList([...recoilCheckedList, item]);
+      } else {
+        setRecoilCheckedList(recoilCheckedList.filter((el) => el.value !== item.value));
+      }
+    },
+    [recoilCheckedList],
+  );
+
+  useEffect(() => {
+    const checkArray = myData.data.categoryId.map((id) => {
+      const tmpArray = [];
+      const categoryID = String(id);
+      const tmpHobbyArr = hobbyFilterArr.filter((el) => el.value === categoryID);
+      const tmpStudyArr = studyFilterArr.filter((el) => el.value === categoryID);
+      if (tmpHobbyArr.length > 0) {
+        tmpArray.push(...tmpHobbyArr);
+      } else {
+        tmpArray.push(...tmpStudyArr);
+      }
+      return tmpArray[0];
+    });
+    setRecoilCheckedList([...checkArray]);
+  }, [recoilSave, recoilCancel]);
+
   return (
     <Container>
       <CatBox>
         <h5>관심분야(스터디)</h5>
         <CatList>
-          <li>
-            <InputHide />
-            <FilterLabel>어학</FilterLabel>
-          </li>
-          <li>
-            <InputHide />
-            <FilterLabel>취업</FilterLabel>
-          </li>
-          <li>
-            <InputHide />
-            <FilterLabel>고시/공무원</FilterLabel>
-          </li>
-          <li>
-            <InputHide />
-            <FilterLabel>프로젝트</FilterLabel>
-          </li>
-          <li>
-            <InputHide />
-            <FilterLabel>기타</FilterLabel>
-          </li>
+          {studyFilterArr.map((item) => (
+            <li key={`${item.htmlId}`}>
+              <InputHide
+                type="checkbox"
+                id={item.htmlId}
+                bgColor={item.color}
+                value={item.value}
+                checked={checkValue(recoilCheckedList, item.value)}
+                onChange={(e) => onCheckedElement(e.target.checked, item)}
+              />
+              <FilterLabel htmlFor={item.htmlId} hColor={item.color}>
+                {item.name}
+              </FilterLabel>
+            </li>
+          ))}
         </CatList>
       </CatBox>
       <CatBox>
         <h5>관심분야(취미)</h5>
         <CatList>
-          <li>
-            <InputHide />
-            <FilterLabel>요리</FilterLabel>
-          </li>
-          <li>
-            <InputHide />
-            <FilterLabel>운동</FilterLabel>
-          </li>
-          <li>
-            <InputHide />
-            <FilterLabel>게임</FilterLabel>
-          </li>
-          <li>
-            <InputHide />
-            <FilterLabel>덕질</FilterLabel>
-          </li>
-          <li>
-            <InputHide />
-            <FilterLabel>트렌드</FilterLabel>
-          </li>
-          <li>
-            <InputHide />
-            <FilterLabel>예술</FilterLabel>
-          </li>
-          <li>
-            <InputHide />
-            <FilterLabel>기타</FilterLabel>
-          </li>
+          {hobbyFilterArr.map((item) => (
+            <li key={`${item.htmlId}`}>
+              <InputHide
+                type="checkbox"
+                id={item.htmlId}
+                bgColor={item.color}
+                value={item.value}
+                checked={checkValue(recoilCheckedList, item.value)}
+                onChange={(e) => onCheckedElement(e.target.checked, item)}
+              />
+              <FilterLabel htmlFor={item.htmlId} hColor={item.color}>
+                {item.name}
+              </FilterLabel>
+            </li>
+          ))}
         </CatList>
       </CatBox>
     </Container>
@@ -116,14 +146,6 @@ const CatBox = styled('div')`
   }
 `;
 
-const InputHide = styled('input')`
-  width: 1px;
-  height: 1px;
-  clip: rect(1px, 1px, 1px, 1px);
-  position: absolute;
-  display: none;
-`;
-
 const FilterLabel = styled('label')`
   padding: 4px 36px 4px 6px;
   background-color: #a8a8a8;
@@ -135,6 +157,7 @@ const FilterLabel = styled('label')`
   position: relative;
   cursor: pointer;
   transition: 0.3s;
+  user-select: none;
 
   &::after {
     content: '';
@@ -147,5 +170,34 @@ const FilterLabel = styled('label')`
     top: 6px;
     transform: rotate(45deg);
     transition: 0.3s;
+  }
+
+  :hover {
+    ${(props) =>
+      props.hColor &&
+      css`
+        border-color: ${props.hColor};
+      `}
+  }
+`;
+
+const InputHide = styled('input')`
+  width: 1px;
+  height: 1px;
+  clip: rect(1px, 1px, 1px, 1px);
+  position: absolute;
+  display: none;
+
+  &:checked + ${FilterLabel} {
+    ${(props) =>
+      props.bgColor &&
+      css`
+        background-color: ${props.bgColor};
+        border-color: transparent;
+        color: #fff;
+      `}
+    &::after {
+      transform: rotate(0deg);
+    }
   }
 `;
