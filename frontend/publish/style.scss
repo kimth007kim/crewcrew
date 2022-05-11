@@ -725,6 +725,7 @@ textarea.TxtAreaInput{
     min-width: 204px;
     height: 100%;
     border-right: 1px solid $black4;
+    position: relative;
 
     .ProfileBox{
         min-width: 60px;
@@ -951,12 +952,5 @@ textarea.TxtAreaInput{
         .ButtonBox{
             display: none;
         }
-    }
-}
-
-@media screen and (max-width:300px) {
-
-    .PostCardBody .TextBox .TextList p{
-        font-size: 11px;
     }
 }

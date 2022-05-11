@@ -1,0 +1,515 @@
+@import "./mypage";
+
+div.TopCont h2 a.arrowAfter{
+    background: none;
+    width: fit-content;
+    height: auto;
+    color: $black1;
+    display: flex;
+    align-items: center;
+
+    &::after{
+        content: '';
+        display: block;
+        background: url('/frontend/src/assets/images/IconNavArrow_Big_Rev.png') right/9px 20px no-repeat;
+        width: 9px;
+        height: 20px;
+        margin-left: 20px;
+    }
+}
+
+section.MypageSentTop{
+
+    .SectionWrap850{
+        padding-top: 36px;
+
+        &>p{
+            margin-top: 8px;
+            font-size: 13px;
+            color: $black3;
+            font-weight: 400;
+            line-height: 20px;
+        }
+    }
+    
+
+    h3{
+        font-size: 20px;
+        font-weight: 700;
+    }
+}
+
+.SentContent{
+    padding: 45px 0 100px;
+
+    h4{
+        font-size: 42px;
+        font-weight: 700;
+        text-align: center;
+        padding-bottom: 50px;
+
+        span{
+            color: $blue3;
+        }
+    }
+}
+
+.SentBoxWrap{
+    display: flex;
+    justify-content: space-between;
+    gap: 48px;
+}
+
+.SentBox{
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    cursor: pointer;
+    transition: 1s;
+    padding: 0 32px;
+    position: relative;
+
+    &:nth-child(1){
+        background-color: #0575E6;
+
+        &:hover{
+            background-color: $blue2;
+        }
+    }
+
+    &:nth-child(2){
+        background-color: $yellow1;
+
+        &:hover{
+            background-color: #fcb90d;
+        }
+    }
+
+    p{
+        color: $white;
+        line-height: 1;
+        width: 100%;
+        text-align: center;
+        transition: .5s;
+
+        &:nth-child(1){
+            font-size: 48px;
+            font-weight: 700;
+        }
+
+        &:nth-child(2){
+            font-size: 18px;
+            font-weight: 500;
+            margin-top: 22px;
+        }
+    }
+
+    .Arrow{
+        width: 55px;
+        height: 55px;
+        background: url('/frontend/src/assets/images/ArrowCircle.png') center/55px 55px;
+        position: absolute;
+        bottom: calc(50% - 28px);
+        right: 65px;
+        transition: .5s;
+        transition-delay: 0s;
+        opacity: 0;
+    }
+
+    &:hover{
+
+        p{
+            width: 170px;
+        }
+        
+        .Arrow{
+            opacity: 1;
+            transition-delay: .1s;
+        }
+    }
+}
+
+.MypageSentPost{
+    background-color: #F6F7FB;
+
+    h3{
+        font-size: 20px;
+        font-weight: 700;
+        padding: 38px 0 24px;
+    }
+    
+    &.Study{
+        padding-top: 52px;
+
+        .SectionWrap850{
+            border-bottom: 2px solid #D7DAE4;
+        }
+
+        h3{
+            color: #0F3FA6;
+        }
+    }
+
+    &.Hobby{
+
+        h3{
+            color: #F7971E;
+        }
+    }
+}
+
+@media screen and (max-width: 820px) {
+    
+    div.TopCont h2 a.arrowAfter{
+        padding-right: 8px;
+
+        &::after{
+            background-size: 8px;
+            margin-left: 8px;
+        }
+    }
+
+    .SentContent{
+        padding: 45px 0;
+
+        h4{
+            font-size: 32px;
+        }
+    }
+
+    .SentBoxWrap{
+        gap: 20px;
+    }
+
+    .SentBox{
+        height: 86px;
+        padding: 0;
+
+        p{
+
+            &:nth-child(1){
+                font-size: 32px;
+            }
+
+            &:nth-child(2){
+                font-size: 13px;
+                margin-top: 6px;
+            }
+        }
+
+        &:hover{
+            
+            p{
+                width: 100%;
+            }
+
+            .Arrow{
+                opacity: 0;
+            }
+        }
+    }
+
+    .MypageSentPost{
+        
+        h3{
+            padding: 36px 0 20px;
+        }
+
+        &.Study{
+            padding-top: 24px;
+        }
+    }
+}
+
+@media screen and (max-width: 300px) {
+
+
+    div.TopCont h2 a.arrowAfter{
+        padding-right: 3px;
+
+        &::after{
+            margin-left: 3px;
+        }
+    }
+
+}
+
+
+
+
+
+
+/* 카드 */
+
+.PostCard.Cent{
+
+    .PostCardBody{
+
+        .TextBox{
+
+            .TitleBox{
+
+                h5{
+                    width: 290px;
+                    margin-top: 4px;
+                }
+            }
+
+            p:last-child{
+                color: $black1;
+                font-weight: 700;
+            }
+        }
+
+        .DetailBox{
+            min-width: 158px;
+            height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 24px;
+            box-sizing: border-box;
+            border-left: 1px solid #A8A8A8;
+            border-right: 1px solid #a8a8a8;
+
+            p{
+                font-size: 14px;
+                font-weight: 700;
+                margin-bottom: 7px;
+                white-space: nowrap;
+
+                span{
+                    font-weight: 500;
+                }
+            }
+
+            button{
+                width: 100%;
+                height: 30px;
+                border: none;
+                outline: none;
+                border-radius: 5px;
+                color: $white;
+                font-size: 13px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: .3s;
+
+                &.Detail{
+                    background-color: #c4c4c4;
+
+                    &:hover{
+                        background-color: #B0B0B0
+                    }
+                }
+
+                &.Nega{
+                    background-color: #F95884;
+
+                    &:hover{
+                        background-color: #E9416E;
+                    }
+                }
+
+                &.Posi{
+                    background-color: #00B7FF;
+
+                    &:hover{
+                        background-color: #00A3E3;
+                    }
+                }
+            }
+        }
+
+        .ButtonBox{
+            min-width: 130px;
+            justify-content: flex-end;
+
+            button.Detail{
+                font-size: 15px;
+            }
+        }
+    }
+}
+
+.ProfileToolTip{
+    width: 164px;
+    height: 70px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    padding: 8px;
+    box-sizing: border-box;
+    cursor: default;
+    display: none;
+    z-index: 1;
+
+    p.ToolTipName{
+        font-size: 12px;
+        font-weight: 400;
+        color: $white;
+    }
+
+    .ToolTipBtn{
+        height: 30px;
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+
+        button{
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: .3s;
+
+            &.Chat{
+                max-width: 30px;
+                background: url("/frontend/src/assets/images/IconChat.png") center / 20px 18px no-repeat #C4C4C4;
+
+                &:hover{
+                    background-color: #b0b0b0;
+                }
+            }
+
+            &.Profile{
+                background-color: #868686;
+                color: $white;
+                font-size: 13px;
+                font-weight: 500;
+
+                &:hover{
+                    background-color: #747474;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 820px) {
+
+    .PostCard.Cent{
+        height: 146px;
+        padding: 12px 10px 16px 16px;
+
+        .PostCardHead{
+            height: 30px;
+            align-items: center;
+
+            .ProfileBox{
+                display: block;
+                min-width: 30px;
+                height: 30px;
+                margin-right: 12px;
+            }
+
+            .TextBox{
+
+                p.Dday{
+                    font-size: 18px;
+                }
+
+                p.Name, p.Date{
+                    display: none;
+                }
+
+            }
+        }
+
+        .PostCardBody{
+            align-items: flex-start;
+            margin-top: 12px;
+
+            .TextBox{
+
+                .TitleBox{
+                    width: 206px;
+                    height: 42px;
+                    margin-top: 0;
+
+                    h5{
+                        width: 100%;
+                        overflow: visible;
+                        white-space: normal;
+                        line-height: 21px;
+                        margin-top: 0;
+                    }
+                }
+
+                .TextList{
+                    margin-top: 20px;
+                    min-width: 100%;
+                }
+            }
+
+            .DetailBox{
+                flex-direction: row;
+                align-items: center;
+                gap: 8px;
+                height: 30px;
+                position: absolute;
+                top: 12px;
+                right: 10px;
+                border: none;
+                padding: 0;
+
+                p{
+                    font-size: 13px;
+                    margin: 0;
+                }
+
+                button{
+                    min-width: 74px;
+                }
+            }
+
+            .ButtonBox{
+                display: block;
+                min-width: 74px;
+                height: 30px;
+                right: 10px;
+                top: 59px;
+                position: absolute;
+
+                button.Detail{
+                    width: 100%;
+                    border-radius: 5px;
+                    font-size: 13px;
+                }
+            }
+        }
+    }
+
+}
+
+@media screen and (max-width: 300px){
+
+    .PostCard.Cent{
+
+        .PostCardBody{
+
+            .TextBox{
+
+                .TitleBox{
+                    width: 150px;
+                }
+            }
+
+            .DetailBox{
+                min-width: 0;
+
+                p span{
+                    display: none;
+                }
+            }
+        }
+
+    }
+}

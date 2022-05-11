@@ -269,10 +269,9 @@ textarea.TxtAreaInput.InputSetting{
 }
 
 .ButtonFull3.ButtonSmall{
-    width: 74px;
-    height: 30px;
+    width: 100px;
+    height: 50px;
     padding: 0;
-    border-radius: 5px;
 }
 
 .myCrewBox{
@@ -624,11 +623,14 @@ p.Nocontent{
     }
 
     &.Nocontent{
-        border-top: 1px solid $black3;
         padding: 100px 0;
         display: flex;
         flex-direction: column;
         align-items: center;
+
+        &.border{
+            border-top: 1px solid $black3;
+        }
     }
 }
 

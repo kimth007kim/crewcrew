@@ -948,6 +948,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   min-width: 204px;
   height: 100%;
   border-right: 1px solid #a8a8a8;
+  position: relative;
 }
 
 .PostCardHead .ProfileBox {
@@ -1181,12 +1182,6 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   }
   .PostCardBody .ButtonBox {
     display: none;
-  }
-}
-
-@media screen and (max-width: 300px) {
-  .PostCardBody .TextBox .TextList p {
-    font-size: 11px;
   }
 }
 
@@ -1937,7 +1932,7 @@ main {
       -ms-flex-pack: justify;
           justify-content: space-between;
   width: 598px;
-  margin: 48px auto 124px;
+  margin: 48px auto 64px;
 }
 
 .PaginationWrapper div {

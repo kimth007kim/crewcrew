@@ -948,6 +948,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   min-width: 204px;
   height: 100%;
   border-right: 1px solid #a8a8a8;
+  position: relative;
 }
 
 .PostCardHead .ProfileBox {
@@ -1181,12 +1182,6 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   }
   .PostCardBody .ButtonBox {
     display: none;
-  }
-}
-
-@media screen and (max-width: 300px) {
-  .PostCardBody .TextBox .TextList p {
-    font-size: 11px;
   }
 }
 
@@ -1937,7 +1932,7 @@ main {
       -ms-flex-pack: justify;
           justify-content: space-between;
   width: 598px;
-  margin: 48px auto 124px;
+  margin: 48px auto 64px;
 }
 
 .PaginationWrapper div {
@@ -2323,10 +2318,9 @@ textarea.TxtAreaInput.InputSetting:disabled:hover {
 }
 
 .ButtonFull3.ButtonSmall {
-  width: 74px;
-  height: 30px;
+  width: 100px;
+  height: 50px;
   padding: 0;
-  border-radius: 5px;
 }
 
 .myCrewBox {
@@ -2710,7 +2704,6 @@ p.Nocontent em {
 }
 
 .PostWrapper.Nocontent {
-  border-top: 1px solid #868686;
   padding: 100px 0;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2722,6 +2715,10 @@ p.Nocontent em {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+}
+
+.PostWrapper.Nocontent.border {
+  border-top: 1px solid #868686;
 }
 
 br.fold {
