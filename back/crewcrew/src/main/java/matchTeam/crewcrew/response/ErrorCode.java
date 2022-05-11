@@ -108,6 +108,7 @@ public enum ErrorCode {
     APPLY_TO_BOARD_WRITER(2404, "APPLY TO BOARD WRITER", "게시판 작성자가 지원했습니다."),
     NOT_CATEGORY_PARENT_ID(2405, "NOT_CATEGORY_PARENT_ID", "부모 카테고리로 지원서 조회를 요청하지 않았습니다."),
     NOT_MATCH_BOARD_OWNER(2406, "NOT_MATCH_BOARD_OWNER", "게시판 작성자가 조회하지 않았습니다."),
+    NOT_EXIST_APPLY(2407, "NOT_EXITS_APPLY", "존재하지 않는 신청서입니다."),
 
     
     // 3000~3100 마이페이지 예외

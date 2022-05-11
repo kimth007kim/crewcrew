@@ -221,5 +221,12 @@ import javax.mail.MessagingException;
     }
 
 
+    @ResponseStatus(value = HttpStatus.OK )
+    @PutMapping(value = "/apply-status-list/status")
+    public ResponseEntity<Object> updateApply(@RequestBody UpdateApplyRequestDTO request){
+
+        ApplicationUserDetailsResponseDTO result = applicationService.updateApply(request);
+        return ResponseHandler.generateResponse("내게 도착한 지원서의 지원자 상세 조회 성공", HttpStatus.OK, result);
+    }
 
 }

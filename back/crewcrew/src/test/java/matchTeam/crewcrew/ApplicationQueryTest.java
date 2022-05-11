@@ -1,9 +1,12 @@
 package matchTeam.crewcrew;
 
+import matchTeam.crewcrew.dto.application.UpdateApplyRequestDTO;
 import matchTeam.crewcrew.repository.application.ApplicationQueryRepository;
+import matchTeam.crewcrew.service.application.ApplicationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -13,12 +16,13 @@ import javax.persistence.EntityManager;
 public class ApplicationQueryTest {
 
     @Autowired
-    private ApplicationQueryRepository queryRepository;
+    private ApplicationService applicationService;
 
     @Test
-    void getMyApplication() throws Exception{
+    void updateApply() throws Exception{
         //given
-        queryRepository.getMyApplication(6L);
+
+        applicationService.updateApply(new UpdateApplyRequestDTO(1L, 6L, "COMPLETED"));
 
         //when
 
@@ -29,7 +33,7 @@ public class ApplicationQueryTest {
     @Test
     void getArrivedApplication() throws Exception{
         //given
-        queryRepository.getArrivedApplication(6L);
+
 
         //when
 
