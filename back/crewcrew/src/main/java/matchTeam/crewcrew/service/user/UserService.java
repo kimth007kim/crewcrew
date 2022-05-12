@@ -144,7 +144,7 @@ public class UserService {
 
         public void profileChange (User user, String password, String name, String
         nickName, List < Long > categoryId, String message){
-
+            // null값들어오는걸로 바꾸기
             if (categoryId == null || categoryId.size() == 0) {
                 throw new ProfileEmptyCategoryException();
             }
