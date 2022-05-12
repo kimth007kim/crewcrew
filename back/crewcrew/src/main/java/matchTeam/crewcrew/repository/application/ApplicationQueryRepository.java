@@ -146,9 +146,9 @@ public class ApplicationQueryRepository {
      * @param specs - 검색 조건
      * @return
      */
-    public List<ApplicationUserDetailsResponseDTO> getArrivedApplier(ApplicationApplierSpecs specs){
+    public List<ArrivedApplierDetailsDTO> getArrivedApplier(ApplicationApplierSpecs specs){
         return queryFactory
-                .selectDistinct(Projections.constructor(ApplicationUserDetailsResponseDTO.class, user, application))
+                .selectDistinct(Projections.constructor(ArrivedApplierDetailsDTO.class, user, application))
                 .from(user)
                     .innerJoin(application)
                     .on(application.user.uid.eq(user.uid))
@@ -173,14 +173,14 @@ public class ApplicationQueryRepository {
     }
 
 
-    @Transactional
+    /* 벌크연산 때문에 엔티티에 직접 update 되지 않음. 또한 한번에 바꾸는 것이 아니므로 굳이 update를 사용할 필요가 없다 @Transactional
     public void updateApply(UpdateApplyRequestDTO request){
         queryFactory
                 .update(application)
                 .set(application.progress, ApplicationStatus.from(request.getStatus()).getStatusCode())
                 .where(application.id.eq(request.getApId()))
                 .execute();
-    }
+    }*/
 
     public Long getTheNumberOfWaiting(ApplicationApplierSpecs specs){
         return queryFactory
