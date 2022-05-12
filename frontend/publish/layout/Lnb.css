@@ -2134,6 +2134,9 @@ main {
 }
 
 @media screen and (max-width: 300px) {
+  .MainTop .ButtonIntro {
+    right: 10px;
+  }
   .TopCont h2, .TopCont h3 {
     text-align: center;
     word-break: keep-all;
@@ -2922,6 +2925,15 @@ main {
     width: 6px;
     height: 6px;
     top: 0;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .MobileGnb, .MobileNav {
+    padding: 0 10px;
+  }
+  .NavHam {
+    left: 10px;
   }
 }
 /*# sourceMappingURL=Lnb.css.map */

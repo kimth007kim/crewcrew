@@ -2134,6 +2134,9 @@ main {
 }
 
 @media screen and (max-width: 300px) {
+  .MainTop .ButtonIntro {
+    right: 10px;
+  }
   .TopCont h2, .TopCont h3 {
     text-align: center;
     word-break: keep-all;
@@ -2303,7 +2306,7 @@ div.TopCont h2 a {
   background-position: 0 1px;
   width: 9px;
   height: 20px;
-  padding-right: 20px;
+  margin-right: 20px;
 }
 
 .MypageTop, .TimeLineSect, .PostListSect {
@@ -2981,11 +2984,11 @@ br.fold {
     width: calc(100vw - 40px);
   }
   div.TopCont h2 {
-    font-size: 16px;
+    font-size: 15px;
   }
   div.TopCont h2 a {
     background-size: 8px;
-    padding-right: 16px;
+    margin-right: 12px;
   }
   section.MypageTop {
     padding: 20px 0 70px;
@@ -3398,10 +3401,10 @@ section.MypageSentTop h3 {
 
 @media screen and (max-width: 300px) {
   div.TopCont h2 a.arrowAfter {
-    padding-right: 3px;
+    padding-right: 6px;
   }
   div.TopCont h2 a.arrowAfter::after {
-    margin-left: 3px;
+    margin-left: 6px;
   }
 }
 /*# sourceMappingURL=mypageSent.css.map */

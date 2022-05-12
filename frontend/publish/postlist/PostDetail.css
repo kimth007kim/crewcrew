@@ -2134,6 +2134,9 @@ main {
 }
 
 @media screen and (max-width: 300px) {
+  .MainTop .ButtonIntro {
+    right: 10px;
+  }
   .TopCont h2, .TopCont h3 {
     text-align: center;
     word-break: keep-all;
@@ -2605,10 +2608,11 @@ aside {
     -webkit-box-ordinal-group: 2;
         -ms-flex-order: 1;
             order: 1;
-    font-size: 18px;
+    font-size: 15px;
   }
   div.TopCont h2::before {
     background-position: 0 1px;
+    margin-right: 12px;
   }
   div.TopCont .InputWrapper {
     margin: 14px 0 34px;
@@ -2718,6 +2722,9 @@ aside {
 }
 
 @media screen and (max-width: 300px) {
+  div.TopCont {
+    width: calc(100% - 20px);
+  }
   .PostDetail ul:nth-of-type(1) {
     gap: 14px;
   }

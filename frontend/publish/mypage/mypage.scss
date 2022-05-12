@@ -34,7 +34,7 @@ div.TopCont{
             background-position: 0 1px;
             width: 9px;
             height: 20px;
-            padding-right: 20px;
+            margin-right: 20px;
         }
     }
 }
@@ -652,11 +652,11 @@ br.fold{
         width: calc(100vw - 40px);
 
         h2{
-           font-size: 16px; 
+           font-size: 15px; 
 
            a {
                background-size: 8px;
-               padding-right: 16px;
+               margin-right: 12px;
            }
         }
     }
