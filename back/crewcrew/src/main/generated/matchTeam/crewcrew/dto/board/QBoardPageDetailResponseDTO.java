@@ -13,8 +13,8 @@ public class QBoardPageDetailResponseDTO extends ConstructorExpression<BoardPage
 
     private static final long serialVersionUID = -1820654065L;
 
-    public QBoardPageDetailResponseDTO(com.querydsl.core.types.Expression<? extends matchTeam.crewcrew.entity.board.Board> res) {
-        super(BoardPageDetailResponseDTO.class, new Class<?>[]{matchTeam.crewcrew.entity.board.Board.class}, res);
+    public QBoardPageDetailResponseDTO(com.querydsl.core.types.Expression<? extends matchTeam.crewcrew.entity.board.Board> res, com.querydsl.core.types.Expression<Boolean> isBookmarked) {
+        super(BoardPageDetailResponseDTO.class, new Class<?>[]{matchTeam.crewcrew.entity.board.Board.class, boolean.class}, res, isBookmarked);
     }
 
 }
