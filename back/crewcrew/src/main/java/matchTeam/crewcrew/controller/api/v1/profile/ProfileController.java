@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -120,6 +121,15 @@ public class ProfileController {
         String name = profileChangeRequestDto.getName();
         List<Long> categoryId= profileChangeRequestDto.getCategoryId();
         String message = profileChangeRequestDto.getMessage();
+        if (categoryId == null){
+            categoryId=new ArrayList<Long>();
+        }
+
+        System.out.println(password);
+        System.out.println(nickName);
+        System.out.println(name);
+        System.out.println(categoryId);
+        System.out.println(message);
 
         User user = userService.tokenChecker(token);
 
@@ -128,6 +138,7 @@ public class ProfileController {
             String filename = s3Uploader.upload(file, tempName, "profile");
             userService.setProfileImage(user, filename);
         }
+        userService.validProfileChange(user,password,name,nickName,categoryId,message);
         userService.profileChange(user, password, name, nickName, categoryId, message);
         return ResponseHandler.generateResponse("성공", HttpStatus.OK, "변경 성공");
     }
