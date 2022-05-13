@@ -3,6 +3,9 @@
 /* eslint-disable indent */
 import React, { useCallback, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { Cookies } from 'react-cookie';
+import useSWR from 'swr';
+import { useNavigate } from 'react-router-dom';
 import LogoTxt from '../../../assets/images/LogoTxt.png';
 import IconButtonArrow from '../../../assets/images/ButtonArrow.png';
 import IconButtonArrowGhost from '../../../assets/images/ButtonArrowGhost.png';
@@ -11,6 +14,7 @@ import Profile2 from '../../../assets/images/Profile3.png';
 import Profile3 from '../../../assets/images/Profile5.png';
 import Profile4 from '../../../assets/images/Profile2.png';
 import AuthModal from '../Auth/AuthModal';
+import fetcher from '../../../utils/fetcher';
 
 const Cards = [
   {
@@ -51,7 +55,7 @@ function NavButton({ ghost, title, clickFunc }) {
   return (
     <NavButtonListLi>
       {ghost ? (
-        <ButtonFull2Ghost type="button">
+        <ButtonFull2Ghost type="button" onClick={clickFunc}>
           {title}
           <ButtonFull2Ghostspan />
         </ButtonFull2Ghost>
@@ -100,7 +104,14 @@ function NavCard({ title, p, img, color, number, reverse }) {
 }
 
 function NavContainer() {
+  const cookies = new Cookies();
+  const {
+    data: myData,
+    error,
+    mutate,
+  } = useSWR(['/user/token', cookies.get('user-token')], fetcher);
   const [Dialog, setDialog] = useState(false);
+  const navigate = useNavigate();
 
   const openModal = useCallback(() => {
     setDialog(true);
@@ -114,6 +125,12 @@ function NavContainer() {
     openModal();
   }, []);
 
+  const locateMypage = useCallback(() => {
+    navigate('/mypage');
+  }, []);
+
+  const handleLogout = useCallback(() => {}, []);
+
   return (
     <>
       <NavCont>
@@ -123,30 +140,61 @@ function NavContainer() {
           </a>
         </Navh1>
         <NavContInner>
-          <Navh1p>
-            목표를 향해 항해하는
-            <br />
-            크루크루에 오신 것을 환영합니다!
-          </Navh1p>
+          {myData && myData.data ? (
+            <Navh1p>
+              {`${myData.data.nickname}님,`}
+              <br />
+              크루크루에 오신 것을 환영합니다!
+            </Navh1p>
+          ) : (
+            <Navh1p>
+              목표를 향해 항해하는
+              <br />
+              크루크루에 오신 것을 환영합니다!
+            </Navh1p>
+          )}
           <NavButtonList>
-            <NavButton title="로그인/회원가입" clickFunc={handleClick} />
-            <NavButton ghost title="서비스 소개" />
+            {myData && myData.data ? (
+              <>
+                <NavButton title="마이 페이지" clickFunc={locateMypage} />
+                <NavButton ghost title="로그아웃" />
+              </>
+            ) : (
+              <>
+                <NavButton title="로그인/회원가입" clickFunc={handleClick} />
+                <NavButton ghost title="서비스 소개" clickFunc={handleLogout} />
+              </>
+            )}
           </NavButtonList>
-          <Navh2>CREW 4 U</Navh2>
-          <Navh2p>나에게 딱 맞는 크루원을 찾고 있었다면, 잘 찾아오셨어요!</Navh2p>
-          <NavCardList>
-            {Cards.map((ele, i) => (
-              <NavCard
-                title={ele.title}
-                p={ele.desc}
-                reverse={ele.reverse}
-                number={i + 1}
-                img={ele.img}
-                color={ele.color}
-                key={ele.title + ele.number}
-              />
-            ))}
-          </NavCardList>
+          {myData && myData.data ? (
+            <>
+              <Navh2>내가 스크랩한 모집글</Navh2>
+              <Navh2p>내가 스크랩한 글의 현황을 확인하세요!</Navh2p>
+            </>
+          ) : (
+            <>
+              <Navh2>CREW 4 U</Navh2>
+              <Navh2p>나에게 딱 맞는 크루원을 찾고 있었다면, 잘 찾아오셨어요!</Navh2p>
+            </>
+          )}
+
+          {myData && myData.data ? (
+            <NavCardList />
+          ) : (
+            <NavCardList>
+              {Cards.map((ele, i) => (
+                <NavCard
+                  title={ele.title}
+                  p={ele.desc}
+                  reverse={ele.reverse}
+                  number={i + 1}
+                  img={ele.img}
+                  color={ele.color}
+                  key={ele.title + ele.number}
+                />
+              ))}
+            </NavCardList>
+          )}
         </NavContInner>
       </NavCont>
 
@@ -379,7 +427,7 @@ const CardIntro = styled.div`
   }
 
   height: 120px;
-  padding: 35px 0 16px;
+  padding: 30px 0 16px;
   box-sizing: border-box;
   background-size: 120px !important;
   background-repeat: no-repeat !important;
@@ -394,10 +442,10 @@ const CardIntro = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 10px;
+    font-size: 12px;
     color: #fff;
-    width: 15px;
-    height: 15px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     background-color: rgba(0, 0, 0, 0.3);
     position: absolute;
@@ -406,7 +454,7 @@ const CardIntro = styled.div`
   }
 
   h3 {
-    font-size: 10px;
+    font-size: 12px;
     color: #fff;
     font-weight: 500;
     br {
@@ -424,7 +472,7 @@ const CardIntro = styled.div`
   p {
     font-size: 18px;
     color: #fff;
-    margin: 8px 0;
+    margin: 10px 0;
     line-height: 24px;
     margin-left: 167px;
 
@@ -444,8 +492,9 @@ const CardIntroReverse = styled.li`
     display: flex;
     align-items: center;
   }
+
   height: 120px;
-  padding: 35px 0 16px;
+  padding: 30px 0 16px;
   box-sizing: border-box;
   background-size: 120px !important;
   background-repeat: no-repeat !important;
@@ -455,29 +504,31 @@ const CardIntroReverse = styled.li`
   background-color: ${(props) => props.color};
   background-image: url(${(props) => props.img});
   background-position: calc(100% - 20px) 50%;
+
   ::before {
     content: ${(props) => `'${props.number}'`};
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 10px;
+    font-size: 12px;
     color: #fff;
-    width: 15px;
-    height: 15px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     background-color: rgba(0, 0, 0, 0.3);
     position: absolute;
     top: 7px;
     left: 7px;
   }
+
   h3 {
-    font-size: 10px;
+    font-size: 12px;
     color: #fff;
     font-weight: 500;
     br {
       display: none;
     }
-    margin-left: 20px;
+    margin-left: 24px;
     @media screen and (max-width: 820px) {
       br {
         display: block;
@@ -486,38 +537,15 @@ const CardIntroReverse = styled.li`
       margin-left: 30px;
     }
   }
+
   p {
     font-size: 18px;
     color: #fff;
-    margin: 8px 0;
+    margin: 10px 0;
     line-height: 24px;
-    margin-left: 20px;
+    margin-left: 24px;
     @media screen and (max-width: 820px) {
       display: none;
     }
-  }
-`;
-
-const CardIntroh3 = styled.h3`
-  font-size: 10px;
-  color: #fff;
-  width: fit-content;
-`;
-
-const CardIntrop = styled.p`
-  font-size: 18px;
-  color: #fff;
-  margin: 8px 0;
-  line-height: 24px;
-  @media screen and (max-width: 820px) {
-    display: none;
-  }
-`;
-
-const Brm = styled.span`
-  display: inline block;
-  width: 3px;
-  @media screen and (max-width: 820px) {
-    display: block;
   }
 `;

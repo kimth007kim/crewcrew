@@ -4,6 +4,8 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { NavLink, useLocation } from 'react-router-dom';
+import { Cookies } from 'react-cookie';
+import useSWR from 'swr';
 import ProfileNull from '../../../assets/images/ProfileNull.png';
 import LogoTxt from '../../../assets/images/LogoTxt.png';
 import IconNavHome from '../../../assets/images/NavIcon1.png';
@@ -18,6 +20,7 @@ import IconNavRecruActive from '../../../assets/images/NavIcon3_Active.png';
 import IconNavChat from '../../../assets/images/NavIcon4.png';
 import IconNavChatHover from '../../../assets/images/NavIcon4_Hover.png';
 import IconNavChatActive from '../../../assets/images/NavIcon4_Active.png';
+import fetcher from '../../../utils/fetcher';
 
 function MobileNavButton({ icon, title, link = '/', selected }) {
   return (
@@ -30,8 +33,14 @@ function MobileNavButton({ icon, title, link = '/', selected }) {
   );
 }
 
-function NavMobile({ path }) {
+function NavMobile({ path, openModal }) {
   const { pathname } = useLocation();
+  const cookies = new Cookies();
+  const {
+    data: myData,
+    error,
+    mutate,
+  } = useSWR(['/user/token', cookies.get('user-token')], fetcher);
 
   return (
     <>
@@ -40,17 +49,25 @@ function NavMobile({ path }) {
           <MobileGnbli />
           <MobileGnbLogoli>
             <h2>
-              <MobileGnba to="/">
+              <MobileGnbA to="/">
                 <MobileLogoimg src={LogoTxt} alt="CrewCrew" />
-              </MobileGnba>
+              </MobileGnbA>
             </h2>
           </MobileGnbLogoli>
           <MobileGnbli>
             <NavProfileWrapper>
-              <MobileGnba to="/mypage">
-                <MobileProfileimg src={ProfileNull} alt="마이페이지" />
-              </MobileGnba>
-              <Alarm />
+              {myData && myData.data ? (
+                <>
+                  <MobileGnbA to="/mypage">
+                    <MobileProfileimg src={ProfileNull} alt="마이페이지" />
+                  </MobileGnbA>
+                  <Alarm />
+                </>
+              ) : (
+                <MobileGnbB onClick={() => openModal()}>
+                  <MobileProfileimg src={ProfileNull} alt="마이페이지" />
+                </MobileGnbB>
+              )}
             </NavProfileWrapper>
           </MobileGnbli>
         </MobileGnbul>
@@ -214,6 +231,10 @@ const MobileNav = styled.nav`
       align-items: center;
     }
   }
+
+  @media screen and (max-width: 300px) {
+    padding: 0 10px;
+  }
 `;
 
 const MobileGnb = styled.div`
@@ -230,6 +251,9 @@ const MobileGnb = styled.div`
     background-color: #fff;
     top: 0;
     box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.05);
+  }
+  @media screen and (max-width: 300px) {
+    padding: 0 10px;
   }
 `;
 
@@ -272,7 +296,12 @@ const Alarm = styled.div`
   }
 `;
 
-const MobileGnba = styled(NavLink)`
+const MobileGnbA = styled(NavLink)`
+  display: block;
+  height: 30px;
+`;
+
+const MobileGnbB = styled('div')`
   display: block;
   height: 30px;
 `;

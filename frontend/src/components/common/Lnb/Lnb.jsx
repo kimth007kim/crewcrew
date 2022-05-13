@@ -114,7 +114,7 @@ function Lnb({ path }) {
         </NavContWrapper>
       </LnbWrapper>
       <NavHam active={on} onClick={() => changeOn(!on)} />
-      <NavMobile path={path} />
+      <NavMobile path={path} openModal={openModal} />
       <AuthModal closeModal={closeModal} visible={Dialog} size="large" />
     </header>
   );
@@ -178,6 +178,10 @@ const NavHam = styled.div`
       css`
         background: url(${IconClose});
       `}
+  }
+
+  @media screen and (max-width: 300px) {
+    left: 10px;
   }
 `;
 
