@@ -5,7 +5,7 @@ import React, { useCallback, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Cookies } from 'react-cookie';
 import useSWR from 'swr';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import LogoTxt from '../../../assets/images/LogoTxt.png';
 import IconButtonArrow from '../../../assets/images/ButtonArrow.png';
 import IconButtonArrowGhost from '../../../assets/images/ButtonArrowGhost.png';
@@ -13,6 +13,7 @@ import Profile1 from '../../../assets/images/Profile1.png';
 import Profile2 from '../../../assets/images/Profile3.png';
 import Profile3 from '../../../assets/images/Profile5.png';
 import Profile4 from '../../../assets/images/Profile2.png';
+import NavIconPlus from '../../../assets/images/NavIconPlus.png';
 import AuthModal from '../Auth/AuthModal';
 import fetcher from '../../../utils/fetcher';
 
@@ -142,7 +143,7 @@ function NavContainer() {
         <NavContInner>
           {myData && myData.data ? (
             <Navh1p>
-              {`${myData.data.nickname}님,`}
+              {`${myData.data.nickName}님,`}
               <br />
               크루크루에 오신 것을 환영합니다!
             </Navh1p>
@@ -179,7 +180,12 @@ function NavContainer() {
           )}
 
           {myData && myData.data ? (
-            <NavCardList />
+            <NavPostCardWrapper>
+              <NavCardPlusPost to="/post">
+                <PlusIcon />
+                <span>모집글 둘러보러 가기</span>
+              </NavCardPlusPost>
+            </NavPostCardWrapper>
           ) : (
             <NavCardList>
               {Cards.map((ele, i) => (
@@ -402,6 +408,58 @@ const NavCardList = styled.ul`
   @media screen and (max-width: 820px) {
     margin-top: 25px;
     height: calc(100vh - 312px);
+  }
+`;
+
+const NavPostCardWrapper = styled.div`
+  margin-top: 30px;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  @media screen and (max-width: 820px) {
+    margin-top: 25px;
+  }
+`;
+
+const NavCardPlusPost = styled(NavLink)`
+  width: 100%;
+  height: 120px;
+  background-color: #fff;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  span {
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 25px;
+    display: flex;
+    align-items: center;
+    color: #a8a8a8;
+  }
+
+  @media screen and (max-width: 820px) {
+    span {
+      font-size: 15px;
+      line-height: 18px;
+    }
+  }
+`;
+
+const PlusIcon = styled.div`
+  width: 52px;
+  height: 52px;
+  background: url(${NavIconPlus});
+  background-repeat: no-repeat !important;
+  background-size: 52px;
+  margin-right: 20px;
+  @media screen and (max-width: 820px) {
+    width: 35px;
+    height: 35px;
+    background-size: 35px;
   }
 `;
 
