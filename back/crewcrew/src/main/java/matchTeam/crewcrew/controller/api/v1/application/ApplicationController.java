@@ -221,5 +221,13 @@ import javax.mail.MessagingException;
     }
 
 
+    @ApiOperation(value = "지원서 진행사항 수정하기")
+    @ResponseStatus(value = HttpStatus.OK )
+    @PutMapping(value = "/apply-status-list/status")
+    public ResponseEntity<Object> updateApply(@RequestBody UpdateApplyRequestDTO request){
+
+        ApplicationUserDetailsResponseDTO result = applicationService.updateApply(request);
+        return ResponseHandler.generateResponse("지원서 진행사항 수정 성공", HttpStatus.OK, result);
+    }
 
 }

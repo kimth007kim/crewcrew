@@ -614,6 +614,10 @@ main{
 
 @media screen and (max-width:300px){
 
+    .MainTop .ButtonIntro{
+        right: 10px;
+    }
+
     .TopCont{
         
         h2, h3{
@@ -659,7 +663,7 @@ main{
     display: flex;
     justify-content: space-between;
     width: 598px;
-    margin: 48px auto 124px;
+    margin: 48px auto 64px;
 
     div{
         width: 32px;

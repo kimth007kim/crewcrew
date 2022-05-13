@@ -524,3 +524,12 @@ $Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
         top: 0;
     }
 }
+
+@media screen and (max-width: 300px) {
+    .MobileGnb, .MobileNav{
+        padding: 0 10px;
+    }
+    .NavHam{
+        left: 10px;
+    }
+}

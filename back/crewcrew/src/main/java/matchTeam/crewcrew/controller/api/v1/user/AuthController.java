@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -247,6 +249,7 @@ public class AuthController {
     })
     public ResponseEntity<Object> checkNickName(@PathVariable String nickName) {
         userService.validateDuplicateByNickname(nickName);
+        userService.validateDuplicateByNickname(nickName);
         return ResponseHandler.generateResponse("닉네임 중복 확인 성공", HttpStatus.OK, true);
     }
 
@@ -418,5 +421,18 @@ public class AuthController {
         return ResponseHandler.generateResponse("인증 코드 일치", HttpStatus.OK, null);
     }
 
+
+    @PostMapping("/cookie/test")
+    public ResponseEntity<Object> cookieTest(HttpServletResponse response) {
+        System.out.println("안녕");
+        // 나중에 이름이나 닉네임으로 추가 인증
+        Cookie myCookie = new Cookie("AccessToken","hello");
+        myCookie.setDomain("crewcrew.org");
+        myCookie.setPath("/");
+        myCookie.setHttpOnly(true);
+        myCookie.setSecure(true);
+        response.addCookie(myCookie);
+        return ResponseHandler.generateResponse("인증 코드 일치", HttpStatus.OK, null);
+    }
 
 }

@@ -1,17 +1,21 @@
 package matchTeam.crewcrew.repository.application;
 
 
+import com.querydsl.core.dml.UpdateClause;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.application.*;
+import matchTeam.crewcrew.entity.application.QApplication;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static matchTeam.crewcrew.entity.board.QBoard.board;
@@ -142,9 +146,9 @@ public class ApplicationQueryRepository {
      * @param specs - 검색 조건
      * @return
      */
-    public List<ApplicationUserDetailsResponseDTO> getArrivedApplier(ApplicationApplierSpecs specs){
+    public List<ArrivedApplierDetailsDTO> getArrivedApplier(ApplicationApplierSpecs specs){
         return queryFactory
-                .selectDistinct(Projections.constructor(ApplicationUserDetailsResponseDTO.class, user, application))
+                .selectDistinct(Projections.constructor(ArrivedApplierDetailsDTO.class, user, application))
                 .from(user)
                     .innerJoin(application)
                     .on(application.user.uid.eq(user.uid))
@@ -169,6 +173,15 @@ public class ApplicationQueryRepository {
     }
 
 
+    /* 벌크연산 때문에 엔티티에 직접 update 되지 않음. 또한 한번에 바꾸는 것이 아니므로 굳이 update를 사용할 필요가 없다 @Transactional
+    public void updateApply(UpdateApplyRequestDTO request){
+        queryFactory
+                .update(application)
+                .set(application.progress, ApplicationStatus.from(request.getStatus()).getStatusCode())
+                .where(application.id.eq(request.getApId()))
+                .execute();
+    }*/
+
     public Long getTheNumberOfWaiting(ApplicationApplierSpecs specs){
         return queryFactory
                 .select(board.id.count())
@@ -185,5 +198,6 @@ public class ApplicationQueryRepository {
     private BooleanExpression approachCodeIn(List<Integer> approach){
         return isEmpty(approach) ? null : board.approach.in(approach);
     }
+
 
 }

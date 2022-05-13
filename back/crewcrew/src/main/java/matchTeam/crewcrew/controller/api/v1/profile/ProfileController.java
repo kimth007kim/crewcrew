@@ -3,6 +3,7 @@ package matchTeam.crewcrew.controller.api.v1.profile;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.user.LikedCategoryDto;
+import matchTeam.crewcrew.dto.user.ProfileChangTestDto;
 import matchTeam.crewcrew.dto.user.ProfileChangeRequestDto;
 import matchTeam.crewcrew.dto.user.example.UserResponseDto;
 import matchTeam.crewcrew.entity.user.User;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -119,6 +121,15 @@ public class ProfileController {
         String name = profileChangeRequestDto.getName();
         List<Long> categoryId= profileChangeRequestDto.getCategoryId();
         String message = profileChangeRequestDto.getMessage();
+        if (categoryId == null){
+            categoryId=new ArrayList<Long>();
+        }
+
+        System.out.println(password);
+        System.out.println(nickName);
+        System.out.println(name);
+        System.out.println(categoryId);
+        System.out.println(message);
 
         User user = userService.tokenChecker(token);
 
@@ -127,84 +138,27 @@ public class ProfileController {
             String filename = s3Uploader.upload(file, tempName, "profile");
             userService.setProfileImage(user, filename);
         }
+        userService.validProfileChange(user,password,name,nickName,categoryId,message);
         userService.profileChange(user, password, name, nickName, categoryId, message);
         return ResponseHandler.generateResponse("성공", HttpStatus.OK, "변경 성공");
     }
-//    @ApiResponses({
-//            @ApiResponse(
-//                    code = 200
-//                    , message = "회원가입 성공"
-//                    , response = UserResponseDto.class
-//            )
-//            , @ApiResponse(
-//            code = 1007
-//            , message = "이미 존재하는 닉네임 입니다. "
-//    )       , @ApiResponse(
-//            code = 1009
-//            , message = "비밀번호에 이모지가 존재합니다.  "
-//    )       , @ApiResponse(
-//            code = 1010
-//            , message = "비밀번호가 8~25자 가 아니거나 특수문자나 영어 숫자가 최소 1개 이상 포함되어있지 않습니다."
-//    )       , @ApiResponse(
-//            code = 1011
-//            , message = "비밀번호에 공백이 발견되었습니다."
-//    )
-//            , @ApiResponse(
-//            code = 1012
-//            , message = "이름이 0자이거나 10자를 초과하였습니다."
-//    )
-//            , @ApiResponse(
-//            code = 1013
-//            , message = "닉네임이 0자이거나 16자를 초과하였습니다."
-//    )       , @ApiResponse(
-//            code = 1014
-//            , message = "한줄 메세지가 0자이거나 25자를 초과하였습니다."
-//    )
-//            , @ApiResponse(
-//            code = 1501
-//            , message = "S3에 업로드하는것을 실패하였습니다."
-//    )
-//            , @ApiResponse(
-//            code = 1502
-//            , message = "S3에 업로드할 파일을 찾을 수 없습니다."
-//    )
-//            , @ApiResponse(
-//            code = 1900
-//            , message = "입력받은 엑세스토큰에 해당하는 유저가없습니다."
-//    )
-//            , @ApiResponse(
-//            code = 3001
-//            , message = "카테고리가 선택되지 않았습니다."
-//    )
-//            , @ApiResponse(
-//            code = 3002
-//            , message = "닉네임이 입력되지 않았습니다."
-//    )
-//            , @ApiResponse(
-//            code = 3003
-//            , message = "이름이 입력되지 않았습니다."
-//    )
-//            , @ApiResponse(
-//            code = 3004
-//            , message = "메세지가 입력되지 않았습니다."
-//    )
-//    })
-//    @PutMapping(value = "/mypage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ResponseEntity<Object> profileChange(
-//            @RequestHeader("X-AUTH-TOKEN") String token,
-//            @ApiParam(value = "비밀번호")
-//            @RequestParam(required = false) String password,
-//            @ApiParam(value = "회원 이름")
-//            @RequestParam(required = true) String name,
-//            @ApiParam(value = "회원 닉네임")
-//            @RequestParam(required = true) String nickName,
-//            @ApiParam(value = "프로필 이미지")
-//            @RequestParam(required = false) MultipartFile file,
-//            @ApiParam(value = "회원이 좋아하는 카테고리 ID")
-//            @RequestParam(required = true) List<Long> categoryId,
-//            @ApiParam(value = "한줄 메세지")
-//            @RequestParam(required = true) String message) throws IOException {
-//
+
+
+
+    @PutMapping(value = "/test", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Object> profileTest(@RequestPart(value="ProfileChangeRequestDto")ProfileChangTestDto profileChangTestDto, @RequestPart(value = "file",required = false) MultipartFile file) throws IOException {
+        String password = profileChangTestDto.getPassword();
+        String nickName = profileChangTestDto.getNickName();
+        String name = profileChangTestDto.getName();
+        List<Long> categoryId= profileChangTestDto.getCategoryId();
+        String message = profileChangTestDto.getMessage();
+
+
+        System.out.println(password);
+        System.out.println(nickName);
+        System.out.println(name);
+        System.out.println(categoryId);
+        System.out.println(message);
 //
 //        User user = userService.tokenChecker(token);
 //
@@ -214,52 +168,8 @@ public class ProfileController {
 //            userService.setProfileImage(user, filename);
 //        }
 //        userService.profileChange(user, password, name, nickName, categoryId, message);
-//        return ResponseHandler.generateResponse("성공", HttpStatus.OK, user);
-//    }
+        return ResponseHandler.generateResponse("성공", HttpStatus.OK, "변경 성공");
+    }
 
-//    @PostMapping("/changeProfileImage")
-//    @ApiOperation(value = "프로필 이미지 변경", notes = "이미지를 입력받아서 s3에 등록하고 db에 그 url을 저장합니다.")
-//    public ResponseEntity<Object> changeProfileImage(@RequestParam MultipartFile files, String email, String provider) throws IOException {
-//        User user = userService.findByEmailAndProvider(email, "local").orElseThrow(CUserNotFoundException::new);
-//
-//        StringBuilder sb = new StringBuilder();
-//        sb.append(email);
-//        sb.append("_local");
-//
-//        String filename = s3Uploader.upload(files, sb.toString(), "profile");
-//        userService.setProfileImage(user, filename);
-//
-//
-//        return ResponseHandler.generateResponse("성공", HttpStatus.OK, filename);
-//    }
-//
-//
-//    @PostMapping("/changeDefaultImage")
-//    @ApiOperation(value = "프로필 이미지 변경", notes = "기본이미지로 변경하기")
-//    public ResponseEntity<Object> changeDefaultImage(Integer number, String email) throws IOException {
-//        User user = userService.findByEmailAndProvider(email, "local").orElseThrow(CUserNotFoundException::new);
-//
-//        String filename = s3Uploader.setDefaultImage(email, number);
-//
-//        return ResponseHandler.generateResponse("성공", HttpStatus.OK, filename);
-//    }
-//
-//    @PostMapping("/password/change")
-//    public ResponseEntity<Object> changePwd(@PathVariable String email, String previous, String change_password) {
-//        userService.findByEmailAndProvider(email, "local").orElseThrow(LoginFailedByEmailNotExistException::new);
-//        User user = userService.findByEmailAndProvider(email, "local").get();
-//        userService.changePassword(user, change_password);
-//        return ResponseHandler.generateResponse("성공", HttpStatus.OK, change_password);
-//    }
-//
-//    @PostMapping("/addCategory")
-//    public ResponseEntity<Object> addCategory(@RequestBody LikedCategoryDto likedCategoryDto) {
-//        System.out.println(likedCategoryDto.getEmail() + "      -     " + likedCategoryDto.getProvider());
-//        User user = userService.findByEmailAndProvider(likedCategoryDto.getEmail(), likedCategoryDto.getProvider()).orElseThrow(LoginFailedByEmailNotExistException::new);
-//        List<Long> input = likedCategoryService.deleteDuplicateCategory(likedCategoryDto.getCategoryId());
-//        List<Long> usersLike = likedCategoryService.findUsersLike(user);
-//        List<Long> result = likedCategoryService.addLikedCategory(user, input);
-//        return ResponseHandler.generateResponse("성공", HttpStatus.OK, result);
-//    }
 
 }

@@ -310,10 +310,11 @@ aside{
 
         h2{
             order: 1;
-            font-size: 18px;
+            font-size: 15px;
 
             &::before{
                 background-position: 0 1px;
+                margin-right: 12px;
             }
         }
 
@@ -446,6 +447,10 @@ aside{
 }
 
 @media screen and (max-width:300px) {
+
+    div.TopCont{
+        width: calc(100% - 20px);
+    }
 
     .PostDetail{
 

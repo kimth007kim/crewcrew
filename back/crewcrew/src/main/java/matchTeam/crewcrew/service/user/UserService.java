@@ -86,113 +86,187 @@ public class UserService {
         System.out.println(refreshToken);
         boolean maintain = userLoginRequestDto.isMaintain();
         if (refreshToken.isPresent() && (jwtProvider.validateToken(refreshToken.get().getToken()) == true)) {
-            TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles(), maintain);
+//            TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles(), maintain);
             refreshTokenJpaRepository.deleteByPkey(refreshToken.get().getPkey());
         }
-            //       1. Refresh 토큰이 존재하면 그걸 토대로 access토큰 발급
-            //        2. Refresh 토큰 없으면 새로 Refresh토큰 발급후 그걸 토대로 accesss토큰 발급
-            //        TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles(),maintain);
-            TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles(), userLoginRequestDto.isMaintain());
+        //       1. Refresh 토큰이 존재하면 그걸 토대로 access토큰 발급
+        //        2. Refresh 토큰 없으면 새로 Refresh토큰 발급후 그걸 토대로 accesss토큰 발급
+        //        TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles(),maintain);
+        TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles(), userLoginRequestDto.isMaintain());
 
-            // RefreshToken 저장
-            RefreshToken refresh_Token = RefreshToken.builder()
-                    .pkey(user.getUid())
-                    .token(tokenDto.getRefreshToken())
-                    .build();
-            refreshTokenJpaRepository.save(refresh_Token);
-            return tokenDto;
+        // RefreshToken 저장
+        RefreshToken refresh_Token = RefreshToken.builder()
+                .pkey(user.getUid())
+                .token(tokenDto.getRefreshToken())
+                .build();
+        refreshTokenJpaRepository.save(refresh_Token);
+        return tokenDto;
 
 
+    }
+
+    public TokenDto reissue(TokenRequestDto tokenRequestDto) {
+        if (!jwtProvider.validateToken(tokenRequestDto.getRefreshToken())) {
+            throw new CRefreshTokenException();
+            //1901 리프레시토큰이 유효하지않습니다.
         }
 
-        public TokenDto reissue (TokenRequestDto tokenRequestDto){
-            if (!jwtProvider.validateToken(tokenRequestDto.getRefreshToken())) {
-                throw new CRefreshTokenException();
-                //1901 리프레시토큰이 유효하지않습니다.
-            }
-
-            //AccessToken 에서 UserPk가져오기
-            String accessToken = tokenRequestDto.getAccessToken();
-            Authentication authentication = jwtProvider.getAuthentication(accessToken);
+        //AccessToken 에서 UserPk가져오기
+        String accessToken = tokenRequestDto.getAccessToken();
+        Authentication authentication = jwtProvider.getAuthentication(accessToken);
 
 
-            //userPk로 user검색 /repo에 저장된 refreshtoken이 없음
-            User user = userRepository.findById(Long.parseLong(authentication.getName()))
-                    .orElseThrow(CUserNotFoundException::new);
-            //1902 토큰의 pk로 유저를 찾을수 없습니다.
-            RefreshToken refreshToken = refreshTokenJpaRepository.findByPkey(user.getUid())
-                    .orElseThrow(CRefreshTokenNotExistInDBException::new);
-            //1903 DB에 해당 Refresh 토큰이 존재하지않습니다.
+        //userPk로 user검색 /repo에 저장된 refreshtoken이 없음
+        User user = userRepository.findById(Long.parseLong(authentication.getName()))
+                .orElseThrow(CUserNotFoundException::new);
+        //1902 토큰의 pk로 유저를 찾을수 없습니다.
+        RefreshToken refreshToken = refreshTokenJpaRepository.findByPkey(user.getUid())
+                .orElseThrow(CRefreshTokenNotExistInDBException::new);
+        //1903 DB에 해당 Refresh 토큰이 존재하지않습니다.
 
-            // 리프레시 토큰 불일치 에러
-            if (!refreshToken.getToken().equals(tokenRequestDto.getRefreshToken()))
-                throw new CRefreshTokenNotMatchWithInputException();
-            //입력받은 Refresh 토큰이 DB에 저장된 Refresh 토큰과 다릅니다.
+        // 리프레시 토큰 불일치 에러
+        if (!refreshToken.getToken().equals(tokenRequestDto.getRefreshToken()))
+            throw new CRefreshTokenNotMatchWithInputException();
+        //입력받은 Refresh 토큰이 DB에 저장된 Refresh 토큰과 다릅니다.
 
-            //AccessToken , refreshToken 토큰 재발급 ,리프레시 토큰 저장
-            TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles(), false);
-            RefreshToken updateRefreshToken = refreshToken.updateToken(newCreatedToken.getRefreshToken());
-            refreshTokenJpaRepository.save(updateRefreshToken);
+        //AccessToken , refreshToken 토큰 재발급 ,리프레시 토큰 저장
+        TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles(), false);
+        RefreshToken updateRefreshToken = refreshToken.updateToken(newCreatedToken.getRefreshToken());
+        refreshTokenJpaRepository.save(updateRefreshToken);
 
-            return newCreatedToken;
-        }
+        return newCreatedToken;
+    }
 
-        public boolean stringCheck (String str){
-            return str == null || str.isBlank();
+    public boolean stringCheck(String str) {
+        return str == null;
 
-        }
+    }
 
-        public void profileChange (User user, String password, String name, String
-        nickName, List < Long > categoryId, String message){
+    public boolean blankCheck(String str) {
+        return str.isBlank();
+    }
 
-            if (categoryId == null || categoryId.size() == 0) {
-                throw new ProfileEmptyCategoryException();
-            }
-            List<Long> usersLike = likedCategoryService.findUsersLike(user);
-            likedCategoryService.ChangeUsersLike(user, categoryId, usersLike);
-            if (!stringCheck(password)) {
-                validationPasswd(password);
-                changePassword(user, password);
-            }
+//    public void profileChange(User user, String password, String name, String
+//            nickName, List<Long> categoryId, String message) {
+//        // null값들어오는걸로 바꾸기
+////            if (categoryId == null || categoryId.size() == 0) {
+////                throw new ProfileEmptyCategoryException();
+////            }
+//        List<Long> usersLike = likedCategoryService.findUsersLike(user);
+//        likedCategoryService.ChangeUsersLike(user, categoryId, usersLike);
 //
-            if (stringCheck(nickName)) {
+//        if (!stringCheck(password)) {
+//            validationPasswd(password);
+//            changePassword(user, password);
+//        }
+////
+//        if (stringCheck(nickName)) {
+//            throw new ProfileEmptyNickNameException();
+//        } else if (!nickName.equals(user.getNickname())) {
+//            validationNickName(nickName);
+//            validateDuplicateByNickname(nickName);
+//            user.setNickname(nickName);
+//
+//        }
+//
+//        if (stringCheck(name)) {
+//            throw new ProfileEmptyNameException();
+//        } else if (!name.equals(user.getName())) {
+//            validationName(name);
+//            user.setNickname(name);
+//        }
+//        if (stringCheck(message)) {
+//            throw new ProfileEmptyNameException();
+//        } else if (!message.equals(user.getMessage())) {
+//            validationMessage(message);
+//            user.setMessage(message);
+//        }
+//    }
+
+    public void validProfileChange(User user, String password, String name, String
+            nickName, List<Long> categoryId, String message) {
+
+
+//            if (categoryId == null || categoryId.size() == 0) {
+//                throw new ProfileEmptyCategoryException();
+//            }
+//        List<Long> usersLike = likedCategoryService.findUsersLike(user);
+//        likedCategoryService.ChangeUsersLike(user, categoryId, usersLike);
+
+        if (!stringCheck(password)) {
+            if (blankCheck(password)) {
+                throw new PasswordBlankException();
+            }
+            validationPasswd(password);
+//            changePassword(user, password);
+        }
+//
+        if (!stringCheck(nickName)) {
+            if (blankCheck(nickName)) {
                 throw new ProfileEmptyNickNameException();
-            } else if (!nickName.equals(user.getNickname())) {
-                validationNickName(nickName);
-                validateDuplicateByNickname(nickName);
-                user.setNickname(nickName);
-
             }
+            validationNickName(nickName);
+            validateDuplicateByNickname(nickName);
+//            user.setNickname(nickName);
+        }
 
-            if (stringCheck(name)) {
+        if (!stringCheck(name)) {
+            if (blankCheck(name)) {
                 throw new ProfileEmptyNameException();
-            } else if (!name.equals(user.getName())) {
-                validationName(name);
-                user.setNickname(name);
             }
-            if (stringCheck(message)) {
+            validationName(name);
+//            user.setName(name);
+        }
+        if (!stringCheck(message)) {
+            if (blankCheck(message)) {
                 throw new ProfileEmptyNameException();
-            } else if (!message.equals(user.getMessage())) {
-                validationMessage(message);
-                user.setMessage(message);
             }
+            validationMessage(message);
+//            user.setMessage(message);
         }
+        System.out.println(password);
+        System.out.println(nickName);
+        System.out.println(name);
+        System.out.println(message);
 
-        public Long kakaoSignup (UserSignUpRequestDto userSignUpRequestDto){
-            Optional<User> user = userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider());
-            System.out.println(user);
-            if (userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider())
-                    .isPresent()) throw new CKakaoUserAlreadyExistException();
-            return userRepository.save(userSignUpRequestDto.toEntity("kakao")).getUid();
-        }
+    }
 
-        public Long naverSignup (UserSignUpRequestDto userSignUpRequestDto){
-            Optional<User> user = userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider());
-            System.out.println(user);
-            if (userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider())
-                    .isPresent()) throw new CUserAlreadyExistException();
-            return userRepository.save(userSignUpRequestDto.toEntity("naver")).getUid();
+    public void profileChange(User user, String password, String name, String
+            nickName, List<Long> categoryId, String message) {
+        List<Long> usersLike = likedCategoryService.findUsersLike(user);
+        likedCategoryService.ChangeUsersLike(user, categoryId, usersLike);
+        if (!stringCheck(password)) {
+            changePassword(user, password);
         }
+        if (!stringCheck(name)) {
+            user.setName(name);
+        }
+        if (!stringCheck(nickName)) {
+            user.setNickname(nickName);
+        }
+        if (!stringCheck(nickName)) {
+            user.setNickname(nickName);
+        }
+        if (!stringCheck(message)) {
+            user.setMessage(message);
+        }
+    }
+
+    public Long kakaoSignup(UserSignUpRequestDto userSignUpRequestDto) {
+        Optional<User> user = userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider());
+        System.out.println(user);
+        if (userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider())
+                .isPresent()) throw new CKakaoUserAlreadyExistException();
+        return userRepository.save(userSignUpRequestDto.toEntity("kakao")).getUid();
+    }
+
+    public Long naverSignup(UserSignUpRequestDto userSignUpRequestDto) {
+        Optional<User> user = userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider());
+        System.out.println(user);
+        if (userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider())
+                .isPresent()) throw new CUserAlreadyExistException();
+        return userRepository.save(userSignUpRequestDto.toEntity("naver")).getUid();
+    }
 
 //    public void passwordCheck(User user, String previous) {
 //        System.out.println("---------         " + previous + "     ------------ " + user.getPassword());
@@ -201,155 +275,155 @@ public class UserService {
 //        }
 //    }
 
-        public void validationPasswd (String pw){
-            Pattern p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
-            Matcher m = p.matcher(pw);
+    public void validationPasswd(String pw) {
+        Pattern p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
+        Matcher m = p.matcher(pw);
 
-            Pattern blank = Pattern.compile("(\\s)");
-            Matcher m_blank = blank.matcher(pw);
+        Pattern blank = Pattern.compile("(\\s)");
+        Matcher m_blank = blank.matcher(pw);
 
-            Pattern emoji_m = Pattern.compile("[\\x{10000}-\\x{10ffff}\ud800-\udfff]");
-            Matcher emoji_p = emoji_m.matcher(pw);
+        Pattern emoji_m = Pattern.compile("[\\x{10000}-\\x{10ffff}\ud800-\udfff]");
+        Matcher emoji_p = emoji_m.matcher(pw);
 
 
-            if (m_blank.find()) {
-                throw new PasswordBlankException();
-            }
-            if (emoji_p.find()) {
-                throw new PasswordEmojiException();
-            }
-            if (!m.matches()) {
-                throw new PasswordInvalidException();
-            }
+        if (m_blank.find()) {
+            throw new PasswordBlankException();
         }
-
-
-        public void setProfileImage (User user, String image){
-            user.setProfileImage(image);
+        if (emoji_p.find()) {
+            throw new PasswordEmojiException();
         }
-
-        public void setMessage (User user, String message){
-            user.setMessage(message);
+        if (!m.matches()) {
+            throw new PasswordInvalidException();
         }
+    }
 
-        public void changePassword (User user, String password){
-            String new_password = passwordEncoder.encode(password);
-            user.setPassword(new_password);
+
+    public void setProfileImage(User user, String image) {
+        user.setProfileImage(image);
+    }
+
+    public void setMessage(User user, String message) {
+        user.setMessage(message);
+    }
+
+    public void changePassword(User user, String password) {
+        String new_password = passwordEncoder.encode(password);
+        user.setPassword(new_password);
+    }
+
+    public void validationNickName(String nickName) {
+
+        System.out.println("-------------길이-------" + nickName.length());
+        System.out.println(nickName);
+        if (nickName.length() <= 0) {
+            System.out.println(nickName.length() + "에러 짧아서 발생");
+
+            throw new NickNameInvalidException();
+        } else if (nickName.length() > 15) {
+            System.out.println(nickName.length() + "에러 길어서 발생");
+            throw new NickNameInvalidException();
         }
+    }
 
-        public void validationNickName (String nickName){
+    public void validationName(String name) {
+        System.out.println("-------------길이-------" + name.length());
+        if (name.length() <= 0) {
+            System.out.println(name.length() + "에러 짧아서 발생");
 
-            System.out.println("-------------길이-------" + nickName.length());
-            System.out.println(nickName);
-            if (nickName.length() <= 0) {
-                System.out.println(nickName.length() + "에러 짧아서 발생");
-
-                throw new NickNameInvalidException();
-            } else if (nickName.length() > 15) {
-                System.out.println(nickName.length() + "에러 길어서 발생");
-                throw new NickNameInvalidException();
-            }
+            throw new NameInvalidException();
+        } else if (name.length() > 10) {
+            System.out.println(name.length() + "에러 길어서 발생");
+            throw new NameInvalidException();
         }
+    }
 
-        public void validationName (String name){
-            System.out.println("-------------길이-------" + name.length());
-            if (name.length() <= 0) {
-                System.out.println(name.length() + "에러 짧아서 발생");
+    public void validationMessage(String message) {
+        System.out.println("-------------길이-------" + message.length());
+        if (message.length() <= 0) {
+            System.out.println(message.length() + "에러 짧아서 발생");
 
-                throw new NameInvalidException();
-            } else if (name.length() > 10) {
-                System.out.println(name.length() + "에러 길어서 발생");
-                throw new NameInvalidException();
-            }
+            throw new MessageInvalidException();
+        } else if (message.length() > 25) {
+            System.out.println(message.length() + "에러 길어서 발생");
+            throw new MessageInvalidException();
         }
+    }
 
-        public void validationMessage (String message){
-            System.out.println("-------------길이-------" + message.length());
-            if (message.length() <= 0) {
-                System.out.println(message.length() + "에러 짧아서 발생");
+    public void setRandomMessage(User user) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("M");
+        int random = (int) ((Math.random() * 5));
+        sb.append(random);
+        String message = UserMessage.valueOf(sb.toString()).getMessage();
+        user.setMessage(message);
 
-                throw new MessageInvalidException();
-            } else if (message.length() > 25) {
-                System.out.println(message.length() + "에러 길어서 발생");
-                throw new MessageInvalidException();
-            }
-        }
+    }
 
-        public void setRandomMessage (User user){
+    public String nickNameGenerator(String nickName) {
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 6;
+        Random random = new Random();
+        while (true) {
+            String generated = random.ints(leftLimit, rightLimit + 1)
+                    .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                    .limit(targetStringLength)
+                    .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                    .toString();
+
             StringBuilder sb = new StringBuilder();
-            sb.append("M");
-            int random = (int) ((Math.random() * 5));
-            sb.append(random);
-            String message = UserMessage.valueOf(sb.toString()).getMessage();
-            user.setMessage(message);
-
-        }
-
-        public String nickNameGenerator (String nickName){
-            int leftLimit = 48; // numeral '0'
-            int rightLimit = 122; // letter 'z'
-            int targetStringLength = 6;
-            Random random = new Random();
-            while (true) {
-                String generated = random.ints(leftLimit, rightLimit + 1)
-                        .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                        .limit(targetStringLength)
-                        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                        .toString();
-
-                StringBuilder sb = new StringBuilder();
-                sb.append(nickName);
-                sb.append("#");
-                sb.append(generated);
-                if (userRepository.findByNickname(sb.toString()).isEmpty()) {
-                    return sb.toString();
-                }
-
+            sb.append(nickName);
+            sb.append("#");
+            sb.append(generated);
+            if (userRepository.findByNickname(sb.toString()).isEmpty()) {
+                return sb.toString();
             }
 
-
-        }
-
-        public List<UserResponseDto> findUsers () {
-            List<User> result = userRepository.findAll();
-            int length = result.size();
-            List<UserResponseDto> users = new ArrayList<>();
-            for (int i = 0; i < length; i++) {
-                User user = result.get(i);
-//            System.out.println("ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅋㅎ------------------------"+user.getUid());
-                UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), likedCategoryService.findUsersLike(user), user.getMessage(), user.getProvider());
-                users.add(userResponseDto);
-            }
-            return users;
-        }
-
-        public Optional<User> findByEmail (String email){
-            return userRepository.findByEmail(email);
-        }
-
-
-        public void validateDuplicateByNickname (String nickname){
-            if (!userRepository.findByNickname(nickname).isEmpty()) {
-                throw new NickNameAlreadyExistException();
-            }
-        }
-
-
-        public User tokenChecker (String accessToken){
-            if (!jwtProvider.validateToken(accessToken)) {
-                throw new CInvalidTokenException();
-            }
-            Claims c = jwtProvider.parseClaims(accessToken);
-            String uid = c.getSubject();
-            System.out.println("Claims=  " + c + "  uid= " + uid);
-            if (userRepository.findById(Long.valueOf(uid)).isEmpty()) {
-                throw new UidNotExistException();
-            }
-            User user = userRepository.findByUid(Long.valueOf(uid));
-
-
-            return user;
         }
 
 
     }
+
+    public List<UserResponseDto> findUsers() {
+        List<User> result = userRepository.findAll();
+        int length = result.size();
+        List<UserResponseDto> users = new ArrayList<>();
+        for (int i = 0; i < length; i++) {
+            User user = result.get(i);
+//            System.out.println("ㄱㄴㄷㄹㅁㅂㅅㅇㅈㅋㅎ------------------------"+user.getUid());
+            UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), likedCategoryService.findUsersLike(user), user.getMessage(), user.getProvider());
+            users.add(userResponseDto);
+        }
+        return users;
+    }
+
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+
+    public void validateDuplicateByNickname(String nickname) {
+        if (!userRepository.findByNickname(nickname).isEmpty()) {
+            throw new NickNameAlreadyExistException();
+        }
+    }
+
+
+    public User tokenChecker(String accessToken) {
+        if (!jwtProvider.validateToken(accessToken)) {
+            throw new CInvalidTokenException();
+        }
+        Claims c = jwtProvider.parseClaims(accessToken);
+        String uid = c.getSubject();
+        System.out.println("Claims=  " + c + "  uid= " + uid);
+        if (userRepository.findById(Long.valueOf(uid)).isEmpty()) {
+            throw new UidNotExistException();
+        }
+        User user = userRepository.findByUid(Long.valueOf(uid));
+
+
+        return user;
+    }
+
+
+}

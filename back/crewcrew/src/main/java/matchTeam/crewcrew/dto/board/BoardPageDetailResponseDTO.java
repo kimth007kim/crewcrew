@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import matchTeam.crewcrew.entity.board.Board;
+import matchTeam.crewcrew.entity.bookmark.Bookmark;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -66,9 +67,12 @@ public class BoardPageDetailResponseDTO {
     @ApiModelProperty(value = "만료여부", notes = "만료여부를 true(만료x) or false(만료됨)로 표현", example = "1")
     private Boolean viewable;
 
+    @ApiModelProperty(value = "북마크 여부")
+    private Boolean isBookmarked;
+
     @QueryProjection
     @Builder
-    public BoardPageDetailResponseDTO(Board res) {
+    public BoardPageDetailResponseDTO(Board res, Boolean isBookmarked) {
         this.boardId = res.getId();
         this.title = res.getTitle();
         this.uid = res.getUser().getUid();
@@ -85,6 +89,7 @@ public class BoardPageDetailResponseDTO {
         this.expiredDate = res.getExpiredDate();
         this.hit = res.getHit();
         this.viewable = res.getViewable();
+        this.isBookmarked = isBookmarked;
     }
 
 

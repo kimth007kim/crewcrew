@@ -3,12 +3,11 @@ package matchTeam.crewcrew.repository.board;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.board.BoardPageDetailResponseDTO;
-import matchTeam.crewcrew.dto.board.BoardResponseDTO;
-import matchTeam.crewcrew.dto.board.QBoardResponseDTO;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.response.exception.board.NotExistOrderKeywordException;
@@ -24,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static matchTeam.crewcrew.entity.board.QBoard.board;
+import static matchTeam.crewcrew.entity.bookmark.QBookmark.bookmark;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static org.springframework.util.StringUtils.hasText;
 
@@ -37,8 +37,13 @@ public class BoardSearchRepository{
 
     public Page<BoardPageDetailResponseDTO> search(BoardSpecs boardSpecs, Pageable pageable) {
         List<BoardPageDetailResponseDTO> content = queryFactory
-                .select(Projections.constructor(BoardPageDetailResponseDTO.class, board))
+                .select(Projections.constructor(BoardPageDetailResponseDTO.class, board,
+                        new CaseBuilder()
+                                .when(bookmark.boardId.id.isNull())
+                                .then(false).otherwise(true)))
                 .from(board)
+                .leftJoin(bookmark)
+                .on(board.id.eq(bookmark.boardId.id))
                 .where(
                         board.viewable.eq(true),
                         approachCodeIn(boardSpecs.getApproach()),
@@ -53,6 +58,8 @@ public class BoardSearchRepository{
         JPAQuery<Board> countQuery = queryFactory
                 .select(board)
                 .from(board)
+                .leftJoin(bookmark)
+                .on(board.id.eq(bookmark.boardId.id))
                 .where(
                         board.viewable.eq(true),
                         approachCodeIn(boardSpecs.getApproach()),

@@ -9,6 +9,7 @@ import matchTeam.crewcrew.repository.application.ApplicationQueryRepository;
 import matchTeam.crewcrew.repository.application.ApplicationRepository;
 import matchTeam.crewcrew.repository.board.BoardRepository;
 import matchTeam.crewcrew.repository.board.CategoryRepository;
+import matchTeam.crewcrew.repository.user.LikedCategoryRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
 import matchTeam.crewcrew.response.exception.application.*;
 import matchTeam.crewcrew.response.exception.board.NotExistBoardInIdException;
@@ -22,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 @Service
 public class ApplicationService {
     private final ApplicationRepository applicationRepository;
@@ -30,6 +30,7 @@ public class ApplicationService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
+    private final LikedCategoryRepository likedCategoryRepository;
 
     @Transactional
     public ApplicationSaveResponseDTO save(ApplicationSaveRequestDTO req){
@@ -84,7 +85,22 @@ public class ApplicationService {
             throw new NotMatchBoardOwnerException();
         }
 
-        return ArrivedApplicationUserDetailsResponseDTO.toDTO(queryRepository.getArrivedApplier(specs), queryRepository.getTheNumberOfWaiting(specs));
+        List<ArrivedApplierDetailsDTO> arrivedApplier = queryRepository.getArrivedApplier(specs);
+        for (ArrivedApplierDetailsDTO res: arrivedApplier) {
+            res.setLikedCategoryList(likedCategoryRepository.findByUser(userRepository.findByUid(res.getUid())));
+        }
+
+        return ArrivedApplicationUserDetailsResponseDTO.toDTO(arrivedApplier, queryRepository.getTheNumberOfWaiting(specs));
+    }
+
+    @Transactional
+    public ApplicationUserDetailsResponseDTO updateApply(UpdateApplyRequestDTO request){
+        User user = userRepository.findByUid(request.getUid());
+        Application ap = applicationRepository.findById(request.getApId())
+                .orElseThrow(NotExistApIdException::new);
+
+        ap.updateProgress(request.getStatus());
+        return ApplicationUserDetailsResponseDTO.builder().ap(ap).res(user).build();
     }
 
     //중복 지원했을때
