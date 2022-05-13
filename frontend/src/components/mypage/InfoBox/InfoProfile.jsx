@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Cookies } from 'react-cookie';
 import styled, { css } from 'styled-components';
 import useSWR from 'swr';
@@ -41,6 +41,76 @@ function InfoProfile() {
   const [messageFocus, setMessageFocus] = useState(false);
   const [messageSetting, setMessageSetting] = useState(true);
 
+  // 이미지
+
+  const inputFileRef = useRef(null);
+  const [file, setFile] = useState(null);
+
+  // 이미지 변경 함수
+
+  const deleteFile = useCallback(() => {
+    setFile(null);
+
+    inputFileRef.current.value = '';
+  }, [file]);
+
+  const HandleImageUpload = useCallback(async () => {
+    try {
+      if (!file) {
+        return null;
+      }
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const { data } = await axios.put('/profile/mypage', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      switch (data.status) {
+        case 200:
+          mutate('/user/token');
+          deleteFile();
+          toast.success('성공적으로 변경되었습니다.');
+          break;
+        case 1501:
+        case 1502:
+          toast.error(data.message);
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      toast.error('알 수 없는 오류가 발생했습니다. 새로고침 후 다시 시도해주시길 바랍니다');
+      console.dir(error);
+    }
+  }, [file]);
+
+  const HandleImageChange = useCallback(
+    (e) => {
+      const fileImg = e.target.files[0];
+      if (!fileImg) {
+        return null;
+      }
+      const filesize = Number((fileImg.size / 1024 / 1024).toFixed(4));
+      if (filesize >= 10) {
+        deleteFile();
+
+        toast.error('이미지 사이즈가 너무 큽니다.');
+        return null;
+      }
+
+      if (!(fileImg && fileImg.type.startsWith('image/'))) {
+        deleteFile();
+
+        toast.error('잘못된 파일입니다.');
+        return null;
+      }
+      HandleImageUpload();
+    },
+    [file],
+  );
   // 닉네임 변경 함수
 
   const HandleNicknameChange = useCallback((e) => {
@@ -106,6 +176,8 @@ function InfoProfile() {
     setMessageValid(false);
   }, []);
 
+  // 텍스트 필드 변경 함수
+
   const HandleFieldSet = useCallback((setSetting) => {
     setSetting(false);
   }, []);
@@ -139,8 +211,15 @@ function InfoProfile() {
             <MyProfile>
               <img src={myData.data.file} alt="" />
             </MyProfile>
-            <InputHide type="file" id="ProfileSetting" />
-            <Setting htmlFor="ProfileSetting">프로필 세팅하기</Setting>
+            <InputHide
+              type="file"
+              id="ProfileSetting"
+              ref={inputFileRef}
+              onChange={HandleImageChange}
+            />
+            <Setting htmlFor="ProfileSetting" onClick={() => inputFileRef.current.click()}>
+              프로필 세팅하기
+            </Setting>
             <InputWrap>
               <Textfield
                 type="text"
