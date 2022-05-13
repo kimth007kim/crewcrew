@@ -72,17 +72,21 @@ const TopCont = styled('div')`
     width: calc(100vw - 40px);
 
     h2 {
-      font-size: 16px;
+      font-size: 15px;
 
       a {
         background-size: 8px;
-        padding-right: 16px;
+        padding-right: 12px;
       }
     }
   }
 
   @media screen and (max-width: 300px) {
     width: calc(100vw - 20px);
+
+    h2 {
+      line-height: 30px;
+    }
   }
 `;
 const ButtonIntro = styled('div')`
@@ -103,5 +107,9 @@ const ButtonIntro = styled('div')`
     right: 20px;
     opacity: 1;
     top: 18px;
+  }
+
+  @media screen and (max-width: 300px) {
+    right: 10px;
   }
 `;
