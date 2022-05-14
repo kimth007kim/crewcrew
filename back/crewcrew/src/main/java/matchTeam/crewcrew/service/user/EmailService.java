@@ -24,8 +24,8 @@ import java.util.Random;
 public class EmailService {
     private final RedisUtil redisUtil;
     private final EmailSenderService emailSenderService;
-    private JavaMailSender javaMailSender;
-    private TemplateEngine templateEngine;
+    // private JavaMailSender javaMailSender;
+    // private TemplateEngine templateEngine;
 
     private final TotalEmailService totalEmailService;
 
