@@ -4,6 +4,7 @@ import { Cookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 import styled, { css } from 'styled-components';
 import useSWR from 'swr';
+import { hobbyFilterArr, studyFilterArr } from '../../../../frontDB/filterDB';
 import fetcher from '../../../../utils/fetcher';
 import InfoCat from '../InfoCat';
 import InfoProfile from '../InfoProfile';
@@ -37,8 +38,12 @@ function MyInfoProfile({ open }) {
   const [btnActive, setBtnActive] = useState(false);
 
   // 이미지
-
   const [file, setFile] = useState(null);
+
+  // 카테고리
+  const [studyCheckedList, setStudyCheckedList] = useState([]);
+  const [hobbyCheckedList, setHobbyCheckedList] = useState([]);
+  const [checkFlag, setCheckFlag] = useState(false);
 
   const InitialState = useCallback(() => {
     setNickname('');
@@ -56,6 +61,25 @@ function MyInfoProfile({ open }) {
     setBtnActive(false);
 
     setFile(null);
+    setCheckFlag(false);
+
+    const studyArr = [];
+    const hobbyArr = [];
+    if (myData && !myError) {
+      myData.data.categoryId.forEach((id) => {
+        const categoryID = String(id);
+        const tmpHobbyArr = hobbyFilterArr.filter((el) => el.value === categoryID);
+        const tmpStudyArr = studyFilterArr.filter((el) => el.value === categoryID);
+        if (tmpHobbyArr.length > 0) {
+          hobbyArr.push(...tmpHobbyArr);
+        } else {
+          studyArr.push(...tmpStudyArr);
+        }
+      });
+    }
+
+    setStudyCheckedList([...studyArr]);
+    setHobbyCheckedList([...hobbyArr]);
   }, []);
 
   const HandleCancelUpload = useCallback(() => {
@@ -65,16 +89,31 @@ function MyInfoProfile({ open }) {
   const HandleProfileUpload = useCallback(async () => {
     try {
       const context = {};
-      if (!nicknameValid && duplicateCheck && nickname !== myData.data.nickName) {
+      if (
+        nickname.length > 0 &&
+        !nicknameValid &&
+        duplicateCheck &&
+        nickname !== myData.data.nickName
+      ) {
         context.name = nickname;
       }
-      if (!messageValid && message !== myData.data.message) {
+      if (message.length > 0 && !messageValid && message !== myData.data.message) {
         context.message = message;
       }
       const formData = new FormData();
       formData.append('ProfileChangeRequestDto', context);
       if (file) {
         formData.append('file', file);
+      }
+
+      if (checkFlag) {
+        const categoryId = [];
+        const studyCategory = studyCheckedList.map((data) => data.value);
+        const hobbyCategory = hobbyCheckedList.map((data) => data.value);
+        categoryId.push(...studyCategory);
+        categoryId.push(...hobbyCategory);
+
+        context.categoryId = categoryId;
       }
 
       const { data } = await axios.put('/profile/mypage', formData, {
@@ -113,13 +152,33 @@ function MyInfoProfile({ open }) {
       console.dir(error);
       InitialState();
     }
-  }, [file, nickname, message]);
+  }, [file, nickname, message, checkFlag, studyCheckedList, hobbyCheckedList]);
 
   useEffect(() => {
-    if (!nicknameSetting || !messageSetting || file) {
+    if (!nicknameSetting || !messageSetting || file || checkFlag) {
       setBtnActive(true);
     }
-  }, [nicknameSetting, messageSetting, file]);
+  }, [nicknameSetting, messageSetting, file, checkFlag]);
+
+  useEffect(() => {
+    const studyArr = [];
+    const hobbyArr = [];
+    if (myData && !myError) {
+      myData.data.categoryId.forEach((id) => {
+        const categoryID = String(id);
+        const tmpHobbyArr = hobbyFilterArr.filter((el) => el.value === categoryID);
+        const tmpStudyArr = studyFilterArr.filter((el) => el.value === categoryID);
+        if (tmpHobbyArr.length > 0) {
+          hobbyArr.push(...tmpHobbyArr);
+        } else {
+          studyArr.push(...tmpStudyArr);
+        }
+      });
+    }
+
+    setStudyCheckedList([...studyArr]);
+    setHobbyCheckedList([...hobbyArr]);
+  }, []);
 
   return (
     <>
@@ -148,7 +207,15 @@ function MyInfoProfile({ open }) {
             setFile,
           }}
         />
-        <InfoCat />
+        <InfoCat
+          state={{
+            studyCheckedList,
+            setStudyCheckedList,
+            hobbyCheckedList,
+            setHobbyCheckedList,
+            setCheckFlag,
+          }}
+        />
       </InfoBody>
       {open && (
         <ButtonWrap>
@@ -186,6 +253,10 @@ const ButtonWrap = styled('div')`
   gap: 8px;
   justify-content: end;
   margin-top: auto;
+
+  @media screen and (max-width: 820px) {
+    gap: 15px;
+  }
 `;
 
 const ButtonSave = styled('button')`
