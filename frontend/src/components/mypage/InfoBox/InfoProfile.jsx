@@ -217,9 +217,7 @@ function InfoProfile() {
               ref={inputFileRef}
               onChange={HandleImageChange}
             />
-            <Setting htmlFor="ProfileSetting" onClick={() => inputFileRef.current.click()}>
-              프로필 세팅하기
-            </Setting>
+            <Setting htmlFor="ProfileSetting">프로필 세팅하기</Setting>
             <InputWrap>
               <Textfield
                 type="text"

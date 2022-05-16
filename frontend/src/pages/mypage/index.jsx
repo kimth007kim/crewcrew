@@ -22,7 +22,7 @@ function MyPage() {
     return null;
   }
 
-  if (!(myData.status === 200)) {
+  if (!(myData.status === 200) || error) {
     toast.error('로그인 후 이용 가능합니다. 잘못된 접근입니다.');
 
     return <Navigate to="/" />;
