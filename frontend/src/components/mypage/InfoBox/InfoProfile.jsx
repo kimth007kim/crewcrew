@@ -7,11 +7,10 @@ import { toast } from 'react-toastify';
 import fetcher from '../../../utils/fetcher';
 import Textfield from '../../common/TextfieldEmail';
 import SettingGray from '../../../assets/images/SettingGray.png';
-import ProfileNull from '../../../assets/images/ProfileNull.png';
 import CheckImg from '../../../assets/images/Checked_on.png';
 import { emojiSlice, spaceSlice } from '../../../utils';
 
-function InfoProfile() {
+function InfoProfile({ state }) {
   const cookies = new Cookies();
   const {
     data: myData,
@@ -19,74 +18,18 @@ function InfoProfile() {
     mutate,
   } = useSWR(['/user/token', cookies.get('user-token')], fetcher);
 
-  // 닉네임
-  const [nickname, setNickname] = useState('');
-  const [nicknameValid, setNicknameValid] = useState(false);
-  const [nicknameValidMsg, setNicknameValidMsg] = useState(
-    '앞으로 사용할 닉네임을 입력해주세요. (10자 이내)',
-  );
   const [nicknameFocus, setNicknameFocus] = useState(false);
-  const [nicknameSetting, setNicknameSetting] = useState(true);
 
-  const [preNickname, setPreNickname] = useState('');
-
-  const [doubleCheck, setDoubleCheck] = useState(false);
-
-  // 자기소개
-  const [message, setMessage] = useState('');
-  const [messageValid, setMessageValid] = useState(false);
-  const [messageValidMsg, setMessageValidMsg] = useState(
-    '나를 소개하는 한 줄 메세지를 입력해주세요.(30자 이내)',
-  );
   const [messageFocus, setMessageFocus] = useState(false);
-  const [messageSetting, setMessageSetting] = useState(true);
-
-  // 이미지
 
   const inputFileRef = useRef(null);
-  const [file, setFile] = useState(null);
+  const myImgRef = useRef(null);
 
   // 이미지 변경 함수
 
   const deleteFile = useCallback(() => {
-    setFile(null);
-
     inputFileRef.current.value = '';
-  }, [file]);
-
-  const HandleImageUpload = useCallback(async () => {
-    try {
-      if (!file) {
-        return null;
-      }
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const { data } = await axios.put('/profile/mypage', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      switch (data.status) {
-        case 200:
-          mutate('/user/token');
-          deleteFile();
-          toast.success('성공적으로 변경되었습니다.');
-          break;
-        case 1501:
-        case 1502:
-          toast.error(data.message);
-          break;
-        default:
-          break;
-      }
-    } catch (error) {
-      toast.error('알 수 없는 오류가 발생했습니다. 새로고침 후 다시 시도해주시길 바랍니다');
-      console.dir(error);
-    }
-  }, [file]);
-
+  }, [state.file]);
   const HandleImageChange = useCallback(
     (e) => {
       const fileImg = e.target.files[0];
@@ -104,27 +47,30 @@ function InfoProfile() {
       if (!(fileImg && fileImg.type.startsWith('image/'))) {
         deleteFile();
 
-        toast.error('잘못된 파일입니다.');
+        toast.error('잘못된 형식의 파일입니다.');
         return null;
       }
-      HandleImageUpload();
+      state.setFile(fileImg);
+      const profileUrl = URL.createObjectURL(fileImg);
+      myImgRef.current.firstElementChild.setAttribute('src', profileUrl);
     },
-    [file],
+    [state.file],
   );
   // 닉네임 변경 함수
 
   const HandleNicknameChange = useCallback((e) => {
     const value = emojiSlice(spaceSlice(e.target.value)).slice(0, 10);
-    setNickname(value);
-    setNicknameValid(false);
-    setDoubleCheck(false);
-    setNicknameValidMsg('앞으로 사용할 닉네임을 입력해주세요. (10자 이내)');
+    state.setNickname(value);
+    state.setNicknameValid(false);
+    state.setDuplicateCheck(false);
+    state.setNicknameValidMsg('앞으로 사용할 닉네임을 입력해주세요. (10자 이내)');
   }, []);
 
   const HandleNicknameDelete = useCallback(() => {
-    setNickname('');
-    setNicknameValid(false);
-    setDoubleCheck(false);
+    state.setNickname('');
+    state.setNicknameValid(false);
+    state.setDuplicateCheck(false);
+    state.setNicknameValidMsg('앞으로 사용할 닉네임을 입력해주세요. (10자 이내)');
   }, []);
 
   const HandleCheckNickname = useCallback(
@@ -132,20 +78,21 @@ function InfoProfile() {
       e.preventDefault();
       async function axiosPost() {
         try {
-          if (preNickname === nickname) {
-            setNicknameValidMsg('기존 동일한 닉네임입니다.');
-            setNicknameValid(true);
+          if (myData.data.nickName === state.nickname) {
+            state.setNicknameValidMsg('기존과 동일한 닉네임입니다.');
+            state.setNicknameValid(true);
             return;
           }
-          const { data } = await axios.get(`/auth/user/nickname/${nickname}`);
+          const { data } = await axios.get(`/auth/user/nickname/${state.nickname}`);
           switch (data.status) {
             case 200:
-              setDoubleCheck(true);
-              setNicknameValidMsg('사용 가능한 닉네임입니다.');
+              state.setDuplicateCheck(true);
+              state.setNicknameValid(false);
+              state.setNicknameValidMsg('사용 가능한 닉네임입니다.');
               break;
             case 1007:
-              setNicknameValidMsg(data.message);
-              setNicknameValid(true);
+              state.setNicknameValidMsg(data.message);
+              state.setNicknameValid(true);
               break;
             default:
               break;
@@ -157,23 +104,23 @@ function InfoProfile() {
       }
       axiosPost();
     },
-    [nickname],
+    [state.nickname],
   );
 
   // 메세지 변경 함수
 
   const HandleMessageChange = useCallback((e) => {
-    setMessage(e.target.value);
+    state.setMessage(emojiSlice(e.target.value).slice(0, 30));
     if (e.target.value.length < 6 && e.target.value) {
-      setMessageValid(true);
+      state.setMessageValid(true);
     } else {
-      setMessageValid(false);
+      state.setMessageValid(false);
     }
   }, []);
 
   const HandleMessageDelete = useCallback(() => {
-    setMessage('');
-    setMessageValid(false);
+    state.setMessage('');
+    state.setMessageValid(false);
   }, []);
 
   // 텍스트 필드 변경 함수
@@ -182,33 +129,28 @@ function InfoProfile() {
     setSetting(false);
   }, []);
 
-  const HandleSaveProfile = useCallback(() => {
-    setNicknameSetting(true);
-    setNicknameFocus(false);
-
-    setMessageSetting(true);
-    setMessageFocus(false);
-  }, []);
-
   useEffect(() => {
-    if (!nicknameSetting) {
-      setNickname(myData.data.nickName);
-      setPreNickname(myData.data.nickName);
+    if (!state.nicknameSetting) {
+      state.setNickname(myData.data.nickName);
       setNicknameFocus(true);
     }
 
-    if (!messageSetting) {
-      setMessage(myData.data.message);
+    if (!state.messageSetting) {
+      state.setMessage(myData.data.message);
       setMessageFocus(true);
     }
-  }, [messageSetting, nicknameSetting]);
+
+    if (!state.file) {
+      myImgRef.current.firstElementChild.setAttribute('src', myData.data.file);
+    }
+  }, [state.messageSetting, state.nicknameSetting, state.file]);
 
   return (
     <InfoInputList>
       {myData && myData.data && (
         <>
           <InputTop>
-            <MyProfile>
+            <MyProfile ref={myImgRef}>
               <img src={myData.data.file} alt="" />
             </MyProfile>
             <InputHide
@@ -222,25 +164,25 @@ function InfoProfile() {
               <Textfield
                 type="text"
                 onChange={HandleNicknameChange}
-                value={nickname}
-                label={nicknameSetting ? `${myData.data.nickName}` : '닉네임'}
-                validMessage={nicknameValidMsg}
-                valid={nicknameValid}
+                value={state.nickname}
+                label={state.nicknameSetting ? `${myData.data.nickName}` : '닉네임'}
+                validMessage={state.nicknameValidMsg}
+                valid={state.nicknameValid}
                 onDelete={HandleNicknameDelete}
                 focus={nicknameFocus}
-                disabled={nicknameSetting}
+                disabled={state.nicknameSetting}
               />
-              {nicknameSetting ? (
-                <TxtFieldSetting onClick={() => HandleFieldSet(setNicknameSetting)} />
+              {state.nicknameSetting ? (
+                <TxtFieldSetting onClick={() => HandleFieldSet(state.setNicknameSetting)} />
               ) : (
                 <>
                   <InputDouble
-                    active={nickname.length >= 2 && !doubleCheck}
+                    active={state.nickname.length >= 2 && !state.duplicateCheck}
                     onMouseDown={HandleCheckNickname}
                   >
                     중복확인
                   </InputDouble>
-                  <InputChecked active={doubleCheck} />
+                  <InputChecked active={state.duplicateCheck} />
                 </>
               )}
             </InputWrap>
@@ -249,16 +191,16 @@ function InfoProfile() {
             <Textfield
               type="text"
               onChange={HandleMessageChange}
-              value={message}
-              label={messageSetting ? `${myData.data.message}` : '자기소개'}
-              validMessage={messageValidMsg}
-              valid={messageValid}
+              value={state.message}
+              label={state.messageSetting ? `${myData.data.message}` : '자기소개'}
+              validMessage={state.messageValidMsg}
+              valid={state.messageValid}
               onDelete={HandleMessageDelete}
               focus={messageFocus}
-              disabled={messageSetting}
+              disabled={state.messageSetting}
             />
-            {messageSetting && (
-              <TxtFieldSetting onClick={() => HandleFieldSet(setMessageSetting)} />
+            {state.messageSetting && (
+              <TxtFieldSetting onClick={() => HandleFieldSet(state.setMessageSetting)} />
             )}
           </InputWrap>
         </>
@@ -279,7 +221,7 @@ const InputTop = styled('div')`
 const MyProfile = styled('div')`
   min-width: 50px;
   height: 50px;
-  background-color: #8d2bf5;
+  background-color: #e2e2e2;
   border-radius: 50%;
   overflow: hidden;
   margin-right: 2px;

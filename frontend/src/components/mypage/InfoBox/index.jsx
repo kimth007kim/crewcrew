@@ -54,7 +54,11 @@ function InfoBox() {
         </InfoBtnList>
       </InfoTop>
 
-      {myInfoTab === 1 ? <MyInfoProfile open={openBtn} /> : <MyInfoInput open={openBtn} />}
+      {myInfoTab === 1 ? (
+        <MyInfoProfile open={openBtn} closeFunc={HandleCloseBtn} />
+      ) : (
+        <MyInfoInput open={openBtn} closeFunc={HandleCloseBtn} />
+      )}
 
       {!openBtn && <ButtonSave onClick={HandleOpenBtn}>프로필 관리하기</ButtonSave>}
     </Container>
