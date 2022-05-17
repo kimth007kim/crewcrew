@@ -69,4 +69,52 @@ window.addEventListener("DOMContentLoaded", function(){
         } 
     });
     
+    let swiperProperty = num => ({ //스와이퍼 속성
+        slidesPerView: 3,
+        navigation: {
+            nextEl: '.ButtonNext' + num, 
+            prevEl: '.ButtonPrev' + num
+        },
+        spaceBetween: 10,
+        slidesPerView: 'auto',
+        observer: true,
+        observeParents: true,
+        breakpoints: {
+            768: {
+                spaceBetween: 16
+            }
+        }
+    });
+
+    if(document.querySelector(".CardSwiper")){
+        const swiper1 = new Swiper('.swiper1', swiperProperty(1));
+        const swiper2 = new Swiper('.swiper2', swiperProperty(2));
+        const swiper3 = new Swiper('.swiper3', swiperProperty(3));
+        const swiper4 = new Swiper('.swiper4', swiperProperty(4));
+        const swiper5 = new Swiper('.swiper5', swiperProperty(5));
+    }
+
+    const SwiperBtn = document.querySelectorAll(".SwiperBtn");
+    SwiperBtn?.forEach(e => { //스와이퍼카드 드롭다운
+        e.addEventListener('click', function(){
+            let ThisSwiperCard = this.closest(".SwiperCardWrapper").children[0];
+            ThisSwiperCard.classList.toggle('On');
+            if(ThisSwiperCard.classList.contains('On')){
+                ThisSwiperCard.style.height = `${SwiperCardHeight}px`;
+            } else {
+                ThisSwiperCard.style.height = '94px';
+            }
+        });
+    });
+
+    const SwiperCard = document.querySelector(".PostCard.Swiper");
+    let SwiperCardHeight;
+    function SwiperHeightFunc(){ //스와이퍼카드 원래 높이 구하기
+        if(SwiperCard){
+            SwiperCard.style.height = 'auto';
+            SwiperCardHeight = SwiperCard.clientHeight;
+            SwiperCard.style.height = '94px';
+        }
+    }
+    SwiperHeightFunc();
 });

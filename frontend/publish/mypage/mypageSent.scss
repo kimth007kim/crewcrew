@@ -1,4 +1,5 @@
 @import "./mypage";
+@import "../Swiper";
 
 div.TopCont h2 a.arrowAfter{
     background: none;
@@ -237,4 +238,405 @@ section.MypageSentTop{
         }
     }
 
+}
+
+
+
+/*스와이퍼 카드*/
+@mixin button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.SwiperCardWrapper{
+    position: relative;
+
+    .SwiperBtn{
+        width: 74px;
+        height: 26px;
+        border-radius: 0 0 5px 5px;
+        font-size: 12px;
+        color: #a8a8a8;
+        line-height: 26px;
+        padding-left: 12px;
+        box-sizing: border-box;
+        background: $white url('/frontend/src/assets/images/SwiperArrow.png') center right 10px/10px no-repeat;
+        cursor: pointer;
+        margin-left: calc(100% - 116px);
+    }
+}
+
+.PostCard.Swiper{
+    padding: 0;
+    height: 94px;
+    flex-direction: column;
+    overflow-y: hidden;
+    transition: height .5s, border .2s;
+    cursor: default;
+
+    &.On{
+        height: auto;
+
+        & ~ .SwiperBtn{
+            background-image: url('/frontend/src/assets/images/SwiperArrowReverse.png');
+        }
+
+        & ~ .ButtonNext, & ~ .ButtonPrev{
+            opacity: 1;
+            transition-delay: .2s;
+        }
+    }
+
+    .SwiperCardTop{
+        width: 100%;
+        min-height: 94px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding: 14px 0;
+        box-sizing: border-box;
+        border-bottom: 1px solid #E2E2E2;
+    }
+
+    .PostCardHead{
+        min-width: 262px;
+        border: none;
+
+        .TextBox{
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .DetailBox{
+            min-width: 158px;
+            height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 24px;
+            box-sizing: border-box;
+            border-left: 1px solid #A8A8A8;
+            border-right: 1px solid #a8a8a8;
+
+            p{
+                font-size: 14px;
+                font-weight: 700;
+                margin-bottom: 7px;
+                white-space: nowrap;
+
+                span{
+                    font-weight: 500;
+                }
+            }
+
+            button{
+                @include button();
+                width: 100%;
+                height: 30px;
+                border-radius: 5px;
+                color: $white;
+                font-size: 13px;
+                font-weight: 500;
+                transition: .3s;
+                background-color: #00B7FF;
+
+                    &:hover{
+                        background-color: #00A3E3;
+                    }
+            }
+        }
+    }
+
+    .PostCardBody{
+        padding-left: 24px;
+        position: relative;
+
+        .TextBox{
+
+            .TitleBox{
+                h5{
+                    width:calc(100% - 220px);
+                }
+            }
+
+            .TextList{
+                margin-top: 22px;
+            }
+        }
+
+        .ButtonBox{
+            flex-direction: column;
+            justify-content: space-between;
+            min-width: auto;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            right: 175px;
+
+            button{
+                width: 30px;
+                height: 30px;
+                border-radius: 5px;
+                background-color: #c4c4c4;
+
+                &.Set{
+                    text-indent: -9999px;
+                    background: #c4c4c4 url('/frontend/src/assets/images/SettingWhite.png') center/16px no-repeat;
+                    background-position: center;
+                }
+            }
+        }
+
+        p.Waiting{
+            min-width: 160px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2px 0;
+            box-sizing: border-box;
+            font-size: 15px;
+            color: #a8a8a8;
+            font-weight: 700;
+            border-left: 1px solid #a8a8a8;
+
+            em{
+                font-size: 32px;
+                color: $blue3;
+            }
+        }
+    }
+
+    .SwiperCardBottom{
+        width: 100%;
+
+        .BtTop{
+            height: 54px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 26px 12px 16px;
+            box-sizing: border-box;
+
+            p{
+                font-size: 18px;
+                font-weight: 700;
+                color: #a8a8a8;
+
+                em{
+                    color: $blue3 ;
+                }
+            }
+
+            button{
+                @include button();
+                width: 110px;
+                height: 30px;
+                background-color: #868686;
+                border-radius: 5px;
+                color: $white;
+                font-size: 13px;
+                transition: .3s;
+
+                &:hover{
+                    background-color: #747474;
+                }
+            }
+        }
+    }
+
+    
+}
+
+
+.BtSwiper{
+    margin-bottom: 14px;
+    overflow: hidden;
+
+    .CardSwiper{
+        margin: 0 16px;
+
+        &>ul>li{
+            width: 300px;
+        }
+    }   
+}
+
+.ButtonPrev, .ButtonNext{
+    position: absolute;
+    width: 62px;
+    height: 62px;
+    background-color: $white;
+    border-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    top: calc(50% - 31px);
+    z-index: 1;
+    cursor: pointer;
+    background-size: 10px !important;
+    background-color: $white !important;
+    opacity: 0;
+    transition: .5s;
+
+    &.swiper-button-disabled{
+        opacity: 0 !important;
+        cursor: default;
+    }
+}
+
+.ButtonPrev{
+    left: -84px;
+    background: url("/frontend/src/assets/images/SlideArrowPrev.png") no-repeat 50% 50%;
+}
+
+.ButtonNext{
+    right: -84px;
+    background: url("/frontend/src/assets/images/SlideArrowNext.png") no-repeat 50% 50%;
+}
+
+.SwiperCard{
+    width: 100%;
+    border: 1px solid #e2e2e2;
+    border-radius: 20px;
+}
+
+.SwiperCardHead{
+    padding: 27px 18px 18px 21px;
+    box-sizing: border-box;
+    height: 114px;
+    border-bottom: 1px solid #e2e2e2;
+    display: flex;
+    gap: 13px;
+
+    .CardProfile{
+        min-width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #8d2bf5;
+
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .CardTxt{
+
+        h4{
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        p{
+            font-size: 13px;
+            font-weight: 400;
+            color: $blue3;
+            line-height: 20px;
+
+            &.gray{
+                color: $black4;
+            }
+        }
+    }
+}
+
+.SwiperCardBody{
+    padding: 0 20px 18px;
+
+    h5{
+        margin: 20px 0 12px;
+        font-size: 13px;
+        font-weight: 500;
+        color: $black4;
+    }
+
+    .IntList{
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+
+        li{
+            width: fit-content;
+            padding: 4px 16px;
+            font-size: 13px;
+            font-weight: 300;
+            color: $white;
+            border-radius: 13px;
+        }
+
+        &.Study li{
+            background-color: #0F3FA6;
+        }
+
+        &.Hobby li{
+            background-color: #F7971E;
+        }
+    }
+}
+
+.SwiperSlideBtn{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 30px;
+    margin-top: 14px;
+
+    p{
+        font-size: 13px;
+        color: #868686;
+        margin-left: 16px;
+    }
+
+    .BtnWrapper{
+        height: 100%;
+        display: flex;
+        gap: 8px;
+
+        button{
+            @include button();
+            border-radius: 5px;
+            color: $white;
+            font-size: 13px;
+            transition: .3s;
+
+            &.BtnChat{
+                background: #c4c4c4 url("/frontend/src/assets/images/ChatWhite.png") center/20px no-repeat;
+                text-indent: -9999px;
+                width: 30px;
+
+                &:hover{
+                    background-color: #B0B0B0;
+                }
+            }
+
+            &.BtnColor{
+                width: 50px;
+
+                &.Nega{
+                    background-color: #F95884;
+
+                    &:hover{
+                        background-color: #E9416E;
+                    }
+                }
+
+                &.Posi{
+                    background-color: #00B7FF;
+
+                    &:hover{
+                        background-color: #00A3E3;
+                    }
+                }
+            }
+        }
+    }
 }
