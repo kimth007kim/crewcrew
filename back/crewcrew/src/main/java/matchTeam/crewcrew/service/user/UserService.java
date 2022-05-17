@@ -3,7 +3,9 @@ package matchTeam.crewcrew.service.user;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import matchTeam.crewcrew.config.RedisUtil;
 import matchTeam.crewcrew.config.security.JwtProvider;
+import matchTeam.crewcrew.dto.security.ResponseTokenDto;
 import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.security.TokenRequestDto;
 import matchTeam.crewcrew.dto.user.SignUpRequestDto;
@@ -42,6 +44,7 @@ public class UserService {
     private final UserRepository userRepository;
     //email 발송기능
     private final PasswordEncoder passwordEncoder;
+    private final RedisUtil redisutil;
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
     private final LikedCategoryService likedCategoryService;
     private final JwtProvider jwtProvider;
@@ -104,6 +107,41 @@ public class UserService {
 
 
     }
+    public ResponseTokenDto redisLogin(UserLoginRequestDto userLoginRequestDto) {
+        //회원 정보 존재하는지 확인
+        User user = userRepository.findByEmailAndProvider(userLoginRequestDto.getEmail(), "local").
+                orElseThrow(LoginFailedByEmailNotExistException::new);
+        // 회원 패스워드 일치하는지 확인
+        System.out.println(userLoginRequestDto.getPassword() + "  " + user.getPassword());
+
+        if (!passwordEncoder.matches(userLoginRequestDto.getPassword(), user.getPassword()))
+            throw new LoginFailedByPasswordException();
+
+        log.info(userLoginRequestDto.getEmail(), userLoginRequestDto.getPassword(), userLoginRequestDto.isMaintain());
+        // AccessToken ,Refresh Token 발급
+
+        Long id = user.getUid();
+        System.out.println(user.getUid());
+        //       1. Refresh 토큰이 존재하면 그걸 토대로 access토큰 발급
+        //        2. Refresh 토큰 없으면 새로 Refresh토큰 발급후 그걸 토대로 accesss토큰 발급
+        //        TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles(),maintain);
+        ResponseTokenDto tokenDto = jwtProvider.createResponseToken(user.getUid(), user.getRoles(), userLoginRequestDto.isMaintain());
+
+        // RefreshToken 저장
+        RefreshToken refresh_Token = RefreshToken.builder()
+                .pkey(user.getUid())
+                .token(tokenDto.getRefreshToken())
+                .build();
+
+
+//        refreshTokenJpaRepository.save(refresh_Token);
+        Long time = jwtProvider.refreshTokenTime(userLoginRequestDto.isMaintain());
+        redisutil.setDataExpire(refresh_Token.getToken(),Long.toString(id),time);
+
+        return tokenDto;
+
+
+    }
 
     public TokenDto reissue(TokenRequestDto tokenRequestDto) {
         if (!jwtProvider.validateToken(tokenRequestDto.getRefreshToken())) {
@@ -146,42 +184,6 @@ public class UserService {
         return str.isBlank();
     }
 
-//    public void profileChange(User user, String password, String name, String
-//            nickName, List<Long> categoryId, String message) {
-//        // null값들어오는걸로 바꾸기
-////            if (categoryId == null || categoryId.size() == 0) {
-////                throw new ProfileEmptyCategoryException();
-////            }
-//        List<Long> usersLike = likedCategoryService.findUsersLike(user);
-//        likedCategoryService.ChangeUsersLike(user, categoryId, usersLike);
-//
-//        if (!stringCheck(password)) {
-//            validationPasswd(password);
-//            changePassword(user, password);
-//        }
-////
-//        if (stringCheck(nickName)) {
-//            throw new ProfileEmptyNickNameException();
-//        } else if (!nickName.equals(user.getNickname())) {
-//            validationNickName(nickName);
-//            validateDuplicateByNickname(nickName);
-//            user.setNickname(nickName);
-//
-//        }
-//
-//        if (stringCheck(name)) {
-//            throw new ProfileEmptyNameException();
-//        } else if (!name.equals(user.getName())) {
-//            validationName(name);
-//            user.setNickname(name);
-//        }
-//        if (stringCheck(message)) {
-//            throw new ProfileEmptyNameException();
-//        } else if (!message.equals(user.getMessage())) {
-//            validationMessage(message);
-//            user.setMessage(message);
-//        }
-//    }
 
     public void validProfileChange(User user, String password, String name, String
             nickName, List<Long> categoryId, String message) {

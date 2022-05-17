@@ -3,12 +3,10 @@ package matchTeam.crewcrew.controller.api.v1.user;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
-import matchTeam.crewcrew.config.security.JwtProvider;
-import matchTeam.crewcrew.dto.social.*;
+import matchTeam.crewcrew.dto.security.ResponseTokenDto;
 import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.security.TokenRequestDto;
 import matchTeam.crewcrew.dto.user.*;
-import matchTeam.crewcrew.dto.user.example.EmailSendDto;
 import matchTeam.crewcrew.dto.user.example.UserResponseDto;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.response.ResponseHandler;
@@ -16,7 +14,6 @@ import matchTeam.crewcrew.response.exception.auth.*;
 import matchTeam.crewcrew.service.amazonS3.S3Uploader;
 import matchTeam.crewcrew.service.user.*;
 import org.springframework.http.*;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +22,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 
 @Api(tags = "1. Auth")
@@ -39,6 +37,7 @@ public class AuthController {
     private final EmailService emailService;
     private final LikedCategoryService likedCategoryService;
     private final S3Uploader s3Uploader;
+    private final CookieService cookieService;
 
 
     @ApiOperation(value = "이메일 인증코드 발송", notes = "1. 유효한 이메일 인지 확인합니다.\n " +
@@ -98,7 +97,7 @@ public class AuthController {
         if (user == null) {
             throw new UidNotExistException();
         }
-        UserResponseDto userResponseDto = new UserResponseDto(id, user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), likedCategoryService.findUsersLike(user), user.getMessage(),user.getProvider());
+        UserResponseDto userResponseDto = new UserResponseDto(id, user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), likedCategoryService.findUsersLike(user), user.getMessage(), user.getProvider());
 
         return ResponseHandler.generateResponse("유저 조회 성공", HttpStatus.OK, userResponseDto);
     }
@@ -208,10 +207,10 @@ public class AuthController {
         String email_url = email.replace("@", "_");
 
 
-        String filename = s3Uploader.addImageWhenSignUp(email_url, file, Default,"local");
+        String filename = s3Uploader.addImageWhenSignUp(email_url, file, Default, "local");
         User user = userService.findByUid(signupId);
-        userService.setProfileImage(user,filename);
-        userService.setMessage(user,message);
+        userService.setProfileImage(user, filename);
+        userService.setMessage(user, message);
 
 
 //        if (StringUtils.isEmpty(message)) {
@@ -228,7 +227,7 @@ public class AuthController {
         List<Long> result = likedCategoryService.addLikedCategory(user, input);
         System.out.println("유저가 등록한 후의 카테고리" + result);
 
-        UserResponseDto userResponseDto = new UserResponseDto(signupId, signUpRequestDto.getEmail(), signUpRequestDto.getName(), signUpRequestDto.getNickName(), filename, result, user.getMessage(),user.getProvider());
+        UserResponseDto userResponseDto = new UserResponseDto(signupId, signUpRequestDto.getEmail(), signUpRequestDto.getName(), signUpRequestDto.getNickName(), filename, result, user.getMessage(), user.getProvider());
 
         return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, userResponseDto);
     }
@@ -272,9 +271,16 @@ public class AuthController {
     )
     })
     public ResponseEntity<Object> login(
-            @ApiParam(value = "로그인 요청 DTO", required = true) @RequestBody UserLoginRequestDto userLoginRequestDto) throws JsonProcessingException {
+            @ApiParam(value = "로그인 요청 DTO", required = true) @RequestBody UserLoginRequestDto userLoginRequestDto, HttpServletResponse response) throws JsonProcessingException {
         System.out.println(userLoginRequestDto.getEmail() + " " + userLoginRequestDto.getPassword());
-        TokenDto tokenDto = userService.login(userLoginRequestDto);
+//        TokenDto tokenDto = userService.login(userLoginRequestDto);
+        ResponseTokenDto tokenDto = userService.redisLogin(userLoginRequestDto);
+//        Optional<User> user= userService.findByEmailAndProvider(userLoginRequestDto.getEmail(),"local");
+        Cookie accessCookie = cookieService.generateAccessToken(tokenDto.getAccessToken());
+        Cookie refreshCookie = cookieService.generateRefreshToken(tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExpireDate());
+
+        response.addCookie(accessCookie);
+        response.addCookie(refreshCookie);
 
         return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK, new AccessTokenDto(tokenDto.getAccessToken()));
 
@@ -426,7 +432,7 @@ public class AuthController {
     public ResponseEntity<Object> cookieTest(HttpServletResponse response) {
         System.out.println("안녕");
         // 나중에 이름이나 닉네임으로 추가 인증
-        Cookie myCookie = new Cookie("AccessToken","hello");
+        Cookie myCookie = new Cookie("AccessToken", "hello");
         myCookie.setDomain("crewcrew.org");
         myCookie.setPath("/");
         myCookie.setHttpOnly(true);
