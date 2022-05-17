@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-curly-newline */
 import React, { useCallback, useEffect, useState } from 'react';
 import { Cookies } from 'react-cookie';
 import { useRecoilState, useRecoilValue } from 'recoil';

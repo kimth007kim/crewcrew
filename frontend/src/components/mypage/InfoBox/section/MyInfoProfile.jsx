@@ -89,21 +89,21 @@ function MyInfoProfile({ open }) {
   const HandleProfileUpload = useCallback(async () => {
     try {
       const context = {};
+      if (nickname.length > 0 && nickname !== myData.data.nickName && !duplicateCheck) {
+        setNicknameValid(true);
+        setNicknameValidMsg('닉네임 중복 확인해주세요.');
+        return null;
+      }
       if (
         nickname.length > 0 &&
         !nicknameValid &&
         duplicateCheck &&
         nickname !== myData.data.nickName
       ) {
-        context.name = nickname;
+        context.nickName = nickname;
       }
       if (message.length > 0 && !messageValid && message !== myData.data.message) {
         context.message = message;
-      }
-      const formData = new FormData();
-      formData.append('ProfileChangeRequestDto', context);
-      if (file) {
-        formData.append('file', file);
       }
 
       if (checkFlag) {
@@ -115,7 +115,17 @@ function MyInfoProfile({ open }) {
 
         context.categoryId = categoryId;
       }
-
+      console.log(context);
+      const formData = new FormData();
+      formData.append(
+        'ProfileChangeRequestDto',
+        new Blob([JSON.stringify(context)], {
+          type: 'application/json',
+        }),
+      );
+      if (file) {
+        formData.append('file', file);
+      }
       const { data } = await axios.put('/profile/mypage', formData, {
         withCredentials: true,
         headers: {
@@ -152,7 +162,7 @@ function MyInfoProfile({ open }) {
       console.dir(error);
       InitialState();
     }
-  }, [file, nickname, message, checkFlag, studyCheckedList, hobbyCheckedList]);
+  }, [file, nickname, message, checkFlag, studyCheckedList, hobbyCheckedList, duplicateCheck]);
 
   useEffect(() => {
     if (!nicknameSetting || !messageSetting || file || checkFlag) {

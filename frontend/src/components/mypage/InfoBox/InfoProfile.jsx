@@ -59,16 +59,21 @@ function InfoProfile({ state }) {
   // 닉네임 변경 함수
 
   const HandleNicknameChange = useCallback((e) => {
-    const value = emojiSlice(spaceSlice(e.target.value)).slice(0, 10);
+    const value = emojiSlice(e.target.value).slice(0, 10);
     state.setNickname(value);
-    state.setNicknameValid(false);
+    if (value.length < 2) {
+      state.setNicknameValid(true);
+    } else {
+      state.setNicknameValid(false);
+    }
+
     state.setDuplicateCheck(false);
     state.setNicknameValidMsg('앞으로 사용할 닉네임을 입력해주세요. (10자 이내)');
   }, []);
 
   const HandleNicknameDelete = useCallback(() => {
     state.setNickname('');
-    state.setNicknameValid(false);
+    state.setNicknameValid(true);
     state.setDuplicateCheck(false);
     state.setNicknameValidMsg('앞으로 사용할 닉네임을 입력해주세요. (10자 이내)');
   }, []);
@@ -110,8 +115,9 @@ function InfoProfile({ state }) {
   // 메세지 변경 함수
 
   const HandleMessageChange = useCallback((e) => {
-    state.setMessage(emojiSlice(e.target.value).slice(0, 30));
-    if (e.target.value.length < 6 && e.target.value) {
+    const value = emojiSlice(e.target.value).slice(0, 30);
+    state.setMessage(value);
+    if (value.length < 6) {
       state.setMessageValid(true);
     } else {
       state.setMessageValid(false);
@@ -120,7 +126,7 @@ function InfoProfile({ state }) {
 
   const HandleMessageDelete = useCallback(() => {
     state.setMessage('');
-    state.setMessageValid(false);
+    state.setMessageValid(true);
   }, []);
 
   // 텍스트 필드 변경 함수

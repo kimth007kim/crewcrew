@@ -1,11 +1,20 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import delImage from '../../assets/images/InputDel.png';
 import PWshow from '../../assets/images/PasswordShow.png';
 import PWon from '../../assets/images/PasswordShow_On.png';
 import PWError from '../../assets/images/PasswordShow_Error.png';
 
-function TextfieldPW({ onChange, value, valid, validMessage, label, onDelete, disabled }) {
+function TextfieldPW({
+  onChange,
+  value,
+  valid,
+  validMessage,
+  label,
+  onDelete,
+  disabled = false,
+  focus,
+}) {
   const [Focused, setFocused] = useState(false);
   const [Hover, setHover] = useState(false);
   const InputRef = useRef(null);
@@ -33,6 +42,16 @@ function TextfieldPW({ onChange, value, valid, validMessage, label, onDelete, di
     }
     return setInputType('password');
   }, [InputType]);
+
+  useEffect(() => {
+    if (disabled) {
+      HandleOnBlur();
+      InputRef.current.blur();
+    }
+    if (focus) {
+      InputRef.current.focus();
+    }
+  }, [disabled, focus]);
 
   return (
     <Wrapper onMouseEnter={HandleOnHover} onMouseLeave={HandleOutHover}>
@@ -112,6 +131,12 @@ const Input = styled.input`
       border-color: #ff0045;
       caret-color: #ff0045;
     `};
+
+  &:disabled {
+    color: #a8a8a8;
+    border-color: #e2e2e2;
+    background-color: #fff;
+  }
 `;
 
 const Label = styled.label`
