@@ -24,6 +24,7 @@ import StarOn from '../../assets/images/StarOn.png';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import PostCardSlide from '../../components/home/PostCardSlide';
 
 SwiperCore.use([Navigation, Pagination]);
 function CategoryCard({ sort, src, title, sub, ssub }) {
@@ -154,7 +155,7 @@ function MobileSwiper() {
                 </CardProfile>
                 <CardTxt>
                   <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
-                  <p>재영재영유재영</p>
+                  <p>인생오쯔</p>
                 </CardTxt>
               </CardBody>
               <CardFooter>
@@ -168,109 +169,7 @@ function MobileSwiper() {
           </SwiperSlideCard>
         </SwiperSlide>
         <SwiperSlide>
-          <SwiperSlideCard>
-            <CardPostStudy>
-              <CardHead>
-                <h5>
-                  <span>D-14</span>
-                </h5>
-                <CardHeadRight>
-                  <p>2/3 (목)</p>
-                  <p>
-                    조회수
-                    <span>50</span>
-                  </p>
-                  <Star />
-                </CardHeadRight>
-              </CardHead>
-              <CardBody>
-                <CardProfile>
-                  <ProfileImg alt="" />
-                </CardProfile>
-                <CardTxt>
-                  <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
-                  <p>재영재영유재영</p>
-                </CardTxt>
-              </CardBody>
-              <CardFooter>
-                <CardTagStudy>프로젝트</CardTagStudy>
-                <CardTagStudy>오프라인</CardTagStudy>
-                <CardTag>
-                  <span>10</span>/<span>10</span>명 모집됨
-                </CardTag>
-              </CardFooter>
-            </CardPostStudy>
-          </SwiperSlideCard>
-        </SwiperSlide>
-        <SwiperSlide>
-          <SwiperSlideCard>
-            <CardPostStudy>
-              <CardHead>
-                <h5>
-                  <span>D-14</span>
-                </h5>
-                <CardHeadRight>
-                  <p>2/3 (목)</p>
-                  <p>
-                    조회수
-                    <span>50</span>
-                  </p>
-                  <Star />
-                </CardHeadRight>
-              </CardHead>
-              <CardBody>
-                <CardProfile>
-                  <ProfileImg alt="" />
-                </CardProfile>
-                <CardTxt>
-                  <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
-                  <p>재영재영유재영</p>
-                </CardTxt>
-              </CardBody>
-              <CardFooter>
-                <CardTagStudy>프로젝트</CardTagStudy>
-                <CardTagStudy>오프라인</CardTagStudy>
-                <CardTag>
-                  <span>10</span>/<span>10</span>명 모집됨
-                </CardTag>
-              </CardFooter>
-            </CardPostStudy>
-          </SwiperSlideCard>
-        </SwiperSlide>
-        <SwiperSlide>
-          <SwiperSlideCard>
-            <CardPostHobby>
-              <CardHead>
-                <h5>
-                  <span>D-14</span>
-                </h5>
-                <CardHeadRight>
-                  <p>2/3 (목)</p>
-                  <p>
-                    조회수
-                    <span>50</span>
-                  </p>
-                  <Star />
-                </CardHeadRight>
-              </CardHead>
-              <CardBody>
-                <CardProfile>
-                  <ProfileImg alt="" />
-                </CardProfile>
-                <CardTxt>
-                  <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
-                  <p>재영재영유재영</p>
-                </CardTxt>
-              </CardBody>
-              <CardFooter>
-                <CardTagHobby>프로젝트</CardTagHobby>
-                <CardTagHobby>오프라인</CardTagHobby>
-                <CardTag>
-                  <span>10</span>/<span>10</span>명 모집됨
-                </CardTag>
-              </CardFooter>
-            </CardPostHobby>
-          </SwiperSlideCard>
+          <PostCardSlide />
         </SwiperSlide>
       </Swiper>
     </MobileWrapper>
@@ -373,214 +272,16 @@ function Main() {
                 }}
               >
                 <SwiperSlide>
-                  <SwiperSlideCard>
-                    <CardPostStudy>
-                      <CardHead>
-                        <h5>
-                          <span>D-14</span>
-                        </h5>
-                        <CardHeadRight>
-                          <p>2/3 (목)</p>
-                          <p>
-                            조회수
-                            <span>50</span>
-                          </p>
-                          <Star />
-                        </CardHeadRight>
-                      </CardHead>
-                      <CardBody>
-                        <CardProfile>
-                          <ProfileImg alt="" />
-                        </CardProfile>
-                        <CardTxt>
-                          <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
-                          <p>재영재영유재영</p>
-                        </CardTxt>
-                      </CardBody>
-                      <CardFooter>
-                        <CardTagStudy>고시/공무원</CardTagStudy>
-                        <CardTagStudy>오프라인</CardTagStudy>
-                        <CardTag>
-                          <span>10</span>/<span>10</span>명 모집됨
-                        </CardTag>
-                      </CardFooter>
-                    </CardPostStudy>
-                  </SwiperSlideCard>
+                  <PostCardSlide />
                 </SwiperSlide>
                 <SwiperSlide>
-                  <SwiperSlideCard>
-                    <CardPostHobby>
-                      <CardHead>
-                        <h5>
-                          <span>D-14</span>
-                        </h5>
-                        <CardHeadRight>
-                          <p>2/3 (목)</p>
-                          <p>
-                            조회수
-                            <span>50</span>
-                          </p>
-                          <Star />
-                        </CardHeadRight>
-                      </CardHead>
-                      <CardBody>
-                        <CardProfile>
-                          <ProfileImg alt="" />
-                        </CardProfile>
-                        <CardTxt>
-                          <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
-                          <p>재영재영유재영</p>
-                        </CardTxt>
-                      </CardBody>
-                      <CardFooter>
-                        <CardTagHobby>프로젝트</CardTagHobby>
-                        <CardTagHobby>오프라인</CardTagHobby>
-                        <CardTag>
-                          <span>10</span>/<span>10</span>명 모집됨
-                        </CardTag>
-                      </CardFooter>
-                    </CardPostHobby>
-                  </SwiperSlideCard>
+                  <PostCardSlide />
                 </SwiperSlide>
                 <SwiperSlide>
-                  <SwiperSlideCard>
-                    <CardPostStudy>
-                      <CardHead>
-                        <h5>
-                          <span>D-14</span>
-                        </h5>
-                        <CardHeadRight>
-                          <p>2/3 (목)</p>
-                          <p>
-                            조회수
-                            <span>50</span>
-                          </p>
-                          <Star />
-                        </CardHeadRight>
-                      </CardHead>
-                      <CardBody>
-                        <CardProfile>
-                          <ProfileImg alt="" />
-                        </CardProfile>
-                        <CardTxt>
-                          <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
-                          <p>재영재영유재영</p>
-                        </CardTxt>
-                      </CardBody>
-                      <CardFooter>
-                        <CardTagStudy>프로젝트</CardTagStudy>
-                        <CardTagStudy>오프라인</CardTagStudy>
-                        <CardTag>
-                          <span>10</span>/<span>10</span>명 모집됨
-                        </CardTag>
-                      </CardFooter>
-                    </CardPostStudy>
-                  </SwiperSlideCard>
+                  <PostCardSlide />
                 </SwiperSlide>
                 <SwiperSlide>
-                  <SwiperSlideCard>
-                    <CardPostStudy>
-                      <CardHead>
-                        <h5>
-                          <span>D-14</span>
-                        </h5>
-                        <CardHeadRight>
-                          <p>2/3 (목)</p>
-                          <p>
-                            조회수
-                            <span>50</span>
-                          </p>
-                          <Star />
-                        </CardHeadRight>
-                      </CardHead>
-                      <CardBody>
-                        <CardProfile>
-                          <ProfileImg alt="" />
-                        </CardProfile>
-                        <CardTxt>
-                          <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
-                          <p>재영재영유재영</p>
-                        </CardTxt>
-                      </CardBody>
-                      <CardFooter>
-                        <CardTagStudy>프로젝트</CardTagStudy>
-                        <CardTagStudy>오프라인</CardTagStudy>
-                        <CardTag>
-                          <span>10</span>/<span>10</span>명 모집됨
-                        </CardTag>
-                      </CardFooter>
-                    </CardPostStudy>
-                  </SwiperSlideCard>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <SwiperSlideCard>
-                    <CardPostStudy>
-                      <CardHead>
-                        <h5>
-                          <span>D-14</span>
-                        </h5>
-                        <CardHeadRight>
-                          <p>2/3 (목)</p>
-                          <p>
-                            조회수
-                            <span>50</span>
-                          </p>
-                          <Star />
-                        </CardHeadRight>
-                      </CardHead>
-                      <CardBody>
-                        <CardProfile>
-                          <ProfileImg alt="" />
-                        </CardProfile>
-                        <CardTxt>
-                          <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
-                          <p>재영재영유재영</p>
-                        </CardTxt>
-                      </CardBody>
-                      <CardFooter>
-                        <CardTagStudy>프로젝트</CardTagStudy>
-                        <CardTagStudy>오프라인</CardTagStudy>
-                        <CardTag>
-                          <span>10</span>/<span>10</span>명 모집됨
-                        </CardTag>
-                      </CardFooter>
-                    </CardPostStudy>
-                  </SwiperSlideCard>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <SwiperSlideCard>
-                    <CardPostHobby>
-                      <CardHead>
-                        <h5>
-                          <span>D-14</span>
-                        </h5>
-                        <CardHeadRight>
-                          <p>2/3 (목)</p>
-                          <p>
-                            조회수
-                            <span>50</span>
-                          </p>
-                          <Star />
-                        </CardHeadRight>
-                      </CardHead>
-                      <CardBody>
-                        <CardProfile>
-                          <ProfileImg alt="" />
-                        </CardProfile>
-                        <CardTxt>
-                          <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
-                          <p>재영재영유재영</p>
-                        </CardTxt>
-                      </CardBody>
-                      <CardFooter>
-                        <CardTagHobby>프로젝트</CardTagHobby>
-                        <CardTagHobby>오프라인</CardTagHobby>
-                        <CardTag>
-                          <span>10</span>/<span>10</span>명 모집됨
-                        </CardTag>
-                      </CardFooter>
-                    </CardPostHobby>
-                  </SwiperSlideCard>
+                  <PostCardSlide />
                 </SwiperSlide>
               </Swiper>
               <ButtonPrev />
@@ -730,7 +431,7 @@ const GridWrap = styled.ul`
   }
   @media screen and (max-width: 300px) {
     -ms-grid-columns: 1fr 1fr;
-        grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 `;
 
@@ -1127,42 +828,42 @@ const CategoryStudy = styled.div`
     width: calc((100vw - 70px) / 3);
     height: calc((100vw - 70px) / 3);
     padding: 10px;
-  };
+  }
   @media screen and (max-width: 300px) {
-    width: calc((100vw - 38px)/2);
-    height: calc((100vw - 38px)/2);
-  };
+    width: calc((100vw - 38px) / 2);
+    height: calc((100vw - 38px) / 2);
+  } ;
 `;
 
 const CategoryHobby = styled.div`
-background: linear-gradient(135deg, #F7971E 0%, #FFD200 100%);
-width: 164px;
-height: 164px;
-border-radius: 10px;
--webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-padding: 14px;
--webkit-box-sizing: border-box;
-        box-sizing: border-box;
-position: relative;
-cursor: pointer;
--webkit-transition: .3s;
-transition: .3s;
--webkit-filter: brightness(100%);
-        filter: brightness(100%);
-        :hover {
-  -webkit-filter: brightness(110%);
-          filter: brightness(110%);
-        }
-          @media screen and (max-width: 820px) {
-    width: calc((100vw - 70px)/3);
-    height: calc((100vw - 70px)/3);
+  background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+  width: 164px;
+  height: 164px;
+  border-radius: 10px;
+  -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  padding: 14px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  cursor: pointer;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  -webkit-filter: brightness(100%);
+  filter: brightness(100%);
+  :hover {
+    -webkit-filter: brightness(110%);
+    filter: brightness(110%);
+  }
+  @media screen and (max-width: 820px) {
+    width: calc((100vw - 70px) / 3);
+    height: calc((100vw - 70px) / 3);
     padding: 10px;
-};
-@media screen and (max-width: 300px) {
-    width: calc((100vw - 38px)/2);
-    height: calc((100vw - 38px)/2);
-};
+  }
+  @media screen and (max-width: 300px) {
+    width: calc((100vw - 38px) / 2);
+    height: calc((100vw - 38px) / 2);
+  } ;
 `;
 
 const CategoryIcon = styled.img`
@@ -1279,8 +980,6 @@ const Arrow = styled.div`
 `;
 
 const WriteButtonList = styled.ul`
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 `;
 
@@ -1289,14 +988,8 @@ const WriteButtonLi1 = styled.li`
   height: 180px;
   margin-top: 45px;
   border-radius: 10px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
   justify-content: flex-end;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
 
   @media screen and (max-width: 820px) {
@@ -1304,13 +997,10 @@ const WriteButtonLi1 = styled.li`
     margin-top: 30px;
     height: 86px;
     padding: 20px 0;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
     justify-content: center;
   }
   cursor: pointer;
   position: relative;
-  -webkit-transition: 1s;
   transition: 1s;
   background-color: #0575e6;
   :hover {
@@ -1324,29 +1014,18 @@ const WriteButtonLi2 = styled.li`
   height: 180px;
   margin-top: 45px;
   border-radius: 10px;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
   justify-content: flex-end;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   @media screen and (max-width: 820px) {
     margin-top: 30px;
     height: 86px;
     padding: 20px 0;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
     justify-content: center;
   }
   cursor: pointer;
-  -webkit-transition: 1s;
   transition: 1s;
   background-color: #ffd458;
   :hover {
@@ -1366,35 +1045,18 @@ const FooterSectionWrap = styled.div`
 `;
 
 const FooterTop = styled.div`
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: end;
-  -ms-flex-align: end;
   align-items: flex-end;
   @media screen and (max-width: 820px) {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
   }
   @media screen and (max-width: 300px) {
     margin: 10px 0;
-
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
   }
   ul {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
     margin-left: 40px;
     margin-bottom: 2px;
@@ -1403,26 +1065,16 @@ const FooterTop = styled.div`
       margin: 10px 0;
     }
     @media screen and (max-width: 300px) {
-      -webkit-box-orient: vertical;
-      -webkit-box-direction: normal;
-      -ms-flex-direction: column;
       flex-direction: column;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
       align-items: center;
     }
-
 
     li {
       color: #fff;
       font-weight: 500;
       font-size: 13px;
       line-height: 1;
-      display: -webkit-box;
-      display: -ms-flexbox;
       display: flex;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
       align-items: center;
       height: 20px;
       padding: 0 40px;
@@ -1447,11 +1099,7 @@ const FooterTop = styled.div`
 `;
 
 const FooterBody = styled.div`
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   margin: 30px 0;
   color: #fff;
@@ -1459,12 +1107,7 @@ const FooterBody = styled.div`
 
   @media screen and (max-width: 820px) {
     margin: 20px 0 30px;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
   }
 
@@ -1477,8 +1120,6 @@ const FooterBody = styled.div`
     }
   }
   ul {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
     border-left: 1px solid #fff;
     @media screen and (max-width: 820px) {
@@ -1542,15 +1183,11 @@ const PostWrap = styled.div`
   max-width: 800px;
   margin: auto;
 
-  h4 {
+  & > h4 {
     font-size: 20px;
     font-weight: 700;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
     color: #000;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     @media screen and (max-width: 820px) {
       font-size: 18px;
@@ -1567,7 +1204,7 @@ const PostWrap = styled.div`
       background-repeat: no-repeat;
     }
   }
-  p {
+  & > p {
     font-size: 13px;
     font-weight: 400;
     color: #868686;
@@ -1598,14 +1235,8 @@ const PostSwiper = styled.div`
   width: 100%;
   height: 100%;
   z-index: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-transition-property: -webkit-transform;
-  transition-property: -webkit-transform;
   transition-property: transform;
-  transition-property: transform, -webkit-transform;
-  -webkit-box-sizing: content-box;
   box-sizing: content-box;
   li {
     width: 304px;
@@ -1619,7 +1250,6 @@ const ButtonPrev = styled.div`
   height: 62px;
   background-color: #fff;
   border-radius: 5px;
-  -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
   top: calc(50% - 31px);
   z-index: 1;
@@ -1627,7 +1257,6 @@ const ButtonPrev = styled.div`
   background-size: 10px !important;
   background-color: #fff !important;
   opacity: 1;
-  -webkit-transition: 0.5s;
   transition: 0.5s;
   left: -87px;
   background: url(${SlideArrowPrev}) no-repeat 50% 50%;
@@ -1644,7 +1273,6 @@ const ButtonNext = styled.div`
   height: 62px;
   background-color: #fff;
   border-radius: 5px;
-  -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
   top: calc(50% - 31px);
   z-index: 1;
@@ -1652,7 +1280,6 @@ const ButtonNext = styled.div`
   background-size: 10px !important;
   background-color: #fff !important;
   opacity: 1;
-  -webkit-transition: 0.5s;
   transition: 0.5s;
   @media screen and (max-width: 820px) {
     display: none;
@@ -1660,36 +1287,24 @@ const ButtonNext = styled.div`
 `;
 
 const PostSlideWrapper = styled.ul`
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
   flex-direction: column;
   position: relative;
   width: 100%;
   height: 100%;
   z-index: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-transition-property: -webkit-transform;
-  transition-property: -webkit-transform;
   transition-property: transform;
   transition-property: transform, -webkit-transform;
-  -webkit-box-sizing: content-box;
   box-sizing: content-box;
-  -webkit-transform: translate3d(0px, 0, 0);
   transform: translate3d(0px, 0, 0);
 `;
 
 const SwiperSlideCard = styled.li`
   height: auto;
-  -ms-flex-negative: 0;
   flex-shrink: 0;
   width: 100%;
   height: 100%;
   position: relative;
-  -webkit-transition-property: -webkit-transform;
-  transition-property: -webkit-transform;
   transition-property: transform;
   transition-property: transform, -webkit-transform;
 `;
@@ -1728,10 +1343,8 @@ const CardPostStudy = styled.div`
   width: 100%;
   background-color: #fff;
   border-radius: 2px 2px 15px 15px;
-  -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-  -webkit-box-sizing: border-box;
-        box-sizing: border-box;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
   cursor: pointer;
   p {
     font-size: 10px;
@@ -1741,34 +1354,25 @@ const CardPostStudy = styled.div`
 `;
 
 const CardPostHobby = styled.div`
-  border-top: 6px solid #F7971E;
+  border-top: 6px solid #f7971e;
   width: 100%;
   background-color: #fff;
   border-radius: 2px 2px 15px 15px;
-  -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-  -webkit-box-sizing: border-box;
-        box-sizing: border-box;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
   cursor: pointer;
   p {
     font-size: 10px;
     font-weight: 400;
     color: #868686;
-  };
-  `;
+  }
+`;
 
 const CardHead = styled.div`
   padding: 10px 12px 10px 15px;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   h5 {
     font-size: 13px;
@@ -1777,14 +1381,8 @@ const CardHead = styled.div`
 `;
 
 const CardHeadRight = styled.div`
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
   justify-content: flex-end;
   p {
     :first-child {
