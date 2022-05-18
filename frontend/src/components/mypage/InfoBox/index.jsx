@@ -3,6 +3,8 @@ import styled, { css } from 'styled-components';
 import InfoCat from './InfoCat';
 import InfoInputList from './InfoInputList';
 import InfoProfile from './InfoProfile';
+import MyInfoInput from './section/MyInfoInput';
+import MyInfoProfile from './section/MyInfoProfile';
 
 function InfoBox() {
   const [openBtn, setOpenBtn] = useState(false);
@@ -19,12 +21,7 @@ function InfoBox() {
     setOpenBtn(false);
   }, []);
 
-  const HandleInfoTab = useCallback(() => {
-    if (myInfoTab === 1) {
-      return setMyInfoTab(2);
-    }
-    return setMyInfoTab(1);
-  }, [myInfoTab]);
+  const HandleInfoTab = useCallback((tabNum) => setMyInfoTab(tabNum), [myInfoTab]);
 
   const handleResize = () => {
     if (window.innerWidth > 768) {
@@ -48,29 +45,22 @@ function InfoBox() {
       <InfoTop>
         <h3>내 정보 관리</h3>
         <InfoBtnList>
-          <InfoBtn active={myInfoTab === 1} onClick={HandleInfoTab}>
+          <InfoBtn active={myInfoTab === 1} onClick={() => HandleInfoTab(1)}>
             프로필
           </InfoBtn>
-          <InfoBtn active={myInfoTab === 2} onClick={HandleInfoTab}>
+          <InfoBtn active={myInfoTab === 2} onClick={() => HandleInfoTab(2)}>
             기본정보
           </InfoBtn>
         </InfoBtnList>
       </InfoTop>
-      <InfoBody open={openBtn} size={myInfoTab}>
-        {myInfoTab === 1 ? (
-          <>
-            <InfoProfile />
-            <InfoCat />
-          </>
-        ) : (
-          <InfoInputList />
-        )}
-      </InfoBody>
-      {openBtn ? (
-        <ButtonSave onClick={HandleCloseBtn}>저장</ButtonSave>
+
+      {myInfoTab === 1 ? (
+        <MyInfoProfile open={openBtn} closeFunc={HandleCloseBtn} />
       ) : (
-        <ButtonSave onClick={HandleOpenBtn}>프로필 관리하기</ButtonSave>
+        <MyInfoInput open={openBtn} closeFunc={HandleCloseBtn} />
       )}
+
+      {!openBtn && <ButtonSave onClick={HandleOpenBtn}>프로필 관리하기</ButtonSave>}
     </Container>
   );
 }

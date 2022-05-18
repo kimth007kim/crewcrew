@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-curly-newline */
 import React, { useCallback, useEffect, useState } from 'react';
 import { Cookies } from 'react-cookie';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -8,7 +9,7 @@ import { infoCancelState, infoCategoryState, infoSaveState } from '../../../atom
 import { hobbyFilterArr, studyFilterArr } from '../../../frontDB/filterDB';
 import fetcher from '../../../utils/fetcher';
 
-function InfoCat() {
+function InfoCat({ state }) {
   const cookies = new Cookies();
   const {
     data: myData,
@@ -16,41 +17,21 @@ function InfoCat() {
     mutate,
   } = useSWR(['/user/token', cookies.get('user-token')], fetcher);
 
-  const [recoilCheckedList, setRecoilCheckedList] = useRecoilState(infoCategoryState);
-  const recoilSave = useRecoilValue(infoSaveState);
-  const recoilCancel = useRecoilValue(infoCancelState);
-
   // 각 필터 체크 여부 확인 함수
   const checkValue = useCallback((arr, value) => arr.some((item) => item.value === value), []);
 
   // 개별 체크 클릭 시 발생하는 함수
-  const onCheckedElement = useCallback(
-    (checked, item) => {
-      if (checked) {
-        setRecoilCheckedList([...recoilCheckedList, item]);
-      } else {
-        setRecoilCheckedList(recoilCheckedList.filter((el) => el.value !== item.value));
+  const onCheckedElement = useCallback((checked, item, setCheckedList, checkedList) => {
+    if (checked) {
+      setCheckedList([...checkedList, item]);
+    } else {
+      if (checkedList.length <= 1) {
+        return null;
       }
-    },
-    [recoilCheckedList],
-  );
-
-  useEffect(() => {
-    const checkArray = myData.data.categoryId.map((id) => {
-      const tmpArray = [];
-      const categoryID = String(id);
-      const tmpHobbyArr = hobbyFilterArr.filter((el) => el.value === categoryID);
-      const tmpStudyArr = studyFilterArr.filter((el) => el.value === categoryID);
-      if (tmpHobbyArr.length > 0) {
-        tmpArray.push(...tmpHobbyArr);
-      } else {
-        tmpArray.push(...tmpStudyArr);
-      }
-      return tmpArray[0];
-    });
-    setRecoilCheckedList([...checkArray]);
-  }, [recoilSave, recoilCancel]);
-
+      setCheckedList(checkedList.filter((el) => el.value !== item.value));
+    }
+    state.setCheckFlag(true);
+  }, []);
   return (
     <Container>
       <CatBox>
@@ -63,8 +44,15 @@ function InfoCat() {
                 id={item.htmlId}
                 bgColor={item.color}
                 value={item.value}
-                checked={checkValue(recoilCheckedList, item.value)}
-                onChange={(e) => onCheckedElement(e.target.checked, item)}
+                checked={checkValue(state.studyCheckedList, item.value)}
+                onChange={(e) =>
+                  onCheckedElement(
+                    e.target.checked,
+                    item,
+                    state.setStudyCheckedList,
+                    state.studyCheckedList,
+                  )
+                }
               />
               <FilterLabel htmlFor={item.htmlId} hColor={item.color}>
                 {item.name}
@@ -83,8 +71,15 @@ function InfoCat() {
                 id={item.htmlId}
                 bgColor={item.color}
                 value={item.value}
-                checked={checkValue(recoilCheckedList, item.value)}
-                onChange={(e) => onCheckedElement(e.target.checked, item)}
+                checked={checkValue(state.hobbyCheckedList, item.value)}
+                onChange={(e) =>
+                  onCheckedElement(
+                    e.target.checked,
+                    item,
+                    state.setHobbyCheckedList,
+                    state.hobbyCheckedList,
+                  )
+                }
               />
               <FilterLabel htmlFor={item.htmlId} hColor={item.color}>
                 {item.name}
