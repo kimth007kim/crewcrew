@@ -279,6 +279,9 @@ public class AuthController {
         Cookie accessCookie = cookieService.generateAccessToken(tokenDto.getAccessToken());
         Cookie refreshCookie = cookieService.generateRefreshToken(tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExpireDate());
 
+        System.out.println("refreshCookie = " + refreshCookie);
+        System.out.println("accessCookie = " + accessCookie);
+
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
 

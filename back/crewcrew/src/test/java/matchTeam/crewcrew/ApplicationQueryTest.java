@@ -22,8 +22,6 @@ public class ApplicationQueryTest {
     void updateApply() throws Exception{
         //given
 
-        applicationService.updateApply(new UpdateApplyRequestDTO(1L, 6L, 3));
-
         //when
 
         //then

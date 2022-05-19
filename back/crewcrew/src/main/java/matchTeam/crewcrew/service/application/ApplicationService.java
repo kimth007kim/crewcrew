@@ -33,80 +33,79 @@ public class ApplicationService {
     private final LikedCategoryRepository likedCategoryRepository;
 
     @Transactional
-    public ApplicationSaveResponseDTO save(ApplicationSaveRequestDTO req){
-        User user = userRepository.findById(req.getUid()).orElseThrow(NotExistUidToApplyException::new);
-        Board board = boardRepository.findById(req.getBoardId()).orElseThrow(NotExistBoardIdToApplyException::new);
+    public ApplicationSaveResponseDTO save(User req, ApplicationSaveRequestDTO info){
 
-        checkDuplicateApplier(req);
+        Board board = boardRepository.findById(info.getBoardId()).orElseThrow(NotExistBoardIdToApplyException::new);
+
+        checkDuplicateApplier(req, info);
         checkExpired(board);
-        checkUserWriter(user, board);
+        checkUserWriter(req, board);
 
         Application application = applicationRepository.save(
-                req.toEntity(req, user, board)
+                info.toEntity(info, board, req)
         );
         return ApplicationSaveResponseDTO.builder()
                 .res(application).build();
     }
 
     @Transactional(readOnly = true)
-    public ApplicationCountResponseDTO findMyApplication(Long reqUid){
+    public ApplicationCountResponseDTO findMyApplication(User req){
 
-        userRepository.findById(reqUid).orElseThrow(NotExistUidToApplyException::new);
-        return queryRepository.getMyApplication(reqUid);
+        userRepository.findById(req.getUid()).orElseThrow(NotExistUidToApplyException::new);
+        return queryRepository.getMyApplication(req);
     }
 
     @Transactional(readOnly = true)
-    public Page<ApplicationDetailResponseDTO> findMyApplicationDetails(ApplicationDetailSpecs detailSpecs, Pageable pageable){
-        userRepository.findById(detailSpecs.getUid()).orElseThrow(NotExistUidToApplyException::new);
-        validCategoryParentId(detailSpecs.getCategoryParentId());
-        return queryRepository.getMyApplicationDetails(detailSpecs, pageable);
+    public Page<ApplicationDetailResponseDTO> findMyApplicationDetails(User req, Long categoryParentId, Pageable pageable){
+        userRepository.findById(req.getUid()).orElseThrow(NotExistUidToApplyException::new);
+        validCategoryParentId(categoryParentId);
+        return queryRepository.getMyApplicationDetails(req, categoryParentId, pageable);
     }
 
     @Transactional(readOnly = true)
-    public ApplicationCountResponseDTO findArrivedApplication(Long reqUid){
+    public ApplicationCountResponseDTO findArrivedApplication(User req){
 
-        userRepository.findById(reqUid).orElseThrow(NotExistUidToApplyException::new);
-        return queryRepository.getArrivedApplication(reqUid);
+        userRepository.findById(req.getUid()).orElseThrow(NotExistUidToApplyException::new);
+        return queryRepository.getArrivedApplication(req.getUid());
     }
 
     @Transactional(readOnly = true)
-    public Page<ApplicationDetailResponseDTO> findArrivedApplicationDetails(ApplicationDetailSpecs detailSpecs, Pageable pageable){
-        userRepository.findById(detailSpecs.getUid()).orElseThrow(NotExistUidToApplyException::new);
-        validCategoryParentId(detailSpecs.getCategoryParentId());
-        return queryRepository.getArrivedApplicationDetails(detailSpecs, pageable);
+    public Page<ApplicationDetailResponseDTO> findArrivedApplicationDetails(User req, Long categoryParentId, Pageable pageable){
+        userRepository.findById(req.getUid()).orElseThrow(NotExistUidToApplyException::new);
+        validCategoryParentId(categoryParentId);
+        return queryRepository.getArrivedApplicationDetails(req, categoryParentId, pageable);
     }
 
     @Transactional(readOnly = true)
-    public ArrivedApplicationUserDetailsResponseDTO findArrivedApplicationApplier(ApplicationApplierSpecs specs){
-        User user = userRepository.findById(specs.getUid()).orElseThrow(NotExistUidToApplyException::new);
-        Board board = boardRepository.findById(specs.getBoardId()).orElseThrow(NotExistBoardInIdException::new);
+    public ArrivedApplicationUserDetailsResponseDTO findArrivedApplicationApplier(User req, Long boardId){
+        User user = userRepository.findById(req.getUid()).orElseThrow(NotExistUidToApplyException::new);
+        Board board = boardRepository.findById(boardId).orElseThrow(NotExistBoardInIdException::new);
 
         if (! user.getUid().equals(board.getUser().getUid())){
             throw new NotMatchBoardOwnerException();
         }
 
-        List<ArrivedApplierDetailsDTO> arrivedApplier = queryRepository.getArrivedApplier(specs);
+        List<ArrivedApplierDetailsDTO> arrivedApplier = queryRepository.getArrivedApplier(req, boardId);
         for (ArrivedApplierDetailsDTO res: arrivedApplier) {
             res.setLikedCategoryList(likedCategoryRepository.findByUser(userRepository.findByUid(res.getUid())));
         }
 
-        return ArrivedApplicationUserDetailsResponseDTO.toDTO(arrivedApplier, queryRepository.getTheNumberOfWaiting(specs));
+        return ArrivedApplicationUserDetailsResponseDTO.toDTO(arrivedApplier, queryRepository.getTheNumberOfWaiting(req, boardId));
     }
 
     @Transactional
-    public ApplicationUserDetailsResponseDTO updateApply(UpdateApplyRequestDTO request){
-        User user = userRepository.findByUid(request.getUid());
-        Application ap = applicationRepository.findById(request.getApId())
+    public ApplicationUserDetailsResponseDTO updateApply(UpdateApplyRequestDTO reqInfo, User reqUser){
+        Application ap = applicationRepository.findById(reqInfo.getApId())
                 .orElseThrow(NotExistApIdException::new);
 
-        ap.updateProgress(request.getStatusCode());
-        return ApplicationUserDetailsResponseDTO.builder().ap(ap).res(user).build();
+        ap.updateProgress(reqInfo.getStatusCode());
+        return ApplicationUserDetailsResponseDTO.builder().ap(ap).res(reqUser).build();
     }
 
     //중복 지원했을때
-    public void checkDuplicateApplier(ApplicationSaveRequestDTO req){
-        System.out.println("queryRepository.checkDuplicateApply(req) = " + queryRepository.checkDuplicateApply(req));
-        if (queryRepository.checkDuplicateApply(req) >= 1L){
+    public void checkDuplicateApplier(User req, ApplicationSaveRequestDTO info){
+        System.out.println("queryRepository.checkDuplicateApply(req) = " + queryRepository.checkDuplicateApply(req, info));
+        if (queryRepository.checkDuplicateApply(req, info) >= 1L){
             throw new DuplicateApplierException();
         }
     }

@@ -44,7 +44,7 @@ public class Application extends BaseTimeEntity {
     private Integer progress;
 
     @Builder
-    public Application(Board board, User user, String commentary, String progress) {
+    public Application(Board board, User user, String commentary) {
         this.board = board;
         this.user = user;
         this.commentary = commentary;
