@@ -29,7 +29,10 @@ function InfoProfile({ state }) {
 
   const deleteFile = useCallback(() => {
     inputFileRef.current.value = '';
+
+    state.setFile(null);
   }, [state.file]);
+
   const HandleImageChange = useCallback(
     (e) => {
       const fileImg = e.target.files[0];
@@ -51,8 +54,6 @@ function InfoProfile({ state }) {
         return null;
       }
       state.setFile(fileImg);
-      const profileUrl = URL.createObjectURL(fileImg);
-      myImgRef.current.firstElementChild.setAttribute('src', profileUrl);
     },
     [state.file],
   );
@@ -145,10 +146,6 @@ function InfoProfile({ state }) {
       state.setMessage(myData.data.message);
       setMessageFocus(true);
     }
-
-    if (!state.file) {
-      myImgRef.current.firstElementChild.setAttribute('src', myData.data.file);
-    }
   }, [state.messageSetting, state.nicknameSetting, state.file]);
 
   return (
@@ -157,7 +154,11 @@ function InfoProfile({ state }) {
         <>
           <InputTop>
             <MyProfile ref={myImgRef}>
-              <img src={myData.data.file} alt="" />
+              {state.file ? (
+                <img src={URL.createObjectURL(state.file)} alt="" />
+              ) : (
+                <img src={`${myData.data.file}?cache=${Math.random()}`} alt="myprofile" />
+              )}
             </MyProfile>
             <InputHide
               type="file"
@@ -227,7 +228,7 @@ const InputTop = styled('div')`
 const MyProfile = styled('div')`
   min-width: 50px;
   height: 50px;
-  background-color: #e2e2e2;
+  background-color: transparent;
   border-radius: 50%;
   overflow: hidden;
   margin-right: 2px;

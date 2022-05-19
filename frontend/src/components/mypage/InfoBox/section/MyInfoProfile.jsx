@@ -65,7 +65,7 @@ function MyInfoProfile({ open }) {
 
     const studyArr = [];
     const hobbyArr = [];
-    if (myData && !myError) {
+    if (myData && !myError && myData.data) {
       myData.data.categoryId.forEach((id) => {
         const categoryID = String(id);
         const tmpHobbyArr = hobbyFilterArr.filter((el) => el.value === categoryID);
@@ -80,7 +80,7 @@ function MyInfoProfile({ open }) {
 
     setStudyCheckedList([...studyArr]);
     setHobbyCheckedList([...hobbyArr]);
-  }, []);
+  }, [myData.data]);
 
   const HandleCancelUpload = useCallback(() => {
     InitialState();
@@ -115,7 +115,6 @@ function MyInfoProfile({ open }) {
 
         context.categoryId = categoryId;
       }
-      console.log(context);
       const formData = new FormData();
       formData.append(
         'ProfileChangeRequestDto',
@@ -136,8 +135,8 @@ function MyInfoProfile({ open }) {
 
       switch (data.status) {
         case 200:
-          mutate('/user/token');
           toast.success('성공적으로 변경되었습니다.');
+          mutate('/user/token');
           InitialState();
           break;
         case 1007:
@@ -173,7 +172,7 @@ function MyInfoProfile({ open }) {
   useEffect(() => {
     const studyArr = [];
     const hobbyArr = [];
-    if (myData && !myError) {
+    if (myData && !myError && myData.data) {
       myData.data.categoryId.forEach((id) => {
         const categoryID = String(id);
         const tmpHobbyArr = hobbyFilterArr.filter((el) => el.value === categoryID);
@@ -188,7 +187,7 @@ function MyInfoProfile({ open }) {
 
     setStudyCheckedList([...studyArr]);
     setHobbyCheckedList([...hobbyArr]);
-  }, []);
+  }, [myData.data]);
 
   return (
     <>

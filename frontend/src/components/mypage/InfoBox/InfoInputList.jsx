@@ -97,51 +97,61 @@ function InfoInputList({ state }) {
 
   return (
     <Container>
-      <InputWrap>
-        <Textfield
-          type="text"
-          onChange={HandleNameChange}
-          value={state.name}
-          label={state.nameSetting ? `${myData.data.name}` : '이름'}
-          validMessage={state.nameValidMsg}
-          valid={state.nameValid}
-          focus={nameFocus}
-          disabled={state.nameSetting}
-          onDelete={HandleNameDelete}
-        />
-        {state.nameSetting && (
-          <TxtFieldSetting onClick={() => HandleFieldSet(state.setNameSetting)} />
-        )}
-      </InputWrap>
-      <InputWrap>
-        <Textfield type="email" label={myData.data.email} validMessage="" valid={false} disabled />
-      </InputWrap>
-      <InputWrap>
-        <TextfieldPW
-          onChange={HandlePasswordChange}
-          value={state.password}
-          label="새 비밀번호"
-          validMessage={state.passwordValidMsg}
-          valid={state.passwordValid}
-          focus={passwordFocus}
-          disabled={state.passwordSetting}
-          onDelete={HandlePasswordDelete}
-        />
-        {state.passwordSetting && (
-          <TxtFieldSetting onClick={() => HandleFieldSet(state.setPasswordSetting)} />
-        )}
-      </InputWrap>
-      <InputWrap>
-        <TextfieldPW
-          label="비밀번호 확인"
-          onChange={HandlePWConfirmChange}
-          value={state.pwConfirm}
-          validMessage={state.pwConfirmValidMsg}
-          valid={state.pwConfirmValid}
-          onDelete={HandlePWConfirmDelete}
-          disabled={state.passwordSetting}
-        />
-      </InputWrap>
+      {myData && myData.data && (
+        <>
+          <InputWrap>
+            <Textfield
+              type="text"
+              onChange={HandleNameChange}
+              value={state.name}
+              label={state.nameSetting ? `${myData.data.name}` : '이름'}
+              validMessage={state.nameValidMsg}
+              valid={state.nameValid}
+              focus={nameFocus}
+              disabled={state.nameSetting}
+              onDelete={HandleNameDelete}
+            />
+            {state.nameSetting && (
+              <TxtFieldSetting onClick={() => HandleFieldSet(state.setNameSetting)} />
+            )}
+          </InputWrap>
+          <InputWrap>
+            <Textfield
+              type="email"
+              label={myData.data.email}
+              validMessage=""
+              valid={false}
+              disabled
+            />
+          </InputWrap>
+          <InputWrap>
+            <TextfieldPW
+              onChange={HandlePasswordChange}
+              value={state.password}
+              label="새 비밀번호"
+              validMessage={state.passwordValidMsg}
+              valid={state.passwordValid}
+              focus={passwordFocus}
+              disabled={state.passwordSetting}
+              onDelete={HandlePasswordDelete}
+            />
+            {state.passwordSetting && (
+              <TxtFieldSetting onClick={() => HandleFieldSet(state.setPasswordSetting)} />
+            )}
+          </InputWrap>
+          <InputWrap>
+            <TextfieldPW
+              label="비밀번호 확인"
+              onChange={HandlePWConfirmChange}
+              value={state.pwConfirm}
+              validMessage={state.pwConfirmValidMsg}
+              valid={state.pwConfirmValid}
+              onDelete={HandlePWConfirmDelete}
+              disabled={state.passwordSetting}
+            />
+          </InputWrap>
+        </>
+      )}
     </Container>
   );
 }

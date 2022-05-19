@@ -96,7 +96,10 @@ function Lnb({ path }) {
               {myData && myData.data ? (
                 <>
                   <NavPCFooterA to="/mypage">
-                    <ProfileNullImg src={myData.data.file} alt="마이페이지" />
+                    <ProfileNullImg
+                      src={`${myData.data.file}?cache=${Math.random()}`}
+                      alt="myprofile"
+                    />
                   </NavPCFooterA>
                   <Alarm />
                 </>
