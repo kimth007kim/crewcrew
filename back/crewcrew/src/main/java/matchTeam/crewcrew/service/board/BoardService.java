@@ -32,13 +32,12 @@ public class BoardService {
     private final Integer[] approachCode = {0, 1};
 
     @Transactional
-    public BoardSaveResponseDTO save(BoardSaveRequestDTO req){
+    public BoardSaveResponseDTO save(User req, BoardSaveRequestDTO info){
 
-        User user = userRepository.findById(req.getUid()).orElseThrow(UserNotFoundException::new);
-        Category category = categoryRepository.findById(req.getCategoryId()).orElseThrow(NotExistCategoryException::new);
+        Category category = categoryRepository.findById(info.getCategoryId()).orElseThrow(NotExistCategoryException::new);
 
         Board board = boardRepository.save(
-                req.toEntity(req, user, category)
+                info.toEntity(info, req, category)
         );
 
         return BoardSaveResponseDTO.builder()

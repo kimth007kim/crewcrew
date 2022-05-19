@@ -21,22 +21,19 @@ import matchTeam.crewcrew.util.customException.UserNotFoundException;
 @Getter
 public class ApplicationSaveRequestDTO {
 
-    @ApiParam(value = "해당 게시판에 지원하기를 요청한 유저의 uid")
-    private Long uid;
-
     @ApiParam(value = "지원하기를 요청받은 게시판의 id")
     private Long boardId;
 
     @ApiParam(value = "한줄소개")
     private String commentary;
 
-    public Application toEntity(ApplicationSaveRequestDTO req,
-                                User user, Board board){
+    public Application toEntity(ApplicationSaveRequestDTO info, Board board, User req){
 
         return Application.builder()
                 .board(board)
-                .user(user)
-                .commentary(req.getCommentary()).build();
+                .user(req)
+                .commentary(info.getCommentary())
+                .build();
 
     }
 }

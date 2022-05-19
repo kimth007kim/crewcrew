@@ -10,6 +10,7 @@ import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.application.*;
 import matchTeam.crewcrew.entity.application.QApplication;
+import matchTeam.crewcrew.entity.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -33,10 +34,9 @@ public class ApplicationQueryRepository {
 
     /****
      * 내가 참여한 지원서 보기에 대해 조회
-     * @param reqUid 내가 참여요청한 지원서를 보기를 요청한 사용자의 uid
      * @return
      */
-    public ApplicationCountResponseDTO getMyApplication(Long reqUid) {
+    public ApplicationCountResponseDTO getMyApplication(User req) {
         List<ApplicationResponseDTO> fetch = queryFactory
                 .select(Projections.constructor(ApplicationResponseDTO.class, category.categoryParent.id, category.categoryParent.id.count()))
                 .from(category)
@@ -44,7 +44,7 @@ public class ApplicationQueryRepository {
                 .on(category.id.eq(board.category.id))
                 .innerJoin(application)
                 .on(application.board.id.eq(board.id))
-                .where(application.user.uid.eq(reqUid))
+                .where(application.user.uid.eq(req.getUid()))
                 .groupBy(category.categoryParent.id)
                 .orderBy(category.categoryParent.id.asc())
                 .fetch();
@@ -57,11 +57,10 @@ public class ApplicationQueryRepository {
 
     /***
      * 내 참여요청의 상세 정보를 조회하는 메소드
-     * @param detailSpecs 상세정보를 요구하는 요청사항을 담은 specification
      * @param pageable 페이징 관련 변수
      * @return
      */
-    public Page<ApplicationDetailResponseDTO> getMyApplicationDetails(ApplicationDetailSpecs detailSpecs, Pageable pageable){
+    public Page<ApplicationDetailResponseDTO> getMyApplicationDetails(User req, Long categoryParentId, Pageable pageable){
         List<ApplicationDetailResponseDTO> fetch = queryFactory
                 .select(Projections.constructor(ApplicationDetailResponseDTO.class, board, application))
                 .from(board)
@@ -69,7 +68,7 @@ public class ApplicationQueryRepository {
                 .on(board.category.id.eq(category.id))
                 .innerJoin(application)
                 .on(application.board.id.eq(board.id))
-                .where(application.user.uid.eq(detailSpecs.getUid()).and(category.categoryParent.id.eq(detailSpecs.getCategoryParentId())))
+                .where(application.user.uid.eq(req.getUid()).and(category.categoryParent.id.eq(categoryParentId)))
                 .orderBy(board.createdDate.desc())
                 .fetch();
 
@@ -80,7 +79,7 @@ public class ApplicationQueryRepository {
                 .on(board.category.id.eq(category.id))
                 .innerJoin(application)
                 .on(application.board.id.eq(board.id))
-                .where(application.user.uid.eq(detailSpecs.getUid()).and(category.categoryParent.id.eq(detailSpecs.getCategoryParentId())))
+                .where(application.user.uid.eq(req.getUid()).and(category.categoryParent.id.eq(categoryParentId)))
                 .orderBy(board.createdDate.desc());
 
         return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchCount);
@@ -112,11 +111,11 @@ public class ApplicationQueryRepository {
 
     /***
      * 내게 도착한 요청의 상세 정보를 조회하는 메소드
-     * @param detailSpecs 상세정보를 요구하는 요청사항을 담은 specification
+
      * @param pageable 페이징 관련 변수
      * @return
      */
-    public Page<ApplicationDetailResponseDTO> getArrivedApplicationDetails(ApplicationDetailSpecs detailSpecs, Pageable pageable){
+    public Page<ApplicationDetailResponseDTO> getArrivedApplicationDetails(User req, Long categoryParentId, Pageable pageable){
         List<ApplicationDetailResponseDTO> fetch = queryFactory
                 .select(Projections.constructor(ApplicationDetailResponseDTO.class, board, application))
                 .from(board)
@@ -124,7 +123,7 @@ public class ApplicationQueryRepository {
                 .on(board.category.id.eq(category.id))
                 .innerJoin(application)
                 .on(application.board.id.eq(board.id))
-                .where(application.progress.eq(1).and(board.user.uid.eq(detailSpecs.getUid()).and(category.categoryParent.id.eq(detailSpecs.getCategoryParentId()))))
+                .where(application.progress.eq(1).and(board.user.uid.eq(req.getUid()).and(category.categoryParent.id.eq(categoryParentId))))
                 .orderBy(application.createdDate.desc())
                 .fetch();
 
@@ -135,7 +134,7 @@ public class ApplicationQueryRepository {
                 .on(board.category.id.eq(category.id))
                 .innerJoin(application)
                 .on(application.board.id.eq(board.id))
-                .where(application.progress.eq(1).and(board.user.uid.eq(detailSpecs.getUid()).and(category.categoryParent.id.eq(detailSpecs.getCategoryParentId()))))
+                .where(application.progress.eq(1).and(board.user.uid.eq(req.getUid()).and(category.categoryParent.id.eq(categoryParentId))))
                 .orderBy(application.createdDate.desc());
 
         return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchCount);
@@ -143,10 +142,9 @@ public class ApplicationQueryRepository {
 
     /***
      * 도착한 신청서를 작성한 사람을 조회
-     * @param specs - 검색 조건
      * @return
      */
-    public List<ArrivedApplierDetailsDTO> getArrivedApplier(ApplicationApplierSpecs specs){
+    public List<ArrivedApplierDetailsDTO> getArrivedApplier(User req, Long boardId){
         return queryFactory
                 .selectDistinct(Projections.constructor(ArrivedApplierDetailsDTO.class, user, application))
                 .from(user)
@@ -154,7 +152,7 @@ public class ApplicationQueryRepository {
                     .on(application.user.uid.eq(user.uid))
                     .innerJoin(board)
                     .on(board.id.eq(application.board.id))
-                .where(application.progress.eq(1).and(board.id.eq(specs.getBoardId()).and(board.user.uid.eq(specs.getUid()))))
+                .where(application.progress.eq(1).and(board.id.eq(boardId).and(board.user.uid.eq(req.getUid()))))
                 .orderBy(application.createdDate.desc())
                 .fetch();
     }
@@ -163,12 +161,12 @@ public class ApplicationQueryRepository {
      * 중복 지원을 방지하기 위한 메소드
      * @return
      */
-    public Long checkDuplicateApply(ApplicationSaveRequestDTO req){
+    public Long checkDuplicateApply(User req, ApplicationSaveRequestDTO info){
         return queryFactory
                 .select(application)
                 .from(application)
                 .where(application.user.uid.eq(req.getUid())
-                        .and(application.board.id.eq(req.getBoardId())))
+                        .and(application.board.id.eq(info.getBoardId())))
                 .fetchCount();
     }
 
@@ -182,7 +180,7 @@ public class ApplicationQueryRepository {
                 .execute();
     }*/
 
-    public Long getTheNumberOfWaiting(ApplicationApplierSpecs specs){
+    public Long getTheNumberOfWaiting(User req, Long boardId){
         return queryFactory
                 .select(board.id.count())
                 .from(user)
@@ -190,7 +188,7 @@ public class ApplicationQueryRepository {
                 .on(application.user.uid.eq(user.uid))
                 .innerJoin(board)
                 .on(board.id.eq(application.board.id))
-                .where(application.progress.eq(1).and(board.id.eq(specs.getBoardId()).and(board.user.uid.eq(specs.getUid()))))
+                .where(application.progress.eq(1).and(board.id.eq(boardId).and(board.user.uid.eq(req.getUid()))))
                 .groupBy(board.id)
                 .fetchOne();
     }

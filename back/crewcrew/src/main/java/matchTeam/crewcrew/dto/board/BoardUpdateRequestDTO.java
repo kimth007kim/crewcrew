@@ -16,9 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 public class BoardUpdateRequestDTO {
-    @ApiModelProperty(value = "유저의 uid", notes = "현재 접속해있는 유저의 uid", required = true, example = "1")
-    @NotNull(message = "유저 아이디를 넣어주세요.")
-    private Long uid;
+
 
     @ApiModelProperty(value = "게시글 제목", notes = "게시글 제목을 입력해주세요", required = true, example = "my title")
     @NotBlank(message = "게시글 제목을 입력해주세요.")
@@ -57,10 +55,9 @@ public class BoardUpdateRequestDTO {
     private String kakaoChat;
 
     @Builder
-    public BoardUpdateRequestDTO(Long uid, String title, String boardContent,
+    public BoardUpdateRequestDTO(String title, String boardContent,
                                  Integer recruitedCrew, Integer totalCrew,
                                  Integer approachCode, Long categoryId, LocalDate expiredDate, String kakaoChat) {
-        this.uid = uid;
         this.title = title;
         this.boardContent = boardContent;
         this.recruitedCrew = recruitedCrew;

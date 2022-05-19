@@ -3,10 +3,12 @@ package matchTeam.crewcrew.controller.api.v1.board;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.board.*;
+import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.service.board.BoardHitService;
 import matchTeam.crewcrew.service.board.BoardService;
 import matchTeam.crewcrew.dto.board.BoardSpecs;
+import matchTeam.crewcrew.service.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -25,6 +27,7 @@ public class BoardController {
 
     private final BoardService boardService;
     private final BoardHitService boardHitService;
+    private final UserService userService;
 
     @ApiOperation(value = "게시글 생성", notes = "게시글을 생성한다.")
     @ApiResponses({
@@ -84,14 +87,17 @@ public class BoardController {
     })
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/board")
-    public ResponseEntity<Object> save(@ApiParam(value = "게시글 생성 요청 DTO", required = true)@RequestBody BoardSaveRequestDTO req){
-        //유효한 리퀘스트인지 확인
-        boardService.checkValidSave(req);
+    public ResponseEntity<Object> save(@RequestHeader("X-AUTH-TOKEN") String token,
+                                       @ApiParam(value = "게시글 생성 요청 DTO", required = true)@RequestBody BoardSaveRequestDTO info){
 
-        BoardSaveResponseDTO saveBoard = boardService.save(req);
+        User user = userService.tokenChecker(token);
+        //유효한 리퀘스트인지 확인
+        boardService.checkValidSave(info);
+
+        BoardSaveResponseDTO saveBoard = boardService.save(user, info);
 
         //uid가 일치하는지 확인
-        boardService.checkMathchingUid(req.getUid(), saveBoard.getUid());
+        boardService.checkMathchingUid(user.getUid(), saveBoard.getUid());
 
         return ResponseHandler.generateResponse("게시글 생성 성공", HttpStatus.OK,saveBoard);
     }
@@ -110,10 +116,12 @@ public class BoardController {
     })
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/board/{boardId}")
-    public ResponseEntity<Object> findByBoardId(@ApiParam(value = "게시글 번호", required = true)@PathVariable Long boardId,
+    public ResponseEntity<Object> findByBoardId(@RequestHeader("X-AUTH-TOKEN") String token,
+                                                @ApiParam(value = "게시글 번호", required = true)@PathVariable Long boardId,
                                                 @ModelAttribute BoardSpecs boardSpecs,
                                                 @PageableDefault(size = 5) Pageable pageable){
 
+        User user = userService.tokenChecker(token);
         BoardResponseDTO findBoard = boardService.findById(boardId);
         boardHitService.updateHit(boardId);
 
@@ -167,9 +175,11 @@ public class BoardController {
             )
     })
     @GetMapping("/board/list")
-    public ResponseEntity<Object> getBoardList(@ModelAttribute BoardSpecs boardSpecs,
+    public ResponseEntity<Object> getBoardList(@RequestHeader("X-AUTH-TOKEN") String token,
+                                               @ModelAttribute BoardSpecs boardSpecs,
                                                @PageableDefault(size = 10) Pageable pageable){
 
+        User user = userService.tokenChecker(token);
         Page<BoardPageDetailResponseDTO> result = boardService.search(boardSpecs, pageable);
         BoardPageResponseDTO pageResponseDTO = BoardPageResponseDTO.toDTO(result);
         return ResponseHandler.generateResponse("게시글 리스트 다중 조건 조회 성공", HttpStatus.OK, pageResponseDTO);
@@ -239,14 +249,16 @@ public class BoardController {
     })
     @ResponseStatus(value = HttpStatus.OK)
     @PutMapping("/board/{boardId}")
-    public ResponseEntity<Object> update(@ApiParam(value = "수정을 요청하는 게시글 번호", required = true)@PathVariable Long boardId,
-                                         @ApiParam(value = "게시글 수정 요청 DTO", required = true)@RequestBody BoardUpdateRequestDTO req){
-        boardService.checkValidUpdate(req);
+    public ResponseEntity<Object> update(@RequestHeader("X-AUTH-TOKEN") String token,
+                                         @ApiParam(value = "수정을 요청하는 게시글 번호", required = true)@PathVariable Long boardId,
+                                         @ApiParam(value = "게시글 수정 요청 DTO", required = true)@RequestBody BoardUpdateRequestDTO info){
+        User user = userService.tokenChecker(token);
+        boardService.checkValidUpdate(info);
 
-        Long updateBoardId = boardService.update(boardId, req);
+        Long updateBoardId = boardService.update(boardId, info);
         BoardResponseDTO updateBoard = boardService.findById(updateBoardId);
 
-        boardService.checkMathchingUid(req.getUid(), updateBoard.getUid());
+        boardService.checkMathchingUid(user.getUid(), updateBoard.getUid());
         boardService.checkMathchingBoardId(boardId, updateBoard.getBoardId());
         return ResponseHandler.generateResponse("게시글 번호로 수정 성공",HttpStatus.OK, updateBoard);
     }

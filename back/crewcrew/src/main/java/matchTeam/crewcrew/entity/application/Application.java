@@ -44,15 +44,15 @@ public class Application extends BaseTimeEntity {
     private Integer progress;
 
     @Builder
-    public Application(Board board, User user, String commentary, String progress) {
+    public Application(Board board, User user, String commentary) {
         this.board = board;
         this.user = user;
         this.commentary = commentary;
         this.progress= 1;
     }
 
-    public void updateProgress(String requestStatus){
-        this.progress = ApplicationStatus.from(requestStatus).getStatusCode();
+    public void updateProgress(Integer progressCode){
+        this.progress = progressCode;
     }
 
     public ApplicationSaveResponseDTO toDTO(Application application){

@@ -67,21 +67,22 @@ import javax.mail.MessagingException;
     })
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping(value = "/board/application")
-    public ResponseEntity<Object> fillInApplication(@ApiParam(value = "지원서 작성 요청 DTO", required = true) @RequestBody ApplicationSaveRequestDTO req) throws MessagingException{
+    public ResponseEntity<Object> fillInApplication(@RequestHeader("X-AUTH-TOKEN") String token,
+                                                    @ApiParam(value = "지원서 작성 요청 DTO", required = true) @RequestBody ApplicationSaveRequestDTO info) throws MessagingException{
 
-        ApplicationSaveResponseDTO result = applicationService.save(req);
+        User user = userService.tokenChecker(token);
+        ApplicationSaveResponseDTO result = applicationService.save(user, info);
         announcementService.save(result);
-        applicationProgressService.increaseApply(req.getBoardId());
+        applicationProgressService.increaseApply(info.getBoardId());
 
-        User user = userService.findByUid(result.getUid());
-
+        /*
         Context context = new Context();
         context.setVariable("nickname", user.getNickname());
         context.setVariable("introduce", user.getIntroduce());
         context.setVariable("hobby", user.getLikedCategories());
         //context.setVariable("url", url);
 
-        totalEmailService.sendJavaMail("[크루크루] 지원서 도착", user.getEmail(), "mailform/apply", context);
+        totalEmailService.sendJavaMail("[크루크루] 지원서 도착", user.getEmail(), "mailform/apply", context);*/
         return ResponseHandler.generateResponse("지원서 작성 성공",HttpStatus.OK, result);
     }
 
@@ -101,9 +102,10 @@ import javax.mail.MessagingException;
             )
     })
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(value = "/apply-status-list")
-    public ResponseEntity<Object> findMyApplication(@ApiParam(value = "내 지원서(스터디, 취미별 지원서 개수 조회)를 조회하려는 uid", required = true)@RequestParam Long reqUid){
-        ApplicationCountResponseDTO result = applicationService.findMyApplication(reqUid);
+    @GetMapping(value = "/application")
+    public ResponseEntity<Object> findMyApplication(@RequestHeader("X-AUTH-TOKEN") String token){
+        User user = userService.tokenChecker(token);
+        ApplicationCountResponseDTO result = applicationService.findMyApplication(user);
         return ResponseHandler.generateResponse("내 지원서 조회(스터디, 취미별 지원서 개수 조회)",HttpStatus.OK, result);
     }
 
@@ -128,11 +130,13 @@ import javax.mail.MessagingException;
             )
     })
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(value = "/apply-status-list/details")
-    public ResponseEntity<Object> findMyApplication(@ModelAttribute ApplicationDetailSpecs detailSpecs,
+    @GetMapping(value = "/application/details/{categoryParentId}")
+    public ResponseEntity<Object> findMyApplication(@RequestHeader("X-AUTH-TOKEN") String token,
+                                                    @PathVariable Long categoryParentId,
                                                     @PageableDefault(size = 5)Pageable pageable){
 
-        Page<ApplicationDetailResponseDTO> result = applicationService.findMyApplicationDetails(detailSpecs, pageable);
+        User user = userService.tokenChecker(token);
+        Page<ApplicationDetailResponseDTO> result = applicationService.findMyApplicationDetails(user, categoryParentId, pageable);
         ApplicationDetailsPageResponseDTO pageResponseDTO =ApplicationDetailsPageResponseDTO.toDTO(result);
         return ResponseHandler.generateResponse("내가 지원한 크루 모집글 카테고리별 조회 성공", HttpStatus.OK, pageResponseDTO);
     }
@@ -152,10 +156,11 @@ import javax.mail.MessagingException;
             )
     })
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(value = "/apply-status-list/arrived")
-    public ResponseEntity<Object> findArrivedApplication(@ApiParam(value = "내게 도착한 지원서(스터디, 취미별 지원서 개수) 조회를 요청한 유저 uid", required = true)@RequestParam Long reqUid){
+    @GetMapping(value = "/application/arrived")
+    public ResponseEntity<Object> findArrivedApplication(@RequestHeader("X-AUTH-TOKEN") String token){
 
-        ApplicationCountResponseDTO result = applicationService.findArrivedApplication(reqUid);
+        User user = userService.tokenChecker(token);
+        ApplicationCountResponseDTO result = applicationService.findArrivedApplication(user);
         return ResponseHandler.generateResponse("내게 도착한 지원서 상태(카테고리 별 갯수) 조회 성공",HttpStatus.OK, result);
     }
 
@@ -180,11 +185,13 @@ import javax.mail.MessagingException;
             )
     })
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(value = "/apply-status-list/arrived/details")
-    public ResponseEntity<Object> findArrivedApplicationDetails(@ModelAttribute ApplicationDetailSpecs detailSpecs,
+    @GetMapping(value = "/application/arrived/details/{categoryParentId}")
+    public ResponseEntity<Object> findArrivedApplicationDetails(@RequestHeader("X-AUTH-TOKEN") String token,
+                                                    @PathVariable Long categoryParentId,
                                                     @PageableDefault(size = 5)Pageable pageable){
 
-        Page<ApplicationDetailResponseDTO> result = applicationService.findArrivedApplicationDetails(detailSpecs, pageable);
+        User user = userService.tokenChecker(token);
+        Page<ApplicationDetailResponseDTO> result = applicationService.findArrivedApplicationDetails(user, categoryParentId, pageable);
         ApplicationDetailsPageResponseDTO pageResponseDTO = ApplicationDetailsPageResponseDTO.toDTO(result);
         return ResponseHandler.generateResponse("내게 도착한 지원서 부모 카테고리 별 조회 성공", HttpStatus.OK, pageResponseDTO);
     }
@@ -213,20 +220,22 @@ import javax.mail.MessagingException;
             )
     })
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(value = "/apply-status-list/arrived/details/applier")
-    public ResponseEntity<Object> findArrivedApplicationApplier(@ModelAttribute ApplicationApplierSpecs specs){
-
-        ArrivedApplicationUserDetailsResponseDTO result = applicationService.findArrivedApplicationApplier(specs);
+    @GetMapping(value = "/application/arrived/details/applier/{boardId}")
+    public ResponseEntity<Object> findArrivedApplicationApplier(@RequestHeader("X-AUTH-TOKEN") String token,
+                                                                @PathVariable Long boardId){
+        User user = userService.tokenChecker(token);
+        ArrivedApplicationUserDetailsResponseDTO result = applicationService.findArrivedApplicationApplier(user, boardId);
         return ResponseHandler.generateResponse("내게 도착한 지원서의 지원자 상세 조회 성공", HttpStatus.OK, result);
     }
 
 
     @ApiOperation(value = "지원서 진행사항 수정하기")
     @ResponseStatus(value = HttpStatus.OK )
-    @PutMapping(value = "/apply-status-list/status")
-    public ResponseEntity<Object> updateApply(@RequestBody UpdateApplyRequestDTO request){
+    @PutMapping(value = "/application/status")
+    public ResponseEntity<Object> updateApply(@RequestHeader("X-AUTH-TOKEN") String token, @RequestBody UpdateApplyRequestDTO request){
 
-        ApplicationUserDetailsResponseDTO result = applicationService.updateApply(request);
+        User user = userService.tokenChecker(token);
+        ApplicationUserDetailsResponseDTO result = applicationService.updateApply(request, user);
         return ResponseHandler.generateResponse("지원서 진행사항 수정 성공", HttpStatus.OK, result);
     }
 
