@@ -136,7 +136,7 @@ function Pagination({ data, currentPage, postsPerPage, totalPage }) {
 
   return (
     <PaginationWrapper>
-      {data && totalPage > 1 && (
+      {data && totalPage > 1 && btnDeactive && (
         <>
           <Prev2 onClick={handleClickPrevFirst} deActive={btnDeactive.prev2} />
           <Prev1 onClick={handleClickPrev} deActive={btnDeactive.prev1} />

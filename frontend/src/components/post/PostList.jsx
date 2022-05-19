@@ -5,11 +5,12 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { css } from 'styled-components';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { approachFilterState, arrayFilterState, articleFilterState } from '../../atom/post';
 import Pagination from './Pagination';
 import FilterBox from './FilterBox';
 import PostCard from './PostCard';
+import Loader from '../common/Loader';
 
 function useQuery() {
   const { search } = useLocation();
@@ -24,11 +25,13 @@ function PostList() {
   const [pageData, setPageData] = useState(null);
 
   const [PostListData, setPostListData] = useState([]);
+  const [postLoading, setPostLoading] = useState(true);
 
   const query = useQuery();
   const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(query.get('page') || 1);
   const [postsPerPage, setPostsPerPage] = useState(10);
+  const navigate = useNavigate();
 
   const renderTitle = useCallback(() => {
     if (query.get('search')) {
@@ -87,6 +90,7 @@ function PostList() {
 
   const axiosGetFilter = useCallback(async (page, search) => {
     try {
+      setPostLoading(true);
       const postFilter = JSON.parse(localStorage.getItem('postFilter'));
 
       const order = postFilter.article.value;
@@ -129,6 +133,8 @@ function PostList() {
     } catch (error) {
       toast.error(error);
       console.dir(error);
+    } finally {
+      setPostLoading(false);
     }
   }, []);
 
@@ -142,6 +148,52 @@ function PostList() {
     }
   };
 
+  const handleHistoryback = useCallback(() => {
+    navigate(-1);
+  }, []);
+  const renderPostList = () => {
+    if (PostListData.length > 0) {
+      return (
+        <>
+          <PostWrapper>
+            <ul>
+              {PostListData.map((post) => (
+                <li key={post.boardId}>
+                  <PostCard data={post} />
+                </li>
+              ))}
+            </ul>
+          </PostWrapper>
+          <Pagination
+            data={pageData}
+            currentPage={currentPage}
+            postsPerPage={postsPerPage}
+            totalPage={totalPage}
+          />
+        </>
+      );
+    }
+    if (query.get('search')) {
+      return (
+        <EmptyList>
+          <h2>해당 검색어에 대한 검색결과가 없습니다.</h2>
+          <span>다른 모집글을 찾아보세요</span>
+          <button type="button" onClick={handleHistoryback}>
+            돌아가기
+          </button>
+        </EmptyList>
+      );
+    }
+    return (
+      <EmptyList>
+        <h2>해당 조건에 대한 결과가 없습니다.</h2>
+        <span>다른 조건을 찾아보세요</span>
+        <button type="button" onClick={handleHistoryback}>
+          돌아가기
+        </button>
+      </EmptyList>
+    );
+  };
   useEffect(() => {
     const pageNum = query.get('page');
     const pageSearch = query.get('search');
@@ -183,22 +235,13 @@ function PostList() {
           )}
           {!query.get('search') && renderFilterList(filterData)}
         </FilterChecked>
-        <PostWrapper>
-          <ul>
-            {PostListData.length > 0 &&
-              PostListData.map((post) => (
-                <li key={post.boardId}>
-                  <PostCard data={post} />
-                </li>
-              ))}
-          </ul>
-        </PostWrapper>
-        <Pagination
-          data={pageData}
-          currentPage={currentPage}
-          postsPerPage={postsPerPage}
-          totalPage={totalPage}
-        />
+        {postLoading ? (
+          <LoadingList>
+            <Loader height={80} width={80} />
+          </LoadingList>
+        ) : (
+          renderPostList()
+        )}
       </Wrapper>
     </Container>
   );
@@ -283,5 +326,49 @@ const FilterChecked = styled.ul`
 const PostWrapper = styled.div`
   li {
     padding-bottom: 14px;
+  }
+`;
+
+const LoadingList = styled.div`
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+`;
+
+const EmptyList = styled.div`
+  height: 400px;
+  display: flex;
+  align-items: center;
+  padding-top: 38px;
+  flex-direction: column;
+
+  h2 {
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 19px;
+    text-align: center;
+
+    color: #000000;
+  }
+
+  span {
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 19px;
+    text-align: center;
+
+    color: #000000;
+  }
+
+  button {
+    margin-top: 20px;
+    width: 74px;
+    height: 30px;
+    border: none;
+    background: #00b7ff;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
   }
 `;

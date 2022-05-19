@@ -28,7 +28,7 @@ function PostCard({ data }) {
     <Wrapper>
       <CardHead isDisabled={IsDisable}>
         <ProfileBox>
-          <img src={`${data.profileImage}`} alt="" />
+          <img src={`${data.profileImage}?cache=${Math.random()}`} alt="" />
         </ProfileBox>
         <TextBox>
           <Dday>{IsDisable ? '마감' : `D-${renderDay()}`}</Dday>
@@ -171,7 +171,7 @@ const CardHead = styled.div`
     min-width: 60px;
     height: 60px;
     border-radius: 50%;
-    background-color: #8d2bf5;
+    background-color: transparent;
     overflow: hidden;
     img {
       width: 100%;
