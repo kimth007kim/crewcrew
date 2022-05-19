@@ -40,10 +40,6 @@ public class BoardSaveRequestDTO {
     @NotNull(message = "모집방식을 선택해주세요.")
     private Integer approachCode;
 
-    @ApiModelProperty(value = "유저의 uid", notes = "현재 접속해있는 유저의 uid", required = true, example = "1")
-    @NotNull(message = "유저 아이디를 넣어주세요.")
-    private Long uid;
-
     @ApiModelProperty(value = "카테고리 아이디", notes = "카테고리를 선택해주세요", required = true, example = "3")
     @NotNull(message = "카테고리 아이디를 입력해주세요.")
     @PositiveOrZero(message = "카테고리 아이디를 입력해주세요.")
@@ -63,12 +59,11 @@ public class BoardSaveRequestDTO {
     @Builder
     public BoardSaveRequestDTO(String title, String boardContent,
                                Integer totalCrew, Integer approachCode,
-                               Long uid, Long categoryId, LocalDate expiredDate, String kakaoChat) {
+                               Long categoryId, LocalDate expiredDate, String kakaoChat) {
         this.title = title;
         this.boardContent = boardContent;
         this.totalCrew = totalCrew;
         this.approachCode = approachCode;
-        this.uid = uid;
         this.categoryId = categoryId;
         this.expiredDate = expiredDate;
         this.kakaoChat = kakaoChat;
