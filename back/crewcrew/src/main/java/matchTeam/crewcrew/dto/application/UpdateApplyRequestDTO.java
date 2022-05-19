@@ -15,12 +15,12 @@ public class UpdateApplyRequestDTO {
     @ApiModelProperty(value = "신청서를 작성한 유저의 uid")
     private Long uid;
 
-    @ApiModelProperty(value = "신청서의 상태(DECLINED, APPLY, COMPLETED, CANCELED)")
-    private String status;
+    @ApiModelProperty(value = "신청서의 상태(0: 참여거절, 1: 참여요청중, 2: 참여완료, 3: 참여취소)")
+    private Integer statusCode;
 
-    public UpdateApplyRequestDTO(Long apId, Long uid, String status) {
+    public UpdateApplyRequestDTO(Long apId, Long uid, Integer statusCode) {
         this.apId = apId;
         this.uid = uid;
-        this.status = status;
+        this.statusCode = statusCode;
     }
 }

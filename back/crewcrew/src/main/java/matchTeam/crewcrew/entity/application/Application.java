@@ -51,8 +51,8 @@ public class Application extends BaseTimeEntity {
         this.progress= 1;
     }
 
-    public void updateProgress(String requestStatus){
-        this.progress = ApplicationStatus.from(requestStatus).getStatusCode();
+    public void updateProgress(Integer progressCode){
+        this.progress = progressCode;
     }
 
     public ApplicationSaveResponseDTO toDTO(Application application){

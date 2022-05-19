@@ -99,7 +99,7 @@ public class ApplicationService {
         Application ap = applicationRepository.findById(request.getApId())
                 .orElseThrow(NotExistApIdException::new);
 
-        ap.updateProgress(request.getStatus());
+        ap.updateProgress(request.getStatusCode());
         return ApplicationUserDetailsResponseDTO.builder().ap(ap).res(user).build();
     }
 
