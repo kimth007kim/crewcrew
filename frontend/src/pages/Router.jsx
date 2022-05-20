@@ -5,6 +5,7 @@ import Testing from './testing';
 import NotFound from './notfound';
 import Post from './post';
 import MyPage from './mypage';
+import PostDetail from './post/id';
 
 function Router() {
   return (
@@ -13,7 +14,8 @@ function Router() {
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/testing" element={<Testing />} />
-        <Route path="/post" element={<Post />} />
+        <Route path="/post" element={<Post />}></Route>
+        <Route path="/post/:postId" element={<PostDetail />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
