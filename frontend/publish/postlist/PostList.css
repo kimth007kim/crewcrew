@@ -1095,8 +1095,8 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  min-width: 246px;
   height: 60px;
+  gap: 14px;
   padding: 5px 0;
   padding-left: 22px;
   border-left: 1px solid #a8a8a8;

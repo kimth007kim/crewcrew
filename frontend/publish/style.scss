@@ -853,8 +853,8 @@ textarea.TxtAreaInput{
     .ButtonBox{
         display: flex;
         justify-content: space-between;
-        min-width: 246px;
         height: 60px;
+        gap: 14px;
         padding: 5px 0;
         padding-left: 22px;
         border-left: 1px solid $black4;
