@@ -18,7 +18,7 @@ function PostCardSlide({ data }) {
             <p>2/3 (목)</p>
             <p>
               조회수
-              <span>50</span>
+              <span> 50</span>
             </p>
             <Star />
           </CardHeadRight>
@@ -33,8 +33,8 @@ function PostCardSlide({ data }) {
           </CardTxt>
         </CardBody>
         <CardFooter>
-          <CardTagStudy>고시/공무원</CardTagStudy>
-          <CardTagStudy>오프라인</CardTagStudy>
+          <CardTagColor category="study">고시/공무원</CardTagColor>
+          <CardTagColor category="study">오프라인</CardTagColor>
           <CardTag>
             <span>10/10</span>
             <span>명 모집됨</span>
@@ -74,7 +74,7 @@ const CardPost = styled.div`
   box-sizing: border-box;
   cursor: pointer;
   p {
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 400;
     color: #868686;
   }
@@ -87,8 +87,12 @@ const CardHead = styled.div`
   align-items: center;
   justify-content: space-between;
   h5 {
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 700;
+  }
+
+  @media screen and (max-width: 820px) {
+    padding: 10px 5px 10px 15px;
   }
 `;
 
@@ -104,11 +108,6 @@ const CardHeadRight = styled.div`
     }
     margin-top: 0;
     margin-left: 10px;
-    @media screen and (max-width: 820px) {
-      font-size: 11px;
-      font-weight: 400;
-      color: #868686;
-    }
   }
 `;
 
@@ -142,7 +141,33 @@ const CardTag = styled.div`
   font-size: 13px;
   line-height: 16px;
   color: #fff;
-  font-weight: 400;
+  font-weight: 300;
+
+  @media screen and (max-width: 820px) {
+    font-size: 11px;
+    line-height: 1;
+    border-radius: 12px;
+    padding: 7px 8px;
+  }
+`;
+
+const CardTagColor = styled.div`
+  width: fit-content;
+  padding: 5px 8px;
+  border-radius: 13px;
+  ${(props) =>
+    props.category === 'study'
+      ? css`
+          background-color: #005ec5;
+        `
+      : css`
+          background-color: #f7971e;
+        `}
+
+  font-size: 13px;
+  line-height: 16px;
+  color: #fff;
+  font-weight: 300;
   :not(:last-child) {
     margin-right: 8px;
     @media screen and (max-width: 820px) {
@@ -157,50 +182,6 @@ const CardTag = styled.div`
   }
 `;
 
-const CardTagStudy = styled.div`
-  width: fit-content;
-  padding: 5px 8px;
-  border-radius: 13px;
-  background-color: #005ec5;
-  font-size: 13px;
-  line-height: 16px;
-  color: #fff;
-  font-weight: 400;
-  :not(:last-child) {
-    margin-right: 8px;
-    @media screen and (max-width: 820px) {
-      margin-right: 4px;
-    }
-  }
-  @media screen and (max-width: 820px) {
-    font-size: 11px;
-    line-height: 1;
-    border-radius: 12px;
-    padding: 7px 8px;
-  }
-`;
-const CardTagHobby = styled.div`
-  width: fit-content;
-  padding: 5px 8px;
-  border-radius: 13px;
-  background-color: #f7971e;
-  font-size: 13px;
-  line-height: 16px;
-  color: #fff;
-  font-weight: 400;
-  :not(:last-child) {
-    margin-right: 8px;
-    @media screen and (max-width: 820px) {
-      margin-right: 4px;
-    }
-  }
-  @media screen and (max-width: 820px) {
-    font-size: 11px;
-    line-height: 1;
-    border-radius: 12px;
-    padding: 7px 8px;
-  }
-`;
 const CardTxt = styled.div`
   width: 100%;
   margin-left: 15px;
@@ -222,12 +203,6 @@ const CardTxt = styled.div`
   }
   p {
     margin-top: 0;
-
-    @media screen and (max-width: 820px) {
-      font-size: 11px;
-      font-weight: 400;
-      color: #868686;
-    }
   }
 `;
 
