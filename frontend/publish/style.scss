@@ -546,15 +546,20 @@ textarea.TxtAreaInput{
         }
 
         .Star{
-            width: 24px;
-            height: 24px;
-            background: url("../../src/assets/images/StarOff.png") 50% 50% no-repeat;
-            background-size: 20px !important;
+            width: 30px;
+            height: 30px;
+            background: #c4c4c4 url("/frontend/src/assets/images/ButtonStarWhite.png") center/20px no-repeat;
+            border-radius: 5px;
             cursor: pointer;
             margin-left: 10px;
+            transition: .3s;
+
+            &:hover{
+                background-color: #b0b0b0;
+            }
 
             &.On{
-                background: url("../../src/assets/images/StarOn.png") 50% 50% no-repeat;
+                background-image: url("../../src/assets/images/StarOn.png");
             }
         }
     }
@@ -652,7 +657,10 @@ textarea.TxtAreaInput{
             }
 
             .Star{
-                margin-left: 18px;
+                margin-left: 10px;
+                width: 20px;
+                height: 20px;
+                background-size: 14px;
             }
         }
     }
@@ -783,10 +791,9 @@ textarea.TxtAreaInput{
         .TitleBox{
             display: flex;
             align-items: center;
-            margin-top: 2px;
 
             h5{
-                width: 323px;
+                width: 290px;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
@@ -796,15 +803,21 @@ textarea.TxtAreaInput{
             }
 
             .Star{
-                width: 24px;
-                height: 24px;
-                background: url("../../src/assets/images/StarOff.png") 50% 50% no-repeat;
-                background-size: 20px !important;
+                width: 30px;
+                height: 30px;
+                background: #c4c4c4 url("/frontend/src/assets/images/ButtonStarWhite.png") center/20px no-repeat;
+                border-radius: 5px;
                 cursor: pointer;
-                margin-left: 10px;
+                margin-left: 22px;
+                margin-right: 14px;
+                transition: .3s;
     
+                &:hover{
+                    background-color: #b0b0b0;
+                }
+
                 &.On{
-                    background: url("../../src/assets/images/StarOn.png") 50% 50% no-repeat;
+                    background-image: url("../../src/assets/images/StarOn.png");
                 }
             }
         }
@@ -840,8 +853,12 @@ textarea.TxtAreaInput{
     .ButtonBox{
         display: flex;
         justify-content: space-between;
-        min-width: 214px;
-        height: 50px;
+        min-width: 246px;
+        height: 60px;
+        padding: 5px 0;
+        padding-left: 22px;
+        border-left: 1px solid $black4;
+        box-sizing: border-box;
 
         button{
             width: 100px;
@@ -908,8 +925,8 @@ textarea.TxtAreaInput{
 
                 &.Date{
                     order: 1;
-                    margin-left: 14px;
-                    padding-right: 32px;
+                    margin-left: 12px;
+                    padding-right: 28px;
                 }
 
                 &.Name{
@@ -936,8 +953,12 @@ textarea.TxtAreaInput{
 
                 .Star{
                     position: absolute;
-                    top: 6px;
+                    top: 10px;
                     right: 10px;
+                    width: 20px;
+                    height: 20px;
+                    background-size: 14px;
+                    margin: 0;
                 }
             }
 
@@ -953,6 +974,13 @@ textarea.TxtAreaInput{
         .ButtonBox{
             display: none;
         }
+    }
+}
+
+@media screen and (max-width:300px){
+    .PostCardHead .TextBox p.Date{
+        margin-left: 10px;
+        padding-right: 26px;
     }
 }
 
