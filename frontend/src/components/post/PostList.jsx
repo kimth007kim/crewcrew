@@ -6,7 +6,7 @@ import styled, { css } from 'styled-components';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { approachFilterState, arrayFilterState, articleFilterState } from '../../atom/post';
+import { approachFilterState, arrayFilterState, articleFilterState } from '@/atoms/post';
 import Pagination from './Pagination';
 import FilterBox from './FilterBox';
 import PostCard from './PostCard';

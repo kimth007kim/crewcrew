@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './home';
 import Testing from './testing';
 import NotFound from './notfound';
-import Register from './register';
 import Post from './post';
 import MyPage from './mypage';
 

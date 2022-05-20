@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import FilterArrowImg from '../../assets/images/IconNavArrow_Big.png';
-import IconLinkIntro from '../../assets/images/IconLinkIntro.png';
+import FilterArrowImg from '@/assets/images/IconNavArrow_Big.png';
+import IconLinkIntro from '@/assets/images/IconLinkIntro.png';
 
 function MypageTop() {
   return (

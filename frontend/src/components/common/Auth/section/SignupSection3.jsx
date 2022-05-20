@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { css, keyframes } from 'styled-components';
 import useSWR from 'swr';
-import CloseWhite from '../../../../assets/images/CloseWhite.png';
+import CloseWhite from '@/assets/images/CloseWhite.png';
 import {
   sectionProgress3,
   studyListState,
@@ -18,8 +18,8 @@ import {
   passwordState,
   nickNameState,
   uploadFileImgState,
-} from '../../../../atom/register';
-import fetcher from '../../../../utils/fetcher';
+} from '@/atoms/register';
+import fetcher from '@/utils/fetcher';
 import Button from '../../Button';
 import MTextfield from './MTextfield';
 import Progress from './Progress';

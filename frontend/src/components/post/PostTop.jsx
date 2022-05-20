@@ -1,11 +1,11 @@
 import React, { useCallback, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import BgProfile1 from '../../assets/images/Profile1.png';
-import BgProfile3 from '../../assets/images/Profile3.png';
-import IconLinkIntro from '../../assets/images/IconLinkIntro.png';
-import IconSearch from '../../assets/images/IconSearch.png';
-import delImage from '../../assets/images/InputDel.png';
+import BgProfile1 from '@/assets/images/Profile1.png';
+import BgProfile3 from '@/assets/images/Profile3.png';
+import IconLinkIntro from '@/assets/images/IconLinkIntro.png';
+import IconSearch from '@/assets/images/IconSearch.png';
+import delImage from '@/assets/images/InputDel.png';
 
 function PostTop() {
   const [searchText, setSearchText] = useState('');

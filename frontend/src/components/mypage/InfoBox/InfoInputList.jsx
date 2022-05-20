@@ -2,11 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Cookies } from 'react-cookie';
 import styled from 'styled-components';
 import useSWR from 'swr';
-import SettingGray from '../../../assets/images/SettingGray.png';
-import { emojiSlice, isCheckPassword, spaceSlice } from '../../../utils';
-import fetcher from '../../../utils/fetcher';
-import Textfield from '../../common/TextfieldEmail';
-import TextfieldPW from '../../common/TextfieldPW';
+import SettingGray from '@/assets/images/SettingGray.png';
+import { emojiSlice, isCheckPassword, spaceSlice } from '@/utils';
+import fetcher from '@/utils/fetcher';
+import Textfield from '@/components/common/TextfieldEmail';
+import TextfieldPW from '@/components/common/TextfieldPW';
 
 function InfoInputList({ state }) {
   const cookies = new Cookies();

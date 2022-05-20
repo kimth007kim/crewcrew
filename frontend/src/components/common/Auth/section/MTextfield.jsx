@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
-import delImage from '../../../../assets/images/InputDel.png';
+import delImage from '@/assets/images/InputDel.png';
 
 function MTextfield({
   type = 'text',

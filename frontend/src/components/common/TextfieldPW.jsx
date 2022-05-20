@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
-import delImage from '../../assets/images/InputDel.png';
-import PWshow from '../../assets/images/PasswordShow.png';
-import PWon from '../../assets/images/PasswordShow_On.png';
-import PWError from '../../assets/images/PasswordShow_Error.png';
+import delImage from '@/assets/images/InputDel.png';
+import PWshow from '@/assets/images/PasswordShow.png';
+import PWon from '@/assets/images/PasswordShow_On.png';
+import PWError from '@/assets/images/PasswordShow_Error.png';
 
 function TextfieldPW({
   onChange,

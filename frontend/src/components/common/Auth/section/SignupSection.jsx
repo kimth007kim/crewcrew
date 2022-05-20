@@ -11,8 +11,8 @@ import Button from '../../Button';
 import Textfield from '../../TextfieldEmail';
 import TextfieldSU from './SignupTextfield';
 import TextfieldPW from '../../TextfieldPW';
-import delImage from '../../../../assets/images/InputDel.png';
-import CheckImg from '../../../../assets/images/Checked_on.png';
+import delImage from '@/assets/images/InputDel.png';
+import CheckImg from '@/assets/images/Checked_on.png';
 import Progress from './Progress';
 import {
   sectionProgress1,
@@ -21,8 +21,8 @@ import {
   emailState,
   codeState,
   passwordState,
-} from '../../../../atom/register';
-import { emojiSlice, isCheckPassword, isEmailBack, spaceSlice } from '../../../../utils';
+} from '@/atoms/register';
+import { emojiSlice, isCheckPassword, isEmailBack, spaceSlice } from '@/utils';
 
 const emailList = ['naver.com', 'gmail.com', 'daum.net', 'hanmail.net'];
 

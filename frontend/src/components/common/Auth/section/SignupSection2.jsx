@@ -18,7 +18,7 @@ import Textfield from '../../TextfieldEmail';
 import Button from '../../Button';
 import { emojiSlice, spaceSlice } from '../../../../utils';
 import Progress from './Progress';
-import { sectionProgress2, nickNameState, uploadFileImgState } from '../../../../atom/register';
+import { sectionProgress2, nickNameState, uploadFileImgState } from '@/atoms/register';
 
 const Profile = [
   {

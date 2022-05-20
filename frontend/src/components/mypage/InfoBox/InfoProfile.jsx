@@ -4,11 +4,11 @@ import styled, { css } from 'styled-components';
 import useSWR from 'swr';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import fetcher from '../../../utils/fetcher';
-import Textfield from '../../common/TextfieldEmail';
-import SettingGray from '../../../assets/images/SettingGray.png';
-import CheckImg from '../../../assets/images/Checked_on.png';
-import { emojiSlice, spaceSlice } from '../../../utils';
+import fetcher from '@/utils/fetcher';
+import Textfield from '@/components/common/TextfieldEmail';
+import SettingGray from '@/assets/images/SettingGray.png';
+import CheckImg from '@/assets/images/Checked_on.png';
+import { emojiSlice, spaceSlice } from '@/utils';
 
 function InfoProfile({ state }) {
   const cookies = new Cookies();

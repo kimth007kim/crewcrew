@@ -4,8 +4,8 @@
 import React, { useCallback, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import Modal from '../Modal';
-import Close from '../../../assets/images/ModalClose.png';
-import Arrow from '../../../assets/images/Arrow.png';
+import Close from '@/assets/images/ModalClose.png';
+import Arrow from '@/assets/images/Arrow.png';
 
 import LoginSection from './section/LoginSection';
 import SignupSection from './section/SignupSection';

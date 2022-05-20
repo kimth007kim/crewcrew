@@ -3,10 +3,10 @@ import { Cookies } from 'react-cookie';
 import { useRecoilValue } from 'recoil';
 import styled, { css, keyframes } from 'styled-components';
 import useSWR from 'swr';
-import IconFlag from '../../../../assets/images/IconFlag.png';
-import Profile1 from '../../../../assets/images/Profile1.png';
-import { nickNameState, uploadFileImgState } from '../../../../atom/register';
-import fetcher from '../../../../utils/fetcher';
+import IconFlag from '@/assets/images/IconFlag.png';
+import Profile1 from '@/assets/images/Profile1.png';
+import { nickNameState, uploadFileImgState } from '@/atoms/register';
+import fetcher from '@/utils/fetcher';
 import Button from '../../Button';
 
 function SignupSection4({ IsClick, closeModal, HandleClick }) {

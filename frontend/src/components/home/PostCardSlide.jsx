@@ -2,10 +2,10 @@
 /* eslint-disable operator-linebreak */
 import React from 'react';
 import styled, { css } from 'styled-components';
-import Profile4 from '../../assets/images/Profile4.png';
-import ButtonStarWhite from '../../assets/images/ButtonStarWhite.png';
-import StarOff from '../../assets/images/StarOff.png';
-import StarOn from '../../assets/images/StarOn.png';
+import Profile4 from '@/assets/images/Profile4.png';
+import ButtonStarWhite from '@/assets/images/ButtonStarWhite.png';
+import StarOff from '@/assets/images/StarOff.png';
+import StarOn from '@/assets/images/StarOn.png';
 
 function PostCardSlide({ data }) {
   return (

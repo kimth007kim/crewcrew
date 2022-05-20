@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import ButtonScrollTop from '../../assets/images/ButtonScrollTop.png';
-import ButtonScrollBottom from '../../assets/images/ButtonScrollBottom.png';
+import ButtonScrollTop from '@/assets/images/ButtonScrollTop.png';
+import ButtonScrollBottom from '@/assets/images/ButtonScrollBottom.png';
 
 function ScrollButton() {
   const [buttonTopDis, setButtonTopDis] = useState(true);

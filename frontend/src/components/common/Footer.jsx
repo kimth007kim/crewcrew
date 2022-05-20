@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import LogoTextBlack from '../../assets/images/LogoTextBlack.png';
+import LogoTextBlack from '@/assets/images/LogoTextBlack.png';
 
 function Footer() {
   return (

@@ -3,8 +3,8 @@ import React, { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
 import styled from 'styled-components';
-import SlideArrowNext from '../../assets/images/SlideArrowNext.png';
-import SlideArrowPrev from '../../assets/images/SlideArrowPrev.png';
+import SlideArrowNext from '@/assets/images/SlideArrowNext.png';
+import SlideArrowPrev from '@/assets/images/SlideArrowPrev.png';
 
 import 'swiper/css';
 import 'swiper/css/navigation';

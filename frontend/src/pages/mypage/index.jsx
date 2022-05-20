@@ -4,11 +4,11 @@ import { useNavigate, Navigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import useSWR from 'swr';
-import Lnb from '../../components/common/Lnb/Lnb';
-import MypageMainTop from '../../components/mypage/MypageMainTop';
-import MypageTimeline from '../../components/mypage/MypageTimeline';
-import MypageTop from '../../components/mypage/MypageTop';
-import fetcher from '../../utils/fetcher';
+import Lnb from '@/components/common/Lnb/Lnb';
+import MypageMainTop from '@/components/mypage/MypageMainTop';
+import MypageTimeline from '@/components/mypage/MypageTimeline';
+import MypageTop from '@/components/mypage/MypageTop';
+import fetcher from '@/utils/fetcher';
 
 function MyPage() {
   const cookies = new Cookies();
@@ -22,7 +22,6 @@ function MyPage() {
     return null;
   }
 
-  console.log(myData, error);
   if (error) {
     toast.error('로그인 후 이용 가능합니다. 잘못된 접근입니다.');
 

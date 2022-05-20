@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import PageArrow2Prev from '../../assets/images/PageArrow2Prev.png';
-import PageArrowPrev from '../../assets/images/PageArrowPrev.png';
-import PageArrowNext from '../../assets/images/PageArrowNext.png';
-import PageArrow2Next from '../../assets/images/PageArrow2Next.png';
+import PageArrow2Prev from '@/assets/images/PageArrow2Prev.png';
+import PageArrowPrev from '@/assets/images/PageArrowPrev.png';
+import PageArrowNext from '@/assets/images/PageArrowNext.png';
+import PageArrow2Next from '@/assets/images/PageArrow2Next.png';
 
 function useQuery() {
   const { search } = useLocation();

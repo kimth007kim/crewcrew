@@ -1,13 +1,11 @@
 /* eslint-disable react/jsx-curly-newline */
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import { Cookies } from 'react-cookie';
-import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { css } from 'styled-components';
 import useSWR from 'swr';
-import FilterIconX from '../../../assets/images/FilterIconX.png';
-import { infoCancelState, infoCategoryState, infoSaveState } from '../../../atom/mypage/info';
-import { hobbyFilterArr, studyFilterArr } from '../../../frontDB/filterDB';
-import fetcher from '../../../utils/fetcher';
+import FilterIconX from '@/assets/images/FilterIconX.png';
+import { hobbyFilterArr, studyFilterArr } from '@/frontDB/filterDB';
+import fetcher from '@/utils/fetcher';
 
 function InfoCat({ state }) {
   const cookies = new Cookies();

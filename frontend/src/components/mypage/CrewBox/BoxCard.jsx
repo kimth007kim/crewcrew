@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import PageArrowNext from '../../../assets/images/PageArrowNext.png';
+import PageArrowNext from '@/assets/images/PageArrowNext.png';
 
 function BoxCard() {
   return (

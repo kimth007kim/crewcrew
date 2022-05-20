@@ -12,15 +12,20 @@ module.exports = {
   entry: './src/index.js', // 애플리케이션 시작 경로
   // 번들된 파일 경로
   output: {
-    path: path.resolve(__dirname, '../build/'),
+    path: path.resolve(__dirname, './build/'),
     publicPath: '/',
   },
   devServer: {
     open: true,
-    port: 3000,
+    port: port,
     historyApiFallback: true,
   },
-
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+    alias: {
+      '@': path.resolve(__dirname, './src/'),
+    },
+  },
   module: {
     rules: [
       {
@@ -75,9 +80,7 @@ module.exports = {
       },
     ],
   },
-  resolve: {
-    extensions: ['.js', '.jsx'],
-  },
+
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',

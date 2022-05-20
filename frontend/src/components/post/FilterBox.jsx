@@ -3,15 +3,15 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
-import FilterArrowImg from '../../assets/images/FilterArrow.png';
-import { approachFilterState, arrayFilterState, articleFilterState } from '../../atom/post';
+import FilterArrowImg from '@/assets/images/FilterArrow.png';
+import { approachFilterState, arrayFilterState, articleFilterState } from '@/atoms/post';
 import {
   allFilter,
   approachArr,
   articleArr,
   hobbyFilterArr,
   studyFilterArr,
-} from '../../frontDB/filterDB';
+} from '@/frontDB/filterDB';
 
 function FilterBox({ handleGetAxios }) {
   const [FixedBox, setFixedBox] = useState(false);
