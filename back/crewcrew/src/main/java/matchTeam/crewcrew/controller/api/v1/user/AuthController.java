@@ -273,9 +273,7 @@ public class AuthController {
     public ResponseEntity<Object> login(
             @ApiParam(value = "로그인 요청 DTO", required = true) @RequestBody UserLoginRequestDto userLoginRequestDto, HttpServletResponse response) throws JsonProcessingException {
         System.out.println(userLoginRequestDto.getEmail() + " " + userLoginRequestDto.getPassword());
-//        TokenDto tokenDto = userService.login(userLoginRequestDto);
         ResponseTokenDto tokenDto = userService.redisLogin(userLoginRequestDto);
-//        Optional<User> user= userService.findByEmailAndProvider(userLoginRequestDto.getEmail(),"local");
         Cookie accessCookie = cookieService.generateAccessToken(tokenDto.getAccessToken());
         Cookie refreshCookie = cookieService.generateRefreshToken(tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExpireDate());
 
