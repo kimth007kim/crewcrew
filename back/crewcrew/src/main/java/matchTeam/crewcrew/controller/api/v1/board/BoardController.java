@@ -116,12 +116,10 @@ public class BoardController {
     })
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/board/{boardId}")
-    public ResponseEntity<Object> findByBoardId(@RequestHeader("X-AUTH-TOKEN") String token,
-                                                @ApiParam(value = "게시글 번호", required = true)@PathVariable Long boardId,
+    public ResponseEntity<Object> findByBoardId(@ApiParam(value = "게시글 번호", required = true)@PathVariable Long boardId,
                                                 @ModelAttribute BoardSpecs boardSpecs,
                                                 @PageableDefault(size = 5) Pageable pageable){
 
-        User user = userService.tokenChecker(token);
         BoardResponseDTO findBoard = boardService.findById(boardId);
         boardHitService.updateHit(boardId);
 
@@ -175,11 +173,9 @@ public class BoardController {
             )
     })
     @GetMapping("/board/list")
-    public ResponseEntity<Object> getBoardList(@RequestHeader("X-AUTH-TOKEN") String token,
-                                               @ModelAttribute BoardSpecs boardSpecs,
+    public ResponseEntity<Object> getBoardList(@ModelAttribute BoardSpecs boardSpecs,
                                                @PageableDefault(size = 10) Pageable pageable){
-
-        User user = userService.tokenChecker(token);
+        
         Page<BoardPageDetailResponseDTO> result = boardService.search(boardSpecs, pageable);
         BoardPageResponseDTO pageResponseDTO = BoardPageResponseDTO.toDTO(result);
         return ResponseHandler.generateResponse("게시글 리스트 다중 조건 조회 성공", HttpStatus.OK, pageResponseDTO);
