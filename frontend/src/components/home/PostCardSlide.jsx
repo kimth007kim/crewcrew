@@ -3,6 +3,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import Profile4 from '../../assets/images/Profile4.png';
+import ButtonStarWhite from '../../assets/images/ButtonStarWhite.png';
 import StarOff from '../../assets/images/StarOff.png';
 import StarOn from '../../assets/images/StarOn.png';
 
@@ -223,10 +224,17 @@ const ProfileImg = styled.div`
 `;
 
 const Star = styled.div`
-  width: 24px;
-  height: 24px;
-  background: url(${StarOff}) 50% 50% no-repeat;
-  background-size: 20px !important;
+  width: 30px;
+  height: 30px;
+  background: #c4c4c4 url(${ButtonStarWhite}) center/20px no-repeat;
   cursor: pointer;
   margin-left: 10px;
+  border-radius: 5px;
+  transition: 0.3s;
+
+  @media screen and (max-width: 820px) {
+    width: 20px;
+    height: 20px;
+    background-size: 14px;
+  }
 `;
