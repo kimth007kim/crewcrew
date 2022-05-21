@@ -1,45 +1,70 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import StarOff from '@/assets/images/ButtonStar.png';
 import StarOn from '@/assets/images/ButtonStarOn.png';
 import Markdown from '@/lib/Markdown';
+import { viewDay } from '@/utils';
+import { differenceInDays, format, getDay } from 'date-fns';
+import { cateogoryAll } from '@/frontDB/filterDB';
 
-function MainDetail() {
+function MainPost({ data }) {
+  const [IsDisable, setIsDisable] = useState(false);
+
+  const renderDate = useCallback(() => {
+    const date = new Date(data.createdDate);
+    return `${format(date, 'M/d')} (${viewDay(getDay(date))})`;
+  }, []);
+
+  const renderDay = useCallback(() => {
+    const date = new Date(data.expiredDate);
+    const nowDate = new Date();
+    return differenceInDays(date, nowDate) + 1;
+  }, []);
+
+  useEffect(() => {
+    const bool = !data.viewable || renderDay() < 0;
+    setIsDisable(bool);
+  }, []);
+
   return (
     <Container>
       <Wrapper>
         <ul>
-          <li>D-2</li>
-          <li>재영재영유재영</li>
-          <li>2/4 (목)</li>
+          <li>{IsDisable ? '마감' : `D-${renderDay()}`}</li>
+          <li>{data.nickname}</li>
+          <li>{renderDate()}</li>
         </ul>
-        <TitleMobile>함께 크루원 모집 플랫폼 작업하실 분 모집합니다~!</TitleMobile>
+        <TitleMobile>{data.title}</TitleMobile>
         <ul>
           <li>
-            <h4>함께 크루원 모집 플랫폼 작업하실 분 모집합니다~!</h4>
+            <h4>{data.title}</h4>
           </li>
           <li>
             <ButtonStar type="button" active />
           </li>
           <li>
-            <Button type="button">참여하기</Button>
+            <Button type="button" disabled={IsDisable}>
+              참여하기
+            </Button>
           </li>
         </ul>
-        <TopUList>
-          <li>고시/공무원</li>
-          <li>오프라인</li>
-          <li>10/10명</li>
-          <li>조회수 50</li>
+        <TopUList textColor={data.categoryParentId === 1 ? '#005ec5' : '#F7971E'}>
+          <li>
+            {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
+          </li>
+          <li>{data.approachCode ? '온라인' : '오프라인'}</li>
+          <li>{`${data.recruitedCrew}/${data.totalCrew}`}</li>
+          <li>{`조회수 ${data.hit}`}</li>
         </TopUList>
         <MarkDownbody>
-          <Markdown># 오 된다</Markdown>
+          <Markdown>{data.boardContent}</Markdown>
         </MarkDownbody>
       </Wrapper>
     </Container>
   );
 }
 
-export default MainDetail;
+export default MainPost;
 
 const Container = styled('section')`
   padding: 60px 0 94px;
@@ -108,8 +133,11 @@ const TopUList = styled('ul')`
   }
 
   li:first-child {
-    color: #005ec5;
-    font-weight: 700;
+    ${(props) =>
+      props.textColor &&
+      css`
+        color: ${props.textColor};
+      `}
   }
 `;
 
@@ -171,6 +199,11 @@ const Button = styled('button')`
 
   :hover {
     background-color: #005ec5;
+  }
+
+  :disabled {
+    background-color: #e2e2e2;
+    cursor: default;
   }
 `;
 

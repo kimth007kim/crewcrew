@@ -1,31 +1,30 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import PageArrow2Prev from '@/assets/images/PageArrow2Prev.png';
 import PageArrowPrev from '@/assets/images/PageArrowPrev.png';
 import PageArrowNext from '@/assets/images/PageArrowNext.png';
 import PageArrow2Next from '@/assets/images/PageArrow2Next.png';
+import useQuery from '@/hooks/useQuery';
 
-function useQuery() {
-  const { search } = useLocation();
-
-  return React.useMemo(() => new URLSearchParams(search), [search]);
-}
-
-function Pagination({ data, currentPage, postsPerPage, totalPage }) {
+function Pagination({ data, currentPage, postsPerPage, totalPage, detail = false }) {
   const query = useQuery();
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [btnDeactive, setbtnDeactive] = useState(null);
+  const { postId } = useParams();
 
   const handleClickPageNavi = useCallback(
     (i) => {
       if (query.get('search')) {
         return navigate(`/post?page=${i + 1}&search=${query.get('search')}`);
       }
+      if (detail) {
+        return navigate(`/post/${postId}?page=${i + 1}`);
+      }
       navigate(`/post?page=${i + 1}`);
     },
-    [query.get('search')],
+    [query.get('search'), detail, postId],
   );
 
   const renderNumberDiv = () => {
@@ -46,8 +45,11 @@ function Pagination({ data, currentPage, postsPerPage, totalPage }) {
     if (query.get('search')) {
       return navigate(`/post?page=1&search=${query.get('search')}`);
     }
+    if (detail) {
+      return navigate(`/post/${postId}?page=${1}`);
+    }
     navigate(`/post?page=${1}`);
-  }, [query.get('search'), totalPage, postsPerPage, btnDeactive]);
+  }, [query.get('search'), totalPage, postsPerPage, btnDeactive, detail, postId]);
 
   const handleClickPrev = useCallback(() => {
     if (btnDeactive && btnDeactive.prev1) {
@@ -59,9 +61,12 @@ function Pagination({ data, currentPage, postsPerPage, totalPage }) {
     if (query.get('search')) {
       return navigate(`/post?page=${(page - 1) * postsPerPage + 1}&search=${query.get('search')}`);
     }
+    if (detail) {
+      return navigate(`/post/${postId}?page=${(page - 1) * postsPerPage + 1}`);
+    }
 
     navigate(`/post?page=${(page - 1) * postsPerPage + 1}`);
-  }, [page, query.get('search'), totalPage, postsPerPage, btnDeactive]);
+  }, [page, query.get('search'), totalPage, postsPerPage, btnDeactive, detail, postId]);
 
   const handleClickNext = useCallback(() => {
     if (btnDeactive && btnDeactive.next1) {
@@ -73,9 +78,12 @@ function Pagination({ data, currentPage, postsPerPage, totalPage }) {
     if (query.get('search')) {
       return navigate(`/post?page=${(page + 1) * postsPerPage + 1}&search=${query.get('search')}`);
     }
+    if (detail) {
+      return navigate(`/post/${postId}?page=${(page + 1) * postsPerPage + 1}`);
+    }
 
     navigate(`/post?page=${(page + 1) * postsPerPage + 1}`);
-  }, [page, query.get('search'), totalPage, postsPerPage, btnDeactive]);
+  }, [page, query.get('search'), totalPage, postsPerPage, btnDeactive, detail, postId]);
 
   const handleClickNextLast = useCallback(() => {
     if (btnDeactive && btnDeactive.next2) {
@@ -84,8 +92,12 @@ function Pagination({ data, currentPage, postsPerPage, totalPage }) {
     if (query.get('search')) {
       return navigate(`/post?page=${totalPage}&search=${query.get('search')}`);
     }
+    if (detail) {
+      return navigate(`/post/${postId}?page=${totalPage}`);
+    }
+
     navigate(`/post?page=${totalPage}`);
-  }, [totalPage, query.get('search'), totalPage, postsPerPage, btnDeactive]);
+  }, [totalPage, query.get('search'), postsPerPage, btnDeactive, detail, postId]);
 
   useEffect(() => {
     let pageNum = Math.floor((Number(currentPage) - 1) / postsPerPage);

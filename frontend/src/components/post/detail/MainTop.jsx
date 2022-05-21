@@ -33,7 +33,7 @@ function MainTop() {
     <Container>
       <TopCont>
         <h2>
-          <Link to="/mypage" />
+          <Link to="/post" />
           크루 상세정보
         </h2>
         <form onSubmit={handleSearchTextSubmit}>

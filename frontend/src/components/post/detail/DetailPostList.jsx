@@ -8,10 +8,8 @@ import Pagination from '../Pagination';
 import PostCard from '../PostCard';
 import Loader from '@/components/common/Loader';
 import useQuery from '@/hooks/useQuery';
-import axios from 'axios';
-import { toast } from 'react-toastify';
 
-function DetailPostList() {
+function DetailPostList({ data }) {
   const article = useRecoilValue(articleFilterState);
   const approach = useRecoilValue(approachFilterState);
   const filterData = useRecoilValue(arrayFilterState);
@@ -19,7 +17,7 @@ function DetailPostList() {
   const [pageData, setPageData] = useState(null);
 
   const [PostListData, setPostListData] = useState([]);
-  const [postLoading, setPostLoading] = useState(true);
+  const [postLoading, setPostLoading] = useState(false);
 
   const query = useQuery();
 
@@ -66,54 +64,6 @@ function DetailPostList() {
     return renderFilter;
   };
 
-  const axiosGetFilter = useCallback(async (page) => {
-    try {
-      setPostLoading(true);
-      const postFilter = JSON.parse(localStorage.getItem('postFilter'));
-
-      const order = postFilter.article.value;
-      const access = postFilter.approach.map((data) => data.value);
-      const categoryIds = postFilter.categorylist.map((data) => data.value);
-
-      const params = new URLSearchParams();
-
-      params.append('order', order);
-      params.append('approach', access);
-      if (categoryIds[0] !== '0') {
-        params.append('categoryIds', categoryIds);
-      }
-
-      if (page) {
-        params.append('page', page - 1);
-      }
-      const context = {
-        params,
-      };
-      const { data } = await axios.get('/board/list', context);
-      switch (data.status) {
-        case 200:
-          setPageData({
-            ...data.data,
-          });
-          setPostListData([...data.data.contents]);
-          setTotalPage(data.data.totalPages);
-          break;
-        case 2001:
-        case 2301:
-          toast.error(data.message);
-          break;
-
-        default:
-          break;
-      }
-    } catch (error) {
-      toast.error(error);
-      console.dir(error);
-    } finally {
-      setPostLoading(false);
-    }
-  }, []);
-
   const renderPostList = () => {
     if (PostListData.length > 0) {
       return (
@@ -132,6 +82,7 @@ function DetailPostList() {
             currentPage={currentPage}
             postsPerPage={postsPerPage}
             totalPage={totalPage}
+            detail={true}
           />
         </>
       );
@@ -151,12 +102,13 @@ function DetailPostList() {
 
   useEffect(() => {
     const pageNum = query.get('page');
-
     setCurrentPage(pageNum || 1);
-    if (pageNum) {
-      return axiosGetFilter(pageNum);
-    }
-    axiosGetFilter();
+
+    setPageData({
+      data,
+    });
+    setPostListData([...data.contents]);
+    setTotalPage(data.totalPages);
   }, [query.get('page')]);
 
   useEffect(() => {

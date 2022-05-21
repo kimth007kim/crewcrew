@@ -1,23 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { format, getDay, differenceInDays } from 'date-fns';
 import StarOffImg from '@/assets/images/StarOff.png';
 import StarOnImg from '@/assets/images/StarOn.png';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import { viewDay } from '@/utils';
+import { useNavigate, useParams } from 'react-router-dom';
+import useQuery from '@/hooks/useQuery';
 
 function PostCard({ data }) {
   const [IsDisable, setIsDisable] = useState(false);
-  const renderDate = () => {
+  const navigate = useNavigate();
+  const query = useQuery();
+  const { postId } = useParams();
+
+  const renderDate = useCallback(() => {
     const date = new Date(data.createdDate);
     return `${format(date, 'M/d')} (${viewDay(getDay(date))})`;
-  };
+  }, []);
 
-  const renderDay = () => {
+  const handleLocate = useCallback(() => {
+    const pageNum = query.get('page');
+    if (pageNum) {
+      return navigate(`/post/${data.boardId}?page=${pageNum}`);
+    }
+    navigate(`/post/${data.boardId}`);
+  }, [query.get('page')]);
+
+  const renderDay = useCallback(() => {
     const date = new Date(data.expiredDate);
     const nowDate = new Date();
     return differenceInDays(date, nowDate) + 1;
-  };
+  }, []);
 
   useEffect(() => {
     const bool = !data.viewable || renderDay() < 0;
@@ -25,7 +39,7 @@ function PostCard({ data }) {
   }, []);
 
   return (
-    <Wrapper>
+    <Wrapper onClick={handleLocate} current={String(data.boardId) === postId}>
       <CardHead isDisabled={IsDisable}>
         <ProfileBox>
           <img src={`${data.profileImage}?cache=${Math.random()}`} alt="" />
@@ -82,6 +96,11 @@ const Wrapper = styled.div`
   :hover {
     border-color: #a8a8a8;
   }
+  ${(props) =>
+    props.current &&
+    css`
+      border-color: #a8a8a8;
+    `}
   @media screen and (max-width: 820px) {
     height: 108px;
     padding: 10px 12px 14px 12px;

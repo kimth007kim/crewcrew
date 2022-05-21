@@ -3,7 +3,6 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { sectionProgress1, sectionProgress2, sectionProgress3 } from '@/atoms/register';
-console.log(__dirname);
 
 function Progress() {
   const Progress1 = useRecoilValue(sectionProgress1);
