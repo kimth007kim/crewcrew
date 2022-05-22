@@ -12,6 +12,7 @@ module.exports = {
   entry: './src/index.js', // 애플리케이션 시작 경로
   // 번들된 파일 경로
   output: {
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, './build/'),
     publicPath: '/',
   },

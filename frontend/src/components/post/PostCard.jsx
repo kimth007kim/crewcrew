@@ -344,7 +344,6 @@ const CardBody = styled.div`
     gap: 14px;
     padding: 5px 0;
     padding-left: 22px;
-    border-left: 1px solid #a8a8a8;
     box-sizing: border-box;
 
     button {
