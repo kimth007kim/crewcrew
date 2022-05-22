@@ -2,17 +2,18 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { css } from 'styled-components';
 import NavArrow from '@/assets/images/IconNavArrow.png';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { approachFilterState, arrayFilterState, articleFilterState } from '@/atoms/post';
 import Pagination from '../Pagination';
 import PostCard from '../PostCard';
 import Loader from '@/components/common/Loader';
 import useQuery from '@/hooks/useQuery';
+import { allFilter } from '@/frontDB/filterDB';
 
 function DetailPostList({ data }) {
-  const article = useRecoilValue(articleFilterState);
-  const approach = useRecoilValue(approachFilterState);
-  const filterData = useRecoilValue(arrayFilterState);
+  const [approach, setApproach] = useRecoilState(approachFilterState);
+  const [article, setArticle] = useRecoilState(articleFilterState);
+  const [filterData, setFilterData] = useRecoilState(arrayFilterState);
 
   const [pageData, setPageData] = useState(null);
 
@@ -120,21 +121,50 @@ function DetailPostList({ data }) {
     };
   }, []);
 
+  useEffect(() => {
+    const postFilter = JSON.parse(localStorage.getItem('postFilter'));
+
+    const filterContext = {
+      article,
+      approach,
+      categorylist: [...allFilter],
+    };
+
+    if (postFilter) {
+      const approaches = postFilter.approach.sort((a, b) => a.index - b.index);
+      const categories = postFilter.categorylist.sort((a, b) => a.index - b.index);
+      filterContext.article = postFilter.article;
+      filterContext.approach = [...approaches];
+      filterContext.categorylist = [...categories];
+    }
+
+    localStorage.postFilter = JSON.stringify(filterContext);
+    setArticle({
+      ...filterContext.article,
+    });
+    setApproach([...filterContext.approach]);
+    setFilterData([...filterContext.categorylist]);
+  }, []);
+
   return (
     <Container>
-      <Wrapper>
+      <FilterWrapper>
         {renderTitle()}
-        <FilterChecked>
-          {article && approach && (
-            <>
-              <li>
-                <FilterSpan textColor={article.color}>{article.name}</FilterSpan>
-              </li>
-              {renderFilterList(approach)}
-            </>
-          )}
-          {renderFilterList(filterData)}
-        </FilterChecked>
+        <FilterCheckedWrapper>
+          <FilterChecked>
+            {article && approach && (
+              <>
+                <li>
+                  <FilterSpan textColor={article.color}>{article.name}</FilterSpan>
+                </li>
+                {renderFilterList(approach)}
+              </>
+            )}
+            {renderFilterList(filterData)}
+          </FilterChecked>
+        </FilterCheckedWrapper>
+      </FilterWrapper>
+      <SectionWrapper>
         {postLoading ? (
           <LoadingList>
             <Loader height={80} width={80} />
@@ -142,7 +172,7 @@ function DetailPostList({ data }) {
         ) : (
           renderPostList()
         )}
-      </Wrapper>
+      </SectionWrapper>
     </Container>
   );
 }
@@ -154,7 +184,7 @@ const Container = styled('section')`
   padding-bottom: 90px;
 `;
 
-const Wrapper = styled.div`
+const FilterWrapper = styled.div`
   max-width: 850px;
   margin: 0 auto;
 
@@ -178,11 +208,42 @@ const Wrapper = styled.div`
     }
   }
   @media screen and (max-width: 820px) {
-    width: 100%;
-    padding: 0 20px;
-    box-sizing: border-box;
+    padding: 0;
+    background-color: #fff;
+    margin-bottom: 30px;
+    display: flex;
+    border-top: 1px solid #e2e2e2;
+    border-bottom: 1px solid #e2e2e2;
+    height: 66px;
+
+    h4 {
+      text-indent: -9999em;
+      min-width: 64px;
+      height: 64px;
+      border-right: 1px solid #e2e2e2;
+
+      &::before {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        margin: 0;
+      }
+    }
   }
-  @media screen and (max-width: 300px) {
+`;
+
+const SectionWrapper = styled.div`
+  max-width: 850px;
+  margin: auto;
+  position: relative;
+
+  @media screen and (max-width: 820px) {
+    padding: 0 20px;
+  }
+
+  @media screen and (max-width: 820px) {
     padding: 0 10px;
   }
 `;
@@ -203,6 +264,20 @@ const FilterSpan = styled.span`
     css`
       background-color: ${props.textColor};
     `}
+
+  @media screen and (max-width: 820px) {
+    white-space: nowrap;
+  }
+`;
+
+const FilterCheckedWrapper = styled.div`
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  @media screen and (max-width: 820px) {
+    width: 100%;
+    overflow-x: auto;
+  }
 `;
 
 const FilterChecked = styled.ul`
@@ -215,8 +290,18 @@ const FilterChecked = styled.ul`
     margin-right: 6px;
     margin-bottom: 6px;
   }
+
   @media screen and (max-width: 820px) {
-    display: none;
+    align-items: center;
+    padding: 0 8px;
+    width: auto;
+    height: 100%;
+    flex-wrap: nowrap;
+    gap: 10px;
+
+    li {
+      margin: 0;
+    }
   }
 `;
 

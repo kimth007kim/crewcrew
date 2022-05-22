@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { format, getDay, differenceInDays } from 'date-fns';
 import StarOffImg from '@/assets/images/StarOff.png';
+import ButtonStarWhite from '@/assets/images/ButtonStarWhite.png';
 import StarOnImg from '@/assets/images/StarOn.png';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import { viewDay } from '@/utils';
@@ -64,7 +65,7 @@ function PostCard({ data }) {
               {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
             </CategoryText>
             <p>{data.approachCode ? '온라인' : '오프라인'}</p>
-            <p>{`${data.recruitedCrew}/${data.totalCrew}`}</p>
+            <p>{`${data.recruitedCrew}/${data.totalCrew}명`}</p>
             <p>
               조회수
               {` ${data.hit}`}
@@ -122,7 +123,7 @@ const CardName = styled.p``;
 const TitleBox = styled.div``;
 
 const CategoryText = styled.span`
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 400;
   margin-right: 20px;
   ${(props) =>
@@ -141,16 +142,27 @@ const CategoryText = styled.span`
 `;
 
 const Star = styled.div`
-  width: 24px;
-  height: 24px;
-  background: url(${StarOffImg}) 50% 50% no-repeat;
-  background-size: 20px !important;
+  width: 30px;
+  height: 30px;
+  background: #c4c4c4 url(${ButtonStarWhite}) center/20px no-repeat;
+  border-radius: 5px;
   cursor: pointer;
-  margin-left: 10px;
+  margin-left: 22px;
+  margin-right: 14px;
+  transition: 0.3s;
+
+  :hover {
+    background-color: #b0b0b0;
+  }
+
   @media screen and (max-width: 820px) {
     position: absolute;
-    top: 6px;
+    top: 10px;
     right: 10px;
+    width: 20px;
+    height: 20px;
+    background-size: 14px;
+    margin: 0;
   }
 `;
 
@@ -205,8 +217,8 @@ const CardHead = styled.div`
     height: 100%;
     padding: 0 14px;
     ${Dday} {
-      margin-top: 8px;
-      font-size: 13px;
+      margin-top: 4px;
+      font-size: 16px;
       font-weight: 700;
       color: #00b7ff;
       text-align: right;
@@ -218,14 +230,14 @@ const CardHead = styled.div`
     }
 
     ${CardDate} {
-      margin-top: 2px;
+      margin-top: 0px;
       font-size: 12px;
       font-weight: 300;
       color: #868686;
     }
 
     ${CardName} {
-      margin-top: 4px;
+      margin-top: 2px;
       font-size: 13px;
       font-weight: 500;
       color: #000;
@@ -252,8 +264,8 @@ const CardHead = styled.div`
       ${CardDate} {
         margin: 0;
         order: 1;
-        margin-left: 14px;
-        padding-right: 32px;
+        margin-left: 12px;
+        padding-right: 28px;
       }
 
       ${CardName} {
@@ -261,6 +273,16 @@ const CardHead = styled.div`
         font-size: 12px;
         font-weight: 300;
         color: #868686;
+      }
+    }
+  }
+
+  @media screen and (max-width: 820px) {
+    ${TextBox} {
+      ${CardDate} {
+        order: 1;
+        margin-left: 10px;
+        padding-right: 26px;
       }
     }
   }
@@ -280,9 +302,8 @@ const CardBody = styled.div`
     ${TitleBox} {
       display: flex;
       align-items: center;
-      margin-top: 2px;
       h5 {
-        width: 323px;
+        width: 290px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -299,9 +320,9 @@ const CardBody = styled.div`
 
     ${TextList} {
       display: flex;
-      margin-top: 14px;
+      margin-top: 15px;
       p {
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 400;
         color: #868686;
       }
@@ -319,8 +340,12 @@ const CardBody = styled.div`
   ${ButtonBox} {
     display: flex;
     justify-content: space-between;
-    min-width: 214px;
-    height: 50px;
+    height: 60px;
+    gap: 14px;
+    padding: 5px 0;
+    padding-left: 22px;
+    border-left: 1px solid #a8a8a8;
+    box-sizing: border-box;
 
     button {
       width: 100px;
@@ -342,7 +367,7 @@ const CardBody = styled.div`
       ${TitleBox} {
         margin-top: 18px;
         h5 {
-          font-size: 13px;
+          font-size: 14px;
         }
       }
 
@@ -350,7 +375,7 @@ const CardBody = styled.div`
         display: flex;
         margin-top: 17px;
         p {
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 400;
         }
 
@@ -360,20 +385,6 @@ const CardBody = styled.div`
 
         ${CategoryText} {
           font-weight: 700;
-        }
-      }
-    }
-  }
-
-  @media screen and (max-width: 300px) {
-    ${TextBox} {
-      ${TextList} {
-        p {
-          font-size: 10px;
-          font-weight: 400;
-        }
-        ${CategoryText} {
-          font-size: 10px;
         }
       }
     }

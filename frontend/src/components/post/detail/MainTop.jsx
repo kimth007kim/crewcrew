@@ -71,9 +71,6 @@ const Container = styled('section')`
   position: relative;
   overflow: hidden;
   box-sizing: content-box;
-  @media screen and (max-width: 820px) {
-    height: 64px;
-  }
 `;
 
 const TopCont = styled('div')`
@@ -88,6 +85,7 @@ const TopCont = styled('div')`
   justify-content: space-between;
   flex-direction: row;
   align-items: center;
+  box-sizing: content-box;
 
   h2 {
     font-size: 24px;
@@ -100,11 +98,11 @@ const TopCont = styled('div')`
     a {
       display: block;
       background-image: url(${FilterArrowImg});
-      background-size: 9px;
+      background-size: 8px;
       background-repeat: no-repeat;
       background-position: 0 1px;
-      width: 9px;
-      height: 20px;
+      width: 8px;
+      height: 18px;
       padding-right: 20px;
       text-decoration: none;
       color: #868686;
@@ -114,9 +112,14 @@ const TopCont = styled('div')`
 
   @media screen and (max-width: 820px) {
     width: calc(100vw - 40px);
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
 
     h2 {
       font-size: 15px;
+      order: 1;
+      line-height: 36px;
 
       a {
         background-size: 8px;
@@ -150,7 +153,7 @@ const ButtonIntro = styled('div')`
     height: 30px;
     right: 20px;
     opacity: 1;
-    top: 18px;
+    top: 17px;
   }
 
   @media screen and (max-width: 300px) {
@@ -191,15 +194,15 @@ const InputWrapper = styled.div`
     }
   }
   @media screen and (max-width: 820px) {
-    width: calc(100vw - 40px);
+    width: calc(100vw - 70px);
     height: 36px;
     border-radius: 18px;
-    margin-top: 32px;
+    margin: 14px 0 34px;
 
     img {
       width: 24px;
       height: 24px;
-      margin-left: 12px;
+      margin-left: 16px;
     }
 
     input {

@@ -201,11 +201,13 @@ const InputWrapper = styled.div`
     img {
       width: 24px;
       height: 24px;
-      margin-left: 24px;
+      margin-left: 12px;
     }
 
     input {
-      font-size: 10px;
+      width: calc(100% - 65px);
+      font-size: 12px;
+      margin-left: 12px;
     }
   }
 `;
@@ -248,5 +250,9 @@ const ButtonIntro = styled.div`
     top: 17px;
     right: 20px;
     opacity: 1;
+  }
+
+  @media screen and (max-width: 300px) {
+    right: 10px;
   }
 `;

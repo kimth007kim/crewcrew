@@ -53,7 +53,7 @@ function MainPost({ data }) {
             {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
           </li>
           <li>{data.approachCode ? '온라인' : '오프라인'}</li>
-          <li>{`${data.recruitedCrew}/${data.totalCrew}`}</li>
+          <li>{`${data.recruitedCrew}/${data.totalCrew}명`}</li>
           <li>{`조회수 ${data.hit}`}</li>
         </TopUList>
         <MarkDownbody>
@@ -69,6 +69,10 @@ export default MainPost;
 const Container = styled('section')`
   padding: 60px 0 94px;
   background-color: #f6f7fb;
+
+  @media screen and (max-width: 820px) {
+    padding: 42px 0 66px;
+  }
 `;
 
 const Wrapper = styled('div')`
@@ -123,6 +127,49 @@ const Wrapper = styled('div')`
       }
     }
   }
+
+  @media screen and (max-width: 820px) {
+    padding: 0 20px;
+    ul {
+      &:nth-of-type(1) {
+        margin-bottom: 12px;
+        li {
+          font-size: 13px;
+        }
+
+        li:first-child {
+          font-size: 13px;
+        }
+
+        li:nth-child(2) {
+          color: #000;
+        }
+      }
+
+      &:nth-of-type(2) {
+        order: 1;
+        margin: 14px 0;
+        gap: 10px;
+
+        li:first-child {
+          display: none;
+        }
+
+        li:not(:first-child) {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 300px) {
+    padding: 0 10px;
+    ul {
+      &:nth-of-type(1) {
+        gap: 14px;
+      }
+    }
+  }
 `;
 
 const TopUList = styled('ul')`
@@ -133,16 +180,31 @@ const TopUList = styled('ul')`
   }
 
   li:first-child {
+    font-weight: 700;
     ${(props) =>
       props.textColor &&
       css`
         color: ${props.textColor};
       `}
   }
+
+  @media screen and (max-width: 300px) {
+    gap: 10px;
+
+    li {
+      font-size: 13px;
+    }
+  }
 `;
 
 const TitleMobile = styled('h4')`
   display: none;
+
+  @media screen and (max-width: 820px) {
+    font-size: 18px;
+    margin-bottom: 14px;
+    display: block;
+  }
 `;
 
 const ButtonStar = styled('button')`
@@ -216,4 +278,9 @@ const MarkDownbody = styled('div')`
   box-sizing: border-box;
   background-color: #fff;
   border: 1px solid #e2e2e2;
+
+  @media screen and (max-width: 820px) {
+    margin-top: 20px;
+    min-height: 320px;
+  }
 `;

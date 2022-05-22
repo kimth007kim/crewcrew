@@ -232,6 +232,10 @@ const Star = styled.div`
   border-radius: 5px;
   transition: 0.3s;
 
+  :hover {
+    background-color: #b0b0b0;
+  }
+
   @media screen and (max-width: 820px) {
     width: 20px;
     height: 20px;
