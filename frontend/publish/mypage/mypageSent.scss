@@ -168,6 +168,7 @@ section.MypageSentTop{
     
     div.TopCont h2 a.arrowAfter{
         padding-right: 8px;
+        margin: 0;
 
         &::after{
             background-size: 8px;
@@ -232,7 +233,6 @@ section.MypageSentTop{
 
     div.TopCont h2 a.arrowAfter{
         padding-right: 6px;
-        margin: 0;
 
         &::after{
             margin-left: 6px;
