@@ -1441,6 +1441,8 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
     right: 10px;
     top: 59px;
     position: absolute;
+    border: none;
+    padding: 0;
   }
   .PostCard.Cent .PostCardBody .ButtonBox button.Detail {
     width: 100%;
