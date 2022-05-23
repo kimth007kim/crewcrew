@@ -4175,6 +4175,7 @@ section.MypageSentTop h3 {
   .PostCard.Swiper .PostCardBody .TextBox .TitleBox h5 {
     width: calc(100% - 83px);
     white-space: normal;
+    height: 36px;
   }
   .PostCard.Swiper .PostCardBody .ButtonBox {
     display: -webkit-box;
