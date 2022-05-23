@@ -3650,6 +3650,7 @@ section.MypageSentTop h3 {
 @media screen and (max-width: 300px) {
   div.TopCont h2 a.arrowAfter {
     padding-right: 6px;
+    margin: 0;
   }
   div.TopCont h2 a.arrowAfter::after {
     margin-left: 6px;
