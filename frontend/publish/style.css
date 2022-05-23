@@ -1300,6 +1300,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
+  border: none;
 }
 
 .PostCard.Cent .PostCardBody .ButtonBox button.Detail {
@@ -1441,7 +1442,6 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
     right: 10px;
     top: 59px;
     position: absolute;
-    border: none;
     padding: 0;
   }
   .PostCard.Cent .PostCardBody .ButtonBox button.Detail {
