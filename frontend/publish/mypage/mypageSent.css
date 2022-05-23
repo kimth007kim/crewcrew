@@ -4122,6 +4122,9 @@ section.MypageSentTop h3 {
   .PostCard.Swiper {
     height: 146px;
   }
+  .PostCard.Swiper.On p.Waiting {
+    display: none;
+  }
   .PostCard.Swiper .SwiperCardTop {
     min-height: 146px;
     -webkit-box-align: start;

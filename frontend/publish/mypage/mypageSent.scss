@@ -654,6 +654,10 @@ section.MypageSentTop{
     .PostCard.Swiper{
         height: 146px;
 
+        &.On p.Waiting{
+            display: none;
+        }
+
         .SwiperCardTop{
             min-height: 146px;
             align-items: flex-start;
