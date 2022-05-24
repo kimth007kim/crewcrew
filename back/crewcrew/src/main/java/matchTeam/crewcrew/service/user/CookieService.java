@@ -22,11 +22,11 @@ public class CookieService {
         return cookie;
     }
 
-    public Cookie generateRefreshToken(String value, Long time) {
-        return generateCookie("refreshToken", value, time/1000);
-    }
-
-    public Cookie generateAccessToken(String value) {
-        return generateCookie("X-AUTH-TOKEN", value, jwtProvider.accessTokenValidMillisecond/1000);
-    }
+//    public Cookie generateRefreshToken(String value, Long time) {
+//        return generateCookie("refreshToken", value, time/1000);
+//    }
+//
+//    public Cookie generateAccessToken(String value) {
+//        return generateCookie("X-AUTH-TOKEN", value, jwtProvider.accessTokenValidMillisecond/1000);
+//    }
 }

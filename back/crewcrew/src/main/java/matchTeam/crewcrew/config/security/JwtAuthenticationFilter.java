@@ -65,17 +65,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (accessToken != null) {
             if (jwtProvider.validateToken(accessToken)) {
+                System.out.println("--------------------------------인증 성공-----------------------------------------");
                 this.setAuthentication(accessToken);
             } else if (!jwtProvider.validateToken(accessToken) && refreshToken != null) {
+                System.out.println("--------------------------------재발급 과정-----------------------------------------");
                 boolean validateRefreshToken = jwtProvider.validateToken(refreshToken);
                 boolean isRefreshToken = jwtProvider.existRefreshToken(refreshToken);
                 if (validateRefreshToken && isRefreshToken) {
                     Long uid = jwtProvider.getUserUid(refreshToken);
                     List<String> roles = jwtProvider.getRoles(uid);
                     String newAccessToken = jwtProvider.createToken(uid, roles, jwtProvider.accessTokenValidMillisecond);
-                    response.addCookie(cookieService.generateAccessToken(newAccessToken));
+                    response.addCookie(cookieService.generateCookie("X-AUTH-TOKEN",newAccessToken,jwtProvider.accessTokenValidMillisecond));
                     this.setAuthentication(newAccessToken);
                 }
+                System.out.println("--------------------------------토큰 교체 완료-----------------------------------------");
             }
         }
         filterChain.doFilter(request, response);
