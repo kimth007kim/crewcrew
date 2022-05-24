@@ -239,4 +239,14 @@ import javax.mail.MessagingException;
         return ResponseHandler.generateResponse("지원서 진행사항 수정 성공", HttpStatus.OK, result);
     }
 
+    @ApiOperation("내가 쓴 마감글의 개수 구하기")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/application/myCrew")
+    public ResponseEntity<Object> findMyCrew(@RequestHeader("X-AUTH-TOKEN") String token){
+
+        User user = userService.tokenChecker(token);
+        ApplicationMyCrewResponseDTO myCrewCount = applicationService.findMyCrewCount(user);
+
+        return ResponseHandler.generateResponse("지원서 진행사항 수정 성공", HttpStatus.OK, myCrewCount);
+    }
 }

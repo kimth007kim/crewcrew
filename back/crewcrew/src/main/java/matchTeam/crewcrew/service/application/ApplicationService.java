@@ -102,6 +102,11 @@ public class ApplicationService {
         return ApplicationUserDetailsResponseDTO.builder().ap(ap).res(reqUser).build();
     }
 
+    @Transactional(readOnly = true)
+    public ApplicationMyCrewResponseDTO findMyCrewCount(User req){
+        return ApplicationMyCrewResponseDTO.builder().myCrewCount(queryRepository.getMyCrewCount(req)).build();
+    }
+
     //중복 지원했을때
     public void checkDuplicateApplier(User req, ApplicationSaveRequestDTO info){
         System.out.println("queryRepository.checkDuplicateApply(req) = " + queryRepository.checkDuplicateApply(req, info));
