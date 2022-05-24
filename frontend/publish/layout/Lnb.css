@@ -1300,6 +1300,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
+  border: none;
 }
 
 .PostCard.Cent .PostCardBody .ButtonBox button.Detail {
@@ -1441,6 +1442,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
     right: 10px;
     top: 59px;
     position: absolute;
+    padding: 0;
   }
   .PostCard.Cent .PostCardBody .ButtonBox button.Detail {
     width: 100%;
@@ -1902,9 +1904,12 @@ main {
 }
 
 @media screen and (max-width: 820px) {
+  body.Modal, .ModalWrapper, .ModalBg {
+    height: calc(var(--vh, 1vh) * 100);
+  }
   .ModalWrapper.Modal .ModalBox {
     margin-top: 40px;
-    height: calc(100vh - 40px);
+    height: calc(var(--vh, 1vh) * 100)-40px;
     position: fixed;
     bottom: 0;
   }
@@ -1913,7 +1918,7 @@ main {
     width: 100%;
     border-radius: 20px 20px 0 0;
     height: 0;
-    margin-top: 100vh;
+    margin-top: calc(var(--vh, 1vh) * 100);
   }
   .InputList {
     padding-top: 25px;
@@ -1931,7 +1936,7 @@ main {
     margin-right: 0;
   }
   .ModalBody {
-    height: calc(100vh - 194px);
+    height: calc(var(--vh, 1vh) * 100)-194px;
   }
   .ModalBody::-webkit-scrollbar {
     display: none;
@@ -2715,6 +2720,9 @@ main {
 }
 
 @media screen and (max-width: 820px) {
+  .LnbWrapper {
+    height: calc(var(--vh, 1vh) * 100);
+  }
   .NavPC, .NavArrow, .NavCont h1 {
     display: none;
   }
@@ -2756,7 +2764,7 @@ main {
   }
   .NavCardList {
     margin-top: 25px;
-    height: calc(100vh - 312px);
+    height: calc(var(--vh, 1vh) * 100)-312px;
   }
   .NavCardList li {
     padding-bottom: 10px;

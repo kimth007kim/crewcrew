@@ -2,6 +2,7 @@ package matchTeam.crewcrew.service.application;
 
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.application.*;
+import matchTeam.crewcrew.dto.board.BoardResponseDTO;
 import matchTeam.crewcrew.entity.application.Application;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.user.User;
@@ -13,6 +14,7 @@ import matchTeam.crewcrew.repository.user.LikedCategoryRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
 import matchTeam.crewcrew.response.exception.application.*;
 import matchTeam.crewcrew.response.exception.board.NotExistBoardInIdException;
+import matchTeam.crewcrew.response.exception.board.NotMatchUidException;
 import matchTeam.crewcrew.response.exception.category.NotExistCategoryException;
 import matchTeam.crewcrew.util.customException.UserNotFoundException;
 import org.springframework.data.domain.Page;
@@ -102,6 +104,27 @@ public class ApplicationService {
         return ApplicationUserDetailsResponseDTO.builder().ap(ap).res(reqUser).build();
     }
 
+    @Transactional(readOnly = true)
+    public ApplicationMyCrewResponseDTO findMyCrewCount(User req){
+        return ApplicationMyCrewResponseDTO.builder().myCrewCount(queryRepository.getMyCrewCount(req)).build();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<BoardResponseDTO> findMyCrewCountDetails(User req, Pageable pageable){
+        return queryRepository.getMyCrewCountDetails(req, pageable);
+    }
+
+    @Transactional
+    public void extendExpiredDate(Long boardId){
+        Board board = boardRepository.findById(boardId).orElseThrow(NotExistBoardInIdException::new);
+        board.extendExpired();
+    }
+
+    @Transactional(readOnly = true)
+    public ApplicationParticipatedCrewResponseDTO findMyParticipatedCount(User req){
+        return ApplicationParticipatedCrewResponseDTO.builder().participatedCount(queryRepository.getParticipatedCrewCount(req)).build();
+    }
+
     //중복 지원했을때
     public void checkDuplicateApplier(User req, ApplicationSaveRequestDTO info){
         System.out.println("queryRepository.checkDuplicateApply(req) = " + queryRepository.checkDuplicateApply(req, info));
@@ -123,6 +146,15 @@ public class ApplicationService {
     public void checkUserWriter(User applier, Board board){
         if (applier.getUid().equals(board.getUser().getUid())){
             throw new ApplyToBoardWriterException();
+        }
+    }
+
+    //게시글 작성자가 지원했을 때
+    public void checkEqualWriter(User req, Long boardId){
+        Board board = boardRepository.findById(boardId).orElseThrow(NotExistBoardInIdException::new);
+
+        if (!board.getUser().getUid().equals(req.getUid())){
+            throw new NotMatchUidException();
         }
     }
 

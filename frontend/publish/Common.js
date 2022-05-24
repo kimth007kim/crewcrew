@@ -240,6 +240,13 @@ window.addEventListener("DOMContentLoaded", function(){
 
         isOn = !isOn;
     });
+
+    function setScreenSize() { //모바일 vh이슈
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    setScreenSize();
+    window.addEventListener('resize', setScreenSize);
 });
 
 const SignLength = document.querySelectorAll(".InputList>li")?.length;

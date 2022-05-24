@@ -206,7 +206,6 @@ public class AuthController {
         userService.validationPasswd(password);
         String email_url = email.replace("@", "_");
 
-
         String filename = s3Uploader.addImageWhenSignUp(email_url, file, Default, "local");
         User user = userService.findByUid(signupId);
         userService.setProfileImage(user, filename);
@@ -355,7 +354,7 @@ public class AuthController {
         return ResponseHandler.generateResponse("비밀번호 변경을 위한 코드 성공", HttpStatus.OK, null);
     }
 
-
+    
     @ApiOperation(value = "이메일 인증코드확인후 비밀번호 변경"
             , notes = "이메일 인증코드확인후 비밀번호 변경")
     @ApiResponses({

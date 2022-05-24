@@ -168,6 +168,7 @@ section.MypageSentTop{
     
     div.TopCont h2 a.arrowAfter{
         padding-right: 8px;
+        margin: 0;
 
         &::after{
             background-size: 8px;
@@ -375,6 +376,8 @@ section.MypageSentTop{
             position: absolute;
             top: 0;
             right: 175px;
+            border: none;
+            gap: 4px;
 
             button{
                 width: 30px;
@@ -638,5 +641,187 @@ section.MypageSentTop{
                 }
             }
         }
+    }
+}
+
+@media screen and (max-width: 820px) {
+
+    .SwiperCardWrapper{
+        .SwiperBtn{
+            margin-left: calc(100% - 84px);
+        }
+    }
+
+    .PostCard.Swiper{
+        height: 146px;
+
+        &.On p.Waiting{
+            display: none;
+        }
+
+        .SwiperCardTop{
+            min-height: 146px;
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 12px 10px 16px 10px;
+        }
+    
+        .PostCardHead{
+            min-width: 100%;
+            height: 30px;
+            align-items: center;
+
+            .TextBox{
+
+                p{
+
+                    &.Dday{
+                        text-align: left;
+                    }
+                }
+            }
+
+            .DetailBox{
+                flex-direction: row;
+                border: none;
+                min-width: auto;
+                height: auto;
+                padding: 0;
+                gap: 12px;
+                align-items: center;
+
+                p{
+                    margin: 0;
+                }
+
+                button{
+                    width: 74px;
+                }
+            }
+        }
+
+        .PostCardBody{
+            padding: 0;
+
+            .TextBox{
+                position: relative;
+
+                .TitleBox{
+                    margin-top: 12px;
+
+                    h5{
+                        width: calc(100% - 83px);
+                        white-space: normal;
+                        height: 36px;
+                    }
+                }
+            }
+
+            .ButtonBox{
+                display: flex;
+                flex-direction: row;
+                right: 0;
+                top: 16px;
+                padding: 0;
+                gap: 8px;
+            }
+
+            p.Waiting{
+                border: none;
+                min-width: auto;
+                height: auto;
+                flex-direction: row;
+                align-items: center;
+                font-size: 13px;
+                font-weight: 500;
+                top: inherit;
+                bottom: 0;
+                padding: 0;
+
+                em{
+                    font-size: 14px;
+                    font-weight: 700;
+                    margin-left: 3px;
+                }
+            }
+        }
+
+        .SwiperCardBottom{
+
+            .BtTop{
+                padding: 12px 10px;
+            }
+        }
+    }
+    
+    .BtSwiper{
+
+        .CardSwiper{
+            margin: 0 10px;
+
+            &>ul>li{
+                width: calc(100% - 80px);
+            }
+        }
+    }
+
+    .SwiperCardHead{
+        height: 100px;
+        padding: 12px;
+        position: relative;
+
+        .CardProfile{
+            position: absolute;
+            min-width: 24px;
+            height: 24px;
+        }
+
+        .CardTxt{
+
+            h4{
+                margin: 0 0 10px 36px;
+                line-height: 25px;
+            }
+        }
+    }
+
+    .SwiperCardBody{
+        padding: 0 12px 12px;
+
+        .IntList{
+            
+            li{
+                padding: 3px 8px;
+            }
+        }
+    }
+
+    .SwiperSlideBtn{
+
+        p{
+            margin-left: 8px;
+        }
+
+        .BtnWrapper{
+            gap: 4px;
+        }
+    }
+}
+
+@media screen and (max-width: 300px) {
+    .PostCard.Swiper .PostCardHead .TextBox p.Dday{
+        font-size: 15px;
+    }
+
+    .PostCard.Swiper .PostCardHead .DetailBox{
+        gap: 8px;
+
+        p{
+            font-size: 13px;
+        }
+    } 
+
+    .BtSwiper .CardSwiper > ul > li{
+        width: calc(100% - 20px);
     }
 }
