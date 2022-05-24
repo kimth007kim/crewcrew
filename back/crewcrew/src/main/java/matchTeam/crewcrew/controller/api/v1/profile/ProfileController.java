@@ -38,24 +38,6 @@ public class ProfileController {
     private final S3Uploader s3Uploader;
 
 
-
-//        @PutMapping(value="/test", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ResponseEntity<Object> profileChange(@RequestPart(value="key") ProfileChangeRequestDto profileChangeRequestDto, @RequestPart(value = "img",required = false) MultipartFile img) {
-//
-//
-//        User user = userService.tokenChecker(token);
-//        if (file != null) {
-//            String tempName =s3Uploader.nameFile(user.getEmail(),user.getProvider());
-//            String filename = s3Uploader.upload(file,tempName,"profile");
-//            userService.setProfileImage(user, filename);
-//        }
-//
-//        userService.profileChange(user, password, name, nickName, categoryId, message);
-//        Optional<User> user = userService.findByEmailAndProvider(email,provider);
-////        return ResponseHandler.generateResponse("성공", HttpStatus.OK, user);
-//        return ResponseHandler.generateResponse("성공", HttpStatus.OK, null);
-//    }
-
     @ApiResponses({
             @ApiResponse(
                     code = 200
@@ -125,12 +107,6 @@ public class ProfileController {
             categoryId=new ArrayList<Long>();
         }
 
-        System.out.println(password);
-        System.out.println(nickName);
-        System.out.println(name);
-        System.out.println(categoryId);
-        System.out.println(message);
-
         User user = userService.tokenChecker(token);
 
         if (file != null && !file.isEmpty()) {
@@ -145,29 +121,13 @@ public class ProfileController {
 
 
 
-    @PutMapping(value = "/test", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> profileTest(@RequestPart(value="ProfileChangeRequestDto")ProfileChangTestDto profileChangTestDto, @RequestPart(value = "file",required = false) MultipartFile file) throws IOException {
-        String password = profileChangTestDto.getPassword();
-        String nickName = profileChangTestDto.getNickName();
-        String name = profileChangTestDto.getName();
-        List<Long> categoryId= profileChangTestDto.getCategoryId();
-        String message = profileChangTestDto.getMessage();
+    @PutMapping(value = "/test")
+    public ResponseEntity<Object> profileTest(ArrayList<Long> categoryId) {
+        User user = userService.findByUid(50L);
+        userService.likedCategory(categoryId,user);
 
 
-        System.out.println(password);
-        System.out.println(nickName);
-        System.out.println(name);
-        System.out.println(categoryId);
-        System.out.println(message);
-//
-//        User user = userService.tokenChecker(token);
-//
-//        if (file != null && !file.isEmpty()) {
-//            String tempName = s3Uploader.nameFile(user.getEmail(), user.getProvider());
-//            String filename = s3Uploader.upload(file, tempName, "profile");
-//            userService.setProfileImage(user, filename);
-//        }
-//        userService.profileChange(user, password, name, nickName, categoryId, message);
+
         return ResponseHandler.generateResponse("성공", HttpStatus.OK, "변경 성공");
     }
 

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface LikedCategoryRepository extends JpaRepository<LikedCategory,Long> {
@@ -22,6 +23,8 @@ public interface LikedCategoryRepository extends JpaRepository<LikedCategory,Lon
 
     @Query("select l.category.id from LikedCategory  l where l.user = :user")
     List<Long> findByUser(@Param("user") User user);
+    @Query("select l.category.id,l.category.categoryParent from LikedCategory  l where l.user = :user")
+    Map<Long,Long> findCidAndCparents(@Param("user") User user);
     @Modifying
     @Query("delete from LikedCategory l where l.category=:category and l.user=:user")
     void deleteLikedCategoryByUserAndCategory(@Param("category")Category category,@Param("user") User user);

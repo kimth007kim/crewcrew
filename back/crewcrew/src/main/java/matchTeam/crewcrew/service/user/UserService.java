@@ -16,23 +16,18 @@ import matchTeam.crewcrew.dto.user.example.UserResponseDto;
 import matchTeam.crewcrew.entity.security.RefreshToken;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.repository.security.RefreshTokenJpaRepository;
+import matchTeam.crewcrew.repository.user.LikedCategoryRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
+import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.exception.auth.*;
-import matchTeam.crewcrew.response.exception.profile.ProfileEmptyCategoryException;
 import matchTeam.crewcrew.response.exception.profile.ProfileEmptyNameException;
 import matchTeam.crewcrew.response.exception.profile.ProfileEmptyNickNameException;
-import matchTeam.crewcrew.util.customException.UserNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,6 +37,7 @@ import java.util.regex.Pattern;
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
+    private final LikedCategoryRepository likedCategoryRepository;
     //email 발송기능
     private final PasswordEncoder passwordEncoder;
     private final RedisUtil redisutil;
@@ -64,7 +60,8 @@ public class UserService {
 
     public Long signup(SignUpRequestDto localSignUpRequestDto) {
         if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(), "local").isPresent())
-            throw new EmailSignUpFailedCException();
+//            throw new EmailSignUpFailedCException();
+            throw new CrewException(ErrorCode.EMAIL_CODE_NOT_MATCH);
         return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();
     }
 
@@ -253,6 +250,19 @@ public class UserService {
             user.setMessage(message);
         }
     }
+
+    public void likedCategory(List<Long> categoryId,User user) {
+        Map<Long,Long> usersLike = likedCategoryRepository.findCidAndCparents(user);
+        for(Long l : usersLike.keySet()){
+            System.out.println("-=-=-=-==-==-=-=-"+l+"==-=-=-==-=-"+usersLike.get(l));
+        }
+
+
+        //        System.out.println(user)
+
+        //        likedCategoryService.ChangeUsersLike(user, categoryId, usersLike);
+    }
+
 
     public Long kakaoSignup(UserSignUpRequestDto userSignUpRequestDto) {
         Optional<User> user = userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider());
