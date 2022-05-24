@@ -1070,6 +1070,7 @@ textarea.TxtAreaInput{
         .ButtonBox{
             min-width: 130px;
             justify-content: flex-end;
+            border: none;
 
             button.Detail{
                 font-size: 15px;
@@ -1218,6 +1219,7 @@ textarea.TxtAreaInput{
                 right: 10px;
                 top: 59px;
                 position: absolute;
+                padding: 0;
 
                 button.Detail{
                     width: 100%;

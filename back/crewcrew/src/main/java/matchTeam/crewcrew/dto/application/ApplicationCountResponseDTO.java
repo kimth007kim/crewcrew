@@ -12,23 +12,23 @@ import java.util.List;
 public class ApplicationCountResponseDTO {
 
     @ApiModelProperty(value = "스터디 카테고리로 들어온 신청서의 개수")
-    private Long applyToStudy = 0L;
+    private Long applyToStudyCount = 0L;
 
     @ApiModelProperty(value = "취미 카테고리로 들어온 신청서의 개수")
-    private Long applyToHobby = 0L;
+    private Long applyToHobbyCount = 0L;
 
     @ApiModelProperty(value = "신청서의 총합")
-    private Long totalApply = 0L;
+    private Long totalApplyCount = 0L;
 
     @Builder
     public ApplicationCountResponseDTO(List<ApplicationResponseDTO> results) {
         for (ApplicationResponseDTO res:results) {
             if (res.getCategoryParentId().equals(1L)){
-                this.applyToStudy += res.getCountApllication();
+                this.applyToStudyCount += res.getApllicationCount();
             }else {
-                this.applyToHobby += res.getCountApllication();
+                this.applyToHobbyCount += res.getApllicationCount();
             }
-            totalApply = results.stream().mapToLong(s -> s.getCountApllication()).sum();
+            totalApplyCount = results.stream().mapToLong(s -> s.getApllicationCount()).sum();
         }
     }
 }

@@ -13,8 +13,8 @@ public class QApplicationResponseDTO extends ConstructorExpression<ApplicationRe
 
     private static final long serialVersionUID = 1428402267L;
 
-    public QApplicationResponseDTO(com.querydsl.core.types.Expression<Long> categoryParentId, com.querydsl.core.types.Expression<Long> countApllication) {
-        super(ApplicationResponseDTO.class, new Class<?>[]{long.class, long.class}, categoryParentId, countApllication);
+    public QApplicationResponseDTO(com.querydsl.core.types.Expression<Long> categoryParentId, com.querydsl.core.types.Expression<Long> apllicationCount) {
+        super(ApplicationResponseDTO.class, new Class<?>[]{long.class, long.class}, categoryParentId, apllicationCount);
     }
 
 }

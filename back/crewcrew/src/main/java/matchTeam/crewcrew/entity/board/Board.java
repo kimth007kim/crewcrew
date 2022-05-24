@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Optional;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -110,6 +111,11 @@ public class Board extends BaseTimeEntity {
         this.expiredDate = expiredDate;
         this.viewable = viewable;
         this.kakaoChat = kakaoChat;
+    }
+
+    public void extendExpired(){
+        this.expiredDate = LocalDate.now(ZoneId.of("Asia/Seoul")).plusDays(7);
+        this.viewable = true;
     }
 
     public BoardResponseDTO toDTO(Board board){

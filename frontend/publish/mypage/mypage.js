@@ -102,19 +102,27 @@ window.addEventListener("DOMContentLoaded", function(){
             if(ThisSwiperCard.classList.contains('On')){
                 ThisSwiperCard.style.height = `${SwiperCardHeight}px`;
             } else {
-                ThisSwiperCard.style.height = '94px';
+                ThisSwiperCard.style.height = SwiperCardTopHeight;
             }
         });
     });
 
     const SwiperCard = document.querySelector(".PostCard.Swiper");
-    let SwiperCardHeight;
+    let SwiperCardHeight, SwiperCardTopHeight;
     function SwiperHeightFunc(){ //스와이퍼카드 원래 높이 구하기
         if(SwiperCard){
             SwiperCard.style.height = 'auto';
             SwiperCardHeight = SwiperCard.clientHeight;
-            SwiperCard.style.height = '94px';
+            SwiperCard.style.height = SwiperCardTopHeight;
         }
     }
+    function SwiperTopHeightFunc(){//스와이퍼카드 접힐때 높이 구하기
+        if(SwiperCard){
+            window.innerWidth > 820 ? SwiperCardTopHeight = '94px' : SwiperCardTopHeight = '146px';
+        }
+    }
+    SwiperTopHeightFunc();
     SwiperHeightFunc();
+    window.addEventListener('resize', SwiperTopHeightFunc);
+    window.addEventListener('resize', SwiperHeightFunc);
 });

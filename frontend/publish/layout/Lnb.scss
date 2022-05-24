@@ -326,6 +326,11 @@ $Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
 }
 
 @media screen and (max-width:820px) {
+
+    .LnbWrapper{
+        height: $vh100;
+    }
+
     .NavPC, .NavArrow, .NavCont h1{
         display: none;
     }
@@ -379,7 +384,7 @@ $Shadow2 : 0px 0px 5px rgba(0, 0, 0, 0.15);
 
     .NavCardList{
         margin-top: 25px;
-        height: calc(100vh - 312px);
+        height: $vh100 - 312px;
 
         li{
             padding-bottom: 10px;

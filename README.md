@@ -2,10 +2,10 @@
 
 <h6 align="center">
 
-  <img alt="banner" src="README_image/team-title.png">
+<!--   <img alt="banner" src="README_image/team-title.png"> -->
 
 ![License](https://img.shields.io/badge/License-MIT-red)
-![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/woowa-techcamp-2021/store-2?color=green&label=Version)
+<!-- ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/woowa-techcamp-2021/store-2?color=green&label=Version) -->
 
 </h6>
 
@@ -19,12 +19,12 @@
 
 | Contributor                              | Role | Introduce        |
 | ---------------------------------------- | -------- | ---------------- |
-| [김경동]([https://github.com/edegiil](https://github.com/kimth007kim))     | Backend   |        |
-| [김도희]([https://github.com/Seogeurim](https://github.com/Slowth-KIM))   | Backend   |  |
-| [이하늘](#) | Backend |     |
-| [박한결]([https://github.com/negu63](http://phk9436.pe.kr/))      | Publisher |      |
-| [유재영]([https://github.com/yoonminsang](http://nicole-yoo.com/)) | Designer |    |
-| [오주영]([https://github.com/yoonminsang](https://github.com/ohjooyeong)) | Frontend |     |
+| [김경동](https://github.com/kimth007kim)     | Backend   |        |
+| [김도희](https://github.com/Slowth-KIM)   | Backend   |  |
+| [이하늘](https://github.com/belowalways) | Backend |     |
+| [박한결](http://phk9436.pe.kr/)      | Publisher |      |
+| [유재영](http://nicole-yoo.com/) | Designer |    |
+| [오주영](https://github.com/ohjooyeong) | Frontend |     |
 
 ## Stacks
 
@@ -47,33 +47,21 @@
 
 ```
 🔥 client🔥
-├─public
-│ ├─index.html (기본 HTML)
-│ └─favicon.ico (파비콘)
 ├─src
 │ ├─assets (이미지, 폰트 등)
-│ ├─constants (상수, 라우트 경로)
-│ ├─styles (글로벌 스타일)
-│ ├─lib (리액트 라우터, styled-components)
-│ ├─components (컴포넌트 like view)
-│ ├─containers (like vm)
+│ ├─atoms (recoil atom)
+│ ├─components (컴포넌트)
 │ ├─pages (페이지)
-│ ├─store (redux 모듈)
-│ ├─saga (saga 함수)
-│ ├─types (ts 공통 타입, 인터페이스)
 │ ├─hooks (커스텀 훅)
 │ ├─utils (공통 유틸 함수)
-│ │ └─api (api axios 요청)
-│ ├─index.tsx
-│ └─App.tsx
-├─config
-│ ├─webpack.common.js
-│ ├─webpack.dev.js
-│ └─webpack.prod.js
+│ ├─index.js
+│ ├─index.html
+│ └─App.js
+├─webpack.config.js
 ├─package.json
-├─tsconfig.json
-├─jest.config.js
-├─.eslintrc.json
+├─jsconfig.json
+├─.babelrc
+├─.eslintrc.js
 └─.prettierrc
 
 🔥 server🔥
@@ -155,7 +143,7 @@ $ cd frontend && npm run build
 
 - [WiKi](#)
 - [Project Kanban Board](#)
-- [Figma]([https://www.figma.com/file/MaID4DQs5auLz22DporlgL/%EB%B0%B0%EB%AF%BC-%EB%AC%B8%EB%B0%A9%EA%B5%AC?node-id=0%3A1](https://www.figma.com/file/rW7LcNcg8OWsfHvWB3gXXp/Untitled))
+- [Figma](https://www.figma.com/file/rW7LcNcg8OWsfHvWB3gXXp/Untitled)
 
 ## LICENSE
 
