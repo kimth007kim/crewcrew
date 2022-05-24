@@ -60,8 +60,8 @@ public class UserService {
 
     public Long signup(SignUpRequestDto localSignUpRequestDto) {
         if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(), "local").isPresent())
-//            throw new EmailSignUpFailedCException();
-            throw new CrewException(ErrorCode.EMAIL_CODE_NOT_MATCH);
+            throw new EmailSignUpFailedCException();
+//            throw new CrewException(ErrorCode.EMAIL_CODE_NOT_MATCH);
         return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();
     }
 
