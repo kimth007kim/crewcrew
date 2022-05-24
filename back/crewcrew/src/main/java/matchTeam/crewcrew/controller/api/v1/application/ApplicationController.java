@@ -3,12 +3,14 @@ package matchTeam.crewcrew.controller.api.v1.application;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.application.*;
+import matchTeam.crewcrew.dto.board.BoardResponseDTO;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.dto.board.BoardPageResponseDTO;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.service.announcement.AnnouncementService;
 import matchTeam.crewcrew.service.application.ApplicationProgressService;
 import matchTeam.crewcrew.service.application.ApplicationService;
+import matchTeam.crewcrew.service.board.BoardService;
 import matchTeam.crewcrew.service.mail.TotalEmailService;
 import matchTeam.crewcrew.service.user.UserService;
 import org.springframework.data.domain.Page;
@@ -31,6 +33,8 @@ import javax.mail.MessagingException;
     private final AnnouncementService announcementService;
     private final TotalEmailService totalEmailService;
     private final UserService userService;
+    private final BoardService boardService;
+
 
     @ApiOperation(value = "지원서 작성", notes = "- 유효한 uid 인지 확인합니다.\n " +
             "- 유효한 boardId 인지  확인합니다\n" +
@@ -242,11 +246,61 @@ import javax.mail.MessagingException;
     @ApiOperation("내가 쓴 마감글의 개수 구하기")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/application/myCrew")
-    public ResponseEntity<Object> findMyCrew(@RequestHeader("X-AUTH-TOKEN") String token){
+    public ResponseEntity<Object> findMyCrewCount(@RequestHeader("X-AUTH-TOKEN") String token){
 
         User user = userService.tokenChecker(token);
         ApplicationMyCrewResponseDTO myCrewCount = applicationService.findMyCrewCount(user);
 
-        return ResponseHandler.generateResponse("지원서 진행사항 수정 성공", HttpStatus.OK, myCrewCount);
+        return ResponseHandler.generateResponse("내가 쓴 마감글의 개수 구하기 성공", HttpStatus.OK, myCrewCount);
+    }
+
+    @ApiOperation("내가 쓴 마감글의 상세정보 구하기")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/application/myCrew/details")
+    public ResponseEntity<Object> findMyCrewDetails(@RequestHeader("X-AUTH-TOKEN") String token,
+                                                    @PageableDefault(size = 5)Pageable pageable){
+
+        User user = userService.tokenChecker(token);
+        Page<BoardResponseDTO> dtoPage = applicationService.findMyCrewCountDetails(user, pageable);
+
+        return ResponseHandler.generateResponse("지원서 진행사항 수정 성공", HttpStatus.OK, dtoPage);
+    }
+
+    @ApiOperation("내가 쓴 마감글의 마감일 +7일")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/application/myCrew/extend/{boardId}")
+    public ResponseEntity<Object> extendExpired(@RequestHeader("X-AUTH-TOKEN") String token,
+                                                @PathVariable Long boardId){
+
+        User user = userService.tokenChecker(token);
+
+        applicationService.checkEqualWriter(user, boardId);
+        applicationService.extendExpiredDate(boardId);
+
+        BoardResponseDTO dto = boardService.findById(boardId);
+
+        return ResponseHandler.generateResponse("내가 쓴 마감글의 마감일 +7일 성공", HttpStatus.OK, dto);
+    }
+
+    @ApiOperation("참여수락된 글 개수 구하기")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/application/participated")
+    public ResponseEntity<Object> findMyParticipatedCount(@RequestHeader("X-AUTH-TOKEN") String token){
+
+        User user = userService.tokenChecker(token);
+        ApplicationParticipatedCrewResponseDTO dto = applicationService.findMyParticipatedCount(user);
+
+        return ResponseHandler.generateResponse("참여수락된 글 개수 구하기 성공", HttpStatus.OK, dto);
+    }
+
+    @ApiOperation("참여수락된 글의 상세정보 보기")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/application/participated/details")
+    public ResponseEntity<Object> findParticipatedDetails(@RequestHeader("X-AUTH-TOKEN") String token){
+
+        User user = userService.tokenChecker(token);
+        ApplicationMyCrewResponseDTO myCrewCount = applicationService.findMyCrewCount(user);
+
+        return ResponseHandler.generateResponse("내가 쓴 마감글의 개수 구하기 성공", HttpStatus.OK, myCrewCount);
     }
 }

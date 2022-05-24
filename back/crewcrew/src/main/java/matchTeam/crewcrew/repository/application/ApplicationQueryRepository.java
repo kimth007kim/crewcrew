@@ -10,7 +10,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.application.*;
+import matchTeam.crewcrew.dto.board.BoardResponseDTO;
 import matchTeam.crewcrew.entity.application.QApplication;
+import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -205,6 +207,44 @@ public class ApplicationQueryRepository {
                 .where(board.user.uid.eq(req.getUid()).and(board.viewable.eq(false)))
                 .fetchOne();
     }
+
+    public Page<BoardResponseDTO> getMyCrewCountDetails(User req, Pageable pageable){
+        List<BoardResponseDTO> fetch = queryFactory
+                .select(Projections.constructor(BoardResponseDTO.class, board))
+                .from(board)
+                .where(
+                        board.user.uid.eq(req.getUid()).
+                                and(board.viewable.eq(false)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(board.expiredDate.asc())
+                .fetch();
+
+        JPAQuery<BoardResponseDTO> countQuery = queryFactory
+                .select(Projections.constructor(BoardResponseDTO.class, board))
+                .from(board)
+                .where(
+                        board.user.uid.eq(req.getUid()).
+                                and(board.viewable.eq(false)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(board.expiredDate.asc());
+
+        return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchCount);
+    }
+
+    public Long getParticipatedCrewCount(User req){
+        return queryFactory
+                .select(new CaseBuilder()
+                        .when(board.id.count().isNull())
+                        .then(0L).otherwise(board.id.count()))
+                .from(board)
+                .innerJoin(application)
+                .on(board.id.eq(application.board.id))
+                .where(application.user.uid.eq(req.getUid()).and(application.progress.eq(2)))
+                .fetchOne();
+    }
+
 
     private BooleanExpression approachCodeIn(List<Integer> approach){
         return isEmpty(approach) ? null : board.approach.in(approach);
