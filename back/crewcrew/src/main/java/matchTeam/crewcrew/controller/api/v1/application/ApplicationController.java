@@ -3,12 +3,17 @@ package matchTeam.crewcrew.controller.api.v1.application;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.application.*;
+import matchTeam.crewcrew.dto.board.BoardResponseDTO;
+import matchTeam.crewcrew.entity.board.Board;
+import matchTeam.crewcrew.entity.board.Category;
+import matchTeam.crewcrew.entity.user.LikedCategory;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.dto.board.BoardPageResponseDTO;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.service.announcement.AnnouncementService;
 import matchTeam.crewcrew.service.application.ApplicationProgressService;
 import matchTeam.crewcrew.service.application.ApplicationService;
+import matchTeam.crewcrew.service.board.BoardService;
 import matchTeam.crewcrew.service.mail.TotalEmailService;
 import matchTeam.crewcrew.service.user.UserService;
 import org.springframework.data.domain.Page;
@@ -21,6 +26,8 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 
+import static java.util.stream.Collectors.joining;
+
 @Api(value = "Application Controller", tags = "6. application")
 @ApiOperation(value = "크루 지원, 수락, 거절 / 신청서 조회")
 @RequiredArgsConstructor //생성자 주입
@@ -31,6 +38,7 @@ import javax.mail.MessagingException;
     private final AnnouncementService announcementService;
     private final TotalEmailService totalEmailService;
     private final UserService userService;
+    private final BoardService boardService;
 
     @ApiOperation(value = "지원서 작성", notes = "- 유효한 uid 인지 확인합니다.\n " +
             "- 유효한 boardId 인지  확인합니다\n" +
@@ -69,20 +77,22 @@ import javax.mail.MessagingException;
     @PostMapping(value = "/board/application")
     public ResponseEntity<Object> fillInApplication(@RequestHeader("X-AUTH-TOKEN") String token,
                                                     @ApiParam(value = "지원서 작성 요청 DTO", required = true) @RequestBody ApplicationSaveRequestDTO info) throws MessagingException{
-
         User user = userService.tokenChecker(token);
         ApplicationSaveResponseDTO result = applicationService.save(user, info);
         announcementService.save(result);
         applicationProgressService.increaseApply(info.getBoardId());
 
-        /*
+        BoardResponseDTO board = boardService.findById(info.getBoardId());
+
         Context context = new Context();
         context.setVariable("nickname", user.getNickname());
+        context.setVariable("boardTitle", board.getTitle());
+        context.setVariable("commentary", info.getCommentary());
         context.setVariable("introduce", user.getIntroduce());
-        context.setVariable("hobby", user.getLikedCategories());
-        //context.setVariable("url", url);
-
-        totalEmailService.sendJavaMail("[크루크루] 지원서 도착", user.getEmail(), "mailform/apply", context);*/
+        context.setVariable("interestStudyCategory", user.getLikedCategories().stream().map(LikedCategory::getCategory).filter(i -> i.getCategoryParent().getId() == 1).map(Category::getCategoryName).collect(joining(",")));
+        context.setVariable("interestHobbyCategory", user.getLikedCategories().stream().map(LikedCategory::getCategory).filter(i -> i.getCategoryParent().getId() == 2).map(Category::getCategoryName).collect(joining(",")));
+        context.setVariable("url", "crewcrew.org/board/" + board.getBoardId());
+        totalEmailService.sendJavaMail("[크루크루] 지원서 도착", user.getEmail(), "mailform/apply", context);
         return ResponseHandler.generateResponse("지원서 작성 성공",HttpStatus.OK, result);
     }
 
@@ -227,7 +237,6 @@ import javax.mail.MessagingException;
         ArrivedApplicationUserDetailsResponseDTO result = applicationService.findArrivedApplicationApplier(user, boardId);
         return ResponseHandler.generateResponse("내게 도착한 지원서의 지원자 상세 조회 성공", HttpStatus.OK, result);
     }
-
 
     @ApiOperation(value = "지원서 진행사항 수정하기")
     @ResponseStatus(value = HttpStatus.OK )
