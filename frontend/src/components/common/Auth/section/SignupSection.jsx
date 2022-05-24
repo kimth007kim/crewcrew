@@ -428,7 +428,7 @@ function SignupSection({ IsClick, HandleClick }) {
                     type="text"
                     id="SignEmailDomain"
                     autoComplete="off"
-                    placeholder="examle.com"
+                    placeholder="example.com"
                     onFocus={HandleInputFocus}
                     onBlur={HandleInputBlur}
                     onChange={HandleEmailChange}
