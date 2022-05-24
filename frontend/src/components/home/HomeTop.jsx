@@ -252,7 +252,7 @@ const ButtonIntro = styled.div`
     right: 20px;
     opacity: 1;
   }
-  @media screen and (max-width: 820px) {
+  @media screen and (max-width: 300px) {
     right: 10px;
   }
 `;
@@ -281,6 +281,7 @@ const Wave1 = styled.div`
     height: 80px;
     width: 1600px;
   }
+
   @-webkit-keyframes wave {
     to {
       left: -50%;

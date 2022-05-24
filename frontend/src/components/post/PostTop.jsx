@@ -229,6 +229,9 @@ const InputDel = styled.div`
     css`
       display: block;
     `};
+  @media screen and (max-width: 820px) {
+    top: 8px;
+  }
 `;
 const ButtonIntro = styled.div`
   width: 45px;

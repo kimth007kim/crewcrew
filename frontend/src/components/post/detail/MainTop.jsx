@@ -194,7 +194,7 @@ const InputWrapper = styled.div`
     }
   }
   @media screen and (max-width: 820px) {
-    width: calc(100vw - 70px);
+    width: calc(100% - 50px);
     height: 36px;
     border-radius: 18px;
     margin: 14px 0 34px;
@@ -230,4 +230,7 @@ const InputDel = styled.div`
     css`
       display: block;
     `};
+  @media screen and (max-width: 820px) {
+    top: 8px;
+  }
 `;
