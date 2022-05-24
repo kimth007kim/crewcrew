@@ -5,6 +5,7 @@ import matchTeam.crewcrew.config.security.CustomAccessDeniedHandler;
 import matchTeam.crewcrew.config.security.JwtAuthenticationFilter;
 import matchTeam.crewcrew.config.security.JwtProvider;
 import matchTeam.crewcrew.config.security.CustomAuthenticationEntryPoint;
+import matchTeam.crewcrew.service.user.CookieService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -27,6 +28,7 @@ import java.util.Arrays;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final JwtProvider jwtProvider;
+    private final CookieService cookieService;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
@@ -61,7 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
                 .accessDeniedHandler(customAccessDeniedHandler)
                 .and()
-                    .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
+                    .addFilterBefore(new JwtAuthenticationFilter(jwtProvider,cookieService), UsernamePasswordAuthenticationFilter.class);
     }
 //    @Bean
 //    public CorsConfigurationSource corsConfigurationSource(){
