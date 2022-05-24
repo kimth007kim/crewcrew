@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
 public class ApplicationResponseDTO {
 
     private Long categoryParentId;
-    private Long countApllication;
+    private Long apllicationCount;
 
     @QueryProjection
     @Builder
-    public ApplicationResponseDTO(Long categoryParentId, Long countApllication) {
+    public ApplicationResponseDTO(Long categoryParentId, Long apllicationCount) {
         this.categoryParentId = categoryParentId;
-        this.countApllication = countApllication;
+        this.apllicationCount = apllicationCount;
     }
 }
