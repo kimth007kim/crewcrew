@@ -27,7 +27,7 @@ public class ArrivedApplierDetailsDTO {
     @ApiModelProperty(value = "프로필 사진 url")
     private String profileImage;
 
-    @ApiModelProperty(value = "선호하는 카테고리 리스공")
+    @ApiModelProperty(value = "선호하는 카테고리 리스트")
     private List<Long> likedCategoryList;
 
     @ApiModelProperty(value = "지원서의 한마디")
