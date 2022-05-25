@@ -1,6 +1,13 @@
 @import "./mypage";
 @import "../Swiper";
 
+@mixin backgroundColor($bg, $hover){
+    background-color: $bg;
+
+    &:hover{
+        background-color: $hover;
+    }
+}
 div.TopCont h2 a.arrowAfter{
     background: none;
     width: fit-content;
@@ -76,19 +83,15 @@ section.MypageSentTop{
     position: relative;
 
     &:nth-child(1){
-        background-color: #0575E6;
-
-        &:hover{
-            background-color: $blue2;
-        }
+        @include backgroundColor(#0575E6, $blue2);
     }
 
     &:nth-child(2){
-        background-color: $yellow1;
+        @include backgroundColor($yellow1, #fcb90d);
+    }
 
-        &:hover{
-            background-color: #fcb90d;
-        }
+    &.Gray{
+        @include backgroundColor(#c4c4c4, #707070)
     }
 
     p{
@@ -138,22 +141,27 @@ section.MypageSentTop{
 .MypageSentPost{
     background-color: #F6F7FB;
 
+    &:nth-child(1){
+        padding: 24px 0;
+    }
+    
+
     h3{
         font-size: 20px;
         font-weight: 700;
         padding: 38px 0 24px;
     }
     
-    &.Study{
+    &.Study, &.WrotePost{
         padding-top: 52px;
 
         .SectionWrap850{
             border-bottom: 2px solid #D7DAE4;
         }
+    }
 
-        h3{
-            color: #0F3FA6;
-        }
+    &.Study h3{
+        color: #0F3FA6;
     }
 
     &.Hobby{
@@ -161,6 +169,10 @@ section.MypageSentTop{
         h3{
             color: #F7971E;
         }
+    }
+
+    &.Accepted{
+        padding-bottom: 40px;
     }
 }
 
@@ -309,11 +321,25 @@ section.MypageSentTop{
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
+
+            p{
+
+                &.Dday{
+                    font-size: 20px;
+                    margin: 0;
+                }
+
+                &.PostDate{
+                    font-size: 12px;
+                    color: #868686;
+                    margin-top: 10px;
+                }
+            }
         }
 
         .DetailBox{
             min-width: 158px;
-            height: 60px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -342,11 +368,7 @@ section.MypageSentTop{
                 font-size: 13px;
                 font-weight: 500;
                 transition: .3s;
-                background-color: #00B7FF;
-
-                    &:hover{
-                        background-color: #00A3E3;
-                    }
+                @include backgroundColor(#00B7FF, #00A3E3);
             }
         }
     }
@@ -360,6 +382,7 @@ section.MypageSentTop{
             .TitleBox{
                 h5{
                     width:calc(100% - 220px);
+                    margin-top: 4px;
                 }
             }
 
@@ -393,26 +416,65 @@ section.MypageSentTop{
             }
         }
 
-        p.Waiting{
+        @mixin CardRight{
             min-width: 160px;
             position: absolute;
             top: 0;
             right: 0;
             height: 100%;
             display: flex;
+            align-items: center;
+            box-sizing: border-box;
+            border-left: 1px solid #a8a8a8;
+
+            @media screen and (max-width: 820px) {
+                border: none;
+                min-width: auto;
+                height: auto;
+                top: inherit;
+                bottom: 0;
+            }
+        }
+
+        p.Waiting{
+            @include CardRight();
             flex-direction: column;
             justify-content: space-between;
-            align-items: center;
             padding: 2px 0;
-            box-sizing: border-box;
             font-size: 15px;
             color: #a8a8a8;
             font-weight: 700;
-            border-left: 1px solid #a8a8a8;
 
             em{
                 font-size: 32px;
                 color: $blue3;
+            }
+        }
+
+        .RightBtnBox{
+            @include CardRight();
+            justify-content: center;
+
+            button{
+                @include button();
+                width: 100px;
+                height: 50px;
+                border-radius: 10px;
+                color: $white;
+                font-size: 15px;
+                transition: .3s;
+
+                &.ClosePost{
+                    @include backgroundColor(#c4c4c4, #b0b0b0);
+                }
+
+                &.Deadline{
+                    @include backgroundColor(#00b7ff, #00A3E3);
+                }
+
+                &.Cancel{
+                    @include backgroundColor(#F95884, #E9416E);
+                }
             }
         }
     }
@@ -440,22 +502,47 @@ section.MypageSentTop{
 
             button{
                 @include button();
+                @include backgroundColor(#868686, #747474);
                 width: 110px;
                 height: 30px;
-                background-color: #868686;
                 border-radius: 5px;
                 color: $white;
                 font-size: 13px;
                 transition: .3s;
-
-                &:hover{
-                    background-color: #747474;
-                }
             }
         }
     }
 
-    
+    &.Accepted{
+
+        .PostCardHead{
+            
+            .ProfileBox{
+                margin-left: 16px;
+                margin-right: 13px;
+            }
+
+            .TextBox{
+                min-width: 120px;
+                display: block;
+                margin-right: 12px;
+            }
+        }
+
+        .PostCardBody{
+            width: calc(100% - 406px);
+
+            .TextBox{
+
+                .TitleBox{
+
+                    h5{
+                        width: calc(100% - 176px);
+                    }
+                }
+            }
+        }
+    }
 }
 
 
@@ -625,19 +712,11 @@ section.MypageSentTop{
                 width: 50px;
 
                 &.Nega{
-                    background-color: #F95884;
-
-                    &:hover{
-                        background-color: #E9416E;
-                    }
+                    @include backgroundColor(#F95884, #E9416E);
                 }
 
                 &.Posi{
-                    background-color: #00B7FF;
-
-                    &:hover{
-                        background-color: #00A3E3;
-                    }
+                    @include backgroundColor(#00B7FF, #00A3E3);
                 }
             }
         }
@@ -672,11 +751,17 @@ section.MypageSentTop{
             align-items: center;
 
             .TextBox{
+                align-items: flex-start;
 
                 p{
 
                     &.Dday{
                         text-align: left;
+                        font-size: 18px;
+                    }
+
+                    &.PostDate{
+                        display: none;
                     }
                 }
             }
@@ -707,12 +792,13 @@ section.MypageSentTop{
                 position: relative;
 
                 .TitleBox{
-                    margin-top: 12px;
+                    height: 36px;
 
                     h5{
                         width: calc(100% - 83px);
+                        margin-top: 0;
                         white-space: normal;
-                        height: 36px;
+                        line-height: 20px;
                     }
                 }
             }
@@ -721,21 +807,16 @@ section.MypageSentTop{
                 display: flex;
                 flex-direction: row;
                 right: 0;
-                top: 16px;
+                top: 18px;
                 padding: 0;
                 gap: 8px;
             }
 
             p.Waiting{
-                border: none;
-                min-width: auto;
-                height: auto;
                 flex-direction: row;
                 align-items: center;
                 font-size: 13px;
                 font-weight: 500;
-                top: inherit;
-                bottom: 0;
                 padding: 0;
 
                 em{
@@ -744,12 +825,64 @@ section.MypageSentTop{
                     margin-left: 3px;
                 }
             }
+
+            .RightBtnBox{
+                bottom: -2px;
+
+                button{
+                    width: 74px;
+                    height: 30px;
+                    border-radius: 5px;
+                    font-size: 13px;
+
+                    span{
+                        display: none;
+                    }
+                }
+            }
         }
 
         .SwiperCardBottom{
 
             .BtTop{
                 padding: 12px 10px;
+            }
+        }
+
+        &.Accepted{
+
+            .PostCardHead{
+
+                .ProfileBox{
+                    display: block;
+                    min-width: 30px;
+                    height: 30px;
+                    margin-left: 0;
+                }
+
+                .TextBox{
+                    min-width: auto;
+
+                    p{
+                        line-height: 30px;
+
+                        &:not(:nth-child(1)){
+                            display: none;
+                        }
+                    }
+                }
+
+                .DetailBox p span{
+                    display: none;
+                }
+            }
+
+            .PostCardBody{
+                width: 100%;
+
+                .TextBox .TitleBox h5{
+                    width: 100%;
+                }
             }
         }
     }
@@ -810,7 +943,7 @@ section.MypageSentTop{
 
 @media screen and (max-width: 300px) {
     .PostCard.Swiper .PostCardHead .TextBox p.Dday{
-        font-size: 15px;
+        font-size: 16px;
     }
 
     .PostCard.Swiper .PostCardHead .DetailBox{

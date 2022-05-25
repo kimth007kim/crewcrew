@@ -3540,6 +3540,14 @@ section.MypageSentTop h3 {
   background-color: #fcb90d;
 }
 
+.SentBox.Gray {
+  background-color: #c4c4c4;
+}
+
+.SentBox.Gray:hover {
+  background-color: #707070;
+}
+
 .SentBox p {
   color: #fff;
   line-height: 1;
@@ -3588,17 +3596,21 @@ section.MypageSentTop h3 {
   background-color: #F6F7FB;
 }
 
+.MypageSentPost:nth-child(1) {
+  padding: 24px 0;
+}
+
 .MypageSentPost h3 {
   font-size: 20px;
   font-weight: 700;
   padding: 38px 0 24px;
 }
 
-.MypageSentPost.Study {
+.MypageSentPost.Study, .MypageSentPost.WrotePost {
   padding-top: 52px;
 }
 
-.MypageSentPost.Study .SectionWrap850 {
+.MypageSentPost.Study .SectionWrap850, .MypageSentPost.WrotePost .SectionWrap850 {
   border-bottom: 2px solid #D7DAE4;
 }
 
@@ -3608,6 +3620,10 @@ section.MypageSentTop h3 {
 
 .MypageSentPost.Hobby h3 {
   color: #F7971E;
+}
+
+.MypageSentPost.Accepted {
+  padding-bottom: 40px;
 }
 
 @media screen and (max-width: 820px) {
@@ -3741,11 +3757,25 @@ section.MypageSentTop h3 {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.PostCard.Swiper .PostCardHead .TextBox p.Dday {
+  font-size: 20px;
+  margin: 0;
+}
+
+.PostCard.Swiper .PostCardHead .TextBox p.PostDate {
+  font-size: 12px;
+  color: #868686;
+  margin-top: 10px;
 }
 
 .PostCard.Swiper .PostCardHead .DetailBox {
   min-width: 158px;
-  height: 60px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -3800,6 +3830,7 @@ section.MypageSentTop h3 {
 
 .PostCard.Swiper .PostCardBody .TextBox .TitleBox h5 {
   width: calc(100% - 220px);
+  margin-top: 4px;
 }
 
 .PostCard.Swiper .PostCardBody .TextBox .TextList {
@@ -3845,6 +3876,12 @@ section.MypageSentTop h3 {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-left: 1px solid #a8a8a8;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -3852,21 +3889,92 @@ section.MypageSentTop h3 {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
   padding: 2px 0;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
   font-size: 15px;
   color: #a8a8a8;
   font-weight: 700;
-  border-left: 1px solid #a8a8a8;
+}
+
+@media screen and (max-width: 820px) {
+  .PostCard.Swiper .PostCardBody p.Waiting {
+    border: none;
+    min-width: auto;
+    height: auto;
+    top: inherit;
+    bottom: 0;
+  }
 }
 
 .PostCard.Swiper .PostCardBody p.Waiting em {
   font-size: 32px;
   color: #00b7ff;
+}
+
+.PostCard.Swiper .PostCardBody .RightBtnBox {
+  min-width: 160px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-left: 1px solid #a8a8a8;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+@media screen and (max-width: 820px) {
+  .PostCard.Swiper .PostCardBody .RightBtnBox {
+    border: none;
+    min-width: auto;
+    height: auto;
+    top: inherit;
+    bottom: 0;
+  }
+}
+
+.PostCard.Swiper .PostCardBody .RightBtnBox button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  width: 100px;
+  height: 50px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 15px;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.PostCard.Swiper .PostCardBody .RightBtnBox button.ClosePost {
+  background-color: #c4c4c4;
+}
+
+.PostCard.Swiper .PostCardBody .RightBtnBox button.ClosePost:hover {
+  background-color: #b0b0b0;
+}
+
+.PostCard.Swiper .PostCardBody .RightBtnBox button.Deadline {
+  background-color: #00b7ff;
+}
+
+.PostCard.Swiper .PostCardBody .RightBtnBox button.Deadline:hover {
+  background-color: #00A3E3;
+}
+
+.PostCard.Swiper .PostCardBody .RightBtnBox button.Cancel {
+  background-color: #F95884;
+}
+
+.PostCard.Swiper .PostCardBody .RightBtnBox button.Cancel:hover {
+  background-color: #E9416E;
 }
 
 .PostCard.Swiper .SwiperCardBottom {
@@ -3903,9 +4011,9 @@ section.MypageSentTop h3 {
   border: none;
   outline: none;
   cursor: pointer;
+  background-color: #868686;
   width: 110px;
   height: 30px;
-  background-color: #868686;
   border-radius: 5px;
   color: #fff;
   font-size: 13px;
@@ -3915,6 +4023,25 @@ section.MypageSentTop h3 {
 
 .PostCard.Swiper .SwiperCardBottom .BtTop button:hover {
   background-color: #747474;
+}
+
+.PostCard.Swiper.Accepted .PostCardHead .ProfileBox {
+  margin-left: 16px;
+  margin-right: 13px;
+}
+
+.PostCard.Swiper.Accepted .PostCardHead .TextBox {
+  min-width: 120px;
+  display: block;
+  margin-right: 12px;
+}
+
+.PostCard.Swiper.Accepted .PostCardBody {
+  width: calc(100% - 406px);
+}
+
+.PostCard.Swiper.Accepted .PostCardBody .TextBox .TitleBox h5 {
+  width: calc(100% - 176px);
 }
 
 .BtSwiper {
@@ -4149,8 +4276,17 @@ section.MypageSentTop h3 {
         -ms-flex-align: center;
             align-items: center;
   }
+  .PostCard.Swiper .PostCardHead .TextBox {
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+  }
   .PostCard.Swiper .PostCardHead .TextBox p.Dday {
     text-align: left;
+    font-size: 18px;
+  }
+  .PostCard.Swiper .PostCardHead .TextBox p.PostDate {
+    display: none;
   }
   .PostCard.Swiper .PostCardHead .DetailBox {
     -webkit-box-orient: horizontal;
@@ -4179,12 +4315,13 @@ section.MypageSentTop h3 {
     position: relative;
   }
   .PostCard.Swiper .PostCardBody .TextBox .TitleBox {
-    margin-top: 12px;
+    height: 36px;
   }
   .PostCard.Swiper .PostCardBody .TextBox .TitleBox h5 {
     width: calc(100% - 83px);
+    margin-top: 0;
     white-space: normal;
-    height: 36px;
+    line-height: 20px;
   }
   .PostCard.Swiper .PostCardBody .ButtonBox {
     display: -webkit-box;
@@ -4195,14 +4332,11 @@ section.MypageSentTop h3 {
         -ms-flex-direction: row;
             flex-direction: row;
     right: 0;
-    top: 16px;
+    top: 18px;
     padding: 0;
     gap: 8px;
   }
   .PostCard.Swiper .PostCardBody p.Waiting {
-    border: none;
-    min-width: auto;
-    height: auto;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
         -ms-flex-direction: row;
@@ -4212,8 +4346,6 @@ section.MypageSentTop h3 {
             align-items: center;
     font-size: 13px;
     font-weight: 500;
-    top: inherit;
-    bottom: 0;
     padding: 0;
   }
   .PostCard.Swiper .PostCardBody p.Waiting em {
@@ -4221,8 +4353,44 @@ section.MypageSentTop h3 {
     font-weight: 700;
     margin-left: 3px;
   }
+  .PostCard.Swiper .PostCardBody .RightBtnBox {
+    bottom: -2px;
+  }
+  .PostCard.Swiper .PostCardBody .RightBtnBox button {
+    width: 74px;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 13px;
+  }
+  .PostCard.Swiper .PostCardBody .RightBtnBox button span {
+    display: none;
+  }
   .PostCard.Swiper .SwiperCardBottom .BtTop {
     padding: 12px 10px;
+  }
+  .PostCard.Swiper.Accepted .PostCardHead .ProfileBox {
+    display: block;
+    min-width: 30px;
+    height: 30px;
+    margin-left: 0;
+  }
+  .PostCard.Swiper.Accepted .PostCardHead .TextBox {
+    min-width: auto;
+  }
+  .PostCard.Swiper.Accepted .PostCardHead .TextBox p {
+    line-height: 30px;
+  }
+  .PostCard.Swiper.Accepted .PostCardHead .TextBox p:not(:nth-child(1)) {
+    display: none;
+  }
+  .PostCard.Swiper.Accepted .PostCardHead .DetailBox p span {
+    display: none;
+  }
+  .PostCard.Swiper.Accepted .PostCardBody {
+    width: 100%;
+  }
+  .PostCard.Swiper.Accepted .PostCardBody .TextBox .TitleBox h5 {
+    width: 100%;
   }
   .BtSwiper .CardSwiper {
     margin: 0 10px;
@@ -4260,7 +4428,7 @@ section.MypageSentTop h3 {
 
 @media screen and (max-width: 300px) {
   .PostCard.Swiper .PostCardHead .TextBox p.Dday {
-    font-size: 15px;
+    font-size: 16px;
   }
   .PostCard.Swiper .PostCardHead .DetailBox {
     gap: 8px;
