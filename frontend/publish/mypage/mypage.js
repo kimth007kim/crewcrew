@@ -60,9 +60,10 @@ window.addEventListener("DOMContentLoaded", function(){
                 ToolTipNode.forEach((el) => el.style.display = 'none');
             } else {
                 const idxNode = e.target.closest('li');
-                const idxTarget = [...document.querySelector(".PostWrapper ul").children]; //프로필이미지나 닉네임 클릭했을 때
+                const idxTarget = [...e.target.closest(".PostWrapper ul").children]; //프로필이미지나 닉네임 클릭했을 때
                 const idx = idxTarget.indexOf(idxNode);
                 ToolTipNode.forEach((el, index) => {
+                    console.log(idxTarget, idxNode, idx)
                     if(idx != index) el.style.display = 'none';
                 });
             }
@@ -100,29 +101,22 @@ window.addEventListener("DOMContentLoaded", function(){
             let ThisSwiperCard = this.closest(".SwiperCardWrapper").children[0];
             ThisSwiperCard.classList.toggle('On');
             if(ThisSwiperCard.classList.contains('On')){
-                ThisSwiperCard.style.height = `${SwiperCardHeight}px`;
+                ThisSwiperCard.children[1].style.height = `${SwiperCardHeight}px`;
             } else {
-                ThisSwiperCard.style.height = SwiperCardTopHeight;
+                ThisSwiperCard.children[1].style.height = 0;
             }
         });
     });
 
-    const SwiperCard = document.querySelector(".PostCard.Swiper");
-    let SwiperCardHeight, SwiperCardTopHeight;
+    const SwiperCard = document.querySelector(".SwiperCardBottom");
+    let SwiperCardHeight;
     function SwiperHeightFunc(){ //스와이퍼카드 원래 높이 구하기
         if(SwiperCard){
             SwiperCard.style.height = 'auto';
             SwiperCardHeight = SwiperCard.clientHeight;
-            SwiperCard.style.height = SwiperCardTopHeight;
+            SwiperCard.style.height = 0;
         }
     }
-    function SwiperTopHeightFunc(){//스와이퍼카드 접힐때 높이 구하기
-        if(SwiperCard){
-            window.innerWidth > 820 ? SwiperCardTopHeight = '94px' : SwiperCardTopHeight = '146px';
-        }
-    }
-    SwiperTopHeightFunc();
     SwiperHeightFunc();
-    window.addEventListener('resize', SwiperTopHeightFunc);
     window.addEventListener('resize', SwiperHeightFunc);
 });

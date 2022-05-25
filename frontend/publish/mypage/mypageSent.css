@@ -1318,7 +1318,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
           box-sizing: border-box;
   cursor: default;
   display: none;
-  z-index: 1;
+  z-index: 10;
 }
 
 .ProfileToolTip p.ToolTipName {
@@ -3596,10 +3596,6 @@ section.MypageSentTop h3 {
   background-color: #F6F7FB;
 }
 
-.MypageSentPost:nth-child(1) {
-  padding: 24px 0;
-}
-
 .MypageSentPost h3 {
   font-size: 20px;
   font-weight: 700;
@@ -3700,12 +3696,11 @@ section.MypageSentTop h3 {
 
 .PostCard.Swiper {
   padding: 0;
-  height: 94px;
+  height: auto;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  overflow-y: hidden;
   -webkit-transition: height .5s, border .2s;
   transition: height .5s, border .2s;
   cursor: default;
@@ -3725,6 +3720,10 @@ section.MypageSentTop h3 {
           transition-delay: .2s;
 }
 
+.PostCard.Swiper.On .SwiperCardTop {
+  border-bottom: 1px solid #e2e2e2;
+}
+
 .PostCard.Swiper .SwiperCardTop {
   width: 100%;
   min-height: 94px;
@@ -3738,12 +3737,14 @@ section.MypageSentTop h3 {
   padding: 14px 0;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  border-bottom: 1px solid #E2E2E2;
 }
 
 .PostCard.Swiper .PostCardHead {
   min-width: 262px;
   border: none;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .PostCard.Swiper .PostCardHead .TextBox {
@@ -3979,6 +3980,12 @@ section.MypageSentTop h3 {
 
 .PostCard.Swiper .SwiperCardBottom {
   width: 100%;
+  height: 0;
+  overflow-y: hidden;
+  background-color: #fff;
+  -webkit-transition: .5s;
+  transition: .5s;
+  border-radius: 0 0 10px 10px;
 }
 
 .PostCard.Swiper .SwiperCardBottom .BtTop {
@@ -4025,8 +4032,11 @@ section.MypageSentTop h3 {
   background-color: #747474;
 }
 
-.PostCard.Swiper.Accepted .PostCardHead .ProfileBox {
+.PostCard.Swiper.Accepted .PostCardHead {
   margin-left: 16px;
+}
+
+.PostCard.Swiper.Accepted .PostCardHead .ProfileBox {
   margin-right: 13px;
 }
 
@@ -4252,9 +4262,6 @@ section.MypageSentTop h3 {
   .SwiperCardWrapper .SwiperBtn {
     margin-left: calc(100% - 84px);
   }
-  .PostCard.Swiper {
-    height: 146px;
-  }
   .PostCard.Swiper.On p.Waiting {
     display: none;
   }
@@ -4272,9 +4279,6 @@ section.MypageSentTop h3 {
   .PostCard.Swiper .PostCardHead {
     min-width: 100%;
     height: 30px;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
   }
   .PostCard.Swiper .PostCardHead .TextBox {
     -webkit-box-align: start;
@@ -4367,6 +4371,9 @@ section.MypageSentTop h3 {
   }
   .PostCard.Swiper .SwiperCardBottom .BtTop {
     padding: 12px 10px;
+  }
+  .PostCard.Swiper.Accepted .PostCardHead {
+    margin: 0;
   }
   .PostCard.Swiper.Accepted .PostCardHead .ProfileBox {
     display: block;
