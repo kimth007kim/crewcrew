@@ -1,8 +1,10 @@
 package matchTeam.crewcrew.config.security;
 
+import io.jsonwebtoken.MalformedJwtException;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import matchTeam.crewcrew.response.ErrorResponseHandler;
 import matchTeam.crewcrew.service.user.CookieService;
 import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.exception.auth.CUserNotFoundException;
@@ -64,25 +66,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String refreshToken = jwtProvider.resolveRefreshToken(request);
 
         if (accessToken != null) {
-            if (jwtProvider.validateToken(accessToken)) {
+            if (jwtProvider.validateToken(request,accessToken)) {
                 System.out.println("--------------------------------인증 성공-----------------------------------------");
                 this.setAuthentication(accessToken);
-            } else if (!jwtProvider.validateToken(accessToken) && refreshToken != null) {
+            } else if (!jwtProvider.validateToken(request,accessToken) && refreshToken != null) {
                 System.out.println("--------------------------------재발급 과정-----------------------------------------");
-                boolean validateRefreshToken = jwtProvider.validateToken(refreshToken);
+                boolean validateRefreshToken = jwtProvider.validateToken(request,refreshToken);
                 boolean isRefreshToken = jwtProvider.existRefreshToken(refreshToken);
                 if (validateRefreshToken && isRefreshToken) {
                     Long uid = jwtProvider.getUserUid(refreshToken);
                     List<String> roles = jwtProvider.getRoles(uid);
                     String newAccessToken = jwtProvider.createToken(uid, roles, jwtProvider.accessTokenValidMillisecond);
-                    response.addCookie(cookieService.generateCookie("X-AUTH-TOKEN",newAccessToken,jwtProvider.accessTokenValidMillisecond));
+                    response.addCookie(cookieService.generateCookie("X-AUTH-TOKEN", newAccessToken, jwtProvider.accessTokenValidMillisecond));
                     this.setAuthentication(newAccessToken);
                 }
                 System.out.println("--------------------------------토큰 교체 완료-----------------------------------------");
             }
         }
-        filterChain.doFilter(request, response);
 
+        filterChain.doFilter(request, response);
 
     }
 
