@@ -175,6 +175,22 @@ public class JwtProvider {
             return false;
         }
     }
+
+    public boolean validateToken(HttpServletRequest request,String token){
+        try{
+            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            return true;
+        } catch (MalformedJwtException e) {
+            request.setAttribute("exception", "MalformedJwtException");
+        } catch (ExpiredJwtException e) {
+            request.setAttribute("exception", "ExpiredJwtException");
+        } catch (UnsupportedJwtException e) {
+            request.setAttribute("exception", "UnsupportedJwtException");
+        } catch (IllegalArgumentException e) {
+            request.setAttribute("exception", "IllegalArgumentException");
+        }
+        return false;
+    }
     public Long refreshTokenTime(boolean isMaintain){
         if (isMaintain){
             return refreshTokenLongValidMillisecond;
