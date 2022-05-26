@@ -62,12 +62,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String accessToken = jwtProvider.resolveAccessToken(request);
-        String refreshToken = jwtProvider.resolveRefreshToken(request);
+//        String accessToken = jwtProvider.resolveAccessToken(request);
+//        String refreshToken = jwtProvider.resolveRefreshToken(request);
 
 
-//        String accessToken = cookieService.getCookie(request,"X-AUTH-TOKEN").getValue();
-//        String refreshToken = cookieService.getCookie(request,"refreshToken").getValue();
+        String accessToken = cookieService.getCookie(request,"X-AUTH-TOKEN").getValue();
+        String refreshToken = cookieService.getCookie(request,"refreshToken").getValue();
 
         if (accessToken != null) {
             if (jwtProvider.validateToken(request,accessToken)) {
