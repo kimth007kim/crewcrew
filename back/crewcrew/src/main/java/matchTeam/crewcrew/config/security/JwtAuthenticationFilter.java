@@ -73,9 +73,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 System.out.println("--------------------------------재발급 과정-----------------------------------------");
                 boolean validateRefreshToken = jwtProvider.validateToken(request,refreshToken);
                 boolean isRefreshToken = jwtProvider.existRefreshToken(refreshToken);
+
+                System.out.println("validateRefreshToken 의 경우(refresh 토큰이 유효 한지)"+ validateRefreshToken);
+                System.out.println("isRefreshToken 의 경우(refresh 토큰이 존재하는지)"+ isRefreshToken);
                 if (validateRefreshToken && isRefreshToken) {
                     Long uid = jwtProvider.getUserUid(refreshToken);
                     List<String> roles = jwtProvider.getRoles(uid);
+
+                    System.out.println("교체 --------------------------- 작업 ");
                     String newAccessToken = jwtProvider.createToken(uid, roles, jwtProvider.accessTokenValidMillisecond);
                     response.addCookie(cookieService.generateCookie("X-AUTH-TOKEN", newAccessToken, jwtProvider.accessTokenValidMillisecond));
                     this.setAuthentication(newAccessToken);
