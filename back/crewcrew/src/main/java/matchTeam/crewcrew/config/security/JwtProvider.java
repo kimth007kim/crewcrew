@@ -163,7 +163,7 @@ public class JwtProvider {
         return request.getHeader("X-AUTH-TOKEN");
     }
     public String resolveRefreshToken(HttpServletRequest request){
-        return request.getHeader("refreshToken");
+        return request.getHeader("refresh-Token");
     }
 
     public boolean validateToken(String token){
