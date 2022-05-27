@@ -52,7 +52,7 @@ function SignupSection3({ IsClick, HandleClick }) {
     data: myData,
     error: myError,
     mutate,
-  } = useSWR(['/user/token', myCookies.get('user-token')], fetcher);
+  } = useSWR(['/user/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
 
   // Recoil State
   const name = useRecoilValue(nameState);
@@ -208,7 +208,7 @@ function SignupSection3({ IsClick, HandleClick }) {
       switch (data.status) {
         case 200:
           afterh.setHours(now.getHours() + 3);
-          setCookie('user-token', data.data.accessToken, {
+          setCookie('X-AUTH-TOKEN', data.data.accessToken, {
             path: '/',
             expires: afterh,
           });
