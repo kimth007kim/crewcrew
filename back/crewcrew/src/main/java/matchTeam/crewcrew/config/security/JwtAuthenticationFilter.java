@@ -70,6 +70,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Cookie refreshToken = getCookie(request, "refreshToken");
             if (refreshToken != null) {
                 refreshJwt = refreshToken.getValue();
+                if (refreshJwt != null) {
+                    refreshUname = redisUtil.getData(refreshJwt);
+                    if (refreshUname.equals(jwtProvider.getUserUid(refreshJwt))) {
+                        UserDetails userDetails = userDetailsService.loadUserByUsername(refreshUname);
+                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+
+                        User user = userRepository.findByUid(Long.parseLong(refreshUname));
+                        String newToken = jwtProvider.createToken(uid, user.getRoles(), jwtProvider.accessTokenValidMillisecond);
+
+                        Cookie newCookie = cookieService.generateCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
+                        response.addCookie(newCookie);
+                    }
+                }
             }
         } catch (Exception e) {
 
@@ -86,7 +101,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     User user = userRepository.findByUid(Long.parseLong(refreshUname));
                     String newToken = jwtProvider.createToken(uid, user.getRoles(), jwtProvider.accessTokenValidMillisecond);
 
-                    Cookie newCookie = cookieService.generateCookie("X-AUTH-TOKEN", newToken, 3 * 60 * 60 * 1000L);
+                    Cookie newCookie = cookieService.generateCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
                     response.addCookie(newCookie);
                 }
             }
