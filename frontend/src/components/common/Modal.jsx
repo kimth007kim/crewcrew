@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 /* eslint-disable react/jsx-no-useless-fragment */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import styled, { keyframes, css } from 'styled-components';
 
@@ -26,6 +26,35 @@ function Modal({
     }
     setLocalVisible(visible);
   }, [LocalVisible, visible]);
+
+  const setScreenSize = useCallback(() => {
+    // 모바일 vh이슈
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }, []);
+
+  useEffect(() => {
+    setScreenSize();
+    window.addEventListener('resize', setScreenSize);
+
+    return () => {
+      window.removeEventListener('resize', setScreenSize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (visible) {
+      document.body.style.cssText = `
+      position: fixed;
+      top: -${window.scrollY}px;
+      overflow-y: scroll;
+      width: 100%;`;
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.cssText = '';
+      window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+    }
+  }, [visible]);
 
   if (!Animate && !LocalVisible) return null;
 
@@ -64,13 +93,13 @@ const DownTop = keyframes`
     from{
       height: 0;
     } to {
-      height: calc(100vh - 40px);
+      height: calc(var(--vh, 1vh) * 100)-40px;
     }
 `;
 
 const TopDown = keyframes`
     from{
-      height: calc(100vh - 40px);
+      height: calc(var(--vh, 1vh) * 100)-40px;
     } to {
       height: 0;
     }
@@ -79,11 +108,11 @@ const TopDown = keyframes`
 const ModalBg = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   position: absolute;
   top: 0;
 
-  animation-duration: 0.5s;
+  animation-duration: 0.3s;
   animation-timing-function: ease-out;
   animation-name: ${FadeIn};
   animation-fill-mode: forwards;
@@ -98,7 +127,7 @@ const ModalBg = styled.div`
 const ModalBox = styled.div`
   background-color: #fff;
   transition-property: opacity, top, bottom, padding;
-  transition-duration: 0.5s;
+  transition-duration: 0.3s;
   box-sizing: content-box;
   box-shadow: 0 0 30px rgb(0 0 0 / 16%);
 
@@ -136,22 +165,16 @@ const ModalBox = styled.div`
   ${(props) =>
     props.size === 'large' &&
     css`
-      width: 980px;
+      width: 850px;
     `}
 
   @media screen and (max-width: 820px) {
     width: 100%;
     border-radius: 20px 20px 0 0;
     margin-top: 40px;
-    height: calc(100vh - 40px);
+    height: calc(var(--vh, 1vh) * 100)-40px;
     position: fixed;
     bottom: 0;
-    animation-name: ${DownTop};
-    ${(props) =>
-      props.disappear &&
-      css`
-        animation-name: ${TopDown};
-      `}
   }
 `;
 
@@ -168,9 +191,8 @@ const Wrapper = styled.section`
   z-index: 2000;
 
   @media screen and (max-width: 820px) {
-    -webkit-box-pack: end;
-    -ms-flex-pack: end;
     justify-content: flex-end;
+    height: calc(var(--vh, 1vh) * 100);
     ${ModalBox} {
       margin-top: 40px;
     }

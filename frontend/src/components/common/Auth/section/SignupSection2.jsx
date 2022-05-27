@@ -381,7 +381,7 @@ const InputList = styled.ul`
   padding: 25px 0 20px;
   scroll-behavior: smooth;
   @media screen and (max-width: 820px) {
-    height: calc(100vh - 393px);
+    height: calc(var(--vh, 1vh) * 100)-393px;
     &::-webkit-scrollbar {
       display: none;
     }

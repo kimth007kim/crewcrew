@@ -35,7 +35,7 @@ export default Progress;
 
 const SignStep1 = styled.ul`
   display: flex;
-  margin-bottom: 80px;
+  margin-bottom: 70px;
   & > li {
     width: 100%;
     margin-right: 10px;
