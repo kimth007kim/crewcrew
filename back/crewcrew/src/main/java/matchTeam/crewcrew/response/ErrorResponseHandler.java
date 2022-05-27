@@ -1,5 +1,9 @@
 package matchTeam.crewcrew.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
@@ -7,12 +11,39 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+//@Setter
+//@Getter
+//@Builder
+//public class ErrorResponseHandler {
+//    private final String message;
+//    private final boolean error;
+//    private final int status;
+//
+//
+//
+//    public static ErrorResponseHandler of(ErrorCode errorCode) {
+//        return ErrorResponseHandler.builder()
+//                .message(errorCode.getMessage())
+//                .status(errorCode.getStatus())
+//                .error(true)
+//                .build();
+//    }
+//}
+
+
+@Setter
+@Getter
+@Builder
+@AllArgsConstructor
 public class ErrorResponseHandler {
-//    private String code;
+//        private String code;
     private String message;
     private boolean error;
     private int status;
-//    private List<CustomFieldError> errors;
+    //    private List<CustomFieldError> errors;
+//    private final String message;
+//    private final boolean error;
+//    private final int status;
 
 
     public static class CustomFieldError {
@@ -20,11 +51,6 @@ public class ErrorResponseHandler {
         private String value;
         private String reason;
 
-//        private CustomFieldError(String field, String value, String reason) {
-//            this.field = field;
-//            this.value = value;
-//            this.reason = reason;
-//        }
 
         private CustomFieldError(FieldError fieldError) {
             this.field = fieldError.getField();
@@ -94,3 +120,5 @@ public class ErrorResponseHandler {
 //        return errors;
 //    }
 }
+
+

@@ -240,6 +240,7 @@ window.addEventListener("DOMContentLoaded", function(){
 
         isOn = !isOn;
     });
+
 });
 
 const SignLength = document.querySelectorAll(".InputList>li")?.length;

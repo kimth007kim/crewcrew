@@ -35,7 +35,7 @@ function Lnb({ path }) {
     data: myData,
     error,
     mutate,
-  } = useSWR(['/user/token', cookies.get('user-token')], fetcher);
+  } = useSWR(['/user/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const [on, changeOn] = useState(false);
   const { pathname } = useLocation();

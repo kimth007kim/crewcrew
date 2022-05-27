@@ -7,8 +7,8 @@ import matchTeam.crewcrew.dto.board.BoardResponseDTO;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.entity.user.LikedCategory;
+
 import matchTeam.crewcrew.entity.user.User;
-import matchTeam.crewcrew.dto.board.BoardPageResponseDTO;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.service.announcement.AnnouncementService;
 import matchTeam.crewcrew.service.application.ApplicationProgressService;
@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
+import java.util.List;
 
 import static java.util.stream.Collectors.joining;
 
@@ -114,8 +115,10 @@ import static java.util.stream.Collectors.joining;
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/application")
     public ResponseEntity<Object> findMyApplication(@RequestHeader("X-AUTH-TOKEN") String token){
+
         User user = userService.tokenChecker(token);
         ApplicationCountResponseDTO result = applicationService.findMyApplication(user);
+
         return ResponseHandler.generateResponse("내 지원서 조회(스터디, 취미별 지원서 개수 조회)",HttpStatus.OK, result);
     }
 
@@ -248,4 +251,98 @@ import static java.util.stream.Collectors.joining;
         return ResponseHandler.generateResponse("지원서 진행사항 수정 성공", HttpStatus.OK, result);
     }
 
+    @ApiOperation("내가 쓴 마감글의 개수 구하기")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/application/myCrew")
+    public ResponseEntity<Object> findMyCrewCount(@RequestHeader("X-AUTH-TOKEN") String token){
+
+        User user = userService.tokenChecker(token);
+        ApplicationMyCrewResponseDTO myCrewCount = applicationService.findMyCrewCount(user);
+
+        return ResponseHandler.generateResponse("내가 쓴 마감글의 개수 구하기 성공", HttpStatus.OK, myCrewCount);
+    }
+
+    @ApiOperation("내가 쓴 마감글의 상세정보 구하기")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/application/myCrew/details")
+    public ResponseEntity<Object> findMyCrewDetails(@RequestHeader("X-AUTH-TOKEN") String token,
+                                                    @PageableDefault(size = 5)Pageable pageable){
+
+        User user = userService.tokenChecker(token);
+        Page<BoardResponseDTO> dtoPage = applicationService.findMyCrewCountDetails(user, pageable);
+
+        return ResponseHandler.generateResponse("지원서 진행사항 수정 성공", HttpStatus.OK, dtoPage);
+    }
+
+    @ApiOperation("내가 쓴 마감글의 마감일 +7일")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/application/myCrew/extend/{boardId}")
+    public ResponseEntity<Object> extendExpired(@RequestHeader("X-AUTH-TOKEN") String token,
+                                                @PathVariable Long boardId){
+
+        User user = userService.tokenChecker(token);
+
+        applicationService.checkEqualWriter(user, boardId);
+        applicationService.extendExpiredDate(boardId);
+
+        BoardResponseDTO dto = boardService.findById(boardId);
+
+        return ResponseHandler.generateResponse("내가 쓴 마감글의 마감일 +7일 성공", HttpStatus.OK, dto);
+    }
+
+    @ApiOperation("참여수락된 글 개수 구하기")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/application/participated")
+    public ResponseEntity<Object> findMyParticipatedCount(@RequestHeader("X-AUTH-TOKEN") String token){
+
+        User user = userService.tokenChecker(token);
+        ApplicationParticipatedCrewResponseDTO dto = applicationService.findMyParticipatedCount(user);
+
+        return ResponseHandler.generateResponse("참여수락된 글 개수 구하기 성공", HttpStatus.OK, dto);
+    }
+
+    @ApiOperation("참여수락된 글의 상세정보 보기")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/application/participated/details")
+    public ResponseEntity<Object> findParticipatedDetails(@RequestHeader("X-AUTH-TOKEN") String token,
+                                                          @PageableDefault(size = 5)Pageable pageable){
+
+        User user = userService.tokenChecker(token);
+        Page<ApplicationParticipatedDetailResponseDTO> dtoPage = applicationService.findMyParticipatedDetails(user, pageable);
+        ApParticipatedPageResDTO pageResDTO = ApParticipatedPageResDTO.toDTO(dtoPage);
+        return ResponseHandler.generateResponse("참여수락된 글의 상세정보 보기 성공", HttpStatus.OK, pageResDTO);
+    }
+
+    @ApiOperation("참여수락된 글의 다른 참여자 보기")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/application/participated/applier/{boardId}")
+    public ResponseEntity<Object> findAnotherApplierDetails(@RequestHeader("X-AUTH-TOKEN") String token,
+                                                          @PathVariable Long boardId){
+
+        User user = userService.tokenChecker(token);
+        List<ArrivedApplierDetailsDTO> dtos = applicationService.findAnotherApplier(user, boardId);
+        return ResponseHandler.generateResponse("참여수락된 글의 다른 참여자 보기 성공", HttpStatus.OK, dtos);
+    }
+
+    @ApiOperation("내가 모집중인 크루 개수 조회하기(부모 카테고리별)")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/application/recruiting")
+    public ResponseEntity<Object> findRecruitingCount(@RequestHeader("X-AUTH-TOKEN") String token){
+
+        User user = userService.tokenChecker(token);
+        ApplicationCountResponseDTO count = applicationService.findRecruitingCount(user);
+        return ResponseHandler.generateResponse("내가 모집중인 크루 개수 조회하기 성공", HttpStatus.OK, count);
+    }
+
+    @ApiOperation("내가 모집중인 크루 모집글 조회하기(카테고리 별)")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/application/recruiting/{categoryParentId}")
+    public ResponseEntity<Object> findRecruitingDetails(@RequestHeader("X-AUTH-TOKEN") String token,
+                                                        @PathVariable Long categoryParentId,
+                                                        @PageableDefault(size = 5)Pageable pageable){
+
+        User user = userService.tokenChecker(token);
+        ApplicationCountResponseDTO count = applicationService.findRecruitingCount(user);
+        return ResponseHandler.generateResponse("내가 모집중인 크루 개수 조회하기 성공", HttpStatus.OK, count);
+    }
 }

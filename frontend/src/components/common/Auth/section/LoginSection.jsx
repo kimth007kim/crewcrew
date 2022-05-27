@@ -38,7 +38,7 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
     data: myData,
     error: myError,
     mutate,
-  } = useSWR(['/user/token', myCookies.get('user-token')], fetcher);
+  } = useSWR(['/user/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
 
   const EmailValidCheck = useCallback((value) => {
     if (!isEmail(value)) {
@@ -130,19 +130,12 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
 
           switch (data.status) {
             case 200:
-              if (IsChecked) {
-                afterh.setHours(now.getHours() + 3);
-                setCookie('user-token', data.data.accessToken, {
-                  path: '/',
-                  expires: afterh,
-                });
-              } else {
-                afterh.setHours(now.getHours() + 72);
-                setCookie('user-token', data.data.accessToken, {
-                  path: '/',
-                  expires: afterh,
-                });
-              }
+              afterh.setHours(now.getHours() + 72);
+              setCookie('X-AUTH-TOKEN', data.data.accessToken, {
+                path: '/',
+                expires: afterh,
+              });
+
               mutate('/user/token');
               closeModal();
               break;

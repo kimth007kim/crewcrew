@@ -16,7 +16,7 @@ function InfoProfile({ state }) {
     data: myData,
     error: myError,
     mutate,
-  } = useSWR(['/user/token', cookies.get('user-token')], fetcher);
+  } = useSWR(['/user/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const [nicknameFocus, setNicknameFocus] = useState(false);
 

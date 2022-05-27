@@ -1,22 +1,20 @@
 package matchTeam.crewcrew.repository.application;
 
 
-import com.querydsl.core.dml.UpdateClause;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.querydsl.jpa.impl.JPAUpdateClause;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.application.*;
-import matchTeam.crewcrew.entity.application.QApplication;
+import matchTeam.crewcrew.dto.board.BoardResponseDTO;
 import matchTeam.crewcrew.entity.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 import static matchTeam.crewcrew.entity.board.QBoard.board;
@@ -191,6 +189,137 @@ public class ApplicationQueryRepository {
                 .where(application.progress.eq(1).and(board.id.eq(boardId).and(board.user.uid.eq(req.getUid()))))
                 .groupBy(board.id)
                 .fetchOne();
+    }
+
+
+    public Long getMyCrewCount(User req){
+        return queryFactory
+                .select(new CaseBuilder()
+                        .when(board.id.count().isNull())
+                        .then(0L).otherwise(board.id.count()))
+                .from(board)
+                .where(board.user.uid.eq(req.getUid()).and(board.viewable.eq(false)))
+                .fetchOne();
+    }
+
+    public Page<BoardResponseDTO> getMyCrewCountDetails(User req, Pageable pageable){
+        List<BoardResponseDTO> fetch = queryFactory
+                .select(Projections.constructor(BoardResponseDTO.class, board))
+                .from(board)
+                .where(
+                        board.user.uid.eq(req.getUid()).
+                                and(board.viewable.eq(false)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(board.expiredDate.asc())
+                .fetch();
+
+        JPAQuery<BoardResponseDTO> countQuery = queryFactory
+                .select(Projections.constructor(BoardResponseDTO.class, board))
+                .from(board)
+                .where(
+                        board.user.uid.eq(req.getUid()).
+                                and(board.viewable.eq(false)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(board.expiredDate.asc());
+
+        return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchCount);
+    }
+
+    public Long getParticipatedCrewCount(User req){
+        return queryFactory
+                .select(new CaseBuilder()
+                        .when(board.id.count().isNull())
+                        .then(0L).otherwise(board.id.count()))
+                .from(board)
+                .innerJoin(application)
+                .on(board.id.eq(application.board.id))
+                .where(application.user.uid.eq(req.getUid()).and(application.progress.eq(2)))
+                .fetchOne();
+    }
+
+    public Page<ApplicationParticipatedDetailResponseDTO> getMyParticipatedDetails(User req, Pageable pageable){
+        List<ApplicationParticipatedDetailResponseDTO> fetch = queryFactory
+                .select(Projections.constructor(ApplicationParticipatedDetailResponseDTO.class, board, application, user))
+                .from(application)
+                .innerJoin(user)
+                .on(application.user.uid.eq(user.uid))
+                .innerJoin(board)
+                .on(application.board.id.eq(board.id))
+                .where(
+                        application.user.uid.eq(req.getUid())
+                                .and(application.progress.eq(2)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(board.expiredDate.asc())
+                .fetch();
+
+        JPAQuery<ApplicationParticipatedDetailResponseDTO> countQuery = queryFactory
+                .select(Projections.constructor(ApplicationParticipatedDetailResponseDTO.class, board, application, user))
+                .from(board)
+                .where(
+                        board.user.uid.eq(req.getUid()).
+                                and(board.viewable.eq(false)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(board.expiredDate.asc());
+
+        return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchCount);
+    }
+
+    public List<ArrivedApplierDetailsDTO> getAnotherApplier(User req, Long boardId){
+        return queryFactory
+                .selectDistinct(Projections.constructor(ArrivedApplierDetailsDTO.class, user, application))
+                .from(user)
+                .innerJoin(application)
+                .on(application.user.uid.eq(user.uid))
+                .where(application.progress.eq(2)
+                        .and(application.user.uid.ne(req.getUid()))
+                        .and(application.board.id.eq(boardId)))
+                .orderBy(application.createdDate.desc())
+                .fetch();
+    }
+
+    public ApplicationCountResponseDTO getMyRecruitingCount(User req) {
+        List<ApplicationResponseDTO> fetch = queryFactory
+                .select(Projections.constructor(ApplicationResponseDTO.class, category.categoryParent.id, category.categoryParent.id.count()))
+                .from(board)
+                .innerJoin(category)
+                .on(board.category.id.eq(category.id))
+                .where(board.viewable.eq(true).and(board.user.uid.eq(req.getUid())))
+                .groupBy(category.categoryParent.id)
+                .fetch();
+
+        ApplicationCountResponseDTO result = ApplicationCountResponseDTO.builder()
+                .results(fetch).build();
+
+        return result;
+    }
+
+    public Page<ApplicationDetailResponseDTO> getRecruitingDetails(User req, Long categoryParentId, Pageable pageable){
+        List<ApplicationDetailResponseDTO> fetch = queryFactory
+                .select(Projections.constructor(ApplicationDetailResponseDTO.class, board, application))
+                .from(board)
+                .innerJoin(category)
+                .on(board.category.id.eq(category.id))
+                .innerJoin(application)
+                .on(application.board.id.eq(board.id))
+                .where(application.user.uid.eq(req.getUid()).and(category.categoryParent.id.eq(categoryParentId)))
+                .orderBy(board.createdDate.desc())
+                .fetch();
+
+        JPAQuery<ApplicationDetailResponseDTO> countQuery = queryFactory
+                .select(Projections.constructor(ApplicationDetailResponseDTO.class, board, application))
+                .from(board)
+                .innerJoin(category)
+                .on(board.category.id.eq(category.id))
+                .innerJoin(application)
+                .on(application.board.id.eq(board.id))
+                .where(application.user.uid.eq(req.getUid()).and(category.categoryParent.id.eq(categoryParentId)))
+                .orderBy(board.createdDate.desc());
+
+        return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchCount);
     }
 
     private BooleanExpression approachCodeIn(List<Integer> approach){

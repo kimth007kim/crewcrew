@@ -14,7 +14,7 @@ function InfoInputList({ state }) {
     data: myData,
     error: myError,
     mutate,
-  } = useSWR(['/user/token', cookies.get('user-token')], fetcher);
+  } = useSWR(['/user/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const [nameFocus, setNameFocus] = useState(false);
 

@@ -1089,7 +1089,7 @@ textarea.TxtAreaInput{
     box-sizing: border-box;
     cursor: default;
     display: none;
-    z-index: 1;
+    z-index: 10;
 
     p.ToolTipName{
         font-size: 12px;
