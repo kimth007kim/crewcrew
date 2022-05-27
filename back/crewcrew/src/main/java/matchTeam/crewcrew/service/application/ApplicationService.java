@@ -16,7 +16,6 @@ import matchTeam.crewcrew.response.exception.application.*;
 import matchTeam.crewcrew.response.exception.board.NotExistBoardInIdException;
 import matchTeam.crewcrew.response.exception.board.NotMatchUidException;
 import matchTeam.crewcrew.response.exception.category.NotExistCategoryException;
-import matchTeam.crewcrew.util.customException.UserNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -123,6 +122,27 @@ public class ApplicationService {
     @Transactional(readOnly = true)
     public ApplicationParticipatedCrewResponseDTO findMyParticipatedCount(User req){
         return ApplicationParticipatedCrewResponseDTO.builder().participatedCount(queryRepository.getParticipatedCrewCount(req)).build();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ApplicationParticipatedDetailResponseDTO> findMyParticipatedDetails(User req, Pageable pageable){
+        return queryRepository.getMyParticipatedDetails(req,pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ArrivedApplierDetailsDTO> findAnotherApplier(User req, Long boardId){
+        return queryRepository.getAnotherApplier(req, boardId);
+    }
+
+    @Transactional(readOnly = true)
+    public ApplicationCountResponseDTO findRecruitingCount(User req){
+        return queryRepository.getMyRecruitingCount(req);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ApplicationDetailResponseDTO> findRecruitingDetails(User req, Long categoryParentId, Pageable pageable){
+        validCategoryParentId(categoryParentId);
+        return queryRepository.getMyApplicationDetails(req, categoryParentId, pageable);
     }
 
     //중복 지원했을때

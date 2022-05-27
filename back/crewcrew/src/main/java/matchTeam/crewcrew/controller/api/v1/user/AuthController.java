@@ -273,8 +273,11 @@ public class AuthController {
             @ApiParam(value = "로그인 요청 DTO", required = true) @RequestBody UserLoginRequestDto userLoginRequestDto, HttpServletResponse response) throws JsonProcessingException {
         System.out.println(userLoginRequestDto.getEmail() + " " + userLoginRequestDto.getPassword());
         ResponseTokenDto tokenDto = userService.redisLogin(userLoginRequestDto);
-        Cookie accessCookie = cookieService.generateAccessToken(tokenDto.getAccessToken());
-        Cookie refreshCookie = cookieService.generateRefreshToken(tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExpireDate());
+//        Cookie accessCookie = cookieService.generateAccessToken(tokenDto.getAccessToken());
+//        Cookie refreshCookie = cookieService.generateRefreshToken(tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExpireDate());
+
+        Cookie accessCookie = cookieService.generateCookie("X-AUTH-TOKEN",tokenDto.getAccessToken(),tokenDto.getAccessTokenExpireDate());
+        Cookie refreshCookie = cookieService.generateCookie("refreshToken",tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExpireDate());
 
         System.out.println("refreshCookie = " + refreshCookie);
         System.out.println("accessCookie = " + accessCookie);
@@ -294,41 +297,41 @@ public class AuthController {
 //    }
 
 
-    @ApiOperation(value = "엑세스,리프레시 토큰 재발급"
-            , notes = "엑세스 리프레시 토큰 만료시 회원 검증 후 리프레시 토큰을 검증해서 엑세스 토큰과 리프레시 토큰을 재발급한다.")
-    @ApiResponses({
-            @ApiResponse(
-                    code = 200
-                    , message = "리프레시 토큰 재발급 성공"
-                    , response = TokenDto.class
-            )
-            , @ApiResponse(
-            code = 1901
-            , message = "유효하지않은 리프레시 토큰입니다."
-    )
-            , @ApiResponse(
-            code = 1902
-            , message = "토큰의 pk로 유저를 찾을수 없습니다."
-    )
-            , @ApiResponse(
-            code = 1903
-            , message = "DB에 해당 Refresh 토큰이 존재하지않습니다."
-    )
-            , @ApiResponse(
-            code = 1904
-            , message = "입력받은 Refresh토큰이 DB에 저장된 Refresh토큰과 다릅니다."
-    )
-            , @ApiResponse(
-            code = 9999
-            , message = "권한이 부족한 토큰의 접근입니다."
-    )
-    })
-    @PostMapping("/reissue")
-    public ResponseEntity<Object> check(
-//            @ApiParam(value = "토큰 재발급 요청 DTO", required = true)
-            @RequestBody TokenRequestDto tokenRequestDto) {
-        return ResponseHandler.generateResponse("리프레시 토큰 재발급 성공", HttpStatus.OK, userService.reissue(tokenRequestDto).getAccessToken());
-    }
+//    @ApiOperation(value = "엑세스,리프레시 토큰 재발급"
+//            , notes = "엑세스 리프레시 토큰 만료시 회원 검증 후 리프레시 토큰을 검증해서 엑세스 토큰과 리프레시 토큰을 재발급한다.")
+//    @ApiResponses({
+//            @ApiResponse(
+//                    code = 200
+//                    , message = "리프레시 토큰 재발급 성공"
+//                    , response = TokenDto.class
+//            )
+//            , @ApiResponse(
+//            code = 1901
+//            , message = "유효하지않은 리프레시 토큰입니다."
+//    )
+//            , @ApiResponse(
+//            code = 1902
+//            , message = "토큰의 pk로 유저를 찾을수 없습니다."
+//    )
+//            , @ApiResponse(
+//            code = 1903
+//            , message = "DB에 해당 Refresh 토큰이 존재하지않습니다."
+//    )
+//            , @ApiResponse(
+//            code = 1904
+//            , message = "입력받은 Refresh토큰이 DB에 저장된 Refresh토큰과 다릅니다."
+//    )
+//            , @ApiResponse(
+//            code = 9999
+//            , message = "권한이 부족한 토큰의 접근입니다."
+//    )
+//    })
+//    @PostMapping("/reissue")
+//    public ResponseEntity<Object> check(
+////            @ApiParam(value = "토큰 재발급 요청 DTO", required = true)
+//            @RequestBody TokenRequestDto tokenRequestDto) {
+//        return ResponseHandler.generateResponse("리프레시 토큰 재발급 성공", HttpStatus.OK, userService.reissue(tokenRequestDto).getAccessToken());
+//    }
 
     @ApiOperation(value = "비밀 번호 변경을 위해서 이메일 인증번호를 이메일로 발송하기"
             , notes = "이메일에 비밀번호를 바꾸기 위한 인증번호를 발송한다.")

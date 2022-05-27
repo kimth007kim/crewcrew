@@ -13,7 +13,7 @@ function InfoCat({ state }) {
     data: myData,
     error: myError,
     mutate,
-  } = useSWR(['/user/token', cookies.get('user-token')], fetcher);
+  } = useSWR(['/user/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   // 각 필터 체크 여부 확인 함수
   const checkValue = useCallback((arr, value) => arr.some((item) => item.value === value), []);

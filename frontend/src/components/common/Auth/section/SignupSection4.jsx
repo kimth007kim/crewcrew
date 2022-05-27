@@ -15,7 +15,7 @@ function SignupSection4({ IsClick, closeModal, HandleClick }) {
     data: myData,
     error,
     mutate,
-  } = useSWR(['/user/token', cookies.get('user-token')], fetcher);
+  } = useSWR(['/user/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const nickName = useRecoilValue(nickNameState);
   const fileimg = useRecoilValue(uploadFileImgState);
@@ -105,7 +105,7 @@ const ResultProfileWrapper = styled.div`
   position: relative;
   scroll-behavior: smooth;
   @media screen and (max-width: 820px) {
-    height: calc(100vh - 338px);
+    height: calc(var(--vh, 1vh) * 100)-338px;
     &::-webkit-scrollbar {
       display: none;
     }

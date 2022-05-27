@@ -1318,7 +1318,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
           box-sizing: border-box;
   cursor: default;
   display: none;
-  z-index: 1;
+  z-index: 10;
 }
 
 .ProfileToolTip p.ToolTipName {

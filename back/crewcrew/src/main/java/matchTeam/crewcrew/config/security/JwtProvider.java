@@ -111,6 +111,8 @@ public class JwtProvider {
 
         String refreshToken =Jwts.builder()
                 .setHeaderParam(Header.TYPE,Header.JWT_TYPE)
+                .setClaims(claims)
+                .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() +duration))
                 .signWith(SignatureAlgorithm.HS256,secretKey)
 //                .signWith(key)
@@ -163,7 +165,7 @@ public class JwtProvider {
         return request.getHeader("X-AUTH-TOKEN");
     }
     public String resolveRefreshToken(HttpServletRequest request){
-        return request.getHeader("refreshToken");
+        return request.getHeader("refresh-Token");
     }
 
     public boolean validateToken(String token){
@@ -174,6 +176,22 @@ public class JwtProvider {
             log.error(e.toString());
             return false;
         }
+    }
+
+    public boolean validateToken(HttpServletRequest request,String token){
+        try{
+            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            return true;
+        } catch (MalformedJwtException e) {
+            request.setAttribute("exception", "MalformedJwtException");
+        } catch (ExpiredJwtException e) {
+            request.setAttribute("exception", "ExpiredJwtException");
+        } catch (UnsupportedJwtException e) {
+            request.setAttribute("exception", "UnsupportedJwtException");
+        } catch (IllegalArgumentException e) {
+            request.setAttribute("exception", "IllegalArgumentException");
+        }
+        return false;
     }
     public Long refreshTokenTime(boolean isMaintain){
         if (isMaintain){

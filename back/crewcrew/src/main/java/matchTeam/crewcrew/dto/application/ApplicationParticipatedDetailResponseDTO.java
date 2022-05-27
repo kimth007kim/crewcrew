@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import matchTeam.crewcrew.entity.application.Application;
 import matchTeam.crewcrew.entity.board.Board;
+import matchTeam.crewcrew.entity.user.User;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
-public class ApplicationDetailResponseDTO {
+public class ApplicationParticipatedDetailResponseDTO {
     @ApiModelProperty(value = "신청서의 id")
     private Long apId;
 
@@ -52,10 +53,15 @@ public class ApplicationDetailResponseDTO {
     @ApiModelProperty(value = "총인원수", notes = "총인원수", example = "5")
     private Integer totalCrew;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "참여요청한 날짜", notes = "참여요청한 날짜(년월일)")
     private LocalDateTime appliedDate;
+
+    @DateTimeFormat(pattern = "MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value = "글 작성 날짜(월일)")
+    private LocalDateTime createdDate;
 
     @ApiModelProperty(value = "만료날짜", notes = "년원일", example = "2023-02-27")
     private LocalDate expiredDate;
@@ -63,27 +69,28 @@ public class ApplicationDetailResponseDTO {
     @ApiModelProperty(value = "만료여부", notes = "만료여부를 true(만료x) or false(만료됨)로 표현", example = "1")
     private Boolean viewable;
 
-    @ApiModelProperty(value = "모집진행상태(0: 참여거절, 1: 참여요청중, 2: 참여완료, 3: 참여취소)", notes = "")
+    @ApiModelProperty(value = "모집진행상태(0: 참여거절, 1: 참여요청중, 2: 참여완료, 3: 참여취소)")
     private Integer progress;
 
     @QueryProjection
     @Builder
-    public ApplicationDetailResponseDTO(Board res, Application application) {
+    public ApplicationParticipatedDetailResponseDTO(Board board, Application application, User user) {
         this.apId = application.getId();
-        this.boardId = res.getId();
-        this.uid = res.getUser().getUid();
-        this.profileImage = res.getUser().getProfileImage();
-        this.nickName = res.getUser().getNickname();
-        this.title = res.getTitle();
-        this.approachCode = res.getApproach();
-        this.categoryParentId = res.getCategory().getCategoryParent().getId();
-        this.categoryId = res.getCategory().getId();
-        this.appliedCrew = res.getAppliedCrew();
-        this.recruitedCrew = res.getRecruitedCrew();
-        this.totalCrew = res.getTotalCrew();
+        this.boardId = board.getId();
+        this.uid = user.getUid();
+        this.profileImage = user.getProfileImage();
+        this.nickName = user.getNickname();
+        this.title = board.getTitle();
+        this.categoryParentId = board.getCategory().getCategoryParent().getId();
+        this.categoryId = board.getCategory().getId();
+        this.approachCode = board.getApproach();
+        this.appliedCrew = board.getAppliedCrew();
+        this.createdDate = board.getCreatedDate();
+        this.recruitedCrew = board.getRecruitedCrew();
+        this.totalCrew = board.getTotalCrew();
         this.appliedDate = application.getCreatedDate();
-        this.expiredDate = res.getExpiredDate();
-        this.viewable = res.getViewable();
+        this.expiredDate = board.getExpiredDate();
+        this.viewable = board.getViewable();
         this.progress = application.getProgress();
     }
 }

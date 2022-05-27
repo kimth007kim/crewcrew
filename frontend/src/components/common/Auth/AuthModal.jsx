@@ -134,22 +134,6 @@ function AuthModal({ closeModal, visible }) {
 
 export default AuthModal;
 
-const SizeDown = keyframes`
-    from{
-      height: 114px;
-    } to {
-      height: 0px;
-    }
-`;
-
-const SizeUp = keyframes`
-    from{
-      height: 0;
-    } to {
-      height: 114px;
-    }
-`;
-
 const Header = styled.div`
   width: 100%;
   padding: 0 40px;
@@ -161,17 +145,8 @@ const Header = styled.div`
   border-radius: 20px 20px 0 0;
 
   @media screen and (max-width: 820px) {
-    animation-duration: 0.5s;
-    animation-timing-function: ease-out;
-    animation-name: ${SizeUp};
-    animation-fill-mode: forwards;
     padding: 0px 20px;
-    margin-bottom: 5px;
-    ${(props) =>
-      props.disappear &&
-      css`
-        animation-name: ${SizeDown};
-      `}
+    margin-bottom: 1px;
   }
 `;
 
@@ -187,11 +162,7 @@ const CompleteHeader = styled.div`
 `;
 
 const Top = styled.div`
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   margin-bottom: 35px;
   margin-top: 48px;
@@ -249,7 +220,9 @@ const Body = styled.div`
     width: 100%;
     margin-top: -1px;
     border-radius: 0;
-    height: calc(100vh - 194px);
+    height: calc(var(--vh, 1vh) * 100)-194px;
+    transition: 0.5s;
+
     overflow-y: auto;
     ::-webkit-scrollbar {
       display: none;

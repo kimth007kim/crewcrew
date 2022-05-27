@@ -5,6 +5,7 @@ import matchTeam.crewcrew.config.security.JwtProvider;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -22,11 +23,22 @@ public class CookieService {
         return cookie;
     }
 
-    public Cookie generateRefreshToken(String value, Long time) {
-        return generateCookie("refreshToken", value, time/1000);
+    public Cookie getCookie(HttpServletRequest req, String cookieName){
+        final Cookie[] cookies = req.getCookies();
+        if(cookies == null) return null;
+        for(Cookie cookie: cookies){
+            if(cookie.getName().equals(cookieName)){
+                return cookie;
+            }
+        }
+        return null;
     }
 
-    public Cookie generateAccessToken(String value) {
-        return generateCookie("X-AUTH-TOKEN", value, jwtProvider.accessTokenValidMillisecond/1000);
-    }
+//    public Cookie generateRefreshToken(String value, Long time) {
+//        return generateCookie("refreshToken", value, time/1000);
+//    }
+//
+//    public Cookie generateAccessToken(String value) {
+//        return generateCookie("X-AUTH-TOKEN", value, jwtProvider.accessTokenValidMillisecond/1000);
+//    }
 }

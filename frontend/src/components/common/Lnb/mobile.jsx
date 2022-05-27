@@ -40,7 +40,7 @@ function NavMobile({ path, openModal }) {
     data: myData,
     error,
     mutate,
-  } = useSWR(['/user/token', cookies.get('user-token')], fetcher);
+  } = useSWR(['/user/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   return (
     <>
