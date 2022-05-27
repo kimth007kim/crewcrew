@@ -13,7 +13,7 @@ function MyInfoInput({ open }) {
     data: myData,
     error: myError,
     mutate,
-  } = useSWR(['/user/token', cookies.get('user-token')], fetcher);
+  } = useSWR(['/user/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   // 이름
   const [name, setName] = useState('');
@@ -81,7 +81,7 @@ function MyInfoInput({ open }) {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',
-          'X-AUTH-TOKEN': cookies.get('user-token'),
+          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
         },
       });
 
