@@ -360,11 +360,11 @@ main{
 @media screen and (max-width:820px) {
 
     body.Modal, .ModalWrapper, .ModalBg{
-        height: 100vh;
+        height: 100%;
     }
     .ModalWrapper.Modal .ModalBox{
-        margin-top: 80px;
-        height: calc(100vh - 80px);
+        margin-top: 40px;
+        height: calc(100% - 40px);
         position: fixed;
         bottom: 0;
     }
