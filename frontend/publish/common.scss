@@ -1,6 +1,5 @@
 @import "./style";
 
-$vh100 : calc(var(--vh, 1vh) * 100);
 
 @mixin modalBox($padding, $width) {
     padding: 0 $padding;
@@ -361,11 +360,11 @@ main{
 @media screen and (max-width:820px) {
 
     body.Modal, .ModalWrapper, .ModalBg{
-        height: $vh100;
+        height: 100%;
     }
     .ModalWrapper.Modal .ModalBox{
         margin-top: 40px;
-        height: $vh100 - 40px;
+        height: calc(100% - 40px);
         position: fixed;
         bottom: 0;
     }
@@ -375,7 +374,7 @@ main{
         width: 100%;
         border-radius: 20px 20px 0 0;
         height: 0;
-        margin-top: $vh100;
+        margin-top: 100vh;
     }
     
     .InputList{
@@ -398,7 +397,7 @@ main{
     }
 
     .ModalBody{
-        height: $vh100 - 194px;
+        height: calc(100vh - 194px);
     }
 
     .ModalBody::-webkit-scrollbar{
