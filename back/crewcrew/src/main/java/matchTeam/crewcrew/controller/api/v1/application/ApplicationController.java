@@ -334,9 +334,12 @@ import java.util.List;
                                                         @PathVariable Long categoryParentId,
                                                         @PageableDefault(size = 5)Pageable pageable){
 
+        System.out.println("token = " + token);
+        System.out.println("ApplicationController.findRecruitingDetails");
         User user = userService.tokenChecker(token);
-        MyRecruitingBoardPageResDTO pageResDTO = MyRecruitingBoardPageResDTO.toDTO(applicationService.findRecruitingDetails(user, categoryParentId, pageable));
-        return ResponseHandler.generateResponse("내가 모집중인 크루 개수 조회하기 성공", HttpStatus.OK, pageResDTO);
+        //MyRecruitingBoardPageResDTO pageResDTO = MyRecruitingBoardPageResDTO.toDTO(applicationService.findRecruitingDetails(user, categoryParentId, pageable));
+
+        return ResponseHandler.generateResponse("내가 모집중인 크루 개수 조회하기 성공", HttpStatus.OK, null);
     }
 
     @ApiOperation("내가 모집중인 크루 대기자 조회하기")
