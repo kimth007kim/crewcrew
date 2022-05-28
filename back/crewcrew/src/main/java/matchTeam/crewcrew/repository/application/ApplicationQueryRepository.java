@@ -320,7 +320,7 @@ public class ApplicationQueryRepository {
         return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchCount);
     }
 
-    public Long getWaitingCrewCount(User req, Long boardId) {
+    public Long getWaitingCrewCount(User req, Long boardId, Integer statusCode) {
         return queryFactory
                 .select(new CaseBuilder()
                         .when(application.user.uid.count().isNull())
@@ -328,20 +328,20 @@ public class ApplicationQueryRepository {
                 .from(board)
                 .innerJoin(application)
                 .on(board.id.eq(application.board.id))
-                .where(board.id.eq(boardId).and(board.user.uid.eq(req.getUid())).and(application.progress.eq(2)))
+                .where(board.id.eq(boardId).and(board.user.uid.eq(req.getUid())).and(application.progress.eq(statusCode)))
                 .groupBy(board.id)
                 .fetchOne();
     }
 
-    public List<ArrivedApplierDetailsDTO> getWaitingCrewDetails(User req, Long boardId) {
+    public List<ArrivedApplierDetailsDTO> getWaitingCrewDetails(User req, Long boardId, Integer statusCode) {
         return queryFactory
-                .select(Projections.constructor(ArrivedApplierDetailsDTO.class, application, user))
+                .select(Projections.constructor(ArrivedApplierDetailsDTO.class, user, application))
                 .from(application)
                 .innerJoin(board)
                 .on(board.id.eq(application.board.id))
                 .innerJoin(user)
                 .on(application.user.uid.eq(user.uid))
-                .where(board.id.eq(boardId).and(board.user.uid.eq(req.getUid())).and(application.progress.eq(2)))
+                .where(board.id.eq(boardId).and(board.user.uid.eq(req.getUid())).and(application.progress.eq(statusCode)))
                 .fetch();
     }
 

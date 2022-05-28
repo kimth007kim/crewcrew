@@ -146,11 +146,15 @@ public class ApplicationService {
     }
 
     @Transactional(readOnly = true)
-    public MyWaitingCrewResponseDTO findWaitingCrew(User req, Long boardId){
+    public MyWaitingCrewResponseDTO findWaitingCrew(User req, Long boardId, Integer statusCode){
+
+        Long crewCount = queryRepository.getWaitingCrewCount(req, boardId, statusCode);
+        List<ArrivedApplierDetailsDTO> crewDetails = queryRepository.getWaitingCrewDetails(req, boardId, statusCode);
+
 
         return MyWaitingCrewResponseDTO.builder()
-                .waitingCrew(queryRepository.getWaitingCrewCount(req, boardId))
-                .content(queryRepository.getWaitingCrewDetails(req, boardId)).build();
+                .waitingCrew(crewCount)
+                .content(crewDetails).build();
     }
 
     //중복 지원했을때

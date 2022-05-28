@@ -334,22 +334,21 @@ import java.util.List;
                                                         @PathVariable Long categoryParentId,
                                                         @PageableDefault(size = 5)Pageable pageable){
 
-        System.out.println("token = " + token);
-        System.out.println("ApplicationController.findRecruitingDetails");
         User user = userService.tokenChecker(token);
-        //MyRecruitingBoardPageResDTO pageResDTO = MyRecruitingBoardPageResDTO.toDTO(applicationService.findRecruitingDetails(user, categoryParentId, pageable));
+        MyRecruitingBoardPageResDTO pageResDTO = MyRecruitingBoardPageResDTO.toDTO(applicationService.findRecruitingDetails(user, categoryParentId, pageable));
 
-        return ResponseHandler.generateResponse("내가 모집중인 크루 개수 조회하기 성공", HttpStatus.OK, null);
+        return ResponseHandler.generateResponse("내가 모집중인 크루 개수 조회하기 성공", HttpStatus.OK, pageResDTO);
     }
 
-    @ApiOperation("내가 모집중인 크루 대기자 조회하기")
+    @ApiOperation("내가 모집중인 크루 대기자 혹은 참여자 조회하기")
     @ResponseStatus(value = HttpStatus.OK)
-    @GetMapping(value = "/application/recruiting/{boardId}")
+    @GetMapping(value = "/application/recruiting/waiting/{boardId}")
     public ResponseEntity<Object> findWaitingCrew(@RequestHeader("X-AUTH-TOKEN") String token,
-                                                  @PathVariable Long boardId){
+                                                  @PathVariable Long boardId,
+                                                  @RequestParam Integer statusCode){
 
         User user = userService.tokenChecker(token);
-        applicationService.findWaitingCrew(user, boardId);
-        return ResponseHandler.generateResponse("내가 모집중인 크루 개수 조회하기 성공", HttpStatus.OK, null);
+        MyWaitingCrewResponseDTO waitingCrew = applicationService.findWaitingCrew(user, boardId, statusCode);
+        return ResponseHandler.generateResponse("내가 모집중인 크루 개수 조회하기 성공", HttpStatus.OK, waitingCrew);
     }
 }
