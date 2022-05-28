@@ -16,6 +16,7 @@ import Profile4 from '../../../assets/images/Profile2.png';
 import NavIconPlus from '../../../assets/images/NavIconPlus.png';
 import AuthModal from '../Auth/AuthModal';
 import fetcher from '../../../utils/fetcher';
+import useModal from '../../../hooks/useModal';
 
 const Cards = [
   {
@@ -111,16 +112,8 @@ function NavContainer() {
     error,
     mutate,
   } = useSWR(['/user/token', cookies.get('X-AUTH-TOKEN')], fetcher);
-  const [Dialog, setDialog] = useState(false);
   const navigate = useNavigate();
-
-  const openModal = useCallback(() => {
-    setDialog(true);
-  }, []);
-
-  const closeModal = useCallback(() => {
-    setDialog(false);
-  }, []);
+  const [Dialog, openModal, closeModal] = useModal();
 
   const handleClick = useCallback(() => {
     openModal();

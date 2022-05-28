@@ -6,21 +6,21 @@ import styled, { css } from 'styled-components';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 import useSWR from 'swr';
-import ProfileNull from '../../../assets/images/ProfileNull.png';
-import LogoTxt from '../../../assets/images/LogoTxt.png';
-import IconNavHome from '../../../assets/images/NavIcon1.png';
-import IconNavHomeHover from '../../../assets/images/NavIcon1_Hover.png';
-import IconNavHomeActive from '../../../assets/images/NavIcon1_Active.png';
-import IconNavParti from '../../../assets/images/NavIcon2.png';
-import IconNavPartiHover from '../../../assets/images/NavIcon2_Hover.png';
-import IconNavPartiActive from '../../../assets/images/NavIcon2_Active.png';
-import IconNavRecru from '../../../assets/images/NavIcon3.png';
-import IconNavRecruHover from '../../../assets/images/NavIcon3_Hover.png';
-import IconNavRecruActive from '../../../assets/images/NavIcon3_Active.png';
-import IconNavChat from '../../../assets/images/NavIcon4.png';
-import IconNavChatHover from '../../../assets/images/NavIcon4_Hover.png';
-import IconNavChatActive from '../../../assets/images/NavIcon4_Active.png';
-import fetcher from '../../../utils/fetcher';
+import ProfileNull from '@/assets/images/ProfileNull.png';
+import LogoTxt from '@/assets/images/LogoTxt.png';
+import IconNavHome from '@/assets/images/NavIcon1.png';
+import IconNavHomeHover from '@/assets/images/NavIcon1_Hover.png';
+import IconNavHomeActive from '@/assets/images/NavIcon1_Active.png';
+import IconNavParti from '@/assets/images/NavIcon2.png';
+import IconNavPartiHover from '@/assets/images/NavIcon2_Hover.png';
+import IconNavPartiActive from '@/assets/images/NavIcon2_Active.png';
+import IconNavRecru from '@/assets/images/NavIcon3.png';
+import IconNavRecruHover from '@/assets/images/NavIcon3_Hover.png';
+import IconNavRecruActive from '@/assets/images/NavIcon3_Active.png';
+import IconNavChat from '@/assets/images/NavIcon4.png';
+import IconNavChatHover from '@/assets/images/NavIcon4_Hover.png';
+import IconNavChatActive from '@/assets/images/NavIcon4_Active.png';
+import fetcher from '@/utils/fetcher';
 
 function MobileNavButton({ icon, title, link = '/', selected }) {
   return (

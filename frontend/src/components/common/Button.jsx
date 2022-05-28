@@ -14,6 +14,8 @@ function Button({
   children,
   fontSize,
   paddings,
+  lineHeight,
+  borderRadius,
   type = 'button',
 }) {
   return (
@@ -28,6 +30,8 @@ function Button({
       heightSize={heightSize}
       fontSize={fontSize}
       paddings={paddings}
+      lineHeight={lineHeight}
+      borderRadius={borderRadius}
       type={type}
     >
       {loadings && (
@@ -149,41 +153,6 @@ const Colors = {
             --line-disabled: var(--button_base_white);
         `,
   },
-  violet: {
-    fill: `
-            --text: var(--button_text_white);
-            --bg: var(--button_base_violet);
-            --line: var(--button_base_violet);
-            --text-hover: var(--button_text_white);
-            --bg-hover: var(--button_hover_base_deepViolet);
-            --line-hover: var(--button_hover_base_deepViolet);
-            --text-disabled: var(--button_disabled_text_gray);
-            --bg-disabled: var(--button_disabled_base_gray);
-            --line-disabled: var(--button_disabled_base_gray);
-        `,
-    line: `
-        --text: var(--button_text_violet);
-        --bg: var(--button_base_white);
-        --line: var(--button_line_gray);
-        --text-hover: var(--button_text_violet);
-        --bg-hover: var(--button_hover_base_lightViolet);
-        --line-hover: var(--button_hover_line_violet);
-        --text-disabled: var(--button_disabled_text_gray);
-        --bg-disabled: var(--button_base_white);
-        --line-disabled: var(--button_line_gray);
-    `,
-    text: `
-        --text: var(--button_text_violet);
-        --bg: var(--button_base_white);
-        --line: var(--button_base_white);
-        --text-hover: var(--button_text_violet);
-        --bg-hover: var(--button_hover_base_lightViolet);
-        --line-hover: var(--button_hover_base_lightViolet);
-        --text-disabled: var(--button_disabled_text_gray);
-        --bg-disabled: var(--button_base_white);
-        --line-disabled: var(--button_base_white);
-    `,
-  },
   red: {
     fill: `
             --text: var(--button_text_white);
@@ -219,63 +188,29 @@ const Colors = {
         --line-disabled: var(--button_base_white);
     `,
   },
-  lightViolet: {
-    fill: `
-            --text: var(--button_text_violet);
-            --bg: var(--button_base_lightViolet);
-            --line: var(--button_base_lightViolet);
-            --text-hover: var(--button_text_violet);
-            --bg-hover: var(--button_hover_base_violet);
-            --line-hover: var(--button_hover_base_violet);
-            --text-disabled: var(--button_disabled_text_gray);
-            --bg-disabled: var(--button_disabled_base_gray);
-            --line-disabled: var(--button_disabled_base_gray);`,
-    line: `
-            --text: var(--button_text_violet);
-            --bg: var(--button_base_white);
-            --line: var(--button_line_gray);
-            --text-hover: var(--button_text_violet);
-            --bg-hover: var(--button_hover_base_lightViolet);
-            --line-hover: var(--button_hover_line_violet);
-            --text-disabled: var(--button_disabled_text_gray);
-            --bg-disabled: var(--button_base_white);
-            --line-disabled: var(--button_line_gray);
-           `,
-    text: `
-            --text: var(--button_text_violet);
-            --bg: var(--button_base_white);
-            --line: var(--button_base_white);
-            --text-hover: var(--button_text_violet);
-            --bg-hover: var(--button_hover_base_lightViolet);
-            --line-hover: var(--button_hover_base_lightViolet);
-            --text-disabled: var(--button_disabled_text_gray);
-            --bg-disabled: var(--button_base_white);
-            --line-disabled: var(--button_base_white);
-          `,
-  },
 
-  gray: {
+  white: {
     fill: `
-            --text: var(--button_disabled_text_gray);
-            --bg: var(--button_disabled_base_gray);
-            --line: var(--button_disabled_base_gray);
-            --text-hover: var(--button_disabled_text_gray);
-            --bg-hover: var(--button_disabled_base_gray);
-            --line-hover: var(--button_disabled_base_gray);
-            --text-disabled: var(--button_disabled_text_gray);
-            --bg-disabled: var(--button_disabled_base_gray);
-            --line-disabled: var(--button_disabled_base_gray);
-        `,
-    line: `
-        --text: var(--button_text_gray);
-        --bg: var(--button_base_white);
-        --line: var(--button_line_gray);
-        --text-hover: var(--button_text_gray);
-        --bg-hover: var(--button_hover_base_lightViolet);
-        --line-hover: var(--button_hover_line_violet);
+        --text: var(--button_disabled_text_gray);
+        --bg: var(--button_disabled_base_gray);
+        --line: var(--button_disabled_base_gray);
+        --text-hover: var(--button_disabled_text_gray);
+        --bg-hover: var(--button_disabled_base_gray);
+        --line-hover: var(--button_disabled_base_gray);
         --text-disabled: var(--button_disabled_text_gray);
-        --bg-disabled: var(--button_base_white);
-        --line-disabled: var(--button_line_gray);
+        --bg-disabled: var(--button_disabled_base_gray);
+        --line-disabled: var(--button_disabled_base_gray);
+    `,
+    line: `
+      --text: #a8a8a8;
+      --bg: #fff;
+      --line: #e2e2e2;
+      --text-hover: #00b7ff;
+      --bg-hover: #fff;
+      --line-hover: #00b7ff;
+      --text-disabled: #fff;
+      --bg-disabled: #e2e2e2;
+      --line-disabled: #e2e2e2;
     `,
     text: `
         --text: var(--button_text_gray);
@@ -289,39 +224,29 @@ const Colors = {
         --line-disabled: var(--button_base_white);
     `,
   },
-  black: {
+
+  lightBlue: {
     fill: `
-            --text: var(--button_disabled_text_gray);
-            --bg: var(--button_disabled_base_gray);
-            --line: var(--button_disabled_base_gray);
-            --text-hover: var(--button_disabled_text_gray);
-            --bg-hover: var(--button_disabled_base_gray);
-            --line-hover: var(--button_disabled_base_gray);
-            --text-disabled: var(--button_disabled_text_gray);
-            --bg-disabled: var(--button_disabled_base_gray);
-            --line-disabled: var(--button_disabled_base_gray);
-        `,
-    line: `
-        --text: var(--button_text_gray);
-        --bg: var(--button_base_white);
-        --line: var(--button_line_gray);
-        --text-hover: var(--button_text_gray);
-        --bg-hover: var(--button_hover_base_lightViolet);
-        --line-hover: var(--button_hover_line_violet);
-        --text-disabled: var(--button_disabled_text_gray);
-        --bg-disabled: var(--button_base_white);
-        --line-disabled: var(--button_line_gray);
+    --text: #fff;
+    --bg: #00b7ff;
+    --line: #00b7ff;
+    --text-hover: #fff;
+    --bg-hover: #005ec5;
+    --line-hover: #005ec5;
+    --text-disabled: #fff;
+    --bg-disabled: #e2e2e2;
+    --line-disabled: #e2e2e2;
     `,
-    text: `
-        --text: var(--button_text_black);
-        --bg: var(--button_base_white);
-        --line: var(--button_base_white);
-        --text-hover: var(--button_text_black);
-        --bg-hover: var(--button_hover_base_lightViolet);
-        --line-hover: var(--button_hover_base_lightViolet);
-        --text-disabled: var(--button_disabled_text_gray);
-        --bg-disabled: var(--button_base_white);
-        --line-disabled: var(--button_base_white);
+    line: `
+    --text: #fff;
+    --bg: #00b7ff;
+    --line: #00b7ff;
+    --text-hover: #00b7ff;
+    --bg-hover: #005ec5;
+    --line-hover: #005ec5;
+    --text-disabled: #fff;
+    --bg-disabled: #e2e2e2;
+    --line-disabled: #e2e2e2;
     `,
   },
 };
@@ -373,6 +298,7 @@ const ButtonStyled = styled.button`
   ${(props) => props.widthSize && `min-width: ${props.widthSize}px;`}
   ${(props) => props.heightSize && `min-height: ${props.heightSize}px;`}
   ${(props) => props.fontSize && `font-size: ${props.fontSize}px;`}
+  ${(props) => props.lineHeight && `line-height: ${props.lineHeight}px;`}
   ${(props) => props.paddings && `padding: ${props.paddings};`}
 `;
 

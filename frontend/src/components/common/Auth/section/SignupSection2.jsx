@@ -6,17 +6,17 @@ import { toast } from 'react-toastify';
 import { useRecoilState } from 'recoil';
 
 import axios from 'axios';
-import CameraImg from '../../../../assets/images/Camera.png';
-import CameraOnImg from '../../../../assets/images/Camera_on.png';
-import CheckImg from '../../../../assets/images/Checked_on.png';
-import Profile1 from '../../../../assets/images/Profile1.png';
-import Profile2 from '../../../../assets/images/Profile2.png';
-import Profile3 from '../../../../assets/images/Profile3.png';
-import Profile4 from '../../../../assets/images/Profile4.png';
-import Profile5 from '../../../../assets/images/Profile5.png';
+import CameraImg from '@/assets/images/Camera.png';
+import CameraOnImg from '@/assets/images/Camera_on.png';
+import CheckImg from '@/assets/images/Checked_on.png';
+import Profile1 from '@/assets/images/Profile1.png';
+import Profile2 from '@/assets/images/Profile2.png';
+import Profile3 from '@/assets/images/Profile3.png';
+import Profile4 from '@/assets/images/Profile4.png';
+import Profile5 from '@/assets/images/Profile5.png';
 import Textfield from '../../TextfieldEmail';
 import Button from '../../Button';
-import { emojiSlice, spaceSlice } from '../../../../utils';
+import { emojiSlice, spaceSlice } from '@/utils';
 import Progress from './Progress';
 import { sectionProgress2, nickNameState, uploadFileImgState } from '@/atoms/register';
 

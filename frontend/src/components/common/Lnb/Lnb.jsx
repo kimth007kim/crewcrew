@@ -1,33 +1,35 @@
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable prettier/prettier */
 /* eslint-disable indent */
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useLocation, NavLink } from 'react-router-dom';
 import useSWR from 'swr';
 import { Cookies } from 'react-cookie';
 import NavMobile from './mobile';
 import NavContainer from './container';
-import LogoCircle from '../../../assets/images/LogoCircle.png';
-import ProfileNull from '../../../assets/images/ProfileNull.png';
-import IconHam from '../../../assets/images/IconHam.png';
-import IconClose from '../../../assets/images/IconClose.png';
-import IconNavArrow from '../../../assets/images/IconNavArrow_Rev.png';
-import IconNavArrowOn from '../../../assets/images/IconNavArrow.png';
-import IconNavHome from '../../../assets/images/NavIcon1.png';
-import IconNavHomeHover from '../../../assets/images/NavIcon1_Hover.png';
-import IconNavHomeActive from '../../../assets/images/NavIcon1_Active.png';
-import IconNavParti from '../../../assets/images/NavIcon2.png';
-import IconNavPartiHover from '../../../assets/images/NavIcon2_Hover.png';
-import IconNavPartiActive from '../../../assets/images/NavIcon2_Active.png';
-import IconNavRecru from '../../../assets/images/NavIcon3.png';
-import IconNavRecruHover from '../../../assets/images/NavIcon3_Hover.png';
-import IconNavRecruActive from '../../../assets/images/NavIcon3_Active.png';
-import IconNavChat from '../../../assets/images/NavIcon4.png';
-import IconNavChatHover from '../../../assets/images/NavIcon4_Hover.png';
-import IconNavChatActive from '../../../assets/images/NavIcon4_Active.png';
-import fetcher from '../../../utils/fetcher';
+import LogoCircle from '@/assets/images/LogoCircle.png';
+import ProfileNull from '@/assets/images/ProfileNull.png';
+import IconHam from '@/assets/images/IconHam.png';
+import IconClose from '@/assets/images/IconClose.png';
+import IconNavArrow from '@/assets/images/IconNavArrow_Rev.png';
+import IconNavArrowOn from '@/assets/images/IconNavArrow.png';
+import IconNavHome from '@/assets/images/NavIcon1.png';
+import IconNavHomeHover from '@/assets/images/NavIcon1_Hover.png';
+import IconNavHomeActive from '@/assets/images/NavIcon1_Active.png';
+import IconNavParti from '@/assets/images/NavIcon2.png';
+import IconNavPartiHover from '@/assets/images/NavIcon2_Hover.png';
+import IconNavPartiActive from '@/assets/images/NavIcon2_Active.png';
+import IconNavRecru from '@/assets/images/NavIcon3.png';
+import IconNavRecruHover from '@/assets/images/NavIcon3_Hover.png';
+import IconNavRecruActive from '@/assets/images/NavIcon3_Active.png';
+import IconNavChat from '@/assets/images/NavIcon4.png';
+import IconNavChatHover from '@/assets/images/NavIcon4_Hover.png';
+import IconNavChatActive from '@/assets/images/NavIcon4_Active.png';
+import fetcher from '@/utils/fetcher';
 import AuthModal from '../Auth/AuthModal';
+import useModal from '@/hooks/useModal';
+import PostCreateModal from '../../post/modal/PostCreate';
 
 function Lnb({ path }) {
   const cookies = new Cookies();
@@ -39,19 +41,12 @@ function Lnb({ path }) {
 
   const [on, changeOn] = useState(false);
   const { pathname } = useLocation();
+  const [authVisible, openAuth, closeAuth] = useModal();
 
-  const [Dialog, setDialog] = useState(false);
-
-  const openModal = useCallback(() => {
-    setDialog(true);
-  }, []);
-
-  const closeModal = useCallback(() => {
-    setDialog(false);
-  }, []);
+  const [postVisible, openPost, closePost] = useModal();
 
   const handleClick = useCallback(() => {
-    openModal();
+    openAuth();
   }, []);
 
   return (
@@ -77,12 +72,10 @@ function Lnb({ path }) {
                   <p>크루참여</p>
                 </PartIcon>
               </NavLink>
-              <NavLink to="/">
-                <RecruIcon selected={pathname.startsWith('/crew')}>
-                  <span />
-                  <p>팀원모집</p>
-                </RecruIcon>
-              </NavLink>
+              <RecruIcon selected={pathname.startsWith('/crew')} onClick={() => openPost()}>
+                <span />
+                <p>팀원모집</p>
+              </RecruIcon>
               <NavLink to="/">
                 <ChatIcon selected={pathname.startsWith('/chat')}>
                   <span />
@@ -117,8 +110,9 @@ function Lnb({ path }) {
         </NavContWrapper>
       </LnbWrapper>
       <NavHam active={on} onClick={() => changeOn(!on)} />
-      <NavMobile path={path} openModal={openModal} />
-      <AuthModal closeModal={closeModal} visible={Dialog} size="large" />
+      <NavMobile path={path} openModal={openAuth} />
+      <AuthModal closeModal={closeAuth} visible={authVisible} />
+      <PostCreateModal closeModal={closePost} visible={postVisible} />
     </header>
   );
 }

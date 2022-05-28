@@ -172,7 +172,8 @@ const ModalBox = styled.div`
     width: 100%;
     border-radius: 20px 20px 0 0;
     margin-top: 40px;
-    height: calc(var(--vh, 1vh) * 100)-40px;
+    /* height: calc(var(--vh, 1vh) * 100)-40px; */
+    height: calc(100% - 40px);
     position: fixed;
     bottom: 0;
   }
@@ -192,7 +193,9 @@ const Wrapper = styled.section`
 
   @media screen and (max-width: 820px) {
     justify-content: flex-end;
-    height: calc(var(--vh, 1vh) * 100);
+    /* height: calc(var(--vh, 1vh) * 100); */
+    height: 100%;
+
     ${ModalBox} {
       margin-top: 40px;
     }
