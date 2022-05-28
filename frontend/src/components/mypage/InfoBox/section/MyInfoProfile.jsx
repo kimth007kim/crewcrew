@@ -15,7 +15,7 @@ function MyInfoProfile({ open }) {
     data: myData,
     error: myError,
     mutate,
-  } = useSWR(['/user/token', cookies.get('user-token')], fetcher);
+  } = useSWR(['/user/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   // 닉네임
   const [nickname, setNickname] = useState('');
@@ -129,7 +129,7 @@ function MyInfoProfile({ open }) {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',
-          'X-AUTH-TOKEN': cookies.get('user-token'),
+          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
         },
       });
 

@@ -36,16 +36,16 @@ public class JwtProvider {
     @Value("${spring.jwt.secret}")
     private String secretKey;
 
-//    private String secretKey="lalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefala";
+    //    private String secretKey="lalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefalalalfadgsfgadsgvsdvfsdgwefala";
 //    private SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private String ROLES="roles";
-    public static final long accessTokenValidMillisecond =30 * 60 * 1000L;           // 30분
-    public static final long refreshTokenShortValidMillisecond =3*24*60 * 60 * 1000L;           // 1일
-    public static final long refreshTokenLongValidMillisecond =7* 24 *60 * 60 * 1000L;  // 7일
+    private String ROLES = "roles";
+    public static final long accessTokenValidMillisecond = 3* 60 * 60 * 1000L;           // 30분
+    public static final long refreshTokenShortValidMillisecond =  24 * 60 * 60 * 1000L;           // 1일
+    public static final long refreshTokenLongValidMillisecond = 7 * 24 * 60 * 60 * 1000L;  // 7일
 
     // 객체 초기화, secretKey를 Base64로 인코딩한다.
     @PostConstruct
-    protected void init(){
+    protected void init() {
 //        key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         System.out.println(secretKey);
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
@@ -54,19 +54,19 @@ public class JwtProvider {
     }
 
     //JWT 토큰 생성
-    public TokenDto createTokenDto(Long userPk , List<String> roles, boolean maintain){
+    public TokenDto createTokenDto(Long userPk, List<String> roles, boolean maintain) {
         Claims claims = Jwts.claims().setSubject(String.valueOf(userPk));
-        claims.put(ROLES,roles);
+        claims.put(ROLES, roles);
         Date now = new Date();
         Long duration;
-        if (maintain ==true){
-            duration= refreshTokenLongValidMillisecond;
-        }else{
-            duration=refreshTokenShortValidMillisecond;
+        if (maintain == true) {
+            duration = refreshTokenLongValidMillisecond;
+        } else {
+            duration = refreshTokenShortValidMillisecond;
         }
 
-        String accessToken = createToken(userPk,roles,accessTokenValidMillisecond);
-        String refreshToken= createToken(userPk,roles,duration);
+        String accessToken = createToken(userPk, roles, accessTokenValidMillisecond);
+        String refreshToken = createToken(userPk, roles, duration);
 
         return TokenDto.builder()
                 .grantType("bearer")
@@ -76,7 +76,7 @@ public class JwtProvider {
                 .build();
     }
 
-    public String createToken(Long uid , List<String> roles ,Long tokenValid){
+    public String createToken(Long uid, List<String> roles, Long tokenValid) {
         Claims claims = Jwts.claims().setSubject(String.valueOf(uid)); // claims 생성 및 payload 설정
         claims.put(ROLES, roles); // 권한 설정, key/ value 쌍으로 저장
 
@@ -90,33 +90,18 @@ public class JwtProvider {
     }
 
 
-    public ResponseTokenDto createResponseToken(Long userPk , List<String> roles, boolean maintain){
+    public ResponseTokenDto createResponseToken(Long userPk, List<String> roles, boolean maintain) {
         Claims claims = Jwts.claims().setSubject(String.valueOf(userPk));
-        claims.put(ROLES,roles);
+        claims.put(ROLES, roles);
         Date now = new Date();
         Long duration;
-        if (maintain ==true){
-            duration= refreshTokenLongValidMillisecond;
-        }else{
-            duration=refreshTokenShortValidMillisecond;
+        if (maintain == true) {
+            duration = refreshTokenLongValidMillisecond;
+        } else {
+            duration = refreshTokenShortValidMillisecond;
         }
-        String accessToken =Jwts.builder().
-                setHeaderParam(Header.TYPE,Header.JWT_TYPE)
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() +accessTokenValidMillisecond))
-                .signWith(SignatureAlgorithm.HS256,secretKey)
-//                .signWith(key)
-                .compact();
-
-        String refreshToken =Jwts.builder()
-                .setHeaderParam(Header.TYPE,Header.JWT_TYPE)
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() +duration))
-                .signWith(SignatureAlgorithm.HS256,secretKey)
-//                .signWith(key)
-                .compact();
+        String accessToken = createToken(userPk,roles,accessTokenValidMillisecond);
+        String refreshToken = createToken(userPk,roles,duration);
 
         return ResponseTokenDto.builder()
                 .grantType("bearer")
@@ -141,45 +126,59 @@ public class JwtProvider {
     }
 
 
-
     public Claims parseClaims(String token) {
-        try{
+        try {
 
             return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
 //            return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
 //            return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
 //            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
-        }catch(ExpiredJwtException e){
+        } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
     }
 
     public Long getUserUid(String token) {
-        Long result= Long.valueOf(Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject());
+        Long result = Long.valueOf(Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject());
         return result;
     }
 
 
     // HTTP Request 의 Header에서 Token Parsing -> "X-AUTH_TOKEN: jwt"
-    public String resolveAccessToken(HttpServletRequest request){
+    public String resolveAccessToken(HttpServletRequest request) {
         return request.getHeader("X-AUTH-TOKEN");
     }
-    public String resolveRefreshToken(HttpServletRequest request){
+
+    public String resolveRefreshToken(HttpServletRequest request) {
         return request.getHeader("refresh-Token");
     }
 
-    public boolean validateToken(String token){
-        try{
-           Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-           return true;
-        }catch (JwtException | IllegalArgumentException e){
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
             log.error(e.toString());
             return false;
         }
     }
 
-    public boolean validateToken(HttpServletRequest request,String token){
-        try{
+    public Boolean isTokenExpired(String token) {
+        final Date expiration = parseClaims(token).getExpiration();
+        return expiration.before(new Date());
+    }
+
+
+    public Boolean validateToken(String token, UserDetails userDetails) {
+        Long long_uid = getUserUid(token);
+        if (long_uid == null) return false;
+        final String username = Long.toString(long_uid);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+
+    }
+
+    public boolean validateToken(HttpServletRequest request, String token) {
+        try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
         } catch (MalformedJwtException e) {
@@ -193,8 +192,9 @@ public class JwtProvider {
         }
         return false;
     }
-    public Long refreshTokenTime(boolean isMaintain){
-        if (isMaintain){
+
+    public Long refreshTokenTime(boolean isMaintain) {
+        if (isMaintain) {
             return refreshTokenLongValidMillisecond;
         }
         return refreshTokenShortValidMillisecond;
@@ -202,19 +202,18 @@ public class JwtProvider {
 
     public List<String> getRoles(Long uid) {
 
-        Optional<User> user =userRepository.findById(uid);
+        Optional<User> user = userRepository.findById(uid);
         if (user.isEmpty())
             throw new UserNotFoundException();
         return user.get().getRoles();
     }
 
-    public boolean existRefreshToken(String refreshToken){
-        String result =redisUtil.getData(refreshToken);
-        if (result==null)
+    public boolean existRefreshToken(String refreshToken) {
+        String result = redisUtil.getData(refreshToken);
+        if (result == null)
             return false;
         return true;
     }
-
 
 
 }
