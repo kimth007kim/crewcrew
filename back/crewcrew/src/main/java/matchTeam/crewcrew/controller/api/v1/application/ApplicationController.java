@@ -348,7 +348,7 @@ import static java.util.stream.Collectors.joining;
         return ResponseHandler.generateResponse("내가 모집중인 크루 개수 조회하기 성공", HttpStatus.OK, count);
     }
 
-    @ApiOperation("내가 모집중인 크루 모집글 조회하기(카테고리 별)")
+    @ApiOperation("내가 모집중인 크루 모집글 상세 조회하기(카테고리 별)")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/application/recruiting/{categoryParentId}")
     public ResponseEntity<Object> findRecruitingDetails(@RequestHeader("X-AUTH-TOKEN") String token,
@@ -356,7 +356,20 @@ import static java.util.stream.Collectors.joining;
                                                         @PageableDefault(size = 5)Pageable pageable){
 
         User user = userService.tokenChecker(token);
-        ApplicationCountResponseDTO count = applicationService.findRecruitingCount(user);
-        return ResponseHandler.generateResponse("내가 모집중인 크루 개수 조회하기 성공", HttpStatus.OK, count);
+        MyRecruitingBoardPageResDTO pageResDTO = MyRecruitingBoardPageResDTO.toDTO(applicationService.findRecruitingDetails(user, categoryParentId, pageable));
+
+        return ResponseHandler.generateResponse("내가 모집중인 크루 개수 조회하기 성공", HttpStatus.OK, pageResDTO);
+    }
+
+    @ApiOperation("내가 모집중인 크루 대기자 혹은 참여자 조회하기")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/application/recruiting/waiting/{boardId}")
+    public ResponseEntity<Object> findWaitingCrew(@RequestHeader("X-AUTH-TOKEN") String token,
+                                                  @PathVariable Long boardId,
+                                                  @RequestParam Integer statusCode){
+
+        User user = userService.tokenChecker(token);
+        MyWaitingCrewResponseDTO waitingCrew = applicationService.findWaitingCrew(user, boardId, statusCode);
+        return ResponseHandler.generateResponse("내가 모집중인 크루 개수 조회하기 성공", HttpStatus.OK, waitingCrew);
     }
 }

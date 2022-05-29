@@ -47,7 +47,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final Cookie jwtToken = getCookie(request, "X-AUTH-TOKEN");
+        final Cookie refreshToken = getCookie(request,"refreshToken");
 
+        log.info("X-AUTH-TOKEN = "+jwtToken);
+        log.info("refreshToken = "+refreshToken);
         Long uid = null;
         String jwt = null;
         String refreshJwt = null;
@@ -55,10 +58,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             if (jwtToken != null) {
+                log.info("-------------------- access 토큰이 존재할경우 log -----------");
                 jwt = jwtToken.getValue();
                 uid = jwtProvider.getUserUid(jwt);
             }
             if (uid != null) {
+                log.info("-------------------- uid가 존재할경우 log  -----------");
                 UserDetails userDetails = userDetailsService.loadUserByUsername(Long.toString(uid));
                 if (jwtProvider.validateToken(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -67,15 +72,34 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch (ExpiredJwtException e) {
-            Cookie refreshToken = getCookie(request, "refreshToken");
+            log.info("--------------------토큰이 만료되었을 경우에 뜨는 log -----------");
             if (refreshToken != null) {
+                log.info("--------------------토큰이 만료되었고 refresh 토큰이 있을때 log -----------");
                 refreshJwt = refreshToken.getValue();
+                if (refreshJwt != null) {
+                    refreshUname = redisUtil.getData(refreshJwt);
+                    log.info("--------------------Redis 에서 가져온 UID -----------"+refreshUname);
+                    if (refreshUname.equals(jwtProvider.getUserUid(refreshJwt))) {
+                        log.info("--------------------Redis 조회결과 같을때 -----------");
+                        UserDetails userDetails = userDetailsService.loadUserByUsername(refreshUname);
+                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+
+                        User user = userRepository.findByUid(Long.parseLong(refreshUname));
+                        String newToken = jwtProvider.createToken(uid, user.getRoles(), jwtProvider.accessTokenValidMillisecond);
+
+                        Cookie newCookie = cookieService.generateCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
+                        response.addCookie(newCookie);
+                    }
+                }
             }
         } catch (Exception e) {
 
         }
         try {
-            if (refreshJwt != null) {
+            if (refreshJwt != null && jwtToken==null) {
+                log.info("--------------------Acess 토큰 없고 refresh 토큰있다-----------");
                 refreshUname = redisUtil.getData(refreshJwt);
                 if (refreshUname.equals(jwtProvider.getUserUid(refreshJwt))) {
                     UserDetails userDetails = userDetailsService.loadUserByUsername(refreshUname);
@@ -86,7 +110,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     User user = userRepository.findByUid(Long.parseLong(refreshUname));
                     String newToken = jwtProvider.createToken(uid, user.getRoles(), jwtProvider.accessTokenValidMillisecond);
 
-                    Cookie newCookie = cookieService.generateCookie("X-AUTH-TOKEN", newToken, 3 * 60 * 60 * 1000L);
+                    Cookie newCookie = cookieService.generateCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
                     response.addCookie(newCookie);
                 }
             }

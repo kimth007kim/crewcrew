@@ -100,23 +100,8 @@ public class JwtProvider {
         } else {
             duration = refreshTokenShortValidMillisecond;
         }
-        String accessToken = Jwts.builder().
-                setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + accessTokenValidMillisecond))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
-//                .signWith(key)
-                .compact();
-
-        String refreshToken = Jwts.builder()
-                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + duration))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
-//                .signWith(key)
-                .compact();
+        String accessToken = createToken(userPk,roles,accessTokenValidMillisecond);
+        String refreshToken = createToken(userPk,roles,duration);
 
         return ResponseTokenDto.builder()
                 .grantType("bearer")
