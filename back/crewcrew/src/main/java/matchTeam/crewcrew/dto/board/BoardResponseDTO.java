@@ -69,6 +69,9 @@ public class BoardResponseDTO {
     @ApiModelProperty(value = "만료여부", notes = "만료여부를 true(만료x) or false(만료됨)로 표현", example = "1")
     private Boolean viewable;
 
+    @ApiModelProperty(value = "오픈채팅방 링크")
+    private String kakaoChat;
+
     @QueryProjection
     @Builder
     public BoardResponseDTO(Board res) {
@@ -88,6 +91,7 @@ public class BoardResponseDTO {
         this.expiredDate = res.getExpiredDate();
         this.hit = res.getHit()+1;
         this.viewable = res.getViewable();
+        this.kakaoChat = res.getKakaoChat();
     }
 
 
