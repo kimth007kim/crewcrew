@@ -297,20 +297,18 @@ public class ApplicationQueryRepository {
         return result;
     }
 
-    public Page<ApplicationDetailResponseDTO> getRecruitingDetails(User req, Long categoryParentId, Pageable pageable){
-        List<ApplicationDetailResponseDTO> fetch = queryFactory
-                .select(Projections.constructor(ApplicationDetailResponseDTO.class, board, application))
+    public Page<MyRecruitingBoardResponseDTO> getRecruitingDetails(User req, Long categoryParentId, Pageable pageable){
+        List<MyRecruitingBoardResponseDTO> fetch = queryFactory
+                .select(Projections.constructor(MyRecruitingBoardResponseDTO.class, board))
                 .from(board)
                 .innerJoin(category)
                 .on(board.category.id.eq(category.id))
-                .innerJoin(application)
-                .on(application.board.id.eq(board.id))
-                .where(application.user.uid.eq(req.getUid()).and(category.categoryParent.id.eq(categoryParentId)))
+                .where(board.viewable.eq(true).and(board.user.uid.eq(req.getUid())).and(category.categoryParent.id.eq(categoryParentId)))
                 .orderBy(board.createdDate.desc())
                 .fetch();
-
-        JPAQuery<ApplicationDetailResponseDTO> countQuery = queryFactory
-                .select(Projections.constructor(ApplicationDetailResponseDTO.class, board, application))
+        
+        JPAQuery<MyRecruitingBoardResponseDTO> countQuery = queryFactory
+                .select(Projections.constructor(MyRecruitingBoardResponseDTO.class, board))
                 .from(board)
                 .innerJoin(category)
                 .on(board.category.id.eq(category.id))
@@ -321,6 +319,32 @@ public class ApplicationQueryRepository {
 
         return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchCount);
     }
+
+    public Long getWaitingCrewCount(User req, Long boardId, Integer statusCode) {
+        return queryFactory
+                .select(new CaseBuilder()
+                        .when(application.user.uid.count().isNull())
+                        .then(0L).otherwise(board.id.count()))
+                .from(board)
+                .innerJoin(application)
+                .on(board.id.eq(application.board.id))
+                .where(board.id.eq(boardId).and(board.user.uid.eq(req.getUid())).and(application.progress.eq(statusCode)))
+                .groupBy(board.id)
+                .fetchOne();
+    }
+
+    public List<ArrivedApplierDetailsDTO> getWaitingCrewDetails(User req, Long boardId, Integer statusCode) {
+        return queryFactory
+                .select(Projections.constructor(ArrivedApplierDetailsDTO.class, user, application))
+                .from(application)
+                .innerJoin(board)
+                .on(board.id.eq(application.board.id))
+                .innerJoin(user)
+                .on(application.user.uid.eq(user.uid))
+                .where(board.id.eq(boardId).and(board.user.uid.eq(req.getUid())).and(application.progress.eq(statusCode)))
+                .fetch();
+    }
+
 
     private BooleanExpression approachCodeIn(List<Integer> approach){
         return isEmpty(approach) ? null : board.approach.in(approach);

@@ -173,12 +173,17 @@ public class BoardController {
             )
     })
     @GetMapping("/board/list")
-    public ResponseEntity<Object> getBoardList(@ModelAttribute BoardSpecs boardSpecs,
+    public ResponseEntity<Object> getBoardList(@RequestHeader(name = "X-AUTH-TOKEN", required = false) String token,
+                                               @ModelAttribute BoardSpecs boardSpecs,
                                                @PageableDefault(size = 10) Pageable pageable){
-        
-        Page<BoardPageDetailResponseDTO> result = boardService.search(boardSpecs, pageable);
-        BoardPageResponseDTO pageResponseDTO = BoardPageResponseDTO.toDTO(result);
-        return ResponseHandler.generateResponse("게시글 리스트 다중 조건 조회 성공", HttpStatus.OK, pageResponseDTO);
+        if (token.isBlank()){
+            return ResponseHandler.generateResponse("게시글 리스트 다중 조건 조회 성공", HttpStatus.OK, null);
+        } else {
+            User user = userService.tokenChecker(token);
+            Page<BoardPageDetailResponseDTO> result = boardService.search(boardSpecs, pageable);
+            BoardPageResponseDTO pageResponseDTO = BoardPageResponseDTO.toDTO(result);
+            return ResponseHandler.generateResponse("게시글 리스트 다중 조건 조회 성공", HttpStatus.OK, pageResponseDTO);
+        }
     }
 
 
