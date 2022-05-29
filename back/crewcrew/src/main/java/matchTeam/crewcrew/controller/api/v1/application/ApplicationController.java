@@ -15,6 +15,7 @@ import matchTeam.crewcrew.service.application.ApplicationProgressService;
 import matchTeam.crewcrew.service.application.ApplicationService;
 import matchTeam.crewcrew.service.board.BoardService;
 import matchTeam.crewcrew.service.mail.TotalEmailService;
+import matchTeam.crewcrew.service.user.LikedCategoryService;
 import matchTeam.crewcrew.service.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.List;
 
 import static java.util.stream.Collectors.joining;
@@ -40,6 +42,7 @@ import static java.util.stream.Collectors.joining;
     private final TotalEmailService totalEmailService;
     private final UserService userService;
     private final BoardService boardService;
+    private final LikedCategoryService likedCategoryService;
 
     @ApiOperation(value = "지원서 작성", notes = "- 유효한 uid 인지 확인합니다.\n " +
             "- 유효한 boardId 인지  확인합니다\n" +
@@ -85,15 +88,18 @@ import static java.util.stream.Collectors.joining;
 
         BoardResponseDTO board = boardService.findById(info.getBoardId());
 
+        likedCategoryService.findUsersLike(user);
+
         Context context = new Context();
         context.setVariable("nickname", user.getNickname());
         context.setVariable("boardTitle", board.getTitle());
         context.setVariable("commentary", info.getCommentary());
         context.setVariable("introduce", user.getIntroduce());
-        context.setVariable("interestStudyCategory", user.getLikedCategories().stream().map(LikedCategory::getCategory).filter(i -> i.getCategoryParent().getId() == 1).map(Category::getCategoryName).collect(joining(",")));
-        context.setVariable("interestHobbyCategory", user.getLikedCategories().stream().map(LikedCategory::getCategory).filter(i -> i.getCategoryParent().getId() == 2).map(Category::getCategoryName).collect(joining(",")));
+        context.setVariable("interestStudyCategory", likedCategoryService.findUsersStudyLike(user).stream().collect(joining(",")));
+        context.setVariable("interestHobbyCategory", likedCategoryService.findUsersHobbyLike(user).stream().collect(joining(",")));;
+
         context.setVariable("url", "crewcrew.org/board/" + board.getBoardId());
-        totalEmailService.sendJavaMail("[크루크루] 지원서 도착", user.getEmail(), "mailform/apply", context);
+        totalEmailService.sendJavaMail("[크루크루] 지원서 도착", userService.findByUid(board.getUid()).getEmail(), "mailform/apply", context);
         return ResponseHandler.generateResponse("지원서 작성 성공",HttpStatus.OK, result);
     }
 
@@ -248,6 +254,14 @@ import static java.util.stream.Collectors.joining;
 
         User user = userService.tokenChecker(token);
         ApplicationUserDetailsResponseDTO result = applicationService.updateApply(request, user);
+
+        /*if (request.getStatusCode() == 2){ // 참여 수락된 경우 메일 발송
+            Context context = new Context();
+            context.setVariable("nickname", name);
+            context.setVariable("chatURL", chatURL);
+            totalEmailService.sendJavaMail("[크루크루] 회원님의 요청이 수락되었습니다", email, "mailform/accepted", context);
+        }*/
+
         return ResponseHandler.generateResponse("지원서 진행사항 수정 성공", HttpStatus.OK, result);
     }
 

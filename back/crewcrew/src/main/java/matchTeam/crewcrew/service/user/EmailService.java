@@ -118,15 +118,7 @@ public class EmailService {
         totalEmailService.sendJavaMail("[크루크루] 새로운 지원자가 있습니다", email, "mailform/apply", context);
     }
 
-    public void sendWhenAccepted(String email, String name, String chatURL) throws MessagingException, IOException {
 
-        //thymeleaf Context에 변수세팅
-        Context context = new Context();
-        context.setVariable("nickname", name);
-        context.setVariable("chatURL", chatURL);
-
-        totalEmailService.sendJavaMail("[크루크루] 회원님의 요청이 수락되었습니다", email, "mailform/accepted", context);
-    }
 
 
     public void getUserIdByCode(String code,String email){

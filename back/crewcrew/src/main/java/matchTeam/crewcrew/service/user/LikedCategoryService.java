@@ -84,6 +84,16 @@ public class LikedCategoryService {
         return categoryList;
     }
 
+    public List<String> findUsersStudyLike(User user) {
+        List<String> studyList = likedCategoryRepository.findStudyListByUser(user);
+        return studyList;
+    }
+
+    public List<String> findUsersHobbyLike(User user) {
+        List<String> hobbyList = likedCategoryRepository.findHobbyListByUser(user);
+        return hobbyList;
+    }
+
     public List<Long> deleteDuplicateCategory(List<Long> array) {
         Set<Long> set = new HashSet<Long>(array);
         List<Long> setFinish = new ArrayList<>(set);
