@@ -71,7 +71,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
             }else{
-                if (refreshJwt != null) {
+                if (refreshToken != null) {
+                    refreshJwt = refreshToken.getValue();
                     log.info("--------------------Acess 토큰 없고 refresh 토큰있다-----------");
                     refreshUname = redisUtil.getData(refreshJwt);
                     if (refreshUname.equals(jwtProvider.getUserUid(refreshJwt))) {
