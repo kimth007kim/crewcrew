@@ -23,6 +23,15 @@ public class CookieService {
         return cookie;
     }
 
+    public Cookie generateXAuthCookie(String name, String value, Long time) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setDomain("crewcrew.org");
+        cookie.setMaxAge(time.intValue()/1000);
+        cookie.setPath("/");
+        cookie.setSecure(true);
+        return cookie;
+    }
+
     public Cookie getCookie(HttpServletRequest req, String cookieName) {
         Cookie[] cookies = req.getCookies();
         if (cookies!=null) {

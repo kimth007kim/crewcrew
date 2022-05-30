@@ -88,7 +88,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         String newToken = jwtProvider.createToken(uid, user.getRoles(), jwtProvider.accessTokenValidMillisecond);
                         log.info("--------------------새로운 토큰 발급-----------"+newToken);
 
-                        Cookie newCookie = cookieService.generateCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
+                        Cookie newCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
                         response.addCookie(newCookie);
                     }
                 }
@@ -114,7 +114,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         String newToken = jwtProvider.createToken(uid, user.getRoles(), jwtProvider.accessTokenValidMillisecond);
                         log.info("--------------------새로 생성된 accessToken -----------");
 
-                        Cookie newCookie = cookieService.generateCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
+                        Cookie newCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
                         response.addCookie(newCookie);
                     }
                 }
