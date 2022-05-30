@@ -75,7 +75,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     refreshJwt = refreshToken.getValue();
                     log.info("--------------------Acess 토큰 없고 refresh 토큰있다-----------");
                     refreshUname = redisUtil.getData(refreshJwt);
-                    if (refreshUname.equals(jwtProvider.getUserUid(refreshJwt))) {
+                    log.info("조회한 refreshUname (id값)"+refreshUname);
+                    if (refreshUname.equals(Long.toString(jwtProvider.getUserUid(refreshJwt)))) {
                         log.info("--------------------Redis 에 존재 한다.-----------");
 
                         UserDetails userDetails = userDetailsService.loadUserByUsername(refreshUname);
