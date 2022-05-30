@@ -1,0 +1,390 @@
+@mixin backgroundColor($bg, $hover){
+    background-color: $bg;
+
+    &:hover{
+        background-color: $hover;
+    }
+}
+
+@mixin button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+section.MainTop{
+    height: 130px;
+    background-color: #fff;
+    border-bottom: 1px solid #e2e2e2;
+
+    .ButtonIntro{
+        top: 42px;
+    }
+}
+
+div.TopCont{
+    max-width: 850px;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+
+    h2{
+        font-size: 24px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        color: #000;
+        
+        a{
+            display: block;
+            background-image: url('/frontend/src/assets/images/IconNavArrow_Big.png');
+            background-size: 9px;
+            background-repeat: no-repeat;
+            background-position: 0 1px;
+            width: 9px;
+            height: 20px;
+            margin-right: 20px;
+        }
+    }
+}
+
+.SectionWrap{
+    max-width: 850px;
+    margin: auto;
+}
+
+.Chat{
+    height: calc(100vh - 131px);
+    background-color: #F6F7FB;
+    padding: 20px 0;
+    box-sizing: border-box;
+}
+
+.ChatBoxWrapper{
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+}
+
+.ChatBoxHead{
+    height: 64px;
+    border-bottom: 1px solid #A8A8A8;
+    padding: 0 20px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    h3{
+        margin-right: auto;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    button{
+        @include button();
+        text-indent: -9999px;
+
+        &.Search{
+            width: 26px;
+            height: 26px;
+            margin-right: 20px;
+            background: transparent url("/frontend/src/assets/images/serchSmall.png") center/100% no-repeat;
+        }
+
+        &.Set{
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            background: #c4c4c4 url("/frontend/src/assets/images/SettingWhite.png") center/16px no-repeat;
+            transition: .3s;
+
+            &:hover{
+                background-color: #B0B0B0;
+            }
+        }
+    }
+}
+
+.ChatBoxBody{
+    height: 554px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar{
+        display: none;
+    }
+}
+
+.ChatContent{
+    height: 116px;
+    padding: 8px 14px;
+    border: 6px solid #fff;
+    box-sizing: border-box;
+    background-color: #fff;
+    transition: .5s;
+    position: relative;
+    display: flex;
+    cursor: pointer;
+
+    &:hover{
+        background-color: #f3f3f3;
+    }
+
+    &:not(:last-child)::after{
+        display: block;
+        content: '';
+        height: 1px;
+        width: calc(100% + 12px);
+        background-color: #e2e2e2;
+        position: absolute;
+        bottom: -6px;
+        left: -6px;
+    }
+
+}
+
+.ContentSet{
+    width: 0;
+    padding-top: 5px;
+    overflow: hidden;
+    transition: .5s ease;
+    box-sizing: border-box;
+}
+
+.ContentCard{
+    width: 100%;
+    transition: .5s;
+}
+
+.ChatBoxList.On{
+
+    .ContentSet{
+        width: 40px;
+    }
+
+    .ContentCard{
+        width: calc(100% - 40px);
+    }
+}
+
+.InputHide ~ .LabelCheck{
+    display: block !important;
+}
+
+.ChatContentHead{
+    display: flex;
+    gap: 8px;
+
+    .HeadBox{
+        border-radius: 15px;
+        height: 30px;
+        border: 1px solid #E2E2E2;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+
+        &.Profile{
+            padding-right: 12px;
+
+            .ProfileImg{
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                margin-left: 3px;
+            }
+
+            .ProfileFlag{
+                width: 14px;
+                height: 14px;
+                margin-left: 12px;
+            }
+
+            p{
+                font-size: 15px;
+                font-weight: 700;
+                margin-left: 8px;
+            }
+        }
+
+        &.Post{
+            padding: 8px 16px;
+
+            p{
+                font-size: 12px;
+                color: #a8a8a8;
+                font-weight: 500;
+
+                span{
+                    font-weight: 700;
+                    margin-right: 8px;
+
+                    &.Study{
+                        color: #0F3FA6;
+                    }
+
+                    &.Hobby{
+                        color: #f7971e;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.ChatBoxSearch{
+    height: 0;
+    border-bottom: 1px solid #e2e2e2;
+    overflow: hidden;
+    transition: .5s;
+
+    &.On{
+        height: 78px;
+    }
+
+    .SearchInputWrap{
+        margin: 14px 20px;
+        width: calc(100% - 40px);
+        height: 50px;
+        border-radius: 35px;
+        border: 1px solid #e2e2e2;
+        padding: 0 20px 0 18px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+
+        button{
+            width: 26px;
+            height: 26px;
+            margin-bottom: 2px;
+            text-indent: -9999px;
+            @include button();
+            background: transparent url('/frontend/src/assets/images/serchSmall.png') center/100%;
+        }
+    }
+
+    input{
+        width: 100%;
+        height: 100%;
+        outline: none;
+        border: none;
+        font-size: 13px;
+        color: #000;
+        font-weight: 700;
+
+        &::placeholder{
+            color: #a8a8a8;
+            font-weight: 500;
+        }
+    }
+}
+
+.ChatContentBody{
+    margin: 14px 0 10px;
+
+    p{
+        font-size: 14px;
+        color: #707070;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        &.Disabled{
+            color: #a8a8a8;
+        }
+    }
+}
+
+.ChatContentFooter{
+    display: flex;
+    gap: 12px;
+    align-items: center;
+
+    p{
+        font-size: 13px;
+        font-weight: 500;
+
+        &.Date{
+            color: #a8a8a8;
+        }
+
+        &.New{
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #F95884;
+            line-height: 1;
+
+            span{
+                font-size: 12px;
+                color: #fff;
+                font-weight: 500;
+                background-color: #F95884;
+                border-radius: 10px;
+                width: 30px;
+                height: 16px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+}
+
+
+.DeleteBox{
+    width: 100%;
+    height: 0;
+    overflow-y: hidden;
+    transition: .5s;
+    background-color: #fff;
+    border-top: 1px solid #e2e2e2;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+    padding-right: 5px;
+    box-sizing: border-box;
+
+    &.On{
+        height: 60px
+    }
+
+    button{
+        @include button();
+        width: 112px;
+        height: 50px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 700;
+        color: #fff;
+        transition: .3s;
+        @include backgroundColor(#F95884, #E9416E);
+
+        &[type=reset]{
+            @include backgroundColor(#C4C4C4, #B0B0B0);
+        }
+    }
+}
+
+.CheckAllBox{
+    width: 58px;
+    height: 100%;
+    border-right: 1px solid #e2e2e2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: auto;
+
+    span{
+        margin: 0 !important;
+    }
+
+    
+}
