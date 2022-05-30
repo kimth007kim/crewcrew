@@ -152,8 +152,14 @@ public class JwtProvider {
         try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
+        }catch(MalformedJwtException e){
+            log.error(e.toString());
+            return false;
+
         } catch (JwtException | IllegalArgumentException e) {
             log.error(e.toString());
+            return false;
+        } catch(Exception e){
             return false;
         }
     }

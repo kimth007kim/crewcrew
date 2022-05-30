@@ -55,13 +55,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String jwt = null;
         String refreshJwt = null;
         String refreshUname = null;
-
+//            "undefined"
         try {
             if (jwtToken != null) {
                 log.info("-------------------- access 토큰이 존재할경우 log -----------");
                 jwt = jwtToken.getValue();
                 uid = jwtProvider.getUserUid(jwt);
-                if (uid != null) {
+                if (uid != null ) {
                     log.info("-------------------- uid가 존재할경우 log  -----------");
                     UserDetails userDetails = userDetailsService.loadUserByUsername(Long.toString(uid));
                     if (jwtProvider.validateToken(jwt, userDetails)) {
@@ -97,7 +97,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         } catch (ExpiredJwtException e) {
             log.info("--------------------토큰이 만료되었을 경우에 뜨는 log -----------");
-            if (refreshToken != null) {
+            if (refreshToken != null ) {
                 log.info("--------------------토큰이 만료되었고 refresh 토큰이 있을때 log -----------");
                 refreshJwt = refreshToken.getValue();
                 if (refreshJwt != null) {
