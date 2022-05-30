@@ -80,7 +80,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     if (refreshUname.equals(Long.toString(jwtProvider.getUserUid(refreshJwt)))) {
                         log.info("--------------------Redis 에 존재 한다.-----------");
 
-                        Authentication authentication= jwtProvider.getAuthentication(jwt);
+                        Authentication authentication= jwtProvider.getAuthentication(refreshJwt);
 //                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 //                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                         SecurityContextHolder.getContext().setAuthentication(authentication);
