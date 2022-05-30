@@ -386,10 +386,16 @@ public class UserService {
         }
     }
 
+    public boolean validateToken(String token){
+        if(!jwtProvider.validateToken(token)){
+            return false;
+        }
+        return true;
+    }
 
     public User tokenChecker(String accessToken) {
         if (!jwtProvider.validateToken(accessToken)) {
-            throw new CInvalidTokenException();
+            log.error("사용할수 없는 토큰입니다.");
         }
         Claims c = jwtProvider.parseClaims(accessToken);
         String uid = c.getSubject();

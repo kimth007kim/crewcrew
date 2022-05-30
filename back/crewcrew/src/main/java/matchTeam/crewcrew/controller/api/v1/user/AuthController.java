@@ -468,6 +468,9 @@ public class AuthController {
     @GetMapping("/token")
     public ResponseEntity<Object> checkToken(@RequestHeader("X-AUTH-TOKEN") String token) {
         System.out.println("X-AUTH-TOKEN"+token);
+        if (!userService.validateToken(token))
+            return ResponseHandler.generateResponse("존재하지 않는 유저입니다", HttpStatus.OK,null );
+
         User user = userService.tokenChecker(token);
         System.out.println(user.getUid());
         List<Long> liked =likedCategoryService.findUsersLike(user);

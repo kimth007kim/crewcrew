@@ -150,7 +150,9 @@ public class JwtProvider {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+//            if parseCl
+            Claims c = parseClaims(token);
+//            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
         }catch(MalformedJwtException e){
             log.error(e.toString());
@@ -178,21 +180,7 @@ public class JwtProvider {
 
     }
 
-    public boolean validateToken(HttpServletRequest request, String token) {
-        try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return true;
-        } catch (MalformedJwtException e) {
-            request.setAttribute("exception", "MalformedJwtException");
-        } catch (ExpiredJwtException e) {
-            request.setAttribute("exception", "ExpiredJwtException");
-        } catch (UnsupportedJwtException e) {
-            request.setAttribute("exception", "UnsupportedJwtException");
-        } catch (IllegalArgumentException e) {
-            request.setAttribute("exception", "IllegalArgumentException");
-        }
-        return false;
-    }
+
 
     public Long refreshTokenTime(boolean isMaintain) {
         if (isMaintain) {
