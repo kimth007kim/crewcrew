@@ -3,6 +3,7 @@ window.addEventListener("DOMContentLoaded", function(){
     const Search = document.querySelector("button.Search");
     Search?.addEventListener('click', function(){ //검색창 내리기
         document.querySelector(".ChatBoxSearch").classList.toggle("On");
+        document.querySelector(".ChatBoxBody").classList.toggle("Search");
     }); 
 
     const Set = document.querySelector("button.Set");
