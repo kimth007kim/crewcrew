@@ -65,9 +65,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     log.info("-------------------- uid가 존재할경우 log  -----------");
                     UserDetails userDetails = userDetailsService.loadUserByUsername(Long.toString(uid));
                     if (jwtProvider.validateToken(jwt, userDetails)) {
-                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                        Authentication authentication= jwtProvider.getAuthentication(jwt);
+//                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 }
             }else{
@@ -79,11 +80,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     if (refreshUname.equals(Long.toString(jwtProvider.getUserUid(refreshJwt)))) {
                         log.info("--------------------Redis 에 존재 한다.-----------");
 
-                        UserDetails userDetails = userDetailsService.loadUserByUsername(refreshUname);
-                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
+                        Authentication authentication= jwtProvider.getAuthentication(jwt);
+//                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
                         User user = userRepository.findByUid(Long.parseLong(refreshUname));
                         String newToken = jwtProvider.createToken(uid, user.getRoles(), jwtProvider.accessTokenValidMillisecond);
                         log.info("--------------------새로운 토큰 발급-----------"+newToken);
@@ -105,10 +105,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     log.info("--------------------Redis 에서 가져온 UID -----------"+refreshUname);
                     if (refreshUname.equals(jwtProvider.getUserUid(refreshJwt))) {
                         log.info("--------------------Redis 조회결과 같을때 -----------");
-                        UserDetails userDetails = userDetailsService.loadUserByUsername(refreshUname);
-                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                        Authentication authentication= jwtProvider.getAuthentication(jwt);
+//                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
 
                         User user = userRepository.findByUid(Long.parseLong(refreshUname));
                         String newToken = jwtProvider.createToken(uid, user.getRoles(), jwtProvider.accessTokenValidMillisecond);
@@ -122,26 +122,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         } catch (Exception e) {
 
         }
-//        try {
-//            if (refreshJwt != null && jwtToken==null) {
-//                log.info("--------------------Acess 토큰 없고 refresh 토큰있다-----------");
-//                refreshUname = redisUtil.getData(refreshJwt);
-//                if (refreshUname.equals(jwtProvider.getUserUid(refreshJwt))) {
-//                    UserDetails userDetails = userDetailsService.loadUserByUsername(refreshUname);
-//                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//                    usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-//                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-//
-//                    User user = userRepository.findByUid(Long.parseLong(refreshUname));
-//                    String newToken = jwtProvider.createToken(uid, user.getRoles(), jwtProvider.accessTokenValidMillisecond);
-//
-//                    Cookie newCookie = cookieService.generateCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
-//                    response.addCookie(newCookie);
-//                }
-//            }
-//        } catch (ExpiredJwtException e) {
-//
-//        }
+
         filterChain.doFilter(request, response);
     }
 

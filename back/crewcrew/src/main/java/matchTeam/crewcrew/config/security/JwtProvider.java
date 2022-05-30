@@ -46,11 +46,9 @@ public class JwtProvider {
     // 객체 초기화, secretKey를 Base64로 인코딩한다.
     @PostConstruct
     protected void init() {
-//        key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         System.out.println(secretKey);
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
         System.out.println(secretKey);
-//        secretKey = Base64UrlCodec.BASE64URL.encode(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
     //JWT 토큰 생성
@@ -130,9 +128,6 @@ public class JwtProvider {
         try {
 
             return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
-//            return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
-//            return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
-//            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
@@ -206,13 +201,6 @@ public class JwtProvider {
         if (user.isEmpty())
             throw new UserNotFoundException();
         return user.get().getRoles();
-    }
-
-    public boolean existRefreshToken(String refreshToken) {
-        String result = redisUtil.getData(refreshToken);
-        if (result == null)
-            return false;
-        return true;
     }
 
 
