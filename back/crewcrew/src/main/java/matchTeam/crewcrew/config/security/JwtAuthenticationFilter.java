@@ -76,6 +76,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     log.info("--------------------Acess 토큰 없고 refresh 토큰있다-----------");
                     refreshUname = redisUtil.getData(refreshJwt);
                     if (refreshUname.equals(jwtProvider.getUserUid(refreshJwt))) {
+                        log.info("--------------------Redis 에 존재 한다.-----------");
+
                         UserDetails userDetails = userDetailsService.loadUserByUsername(refreshUname);
                         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                         usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -83,6 +85,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                         User user = userRepository.findByUid(Long.parseLong(refreshUname));
                         String newToken = jwtProvider.createToken(uid, user.getRoles(), jwtProvider.accessTokenValidMillisecond);
+                        log.info("--------------------새로운 토큰 발급-----------"+newToken);
 
                         Cookie newCookie = cookieService.generateCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
                         response.addCookie(newCookie);
@@ -108,6 +111,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                         User user = userRepository.findByUid(Long.parseLong(refreshUname));
                         String newToken = jwtProvider.createToken(uid, user.getRoles(), jwtProvider.accessTokenValidMillisecond);
+                        log.info("--------------------새로 생성된 accessToken -----------");
 
                         Cookie newCookie = cookieService.generateCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
                         response.addCookie(newCookie);
