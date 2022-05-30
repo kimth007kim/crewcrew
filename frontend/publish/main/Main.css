@@ -656,8 +656,7 @@ ul.InputList > li {
   width: 20px;
   height: 20px;
   margin-right: 10px;
-  background: url("../../src/assets/images/LogInCheck_off.png");
-  background-size: 100%;
+  background: url("../../src/assets/images/LogInCheck_off.png") center/100% no-repeat;
   -webkit-transition: background .2s;
   transition: background .2s;
 }
@@ -1463,6 +1462,10 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   }
 }
 
+* {
+  scroll-behavior: smooth;
+}
+
 body.Modal {
   height: 100vh;
   overflow: hidden;
@@ -1905,11 +1908,11 @@ main {
 
 @media screen and (max-width: 820px) {
   body.Modal, .ModalWrapper, .ModalBg {
-    height: 100vh;
+    height: 100%;
   }
   .ModalWrapper.Modal .ModalBox {
-    margin-top: 80px;
-    height: calc(100vh - 80px);
+    margin-top: 40px;
+    height: calc(100% - 40px);
     position: fixed;
     bottom: 0;
   }
@@ -2514,7 +2517,6 @@ main {
 }
 
 * {
-  scroll-behavior: smooth;
   word-break: keep-all;
 }
 

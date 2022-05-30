@@ -656,8 +656,7 @@ ul.InputList > li {
   width: 20px;
   height: 20px;
   margin-right: 10px;
-  background: url("../../src/assets/images/LogInCheck_off.png");
-  background-size: 100%;
+  background: url("../../src/assets/images/LogInCheck_off.png") center/100% no-repeat;
   -webkit-transition: background .2s;
   transition: background .2s;
 }
@@ -1461,6 +1460,10 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   .PostCard.Cent .PostCardBody .DetailBox p span {
     display: none;
   }
+}
+
+* {
+  scroll-behavior: smooth;
 }
 
 body.Modal {
@@ -2294,10 +2297,6 @@ main {
   .PaginationWrapper div.Prev, .PaginationWrapper div.Next, .PaginationWrapper div.Prev2, .PaginationWrapper div.Next2 {
     background-position: center;
   }
-}
-
-* {
-  scroll-behavior: smooth;
 }
 
 section.MainTop {

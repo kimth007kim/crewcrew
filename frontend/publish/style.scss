@@ -460,8 +460,7 @@ ul.InputList>li{
             width: 20px;
             height: 20px;
             margin-right: 10px;
-            background: url("../../src/assets/images/LogInCheck_off.png");
-            background-size: 100%;
+            background: url("../../src/assets/images/LogInCheck_off.png") center/100% no-repeat;
             transition: background .2s;
         }
     }

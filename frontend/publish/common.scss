@@ -1,6 +1,8 @@
 @import "./style";
 
-
+*{
+    scroll-behavior: smooth;
+}
 @mixin modalBox($padding, $width) {
     padding: 0 $padding;
     width: $width;
