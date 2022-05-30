@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -482,6 +483,25 @@ public class AuthController {
             return ResponseHandler.generateResponse("엑세스 토큰에 해당하는 유저 없음", HttpStatus.OK, null );
         }
 
+    }
+    @ApiResponses({
+
+            @ApiResponse(
+                    code = 200
+                    , message = "엑세스토큰 으로 유저 정보 조회 성공"
+                    , response = UserResponseDto.class
+            )
+            ,@ApiResponse(
+            code = 1900
+            , message = "입력받은 엑세스토큰에 해당하는 유저가없습니다"
+    )
+
+    })
+    @ApiOperation(value ="로그아웃" )
+    @GetMapping("/logOut")
+    public ResponseEntity<Object> logOut(HttpServletRequest request, HttpServletResponse response) {
+        cookieService.logOut(request,response);
+            return ResponseHandler.generateResponse("로그아웃 성공", HttpStatus.OK, null );
     }
 
 }

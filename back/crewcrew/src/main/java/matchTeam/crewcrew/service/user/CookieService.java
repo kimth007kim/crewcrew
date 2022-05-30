@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +42,21 @@ public class CookieService {
             }
         }
         return null;
+    }
+
+    public void logOut(HttpServletRequest request, HttpServletResponse response){
+        Cookie accessToken = getCookie(request,"X-AUTH-TOKEN");
+        Cookie refreshToken = getCookie(request,"refreshToken");
+        if (accessToken!=null){
+            accessToken.setValue(null);
+            accessToken.setMaxAge(0);
+            response.addCookie(accessToken);
+        }
+        if (refreshToken!=null){
+            refreshToken.setValue(null);
+            refreshToken.setMaxAge(0);
+            response.addCookie(refreshToken);
+        }
+
     }
 }
