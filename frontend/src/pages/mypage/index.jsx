@@ -16,7 +16,7 @@ function MyPage() {
     data: myData,
     error,
     mutate,
-  } = useSWR(['/user/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   if (myData === undefined) {
     return null;

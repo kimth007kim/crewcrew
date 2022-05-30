@@ -78,7 +78,7 @@ function NavContainer() {
     data: myData,
     error,
     mutate,
-  } = useSWR(['/user/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
   const navigate = useNavigate();
   const [Dialog, openModal, closeModal] = useModal();
 

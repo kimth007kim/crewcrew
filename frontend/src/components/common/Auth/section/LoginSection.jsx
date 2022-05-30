@@ -38,7 +38,7 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
     data: myData,
     error: myError,
     mutate,
-  } = useSWR(['/user/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
+  } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
 
   const EmailValidCheck = useCallback((value) => {
     if (!isEmail(value)) {
@@ -125,18 +125,20 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
           const { data } = await axios.post('/auth/login', context, {
             withCredentials: true,
           });
-          const now = new Date();
-          const afterh = new Date();
 
           switch (data.status) {
             case 200:
-              afterh.setHours(now.getHours() + 72);
-              setCookie('X-AUTH-TOKEN', data.data.accessToken, {
-                path: '/',
-                expires: afterh,
-              });
+              if (process.env.NODE_ENV !== 'production') {
+                const now = new Date();
+                const afterh = new Date();
+                afterh.setHours(now.getHours() + 72);
+                setCookie('X-AUTH-TOKEN', data.data.accessToken, {
+                  path: '/',
+                  expires: afterh,
+                });
+              }
 
-              mutate('/user/token');
+              mutate('/auth/token');
               closeModal();
               break;
             case 400:

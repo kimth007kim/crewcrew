@@ -52,7 +52,7 @@ function SignupSection3({ IsClick, HandleClick }) {
     data: myData,
     error: myError,
     mutate,
-  } = useSWR(['/user/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
+  } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
 
   // Recoil State
   const name = useRecoilValue(nameState);
@@ -202,17 +202,19 @@ function SignupSection3({ IsClick, HandleClick }) {
       const { data } = await axios.post('/auth/login', context, {
         withCredentials: true,
       });
-      const now = new Date();
-      const afterh = new Date();
 
       switch (data.status) {
         case 200:
-          afterh.setHours(now.getHours() + 3);
-          setCookie('X-AUTH-TOKEN', data.data.accessToken, {
-            path: '/',
-            expires: afterh,
-          });
-          mutate('/user/token');
+          if (process.env.NODE_ENV !== 'production') {
+            const now = new Date();
+            const afterh = new Date();
+            afterh.setHours(now.getHours() + 72);
+            setCookie('X-AUTH-TOKEN', data.data.accessToken, {
+              path: '/',
+              expires: afterh,
+            });
+          }
+          mutate('/auth/token');
           break;
         case 400:
         case 1101:

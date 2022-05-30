@@ -15,7 +15,7 @@ function MyInfoProfile({ open }) {
     data: myData,
     error: myError,
     mutate,
-  } = useSWR(['/user/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   // 닉네임
   const [nickname, setNickname] = useState('');
@@ -136,7 +136,7 @@ function MyInfoProfile({ open }) {
       switch (data.status) {
         case 200:
           toast.success('성공적으로 변경되었습니다.');
-          mutate('/user/token');
+          mutate('/auth/token');
           InitialState();
           break;
         case 1007:
