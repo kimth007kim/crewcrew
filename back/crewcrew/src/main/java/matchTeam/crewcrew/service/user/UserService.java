@@ -386,12 +386,12 @@ public class UserService {
         }
     }
 
-    public boolean validateToken(String token){
-        if(!jwtProvider.validateToken(token)){
-            return false;
-        }
-        return true;
-    }
+//    public boolean validateToken(String token){
+//        if(!jwtProvider.validateToken(token)){
+//            return false;
+//        }
+//        return true;
+//    }
 
     public User tokenChecker(String accessToken) {
         if (!jwtProvider.validateToken(accessToken)) {
