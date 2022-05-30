@@ -3357,6 +3357,7 @@ br.fold {
 }
 
 .ChatContentHead .HeadBox {
+  background-color: #fff;
   border-radius: 15px;
   height: 30px;
   border: 1px solid #E2E2E2;
