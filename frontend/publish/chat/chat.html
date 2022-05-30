@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>크루크루</title>
+    <link rel="stylesheet" href="./chat.css">
+    <script src="/frontend/publish/layout/Include.js"></script> <!--퍼블단 인클루드용/개발때는 무시-->
+    <script type="module"src="../Common.js"></script>
+    <script src="./chat.js"></script>
+    <script src="../Swiper.js"></script>
+</head>
+<body>
+    <div data-include="/frontend/publish/layout/Lnb.html"></div> <!--퍼블단 인클루드용/개발때는 무시-->
+
+    <main>
+        <div class="ScrollButton">
+            <div class="ScrollTop"></div>
+            <div class="ScrollBottom"></div>
+        </div>
+
+        <section class="MainTop">
+            <div class="TopCont">
+                <h2><a href="#"></a>채팅</h2>
+            </div>
+            </div>
+            <div class="ButtonIntro"></div>
+        </section>
+
+        <section class="Chat">
+            <div class="SectionWrap">
+                <div class="ChatBoxWrapper">
+                    <div class="ChatBoxHead">
+                        <h3>채팅 목록</h3>
+                        <button class="Search">검색</button>
+                        <button class="Set">설정</button>
+                    </div>
+                    <div class="ChatBoxSearch">
+                        <form action="">
+                            <div class="SearchInputWrap">
+                                <button>검색하기</button>
+                                <input type="text" placeholder="채팅 상대 또는 관련 모집글 이름/카테고리">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="ChatBoxBody">
+                        <form action="">
+                            <ul class="ChatBoxList">
+                                <li class="ChatContent">
+                                    <div class="ContentSet">
+                                        <input type="checkbox" class="InputHide checkProp" id="Chat1" name="Chat">
+                                        <label for="Chat1" class="LabelCheck"><span></span></label>
+                                    </div>
+                                    <div class="ContentCard">
+                                        <div class="ChatContentHead">
+                                            <div class="HeadBox Profile">
+                                                <img src="/frontend/src/assets/images/ProfileMail.png" alt="" class="ProfileImg">
+                                                <img src="/frontend/src/assets/images/IconFlag.png" alt="" class="ProfileFlag">
+                                                <p>재영재영유재영유재영</p>
+                                            </div>
+                                            <div class="HeadBox Post">
+                                                <p><span class="Study">고시/공무원</span>함께 크루원 모집 플랫폼을 작업하실 분을 모십니다~!</p>
+                                            </div>
+                                        </div>
+                                        <div class="ChatContentBody">
+                                            <p>안녕하세요. 요청한 내용 보고 궁금한 점이 있어 채팅 남깁니다. 안녕하세요. 요청한 내용 보고 궁금한 점이 있어 채팅 남깁니다. 안녕하세요. 요청한 내용 보고 궁금한 점이 있어 채팅 남깁니다.</p>
+                                        </div>
+                                        <div class="ChatContentFooter">
+                                            <p class="Date">05.10</p>
+                                            <p class="New">NEW<span>2</span></p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="ChatContent">
+                                    <div class="ContentSet">
+                                        <input type="checkbox" class="InputHide checkProp" id="Chat2" name="Chat">
+                                        <label for="Chat2" class="LabelCheck"><span></span></label>
+                                    </div>
+                                    <div class="ContentCard">
+                                        <div class="ChatContentHead">
+                                            <div class="HeadBox Profile">
+                                                <img src="/frontend/src/assets/images/ProfileMail.png" alt="" class="ProfileImg">
+                                                <p>재영재영유재영유재영</p>
+                                            </div>
+                                            <div class="HeadBox Post">
+                                                <p><span class="Hobby">게임</span>함께 크루원 모집 플랫폼을 작업하실 분을 모십니다~!</p>
+                                            </div>
+                                        </div>
+                                        <div class="ChatContentBody">
+                                            <p>안녕하세요. 요청한 내용 보고 궁금한 점이 있어 채팅 남깁니다. 안녕하세요. 요청한 내용 보고 궁금한 점이 있어 채팅 남깁니다. 안녕하세요. 요청한 내용 보고 궁금한 점이 있어 채팅 남깁니다.</p>
+                                        </div>
+                                        <div class="ChatContentFooter">
+                                            <p class="Date">05.10</p>
+                                            <p class="New">NEW<span>999</span></p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="ChatContent">
+                                    <div class="ContentSet">
+                                        <input type="checkbox" class="InputHide checkProp" id="Chat3" name="Chat">
+                                        <label for="Chat3" class="LabelCheck"><span></span></label>
+                                    </div>
+                                    <div class="ContentCard">
+                                        <div class="ChatContentHead">
+                                            <div class="HeadBox Profile">
+                                                <img src="/frontend/src/assets/images/ProfileMail.png" alt="" class="ProfileImg">
+                                                <img src="/frontend/src/assets/images/IconFlag.png" alt="" class="ProfileFlag">
+                                                <p>재영재영유재영유재영</p>
+                                            </div>
+                                            <div class="HeadBox Post">
+                                                <p><span class="Study">고시/공무원</span>함께 크루원 모집 플랫폼을 작업하실 분을 모십니다~!</p>
+                                            </div>
+                                        </div>
+                                        <div class="ChatContentBody">
+                                            <p class="Disabled">이 채팅방은 삭제되었습니다.</p>
+                                        </div>
+                                        <div class="ChatContentFooter">
+                                            <p class="Date">05.10</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="ChatContent">
+                                    <div class="ContentSet">
+                                        <input type="checkbox" class="InputHide checkProp" id="Chat4" name="Chat">
+                                        <label for="Chat4" class="LabelCheck"><span></span></label>
+                                    </div>
+                                    <div class="ContentCard">
+                                        <div class="ChatContentHead">
+                                            <div class="HeadBox Profile">
+                                                <img src="/frontend/src/assets/images/ProfileMail.png" alt="" class="ProfileImg">
+                                                <img src="/frontend/src/assets/images/IconFlag.png" alt="" class="ProfileFlag">
+                                                <p>재영재영유재영유재영</p>
+                                            </div>
+                                            <div class="HeadBox Post">
+                                                <p><span class="Study">고시/공무원</span>함께 크루원 모집 플랫폼을 작업하실 분을 모십니다~!</p>
+                                            </div>
+                                        </div>
+                                        <div class="ChatContentBody">
+                                            <p>안녕하세요. 요청한 내용 보고 궁금한 점이 있어 채팅 남깁니다. 안녕하세요. 요청한 내용 보고 궁금한 점이 있어 채팅 남깁니다. 안녕하세요. 요청한 내용 보고 궁금한 점이 있어 채팅 남깁니다.</p>
+                                        </div>
+                                        <div class="ChatContentFooter">
+                                            <p class="Date">05.10</p>
+                                            <p class="New">NEW<span>999</span></p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="ChatContent">
+                                    <div class="ContentSet">
+                                        <input type="checkbox" class="InputHide checkProp" id="Chat5" name="Chat">
+                                        <label for="Chat5" class="LabelCheck"><span></span></label>
+                                    </div>
+                                    <div class="ContentCard">
+                                        <div class="ChatContentHead">
+                                            <div class="HeadBox Profile">
+                                                <img src="/frontend/src/assets/images/ProfileMail.png" alt="" class="ProfileImg">
+                                                <p>유재영</p>
+                                            </div>
+                                            <div class="HeadBox Post">
+                                                <p><span class="Study">고시/공무원</span>함께 크루원 모집 플랫폼을 작업하실 분을 모십니다~!</p>
+                                            </div>
+                                        </div>
+                                        <div class="ChatContentBody">
+                                            <p>안녕하세요. 요청한 내용 보고 궁금한 점이 있어 채팅 남깁니다. 안녕하세요. 요청한 내용 보고 궁금한 점이 있어 채팅 남깁니다. 안녕하세요. 요청한 내용 보고 궁금한 점이 있어 채팅 남깁니다.</p>
+                                        </div>
+                                        <div class="ChatContentFooter">
+                                            <p class="Date">05.10</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <div class="DeleteBox">
+                                <div class="CheckAllBox">
+                                    <input type="checkbox" class="InputHide checkAll" id="ChatAll" name="Chat">
+                                    <label for="ChatAll" class="LabelCheck"><span></span></label>
+                                </div>
+                                <button type="reset">선택취소</button>
+                                <button>삭제</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
