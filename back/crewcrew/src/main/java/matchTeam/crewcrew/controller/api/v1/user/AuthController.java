@@ -1,6 +1,7 @@
 package matchTeam.crewcrew.controller.api.v1.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import io.jsonwebtoken.MalformedJwtException;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.security.ResponseTokenDto;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -276,7 +278,7 @@ public class AuthController {
 //        Cookie accessCookie = cookieService.generateAccessToken(tokenDto.getAccessToken());
 //        Cookie refreshCookie = cookieService.generateRefreshToken(tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExpireDate());
 
-        Cookie accessCookie = cookieService.generateCookie("X-AUTH-TOKEN",tokenDto.getAccessToken(),tokenDto.getAccessTokenExpireDate());
+        Cookie accessCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN",tokenDto.getAccessToken(),tokenDto.getAccessTokenExpireDate());
         Cookie refreshCookie = cookieService.generateCookie("refreshToken",tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExpireDate());
 
         System.out.println("refreshCookie = " + refreshCookie);
@@ -442,6 +444,64 @@ public class AuthController {
         myCookie.setSecure(true);
         response.addCookie(myCookie);
         return ResponseHandler.generateResponse("인증 코드 일치", HttpStatus.OK, null);
+    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name="X-AUTH-TOKEN",
+                    value="로그인 성공후 AccessToken",
+                    required= true,dataType = "String",paramType = "header"
+            )
+    })
+    @ApiResponses({
+
+            @ApiResponse(
+                    code = 200
+                    , message = "엑세스토큰 으로 유저 정보 조회 성공"
+                    , response = UserResponseDto.class
+            )
+            ,@ApiResponse(
+            code = 1900
+            , message = "입력받은 엑세스토큰에 해당하는 유저가없습니다"
+    )
+
+    })
+    @ApiOperation(value ="엑세스토큰 으로 유저 정보 조회." ,notes="엑세스 토큰으로 유저정보를 조회합니다.\n"+ "※주의: kakao,naver에서 받은 인가코드로는 불가능합니다.\n"+" 카카오와 네이버에서 인가코드를 받고 로그인후 받은 Access Token는 가능합니다.")
+    @GetMapping("/token")
+    public ResponseEntity<Object> checkToken(@RequestHeader("X-AUTH-TOKEN") String token) {
+        try{
+
+        System.out.println("X-AUTH-TOKEN"+token);
+        User user = userService.tokenChecker(token);
+        System.out.println(user.getUid());
+        List<Long> liked =likedCategoryService.findUsersLike(user);
+        System.out.println("=================================================="+liked.toString());
+        UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(),user.getName(),user.getNickname(),user.getProfileImage(),liked,user.getMessage(),user.getProvider());
+        return ResponseHandler.generateResponse("엑세스토큰 으로 유저 정보 조회 성공", HttpStatus.OK,userResponseDto );
+        }catch(IllegalArgumentException | MalformedJwtException e ){
+
+            return ResponseHandler.generateResponse("엑세스 토큰에 해당하는 유저 없음", HttpStatus.OK, null );
+        }
+
+    }
+    @ApiResponses({
+
+            @ApiResponse(
+                    code = 200
+                    , message = "엑세스토큰 으로 유저 정보 조회 성공"
+                    , response = UserResponseDto.class
+            )
+            ,@ApiResponse(
+            code = 1900
+            , message = "입력받은 엑세스토큰에 해당하는 유저가없습니다"
+    )
+
+    })
+    @ApiOperation(value ="로그아웃" )
+    @DeleteMapping("/logout")
+    public ResponseEntity<Object> logOut(HttpServletRequest request, HttpServletResponse response) {
+        cookieService.logOut(request,response);
+            return ResponseHandler.generateResponse("로그아웃 성공", HttpStatus.OK, null );
     }
 
 }

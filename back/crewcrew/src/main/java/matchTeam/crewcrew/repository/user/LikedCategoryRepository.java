@@ -29,5 +29,9 @@ public interface LikedCategoryRepository extends JpaRepository<LikedCategory,Lon
     @Query("delete from LikedCategory l where l.category=:category and l.user=:user")
     void deleteLikedCategoryByUserAndCategory(@Param("category")Category category,@Param("user") User user);
 
+    @Query("select ca.categoryName from LikedCategory lc join category ca on lc.category.id = ca.id where lc.user = :user and ca.categoryParent.id = 2")
+    List<String> findHobbyListByUser(@Param("user") User user);
 
+    @Query("select ca.categoryName from LikedCategory lc join category ca on lc.category.id = ca.id where lc.user = :user and ca.categoryParent.id = 1")
+    List<String> findStudyListByUser(@Param("user") User user);
 }

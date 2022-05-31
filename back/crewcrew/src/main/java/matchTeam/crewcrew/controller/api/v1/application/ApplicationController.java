@@ -4,6 +4,10 @@ import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.application.*;
 import matchTeam.crewcrew.dto.board.BoardResponseDTO;
+import matchTeam.crewcrew.entity.board.Board;
+import matchTeam.crewcrew.entity.board.Category;
+import matchTeam.crewcrew.entity.user.LikedCategory;
+
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.service.announcement.AnnouncementService;
@@ -11,6 +15,7 @@ import matchTeam.crewcrew.service.application.ApplicationProgressService;
 import matchTeam.crewcrew.service.application.ApplicationService;
 import matchTeam.crewcrew.service.board.BoardService;
 import matchTeam.crewcrew.service.mail.TotalEmailService;
+import matchTeam.crewcrew.service.user.LikedCategoryService;
 import matchTeam.crewcrew.service.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +23,13 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.List;
+
+import static java.util.stream.Collectors.joining;
 
 @Api(value = "Application Controller", tags = "6. application")
 @ApiOperation(value = "크루 지원, 수락, 거절 / 신청서 조회")
@@ -33,7 +42,7 @@ import java.util.List;
     private final TotalEmailService totalEmailService;
     private final UserService userService;
     private final BoardService boardService;
-
+    private final LikedCategoryService likedCategoryService;
 
     @ApiOperation(value = "지원서 작성", notes = "- 유효한 uid 인지 확인합니다.\n " +
             "- 유효한 boardId 인지  확인합니다\n" +
@@ -72,20 +81,25 @@ import java.util.List;
     @PostMapping(value = "/board/application")
     public ResponseEntity<Object> fillInApplication(@RequestHeader("X-AUTH-TOKEN") String token,
                                                     @ApiParam(value = "지원서 작성 요청 DTO", required = true) @RequestBody ApplicationSaveRequestDTO info) throws MessagingException{
-
         User user = userService.tokenChecker(token);
         ApplicationSaveResponseDTO result = applicationService.save(user, info);
         announcementService.save(result);
         applicationProgressService.increaseApply(info.getBoardId());
 
-        /*
+        BoardResponseDTO board = boardService.findById(info.getBoardId());
+
+        likedCategoryService.findUsersLike(user);
+
         Context context = new Context();
         context.setVariable("nickname", user.getNickname());
+        context.setVariable("boardTitle", board.getTitle());
+        context.setVariable("commentary", info.getCommentary());
         context.setVariable("introduce", user.getIntroduce());
-        context.setVariable("hobby", user.getLikedCategories());
-        //context.setVariable("url", url);
+        context.setVariable("interestStudyCategory", likedCategoryService.findUsersStudyLike(user).stream().collect(joining(",")));
+        context.setVariable("interestHobbyCategory", likedCategoryService.findUsersHobbyLike(user).stream().collect(joining(",")));;
 
-        totalEmailService.sendJavaMail("[크루크루] 지원서 도착", user.getEmail(), "mailform/apply", context);*/
+        context.setVariable("url", "crewcrew.org/board/" + board.getBoardId());
+        totalEmailService.sendJavaMail("[크루크루] 지원서 도착", userService.findByUid(board.getUid()).getEmail(), "mailform/apply", context);
         return ResponseHandler.generateResponse("지원서 작성 성공",HttpStatus.OK, result);
     }
 
@@ -110,7 +124,7 @@ import java.util.List;
 
         User user = userService.tokenChecker(token);
         ApplicationCountResponseDTO result = applicationService.findMyApplication(user);
-        
+
         return ResponseHandler.generateResponse("내 지원서 조회(스터디, 취미별 지원서 개수 조회)",HttpStatus.OK, result);
     }
 
@@ -233,7 +247,6 @@ import java.util.List;
         return ResponseHandler.generateResponse("내게 도착한 지원서의 지원자 상세 조회 성공", HttpStatus.OK, result);
     }
 
-
     @ApiOperation(value = "지원서 진행사항 수정하기")
     @ResponseStatus(value = HttpStatus.OK )
     @PutMapping(value = "/application/status")
@@ -241,6 +254,14 @@ import java.util.List;
 
         User user = userService.tokenChecker(token);
         ApplicationUserDetailsResponseDTO result = applicationService.updateApply(request, user);
+
+        /*if (request.getStatusCode() == 2){ // 참여 수락된 경우 메일 발송
+            Context context = new Context();
+            context.setVariable("nickname", name);
+            context.setVariable("chatURL", chatURL);
+            totalEmailService.sendJavaMail("[크루크루] 회원님의 요청이 수락되었습니다", email, "mailform/accepted", context);
+        }*/
+
         return ResponseHandler.generateResponse("지원서 진행사항 수정 성공", HttpStatus.OK, result);
     }
 
@@ -327,7 +348,7 @@ import java.util.List;
         return ResponseHandler.generateResponse("내가 모집중인 크루 개수 조회하기 성공", HttpStatus.OK, count);
     }
 
-    @ApiOperation("내가 모집중인 크루 모집글 조회하기(카테고리 별)")
+    @ApiOperation("내가 모집중인 크루 모집글 상세 조회하기(카테고리 별)")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/application/recruiting/{categoryParentId}")
     public ResponseEntity<Object> findRecruitingDetails(@RequestHeader("X-AUTH-TOKEN") String token,
@@ -335,7 +356,20 @@ import java.util.List;
                                                         @PageableDefault(size = 5)Pageable pageable){
 
         User user = userService.tokenChecker(token);
-        ApplicationCountResponseDTO count = applicationService.findRecruitingCount(user);
-        return ResponseHandler.generateResponse("내가 모집중인 크루 개수 조회하기 성공", HttpStatus.OK, count);
+        MyRecruitingBoardPageResDTO pageResDTO = MyRecruitingBoardPageResDTO.toDTO(applicationService.findRecruitingDetails(user, categoryParentId, pageable));
+
+        return ResponseHandler.generateResponse("내가 모집중인 크루 개수 조회하기 성공", HttpStatus.OK, pageResDTO);
+    }
+
+    @ApiOperation("내가 모집중인 크루 대기자 혹은 참여자 조회하기")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/application/recruiting/waiting/{boardId}")
+    public ResponseEntity<Object> findWaitingCrew(@RequestHeader("X-AUTH-TOKEN") String token,
+                                                  @PathVariable Long boardId,
+                                                  @RequestParam Integer statusCode){
+
+        User user = userService.tokenChecker(token);
+        MyWaitingCrewResponseDTO waitingCrew = applicationService.findWaitingCrew(user, boardId, statusCode);
+        return ResponseHandler.generateResponse("내가 모집중인 크루 개수 조회하기 성공", HttpStatus.OK, waitingCrew);
     }
 }

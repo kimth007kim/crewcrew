@@ -1,100 +1,141 @@
 package matchTeam.crewcrew.config.security;
 
-import io.jsonwebtoken.MalformedJwtException;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
-import matchTeam.crewcrew.response.ErrorResponseHandler;
+import matchTeam.crewcrew.config.RedisUtil;
+import matchTeam.crewcrew.entity.user.User;
+import matchTeam.crewcrew.repository.user.UserRepository;
 import matchTeam.crewcrew.service.user.CookieService;
-import matchTeam.crewcrew.response.ErrorCode;
-import matchTeam.crewcrew.response.exception.auth.CUserNotFoundException;
-import matchTeam.crewcrew.response.exception.auth.CrewException;
-import matchTeam.crewcrew.service.user.CookieService;
-import matchTeam.crewcrew.util.customException.UserNotFoundException;
+import matchTeam.crewcrew.service.user.CustomUserDetailService;
+import matchTeam.crewcrew.service.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtProvider jwtProvider;
-    private final CookieService cookieService;
+    @Autowired
+    private JwtProvider jwtProvider;
 
 
-//    @Override
-//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//        String accessToken = jwtProvider.resolveAccessToken(request);
-//        String refreshToken = jwtProvider.resolveRefreshToken(request);
-//
-//        if (accessToken != null) {
-//            if (jwtProvider.validateToken(accessToken)) {
-//                this.setAuthentication(accessToken);
-//            } else if (!jwtProvider.validateToken(accessToken) && refreshToken != null) {
-//                boolean validateRefreshToken = jwtProvider.validateToken(refreshToken);
-//                boolean isRefreshToken = jwtProvider.existRefreshToken(refreshToken);
-//                if (validateRefreshToken && isRefreshToken) {
-//                    Long uid = jwtProvider.getUserUid(refreshToken);
-//                    List<String> roles = jwtProvider.getRoles(uid);
-//                    String newAccessToken = jwtProvider.createToken(uid, roles, jwtProvider.accessTokenValidMillisecond);
-//                    response.addCookie(cookieService.generateAccessToken(newAccessToken));
-//                    this.setAuthentication(newAccessToken);
-//                }
-//                filterChain.doFilter(request, response);
-//            }
-//        }
-//
-//
-//    }
+    @Autowired
+    private CookieService cookieService;
+
+    @Autowired
+    private CustomUserDetailService userDetailsService;
+    @Autowired
+    private RedisUtil redisUtil;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String accessToken = jwtProvider.resolveAccessToken(request);
-        String refreshToken = jwtProvider.resolveRefreshToken(request);
+        final Cookie jwtToken = getCookie(request, "X-AUTH-TOKEN");
+        final Cookie refreshToken = getCookie(request,"refreshToken");
 
-
-//        String accessToken = cookieService.getCookie(request,"X-AUTH-TOKEN").getValue();
-//        String refreshToken = cookieService.getCookie(request,"refreshToken").getValue();
-
-        if (accessToken != null) {
-            if (jwtProvider.validateToken(request,accessToken)) {
-                System.out.println("--------------------------------인증 성공-----------------------------------------");
-                this.setAuthentication(accessToken);
-            } else if (!jwtProvider.validateToken(request,accessToken) && refreshToken != null) {
-                System.out.println("--------------------------------재발급 과정-----------------------------------------");
-                boolean validateRefreshToken = jwtProvider.validateToken(request,refreshToken);
-                boolean isRefreshToken = jwtProvider.existRefreshToken(refreshToken);
-
-                System.out.println("validateRefreshToken 의 경우(refresh 토큰이 유효 한지)"+ validateRefreshToken);
-                System.out.println("isRefreshToken 의 경우(refresh 토큰이 존재하는지)"+ isRefreshToken);
-                if (validateRefreshToken && isRefreshToken) {
-                    Long uid = jwtProvider.getUserUid(refreshToken);
-                    List<String> roles = jwtProvider.getRoles(uid);
-
-                    System.out.println("교체 --------------------------- 작업 ");
-                    String newAccessToken = jwtProvider.createToken(uid, roles, jwtProvider.accessTokenValidMillisecond);
-                    response.addCookie(cookieService.generateCookie("X-AUTH-TOKEN", newAccessToken, jwtProvider.accessTokenValidMillisecond));
-                    this.setAuthentication(newAccessToken);
+        log.info("X-AUTH-TOKEN = "+jwtToken);
+        log.info("refreshToken = "+refreshToken);
+        Long uid = null;
+        String jwt = null;
+        String refreshJwt = null;
+        String refreshUname = null;
+//            "undefined"
+        try {
+            if (jwtToken != null) {
+                log.info("-------------------- access 토큰이 존재할경우 log -----------");
+                jwt = jwtToken.getValue();
+                uid = jwtProvider.getUserUid(jwt);
+                if (uid != null ) {
+                    log.info("-------------------- uid가 존재할경우 log  -----------");
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(Long.toString(uid));
+                    if (jwtProvider.validateToken(jwt, userDetails)) {
+                        Authentication authentication= jwtProvider.getAuthentication(jwt);
+//                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
                 }
-                System.out.println("--------------------------------토큰 교체 완료-----------------------------------------");
+            }else{
+                if (refreshToken != null) {
+                    refreshJwt = refreshToken.getValue();
+                    log.info("--------------------Acess 토큰 없고 refresh 토큰있다-----------");
+                    refreshUname = redisUtil.getData(refreshJwt);
+                    log.info("조회한 refreshUname (id값)"+refreshUname);
+                    if (refreshUname.equals(Long.toString(jwtProvider.getUserUid(refreshJwt)))) {
+                        log.info("--------------------Redis 에 존재 한다.-----------");
+
+                        Authentication authentication= jwtProvider.getAuthentication(refreshJwt);
+//                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                        User user = userRepository.findByUid(Long.parseLong(refreshUname));
+                        String newToken = jwtProvider.createToken(uid, user.getRoles(), jwtProvider.accessTokenValidMillisecond);
+                        log.info("--------------------새로운 토큰 발급-----------"+newToken);
+
+                        Cookie newCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
+                        response.addCookie(newCookie);
+                    }
+                }
+
             }
+
+        } catch (ExpiredJwtException e) {
+            log.info("--------------------토큰이 만료되었을 경우에 뜨는 log -----------");
+            if (refreshToken != null ) {
+                log.info("--------------------토큰이 만료되었고 refresh 토큰이 있을때 log -----------");
+                refreshJwt = refreshToken.getValue();
+                if (refreshJwt != null) {
+                    refreshUname = redisUtil.getData(refreshJwt);
+                    log.info("--------------------Redis 에서 가져온 UID -----------"+refreshUname);
+                    if (refreshUname.equals(jwtProvider.getUserUid(refreshJwt))) {
+                        log.info("--------------------Redis 조회결과 같을때 -----------");
+                        Authentication authentication= jwtProvider.getAuthentication(jwt);
+//                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                        User user = userRepository.findByUid(Long.parseLong(refreshUname));
+                        String newToken = jwtProvider.createToken(uid, user.getRoles(), jwtProvider.accessTokenValidMillisecond);
+                        log.info("--------------------새로 생성된 accessToken -----------");
+
+                        Cookie newCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
+                        response.addCookie(newCookie);
+                    }
+                }
+            }
+        } catch (Exception e) {
+
         }
 
         filterChain.doFilter(request, response);
+    }
 
+
+    private Cookie getCookie(HttpServletRequest req, String cookieName) {
+        Cookie[] cookies = req.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(cookieName))
+                    return cookie;
+            }
+        }
+        return null;
     }
 
     public void setAuthentication(String token) {

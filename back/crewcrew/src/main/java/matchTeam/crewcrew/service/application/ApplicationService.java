@@ -140,9 +140,21 @@ public class ApplicationService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ApplicationDetailResponseDTO> findRecruitingDetails(User req, Long categoryParentId, Pageable pageable){
+    public Page<MyRecruitingBoardResponseDTO> findRecruitingDetails(User req, Long categoryParentId, Pageable pageable){
         validCategoryParentId(categoryParentId);
-        return queryRepository.getMyApplicationDetails(req, categoryParentId, pageable);
+        return queryRepository.getRecruitingDetails(req, categoryParentId, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public MyWaitingCrewResponseDTO findWaitingCrew(User req, Long boardId, Integer statusCode){
+
+        Long crewCount = queryRepository.getWaitingCrewCount(req, boardId, statusCode);
+        List<ArrivedApplierDetailsDTO> crewDetails = queryRepository.getWaitingCrewDetails(req, boardId, statusCode);
+
+
+        return MyWaitingCrewResponseDTO.builder()
+                .waitingCrew(crewCount)
+                .content(crewDetails).build();
     }
 
     //중복 지원했을때

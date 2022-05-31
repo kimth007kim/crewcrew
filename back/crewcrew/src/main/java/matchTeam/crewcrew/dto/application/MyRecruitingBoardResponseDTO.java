@@ -1,4 +1,4 @@
-package matchTeam.crewcrew.dto.board;
+package matchTeam.crewcrew.dto.application;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
@@ -6,27 +6,16 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import matchTeam.crewcrew.entity.board.Board;
-import matchTeam.crewcrew.util.helper.NestedConvertHelper;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @Getter
-public class BoardResponseDTO {
-
-    @ApiModelProperty(value = "유저의 uid", notes = "게시글 저장에 성공한 유저의 uid", example = "1")
-    private Long uid;
-
-    @ApiModelProperty(value = "유저의 닉네임", notes = "게시글 저장에 성공한 유저의 닉네임")
-    private String nickname;
-
-    @ApiModelProperty(value = "유저의 프로필 이미지", notes = "게시글 저장에 성공한 유저의 프로필 이미지")
-    private String profileImage;
+public class MyRecruitingBoardResponseDTO {
 
     @ApiModelProperty(value = "게시글의 id", notes = "저장에 성공한 게시글 id", example = "1")
     private Long boardId;
@@ -37,7 +26,7 @@ public class BoardResponseDTO {
     @ApiModelProperty(value = "게시글 본문 내용", notes = "게시글 본문 내용", example = "test content")
     private String boardContent;
 
-    @ApiModelProperty(value = "지원한 사람의 수", notes = "지원하는 사람의 수", example = "0")
+    @ApiModelProperty(value = "지원자의 수", notes = "지원자의 수", example = "0")
     private Integer appliedCrew;
 
     @ApiModelProperty(value = "모집하는 인원수", notes = "모집하는 인원수", example = "5")
@@ -69,17 +58,11 @@ public class BoardResponseDTO {
     @ApiModelProperty(value = "만료여부", notes = "만료여부를 true(만료x) or false(만료됨)로 표현", example = "1")
     private Boolean viewable;
 
-    @ApiModelProperty(value = "오픈채팅방 링크")
-    private String kakaoChat;
-
     @QueryProjection
     @Builder
-    public BoardResponseDTO(Board res) {
+    public MyRecruitingBoardResponseDTO(Board res) {
         this.boardId = res.getId();
         this.title = res.getTitle();
-        this.uid = res.getUser().getUid();
-        this.nickname = res.getUser().getNickname();
-        this.profileImage =res.getUser().getProfileImage();
         this.boardContent = res.getBoardContent();
         this.appliedCrew = res.getAppliedCrew();
         this.recruitedCrew = res.getRecruitedCrew();
@@ -91,12 +74,10 @@ public class BoardResponseDTO {
         this.expiredDate = res.getExpiredDate();
         this.hit = res.getHit()+1;
         this.viewable = res.getViewable();
-        this.kakaoChat = res.getKakaoChat();
     }
 
-
-    public static BoardResponseDTO toDTO(Board board){
-        return BoardResponseDTO.builder()
+    public static MyRecruitingBoardResponseDTO toDTO(Board board){
+        return MyRecruitingBoardResponseDTO.builder()
                 .res(board).build();
     }
 }

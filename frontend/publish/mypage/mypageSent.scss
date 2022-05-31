@@ -399,6 +399,7 @@ section.MypageSentTop{
             right: 175px;
             border: none;
             gap: 4px;
+            padding: 0;
 
             button{
                 width: 30px;
@@ -595,6 +596,7 @@ section.MypageSentTop{
 
 .SwiperCard{
     width: 100%;
+    height: 342px;
     border: 1px solid #e2e2e2;
     border-radius: 20px;
 }
