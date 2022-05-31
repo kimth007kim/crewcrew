@@ -498,7 +498,7 @@ public class AuthController {
 
     })
     @ApiOperation(value ="로그아웃" )
-    @DeleteMapping("/logOut")
+    @DeleteMapping("/logout")
     public ResponseEntity<Object> logOut(HttpServletRequest request, HttpServletResponse response) {
         cookieService.logOut(request,response);
             return ResponseHandler.generateResponse("로그아웃 성공", HttpStatus.OK, null );
