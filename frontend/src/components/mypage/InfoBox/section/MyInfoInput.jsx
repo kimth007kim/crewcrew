@@ -13,7 +13,7 @@ function MyInfoInput({ open }) {
     data: myData,
     error: myError,
     mutate,
-  } = useSWR(['/user/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   // 이름
   const [name, setName] = useState('');
@@ -89,7 +89,7 @@ function MyInfoInput({ open }) {
         case 200:
           toast.success('성공적으로 변경되었습니다.');
           InitialState();
-          mutate('/user/token');
+          mutate('/auth/token');
           break;
         case 1009:
         case 1010:

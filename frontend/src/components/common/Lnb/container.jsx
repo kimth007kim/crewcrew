@@ -18,6 +18,7 @@ import AuthModal from '../Auth/AuthModal';
 import fetcher from '../../../utils/fetcher';
 import useModal from '../../../hooks/useModal';
 import NavCard from './NavCard';
+import axios from 'axios';
 
 const Cards = [
   {
@@ -78,7 +79,7 @@ function NavContainer() {
     data: myData,
     error,
     mutate,
-  } = useSWR(['/user/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
   const navigate = useNavigate();
   const [Dialog, openModal, closeModal] = useModal();
 
@@ -90,7 +91,19 @@ function NavContainer() {
     navigate('/mypage');
   }, []);
 
-  const handleLogout = useCallback(() => {}, []);
+  const handleLogout = useCallback(() => {
+    async function axiosDelete() {
+      try {
+        const { data } = await axios.delete('/auth/logout', {
+          withCredentials: true,
+        });
+        console.dir(data);
+      } catch (error) {
+        console.dir(error);
+      }
+    }
+    axiosDelete();
+  }, []);
 
   return (
     <>
@@ -118,12 +131,12 @@ function NavContainer() {
             {myData && myData.data ? (
               <>
                 <NavButton title="마이 페이지" clickFunc={locateMypage} />
-                <NavButton ghost title="로그아웃" />
+                <NavButton ghost title="로그아웃" clickFunc={handleLogout} />
               </>
             ) : (
               <>
                 <NavButton title="로그인/회원가입" clickFunc={handleClick} />
-                <NavButton ghost title="서비스 소개" clickFunc={handleLogout} />
+                <NavButton ghost title="서비스 소개" />
               </>
             )}
           </NavButtonList>
