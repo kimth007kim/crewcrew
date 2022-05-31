@@ -476,16 +476,13 @@ public class AuthController {
         userService.reissue(request,response);
         log.info("컨트롤러에서의 재발급 요청");
 //        System.out.println("X-AUTH-TOKEN"+token);
-        try {
             User user = userService.tokenChecker(jwt.getValue());
             System.out.println(user.getUid());
             List<Long> liked = likedCategoryService.findUsersLike(user);
             System.out.println("==================================================" + liked.toString());
             UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), liked, user.getMessage(), user.getProvider());
             return ResponseHandler.generateResponse("엑세스토큰 으로 유저 정보 조회 성공", HttpStatus.OK, userResponseDto);
-        }catch(Exception e){
-            return ResponseHandler.generateResponse("AccessToken이 없거나 유효하지않은 토큰입니다", HttpStatus.OK, null);
-        }
+
 
     }
     @ApiResponses({
