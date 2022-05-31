@@ -402,6 +402,7 @@ public class UserService {
     public User tokenChecker(String accessToken) {
         if (!jwtProvider.validateToken(accessToken)) {
             log.error("사용할수 없는 토큰입니다.");
+            return null;
         }
         Claims c = jwtProvider.parseClaims(accessToken);
         String uid = c.getSubject();
@@ -414,6 +415,7 @@ public class UserService {
 
         return user;
     }
+
 
 
     public void reissue(HttpServletRequest request , HttpServletResponse response) {
