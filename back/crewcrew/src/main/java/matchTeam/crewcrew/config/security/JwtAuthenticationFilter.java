@@ -89,7 +89,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                        SecurityContextHolder.getContext().setAuthentication(authentication);
                         User user = userRepository.findByUid(Long.parseLong(refreshUname));
 
-                        String newToken = jwtProvider.createToken(uid, user.getRoles(), jwtProvider.accessTokenValidMillisecond);
+                        String newToken = jwtProvider.createToken(user.getUid(), user.getRoles(), jwtProvider.accessTokenValidMillisecond);
                         log.info("--------------------새로운 토큰 발급-----------"+newToken);
 
                         Cookie newCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);

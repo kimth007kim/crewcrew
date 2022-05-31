@@ -409,7 +409,7 @@ public class UserService {
         }
         Claims c = jwtProvider.parseClaims(accessToken);
         String uid = c.getSubject();
-        if (uid ==null){
+        if (uid ==null || uid.equals("null")){
             return null;
         }
 
