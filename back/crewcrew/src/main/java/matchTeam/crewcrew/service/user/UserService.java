@@ -23,10 +23,14 @@ import matchTeam.crewcrew.response.exception.auth.*;
 import matchTeam.crewcrew.response.exception.profile.ProfileEmptyNameException;
 import matchTeam.crewcrew.response.exception.profile.ProfileEmptyNickNameException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,6 +44,7 @@ public class UserService {
     private final LikedCategoryRepository likedCategoryRepository;
     //email 발송기능
     private final PasswordEncoder passwordEncoder;
+    private final CookieService cookieService;
     private final RedisUtil redisutil;
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
     private final LikedCategoryService likedCategoryService;
@@ -104,6 +109,7 @@ public class UserService {
 
 
     }
+
     public ResponseTokenDto redisLogin(UserLoginRequestDto userLoginRequestDto) {
         //회원 정보 존재하는지 확인
         User user = userRepository.findByEmailAndProvider(userLoginRequestDto.getEmail(), "local").
@@ -130,7 +136,7 @@ public class UserService {
 
 //        refreshTokenJpaRepository.save(refresh_Token);
         Long time = jwtProvider.refreshTokenTime(userLoginRequestDto.isMaintain());
-        redisutil.setDataExpire(refresh_Token.getToken(),Long.toString(id),time);
+        redisutil.setDataExpire(refresh_Token.getToken(), Long.toString(id), time);
 
         return tokenDto;
 
@@ -217,10 +223,10 @@ public class UserService {
         }
     }
 
-    public void likedCategory(List<Long> categoryId,User user) {
-        Map<Long,Long> usersLike = likedCategoryRepository.findCidAndCparents(user);
-        for(Long l : usersLike.keySet()){
-            System.out.println("-=-=-=-==-==-=-=-"+l+"==-=-=-==-=-"+usersLike.get(l));
+    public void likedCategory(List<Long> categoryId, User user) {
+        Map<Long, Long> usersLike = likedCategoryRepository.findCidAndCparents(user);
+        for (Long l : usersLike.keySet()) {
+            System.out.println("-=-=-=-==-==-=-=-" + l + "==-=-=-==-=-" + usersLike.get(l));
         }
 
 
@@ -409,5 +415,44 @@ public class UserService {
         return user;
     }
 
+
+    public void reissue(HttpServletRequest request , HttpServletResponse response) {
+        Cookie accessToken =cookieService.getCookie(request,"X-AUTH-TOKEN");
+        Cookie refreshToken =cookieService.getCookie(request,"refreshToken");
+        String jwt = null;
+        String refreshjwt= null;
+        String refreshUname =null;
+        if (accessToken!=null)  jwt= accessToken.getValue();
+        if (refreshToken!=null) refreshjwt= refreshToken.getValue();
+
+
+        if (jwtProvider.validateToken(jwt) && jwtProvider.isTokenExpired(jwt)){
+            return;
+        }else{
+            if (refreshToken!=null && jwtProvider.isTokenExpired(refreshjwt)){
+                if (jwtProvider.validateToken(refreshjwt)){
+                    refreshUname = redisutil.getData(refreshjwt);
+                    if (refreshUname.equals(Long.toString(jwtProvider.getUserUid(refreshjwt)))) {
+                        log.info("--------------------Redis 에 존재 한다.-----------");
+
+                        Authentication authentication= jwtProvider.getAuthentication(refreshjwt);
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                        User user = userRepository.findByUid(Long.parseLong(refreshUname));
+                        String newToken = jwtProvider.createToken(user.getUid(), user.getRoles(), jwtProvider.accessTokenValidMillisecond);
+                        log.info("--------------------새로운 토큰 발급-----------"+newToken);
+
+                        Cookie newCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
+                        response.addCookie(newCookie);
+                        return;
+                    }
+
+
+                }
+
+            }
+
+        }
+        return;
+    }
 
 }

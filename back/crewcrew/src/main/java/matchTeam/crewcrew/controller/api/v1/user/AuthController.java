@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import matchTeam.crewcrew.dto.security.ResponseTokenDto;
 import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.security.TokenRequestDto;
@@ -30,6 +31,7 @@ import java.util.Optional;
 @Api(tags = "1. Auth")
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 //@RequestMapping("/api/v1/auth/")
 @RequestMapping("/auth")
 public class AuthController {
@@ -468,19 +470,21 @@ public class AuthController {
     })
     @ApiOperation(value ="엑세스토큰 으로 유저 정보 조회." ,notes="엑세스 토큰으로 유저정보를 조회합니다.\n"+ "※주의: kakao,naver에서 받은 인가코드로는 불가능합니다.\n"+" 카카오와 네이버에서 인가코드를 받고 로그인후 받은 Access Token는 가능합니다.")
     @GetMapping("/token")
-    public ResponseEntity<Object> checkToken(@RequestHeader("X-AUTH-TOKEN") String token) {
-        try{
+    public ResponseEntity<Object> checkToken(HttpServletRequest request, HttpServletResponse response) {
+        Cookie jwt = cookieService.getCookie(request,"X-AUTH-TOKEN");
 
-        System.out.println("X-AUTH-TOKEN"+token);
-        User user = userService.tokenChecker(token);
-        System.out.println(user.getUid());
-        List<Long> liked =likedCategoryService.findUsersLike(user);
-        System.out.println("=================================================="+liked.toString());
-        UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(),user.getName(),user.getNickname(),user.getProfileImage(),liked,user.getMessage(),user.getProvider());
-        return ResponseHandler.generateResponse("엑세스토큰 으로 유저 정보 조회 성공", HttpStatus.OK,userResponseDto );
-        }catch(IllegalArgumentException | MalformedJwtException e ){
-
-            return ResponseHandler.generateResponse("엑세스 토큰에 해당하는 유저 없음", HttpStatus.OK, null );
+        userService.reissue(request,response);
+        log.info("컨트롤러에서의 재발급 요청");
+//        System.out.println("X-AUTH-TOKEN"+token);
+        try {
+            User user = userService.tokenChecker(jwt.getValue());
+            System.out.println(user.getUid());
+            List<Long> liked = likedCategoryService.findUsersLike(user);
+            System.out.println("==================================================" + liked.toString());
+            UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), liked, user.getMessage(), user.getProvider());
+            return ResponseHandler.generateResponse("엑세스토큰 으로 유저 정보 조회 성공", HttpStatus.OK, userResponseDto);
+        }catch(Exception e){
+            return ResponseHandler.generateResponse("AccessToken이 없거나 유효하지않은 토큰입니다", HttpStatus.OK, null);
         }
 
     }

@@ -48,6 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final Cookie jwtToken = getCookie(request, "X-AUTH-TOKEN");
         final Cookie refreshToken = getCookie(request,"refreshToken");
+        log.info("필터 가 호출되었습니다.");
 
         log.info("X-AUTH-TOKEN = "+jwtToken);
         log.info("refreshToken = "+refreshToken);
@@ -71,7 +72,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 }
-            }else{
+            }else if (jwtToken==null || jwtProvider.isTokenExpired(jwt)){
                 if (refreshToken != null) {
                     refreshJwt = refreshToken.getValue();
                     log.info("--------------------Acess 토큰 없고 refresh 토큰있다-----------");
@@ -95,30 +96,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             }
 
-        } catch (ExpiredJwtException e) {
-            log.info("--------------------토큰이 만료되었을 경우에 뜨는 log -----------");
-            if (refreshToken != null ) {
-                log.info("--------------------토큰이 만료되었고 refresh 토큰이 있을때 log -----------");
-                refreshJwt = refreshToken.getValue();
-                if (refreshJwt != null) {
-                    refreshUname = redisUtil.getData(refreshJwt);
-                    log.info("--------------------Redis 에서 가져온 UID -----------"+refreshUname);
-                    if (refreshUname.equals(jwtProvider.getUserUid(refreshJwt))) {
-                        log.info("--------------------Redis 조회결과 같을때 -----------");
-                        Authentication authentication= jwtProvider.getAuthentication(jwt);
-//                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                        User user = userRepository.findByUid(Long.parseLong(refreshUname));
-                        String newToken = jwtProvider.createToken(uid, user.getRoles(), jwtProvider.accessTokenValidMillisecond);
-                        log.info("--------------------새로 생성된 accessToken -----------");
-
-                        Cookie newCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
-                        response.addCookie(newCookie);
-                    }
-                }
-            }
         } catch (Exception e) {
 
         }
