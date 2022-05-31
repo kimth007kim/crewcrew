@@ -280,8 +280,8 @@ public class AuthController {
 //        Cookie accessCookie = cookieService.generateAccessToken(tokenDto.getAccessToken());
 //        Cookie refreshCookie = cookieService.generateRefreshToken(tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExpireDate());
 
-        Cookie accessCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN",tokenDto.getAccessToken(),tokenDto.getAccessTokenExpireDate());
-        Cookie refreshCookie = cookieService.generateCookie("refreshToken",tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExpireDate());
+        Cookie accessCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN", tokenDto.getAccessToken(), tokenDto.getAccessTokenExpireDate());
+        Cookie refreshCookie = cookieService.generateCookie("refreshToken", tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExpireDate());
 
         System.out.println("refreshCookie = " + refreshCookie);
         System.out.println("accessCookie = " + accessCookie);
@@ -361,7 +361,7 @@ public class AuthController {
         return ResponseHandler.generateResponse("비밀번호 변경을 위한 코드 성공", HttpStatus.OK, null);
     }
 
-    
+
     @ApiOperation(value = "이메일 인증코드확인후 비밀번호 변경"
             , notes = "이메일 인증코드확인후 비밀번호 변경")
     @ApiResponses({
@@ -450,9 +450,9 @@ public class AuthController {
 
     @ApiImplicitParams({
             @ApiImplicitParam(
-                    name="X-AUTH-TOKEN",
-                    value="로그인 성공후 AccessToken",
-                    required= true,dataType = "String",paramType = "header"
+                    name = "X-AUTH-TOKEN",
+                    value = "로그인 성공후 AccessToken",
+                    required = true, dataType = "String", paramType = "header"
             )
     })
     @ApiResponses({
@@ -462,29 +462,29 @@ public class AuthController {
                     , message = "엑세스토큰 으로 유저 정보 조회 성공"
                     , response = UserResponseDto.class
             )
-            ,@ApiResponse(
+            , @ApiResponse(
             code = 1900
             , message = "입력받은 엑세스토큰에 해당하는 유저가없습니다"
     )
 
     })
-    @ApiOperation(value ="엑세스토큰 으로 유저 정보 조회." ,notes="엑세스 토큰으로 유저정보를 조회합니다.\n"+ "※주의: kakao,naver에서 받은 인가코드로는 불가능합니다.\n"+" 카카오와 네이버에서 인가코드를 받고 로그인후 받은 Access Token는 가능합니다.")
+    @ApiOperation(value = "엑세스토큰 으로 유저 정보 조회.", notes = "엑세스 토큰으로 유저정보를 조회합니다.\n" + "※주의: kakao,naver에서 받은 인가코드로는 불가능합니다.\n" + " 카카오와 네이버에서 인가코드를 받고 로그인후 받은 Access Token는 가능합니다.")
     @GetMapping("/token")
-    public ResponseEntity<Object> checkToken(HttpServletRequest request, HttpServletResponse response) {
-        Cookie jwt = cookieService.getCookie(request,"X-AUTH-TOKEN");
+    public ResponseEntity<Object> checkToken(HttpServletRequest request, HttpServletResponse response, @RequestHeader("X-AUTH-TOKEN") String headerToken) {
+        Cookie jwt = cookieService.getCookie(request, "X-AUTH-TOKEN");
+        User user = userService.tokenChecker(jwt.getValue());
+        System.out.println(user.getUid());
+        List<Long> liked = likedCategoryService.findUsersLike(user);
+        System.out.println("==================================================" + liked.toString());
+        UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), liked, user.getMessage(), user.getProvider());
+        return ResponseHandler.generateResponse("엑세스토큰 으로 유저 정보 조회 성공", HttpStatus.OK, userResponseDto);
 
-        userService.reissue(request,response);
-        log.info("컨트롤러에서의 재발급 요청");
-//        System.out.println("X-AUTH-TOKEN"+token);
-            User user = userService.tokenChecker(jwt.getValue());
-            System.out.println(user.getUid());
-            List<Long> liked = likedCategoryService.findUsersLike(user);
-            System.out.println("==================================================" + liked.toString());
-            UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), liked, user.getMessage(), user.getProvider());
-            return ResponseHandler.generateResponse("엑세스토큰 으로 유저 정보 조회 성공", HttpStatus.OK, userResponseDto);
+//        log.info("컨트롤러에서의 재발급 요청");
+////        System.out.println("X-AUTH-TOKEN"+token);
 
 
     }
+
     @ApiResponses({
 
             @ApiResponse(
@@ -492,17 +492,17 @@ public class AuthController {
                     , message = "엑세스토큰 으로 유저 정보 조회 성공"
                     , response = UserResponseDto.class
             )
-            ,@ApiResponse(
+            , @ApiResponse(
             code = 1900
             , message = "입력받은 엑세스토큰에 해당하는 유저가없습니다"
     )
 
     })
-    @ApiOperation(value ="로그아웃" )
+    @ApiOperation(value = "로그아웃")
     @DeleteMapping("/logout")
     public ResponseEntity<Object> logOut(HttpServletRequest request, HttpServletResponse response) {
-        cookieService.logOut(request,response);
-            return ResponseHandler.generateResponse("로그아웃 성공", HttpStatus.OK, null );
+        cookieService.logOut(request, response);
+        return ResponseHandler.generateResponse("로그아웃 성공", HttpStatus.OK, null);
     }
 
 }

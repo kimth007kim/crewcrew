@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.xpath.XPath;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -56,11 +58,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String jwt = null;
         String refreshJwt = null;
         String refreshUname = null;
-//            "undefined"
+        if (jwtToken != null){
+            jwt = jwtToken.getValue();
+        }
+
         try {
-            if (jwtToken != null) {
+            if(jwt != null && jwtProvider.validateToken(jwt)){
                 log.info("-------------------- access 토큰이 존재할경우 log -----------");
-                jwt = jwtToken.getValue();
                 uid = jwtProvider.getUserUid(jwt);
                 if (uid != null ) {
                     log.info("-------------------- uid가 존재할경우 log  -----------");
@@ -72,7 +76,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 }
-            }else if (jwtToken==null || jwtProvider.isTokenExpired(jwt)){
+            }else {
                 if (refreshToken != null) {
                     refreshJwt = refreshToken.getValue();
                     log.info("--------------------Acess 토큰 없고 refresh 토큰있다-----------");
@@ -82,15 +86,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         log.info("--------------------Redis 에 존재 한다.-----------");
 
                         Authentication authentication= jwtProvider.getAuthentication(refreshJwt);
-//                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                       SecurityContextHolder.getContext().setAuthentication(authentication);
                         User user = userRepository.findByUid(Long.parseLong(refreshUname));
+
                         String newToken = jwtProvider.createToken(uid, user.getRoles(), jwtProvider.accessTokenValidMillisecond);
                         log.info("--------------------새로운 토큰 발급-----------"+newToken);
 
                         Cookie newCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
                         response.addCookie(newCookie);
+
                     }
                 }
 
