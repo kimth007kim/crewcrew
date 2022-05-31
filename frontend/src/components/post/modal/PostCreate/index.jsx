@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../../../common/Button';
 import Modal from '../../../common/Modal';
-import HeaderContent1 from './headerContent1';
+import HeaderContent1 from './HeaderContent1';
+import HeaderContent2 from './HeaderContent2';
 
 function PostCreateModal({ closeModal, visible }) {
   const [categoryCheck, setCategoryCheck] = useState(0);
+  const [meetingCheck, setMeetingCheck] = useState(0);
+  const [peopleNum, setPeopleNum] = useState(1);
+  const [lastDate, setLastDate] = useState(new Date());
+  const [detailCategoryCheck, setDetailCategoryCheck] = useState(0);
   return (
     <Modal
       handleClose={() => {
@@ -17,7 +22,24 @@ function PostCreateModal({ closeModal, visible }) {
       body={
         <Wrapper>
           <Body>
-            <HeaderContent1 state={{ categoryCheck, setCategoryCheck }}></HeaderContent1>
+            <HeaderContent1
+              state={{
+                categoryCheck,
+                setCategoryCheck,
+                detailCategoryCheck,
+                setDetailCategoryCheck,
+              }}
+            ></HeaderContent1>
+            <HeaderContent2
+              state={{
+                meetingCheck,
+                setMeetingCheck,
+                peopleNum,
+                setPeopleNum,
+                lastDate,
+                setLastDate,
+              }}
+            />
           </Body>
           <Footer>
             <ListFlex>
