@@ -400,13 +400,18 @@ public class UserService {
 //    }
 
     public User tokenChecker(String accessToken) {
+        if (accessToken== null || blankCheck(accessToken)){
+            return null;
+        }
         if (!jwtProvider.validateToken(accessToken)) {
             log.error("사용할수 없는 토큰입니다.");
             return null;
         }
         Claims c = jwtProvider.parseClaims(accessToken);
         String uid = c.getSubject();
+
         System.out.println("Claims=  " + c + "  uid= " + uid);
+
         if (userRepository.findById(Long.valueOf(uid)).isEmpty()) {
             throw new UidNotExistException();
         }
