@@ -3,23 +3,38 @@ import styled from 'styled-components';
 import { css } from 'styled-components';
 import { ko } from 'date-fns/esm/locale';
 import DatePickers from 'react-datepicker';
+import moment from 'moment';
+import InputMask from 'react-input-mask';
+import { format } from 'date-fns';
 
 import { InputHide, LabelBtn, ListFlex } from './index.style';
 import ArrowDown from '@/assets/images/ArrowDown.png';
 import ArrowDownOn from '@/assets/images/ArrowDownOn.png';
 import ArrowUp from '@/assets/images/ArrowUp.png';
 import ArrowUpOn from '@/assets/images/ArrowUpOn.png';
+import IconCalendar from '@/assets/images/IconCalendar.png';
 import { numberSlice } from '@/utils';
 import 'react-datepicker/dist/react-datepicker.css';
 
 function HeaderContent2({ state }) {
   const [peopleClick, setPeopleClick] = useState(false);
-  const [dateClick, setDateClick] = useState(false);
+
+  const mask = 'FfyY-mM-dD';
+  const formatChars = {
+    F: '2',
+    f: '0',
+    y: '[2-5]',
+    Y: '[0-9]',
+    m: '[0-1]',
+    M: '[0-9]',
+    d: '[0-3]',
+    D: '[0-9]',
+  };
+
   const numList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   const peopleRef = useRef(null);
   const peopleInputRef = useRef(null);
-  const dateRef = useRef(null);
 
   const onChangePeopleNum = useCallback((e) => {
     let value = numberSlice(e.target.value);
@@ -71,10 +86,13 @@ function HeaderContent2({ state }) {
     },
     [peopleClick],
   );
+  const onChangeDate = useCallback((date) => {
+    state.setLastDate(date);
+  }, []);
 
-  const handleChangeDate = (date) => {
-    state.setDatePick(date);
-  };
+  const onChangeInputDate = useCallback((e) => {
+    state.setLastDate(e.target.value);
+  }, []);
 
   useEffect(() => {
     if (state.peopleNum < 1) {
@@ -84,6 +102,31 @@ function HeaderContent2({ state }) {
       state.setPeopleNum(10);
     }
   }, [peopleClick]);
+
+  useEffect(() => {
+    // input date 예외 처리
+    if (moment(state.lastDate).isValid()) {
+      const inputDate = new Date(state.lastDate);
+      const currentDate = new Date();
+      if (inputDate.getFullYear() < currentDate.getFullYear()) {
+        return state.setLastDate(currentDate);
+      }
+      if (
+        inputDate.getFullYear() === currentDate.getFullYear() &&
+        inputDate.getMonth() < currentDate.getMonth()
+      ) {
+        return state.setLastDate(currentDate);
+      }
+
+      if (
+        inputDate.getFullYear() === currentDate.getFullYear() &&
+        inputDate.getMonth() === currentDate.getMonth() &&
+        inputDate.getDay() < currentDate.getDay()
+      ) {
+        return state.setLastDate(currentDate);
+      }
+    }
+  }, [state.lastDate]);
 
   return (
     <Content>
@@ -140,11 +183,24 @@ function HeaderContent2({ state }) {
         <div>
           <h4>마감일자</h4>
           <CustomDatePicker
+            className="date__picker__custom"
+            showPopperArrow={false}
+            dateFormat={'yyyy-MM-dd'}
             locale={ko}
-            dateFormat="yyyy-MM-dd"
             minDate={new Date()}
-            onChange={(date) => state.setLastDate(date)}
+            onChange={(date) => onChangeDate(date)}
             selected={state.lastDate}
+            value={state.lastDate}
+            customInput={
+              <CustomInput
+                mask={mask}
+                formatChars={formatChars}
+                maskChar={null}
+                placeholder="YYYY-MM-DD"
+                value={state.lastDate}
+                onChange={onChangeInputDate}
+              ></CustomInput>
+            }
           ></CustomDatePicker>
         </div>
       </div>
@@ -173,6 +229,21 @@ const Content = styled('div')`
         position: relative;
         margin-right: 24px;
       }
+    }
+  }
+
+  .react-datepicker__input-container {
+    &::after {
+      content: '';
+      position: absolute;
+      top: 13px;
+      right: 15px;
+      background: url(${IconCalendar}) no-repeat 50% 50%;
+      background-size: 26px;
+      width: 26px;
+      height: 26px;
+      cursor: pointer;
+      z-index: 2000;
     }
   }
 `;
@@ -293,7 +364,23 @@ const InputPostPeople = styled('input')`
   }
 `;
 
-const CustomDatePicker = styled(DatePickers)`
+const InputDateWrap = styled('div')`
+  position: relative;
+  ::after {
+    content: '';
+    position: absolute;
+    top: 13px;
+    right: 15px;
+    background: url(${IconCalendar}) no-repeat 50% 50%;
+    background-size: 26px;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    z-index: 2000;
+  }
+`;
+
+const CustomInput = styled(InputMask)`
   width: 100%;
   height: 50px;
   border-radius: 10px;
@@ -307,4 +394,36 @@ const CustomDatePicker = styled(DatePickers)`
   cursor: pointer;
   color: #707070;
   padding: 0 12px;
+  position: relative;
+
+  ::after {
+    content: '';
+    position: absolute;
+    top: 13px;
+    right: 15px;
+    background: url(${IconCalendar}) no-repeat 50% 50%;
+    background-size: 26px;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    z-index: 2000;
+  }
+`;
+
+const CustomDatePicker = styled(DatePickers)`
+  .react-datepicker-wrapper {
+    position: relative;
+    ::after {
+      content: '';
+      position: absolute;
+      top: 13px;
+      right: 15px;
+      background: url(${IconCalendar}) no-repeat 50% 50%;
+      background-size: 26px;
+      width: 26px;
+      height: 26px;
+      cursor: pointer;
+      z-index: 2000;
+    }
+  }
 `;
