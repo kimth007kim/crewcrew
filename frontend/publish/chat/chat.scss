@@ -56,27 +56,34 @@
             height: 26px;
             background: transparent url("/frontend/src/assets/images/serchSmall.png") center/100% no-repeat;
         }
+    }
+}
 
-        &.Set{
-            width: 30px;
-            height: 30px;
-            border-radius: 5px;
-            background: #c4c4c4 url("/frontend/src/assets/images/SettingWhite.png") center/16px no-repeat;
-            transition: .3s;
+button.Set{
+    @include button();
+    text-indent: -9999px;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    background: #c4c4c4 url("/frontend/src/assets/images/SettingWhite.png") center/16px no-repeat;
+    transition: .3s;
 
-            &:hover{
-                background-color: #B0B0B0;
-            }
-        }
+    &:hover{
+        background-color: #B0B0B0;
+    }
+
+    &.On{
+        @include backgroundColor(#00B7FF, #00A3E3);
     }
 }
 
 .ChatBoxBody{
-    height: 554px;
+    height: calc(100vh - 236px);
     overflow-y: auto;
+    transition: .5s;
 
-    &::-webkit-scrollbar{
-        display: none;
+    &.Search{
+        height: calc(100vh - 314px);
     }
 }
 
@@ -361,7 +368,6 @@
 
     .ChatBoxBody{
         height: calc(100vh - 300px);
-        transition: .5s;
 
         &.Search{
             height: calc(100vh - 353px);
@@ -462,6 +468,7 @@
     .ChatBoxSearch .SearchInputWrap{
         margin: 9px 10px;
         width: calc(100% - 20px);
+        padding: 0 12px;
     }
 
     .ChatBoxList.On .ContentSet{
@@ -475,4 +482,5 @@
     .CheckAllBox{
         width: 40px;
     }
+    
 }

@@ -10,6 +10,7 @@ window.addEventListener("DOMContentLoaded", function(){
     Set?.addEventListener('click', function(){ //옵션버튼
         document.querySelector(".ChatBoxList").classList.toggle("On");
         document.querySelector(".DeleteBox").classList.toggle("On");
+        this.classList.toggle('On');
     });
 
     const ResetBtn = document.querySelector(".DeleteBox>button");

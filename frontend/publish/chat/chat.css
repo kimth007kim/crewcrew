@@ -3268,7 +3268,11 @@ br.fold {
   background: transparent url("/frontend/src/assets/images/serchSmall.png") center/100% no-repeat;
 }
 
-.ChatBoxHead button.Set {
+button.Set {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  text-indent: -9999px;
   width: 30px;
   height: 30px;
   border-radius: 5px;
@@ -3277,17 +3281,27 @@ br.fold {
   transition: .3s;
 }
 
-.ChatBoxHead button.Set:hover {
+button.Set:hover {
   background-color: #B0B0B0;
 }
 
-.ChatBoxBody {
-  height: 554px;
-  overflow-y: auto;
+button.Set.On {
+  background-color: #00B7FF;
 }
 
-.ChatBoxBody::-webkit-scrollbar {
-  display: none;
+button.Set.On:hover {
+  background-color: #00A3E3;
+}
+
+.ChatBoxBody {
+  height: calc(100vh - 236px);
+  overflow-y: auto;
+  -webkit-transition: .5s;
+  transition: .5s;
+}
+
+.ChatBoxBody.Search {
+  height: calc(100vh - 314px);
 }
 
 .ChatContent {
@@ -3638,8 +3652,6 @@ br.fold {
   }
   .ChatBoxBody {
     height: calc(100vh - 300px);
-    -webkit-transition: .5s;
-    transition: .5s;
   }
   .ChatBoxBody.Search {
     height: calc(100vh - 353px);
@@ -3718,6 +3730,7 @@ br.fold {
   .ChatBoxSearch .SearchInputWrap {
     margin: 9px 10px;
     width: calc(100% - 20px);
+    padding: 0 12px;
   }
   .ChatBoxList.On .ContentSet {
     width: 30px;
