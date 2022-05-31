@@ -472,12 +472,10 @@ public class AuthController {
     @GetMapping("/token")
     public ResponseEntity<Object> checkToken(@RequestHeader("X-AUTH-TOKEN") String headerToken) {
         User user = userService.tokenChecker(headerToken);
-//        System.out.println(user.getUid());
-        List<Long> liked = likedCategoryService.findUsersLike(user);
-        System.out.println("==================================================" + liked.toString());
-        if (user==null){
+        if (user == null) {
             return ResponseHandler.generateResponse("엑세스토큰 으로 유저 정보 조회 성공", HttpStatus.OK, null);
         }
+        List<Long> liked = likedCategoryService.findUsersLike(user);
         UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), liked, user.getMessage(), user.getProvider());
 
         return ResponseHandler.generateResponse("엑세스토큰 으로 유저 정보 조회 성공", HttpStatus.OK, userResponseDto);
