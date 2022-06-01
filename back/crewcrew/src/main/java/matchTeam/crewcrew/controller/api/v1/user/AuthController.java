@@ -200,6 +200,7 @@ public class AuthController {
         System.out.println("email: " + email + "password: " + password + "name: " + name + "nickname" + "file: " + file + "categoryId" + categoryId);
 
         userService.validateDuplicateByNickname(nickName);
+        likedCategoryService.validLikedCategory(categoryId);
         System.out.println(signUpRequestDto.getEmail());
         emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
         //1004 이메일인증이 안된 이메일
@@ -219,6 +220,8 @@ public class AuthController {
         List<Long> usersLike = likedCategoryService.findUsersLike(user);
 
         List<Long> input = likedCategoryService.deleteDuplicateCategory(signUpRequestDto.getCategoryId());
+
+
         System.out.println("중복을 제거한 카테고리" + input);
         List<Long> result = likedCategoryService.addLikedCategory(user, input);
         System.out.println("유저가 등록한 후의 카테고리" + result);

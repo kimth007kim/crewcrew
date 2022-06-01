@@ -22,6 +22,7 @@ import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.exception.auth.*;
 import matchTeam.crewcrew.response.exception.profile.ProfileEmptyNameException;
 import matchTeam.crewcrew.response.exception.profile.ProfileEmptyNickNameException;
+import matchTeam.crewcrew.service.amazonS3.S3Uploader;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -63,6 +64,9 @@ public class UserService {
         return userRepository.findByEmailAndProvider(email, provider);
     }
 
+
+
+    @Transactional
     public Long signup(SignUpRequestDto localSignUpRequestDto) {
         if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(), "local").isPresent())
             throw new EmailSignUpFailedCException();

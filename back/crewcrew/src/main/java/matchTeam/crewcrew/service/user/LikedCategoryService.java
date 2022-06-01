@@ -3,6 +3,7 @@ package matchTeam.crewcrew.service.user;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.entity.user.LikedCategory;
 import matchTeam.crewcrew.entity.user.User;
@@ -23,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -58,7 +60,7 @@ public class LikedCategoryService {
 //    }
 
     public void validLikedCategory(List<Long> input) {
-
+        log.info("좋아하는 카테고리", input.toString());
         if (input == null || input.size() == 0) {
             throw new ProfileEmptyCategoryException();
         }
@@ -67,19 +69,24 @@ public class LikedCategoryService {
 
         for (Long u : input) {
             Long parentId = categoryRepository.findParentIdByCategoryId(u);
+            if (parentId == null) {
+                throw new AskNotDetailCategoryException();
+            }
             if (parentId == 1L) {
                 study += 1;
             } else if (parentId == 2L) {
                 hobby += 1;
-            } else {
-                throw new AskNotDetailCategoryException();
+            }
+            log.info("취미"+study);
+            log.info("스터디"+hobby);
+            if (study == 0){
+                throw new ProfileStudyNotFoundException();
+            }
+            if (hobby == 0){
+                throw new ProfileHobbyNotFoundException();
+
             }
         }
-
-        if (study == 0)
-            throw new ProfileStudyNotFoundException();
-        if (hobby == 0)
-            throw new ProfileHobbyNotFoundException();
     }
 
     public void ChangeUsersLike(User user, List<Long> input, List<Long> userLike) {

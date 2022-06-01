@@ -3,6 +3,7 @@ package matchTeam.crewcrew.response.exception.profile;
 import io.jsonwebtoken.security.SignatureException;
 import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.ErrorResponseHandler;
+import matchTeam.crewcrew.response.exception.category.AskNotDetailCategoryException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -58,12 +59,12 @@ public class ProfileExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @ExceptionHandler(ProfileStudyNotFoundException.class)
-    protected ResponseEntity<ErrorResponseHandler> studyNotFoundException(SignatureException e){
+    protected ResponseEntity<ErrorResponseHandler> studyNotFoundException(ProfileStudyNotFoundException e){
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.CATEGORY_STUDY_NULL_EXCEPTION);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @ExceptionHandler(ProfileHobbyNotFoundException.class)
-    protected ResponseEntity<ErrorResponseHandler> hobbyNotFoundException(SignatureException e){
+    protected ResponseEntity<ErrorResponseHandler> hobbyNotFoundException(ProfileHobbyNotFoundException e){
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.CATEGORY_HOBBY_NULL_EXCEPTION);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
