@@ -156,13 +156,7 @@ public class UserService {
 
     public void validProfileChange(User user, String password, String name, String
             nickName, List<Long> categoryId, String message) {
-
-
-//            if (categoryId == null || categoryId.size() == 0) {
-//                throw new ProfileEmptyCategoryException();
-//            }
-//        List<Long> usersLike = likedCategoryService.findUsersLike(user);
-//        likedCategoryService.ChangeUsersLike(user, categoryId, usersLike);
+        likedCategoryService.validLikedCategory(categoryId);
 
         if (!stringCheck(password)) {
             if (blankCheck(password)) {
@@ -400,7 +394,7 @@ public class UserService {
 //    }
 
     public User tokenChecker(String accessToken) {
-        if (accessToken== null || blankCheck(accessToken)){
+        if (accessToken == null || blankCheck(accessToken)) {
             return null;
         }
         if (!jwtProvider.validateToken(accessToken)) {
@@ -409,7 +403,7 @@ public class UserService {
         }
         Claims c = jwtProvider.parseClaims(accessToken);
         String uid = c.getSubject();
-        if (uid ==null || uid.equals("null")){
+        if (uid == null || uid.equals("null")) {
             return null;
         }
 
@@ -425,31 +419,30 @@ public class UserService {
     }
 
 
-
-    public void reissue(HttpServletRequest request , HttpServletResponse response) {
-        Cookie accessToken =cookieService.getCookie(request,"X-AUTH-TOKEN");
-        Cookie refreshToken =cookieService.getCookie(request,"refreshToken");
+    public void reissue(HttpServletRequest request, HttpServletResponse response) {
+        Cookie accessToken = cookieService.getCookie(request, "X-AUTH-TOKEN");
+        Cookie refreshToken = cookieService.getCookie(request, "refreshToken");
         String jwt = null;
-        String refreshjwt= null;
-        String refreshUname =null;
-        if (accessToken!=null)  jwt= accessToken.getValue();
-        if (refreshToken!=null) refreshjwt= refreshToken.getValue();
+        String refreshjwt = null;
+        String refreshUname = null;
+        if (accessToken != null) jwt = accessToken.getValue();
+        if (refreshToken != null) refreshjwt = refreshToken.getValue();
 
 
-        if (jwtProvider.validateToken(jwt) && jwtProvider.isTokenExpired(jwt)){
+        if (jwtProvider.validateToken(jwt) && jwtProvider.isTokenExpired(jwt)) {
             return;
-        }else{
-            if (refreshToken!=null && jwtProvider.isTokenExpired(refreshjwt)){
-                if (jwtProvider.validateToken(refreshjwt)){
+        } else {
+            if (refreshToken != null && jwtProvider.isTokenExpired(refreshjwt)) {
+                if (jwtProvider.validateToken(refreshjwt)) {
                     refreshUname = redisutil.getData(refreshjwt);
                     if (refreshUname.equals(Long.toString(jwtProvider.getUserUid(refreshjwt)))) {
                         log.info("--------------------Redis 에 존재 한다.-----------");
 
-                        Authentication authentication= jwtProvider.getAuthentication(refreshjwt);
+                        Authentication authentication = jwtProvider.getAuthentication(refreshjwt);
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                         User user = userRepository.findByUid(Long.parseLong(refreshUname));
                         String newToken = jwtProvider.createToken(user.getUid(), user.getRoles(), jwtProvider.accessTokenValidMillisecond);
-                        log.info("--------------------새로운 토큰 발급-----------"+newToken);
+                        log.info("--------------------새로운 토큰 발급-----------" + newToken);
 
                         Cookie newCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
                         response.addCookie(newCookie);

@@ -216,14 +216,7 @@ public class AuthController {
         userService.setMessage(user, message);
 
 
-//        if (StringUtils.isEmpty(message)) {
-//            System.out.println("message 가 비어있음");
-//        }
-
-//        User user= userService.findByEmailAndProvider(likedCategoryDto.getEmail(),likedCategoryDto.getProvider()).orElseThrow(LoginFailedByEmailNotExistException::new);
-//        List<Long> input=likedCategoryService.deleteDuplicateCategory(likedCategoryDto.getCategoryId());
         List<Long> usersLike = likedCategoryService.findUsersLike(user);
-//        List<Long> result =likedCategoryService.addLikedCategory(user,input,usersLike);
 
         List<Long> input = likedCategoryService.deleteDuplicateCategory(signUpRequestDto.getCategoryId());
         System.out.println("중복을 제거한 카테고리" + input);

@@ -146,6 +146,8 @@ public class  GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+
+
 //    @ExceptionHandler(RuntimeException.class)
 //    protected ResponseEntity<ErrorResponseHandler> crewException(CrewException e) {
 //        final ErrorResponseHandler response = ErrorResponseHandler.of(e.getErrorCode());

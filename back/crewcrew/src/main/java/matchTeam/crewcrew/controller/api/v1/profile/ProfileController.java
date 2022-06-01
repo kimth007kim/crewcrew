@@ -80,6 +80,10 @@ public class ProfileController {
             , message = "입력받은 엑세스토큰에 해당하는 유저가없습니다."
     )
             , @ApiResponse(
+            code = 2002
+            , message = "부모 카테고리에 대해 조회했습니다."
+    )
+            , @ApiResponse(
             code = 3001
             , message = "카테고리가 선택되지 않았습니다."
     )
@@ -94,6 +98,14 @@ public class ProfileController {
             , @ApiResponse(
             code = 3004
             , message = "메세지가 입력되지 않았습니다."
+    )
+            , @ApiResponse(
+            code = 3005
+            , message = "카테고리에서 스터디 항목이 선택되지 않았습니다."
+    )
+            , @ApiResponse(
+            code = 3006
+            , message = "카테고리에서 취미 항목이 선택되지 않았습니다."
     )
     })
     @PutMapping(value = "/mypage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -121,13 +133,27 @@ public class ProfileController {
 
 
 
-    @PutMapping(value = "/test")
-    public ResponseEntity<Object> profileTest(ArrayList<Long> categoryId) {
-        User user = userService.findByUid(50L);
-        userService.likedCategory(categoryId,user);
+    @PutMapping(value = "/test", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Object> test( @RequestPart(value="ProfileChangeRequestDto") ProfileChangeRequestDto profileChangeRequestDto, @RequestPart(value = "file",required = false) MultipartFile file) throws IOException {
+        String password = profileChangeRequestDto.getPassword();
+        String nickName = profileChangeRequestDto.getNickName();
+        String name = profileChangeRequestDto.getName();
+        List<Long> categoryId= profileChangeRequestDto.getCategoryId();
+        String message = profileChangeRequestDto.getMessage();
+        if (categoryId == null){
+            categoryId=new ArrayList<Long>();
+        }
 
+//        User user = userService.tokenChecker(token);
 
-
+        User user =userService.findByUid(50L);
+        if (file != null && !file.isEmpty()) {
+            String tempName = s3Uploader.nameFile(user.getEmail(), user.getProvider());
+            String filename = s3Uploader.upload(file, tempName, "profile");
+            userService.setProfileImage(user, filename);
+        }
+        userService.validProfileChange(user,password,name,nickName,categoryId,message);
+        userService.profileChange(user, password, name, nickName, categoryId, message);
         return ResponseHandler.generateResponse("성공", HttpStatus.OK, "변경 성공");
     }
 
