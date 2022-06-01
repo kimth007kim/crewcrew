@@ -199,12 +199,16 @@ public class AuthController {
         SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email, password, name, nickName, file, categoryId);
         System.out.println("email: " + email + "password: " + password + "name: " + name + "nickname" + "file: " + file + "categoryId" + categoryId);
 
+        if (userService.findByEmailAndProvider(email, "local").isPresent()) {
+            throw new CUserAlreadyExistException();
+        }
+
+
         userService.validateDuplicateByNickname(nickName);
         likedCategoryService.validLikedCategory(categoryId);
         System.out.println(signUpRequestDto.getEmail());
         emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
         //1004 이메일인증이 안된 이메일
-        Long signupId = userService.signup(signUpRequestDto);
         //1005 현재 입력한 이메일로 이미 존재할 경우
         userService.validationNickName(nickName);
         userService.validationName(name);
@@ -212,6 +216,8 @@ public class AuthController {
         String email_url = email.replace("@", "_");
 
         String filename = s3Uploader.addImageWhenSignUp(email_url, file, Default, "local");
+
+        Long signupId = userService.signup(signUpRequestDto);
         User user = userService.findByUid(signupId);
         userService.setProfileImage(user, filename);
         userService.setMessage(user, message);

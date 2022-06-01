@@ -69,6 +69,7 @@ public class LikedCategoryService {
 
         for (Long u : input) {
             Long parentId = categoryRepository.findParentIdByCategoryId(u);
+            log.info(u + "" + parentId);
             if (parentId == null) {
                 throw new AskNotDetailCategoryException();
             }
@@ -77,16 +78,17 @@ public class LikedCategoryService {
             } else if (parentId == 2L) {
                 hobby += 1;
             }
-            log.info("취미"+study);
-            log.info("스터디"+hobby);
-            if (study == 0){
-                throw new ProfileStudyNotFoundException();
-            }
-            if (hobby == 0){
-                throw new ProfileHobbyNotFoundException();
-
-            }
+            log.info("취미" + study);
+            log.info("스터디" + hobby);
         }
+        if (study == 0) {
+            throw new ProfileStudyNotFoundException();
+        }
+        if (hobby == 0) {
+            throw new ProfileHobbyNotFoundException();
+
+        }
+
     }
 
     public void ChangeUsersLike(User user, List<Long> input, List<Long> userLike) {
