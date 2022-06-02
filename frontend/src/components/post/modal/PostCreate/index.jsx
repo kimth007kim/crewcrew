@@ -5,6 +5,7 @@ import Button from '../../../common/Button';
 import Modal from '../../../common/Modal';
 import HeaderContent1 from './HeaderContent1';
 import HeaderContent2 from './HeaderContent2';
+import MainContent from './MainContent';
 
 function PostCreateModal({ closeModal, visible }) {
   const [categoryCheck, setCategoryCheck] = useState(0);
@@ -41,6 +42,7 @@ function PostCreateModal({ closeModal, visible }) {
                 setLastDate,
               }}
             />
+            <MainContent></MainContent>
           </Body>
           <Footer>
             <ListFlex>
