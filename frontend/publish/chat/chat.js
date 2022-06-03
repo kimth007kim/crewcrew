@@ -17,6 +17,7 @@ window.addEventListener("DOMContentLoaded", function(){
     ResetBtn?.addEventListener('click', function(){ //선택취소 버튼
         document.querySelector(".ChatBoxList").classList.remove("On");
         document.querySelector(".DeleteBox").classList.remove("On");
+        Set.classList.remove('On');
     });
 
     const checkProp = document.querySelectorAll(".checkProp");
