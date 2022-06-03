@@ -2130,8 +2130,8 @@ main {
     height: 240px;
   }
   .MainTop .ButtonIntro {
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
     top: 17px;
     right: 20px;
     opacity: 1;
@@ -2628,7 +2628,7 @@ aside {
 
 @media screen and (max-width: 820px) {
   section.MainTop .ButtonIntro {
-    top: 17px;
+    top: 22px;
   }
   div.TopCont {
     -webkit-box-orient: vertical;
