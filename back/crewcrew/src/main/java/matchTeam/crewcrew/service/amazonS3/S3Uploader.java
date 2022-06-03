@@ -116,7 +116,7 @@ public class S3Uploader {
         return String.valueOf(UUID.randomUUID());
     }
 
-    private void deleteS3(String source) {
+    public void deleteS3(String source) {
         amazonS3Client.deleteObject(bucket, source);
     }
 

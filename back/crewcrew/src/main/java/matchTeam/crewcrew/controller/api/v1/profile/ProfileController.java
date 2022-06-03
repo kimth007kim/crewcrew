@@ -123,7 +123,7 @@ public class ProfileController {
 
         if (file != null && !file.isEmpty()) {
             String previous = userService.profileFileName(user);
-
+            s3Uploader.deleteS3(previous);
 
             String tempName = s3Uploader.nameFile(user.getEmail(), user.getProvider());
             String filename = s3Uploader.upload(file, tempName);
