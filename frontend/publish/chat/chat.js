@@ -42,4 +42,64 @@ window.addEventListener("DOMContentLoaded", function(){
             });
         }
     });
+
+    const chatDt = document.querySelector(".ChatBoxBody.Dt");
+    const chatList = document.querySelectorAll(".ChatDtWrapper");
+    const chatForm = document.querySelector(".ChatBoxBottom form");
+    const chatTxt = document.querySelector(".ChatInput");
+    const chatBtn = document.querySelector(".ChatPost");
+    let chatDtHeight = 0;
+    chatList?.forEach(e => {
+        chatDtHeight += e.offsetHeight;
+    });
+
+    function chatDtHeightFunc() { //채팅창 하단 스크롤 이동 함수
+        chatDtHeight = 0;
+        chatList?.forEach(e => {
+            chatDtHeight += e.offsetHeight;
+        });
+        chatDt?.scroll(0, chatDtHeight);
+    }
+    
+    function ChatSubmit(e) { //채팅 입력시 채팅추가함수
+        e.preventDefault();
+        
+        if(chatTxt.value){
+            let Now = new Date();
+            let NowHours = (`0${Now.getHours()}`).slice(-2);
+            let NowMinutes = (`0${Now.getMinutes()}`).slice(-2);
+            let Time = `${NowHours}:${NowMinutes}`;
+
+            let chatDom = document.createElement("div");
+            chatDom.classList.add('ChatDt');
+            chatDom.classList.add('Me');
+            chatDom.innerHTML = `
+                <div class="ChatTxt">
+                   ${chatTxt.value}
+                </div>
+                <p class="Time">${Time}</p>`;
+            [...chatList].at(-1).appendChild(chatDom);
+
+            let scrollFuncValue = chatDtHeight - chatDt.offsetHeight;
+            chatDt.scrollTop >= scrollFuncValue && chatDtHeightFunc(); //최근 채팅을 보고있을때만 스크롤시키기
+
+            chatTxt.value = ''; //초기화
+            chatBtn.classList.remove("On"); //초기화
+        }
+    }
+    chatDtHeightFunc();
+    window.addEventListener('resize', chatDtHeightFunc);
+    chatForm?.addEventListener('submit', ChatSubmit);
+
+    chatTxt?.addEventListener('keyup', function(e){ //채팅버튼 활성화
+        if(e.target.value) {
+            if(e.keyCode == 13) { //엔터키 칠때 submit시키기
+                e.target.value.length > 1 ? chatBtn.click() : e.target.value = '';
+            } else {
+                chatBtn.classList.add("On");
+            }
+        } else { 
+            chatBtn.classList.remove("On");
+        }
+    });
 });
