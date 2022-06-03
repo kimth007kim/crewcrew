@@ -122,8 +122,11 @@ public class ProfileController {
         User user = userService.tokenChecker(token);
 
         if (file != null && !file.isEmpty()) {
+            String previous = userService.profileFileName(user);
+
+
             String tempName = s3Uploader.nameFile(user.getEmail(), user.getProvider());
-            String filename = s3Uploader.upload(file, tempName, "profile");
+            String filename = s3Uploader.upload(file, tempName);
             userService.setProfileImage(user, filename);
         }
         userService.validProfileChange(user,password,name,nickName,categoryId,message);
@@ -133,28 +136,14 @@ public class ProfileController {
 
 
 
-    @PutMapping(value = "/test", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> test( @RequestPart(value="ProfileChangeRequestDto") ProfileChangeRequestDto profileChangeRequestDto, @RequestPart(value = "file",required = false) MultipartFile file) throws IOException {
-        String password = profileChangeRequestDto.getPassword();
-        String nickName = profileChangeRequestDto.getNickName();
-        String name = profileChangeRequestDto.getName();
-        List<Long> categoryId= profileChangeRequestDto.getCategoryId();
-        String message = profileChangeRequestDto.getMessage();
-        if (categoryId == null){
-            categoryId=new ArrayList<Long>();
-        }
+    @GetMapping(value = "/test")
+    public ResponseEntity<Object> test( ) throws IOException {
 
-//        User user = userService.tokenChecker(token);
 
         User user =userService.findByUid(50L);
-        if (file != null && !file.isEmpty()) {
-            String tempName = s3Uploader.nameFile(user.getEmail(), user.getProvider());
-            String filename = s3Uploader.upload(file, tempName, "profile");
-            userService.setProfileImage(user, filename);
-        }
-        userService.validProfileChange(user,password,name,nickName,categoryId,message);
-        userService.profileChange(user, password, name, nickName, categoryId, message);
-        return ResponseHandler.generateResponse("성공", HttpStatus.OK, "변경 성공");
+        String name = userService.profileFileName(user);
+        return ResponseHandler.generateResponse("성공", HttpStatus.OK,name);
+
     }
 
 

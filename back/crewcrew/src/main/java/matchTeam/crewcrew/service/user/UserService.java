@@ -65,7 +65,6 @@ public class UserService {
     }
 
 
-
     @Transactional
     public Long signup(SignUpRequestDto localSignUpRequestDto) {
         if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(), "local").isPresent())
@@ -145,6 +144,24 @@ public class UserService {
         return tokenDto;
 
 
+    }
+
+    public String profileFileName(User user) {
+        String name = user.getProfileImage();
+        StringBuilder sb = new StringBuilder();
+
+        String [] array= name.split("/");
+        int length  = array.length;
+
+        for (int i=length-2; i<length; i++){
+            sb.append(array[i]);
+            if (i!= length-1){
+                sb.append("/");
+            }
+            System.out.println(i+ array[i]);
+        }
+
+        return sb.toString();
     }
 
 

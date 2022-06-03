@@ -26,7 +26,7 @@ public class S3Controller {
     public ResponseEntity<Object> uploadImage(MultipartFile multipartFile, String dirname) {
         String filename="";
         try {
-           filename =s3Uploader.upload(multipartFile, dirname,"sad");
+           filename =s3Uploader.upload(multipartFile, dirname);
         } catch (IOException e) {
             e.printStackTrace();
         }
