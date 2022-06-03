@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import matchTeam.crewcrew.dto.security.ResponseTokenDto;
 import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.security.TokenRequestDto;
@@ -30,6 +31,7 @@ import java.util.Optional;
 @Api(tags = "1. Auth")
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 //@RequestMapping("/api/v1/auth/")
 @RequestMapping("/auth")
 public class AuthController {
@@ -197,11 +199,16 @@ public class AuthController {
         SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email, password, name, nickName, file, categoryId);
         System.out.println("email: " + email + "password: " + password + "name: " + name + "nickname" + "file: " + file + "categoryId" + categoryId);
 
+        if (userService.findByEmailAndProvider(email, "local").isPresent()) {
+            throw new CUserAlreadyExistException();
+        }
+
+
         userService.validateDuplicateByNickname(nickName);
+        likedCategoryService.validLikedCategory(categoryId);
         System.out.println(signUpRequestDto.getEmail());
         emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
         //1004 이메일인증이 안된 이메일
-        Long signupId = userService.signup(signUpRequestDto);
         //1005 현재 입력한 이메일로 이미 존재할 경우
         userService.validationNickName(nickName);
         userService.validationName(name);
@@ -209,21 +216,18 @@ public class AuthController {
         String email_url = email.replace("@", "_");
 
         String filename = s3Uploader.addImageWhenSignUp(email_url, file, Default, "local");
+
+        Long signupId = userService.signup(signUpRequestDto);
         User user = userService.findByUid(signupId);
         userService.setProfileImage(user, filename);
         userService.setMessage(user, message);
 
 
-//        if (StringUtils.isEmpty(message)) {
-//            System.out.println("message 가 비어있음");
-//        }
-
-//        User user= userService.findByEmailAndProvider(likedCategoryDto.getEmail(),likedCategoryDto.getProvider()).orElseThrow(LoginFailedByEmailNotExistException::new);
-//        List<Long> input=likedCategoryService.deleteDuplicateCategory(likedCategoryDto.getCategoryId());
         List<Long> usersLike = likedCategoryService.findUsersLike(user);
-//        List<Long> result =likedCategoryService.addLikedCategory(user,input,usersLike);
 
         List<Long> input = likedCategoryService.deleteDuplicateCategory(signUpRequestDto.getCategoryId());
+
+
         System.out.println("중복을 제거한 카테고리" + input);
         List<Long> result = likedCategoryService.addLikedCategory(user, input);
         System.out.println("유저가 등록한 후의 카테고리" + result);
@@ -278,8 +282,8 @@ public class AuthController {
 //        Cookie accessCookie = cookieService.generateAccessToken(tokenDto.getAccessToken());
 //        Cookie refreshCookie = cookieService.generateRefreshToken(tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExpireDate());
 
-        Cookie accessCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN",tokenDto.getAccessToken(),tokenDto.getAccessTokenExpireDate());
-        Cookie refreshCookie = cookieService.generateCookie("refreshToken",tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExpireDate());
+        Cookie accessCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN", tokenDto.getAccessToken(), tokenDto.getAccessTokenExpireDate());
+        Cookie refreshCookie = cookieService.generateCookie("refreshToken", tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExpireDate());
 
         System.out.println("refreshCookie = " + refreshCookie);
         System.out.println("accessCookie = " + accessCookie);
@@ -359,7 +363,7 @@ public class AuthController {
         return ResponseHandler.generateResponse("비밀번호 변경을 위한 코드 성공", HttpStatus.OK, null);
     }
 
-    
+
     @ApiOperation(value = "이메일 인증코드확인후 비밀번호 변경"
             , notes = "이메일 인증코드확인후 비밀번호 변경")
     @ApiResponses({
@@ -448,9 +452,9 @@ public class AuthController {
 
     @ApiImplicitParams({
             @ApiImplicitParam(
-                    name="X-AUTH-TOKEN",
-                    value="로그인 성공후 AccessToken",
-                    required= true,dataType = "String",paramType = "header"
+                    name = "X-AUTH-TOKEN",
+                    value = "로그인 성공후 AccessToken",
+                    required = true, dataType = "String", paramType = "header"
             )
     })
     @ApiResponses({
@@ -460,30 +464,30 @@ public class AuthController {
                     , message = "엑세스토큰 으로 유저 정보 조회 성공"
                     , response = UserResponseDto.class
             )
-            ,@ApiResponse(
+            , @ApiResponse(
             code = 1900
             , message = "입력받은 엑세스토큰에 해당하는 유저가없습니다"
     )
 
     })
-    @ApiOperation(value ="엑세스토큰 으로 유저 정보 조회." ,notes="엑세스 토큰으로 유저정보를 조회합니다.\n"+ "※주의: kakao,naver에서 받은 인가코드로는 불가능합니다.\n"+" 카카오와 네이버에서 인가코드를 받고 로그인후 받은 Access Token는 가능합니다.")
+    @ApiOperation(value = "엑세스토큰 으로 유저 정보 조회.", notes = "엑세스 토큰으로 유저정보를 조회합니다.\n" + "※주의: kakao,naver에서 받은 인가코드로는 불가능합니다.\n" + " 카카오와 네이버에서 인가코드를 받고 로그인후 받은 Access Token는 가능합니다.")
     @GetMapping("/token")
-    public ResponseEntity<Object> checkToken(@RequestHeader("X-AUTH-TOKEN") String token) {
-        try{
-
-        System.out.println("X-AUTH-TOKEN"+token);
-        User user = userService.tokenChecker(token);
-        System.out.println(user.getUid());
-        List<Long> liked =likedCategoryService.findUsersLike(user);
-        System.out.println("=================================================="+liked.toString());
-        UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(),user.getName(),user.getNickname(),user.getProfileImage(),liked,user.getMessage(),user.getProvider());
-        return ResponseHandler.generateResponse("엑세스토큰 으로 유저 정보 조회 성공", HttpStatus.OK,userResponseDto );
-        }catch(IllegalArgumentException | MalformedJwtException e ){
-
-            return ResponseHandler.generateResponse("엑세스 토큰에 해당하는 유저 없음", HttpStatus.OK, null );
+    public ResponseEntity<Object> checkToken(@RequestHeader("X-AUTH-TOKEN") String headerToken) {
+        User user = userService.tokenChecker(headerToken);
+        if (user == null) {
+            return ResponseHandler.generateResponse("엑세스토큰 으로 유저 정보 조회 성공", HttpStatus.OK, null);
         }
+        List<Long> liked = likedCategoryService.findUsersLike(user);
+        UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), liked, user.getMessage(), user.getProvider());
+
+        return ResponseHandler.generateResponse("엑세스토큰 으로 유저 정보 조회 성공", HttpStatus.OK, userResponseDto);
+
+//        log.info("컨트롤러에서의 재발급 요청");
+////        System.out.println("X-AUTH-TOKEN"+token);
+
 
     }
+
     @ApiResponses({
 
             @ApiResponse(
@@ -491,17 +495,17 @@ public class AuthController {
                     , message = "엑세스토큰 으로 유저 정보 조회 성공"
                     , response = UserResponseDto.class
             )
-            ,@ApiResponse(
+            , @ApiResponse(
             code = 1900
             , message = "입력받은 엑세스토큰에 해당하는 유저가없습니다"
     )
 
     })
-    @ApiOperation(value ="로그아웃" )
+    @ApiOperation(value = "로그아웃")
     @DeleteMapping("/logout")
     public ResponseEntity<Object> logOut(HttpServletRequest request, HttpServletResponse response) {
-        cookieService.logOut(request,response);
-            return ResponseHandler.generateResponse("로그아웃 성공", HttpStatus.OK, null );
+        cookieService.logOut(request, response);
+        return ResponseHandler.generateResponse("로그아웃 성공", HttpStatus.OK, null);
     }
 
 }

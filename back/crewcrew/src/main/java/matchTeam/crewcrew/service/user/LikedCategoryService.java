@@ -3,13 +3,18 @@ package matchTeam.crewcrew.service.user;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.entity.user.LikedCategory;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.repository.board.CategoryRepository;
 import matchTeam.crewcrew.repository.user.LikedCategoryRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
+import matchTeam.crewcrew.response.exception.category.AskNotDetailCategoryException;
 import matchTeam.crewcrew.response.exception.category.NotExistCategoryException;
+import matchTeam.crewcrew.response.exception.profile.ProfileEmptyCategoryException;
+import matchTeam.crewcrew.response.exception.profile.ProfileHobbyNotFoundException;
+import matchTeam.crewcrew.response.exception.profile.ProfileStudyNotFoundException;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -53,8 +59,41 @@ public class LikedCategoryService {
 //        return likedCategoryRepository.findByUser(user);
 //    }
 
+    public void validLikedCategory(List<Long> input) {
+        log.info("좋아하는 카테고리", input.toString());
+        if (input == null || input.size() == 0) {
+            throw new ProfileEmptyCategoryException();
+        }
+        int study = 0;
+        int hobby = 0;
+
+        for (Long u : input) {
+            Long parentId = categoryRepository.findParentIdByCategoryId(u);
+            log.info(u + "" + parentId);
+            if (parentId == null) {
+                throw new AskNotDetailCategoryException();
+            }
+            if (parentId == 1L) {
+                study += 1;
+            } else if (parentId == 2L) {
+                hobby += 1;
+            }
+            log.info("취미" + study);
+            log.info("스터디" + hobby);
+        }
+        if (study == 0) {
+            throw new ProfileStudyNotFoundException();
+        }
+        if (hobby == 0) {
+            throw new ProfileHobbyNotFoundException();
+
+        }
+
+    }
+
     public void ChangeUsersLike(User user, List<Long> input, List<Long> userLike) {
         List<Long> after = new ArrayList<>();
+
 
         System.out.println("/////////////////////////////////////////////////////////////////////////");
         System.out.println("넣은값" + input);
@@ -66,7 +105,7 @@ public class LikedCategoryService {
             } else {
                 // delete from 쿼리 날리기
                 Category category = categoryRepository.findById(l).orElseThrow(NotExistCategoryException::new);
-                likedCategoryRepository.deleteLikedCategoryByUserAndCategory(category,user);
+                likedCategoryRepository.deleteLikedCategoryByUserAndCategory(category, user);
             }
         }
         // insert 쿼리 날리기;
@@ -78,6 +117,7 @@ public class LikedCategoryService {
             }
         }
     }
+
 
     public List<Long> findUsersLike(User user) {
         List<Long> categoryList = likedCategoryRepository.findByUser(user);

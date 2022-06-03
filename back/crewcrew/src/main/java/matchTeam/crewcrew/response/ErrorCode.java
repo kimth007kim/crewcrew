@@ -115,7 +115,10 @@ public enum ErrorCode {
     EMPTY_CATEGORY_EXCEPTION(3001, "CATEGORY IS EMPTY", "카테고리가 선택되지 않았습니다."),
     EMPTY_NICKNAME_EXCEPTION(3002, "NICKNAME IS EMPTY", "닉네임이 입력되지 않았습니다."),
     EMPTY_NAME_EXCEPTION(3003, "NAME IS EMPTY", "이름이 입력되지 않았습니다."),
-    EMPTY_MESSAGE_EXCEPTION(3004, "MESSAGE IS EMPTY", "메세지가 입력되지 않았습니다.");
+    EMPTY_MESSAGE_EXCEPTION(3004, "MESSAGE IS EMPTY", "메세지가 입력되지 않았습니다."),
+    CATEGORY_STUDY_NULL_EXCEPTION(3005,"CATEGORY STUDY IS NULL","카테고리에서 스터디 항목이 선택되지 않았습니다."),
+    CATEGORY_HOBBY_NULL_EXCEPTION(3006,"CATEGORY STUDY IS NULL","카테고리에서 취미 항목이 선택되지 않았습니다.");
+
 
 
 

@@ -83,11 +83,11 @@ public class  GlobalExceptionHandler {
     /**
      * 비즈니스 로직 수행 도중, 해당 도메인 객체의 상태가 로직을 수행할 수 없을 때 발생
      */
-    @ExceptionHandler(IllegalArgumentException.class)
-    protected ResponseEntity<ErrorResponseHandler> handleIllegalArgumentException(IllegalArgumentException e){
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.ILLEGAL_ARGUMENT);
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler(IllegalArgumentException.class)
+//    protected ResponseEntity<ErrorResponseHandler> handleIllegalArgumentException(IllegalArgumentException e){
+//        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.ILLEGAL_ARGUMENT);
+//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//    }
 
     /**
      * 여기서 작성하지 않은 다른 모든 예외에 대해 처리한다. 이 때 500 status code와 함께 반환한다.
@@ -145,6 +145,8 @@ public class  GlobalExceptionHandler {
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.URL_MALFORMED_EXCEPTION);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+
 
 //    @ExceptionHandler(RuntimeException.class)
 //    protected ResponseEntity<ErrorResponseHandler> crewException(CrewException e) {

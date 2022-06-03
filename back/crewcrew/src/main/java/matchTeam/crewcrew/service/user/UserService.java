@@ -22,11 +22,16 @@ import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.exception.auth.*;
 import matchTeam.crewcrew.response.exception.profile.ProfileEmptyNameException;
 import matchTeam.crewcrew.response.exception.profile.ProfileEmptyNickNameException;
+import matchTeam.crewcrew.service.amazonS3.S3Uploader;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,6 +45,7 @@ public class UserService {
     private final LikedCategoryRepository likedCategoryRepository;
     //email 발송기능
     private final PasswordEncoder passwordEncoder;
+    private final CookieService cookieService;
     private final RedisUtil redisutil;
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
     private final LikedCategoryService likedCategoryService;
@@ -58,6 +64,8 @@ public class UserService {
         return userRepository.findByEmailAndProvider(email, provider);
     }
 
+
+    @Transactional
     public Long signup(SignUpRequestDto localSignUpRequestDto) {
         if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(), "local").isPresent())
             throw new EmailSignUpFailedCException();
@@ -104,6 +112,7 @@ public class UserService {
 
 
     }
+
     public ResponseTokenDto redisLogin(UserLoginRequestDto userLoginRequestDto) {
         //회원 정보 존재하는지 확인
         User user = userRepository.findByEmailAndProvider(userLoginRequestDto.getEmail(), "local").
@@ -130,11 +139,29 @@ public class UserService {
 
 //        refreshTokenJpaRepository.save(refresh_Token);
         Long time = jwtProvider.refreshTokenTime(userLoginRequestDto.isMaintain());
-        redisutil.setDataExpire(refresh_Token.getToken(),Long.toString(id),time);
+        redisutil.setDataExpire(refresh_Token.getToken(), Long.toString(id), time);
 
         return tokenDto;
 
 
+    }
+
+    public String profileFileName(User user) {
+        String name = user.getProfileImage();
+        StringBuilder sb = new StringBuilder();
+
+        String [] array= name.split("/");
+        int length  = array.length;
+
+        for (int i=length-2; i<length; i++){
+            sb.append(array[i]);
+            if (i!= length-1){
+                sb.append("/");
+            }
+            System.out.println(i+ array[i]);
+        }
+
+        return sb.toString();
     }
 
 
@@ -150,13 +177,7 @@ public class UserService {
 
     public void validProfileChange(User user, String password, String name, String
             nickName, List<Long> categoryId, String message) {
-
-
-//            if (categoryId == null || categoryId.size() == 0) {
-//                throw new ProfileEmptyCategoryException();
-//            }
-//        List<Long> usersLike = likedCategoryService.findUsersLike(user);
-//        likedCategoryService.ChangeUsersLike(user, categoryId, usersLike);
+        likedCategoryService.validLikedCategory(categoryId);
 
         if (!stringCheck(password)) {
             if (blankCheck(password)) {
@@ -217,10 +238,10 @@ public class UserService {
         }
     }
 
-    public void likedCategory(List<Long> categoryId,User user) {
-        Map<Long,Long> usersLike = likedCategoryRepository.findCidAndCparents(user);
-        for(Long l : usersLike.keySet()){
-            System.out.println("-=-=-=-==-==-=-=-"+l+"==-=-=-==-=-"+usersLike.get(l));
+    public void likedCategory(List<Long> categoryId, User user) {
+        Map<Long, Long> usersLike = likedCategoryRepository.findCidAndCparents(user);
+        for (Long l : usersLike.keySet()) {
+            System.out.println("-=-=-=-==-==-=-=-" + l + "==-=-=-==-=-" + usersLike.get(l));
         }
 
 
@@ -394,12 +415,21 @@ public class UserService {
 //    }
 
     public User tokenChecker(String accessToken) {
+        if (accessToken == null || blankCheck(accessToken)) {
+            return null;
+        }
         if (!jwtProvider.validateToken(accessToken)) {
             log.error("사용할수 없는 토큰입니다.");
+            return null;
         }
         Claims c = jwtProvider.parseClaims(accessToken);
         String uid = c.getSubject();
+        if (uid == null || uid.equals("null")) {
+            return null;
+        }
+
         System.out.println("Claims=  " + c + "  uid= " + uid);
+
         if (userRepository.findById(Long.valueOf(uid)).isEmpty()) {
             throw new UidNotExistException();
         }
@@ -409,5 +439,44 @@ public class UserService {
         return user;
     }
 
+
+    public void reissue(HttpServletRequest request, HttpServletResponse response) {
+        Cookie accessToken = cookieService.getCookie(request, "X-AUTH-TOKEN");
+        Cookie refreshToken = cookieService.getCookie(request, "refreshToken");
+        String jwt = null;
+        String refreshjwt = null;
+        String refreshUname = null;
+        if (accessToken != null) jwt = accessToken.getValue();
+        if (refreshToken != null) refreshjwt = refreshToken.getValue();
+
+
+        if (jwtProvider.validateToken(jwt) && jwtProvider.isTokenExpired(jwt)) {
+            return;
+        } else {
+            if (refreshToken != null && jwtProvider.isTokenExpired(refreshjwt)) {
+                if (jwtProvider.validateToken(refreshjwt)) {
+                    refreshUname = redisutil.getData(refreshjwt);
+                    if (refreshUname.equals(Long.toString(jwtProvider.getUserUid(refreshjwt)))) {
+                        log.info("--------------------Redis 에 존재 한다.-----------");
+
+                        Authentication authentication = jwtProvider.getAuthentication(refreshjwt);
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                        User user = userRepository.findByUid(Long.parseLong(refreshUname));
+                        String newToken = jwtProvider.createToken(user.getUid(), user.getRoles(), jwtProvider.accessTokenValidMillisecond);
+                        log.info("--------------------새로운 토큰 발급-----------" + newToken);
+
+                        Cookie newCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
+                        response.addCookie(newCookie);
+                        return;
+                    }
+
+
+                }
+
+            }
+
+        }
+        return;
+    }
 
 }

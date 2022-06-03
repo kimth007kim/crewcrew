@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.xpath.XPath;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -48,6 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final Cookie jwtToken = getCookie(request, "X-AUTH-TOKEN");
         final Cookie refreshToken = getCookie(request,"refreshToken");
+        log.info("필터 가 호출되었습니다.");
 
         log.info("X-AUTH-TOKEN = "+jwtToken);
         log.info("refreshToken = "+refreshToken);
@@ -55,11 +58,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String jwt = null;
         String refreshJwt = null;
         String refreshUname = null;
-//            "undefined"
+        if (jwtToken != null){
+            jwt = jwtToken.getValue();
+        }
+
         try {
-            if (jwtToken != null) {
+            if(jwt != null && jwtProvider.validateToken(jwt)){
                 log.info("-------------------- access 토큰이 존재할경우 log -----------");
-                jwt = jwtToken.getValue();
                 uid = jwtProvider.getUserUid(jwt);
                 if (uid != null ) {
                     log.info("-------------------- uid가 존재할경우 log  -----------");
@@ -71,7 +76,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 }
-            }else{
+            }else {
                 if (refreshToken != null) {
                     refreshJwt = refreshToken.getValue();
                     log.info("--------------------Acess 토큰 없고 refresh 토큰있다-----------");
@@ -81,44 +86,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         log.info("--------------------Redis 에 존재 한다.-----------");
 
                         Authentication authentication= jwtProvider.getAuthentication(refreshJwt);
-//                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                       SecurityContextHolder.getContext().setAuthentication(authentication);
                         User user = userRepository.findByUid(Long.parseLong(refreshUname));
-                        String newToken = jwtProvider.createToken(uid, user.getRoles(), jwtProvider.accessTokenValidMillisecond);
+
+                        String newToken = jwtProvider.createToken(user.getUid(), user.getRoles(), jwtProvider.accessTokenValidMillisecond);
                         log.info("--------------------새로운 토큰 발급-----------"+newToken);
 
                         Cookie newCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
                         response.addCookie(newCookie);
+
                     }
                 }
 
             }
 
-        } catch (ExpiredJwtException e) {
-            log.info("--------------------토큰이 만료되었을 경우에 뜨는 log -----------");
-            if (refreshToken != null ) {
-                log.info("--------------------토큰이 만료되었고 refresh 토큰이 있을때 log -----------");
-                refreshJwt = refreshToken.getValue();
-                if (refreshJwt != null) {
-                    refreshUname = redisUtil.getData(refreshJwt);
-                    log.info("--------------------Redis 에서 가져온 UID -----------"+refreshUname);
-                    if (refreshUname.equals(jwtProvider.getUserUid(refreshJwt))) {
-                        log.info("--------------------Redis 조회결과 같을때 -----------");
-                        Authentication authentication= jwtProvider.getAuthentication(jwt);
-//                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-//                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                        User user = userRepository.findByUid(Long.parseLong(refreshUname));
-                        String newToken = jwtProvider.createToken(uid, user.getRoles(), jwtProvider.accessTokenValidMillisecond);
-                        log.info("--------------------새로 생성된 accessToken -----------");
-
-                        Cookie newCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
-                        response.addCookie(newCookie);
-                    }
-                }
-            }
         } catch (Exception e) {
 
         }

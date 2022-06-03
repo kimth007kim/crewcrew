@@ -150,9 +150,7 @@ public class JwtProvider {
 
     public boolean validateToken(String token) {
         try {
-//            if parseCl
-            Claims c = parseClaims(token);
-//            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            Claims c = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();;
             return true;
         }catch(MalformedJwtException e){
             log.error(e.toString());

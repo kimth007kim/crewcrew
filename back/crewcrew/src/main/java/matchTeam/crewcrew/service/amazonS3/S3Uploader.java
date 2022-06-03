@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -78,11 +79,9 @@ public class S3Uploader {
         }
 
         String filename;
-
-
         try {
             String email_url = nameFile(email, provider);
-            filename = upload(file, email_url, "profile");
+            filename = upload(file, email_url);
         } catch (IOException e) {
             throw new S3UploadException();
         }
@@ -90,31 +89,34 @@ public class S3Uploader {
         return filename;
     }
 
-    public String upload(MultipartFile multipartFile, String dirName, String filename) throws IOException {
+    public String upload(MultipartFile multipartFile, String dirName) throws IOException {
 //        File uploadFile = convert(multipartFile).orElseThrow(()-> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
         File uploadFile = convert(multipartFile);
-        return upload(uploadFile, dirName, filename);
+        return upload(uploadFile, dirName);
 
     }
 
-    public String upload(File uploadFile, String dirName, String filename) {
+    public String upload(File uploadFile, String dirName) {
 //        String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();
-        String fileName = dirName + "/" + filename;
+        String fileName = dirName + "/" + generateName();
 //        String fileName = dirName + "/"+ uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile, fileName);
         removeNewFile(uploadFile);
         return uploadImageUrl;
     }
 
-    public String uploadURL(String uploadFile, String dirName, String filename) {
+    public String uploadURL(String uploadFile, String dirName) {
 //        String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();
-        String fileName = dirName + "/" + filename;
+        String fileName = dirName + "/" + generateName();
 //        String fileName = dirName + "/"+ uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile, fileName);
         return uploadImageUrl;
     }
+    public String generateName(){
+        return String.valueOf(UUID.randomUUID());
+    }
 
-    private void deleteS3(String source) {
+    public void deleteS3(String source) {
         amazonS3Client.deleteObject(bucket, source);
     }
 
@@ -185,7 +187,7 @@ public class S3Uploader {
             URL url = new URL(imageUrl);
             File file = new File("temp.jpg");
             FileUtils.copyURLToFile(url, file);
-            String filename = upload(file, emailUrl, "profile");
+            String filename = upload(file, emailUrl);
             userService.setProfileImage(user, filename);
 
         } catch (MalformedURLException e) {
