@@ -5,7 +5,6 @@ import { ko } from 'date-fns/esm/locale';
 import DatePickers from 'react-datepicker';
 import moment from 'moment';
 import InputMask from 'react-input-mask';
-import { format } from 'date-fns';
 
 import { InputHide, LabelBtn, ListFlex } from './index.style';
 import ArrowDown from '@/assets/images/ArrowDown.png';
@@ -18,6 +17,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 function HeaderContent2({ state }) {
   const [peopleClick, setPeopleClick] = useState(false);
+  const nowDate = new Date();
 
   const mask = 'FfyY-mM-dD';
   const formatChars = {
@@ -105,9 +105,11 @@ function HeaderContent2({ state }) {
 
   useEffect(() => {
     // input date 예외 처리
+
     if (moment(state.lastDate).isValid()) {
       const inputDate = new Date(state.lastDate);
       const currentDate = new Date();
+      const tomorrow = new Date(currentDate.setDate(currentDate.getDate() + 1));
       if (inputDate.getFullYear() < currentDate.getFullYear()) {
         return state.setLastDate(currentDate);
       }
@@ -121,9 +123,10 @@ function HeaderContent2({ state }) {
       if (
         inputDate.getFullYear() === currentDate.getFullYear() &&
         inputDate.getMonth() === currentDate.getMonth() &&
-        inputDate.getDay() < currentDate.getDay()
+        inputDate.getDate() < tomorrow.getDate()
       ) {
-        return state.setLastDate(currentDate);
+        console.log(inputDate.getDate(), tomorrow.getDate());
+        return state.setLastDate(tomorrow);
       }
     }
   }, [state.lastDate]);
@@ -187,7 +190,7 @@ function HeaderContent2({ state }) {
             showPopperArrow={false}
             dateFormat={'yyyy-MM-dd'}
             locale={ko}
-            minDate={new Date()}
+            minDate={new Date(nowDate.setDate(nowDate.getDate() + 1))}
             onChange={(date) => onChangeDate(date)}
             selected={state.lastDate}
             value={state.lastDate}

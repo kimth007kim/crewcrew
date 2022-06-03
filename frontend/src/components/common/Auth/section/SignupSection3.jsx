@@ -450,6 +450,7 @@ function SignupSection3({ IsClick, HandleClick }) {
       document.removeEventListener('click', handleClickOutside);
     };
   }, [studyRef, hobbyRef, IsClick]); // ref가 변경되면 useEffect를 다시 생성합니다.
+
   return (
     <SignupContents active={IsClick === 3} onClick={HandleStudyInputClick}>
       <form>

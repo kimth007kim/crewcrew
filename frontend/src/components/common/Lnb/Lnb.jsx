@@ -45,9 +45,21 @@ function Lnb({ path }) {
 
   const [postVisible, openPost, closePost] = useModal();
 
-  const handleClick = useCallback(() => {
+  const handleAuthModal = useCallback(() => {
     openAuth();
   }, []);
+
+  const handlePostModal = () => {
+    if (myData && myData.data) {
+      openPost();
+    } else {
+      const login = window.confirm('로그인 후 이용가능합니다. 로그인하시겠습니까?');
+      if (login) {
+        return openAuth();
+      }
+      return;
+    }
+  };
 
   return (
     <header>
@@ -72,7 +84,7 @@ function Lnb({ path }) {
                   <p>크루참여</p>
                 </PartIcon>
               </NavLink>
-              <RecruIcon selected={pathname.startsWith('/crew')} onClick={() => openPost()}>
+              <RecruIcon selected={pathname.startsWith('/crew')} onClick={handlePostModal}>
                 <span />
                 <p>팀원모집</p>
               </RecruIcon>
@@ -97,7 +109,7 @@ function Lnb({ path }) {
                   <Alarm />
                 </>
               ) : (
-                <NavPCFooterB onClick={handleClick}>
+                <NavPCFooterB onClick={handleAuthModal}>
                   <ProfileNullImg src={ProfileNull} alt="blank" />
                 </NavPCFooterB>
               )}

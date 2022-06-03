@@ -1,13 +1,20 @@
 import Textfield from '@/components/common/TextfieldEmail';
 import { emojiSlice } from '@/utils';
-import React, { useCallback, useState } from 'react';
+import React, { forwardRef, useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { css } from 'styled-components';
+import { Editor } from '@toast-ui/react-editor';
+import Prism from 'prismjs';
+// 여기 css를 수정해서 코드 하이라이팅 커스텀 가능
+import 'prismjs/themes/prism.css';
+import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
 
-function MainContent() {
+import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
+import '@toast-ui/editor/dist/toastui-editor.css';
+
+function MainContent(props, ref) {
+  const { state } = props;
   const [tooltipBool, setTooltipBool] = useState(false);
-  const [inviteLink, setInviteLink] = useState('');
-  const [titleText, setTitleText] = useState('');
 
   const handleFocusTooltip = useCallback(() => {
     setTooltipBool(true);
@@ -19,20 +26,20 @@ function MainContent() {
 
   const onChangeInviteLink = useCallback((e) => {
     const value = emojiSlice(e.target.value);
-    setInviteLink(value);
+    state.setInviteLink(value);
   }, []);
 
   const deleteInviteLink = useCallback((e) => {
-    setInviteLink('');
+    state.setInviteLink('');
   }, []);
 
   const onChangeTitleText = useCallback((e) => {
     const value = e.target.value;
-    setTitleText(value);
+    state.setTitleText(value);
   }, []);
 
   const deleteTitleText = useCallback((e) => {
-    setTitleText('');
+    state.setTitleText('');
   }, []);
 
   return (
@@ -53,12 +60,12 @@ function MainContent() {
         <InputBox>
           <Textfield
             type="text"
-            value={inviteLink}
+            value={state.inviteLink}
             label=""
             validMessage={''}
             valid={false}
-            onDelete={onChangeTitleText}
             onChange={onChangeInviteLink}
+            onDelete={deleteInviteLink}
             disabled={false}
           />
         </InputBox>
@@ -67,20 +74,38 @@ function MainContent() {
       <InputBox>
         <Textfield
           type="text"
-          value={titleText}
+          value={state.titleText}
           label=""
           validMessage={''}
           valid={false}
-          onChange={deleteTitleText}
+          onChange={onChangeTitleText}
           onDelete={deleteTitleText}
           disabled={false}
         />
       </InputBox>
+      <Title>내용</Title>
+      <Editor
+        ref={ref}
+        placeholder="내용을 입력해주세요."
+        height="350px"
+        initialEditType="markdown"
+        useCommandShortcut={false}
+        plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+        toolbarItems={[
+          // 툴바 옵션 설정
+          ['heading', 'bold', 'italic', 'strike'],
+          ['hr', 'quote'],
+          ['ul', 'ol', 'task', 'indent', 'outdent'],
+          ['table', 'link'],
+          ['code', 'codeblock'],
+        ]}
+        // * 주의! 이미지 추가시, 파일 업로드 형태가 아니라 이미지 자체를 base64로 인코딩한 형태의 img 태그로 말아주니 주의해서 사용하자!
+      ></Editor>
     </>
   );
 }
 
-export default MainContent;
+export default forwardRef(MainContent);
 
 const ToolTipWrapper = styled('div')`
   position: relative;
