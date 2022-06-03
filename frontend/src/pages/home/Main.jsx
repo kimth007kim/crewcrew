@@ -1,7 +1,9 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable indent */
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { Cookies } from 'react-cookie';
+
 import Category1 from '@/assets/images/IconCategory1.png';
 import Category2 from '@/assets/images/IconCategory2.png';
 import Category3 from '@/assets/images/IconCategory3.png';
@@ -23,6 +25,11 @@ import ScrollButton from '@/components/post/ScrollButton';
 import SwiperSection from '@/components/home/SwiperSection';
 import CategoryCard from '@/components/home/CategoryCard';
 import Footer from '@/components/common/Footer';
+import PostCreateModal from '@/components/post/modal/PostCreate';
+import useModal from '@/hooks/useModal';
+import fetcher from '@/utils/fetcher';
+import useSWR from 'swr';
+import AuthModal from '@/components/common/Auth/AuthModal';
 
 const categoryIcon = [
   Category1,
@@ -139,6 +146,30 @@ const categoryList = [
 ];
 
 function Main() {
+  const cookies = new Cookies();
+  const {
+    data: myData,
+    error,
+    mutate,
+  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const [categoryCheck, setCategoryCheck] = useState(0);
+
+  const [authVisible, openAuth, closeAuth] = useModal();
+  const [postVisible, openPost, closePost] = useModal();
+
+  const handlePostModal = (category) => {
+    if (myData && myData.data) {
+      setCategoryCheck(category);
+      openPost();
+    } else {
+      const login = window.confirm('로그인 후 이용가능합니다. 로그인하시겠습니까?');
+      if (login) {
+        return openAuth();
+      }
+      return;
+    }
+  };
+
   return (
     <MainMain>
       <ScrollButton />
@@ -160,7 +191,7 @@ function Main() {
           <p>더울 효율적이면서, 간편하게 크루원을 모집해보아요</p>
           <WriteButtonList>
             <WriteButtonLi1>
-              <WriteButton>
+              <WriteButton onClick={() => handlePostModal(0)}>
                 <WriteButtonimg src={Profile1} />
                 <h5>
                   <em>스터디 크루원</em>
@@ -172,7 +203,7 @@ function Main() {
               </WriteButton>
             </WriteButtonLi1>
             <WriteButtonLi2>
-              <WriteButton>
+              <WriteButton onClick={() => handlePostModal(1)}>
                 <WriteButtonimg src={Profile5} alt="" />
                 <h5>
                   <em>취미 크루원</em>
@@ -197,6 +228,8 @@ function Main() {
         </PostWrap>
       </MainPost>
       <Footer />
+      <PostCreateModal closeModal={closePost} visible={postVisible} category={categoryCheck} />
+      <AuthModal closeModal={closeAuth} visible={authVisible} />
     </MainMain>
   );
 }

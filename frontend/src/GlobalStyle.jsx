@@ -37,6 +37,10 @@ const GlobalStyle = createGlobalStyle`
     em {
       font-style: normal;
     }
+
+    #modal-root {
+      z-index: 1200;
+    }
 `;
 
 export default GlobalStyle;

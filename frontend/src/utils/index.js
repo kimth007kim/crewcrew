@@ -25,6 +25,12 @@ export const emojiSlice = (value) => {
   return validvalue;
 };
 
+export const numberSlice = (value) => {
+  const validvalue = value.replace(/[^0-9]/g, '');
+
+  return validvalue;
+};
+
 export const spaceSlice = (value) => {
   const strSpace = /\s/;
 

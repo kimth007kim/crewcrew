@@ -39,3 +39,13 @@ export const InputHide = styled('input')`
       `}
   }
 `;
+
+export const ListFlex = styled('ul')`
+  display: flex;
+  margin-right: 24px;
+  gap: 15px;
+
+  li {
+    width: 112px;
+  }
+`;

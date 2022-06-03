@@ -2,17 +2,39 @@ import axios from 'axios';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
-import { InputHide, LabelBtn } from './index.style';
+import { InputHide, LabelBtn, ListFlex } from './index.style';
+import ArrowDown from '@/assets/images/ArrowDown.png';
+import ArrowDownOn from '@/assets/images/ArrowDownOn.png';
+import { css } from 'styled-components';
 
 function HeaderContent1({ state }) {
   const [studyClick, setStudyClick] = useState(false);
   const [hobbyClick, setHobbyClick] = useState(false);
+  const [categoryValue, setCategoryValue] = useState('');
 
   const [studyArr, setStudyArr] = useState([]);
   const [hobbyArr, setHobbyArr] = useState([]);
 
   const studyRef = useRef(null);
   const hobbyRef = useRef(null);
+
+  const HandleCategoryChoose = useCallback((value, setClick) => {
+    setClick(value);
+    setCategoryValue('');
+    state.setDetailCategoryCheck(0);
+  }, []);
+
+  const HandleChoose = useCallback((e, data, setClick) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    state.setDetailCategoryCheck(data.categoryId);
+    setCategoryValue(data.categoryName);
+
+    setTimeout(() => {
+      setClick(false);
+    }, 150);
+  }, []);
 
   const HandleStudyInputClick = useCallback(
     (e) => {
@@ -50,6 +72,77 @@ function HeaderContent1({ state }) {
     [hobbyClick],
   );
 
+  const renderDetailCategory = useCallback(() => {
+    if (state.categoryCheck === 0) {
+      return (
+        <ListDrop
+          ref={studyRef}
+          active={studyClick}
+          onClick={HandleStudyInputClick}
+          hLength={studyArr.length > 0 && studyArr.length}
+        >
+          <li>
+            <InputPostCatDet
+              autoComplete="off"
+              readOnly
+              placeholder="어떤 스터디 크루원이 필요하세요?"
+              value={categoryValue}
+            />
+            <span></span>
+          </li>
+          {studyArr.length > 0 &&
+            studyArr.map((m, i) => (
+              <li key={m.categoryName + m.categoryId + m.description}>
+                <InputHide />
+                <LabelChoose
+                  onClick={(e) => HandleChoose(e, m, setStudyClick)}
+                  active={state.detailCategoryCheck === m.categoryId}
+                >
+                  <Choose active={state.detailCategoryCheck === m.categoryId}>
+                    <em>{m.categoryName}</em>
+                    {m.description}
+                  </Choose>
+                </LabelChoose>
+              </li>
+            ))}
+        </ListDrop>
+      );
+    }
+    return (
+      <ListDrop
+        ref={hobbyRef}
+        active={hobbyClick}
+        onClick={HandleHobbyInputClick}
+        hLength={hobbyArr.length > 0 && hobbyArr.length}
+      >
+        <li>
+          <InputPostCatDet
+            autoComplete="off"
+            readOnly
+            placeholder="어떤 취미 크루원이 필요하세요?"
+            value={categoryValue}
+          />
+          <span></span>
+        </li>
+        {hobbyArr.length > 0 &&
+          hobbyArr.map((m, i) => (
+            <li key={m.categoryName + m.categoryId + m.description}>
+              <InputHide />
+              <LabelChoose
+                onClick={(e) => HandleChoose(e, m, setHobbyClick)}
+                active={state.detailCategoryCheck === m.categoryId}
+              >
+                <Choose active={state.detailCategoryCheck === m.categoryId}>
+                  <em>{m.categoryName}</em>
+                  {m.description}
+                </Choose>
+              </LabelChoose>
+            </li>
+          ))}
+      </ListDrop>
+    );
+  }, [state.categoryCheck, hobbyClick, studyClick]);
+
   useEffect(() => {
     async function axiosGet() {
       try {
@@ -85,7 +178,7 @@ function HeaderContent1({ state }) {
               id="PostStudy"
               type={'radio'}
               checked={0 === state.categoryCheck}
-              onChange={() => state.setCategoryCheck(0)}
+              onChange={() => HandleCategoryChoose(0, state.setCategoryCheck)}
             ></InputHide>
             <LabelBtn htmlFor="PostStudy">스터디</LabelBtn>
           </li>
@@ -95,7 +188,7 @@ function HeaderContent1({ state }) {
               id="PostHobby"
               type={'radio'}
               checked={1 === state.categoryCheck}
-              onChange={() => state.setCategoryCheck(1)}
+              onChange={() => HandleCategoryChoose(1, state.setCategoryCheck)}
             ></InputHide>
             <LabelBtn htmlFor="PostHobby">취미</LabelBtn>
           </li>
@@ -103,7 +196,7 @@ function HeaderContent1({ state }) {
       </div>
       <div>
         <h4>상세 카테고리</h4>
-        <ListDrop></ListDrop>
+        {renderDetailCategory()}
       </div>
     </Content>
   );
@@ -124,16 +217,6 @@ const Content = styled('div')`
   }
 `;
 
-const ListFlex = styled('ul')`
-  display: flex;
-  margin-right: 24px;
-  gap: 15px;
-
-  li {
-    width: 112px;
-  }
-`;
-
 const ListDrop = styled('ul')`
   width: 100%;
   height: 50px;
@@ -146,4 +229,116 @@ const ListDrop = styled('ul')`
   box-sizing: border-box;
   position: absolute;
   top: 24px;
+
+  ${(props) =>
+    props.active &&
+    css`
+      border: 1px solid #00b7ff;
+      height: ${8 + 50 + props.hLength * 27}px;
+    `}
+
+  li {
+    width: 100%;
+    position: relative;
+    padding-left: 6px;
+    cursor: pointer;
+    box-sizing: border-box;
+
+    &:first-child {
+      height: 50px;
+      padding: 0;
+
+      &::after {
+        content: '';
+        display: block;
+        height: 1px;
+        width: calc(100% - 24px);
+        background-color: #e2e2e2;
+        margin: 0 auto;
+      }
+
+      span {
+        display: block;
+        width: 11px;
+        height: 6px;
+        background: url(${ArrowDown}) no-repeat;
+        background-size: 11px !important;
+        position: absolute;
+        top: calc(50% - 3px);
+        right: 12px;
+        transition: 0.3s;
+      }
+    }
+
+    &:nth-child(2) {
+      padding-top: 5px;
+    }
+  }
+
+  &:hover {
+    border-color: #00b7ff;
+
+    li {
+      span {
+        background: url(${ArrowDownOn}) no-repeat;
+      }
+    }
+  }
+`;
+
+const InputPostCatDet = styled('input')`
+  width: 100%;
+  height: 50px;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  font-size: 13px;
+  font-weight: 400;
+  cursor: pointer;
+  color: #707070;
+  padding: 0 12px 0 18px;
+
+  &::placeholder {
+    color: #a8a8a8;
+  }
+`;
+
+const LabelChoose = styled.label`
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  height: 21px;
+  padding: 4px 6px 2px;
+  padding-right: 0;
+  box-sizing: content-box;
+  :hover {
+    p {
+      background-color: #e2e2e2;
+      ${(props) =>
+        props.active &&
+        css`
+          background-color: #00b7ff;
+        `};
+    }
+  }
+`;
+
+const Choose = styled.p`
+  width: fit-content;
+  padding: 4px 6px 4px 6px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 14px;
+  color: #000;
+  transition: 0.2s;
+  position: relative;
+  white-space: nowrap;
+  user-select: none;
+
+  ${(props) =>
+    props.active &&
+    css`
+      background-color: #00b7ff;
+      color: #fff;
+    `};
 `;
