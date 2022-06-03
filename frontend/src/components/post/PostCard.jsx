@@ -43,7 +43,7 @@ function PostCard({ data }) {
     <Wrapper onClick={handleLocate} current={String(data.boardId) === postId}>
       <CardHead isDisabled={IsDisable}>
         <ProfileBox>
-          <img src={`${data.profileImage}?cache=${Math.random()}`} alt="" />
+          <img src={`${data.profileImage}`} alt="" />
         </ProfileBox>
         <TextBox>
           <Dday>{IsDisable ? '마감' : `D-${renderDay()}`}</Dday>

@@ -154,6 +154,7 @@ function MyInfoProfile({ open }) {
           toast.error(data.message);
           break;
         default:
+          toast.error(data.message);
           break;
       }
     } catch (error) {
