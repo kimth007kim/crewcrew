@@ -2130,8 +2130,8 @@ main {
     height: 240px;
   }
   .MainTop .ButtonIntro {
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
     top: 17px;
     right: 20px;
     opacity: 1;
@@ -3010,10 +3010,10 @@ br.fold {
 
 @media screen and (max-width: 820px) {
   section.MainTop {
-    height: 64px;
+    height: 44px;
   }
   section.MainTop .ButtonIntro {
-    top: 18px;
+    top: 10px;
   }
   div.TopCont {
     width: calc(100vw - 40px);
@@ -3910,7 +3910,7 @@ button.Set.On:hover {
     min-height: 0;
   }
   .ChatBoxBody {
-    height: calc(100vh - 300px);
+    height: calc(100vh - 280px);
   }
   .ChatBoxBody.Search {
     height: calc(100vh - 353px);
@@ -3987,7 +3987,7 @@ button.Set.On:hover {
     max-width: calc(100% - 38px);
   }
   .ChatBoxBody.Dt {
-    height: calc(100vh - 400px);
+    height: calc(100vh - 380px);
   }
   .ChatDt.Opponent {
     margin: 20px auto 0 20px;

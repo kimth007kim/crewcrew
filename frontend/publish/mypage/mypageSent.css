@@ -2130,8 +2130,8 @@ main {
     height: 240px;
   }
   .MainTop .ButtonIntro {
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
     top: 17px;
     right: 20px;
     opacity: 1;
@@ -3010,10 +3010,10 @@ br.fold {
 
 @media screen and (max-width: 820px) {
   section.MainTop {
-    height: 64px;
+    height: 44px;
   }
   section.MainTop .ButtonIntro {
-    top: 18px;
+    top: 10px;
   }
   div.TopCont {
     width: calc(100vw - 40px);
