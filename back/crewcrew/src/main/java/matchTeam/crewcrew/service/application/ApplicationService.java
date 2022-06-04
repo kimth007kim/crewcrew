@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -155,6 +156,13 @@ public class ApplicationService {
         return MyWaitingCrewResponseDTO.builder()
                 .waitingCrew(crewCount)
                 .content(crewDetails).build();
+    }
+
+    @Transactional(readOnly = true)
+    public Application findbyId(Long apId){
+        Application ap = applicationRepository.findById(apId)
+                .orElseThrow(NotExistApIdException::new);
+        return ap;
     }
 
     //중복 지원했을때

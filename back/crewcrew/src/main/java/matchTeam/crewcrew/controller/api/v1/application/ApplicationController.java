@@ -4,11 +4,13 @@ import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.application.*;
 import matchTeam.crewcrew.dto.board.BoardResponseDTO;
+import matchTeam.crewcrew.entity.application.Application;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.entity.user.LikedCategory;
 
 import matchTeam.crewcrew.entity.user.User;
+import matchTeam.crewcrew.repository.application.ApplicationRepository;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.service.announcement.AnnouncementService;
 import matchTeam.crewcrew.service.application.ApplicationProgressService;
@@ -17,6 +19,7 @@ import matchTeam.crewcrew.service.board.BoardService;
 import matchTeam.crewcrew.service.mail.TotalEmailService;
 import matchTeam.crewcrew.service.user.LikedCategoryService;
 import matchTeam.crewcrew.service.user.UserService;
+import matchTeam.crewcrew.util.customException.UserNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -28,6 +31,7 @@ import org.thymeleaf.context.Context;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.joining;
 
@@ -43,6 +47,7 @@ import static java.util.stream.Collectors.joining;
     private final UserService userService;
     private final BoardService boardService;
     private final LikedCategoryService likedCategoryService;
+    private final ApplicationRepository applicationRepository;
 
     @ApiOperation(value = "지원서 작성", notes = "- 유효한 uid 인지 확인합니다.\n " +
             "- 유효한 boardId 인지  확인합니다\n" +
@@ -91,12 +96,15 @@ import static java.util.stream.Collectors.joining;
         likedCategoryService.findUsersLike(user);
 
         Context context = new Context();
+        user.getProfileImage();
+
         context.setVariable("nickname", user.getNickname());
         context.setVariable("boardTitle", board.getTitle());
         context.setVariable("commentary", info.getCommentary());
         context.setVariable("introduce", user.getIntroduce());
         context.setVariable("interestStudyCategory", likedCategoryService.findUsersStudyLike(user).stream().collect(joining(",")));
         context.setVariable("interestHobbyCategory", likedCategoryService.findUsersHobbyLike(user).stream().collect(joining(",")));;
+        context.setVariable("profileImageURL", user.getProfileImage());
 
         context.setVariable("url", "crewcrew.org/board/" + board.getBoardId());
         totalEmailService.sendJavaMail("[크루크루] 지원서 도착", userService.findByUid(board.getUid()).getEmail(), "mailform/apply", context);
@@ -250,18 +258,22 @@ import static java.util.stream.Collectors.joining;
     @ApiOperation(value = "지원서 진행사항 수정하기")
     @ResponseStatus(value = HttpStatus.OK )
     @PutMapping(value = "/application/status")
-    public ResponseEntity<Object> updateApply(@RequestHeader("X-AUTH-TOKEN") String token, @RequestBody UpdateApplyRequestDTO request){
+    public ResponseEntity<Object> updateApply(@RequestHeader("X-AUTH-TOKEN") String token, @RequestBody UpdateApplyRequestDTO request) throws Exception {
 
         User user = userService.tokenChecker(token);
         ApplicationUserDetailsResponseDTO result = applicationService.updateApply(request, user);
 
-        /*if (request.getStatusCode() == 2){ // 참여 수락된 경우 메일 발송
-            Context context = new Context();
-            context.setVariable("nickname", name);
-            context.setVariable("chatURL", chatURL);
-            totalEmailService.sendJavaMail("[크루크루] 회원님의 요청이 수락되었습니다", email, "mailform/accepted", context);
-        }*/
+        if (request.getStatusCode() == 2){ // 참여 수락된 경우 메일 발송
+            Application application = applicationService.findbyId(request.getApId());
+            User appliedUser = application.getUser();
+            Board board = application.getBoard();
 
+            Context context = new Context();
+            context.setVariable("nickname", appliedUser.getNickname());
+            context.setVariable("chatURL", board.getKakaoChat());
+            context.setVariable("boardTitle", board.getTitle());
+            totalEmailService.sendJavaMail("[크루크루] 회원님의 요청이 수락되었습니다", appliedUser.getEmail(), "mailform/accepted", context);
+        }
         return ResponseHandler.generateResponse("지원서 진행사항 수정 성공", HttpStatus.OK, result);
     }
 

@@ -58,4 +58,5 @@ public class ApplicationExceptionHandler {
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.NOT_EXIST_APPLY);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
 }
