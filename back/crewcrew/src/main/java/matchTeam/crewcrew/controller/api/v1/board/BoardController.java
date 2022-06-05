@@ -33,7 +33,7 @@ public class BoardController {
     @ApiResponses({
             @ApiResponse(
                     code = 200,
-                    message = "게시글 번호로 수정 성공",
+                    message = "게시글 작성 성공",
                     response = BoardSaveResponseDTO.class
             ),
             @ApiResponse(
