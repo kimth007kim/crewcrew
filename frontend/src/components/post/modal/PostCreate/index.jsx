@@ -60,11 +60,13 @@ function PostCreateModal({ closeModal, visible, category = 0 }) {
         return;
       }
 
+      const expiredDate = format(lastDate, 'yyyy-MM-dd');
+
       const context = {
         approachCode: meetingCheck,
         boardContent: editorRef.current?.getInstance().getMarkdown(),
         categoryId: detailCategoryCheck,
-        expiredDate: lastDate,
+        expiredDate: expiredDate,
         kakaoChat: inviteLink,
         title: titleText,
         totalCrew: peopleNum,
@@ -76,7 +78,6 @@ function PostCreateModal({ closeModal, visible, category = 0 }) {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
         },
       });
-      console.log(data);
 
       switch (data.status) {
         case 200:
