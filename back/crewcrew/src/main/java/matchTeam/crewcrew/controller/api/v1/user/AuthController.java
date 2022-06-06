@@ -25,14 +25,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 
 @Api(tags = "1. Auth")
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-//@RequestMapping("/api/v1/auth/")
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -127,119 +125,117 @@ public class AuthController {
     }
 
 
-    @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다. \n" + "1. 프로필 이미지로 가입시  file=Multipartfile, default 는 사용하지않습니다. \n" + "2. 기본이미지로 회원가입시  file을 사용하지않고 default =1~5  를 사용합니다.")
-    @ApiResponses({
-            @ApiResponse(
-                    code = 200
-                    , message = "회원가입 성공"
-                    , response = UserResponseDto.class
-            )
-            , @ApiResponse(
-            code = 1004
-            , message = "이메일 인증이 되지않은 이메일 주소입니다."
-    )
-            , @ApiResponse(
-            code = 1005
-            , message = "현재 입력한 이메일을 가진 유저가 이미 존재합니다. "
-    )
-            , @ApiResponse(
-            code = 1007
-            , message = "이미 존재하는 닉네임 입니다. "
-    ), @ApiResponse(
-            code = 1009
-            , message = "비밀번호에 이모지가 존재합니다.  "
-    ), @ApiResponse(
-            code = 1010
-            , message = "비밀번호가 8~25자 가 아니거나 특수문자나 영어 숫자가 최소 1개 이상 포함되어있지 않습니다."
-    ), @ApiResponse(
-            code = 1011
-            , message = "비밀번호에 공백이 발견되었습니다."
-    ), @ApiResponse(
-            code = 1012
-            , message = "이름이 0자이거나 10자를 초과하였습니다."
-    ), @ApiResponse(
-            code = 1013
-            , message = "닉네임이 0자이거나 16자를 초과하였습니다."
-    )
-            , @ApiResponse(
-            code = 1501
-            , message = "S3에 업로드하는것을 실패하였습니다."
-    )
-            , @ApiResponse(
-            code = 1502
-            , message = "S3에 업로드할 파일을 찾을 수 없습니다."
-    )
-            , @ApiResponse(
-            code = 2001
-            , message = "존재하지 않는 카테고리 번호입니다."
-    )
-    })
-
-
-    public ResponseEntity<Object> signUp(
-            @ApiParam(value = "email 주소", required = true)
-            @RequestParam String email,
-            @ApiParam(value = "비밀번호", required = true)
-            @RequestParam String password,
-            @ApiParam(value = "회원 이름", required = true)
-            @RequestParam String name,
-            @ApiParam(value = "회원 닉네임", required = true)
-            @RequestParam String nickName,
-            @ApiParam(value = "프로필 이미지")
-            @RequestParam(required = false) MultipartFile file,
-            @ApiParam(value = "회원이 좋아하는 카테고리 ID", required = true)
-            @RequestParam List<Long> categoryId,
-            @ApiParam(value = "한줄 메세지")
-            @RequestParam(required = false) String message,
-            @ApiParam(value = "디폴트 이미지 선택")
-            @RequestParam(required = false) Integer Default) {
-//                 String email,  String password, String name, String nickName, MultipartFile file, List<Long> categoryId) {
-//                @ModelAttribute SignUpRequestDto signUpRequestDto) {
-        SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email, password, name, nickName, file, categoryId);
-        System.out.println("email: " + email + "password: " + password + "name: " + name + "nickname" + "file: " + file + "categoryId" + categoryId);
-
-        if (userService.findByEmailAndProvider(email, "local").isPresent()) {
-            throw new CUserAlreadyExistException();
-        }
-
-
-        userService.validateDuplicateByNickname(nickName);
-        likedCategoryService.validLikedCategory(categoryId);
-        System.out.println(signUpRequestDto.getEmail());
-        emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
-        //1004 이메일인증이 안된 이메일
-        //1005 현재 입력한 이메일로 이미 존재할 경우
-        userService.validationNickName(nickName);
-        userService.validationName(name);
-        userService.validationPasswd(password);
-        String email_url = email.replace("@", "_");
-
-        String filename = s3Uploader.addImageWhenSignUp(email_url, file, Default, "local");
-
-        Long signupId = userService.signup(signUpRequestDto);
-        User user = userService.findByUid(signupId);
-        userService.setProfileImage(user, filename);
-        userService.setMessage(user, message);
-
-
-        List<Long> usersLike = likedCategoryService.findUsersLike(user);
-
-        List<Long> input = likedCategoryService.deleteDuplicateCategory(signUpRequestDto.getCategoryId());
-
-
-        System.out.println("중복을 제거한 카테고리" + input);
-        List<Long> result = likedCategoryService.addLikedCategory(user, input);
-        System.out.println("유저가 등록한 후의 카테고리" + result);
-
-        UserResponseDto userResponseDto = new UserResponseDto(signupId, signUpRequestDto.getEmail(), signUpRequestDto.getName(), signUpRequestDto.getNickName(), filename, result, user.getMessage(), user.getProvider());
-
-        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, userResponseDto);
-    }
+//    @PostMapping(value = "/signUp", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다. \n" + "1. 프로필 이미지로 가입시  file=Multipartfile, default 는 사용하지않습니다. \n" + "2. 기본이미지로 회원가입시  file을 사용하지않고 default =1~5  를 사용합니다.")
+//    @ApiResponses({
+//            @ApiResponse(
+//                    code = 200
+//                    , message = "회원가입 성공"
+//                    , response = UserResponseDto.class
+//            )
+//            , @ApiResponse(
+//            code = 1004
+//            , message = "이메일 인증이 되지않은 이메일 주소입니다."
+//    )
+//            , @ApiResponse(
+//            code = 1005
+//            , message = "현재 입력한 이메일을 가진 유저가 이미 존재합니다. "
+//    )
+//            , @ApiResponse(
+//            code = 1007
+//            , message = "이미 존재하는 닉네임 입니다. "
+//    ), @ApiResponse(
+//            code = 1009
+//            , message = "비밀번호에 이모지가 존재합니다.  "
+//    ), @ApiResponse(
+//            code = 1010
+//            , message = "비밀번호가 8~25자 가 아니거나 특수문자나 영어 숫자가 최소 1개 이상 포함되어있지 않습니다."
+//    ), @ApiResponse(
+//            code = 1011
+//            , message = "비밀번호에 공백이 발견되었습니다."
+//    ), @ApiResponse(
+//            code = 1012
+//            , message = "이름이 0자이거나 10자를 초과하였습니다."
+//    ), @ApiResponse(
+//            code = 1013
+//            , message = "닉네임이 0자이거나 16자를 초과하였습니다."
+//    )
+//            , @ApiResponse(
+//            code = 1501
+//            , message = "S3에 업로드하는것을 실패하였습니다."
+//    )
+//            , @ApiResponse(
+//            code = 1502
+//            , message = "S3에 업로드할 파일을 찾을 수 없습니다."
+//    )
+//            , @ApiResponse(
+//            code = 2001
+//            , message = "존재하지 않는 카테고리 번호입니다."
+//    )
+//    })
+//    public ResponseEntity<Object> signUp(
+//            @ApiParam(value = "email 주소", required = true)
+//            @RequestParam String email,
+//            @ApiParam(value = "비밀번호", required = true)
+//            @RequestParam String password,
+//            @ApiParam(value = "회원 이름", required = true)
+//            @RequestParam String name,
+//            @ApiParam(value = "회원 닉네임", required = true)
+//            @RequestParam String nickName,
+//            @ApiParam(value = "프로필 이미지")
+//            @RequestParam(required = false) MultipartFile file,
+//            @ApiParam(value = "회원이 좋아하는 카테고리 ID", required = true)
+//            @RequestParam List<Long> categoryId,
+//            @ApiParam(value = "한줄 메세지")
+//            @RequestParam(required = false) String message,
+//            @ApiParam(value = "디폴트 이미지 선택")
+//            @RequestParam(required = false) Integer Default) {
+////                 String email,  String password, String name, String nickName, MultipartFile file, List<Long> categoryId) {
+////                @ModelAttribute SignUpRequestDto signUpRequestDto) {
+//        SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email, password, name, nickName, file, categoryId);
+//        System.out.println("email: " + email + "password: " + password + "name: " + name + "nickname" + "file: " + file + "categoryId" + categoryId);
+//
+//        if (userService.findByEmailAndProvider(email, "local").isPresent()) {
+//            throw new CUserAlreadyExistException();
+//        }
+//
+//
+//        userService.validateDuplicateByNickname(nickName);
+//        likedCategoryService.validLikedCategory(categoryId);
+//        System.out.println(signUpRequestDto.getEmail());
+//        emailService.checkVerifiedEmail(signUpRequestDto.getEmail());
+//        //1004 이메일인증이 안된 이메일
+//        //1005 현재 입력한 이메일로 이미 존재할 경우
+//        userService.validationNickName(nickName);
+//        userService.validationName(name);
+//        userService.validationPasswd(password);
+//        String email_url = email.replace("@", "_");
+//
+//        String filename = s3Uploader.addImageWhenSignUp(email_url, file, Default, "local");
+//
+//        Long signupId = userService.signup(signUpRequestDto);
+//        User user = userService.findByUid(signupId);
+//        userService.setProfileImage(user, filename);
+//        userService.setMessage(user, message);
+//
+//
+//        List<Long> usersLike = likedCategoryService.findUsersLike(user);
+//
+//        List<Long> input = likedCategoryService.deleteDuplicateCategory(signUpRequestDto.getCategoryId());
+//
+//
+//        System.out.println("중복을 제거한 카테고리" + input);
+//        List<Long> result = likedCategoryService.addLikedCategory(user, input);
+//        System.out.println("유저가 등록한 후의 카테고리" + result);
+//
+//        UserResponseDto userResponseDto = new UserResponseDto(signupId, signUpRequestDto.getEmail(), signUpRequestDto.getName(), signUpRequestDto.getNickName(), filename, result, user.getMessage(), user.getProvider());
+//
+//        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, userResponseDto);
+//    }
 
 
 
-    @PostMapping(value = "/signUp", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다. \n" + "1. 프로필 이미지로 가입시  file=Multipartfile, default 는 사용하지않습니다. \n" + "2. 기본이미지로 회원가입시  file을 사용하지않고 default =1~5  를 사용합니다.")
 
     public ResponseEntity<Object> register(
@@ -259,9 +255,6 @@ public class AuthController {
             @RequestParam(required = false) String message,
             @ApiParam(value = "디폴트 이미지 선택")
             @RequestParam(required = false) Integer Default) {
-//                 String email,  String password, String name, String nickName, MultipartFile file, List<Long> categoryId) {
-//                @ModelAttribute SignUpRequestDto signUpRequestDto) {
-
             UserResponseDto userResponseDto= userService.register(email,password,name,nickName,file,  categoryId,message,Default);
 
         return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, userResponseDto);

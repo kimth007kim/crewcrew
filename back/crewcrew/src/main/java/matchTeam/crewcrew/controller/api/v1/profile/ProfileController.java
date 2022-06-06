@@ -110,27 +110,8 @@ public class ProfileController {
     })
     @PutMapping(value = "/mypage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> profileChange(@RequestHeader("X-AUTH-TOKEN") String token, @RequestPart(value="ProfileChangeRequestDto") ProfileChangeRequestDto profileChangeRequestDto, @RequestPart(value = "file",required = false) MultipartFile file) throws IOException {
-//        String password = profileChangeRequestDto.getPassword();
-//        String nickName = profileChangeRequestDto.getNickName();
-//        String name = profileChangeRequestDto.getName();
-//        List<Long> categoryId= profileChangeRequestDto.getCategoryId();
-//        String message = profileChangeRequestDto.getMessage();
-//        if (categoryId == null){
-//            categoryId=new ArrayList<Long>();
-//        }
-
         User user = userService.tokenChecker(token);
 
-//        if (file != null && !file.isEmpty()) {
-//            String previous = userService.profileFileName(user);
-//            s3Uploader.deleteS3(previous);
-//
-//            String tempName = s3Uploader.nameFile(user.getEmail(), user.getProvider());
-//            String filename = s3Uploader.upload(file, tempName);
-//            userService.setProfileImage(user, filename);
-//        }
-//        userService.validProfileChange(user,password,name,nickName,categoryId,message);
-//        userService.profileChange(user, password, name, nickName, categoryId, message);
         userService.profileEdit(profileChangeRequestDto,user,file);
         return ResponseHandler.generateResponse("성공", HttpStatus.OK, "변경 성공");
     }
