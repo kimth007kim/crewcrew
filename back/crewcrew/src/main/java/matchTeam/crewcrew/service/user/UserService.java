@@ -87,7 +87,7 @@ public class UserService {
 
     @Transactional(rollbackFor = Exception.class)
     public UserResponseDto register(String email, String password, String name, String nickName, MultipartFile file, List<Long> categoryId, String message, Integer Default) {
-        System.out.println("email: " + email + "password: " + password + "name: " + name + "nickname" + "file: " + file + "categoryId" + categoryId);
+        System.out.println("email: " + email + "password: " + password + "name: " + name + "nickname" + "file: " + file + "categoryId" + categoryId+" Default "+Default);
 
         if (findByEmailAndProvider(email, "local").isPresent()) {
             throw new CUserAlreadyExistException();

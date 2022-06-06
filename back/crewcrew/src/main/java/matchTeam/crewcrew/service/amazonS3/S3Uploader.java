@@ -56,11 +56,14 @@ public class S3Uploader {
 
 
 
-    public String addImageWhenSignUp(String email, MultipartFile file, Integer Default,String provider) {
-        if (file.isEmpty()) {
+    public String addImageWhenSignUp(String email, MultipartFile file, Integer Default, String provider) {
+        if (file==null) {
+            System.out.println("1 발동");
             if (Default == null || 0 >= Default || Default > 5) {
+                System.out.println("2 ");
                 throw new S3FileNotFoundException();
             } else {
+                System.out.println("3잘 넘어온 경우");
 //                시작경로 만든 메서드
                 StringBuilder start = new StringBuilder();
                 start.append("default/");
@@ -69,22 +72,28 @@ public class S3Uploader {
                 String source = start.toString();
 
 //                도착경로 만드는 메서드
-                String destination = nameFile(email, provider);
-                copy(source, destination);
+                StringBuilder destination= new StringBuilder();
+                destination.append(nameFile(email,provider));
+                destination.append("/");
+                destination.append(generateName());
 
-                return destination;
+                String result = destination.toString();
+//                String destination = nameFile(email, provider);
+                copy(source, result);
+
+                return result;
             }
-        }
-
-        String filename;
-        try {
-            String email_url = nameFile(email, provider);
-            filename = upload(file, email_url);
-        } catch (IOException e) {
-            throw new S3UploadException();
-        }
-
+        }else {
+            String filename;
+            try {
+                String email_url = nameFile(email, provider);
+                filename = upload(file, email_url);
+            } catch (IOException e) {
+                throw new S3UploadException();
+            }
         return filename;
+        }
+
     }
 
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {

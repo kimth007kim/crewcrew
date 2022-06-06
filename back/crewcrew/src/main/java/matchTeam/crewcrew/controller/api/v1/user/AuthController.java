@@ -255,6 +255,7 @@ public class AuthController {
             @RequestParam(required = false) String message,
             @ApiParam(value = "디폴트 이미지 선택")
             @RequestParam(required = false) Integer Default) {
+        System.out.println("-----file----------"+file);
             UserResponseDto userResponseDto= userService.register(email,password,name,nickName,file,  categoryId,message,Default);
 
         return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, userResponseDto);
