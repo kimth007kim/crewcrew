@@ -76,7 +76,7 @@ public class UserService {
         return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();
     }
 
-    @Transactional
+//    @Transactional
     public Long signup(SignUpLocalRequestDto localSignUpRequestDto) {
         if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(), "local").isPresent())
             throw new EmailSignUpFailedCException();
@@ -105,6 +105,7 @@ public class UserService {
         String email_url = email.replace("@", "_");
 
         String filename = s3Uploader.addImageWhenSignUp(email_url, file, Default, "local");
+        log.info(filename,"파일네임 파일네임");
 
         List<Long> input = likedCategoryService.deleteDuplicateCategory(categoryId);
         SignUpLocalRequestDto signUpRequestDto = new SignUpLocalRequestDto(email, password, name, nickName, filename, input, message);
