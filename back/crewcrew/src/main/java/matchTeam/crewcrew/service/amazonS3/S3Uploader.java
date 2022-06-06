@@ -10,7 +10,6 @@ import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.response.exception.auth.MalformedURLImageException;
 import matchTeam.crewcrew.response.exception.auth.S3FileNotFoundException;
 import matchTeam.crewcrew.response.exception.auth.S3UploadException;
-import matchTeam.crewcrew.service.user.UserService;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -29,7 +28,6 @@ import java.util.UUID;
 @Component
 public class S3Uploader {
     private final AmazonS3Client amazonS3Client;
-    private final UserService userService;
 
     @Value("${cloud.aws.s3.bucket}")
     public String bucket;
@@ -58,11 +56,14 @@ public class S3Uploader {
 
 
 
-    public String addImageWhenSignUp(String email, MultipartFile file, Integer Default,String provider) {
-        if (file.isEmpty()) {
+    public String addImageWhenSignUp(String email, MultipartFile file, Integer Default, String provider) {
+        if (file==null) {
+            System.out.println("1 발동");
             if (Default == null || 0 >= Default || Default > 5) {
+                System.out.println("2 ");
                 throw new S3FileNotFoundException();
             } else {
+                System.out.println("3잘 넘어온 경우");
 //                시작경로 만든 메서드
                 StringBuilder start = new StringBuilder();
                 start.append("default/");
@@ -71,22 +72,28 @@ public class S3Uploader {
                 String source = start.toString();
 
 //                도착경로 만드는 메서드
-                String destination = nameFile(email, provider);
-                copy(source, destination);
+                StringBuilder destination= new StringBuilder();
+                destination.append(nameFile(email,provider));
+                destination.append("/");
+                destination.append(generateName());
 
-                return destination;
+                String result = destination.toString();
+//                String destination = nameFile(email, provider);
+                copy(source, result);
+
+                return result;
             }
-        }
-
-        String filename;
-        try {
-            String email_url = nameFile(email, provider);
-            filename = upload(file, email_url);
-        } catch (IOException e) {
-            throw new S3UploadException();
-        }
-
+        }else {
+            String filename;
+            try {
+                String email_url = nameFile(email, provider);
+                filename = upload(file, email_url);
+            } catch (IOException e) {
+                throw new S3UploadException();
+            }
         return filename;
+        }
+
     }
 
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
@@ -182,13 +189,13 @@ public class S3Uploader {
         }
     }
 
-    public void urlConvert(String emailUrl, String imageUrl, User user) {
+    public String urlConvert(String emailUrl, String imageUrl, User user) {
         try {
             URL url = new URL(imageUrl);
             File file = new File("temp.jpg");
             FileUtils.copyURLToFile(url, file);
             String filename = upload(file, emailUrl);
-            userService.setProfileImage(user, filename);
+            return filename;
 
         } catch (MalformedURLException e) {
             throw new MalformedURLImageException();
