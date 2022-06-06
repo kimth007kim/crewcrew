@@ -10,7 +10,6 @@ import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.response.exception.auth.MalformedURLImageException;
 import matchTeam.crewcrew.response.exception.auth.S3FileNotFoundException;
 import matchTeam.crewcrew.response.exception.auth.S3UploadException;
-import matchTeam.crewcrew.service.user.UserService;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -29,7 +28,6 @@ import java.util.UUID;
 @Component
 public class S3Uploader {
     private final AmazonS3Client amazonS3Client;
-    private final UserService userService;
 
     @Value("${cloud.aws.s3.bucket}")
     public String bucket;
@@ -182,13 +180,13 @@ public class S3Uploader {
         }
     }
 
-    public void urlConvert(String emailUrl, String imageUrl, User user) {
+    public String urlConvert(String emailUrl, String imageUrl, User user) {
         try {
             URL url = new URL(imageUrl);
             File file = new File("temp.jpg");
             FileUtils.copyURLToFile(url, file);
             String filename = upload(file, emailUrl);
-            userService.setProfileImage(user, filename);
+            return filename;
 
         } catch (MalformedURLException e) {
             throw new MalformedURLImageException();

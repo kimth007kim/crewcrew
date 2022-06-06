@@ -127,7 +127,7 @@ public class AuthController {
     }
 
 
-    @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다. \n" + "1. 프로필 이미지로 가입시  file=Multipartfile, default 는 사용하지않습니다. \n" + "2. 기본이미지로 회원가입시  file을 사용하지않고 default =1~5  를 사용합니다.")
     @ApiResponses({
             @ApiResponse(
@@ -233,6 +233,36 @@ public class AuthController {
         System.out.println("유저가 등록한 후의 카테고리" + result);
 
         UserResponseDto userResponseDto = new UserResponseDto(signupId, signUpRequestDto.getEmail(), signUpRequestDto.getName(), signUpRequestDto.getNickName(), filename, result, user.getMessage(), user.getProvider());
+
+        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, userResponseDto);
+    }
+
+
+
+    @PostMapping(value = "/signUp", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiOperation(value = "이메일 회원가입", notes = "이메일로 회원가입을 합니다. \n" + "1. 프로필 이미지로 가입시  file=Multipartfile, default 는 사용하지않습니다. \n" + "2. 기본이미지로 회원가입시  file을 사용하지않고 default =1~5  를 사용합니다.")
+
+    public ResponseEntity<Object> register(
+            @ApiParam(value = "email 주소", required = true)
+            @RequestParam String email,
+            @ApiParam(value = "비밀번호", required = true)
+            @RequestParam String password,
+            @ApiParam(value = "회원 이름", required = true)
+            @RequestParam String name,
+            @ApiParam(value = "회원 닉네임", required = true)
+            @RequestParam String nickName,
+            @ApiParam(value = "프로필 이미지")
+            @RequestParam(required = false) MultipartFile file,
+            @ApiParam(value = "회원이 좋아하는 카테고리 ID", required = true)
+            @RequestParam List<Long> categoryId,
+            @ApiParam(value = "한줄 메세지")
+            @RequestParam(required = false) String message,
+            @ApiParam(value = "디폴트 이미지 선택")
+            @RequestParam(required = false) Integer Default) {
+//                 String email,  String password, String name, String nickName, MultipartFile file, List<Long> categoryId) {
+//                @ModelAttribute SignUpRequestDto signUpRequestDto) {
+
+            UserResponseDto userResponseDto= userService.register(email,password,name,nickName,file,  categoryId,message,Default);
 
         return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, userResponseDto);
     }

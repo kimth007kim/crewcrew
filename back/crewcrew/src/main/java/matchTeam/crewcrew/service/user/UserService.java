@@ -1,6 +1,7 @@
 package matchTeam.crewcrew.service.user;
 
 import io.jsonwebtoken.Claims;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import matchTeam.crewcrew.config.RedisUtil;
@@ -8,10 +9,7 @@ import matchTeam.crewcrew.config.security.JwtProvider;
 import matchTeam.crewcrew.dto.security.ResponseTokenDto;
 import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.security.TokenRequestDto;
-import matchTeam.crewcrew.dto.user.SignUpRequestDto;
-import matchTeam.crewcrew.dto.user.UserLoginRequestDto;
-import matchTeam.crewcrew.dto.user.UserMessage;
-import matchTeam.crewcrew.dto.user.UserSignUpRequestDto;
+import matchTeam.crewcrew.dto.user.*;
 import matchTeam.crewcrew.dto.user.example.UserResponseDto;
 import matchTeam.crewcrew.entity.security.RefreshToken;
 import matchTeam.crewcrew.entity.user.User;
@@ -28,10 +26,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,6 +51,8 @@ public class UserService {
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
     private final LikedCategoryService likedCategoryService;
     private final JwtProvider jwtProvider;
+    private final EmailService emailService;
+    private final S3Uploader s3Uploader;
 
 
     public User findByUid(Long id) {
@@ -73,6 +76,45 @@ public class UserService {
         return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();
     }
 
+    @Transactional
+    public Long signup(SignUpLocalRequestDto localSignUpRequestDto) {
+        if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(), "local").isPresent())
+            throw new EmailSignUpFailedCException();
+//            throw new CrewException(ErrorCode.EMAIL_CODE_NOT_MATCH);
+        return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public UserResponseDto register(String email, String password, String name, String nickName, MultipartFile file, List<Long> categoryId, String message, Integer Default) {
+        System.out.println("email: " + email + "password: " + password + "name: " + name + "nickname" + "file: " + file + "categoryId" + categoryId);
+
+        if (findByEmailAndProvider(email, "local").isPresent()) {
+            throw new CUserAlreadyExistException();
+        }
+
+
+        validateDuplicateByNickname(nickName);
+        likedCategoryService.validLikedCategory(categoryId);
+        emailService.checkVerifiedEmail(email);
+        //1004 이메일인증이 안된 이메일
+        //1005 현재 입력한 이메일로 이미 존재할 경우
+        validationNickName(nickName);
+        validationName(name);
+        validationPasswd(password);
+        String email_url = email.replace("@", "_");
+
+        String filename = s3Uploader.addImageWhenSignUp(email_url, file, Default, "local");
+
+        List<Long> input = likedCategoryService.deleteDuplicateCategory(categoryId);
+        SignUpLocalRequestDto signUpRequestDto = new SignUpLocalRequestDto(email, password, name, nickName, filename, input, message);
+        Long signupId = signup(signUpRequestDto);
+        User user = findByUid(signupId);
+
+        UserResponseDto userResponseDto = new UserResponseDto(signupId, signUpRequestDto.getEmail(), signUpRequestDto.getName(), signUpRequestDto.getNickName(), filename, signUpRequestDto.getCategoryId(), user.getMessage(), user.getProvider());
+        return userResponseDto;
+    }
+
 
     public TokenDto login(UserLoginRequestDto userLoginRequestDto) {
         //회원 정보 존재하는지 확인
@@ -93,13 +135,6 @@ public class UserService {
         Optional<RefreshToken> refreshToken = refreshTokenJpaRepository.findByPkey(id);
         System.out.println(refreshToken);
         boolean maintain = userLoginRequestDto.isMaintain();
-//        if (refreshToken.isPresent() && (jwtProvider.validateToken(request,refreshToken.get().getToken()) == true)) {
-//            TokenDto newCreatedToken = jwtProvider.createTokenDto(user.getUid(), user.getRoles(), maintain);
-//            refreshTokenJpaRepository.deleteByPkey(refreshToken.get().getPkey());
-//        }
-        //       1. Refresh 토큰이 존재하면 그걸 토대로 access토큰 발급
-        //        2. Refresh 토큰 없으면 새로 Refresh토큰 발급후 그걸 토대로 accesss토큰 발급
-        //        TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles(),maintain);
         TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles(), userLoginRequestDto.isMaintain());
 
         // RefreshToken 저장
@@ -150,15 +185,15 @@ public class UserService {
         String name = user.getProfileImage();
         StringBuilder sb = new StringBuilder();
 
-        String [] array= name.split("/");
-        int length  = array.length;
+        String[] array = name.split("/");
+        int length = array.length;
 
-        for (int i=length-2; i<length; i++){
+        for (int i = length - 2; i < length; i++) {
             sb.append(array[i]);
-            if (i!= length-1){
+            if (i != length - 1) {
                 sb.append("/");
             }
-            System.out.println(i+ array[i]);
+            System.out.println(i + array[i]);
         }
 
         return sb.toString();
@@ -238,16 +273,16 @@ public class UserService {
         }
     }
 
+    public void urlToImage(String emailUrl, String imageUrl, User user) {
+        String filename = s3Uploader.urlConvert(emailUrl, imageUrl, user);
+        setProfileImage(user, filename);
+    }
+
     public void likedCategory(List<Long> categoryId, User user) {
         Map<Long, Long> usersLike = likedCategoryRepository.findCidAndCparents(user);
         for (Long l : usersLike.keySet()) {
             System.out.println("-=-=-=-==-==-=-=-" + l + "==-=-=-==-=-" + usersLike.get(l));
         }
-
-
-        //        System.out.println(user)
-
-        //        likedCategoryService.ChangeUsersLike(user, categoryId, usersLike);
     }
 
 
@@ -267,12 +302,7 @@ public class UserService {
         return userRepository.save(userSignUpRequestDto.toEntity("naver")).getUid();
     }
 
-//    public void passwordCheck(User user, String previous) {
-//        System.out.println("---------         " + previous + "     ------------ " + user.getPassword());
-//        if (!passwordEncoder.matches(previous, user.getPassword())) {
-//            throw new CPasswordNotMatchException();
-//        }
-//    }
+
 
     public void validationPasswd(String pw) {
         Pattern p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
@@ -407,12 +437,6 @@ public class UserService {
         }
     }
 
-//    public boolean validateToken(String token){
-//        if(!jwtProvider.validateToken(token)){
-//            return false;
-//        }
-//        return true;
-//    }
 
     public User tokenChecker(String accessToken) {
         if (accessToken == null || blankCheck(accessToken)) {
@@ -439,44 +463,35 @@ public class UserService {
         return user;
     }
 
-
-    public void reissue(HttpServletRequest request, HttpServletResponse response) {
-        Cookie accessToken = cookieService.getCookie(request, "X-AUTH-TOKEN");
-        Cookie refreshToken = cookieService.getCookie(request, "refreshToken");
-        String jwt = null;
-        String refreshjwt = null;
-        String refreshUname = null;
-        if (accessToken != null) jwt = accessToken.getValue();
-        if (refreshToken != null) refreshjwt = refreshToken.getValue();
-
-
-        if (jwtProvider.validateToken(jwt) && jwtProvider.isTokenExpired(jwt)) {
-            return;
-        } else {
-            if (refreshToken != null && jwtProvider.isTokenExpired(refreshjwt)) {
-                if (jwtProvider.validateToken(refreshjwt)) {
-                    refreshUname = redisutil.getData(refreshjwt);
-                    if (refreshUname.equals(Long.toString(jwtProvider.getUserUid(refreshjwt)))) {
-                        log.info("--------------------Redis 에 존재 한다.-----------");
-
-                        Authentication authentication = jwtProvider.getAuthentication(refreshjwt);
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                        User user = userRepository.findByUid(Long.parseLong(refreshUname));
-                        String newToken = jwtProvider.createToken(user.getUid(), user.getRoles(), jwtProvider.accessTokenValidMillisecond);
-                        log.info("--------------------새로운 토큰 발급-----------" + newToken);
-
-                        Cookie newCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
-                        response.addCookie(newCookie);
-                        return;
-                    }
-
-
-                }
-
-            }
-
+    @Transactional(rollbackFor = Exception.class)
+    public void profileEdit(ProfileChangeRequestDto profileChangeRequestDto,User user,MultipartFile file){
+        String password = profileChangeRequestDto.getPassword();
+        String nickName = profileChangeRequestDto.getNickName();
+        String name = profileChangeRequestDto.getName();
+        List<Long> categoryId= profileChangeRequestDto.getCategoryId();
+        String message = profileChangeRequestDto.getMessage();
+        if (categoryId == null){
+            categoryId=new ArrayList<Long>();
         }
-        return;
+
+        if (file != null && !file.isEmpty()) {
+            String previous = profileFileName(user);
+            s3Uploader.deleteS3(previous);
+
+            String tempName = s3Uploader.nameFile(user.getEmail(), user.getProvider());
+            String filename = null;
+            try {
+                filename = s3Uploader.upload(file, tempName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            setProfileImage(user, filename);
+        }
+        validProfileChange(user,password,name,nickName,categoryId,message);
+        profileChange(user, password, name, nickName, categoryId, message);
+
+
     }
+
 
 }

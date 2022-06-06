@@ -265,7 +265,7 @@ public class OauthController {
                     .build());
             User NEW_USER = userService.findByUid(userId);
             String email_url = s3Uploader.nameFile(naverProfile.getResponse().getEmail(), "naver");
-            s3Uploader.urlConvert(email_url, naverProfile.getResponse().getProfile_image(), NEW_USER);
+            userService.urlToImage(email_url, naverProfile.getResponse().getProfile_image(), NEW_USER);
 
 
             TokenDto token = jwtProvider.createTokenDto(userId, NEW_USER.getRoles(), false);
