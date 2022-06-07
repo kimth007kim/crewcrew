@@ -157,7 +157,7 @@ function InfoProfile({ state }) {
               {state.file ? (
                 <img src={URL.createObjectURL(state.file)} alt="" />
               ) : (
-                <img src={`${myData.data.file}}`} alt="myprofile" />
+                <img src={`${myData.data.file}`} alt="myprofile" />
               )}
             </MyProfile>
             <InputHide

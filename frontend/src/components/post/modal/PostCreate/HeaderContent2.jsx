@@ -222,7 +222,7 @@ const Content = styled('div')`
   display: flex;
   margin-bottom: 30px;
   position: relative;
-  z-index: 5;
+  z-index: 1;
 
   & > div:last-of-type {
     height: 74px;
@@ -249,6 +249,7 @@ const Content = styled('div')`
   @media screen and (max-width: 820px) {
     flex-direction: column;
     margin-bottom: 0;
+    z-index: 3;
 
     & > div {
       margin-bottom: 20px;

@@ -101,7 +101,7 @@ function Lnb({ path }) {
               {myData && myData.data ? (
                 <>
                   <NavPCFooterA to="/mypage">
-                    <ProfileNullImg src={`${myData.data.file}}`} alt="myprofile" />
+                    <ProfileNullImg src={`${myData.data.file}`} alt="myprofile" />
                   </NavPCFooterA>
                   <Alarm />
                 </>

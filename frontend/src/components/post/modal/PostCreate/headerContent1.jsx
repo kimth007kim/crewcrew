@@ -242,7 +242,7 @@ const ListDrop = styled('ul')`
   border: 1px solid #e2e2e2;
   border-radius: 10px;
   transition-property: height, border-color;
-  transition-duration: 0.5s, 0.3s;
+  transition-duration: 0.3s;
   overflow: hidden;
   background-color: #fff;
   box-sizing: border-box;
