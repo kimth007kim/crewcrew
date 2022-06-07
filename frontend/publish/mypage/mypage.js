@@ -119,4 +119,69 @@ window.addEventListener("DOMContentLoaded", function(){
     }
     SwiperHeightFunc();
     window.addEventListener('resize', SwiperHeightFunc);
+
+    const BtnSet = document.querySelector("button.Set");
+    BtnSet?.addEventListener('click', function(){
+        this.classList.toggle('On');
+        if(document.querySelector('.TLCardSet')){
+            document.querySelectorAll(".TLCardSet").forEach(e => {
+                e.classList.toggle("On");
+            });
+        }
+        document.querySelector('.SettingBar')?.classList.toggle('On');
+    });
+
+    const BtnReset = document.querySelector("button.Reset");
+    BtnReset?.addEventListener('click', function(){
+        if(document.querySelector('.TLCardSet')){
+            document.querySelectorAll(".TLCardSet").forEach(e => {
+                e.classList.remove("On");
+            });
+        }
+        document.querySelector('.SettingBar')?.classList.remove('On');
+    });
+
+    const MainTop = document.querySelector(".MainTop");
+    const TopSub = document.querySelector(".MainTop.Sub");
+    window.addEventListener('scroll', function(){
+        if(TopSub){
+            window.scrollY >= MainTop.offsetHeight ? TopSub.classList.add('fixed') : TopSub.classList.remove('fixed');
+        }
+    });
+
+    const checkProp = document.querySelectorAll(".checkProp");
+    const checkAll = document.querySelector(".checkAll");
+    checkProp?.forEach(e => { //체크버튼 다 누를때 모두체크 활성화
+        e.addEventListener('change', function(){
+            if(document.querySelectorAll(".checkProp:checked").length == checkProp.length){
+                checkAll.checked = true;
+            } else {
+                checkAll.checked = false;
+            }
+        });
+    });
+
+    checkAll?.addEventListener('change', function(){ //모두체크시
+        if(this.checked){
+            checkProp.forEach(e => {
+                e.checked = true;
+            });
+        } else {
+            checkProp.forEach(e => {
+                e.checked = false;
+            });
+        }
+    });
+
+    const TLFilter = document.querySelector(".filterWrapper");
+    TLFilter?.addEventListener("click", function(e){
+        window.innerWidth > 820 && this.classList.toggle("On");
+        if(e.target.tagName == 'LI') {
+            this.children[0].innerHTML = e.target.outerText;
+            window.innerWidth <= 820 && this.classList.remove("On");
+        }
+    });
+    TLFilter.children[0].addEventListener('click', function(e){
+        window.innerWidth <= 820 && TLFilter.classList.toggle('On');
+    });
 });
