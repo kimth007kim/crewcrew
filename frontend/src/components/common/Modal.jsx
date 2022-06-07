@@ -22,7 +22,7 @@ function Modal({
       setAnimate(true);
       setTimeout(() => {
         setAnimate(false);
-      }, 1000);
+      }, 500);
     }
     setLocalVisible(visible);
   }, [LocalVisible, visible]);
@@ -112,7 +112,7 @@ const ModalBg = styled.div`
   position: absolute;
   top: 0;
 
-  animation-duration: 0.3s;
+  animation-duration: 0.5s;
   animation-timing-function: ease-out;
   animation-name: ${FadeIn};
   animation-fill-mode: forwards;
@@ -127,7 +127,7 @@ const ModalBg = styled.div`
 const ModalBox = styled.div`
   background-color: #fff;
   transition-property: opacity, top, bottom, padding;
-  transition-duration: 0.3s;
+  transition-duration: 0.5s;
   box-sizing: content-box;
   box-shadow: 0 0 30px rgb(0 0 0 / 16%);
 
