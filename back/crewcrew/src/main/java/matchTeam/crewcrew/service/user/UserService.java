@@ -256,7 +256,9 @@ public class UserService {
     public void profileChange(User user, String password, String name, String
             nickName, List<Long> categoryId, String message) {
         List<Long> usersLike = likedCategoryService.findUsersLike(user);
-        likedCategoryService.ChangeUsersLike(user, categoryId, usersLike);
+        if (categoryId == null || categoryId.size() == 0) {
+            likedCategoryService.ChangeUsersLike(user, categoryId, usersLike);
+        }
         if (!stringCheck(password)) {
             changePassword(user, password);
         }
