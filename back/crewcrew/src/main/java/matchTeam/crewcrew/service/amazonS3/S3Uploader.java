@@ -80,8 +80,7 @@ public class S3Uploader {
                 String result = destination.toString();
 //                String destination = nameFile(email, provider);
                 copy(source, result);
-
-                return result;
+                return amazonS3Client.getUrl(bucket, result).toString();
             }
         }else {
             String filename;

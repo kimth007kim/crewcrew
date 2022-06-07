@@ -60,6 +60,9 @@ public class LikedCategoryService {
 //    }
 
     public void validLikedCategory(List<Long> input) {
+        if(input ==null || input.size()==0){
+            return;
+        }
         log.info("좋아하는 카테고리", input.toString());
 //        if (input == null || input.size() == 0) {
 //            throw new ProfileEmptyCategoryException();
