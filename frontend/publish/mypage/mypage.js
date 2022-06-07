@@ -138,6 +138,7 @@ window.addEventListener("DOMContentLoaded", function(){
                 e.classList.remove("On");
             });
         }
+        BtnSet?.classList.remove('On');
         document.querySelector('.SettingBar')?.classList.remove('On');
     });
 
@@ -181,7 +182,7 @@ window.addEventListener("DOMContentLoaded", function(){
             window.innerWidth <= 820 && this.classList.remove("On");
         }
     });
-    TLFilter.children[0].addEventListener('click', function(e){
+    TLFilter.children[0]?.addEventListener('click', function(e){
         window.innerWidth <= 820 && TLFilter.classList.toggle('On');
     });
 });

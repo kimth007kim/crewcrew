@@ -20,6 +20,22 @@ em {
   font-style: normal;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+  z-index: 9;
+}
+
+::-webkit-scrollbar-track {
+  width: 100%;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  width: 100%;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
 /*button*/
 .ButtonFull {
   width: 100%;
@@ -1464,6 +1480,10 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
 
 * {
   scroll-behavior: smooth;
+}
+
+body {
+  overflow-y: overlay;
 }
 
 body.Modal {

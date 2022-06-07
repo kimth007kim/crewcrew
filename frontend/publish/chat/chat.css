@@ -20,6 +20,22 @@ em {
   font-style: normal;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+  z-index: 9;
+}
+
+::-webkit-scrollbar-track {
+  width: 100%;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  width: 100%;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
 /*button*/
 .ButtonFull {
   width: 100%;
@@ -1464,6 +1480,10 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
 
 * {
   scroll-behavior: smooth;
+}
+
+body {
+  overflow-y: overlay;
 }
 
 body.Modal {
@@ -3296,7 +3316,7 @@ button.Set.On:hover {
 
 .ChatBoxBody {
   height: calc(100vh - 236px);
-  overflow-y: auto;
+  overflow-y: overlay;
   -webkit-transition: .5s;
   transition: .5s;
 }
@@ -3794,6 +3814,10 @@ button.Set.On:hover {
 }
 
 .ChatBoxBody.Dt {
+  overflow: overlay !important;
+}
+
+.ChatBoxBody.Dt {
   height: calc(100vh - 379px);
   scroll-behavior: initial;
 }
@@ -3927,7 +3951,7 @@ form {
   border: none;
   outline: none;
   margin: 10px 40px 10px 30px;
-  width: calc(100% - 170px);
+  width: calc(100% - 150px);
   height: 57px;
   font-size: 13px;
   line-height: 20px;

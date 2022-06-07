@@ -42,6 +42,23 @@ em {
     font-style: normal;
 }
 
+::-webkit-scrollbar{
+    width: 10px;
+    z-index: 9;
+}
+
+::-webkit-scrollbar-track{
+    width: 100%;
+    background-color: transparent;
+    
+}
+
+::-webkit-scrollbar-thumb{
+    width: 100%;
+    border-radius: 10px;
+    background-color: rgba($color: #000, $alpha: 0.5);
+}
+
 
 /*button*/
 @mixin buttonFull($padding, $size, $weight, $lheight, $radius) {

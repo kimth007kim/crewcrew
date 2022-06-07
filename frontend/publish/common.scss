@@ -3,6 +3,9 @@
 *{
     scroll-behavior: smooth;
 }
+body{
+    overflow-y: overlay;
+}
 @mixin modalBox($padding, $width) {
     padding: 0 $padding;
     width: $width;

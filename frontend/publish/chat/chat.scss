@@ -84,7 +84,7 @@ button.Set{
 
 .ChatBoxBody{
     height: calc(100vh - 236px);
-    overflow-y: auto;
+    overflow-y: overlay;
     transition: .5s;
 
     &.Search{
@@ -468,6 +468,10 @@ button.Set{
         }
     }
 }
+.ChatBoxBody.Dt{
+    overflow: overlay !important;
+}
+
 
 .ChatBoxBody.Dt{
     height: calc(100vh - 379px);
@@ -590,7 +594,7 @@ form{
     border: none;
     outline: none;
     margin: 10px 40px 10px 30px;
-    width: calc(100% - 170px);
+    width: calc(100% - 150px);
     height: 57px;
     font-size: 13px;
     line-height: 20px;
