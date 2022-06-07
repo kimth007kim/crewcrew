@@ -1,5 +1,13 @@
 @import "../common";
 
+@mixin backgroundColor($bg, $hover){
+    background-color: $bg;
+
+    &:hover{
+        background-color: $hover;
+    }
+}
+
 section.MainTop{
     height: 130px;
     background-color: $white;

@@ -61,9 +61,9 @@ public class LikedCategoryService {
 
     public void validLikedCategory(List<Long> input) {
         log.info("좋아하는 카테고리", input.toString());
-        if (input == null || input.size() == 0) {
-            throw new ProfileEmptyCategoryException();
-        }
+//        if (input == null || input.size() == 0) {
+//            throw new ProfileEmptyCategoryException();
+//        }
         int study = 0;
         int hobby = 0;
 

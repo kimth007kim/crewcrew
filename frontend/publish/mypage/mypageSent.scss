@@ -1,13 +1,6 @@
 @import "./mypage";
 @import "../Swiper";
 
-@mixin backgroundColor($bg, $hover){
-    background-color: $bg;
-
-    &:hover{
-        background-color: $hover;
-    }
-}
 div.TopCont h2 a.arrowAfter{
     background: none;
     width: fit-content;

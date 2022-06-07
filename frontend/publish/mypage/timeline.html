@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>크루크루</title>
+    <link rel="stylesheet" href="./timeline.css">
+    <script src="/frontend/publish/layout/Include.js"></script> <!--퍼블단 인클루드용/개발때는 무시-->
+    <script type="module"src="../Common.js"></script>
+    <script src="./mypage.js"></script>
+</head>
+<body>
+    <div data-include="/frontend/publish/layout/Lnb.html"></div> <!--퍼블단 인클루드용/개발때는 무시-->
+
+    <main>
+        <div class="ScrollButton">
+            <div class="ScrollTop"></div>
+            <div class="ScrollBottom"></div>
+        </div>
+
+        <section class="MainTop">
+            <div class="TopCont">
+                <h2><a href="#"></a>마이페이지</h2>
+            </div>
+            <div class="ButtonIntro"></div>
+        </section>
+
+        <section class="MainTop Sub">
+            <div class="TopCont">
+                <div class="SubTitle">
+                    <h3>크루 타임라인</h3>
+                    <p>최근 30일 이내 알림을 확인해보세요!</p>
+                </div>
+                <button class="Set">설정</button>
+                <div class="filterWrapper">
+                    <p>전체알림</p>
+                    <ul>
+                        <li>전체알림</li>
+                        <li>나에게 온 참여요청</li>
+                        <li>나의 참여요청 거절</li>
+                        <li>나의 참여요청 수락</li>
+                        <li>나의 참여 취소</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="TimeLineList">
+            <form action="">
+                <div class="TLComponent">
+                    <div class="TopDate">
+                        <p>22.05.25 (수)</p>
+                    </div>
+                    <ul class="TLCardList">
+                        <li>
+                            <div class="TLCardSet">
+                                <input type="checkbox" class="InputHide checkProp" id="TL1" name="Chat">
+                                <label for="TL1" class="LabelCheck"><span></span></label>
+                            </div>
+                            <div class="TLCard">
+                                <div class="TLCardBox Hobby Posi">
+                                    <p class="title"><em>요리</em>22/05/25 15:38</p>
+                                    <p class="Detail"><em>재영재영유재영유재영</em>님이 회원님의 글에 <b>참여요청</b>하였습니다.</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="TLCardSet">
+                                <input type="checkbox" class="InputHide checkProp" id="TL2" name="Chat">
+                                <label for="TL2" class="LabelCheck"><span></span></label>
+                            </div>
+                            <div class="TLCard">
+                                <div class="TLCardBox Study Nega">
+                                    <p class="title"><em>프로젝트</em>22/05/25 15:38</p>
+                                    <p class="Detail"><em>'함께 크루원 모집 플랫폼 작업하실 분 모십니다~!000'</em>에서 회원님의 <b>참여요청을 거절</b>하였습니다.</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="TLComponent">
+                    <div class="TopDate">
+                        <p>22.05.23 (월)</p>
+                    </div>
+                    <ul class="TLCardList">
+                        <li>
+                            <div class="TLCardSet">
+                                <input type="checkbox" class="InputHide checkProp" id="TL3" name="Chat">
+                                <label for="TL3" class="LabelCheck"><span></span></label>
+                            </div>
+                            <div class="TLCard">
+                                <div class="TLCardBox Study Nega">
+                                    <p class="title"><em>프로젝트</em>22/05/25 15:38</p>
+                                    <p class="Detail"><em>'함께 크루원 모집 플랫폼 작업하실 분 모십니다~!000'</em>에서 회원님의 <b>참여요청을 거절</b>하였습니다.</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="TLCardSet">
+                                <input type="checkbox" class="InputHide checkProp" id="TL4" name="Chat">
+                                <label for="TL4" class="LabelCheck"><span></span></label>
+                            </div>
+                            <div class="TLCard">
+                                <div class="TLCardBox Hobby Posi Disabled">
+                                    <p class="title"><em>요리</em>22/05/25 15:38</p>
+                                    <p class="Detail"><em>재영재영유재영유재영</em>님이 회원님의 글에 <b>참여요청</b>하였습니다.</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="TLComponent">
+                    <div class="TopDate">
+                        <p>22.05.20 (금)</p>
+                    </div>
+                    <ul class="TLCardList">
+                        <li>
+                            <div class="TLCardSet">
+                                <input type="checkbox" class="InputHide checkProp" id="TL5" name="Chat">
+                                <label for="TL5" class="LabelCheck"><span></span></label>
+                            </div>
+                            <div class="TLCard">
+                                <div class="TLCardBox Study Nega">
+                                    <p class="title"><em>프로젝트</em>22/05/25 15:38</p>
+                                    <p class="Detail"><em>'함께 크루원 모집 플랫폼 작업하실 분 모십니다~!000'</em>에서 회원님의 <b>참여요청을 거절</b>하였습니다.</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="TLCardSet">
+                                <input type="checkbox" class="InputHide checkProp" id="TL6" name="Chat">
+                                <label for="TL6" class="LabelCheck"><span></span></label>
+                            </div>
+                            <div class="TLCard">
+                                <div class="TLCardBox Hobby Posi Disabled">
+                                    <p class="title"><em>요리</em>22/05/25 15:38</p>
+                                    <p class="Detail"><em>재영재영유재영유재영</em>님이 회원님의 글에 <b>참여요청</b>하였습니다.</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="TLCardSet">
+                                <input type="checkbox" class="InputHide checkProp" id="TL7" name="Chat">
+                                <label for="TL7" class="LabelCheck"><span></span></label>
+                            </div>
+                            <div class="TLCard">
+                                <div class="TLCardBox Study Nega">
+                                    <p class="title"><em>프로젝트</em>22/05/25 15:38</p>
+                                    <p class="Detail"><em>'함께 크루원 모집 플랫폼 작업하실 분 모십니다~!000'</em>에서 회원님의 <b>참여요청을 거절</b>하였습니다.</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="TLCardSet">
+                                <input type="checkbox" class="InputHide checkProp" id="TL8" name="Chat">
+                                <label for="TL8" class="LabelCheck"><span></span></label>
+                            </div>
+                            <div class="TLCard">
+                                <div class="TLCardBox Hobby Posi Disabled">
+                                    <p class="title"><em>요리</em>22/05/25 15:38</p>
+                                    <p class="Detail"><em>재영재영유재영유재영</em>님이 회원님의 글에 <b>참여요청</b>하였습니다.</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="TLCardSet">
+                                <input type="checkbox" class="InputHide checkProp" id="TL9" name="Chat">
+                                <label for="TL9" class="LabelCheck"><span></span></label>
+                            </div>
+                            <div class="TLCard">
+                                <div class="TLCardBox Study Nega">
+                                    <p class="title"><em>프로젝트</em>22/05/25 15:38</p>
+                                    <p class="Detail"><em>'함께 크루원 모집 플랫폼 작업하실 분 모십니다~!000'</em>에서 회원님의 <b>참여요청을 거절</b>하였습니다.</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="TLCardSet">
+                                <input type="checkbox" class="InputHide checkProp" id="TL10" name="Chat">
+                                <label for="TL10" class="LabelCheck"><span></span></label>
+                            </div>
+                            <div class="TLCard">
+                                <div class="TLCardBox Hobby Posi Disabled">
+                                    <p class="title"><em>요리</em>22/05/25 15:38</p>
+                                    <p class="Detail"><em>재영재영유재영유재영</em>님이 회원님의 글에 <b>참여요청</b>하였습니다.</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="PaginationWrapper"></div>
+
+                <div class="SettingBar">
+                    <div class="TLSetBox">
+                        <input type="checkbox" class="InputHide checkAll" id="TLAll" name="Chat">
+                        <label for="TLAll" class="LabelCheck"><span></span></label>
+                        <p>전체 선택</p>
+                    </div>
+                    <button type="reset" class="Reset">선택취소</button>
+                    <button>읽음처리</button>
+                    <button class="Del">삭제</button>
+                </div>
+            </form>
+        </section>
+
+        
+    </main>
+</body>
+</html>
