@@ -16,13 +16,24 @@ function MainContent(props, ref) {
   const { state } = props;
   const [tooltipBool, setTooltipBool] = useState(false);
 
-  const handleFocusTooltip = useCallback(() => {
-    setTooltipBool(true);
-  }, [tooltipBool]);
+  const handleFocusTooltip = useCallback(
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setTooltipBool(true);
+    },
+    [tooltipBool],
+  );
 
-  const handleBlurTooltip = useCallback(() => {
-    setTooltipBool(false);
-  }, [tooltipBool]);
+  const handleBlurTooltip = useCallback(
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      setTooltipBool(false);
+    },
+    [tooltipBool],
+  );
 
   const onChangeInviteLink = useCallback((e) => {
     const value = emojiSlice(e.target.value);
@@ -42,12 +53,17 @@ function MainContent(props, ref) {
     state.setTitleText('');
   }, []);
 
+  const stopEvent = useCallback((e) => {
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+  }, []);
+
   return (
     <>
       <ToolTipWrapper>
-        <Title>
+        <Title onClick={stopEvent}>
           초대링크 (필수){' '}
-          <ToolTip onMouseOver={handleFocusTooltip} onMouseLeave={handleBlurTooltip}>
+          <ToolTip onMouseOver={handleFocusTooltip} onMouseOut={handleBlurTooltip}>
             ?
           </ToolTip>
         </Title>
@@ -70,7 +86,7 @@ function MainContent(props, ref) {
           />
         </InputBox>
       </ToolTipWrapper>
-      <Title>제목</Title>
+      <Title onClick={stopEvent}>제목</Title>
       <InputBox>
         <Textfield
           type="text"
@@ -90,6 +106,7 @@ function MainContent(props, ref) {
         height="350px"
         initialEditType="markdown"
         useCommandShortcut={false}
+        autofocus={false}
         plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
         toolbarItems={[
           // 툴바 옵션 설정
@@ -143,6 +160,11 @@ const ToolTipDesc = styled('div')`
       display: block;
       opacity: 1;
     `};
+
+  @media screen and (max-width: 820px) {
+    top: 30px;
+    left: 0;
+  }
 `;
 
 const ToolTip = styled('span')`

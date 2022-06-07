@@ -34,6 +34,7 @@ function PostCreateModal({ closeModal, visible, category = 0 }) {
 
   const navigate = useNavigate();
 
+  const bodyRef = useRef(null);
   const editorRef = useRef(null);
 
   const handleRegisterBtn = async () => {
@@ -60,11 +61,13 @@ function PostCreateModal({ closeModal, visible, category = 0 }) {
         return;
       }
 
+      const expiredDate = format(lastDate, 'yyyy-MM-dd');
+
       const context = {
         approachCode: meetingCheck,
         boardContent: editorRef.current?.getInstance().getMarkdown(),
         categoryId: detailCategoryCheck,
-        expiredDate: lastDate,
+        expiredDate: expiredDate,
         kakaoChat: inviteLink,
         title: titleText,
         totalCrew: peopleNum,
@@ -76,7 +79,6 @@ function PostCreateModal({ closeModal, visible, category = 0 }) {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
         },
       });
-      console.log(data);
 
       switch (data.status) {
         case 200:
@@ -133,7 +135,7 @@ function PostCreateModal({ closeModal, visible, category = 0 }) {
       heightSize={850}
       body={
         <Wrapper>
-          <Body>
+          <Body ref={bodyRef}>
             <HeaderContent1
               state={{
                 categoryCheck,
@@ -202,6 +204,9 @@ const Wrapper = styled('div')`
   height: 100%;
   padding: 40px;
   box-sizing: border-box;
+  @media screen and (max-width: 820px) {
+    padding: 18px 0 24px;
+  }
 `;
 
 const Body = styled('div')`
@@ -218,20 +223,39 @@ const Body = styled('div')`
   &::-webkit-scrollbar {
     display: none;
   }
+
+  @media screen and (max-width: 820px) {
+    padding: 0 18px;
+    height: calc(100% - 90px);
+  }
 `;
 
 const Footer = styled('div')`
   width: fit-content;
   margin-top: 34px;
   margin-left: auto;
+
+  @media screen and (max-width: 820px) {
+    width: 100%;
+    padding: 0 18px;
+    box-sizing: border-box;
+    margin-top: 40px;
+  }
 `;
 
 const ListFlex = styled('ul')`
   display: flex;
-  margin-right: 0;
   gap: 15px;
 
   li {
     width: 112px;
+  }
+
+  @media screen and (max-width: 820px) {
+    gap: 8px;
+
+    li {
+      width: 100%;
+    }
   }
 `;

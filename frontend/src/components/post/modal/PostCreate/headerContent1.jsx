@@ -72,6 +72,12 @@ function HeaderContent1({ state }) {
     [hobbyClick],
   );
 
+  const stopEvent = useCallback((e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    e.nativeEvent.stopImmediatePropagation();
+  }, []);
+
   const renderDetailCategory = useCallback(() => {
     if (state.categoryCheck === 0) {
       return (
@@ -170,7 +176,7 @@ function HeaderContent1({ state }) {
   return (
     <Content>
       <div>
-        <h4>카테고리</h4>
+        <h4 onClick={stopEvent}>카테고리</h4>
         <ListFlex>
           <li>
             <InputHide
@@ -195,7 +201,7 @@ function HeaderContent1({ state }) {
         </ListFlex>
       </div>
       <div>
-        <h4>상세 카테고리</h4>
+        <h4 onClick={stopEvent}>상세 카테고리</h4>
         {renderDetailCategory()}
       </div>
     </Content>
@@ -214,6 +220,19 @@ const Content = styled('div')`
     height: 74px;
     width: 100%;
     position: relative;
+  }
+
+  @media screen and (max-width: 820px) {
+    flex-direction: column;
+    margin-bottom: 0;
+
+    & > div {
+      margin-bottom: 20px;
+    }
+
+    & > div:last-of-type {
+      height: auto;
+    }
   }
 `;
 
@@ -284,6 +303,10 @@ const ListDrop = styled('ul')`
       }
     }
   }
+
+  @media screen and (max-width: 820px) {
+    position: static;
+  }
 `;
 
 const InputPostCatDet = styled('input')`
@@ -300,6 +323,10 @@ const InputPostCatDet = styled('input')`
 
   &::placeholder {
     color: #a8a8a8;
+  }
+
+  @media screen and (max-width: 820px) {
+    padding: 0 12px;
   }
 `;
 

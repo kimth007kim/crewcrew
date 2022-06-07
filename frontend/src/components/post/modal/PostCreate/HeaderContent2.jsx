@@ -94,6 +94,11 @@ function HeaderContent2({ state }) {
     state.setLastDate(e.target.value);
   }, []);
 
+  const stopEvent = useCallback((e) => {
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+  }, []);
+
   useEffect(() => {
     if (state.peopleNum < 1) {
       state.setPeopleNum(1);
@@ -134,7 +139,7 @@ function HeaderContent2({ state }) {
   return (
     <Content>
       <div>
-        <h4>모임방식</h4>
+        <h4 onClick={stopEvent}>모임방식</h4>
         <ListFlex>
           <li>
             <InputHide
@@ -158,9 +163,9 @@ function HeaderContent2({ state }) {
           </li>
         </ListFlex>
       </div>
-      <div>
+      <ContentFlex>
         <div>
-          <h4>모집 인원수</h4>
+          <h4 onClick={stopEvent}>모집 인원수</h4>
           <ListDrop ref={peopleRef} active={peopleClick} onClick={HandlePeopleInputClick}>
             <li>
               <InputPostPeople
@@ -206,7 +211,7 @@ function HeaderContent2({ state }) {
             }
           ></CustomDatePicker>
         </div>
-      </div>
+      </ContentFlex>
     </Content>
   );
 }
@@ -217,22 +222,13 @@ const Content = styled('div')`
   display: flex;
   margin-bottom: 30px;
   position: relative;
-  z-index: 1;
+  z-index: 5;
 
   & > div:last-of-type {
     height: 74px;
     width: 100%;
     position: relative;
     display: flex;
-
-    & > div {
-      width: 100%;
-
-      &:first-of-type {
-        position: relative;
-        margin-right: 24px;
-      }
-    }
   }
 
   .react-datepicker__input-container {
@@ -247,6 +243,41 @@ const Content = styled('div')`
       height: 26px;
       cursor: pointer;
       z-index: 2000;
+    }
+  }
+
+  @media screen and (max-width: 820px) {
+    flex-direction: column;
+    margin-bottom: 0;
+
+    & > div {
+      margin-bottom: 20px;
+    }
+
+    & > div:last-of-type {
+      height: auto;
+    }
+  }
+`;
+
+const ContentFlex = styled('div')`
+  display: flex;
+  & > div {
+    width: 100%;
+    position: relative;
+  }
+  & > div:first-of-type {
+    position: relative;
+    margin-right: 24px;
+  }
+
+  @media screen and (max-width: 820px) {
+    flex-direction: column;
+    margin-bottom: 0;
+
+    display: block;
+    & > div:first-child {
+      margin-bottom: 20px;
     }
   }
 `;
@@ -342,11 +373,33 @@ const ListDrop = styled('ul')`
           color: #00b7ff;
         }
       }
+
+      @media screen and (max-width: 820px) {
+        padding: 20px 12px;
+      }
     }
   }
 
   &:hover {
     border-color: #00b7ff;
+  }
+
+  @media screen and (max-width: 820px) {
+    position: static;
+
+    ${(props) =>
+      props.active &&
+      css`
+        height: 110px;
+      `}
+  }
+
+  @media screen and (max-width: 410px) {
+    ${(props) =>
+      props.active &&
+      css`
+        height: 144px;
+      `}
   }
 `;
 
