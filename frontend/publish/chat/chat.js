@@ -8,9 +8,11 @@ window.addEventListener("DOMContentLoaded", function(){
 
     const Set = document.querySelector("button.Set");
     Set?.addEventListener('click', function(){ //옵션버튼
-        document.querySelector(".ChatBoxList").classList.toggle("On");
-        document.querySelector(".DeleteBox").classList.toggle("On");
-        this.classList.toggle('On');
+        if(document.querySelector(".ChatBoxList")) {
+            document.querySelector(".ChatBoxList").classList.toggle("On");
+            document.querySelector(".DeleteBox")?.classList.toggle("On");
+            this.classList.toggle('On');
+        }
     });
 
     const ResetBtn = document.querySelector(".DeleteBox>button");

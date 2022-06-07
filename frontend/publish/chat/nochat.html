@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>크루크루</title>
+    <link rel="stylesheet" href="./chat.css">
+    <script src="/frontend/publish/layout/Include.js"></script> <!--퍼블단 인클루드용/개발때는 무시-->
+    <script type="module"src="../Common.js"></script>
+    <script src="./chat.js"></script>
+    <script src="../Swiper.js"></script>
+</head>
+<body>
+    <div data-include="/frontend/publish/layout/Lnb.html"></div> <!--퍼블단 인클루드용/개발때는 무시-->
+
+    <main>
+        <div class="ScrollButton">
+            <div class="ScrollTop"></div>
+            <div class="ScrollBottom"></div>
+        </div>
+
+        <section class="MainTop">
+            <div class="TopCont">
+                <h2><a href="#"></a>채팅</h2>
+            </div>
+            </div>
+            <div class="ButtonIntro"></div>
+        </section>
+
+        <section class="Chat">
+            <div class="SectionWrap850">
+                <div class="ChatBoxWrapper">
+                    <div class="ChatBoxHead">
+                        <h3>채팅 목록</h3>
+                        <button class="Search">검색</button>
+                        <button class="Set">설정</button>
+                    </div>
+                    <div class="ChatBoxSearch">
+                        <form action="">
+                            <div class="SearchInputWrap">
+                                <button>검색하기</button>
+                                <input type="text" placeholder="채팅 상대 또는 관련 모집글 이름/카테고리">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="ChatBoxBody">
+                        <form action="">
+                            <div class="noContent">
+                                <div class="Illust">
+                                    <img src="/frontend/src/assets/images/Profile1.png" alt="">
+                                </div>
+                                <p><em>진행중인 채팅이 없습니다.</em><br>언제든지 채팅을 시작해보세요!</p>
+                                <button>크루참여</button>
+                            </div>
+
+                            <div class="DeleteBox">
+                                <div class="CheckAllBox">
+                                    <input type="checkbox" class="InputHide checkAll" id="ChatAll" name="Chat">
+                                    <label for="ChatAll" class="LabelCheck"><span></span></label>
+                                </div>
+                                <button type="reset">선택취소</button>
+                                <button>삭제</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
