@@ -1,7 +1,7 @@
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable prettier/prettier */
 /* eslint-disable indent */
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
@@ -21,6 +21,9 @@ import IconNavChat from '@/assets/images/NavIcon4.png';
 import IconNavChatHover from '@/assets/images/NavIcon4_Hover.png';
 import IconNavChatActive from '@/assets/images/NavIcon4_Active.png';
 import fetcher from '@/utils/fetcher';
+import useModal from '@/hooks/useModal';
+import AuthModal from '../Auth/AuthModal';
+import PostCreateModal from '@/components/post/modal/PostCreate';
 
 function MobileNavButton({ icon, title, link = '/', selected }) {
   return (
@@ -41,6 +44,26 @@ function NavMobile({ path, openModal }) {
     error,
     mutate,
   } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+
+  const [authVisible, openAuth, closeAuth] = useModal();
+
+  const [postVisible, openPost, closePost] = useModal();
+
+  const handleAuthModal = useCallback(() => {
+    openAuth();
+  }, []);
+
+  const handlePostModal = () => {
+    if (myData && myData.data) {
+      openPost();
+    } else {
+      const login = window.confirm('로그인 후 이용가능합니다. 로그인하시겠습니까?');
+      if (login) {
+        return openAuth();
+      }
+      return;
+    }
+  };
 
   return (
     <>
@@ -86,12 +109,11 @@ function NavMobile({ path, openModal }) {
             link="/post"
             selected={pathname.startsWith('/post')}
           />
-          <MobileNavButton
-            icon={<RecruIcon selected={pathname.startsWith('/crew')} />}
-            title="팀원모집"
-            link="/"
-            selected={pathname.startsWith('/crew')}
-          />
+          <MobileNavLi selected={pathname.startsWith('/crew')} onClick={handlePostModal}>
+            {<RecruIcon selected={pathname.startsWith('/crew')} />}
+            {'팀원모집'}
+          </MobileNavLi>
+
           <MobileNavButton
             icon={<ChatIcon selected={pathname.startsWith('/chat')} />}
             title="채팅"
@@ -100,6 +122,8 @@ function NavMobile({ path, openModal }) {
           />
         </MobileNavUl>
       </MobileNav>
+      <AuthModal closeModal={closeAuth} visible={authVisible} />
+      <PostCreateModal closeModal={closePost} visible={postVisible} />
     </>
   );
 }

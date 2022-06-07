@@ -17,6 +17,7 @@ export const LabelBtn = styled('label')`
   border: 1px solid #e2e2e2;
   outline: none;
   transition: 0.3s;
+  transition-property: color border-color background-color;
 `;
 
 export const InputHide = styled('input')`
@@ -31,11 +32,7 @@ export const InputHide = styled('input')`
       props.bgColor &&
       css`
         background-color: ${props.bgColor};
-        border-color: transparent;
         color: #fff;
-        @media screen and (max-width: 820px) {
-          color: ${props.bgColor};
-        }
       `}
   }
 `;
@@ -47,5 +44,14 @@ export const ListFlex = styled('ul')`
 
   li {
     width: 112px;
+  }
+
+  @media screen and (max-width: 820px) {
+    gap: 8px;
+    margin-right: 0;
+
+    li {
+      width: 100%;
+    }
   }
 `;
