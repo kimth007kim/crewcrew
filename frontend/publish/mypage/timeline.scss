@@ -313,9 +313,21 @@ button.Set{
         width: 46px;
         height: 100%;
         display: flex;
-        align-items: center;
         border-right: 1px solid $black5;
         box-sizing: border-box;
+        position: relative;
+
+        label{
+            margin-top: 22px;
+        }
+
+        p{
+            position: absolute;
+            @include font($black4, 13px, 500);
+            white-space: nowrap;
+            bottom: 22px;
+            left: -32%;
+        }
     }
 
     button{
@@ -439,7 +451,16 @@ button.Set{
         padding: 0 20px;
 
         .TLSetBox{
+            align-items: center;
             width: 40px;
+
+            label{
+                margin: 0;
+            }
+
+            p{
+                display: none;
+            }
         }
 
         button{
