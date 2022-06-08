@@ -2,10 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import BoxCard from './BoxCard';
 import { Cookies } from 'react-cookie';
-import fetcher from '@/utils/fetcher';
-import useSWR from 'swr';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 function CrewBox() {
   const cookies = new Cookies();
@@ -14,6 +12,12 @@ function CrewBox() {
   const [crewRecruit, setCrewRecruit] = useState(null);
   const [crewArrive, setCrewArrive] = useState(null);
   const [crewActivity, setCrewActivity] = useState(null);
+
+  const navigate = useNavigate();
+
+  const handleLocate = useCallback((link) => {
+    return navigate(link);
+  }, []);
 
   const apiApplication = useCallback(async () => {
     try {
@@ -141,6 +145,7 @@ function CrewBox() {
           total={crewRequest ? crewRequest.totalApplyCount : 0}
           count_one={crewRequest ? crewRequest.applyToStudyCount : 0}
           count_two={crewRequest ? crewRequest.applyToHobbyCount : 0}
+          onClick={() => handleLocate('/mypage/request')}
         />
         <BoxCard
           title="내가 모집중인 크루"

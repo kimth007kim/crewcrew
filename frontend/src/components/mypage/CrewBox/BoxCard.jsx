@@ -11,9 +11,10 @@ function BoxCard({
   count_one = 0,
   count_two = 0,
   deactive = false,
+  onClick,
 }) {
   return (
-    <Container>
+    <Container onClick={onClick}>
       <NumDesc>
         <span>{total}개</span>
       </NumDesc>
