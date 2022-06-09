@@ -5,6 +5,8 @@ import MypageSubTop from '@/components/mypage/MypageSubTop';
 import styled from 'styled-components';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
+import RequestCard from '@/components/mypage/RequestCard';
+import Button from '@/components/common/Button';
 
 function Request() {
   const cookies = new Cookies();
@@ -52,12 +54,44 @@ function Request() {
       ></MypageMainSubTop>
       <Wrap>
         <SectionWrap>
-          <h3>스터디 크루</h3>
+          <h3 className="study">스터디 크루</h3>
           <CardWrapper>
             <ul>
-              <li></li>
+              <li>
+                <RequestCard></RequestCard>
+              </li>
+              <li>
+                <RequestCard></RequestCard>
+              </li>
+              <li>
+                <RequestCard></RequestCard>
+              </li>
             </ul>
           </CardWrapper>
+        </SectionWrap>
+      </Wrap>
+      <Wrap>
+        <SectionWrap>
+          <h3 className="hobby">취미 크루</h3>
+          <NoContent>
+            <p>
+              <em>크루에 참여요청한 내역이 없습니다.</em>
+              <br></br>
+              크루에 참여하셔서 활동 이력을 남겨보세요!
+            </p>
+            <Button
+              widthSize={100}
+              heightSize={50}
+              paddings={0}
+              fontSize={15}
+              lineHeight={26}
+              borderRadius={10}
+              size={'regular'}
+              color={'lightBlue'}
+            >
+              크루참여
+            </Button>
+          </NoContent>
         </SectionWrap>
       </Wrap>
     </MyLayout>
@@ -85,5 +119,24 @@ const SectionWrap = styled('div')`
 const CardWrapper = styled('div')`
   li {
     padding-bottom: 14px;
+  }
+`;
+
+const NoContent = styled('div')`
+  padding: 100px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  p {
+    font-size: 15px;
+    line-height: 22px;
+    text-align: center;
+    font-weight: 400;
+    margin-bottom: 20px;
+
+    em {
+      font-weight: 700;
+    }
   }
 `;
