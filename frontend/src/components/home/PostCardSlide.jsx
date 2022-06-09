@@ -1,25 +1,43 @@
 /* eslint-disable no-confusing-arrow */
 /* eslint-disable operator-linebreak */
-import React from 'react';
+import React, {useCallback} from 'react';
 import styled, { css } from 'styled-components';
 import Profile4 from '@/assets/images/Profile4.png';
 import ButtonStarWhite from '@/assets/images/ButtonStarWhite.png';
 import StarOff from '@/assets/images/StarOff.png';
 import StarOn from '@/assets/images/StarOn.png';
+import { cateogoryAll } from '@/frontDB/filterDB';
+import { format, getDay, differenceInDays } from 'date-fns';
+import { viewDay } from '@/utils';
 
 function PostCardSlide({ data }) {
+
+  const renderDate = useCallback(() => {
+    const date = new Date(data.createdDate);
+    return `${format(date, 'M/d')} (${viewDay(getDay(date))})`;
+  }, []);
+
+  const renderDay = useCallback(() => {
+    const date = new Date(data.expiredDate);
+    const nowDate = new Date();
+    return differenceInDays(date, nowDate) + 1;
+  }, []);
+
+  const category = (id = data.categoryParentId) => {
+    return id === 1 ? 'study' : 'hobby'
+  }
   return (
     <Container>
-      <CardPost category="study">
+      <CardPost category={category()}>
         <CardHead>
           <h5>
-            <span>D-14</span>
+            <span>{`D-${renderDay()}`}</span>
           </h5>
           <CardHeadRight>
-            <p>2/3 (목)</p>
+            <p>{renderDate()}</p>
             <p>
               조회수
-              <span> 50</span>
+              <span> {data.hit}</span>
             </p>
             <Star />
           </CardHeadRight>
@@ -29,15 +47,15 @@ function PostCardSlide({ data }) {
             <ProfileImg alt="" />
           </CardProfile>
           <CardTxt>
-            <h4>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h4>
-            <p>인생인생오쯔</p>
+            <h4>{data.title}</h4>
+            <p>{data.nickname}</p>
           </CardTxt>
         </CardBody>
         <CardFooter>
-          <CardTagColor category="study">고시/공무원</CardTagColor>
-          <CardTagColor category="study">오프라인</CardTagColor>
+          <CardTagColor category={category()}> {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}</CardTagColor>
+          <CardTagColor category={category()}>{data.approachCode ? '온라인' : '오프라인'}</CardTagColor>
           <CardTag>
-            <span>10/10</span>
+            <span>{data.recruitedCrew}/{data.totalCrew}</span>
             <span>명 모집됨</span>
           </CardTag>
         </CardFooter>

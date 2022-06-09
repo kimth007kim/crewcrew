@@ -30,6 +30,8 @@ import useModal from '@/hooks/useModal';
 import fetcher from '@/utils/fetcher';
 import useSWR from 'swr';
 import AuthModal from '@/components/common/Auth/AuthModal';
+import useQuery from '@/hooks/useQuery';
+import axios, {toast} from 'axios';
 
 const categoryIcon = [
   Category1,
@@ -46,105 +48,6 @@ const categoryIcon = [
   Category12,
 ];
 
-const categoryList = [
-  {
-    htmlId: 'CategoryStudy1',
-    name: '어학',
-    sub: '토플/토익',
-    value: '3',
-    group: 0,
-    index: 0,
-  },
-  {
-    htmlId: 'CategoryStudy2',
-    name: '취업',
-    sub: '면접/자소서',
-    group: 0,
-    value: '4',
-    index: 1,
-  },
-  {
-    htmlId: 'CategoryStudy3',
-    name: '고시/공무원',
-    group: 0,
-    sub: '',
-    value: '5',
-    index: 2,
-  },
-  {
-    htmlId: 'CategoryStudy4',
-    name: '프로젝트',
-    sub: '디자인/개발',
-    group: 0,
-    value: '6',
-    index: 3,
-  },
-  {
-    htmlId: 'CategoryStudy5',
-    name: '스터디기타',
-    group: 0,
-    sub: '',
-    value: '7',
-    index: 4,
-  },
-  {
-    htmlId: 'CategoryHobby0',
-    name: '예술',
-    sub: '공예/화학',
-    group: 1,
-    value: '8',
-    index: 5,
-  },
-  {
-    htmlId: 'CategoryHobby1',
-    name: '요리',
-    sub: '맛집탐방/카페탐방',
-    value: '9',
-    group: 1,
-    index: 6,
-  },
-  {
-    htmlId: 'CategoryHobby2',
-    name: '운동',
-    sub: '헬스/구기종목',
-    value: '10',
-    group: 1,
-    index: 7,
-  },
-  {
-    htmlId: 'CategoryHobby3',
-    name: '게임',
-    sub: '보드게임/온라인 게임',
-    value: '11',
-    group: 1,
-    index: 8,
-  },
-  {
-    htmlId: 'CategoryHobby4',
-    name: '덕질',
-    sub: '코스프레/콘서트/프라모델',
-    value: '12',
-    group: 1,
-    index: 9,
-  },
-  {
-    htmlId: 'CategoryHobby5',
-    name: '트렌드',
-    sub: '뷰티/패션',
-    value: '13',
-    group: 1,
-    index: 10,
-  },
-  {
-    htmlId: 'CategoryHobby6',
-    name: '취미기타',
-    color: '#F7971E',
-    value: '14',
-    group: 1,
-    index: 11,
-  },
-];
-
 function Main() {
   const cookies = new Cookies();
   const {
@@ -153,6 +56,9 @@ function Main() {
     mutate,
   } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
   const [categoryCheck, setCategoryCheck] = useState(0);
+  const [newPost, setNewPost] = useState([]);
+  const [deadlinePost, setDeadlinePost] = useState([]);
+  const [catList, setCatList] = useState([]);
 
   const [authVisible, openAuth, closeAuth] = useModal();
   const [postVisible, openPost, closePost] = useModal();
@@ -170,6 +76,92 @@ function Main() {
     }
   };
 
+ 
+
+  const params = new URLSearchParams();
+  const context = {
+    params,
+  };
+  params.append('order', "expired");
+
+  const CatList = useCallback( async() => {
+    try{
+      const { data } = await axios.get('/category/list');
+      const listData = [];
+      data.data.forEach((dataDepth) => {
+        dataDepth.children.forEach(e => {
+          listData.push({
+            catParentName : dataDepth.categoryName,
+            ...e
+          });
+        });
+      });
+      
+      switch(data.status) {
+        case 200: 
+          setCatList(listData);
+          break;
+        case 2001:
+        case 2301:
+          toast.error(data.message);
+          break;
+        default:
+          break;
+      }
+    } catch(error) {
+      toast.error(error);
+      console.dir(error);
+    }
+  }, []);
+
+  const axiosGetNewPost = useCallback( async() => {
+    try{
+      const { data } = await axios.get('/board/list');
+      switch(data.status) {
+        case 200: 
+          setNewPost([...data.data.contents]);
+          break;
+        case 2001:
+        case 2301:
+          toast.error(data.message);
+          break;
+        default:
+          break;
+      }
+    } catch(error) {
+      toast.error(error);
+      console.dir(error);
+    }
+  }, []);
+
+  const axiosGetDeadLinePost = useCallback( async() => {
+    try{
+      const { data } = await axios.get('/board/list', context);
+      switch(data.status) {
+        case 200: 
+          setDeadlinePost([...data.data.contents]);
+          break;
+        case 2001:
+        case 2301:
+          toast.error(data.message);
+          break;
+        default:
+          break;
+      }
+    } catch(error) {
+      toast.error(error);
+      console.dir(error);
+    }
+  }, []);
+
+  useEffect(()=> {
+    CatList();
+    axiosGetNewPost();
+    axiosGetDeadLinePost();
+  }, []);
+
+  console.log(catList)
+
   return (
     <MainMain>
       <ScrollButton />
@@ -179,8 +171,8 @@ function Main() {
           <SectionWraph4>12가지 분야에서 크루원 절찬리 모집중!</SectionWraph4>
           <SectionWrapp>혼자서 공부하기 힘들었죠? 이제는 크루원들과 함께 성공합시다~!</SectionWrapp>
           <GridWrap>
-            {categoryList.map((data) => (
-              <CategoryCard data={data} key={data.htmlId} />
+            {catList.map((data) => (
+              <CategoryCard data={data} key={data.categoryId} />
             ))}
           </GridWrap>
         </SectionWrap>
@@ -221,10 +213,10 @@ function Main() {
         <PostWrap>
           <h4>신규 크루원 모집글</h4>
           <p>이번주 새롭게 크루원을 모집하는 모집글을 소개해드려요.</p>
-          <SwiperSection />
+          <SwiperSection data={newPost} post={'New'}/>
           <h4>마감임박! 놓치지 말아요!</h4>
           <p>마감일이 가깝거나 모집인원을 거의 다 모은 크루원 모집글을 소개해드려요.</p>
-          <SwiperSection />
+          <SwiperSection data={deadlinePost} post={'Deadline'}/>
         </PostWrap>
       </MainPost>
       <Footer />

@@ -6,10 +6,10 @@ import styled, { css } from 'styled-components';
 function CategoryCard({ data }) {
   return (
     <li>
-      <Wrapper group={data.group}>
-        <h5>{data.name}</h5>
-        <p>{data.sub}</p>
-        <p>{data.group ? '취미' : '스터디'}</p>
+      <Wrapper group={data.catParentName}>
+        <h5>{data.categoryName}</h5>
+        <p>{data.description}</p>
+        <p>{data.catParentName}</p>
         <div className="Icon" />
       </Wrapper>
     </li>
@@ -20,7 +20,7 @@ export default CategoryCard;
 
 const Wrapper = styled.div`
   ${(props) =>
-    props.group === 0
+    props.group === '스터디'
       ? css`
           background: linear-gradient(135deg, #0f3fa6 3.96%, #0575e6 99.7%);
         `
