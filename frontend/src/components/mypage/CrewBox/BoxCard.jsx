@@ -1,22 +1,32 @@
 import React from 'react';
 import styled from 'styled-components';
 import PageArrowNext from '@/assets/images/PageArrowNext.png';
+import { css } from 'styled-components';
 
-function BoxCard() {
+function BoxCard({
+  title,
+  total = 0,
+  small_title1 = '스터디',
+  small_title2 = '취미',
+  count_one = 0,
+  count_two = 0,
+  deactive = false,
+  onClick,
+}) {
   return (
-    <Container>
+    <Container onClick={onClick}>
       <NumDesc>
-        <span>3개</span>
+        <span>{total}개</span>
       </NumDesc>
-      <BoxTitle>내가 참여요청한 크루</BoxTitle>
-      <CrewCat>
+      <BoxTitle>{title}</BoxTitle>
+      <CrewCat deactive={deactive}>
         <li>
-          <h4>스터디</h4>
-          <p>2</p>
+          <h4>{small_title1}</h4>
+          <p>{count_one}</p>
         </li>
         <li>
-          <h4>취미</h4>
-          <p>2</p>
+          <h4>{small_title2}</h4>
+          <p>{count_two}</p>
         </li>
       </CrewCat>
     </Container>
@@ -104,6 +114,24 @@ const CrewCat = styled('ul')`
       background-color: #f7971e;
     }
   }
+
+  ${(props) =>
+    props.deactive &&
+    css`
+      li {
+        :first-child {
+          background-color: #a8a8a8;
+        }
+
+        :last-child {
+          background-color: #a8a8a8;
+        }
+
+        h4 {
+          font-size: 12px;
+        }
+      }
+    `}
 
   @media screen and (max-width: 820px) {
     gap: 10px;
