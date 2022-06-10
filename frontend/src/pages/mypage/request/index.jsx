@@ -34,14 +34,7 @@ function Request() {
   }, []);
 
   useEffect(() => {
-    const apiCollect = async () => {
-      try {
-        await apiApplication();
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    apiCollect();
+    apiApplication();
   }, []);
 
   return (
@@ -52,9 +45,9 @@ function Request() {
         studyCnt={crewRequest ? crewRequest.applyToStudyCount : 0}
         hobbyCnt={crewRequest ? crewRequest.applyToHobbyCount : 0}
       ></MypageMainSubTop>
-      <Wrap>
+      <Wrap className="study">
         <SectionWrap>
-          <h3 className="study">스터디 크루</h3>
+          <h3>스터디 크루</h3>
           <CardWrapper>
             <ul>
               <li>
@@ -67,12 +60,13 @@ function Request() {
                 <RequestCard></RequestCard>
               </li>
             </ul>
+            <PaginationWrapper></PaginationWrapper>
           </CardWrapper>
         </SectionWrap>
       </Wrap>
-      <Wrap>
+      <Wrap className="hobby">
         <SectionWrap>
-          <h3 className="hobby">취미 크루</h3>
+          <h3>취미 크루</h3>
           <NoContent>
             <p>
               <em>크루에 참여요청한 내역이 없습니다.</em>
@@ -100,10 +94,6 @@ function Request() {
 
 export default Request;
 
-const Wrap = styled('section')`
-  background-color: #f6f7fb;
-`;
-
 const SectionWrap = styled('div')`
   max-width: 850px;
   margin: auto;
@@ -113,6 +103,23 @@ const SectionWrap = styled('div')`
     font-size: 20px;
     font-weight: 700;
     padding: 38px 0 24px;
+  }
+`;
+
+const Wrap = styled('section')`
+  background-color: #f6f7fb;
+
+  &.study {
+    padding-top: 52px;
+    h3 {
+      color: #0f3fa6;
+    }
+    ${SectionWrap} {
+      border-bottom: 2px solid #d7dae4;
+    }
+  }
+  &.hobby h3 {
+    color: #f7971e;
   }
 `;
 
@@ -139,4 +146,12 @@ const NoContent = styled('div')`
       font-weight: 700;
     }
   }
+`;
+
+const PaginationWrapper = styled('div')`
+  display: flex;
+  justify-content: space-between;
+  width: 598px;
+  padding: 48px 0 64px;
+  margin: 0 auto;
 `;

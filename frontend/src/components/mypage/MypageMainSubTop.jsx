@@ -1,26 +1,60 @@
-import React from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import ArrowCircle from '@/assets/images/ArrowCircle.png';
 
-function MypageMainSubTop({ total = 0, studyCnt = 0, hobbyCnt = 0 }) {
+function MypageMainSubTop({
+  total = 0,
+  studyCnt = 0,
+  hobbyCnt = 0,
+  title = '내가 참여요청한 크루',
+  desc = '내가 참여요청한 크루의 현황을 이곳에서 확인하고 관리하세요!',
+}) {
+  const totalRef = useRef(null);
+  const studyRef = useRef(null);
+  const hobbyRef = useRef(null);
+
+  const numberTotal = useCallback((ref, limitNum) => {
+    let num = 0;
+    let timer = setInterval(() => {
+      if (ref && ref.current) {
+        ref.current.innerHTML = `${num}개`;
+
+        if (limitNum <= num) {
+          ref.current.innerHTML = ` ${limitNum}개`;
+          clearInterval(timer);
+        }
+      }
+      num += 1;
+      if (limitNum > 10) {
+        num += 10;
+      }
+    }, 20);
+  }, []);
+
+  useEffect(() => {
+    numberTotal(totalRef, total);
+    numberTotal(studyRef, studyCnt);
+    numberTotal(hobbyRef, hobbyCnt);
+  }, [total, studyCnt, hobbyCnt]);
+
   return (
     <section>
       <Wrapper>
-        <h3>내가 참여요청한 크루</h3>
-        <p>내가 참여요청한 크루의 현황을 이곳에서 확인하고 관리하세요!</p>
+        <h3>{title}</h3>
+        <p>{desc}</p>
         <Content>
           <h4>
-            전체
-            <span> {total}개</span>
+            {'전체 '}
+            <span ref={totalRef} data-rate={total}></span>
           </h4>
           <BoxWrap>
             <SentBox color="#0575e6" hoverColor="#005ec5">
-              <p>{studyCnt}개</p>
+              <p ref={studyRef}>{studyCnt}개</p>
               <p>스터디 크루</p>
               <div className="arrow"></div>
             </SentBox>
             <SentBox color="#ffd458" hoverColor="#fcb90d">
-              <p>{hobbyCnt}개</p>
+              <p ref={hobbyRef}>{hobbyCnt}개</p>
               <p>취미 크루</p>
               <div className="arrow"></div>
             </SentBox>

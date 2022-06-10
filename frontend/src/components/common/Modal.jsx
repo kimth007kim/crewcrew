@@ -47,7 +47,6 @@ function Modal({
       document.body.style.cssText = `
       position: fixed;
       top: -${window.scrollY}px;
-      overflow-y: scroll;
       width: 100%;`;
     } else {
       const scrollY = document.body.style.top;
