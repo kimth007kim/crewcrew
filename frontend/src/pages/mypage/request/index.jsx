@@ -5,7 +5,7 @@ import MypageSubTop from '@/components/mypage/MypageSubTop';
 import styled from 'styled-components';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
-import RequestCard from '@/components/mypage/RequestCard';
+import RequestCard from '@/components/mypage/Card/RequestCard';
 import Button from '@/components/common/Button';
 
 function Request() {

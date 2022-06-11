@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
 import Button from '@/components/common/Button';
+import ArriveCard from '@/components/mypage/Card/ArriveCard';
 
 function Arrive() {
   const cookies = new Cookies();
@@ -50,9 +51,15 @@ function Arrive() {
           <h3>스터디 크루</h3>
           <CardWrapper>
             <ul>
-              <li></li>
-              <li></li>
-              <li></li>
+              <li>
+                <ArriveCard />
+              </li>
+              <li>
+                <ArriveCard />
+              </li>
+              <li>
+                <ArriveCard />
+              </li>
             </ul>
             <PaginationWrapper></PaginationWrapper>
           </CardWrapper>
@@ -60,7 +67,7 @@ function Arrive() {
       </Wrap>
       <Wrap className="hobby">
         <SectionWrap>
-          <h3>스터디 크루</h3>
+          <h3>취미 크루</h3>
           <NoContent>
             <p>
               <em>내게 도착한 크루참여요청이 없습니다.</em>
