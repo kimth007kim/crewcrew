@@ -17,6 +17,7 @@ import matchTeam.crewcrew.repository.security.RefreshTokenJpaRepository;
 import matchTeam.crewcrew.repository.user.LikedCategoryRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
 import matchTeam.crewcrew.response.ErrorCode;
+import matchTeam.crewcrew.response.exception.CrewException;
 import matchTeam.crewcrew.response.exception.auth.*;
 import matchTeam.crewcrew.response.exception.profile.ProfileEmptyNameException;
 import matchTeam.crewcrew.response.exception.profile.ProfileEmptyNickNameException;
@@ -117,42 +118,10 @@ public class UserService {
     }
 
 
-    public TokenDto login(UserLoginRequestDto userLoginRequestDto) {
+    public ResponseTokenDto login(UserLoginRequestDto userLoginRequestDto) {
         //회원 정보 존재하는지 확인
-        User user = userRepository.findByEmailAndProvider(userLoginRequestDto.getEmail(), "local").
-                orElseThrow(LoginFailedByEmailNotExistException::new);
-        // 회원 패스워드 일치하는지 확인
-        System.out.println(userLoginRequestDto.getPassword() + "  " + user.getPassword());
-
-        if (!passwordEncoder.matches(userLoginRequestDto.getPassword(), user.getPassword()))
-            throw new LoginFailedByPasswordException();
-
-        log.info(userLoginRequestDto.getEmail(), userLoginRequestDto.getPassword(), userLoginRequestDto.isMaintain());
-        // AccessToken ,Refresh Token 발급
-
-        Long id = user.getUid();
-        System.out.println(user.getUid());
-//        if (jwtProvider.validateToken()==True)
-        Optional<RefreshToken> refreshToken = refreshTokenJpaRepository.findByPkey(id);
-        System.out.println(refreshToken);
-        boolean maintain = userLoginRequestDto.isMaintain();
-        TokenDto tokenDto = jwtProvider.createTokenDto(user.getUid(), user.getRoles(), userLoginRequestDto.isMaintain());
-
-        // RefreshToken 저장
-        RefreshToken refresh_Token = RefreshToken.builder()
-                .pkey(user.getUid())
-                .token(tokenDto.getRefreshToken())
-                .build();
-//        refreshTokenJpaRepository.save(refresh_Token);
-        return tokenDto;
-
-
-    }
-
-    public ResponseTokenDto redisLogin(UserLoginRequestDto userLoginRequestDto) {
-        //회원 정보 존재하는지 확인
-        User user = userRepository.findByEmailAndProvider(userLoginRequestDto.getEmail(), "local").
-                orElseThrow(LoginFailedByEmailNotExistException::new);
+        User user = userRepository.findByEmailAndProvider(userLoginRequestDto.getEmail(), "local").orElseThrow(()-> new CrewException(ErrorCode.LOGIN_FAILED_BY_EMAIL));
+//                orElseThrow(LoginFailedByEmailNotExistException::new);
         // 회원 패스워드 일치하는지 확인
         System.out.println(userLoginRequestDto.getPassword() + "  " + user.getPassword());
 

@@ -11,7 +11,9 @@ import matchTeam.crewcrew.dto.security.TokenRequestDto;
 import matchTeam.crewcrew.dto.user.*;
 import matchTeam.crewcrew.dto.user.example.UserResponseDto;
 import matchTeam.crewcrew.entity.user.User;
+import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.ResponseHandler;
+import matchTeam.crewcrew.response.exception.CrewException;
 import matchTeam.crewcrew.response.exception.auth.*;
 import matchTeam.crewcrew.service.amazonS3.S3Uploader;
 import matchTeam.crewcrew.service.user.*;
@@ -302,7 +304,7 @@ public class AuthController {
     public ResponseEntity<Object> login(
             @ApiParam(value = "로그인 요청 DTO", required = true) @RequestBody UserLoginRequestDto userLoginRequestDto, HttpServletResponse response) throws JsonProcessingException {
         System.out.println(userLoginRequestDto.getEmail() + " " + userLoginRequestDto.getPassword());
-        ResponseTokenDto tokenDto = userService.redisLogin(userLoginRequestDto);
+        ResponseTokenDto tokenDto = userService.login(userLoginRequestDto);
 //        Cookie accessCookie = cookieService.generateAccessToken(tokenDto.getAccessToken());
 //        Cookie refreshCookie = cookieService.generateRefreshToken(tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExpireDate());
 
@@ -379,7 +381,7 @@ public class AuthController {
     public ResponseEntity<Object> findPassword(
 //            @ApiParam(value = "PasswordFindDTO", required = true)
             @RequestBody PasswordFindDTO passwordFindDTO) throws MessagingException, IOException {
-        User user = userService.findByEmailAndProvider(passwordFindDTO.getEmail(), "local").orElseThrow(LoginFailedByEmailNotExistException::new);
+        User user = userService.findByEmailAndProvider(passwordFindDTO.getEmail(), "local").orElseThrow(()-> new CrewException(ErrorCode.LOGIN_FAILED_BY_EMAIL));
         String code = emailService.findPassword(passwordFindDTO.getEmail(), user.getName());
         // 나중에 이름이나 닉네임으로 추가 인증
 //        if(user.getName().equals(name)){
@@ -531,5 +533,13 @@ public class AuthController {
         cookieService.logOut(request, response);
         return ResponseHandler.generateResponse("로그아웃 성공", HttpStatus.OK, null);
     }
+
+    @GetMapping("/test")
+    public ResponseEntity<Object> test() {
+        int a= 1;
+        if (a==1) throw new CrewException(ErrorCode.APPLY_TO_BOARD_WRITER);
+        return ResponseHandler.generateResponse("로그아웃 성공", HttpStatus.OK, null);
+    }
+
 
 }

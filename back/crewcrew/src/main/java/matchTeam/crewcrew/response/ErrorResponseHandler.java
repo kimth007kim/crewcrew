@@ -101,9 +101,6 @@ public class ErrorResponseHandler {
         return new ErrorResponseHandler(errorCode, exceptionMessage);
     }
 
-//    public String getCode() {
-//        return code;
-//    }
 
     public String getMessage() {
         return message;
