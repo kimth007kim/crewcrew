@@ -2,15 +2,26 @@
 /* eslint-disable operator-linebreak */
 import React from 'react';
 import styled, { css } from 'styled-components';
+import { Link } from 'react-router-dom';
 
 function CategoryCard({ data }) {
+
+  const description = (data) => {
+    if(data){
+      let description = data.replace('(', '');
+      description = description.replace(')', '');
+      return description;
+    }
+  }
   return (
     <li>
       <Wrapper group={data.catParentName}>
-        <h5>{data.categoryName}</h5>
-        <p>{data.description}</p>
-        <p>{data.catParentName}</p>
-        <div className="Icon" />
+        <Link to="/post">
+          <h5>{data.categoryName}</h5>
+          <p>{data.categoryName !== '기타' && description(data.description)}</p>
+          <p>{data.catParentName}</p>
+          <div className="Icon" />
+        </Link>
       </Wrapper>
     </li>
   );

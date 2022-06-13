@@ -375,7 +375,6 @@ button.Set{
         aspect-ratio: 1;
         border-radius: 50%;
         overflow: hidden;
-        background-color: $blue2;
 
         @media screen and (max-width: 820px) {
             width: 200px;
@@ -667,7 +666,7 @@ form{
     }
 
     .ChatContent{
-        height: 170px;
+        height: auto;
     }
 
     .ChatContentBody{

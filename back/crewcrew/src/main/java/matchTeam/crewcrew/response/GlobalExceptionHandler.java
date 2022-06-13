@@ -2,6 +2,7 @@ package matchTeam.crewcrew.response;
 
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import matchTeam.crewcrew.response.exception.CrewException;
 import matchTeam.crewcrew.response.exception.auth.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -148,20 +149,18 @@ public class  GlobalExceptionHandler {
 
 
 
-//    @ExceptionHandler(RuntimeException.class)
-//    protected ResponseEntity<ErrorResponseHandler> crewException(CrewException e) {
-//        final ErrorResponseHandler response = ErrorResponseHandler.of(e.getErrorCode());
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
-//
-//    @ExceptionHandler(Exception.class)
-//    protected ResponseEntity<ErrorResponseHandler> globalException(CrewException e) {
-//        final ErrorResponseHandler response = ErrorResponseHandler.of(e.getErrorCode());
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
+    @ExceptionHandler(RuntimeException.class)
+    protected ResponseEntity<ErrorResponseHandler> crewException(CrewException e) {
+        final ErrorResponseHandler response = ErrorResponse.of(e.getErrorCode());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<ErrorResponseHandler> globalException(CrewException e) {
+        final ErrorResponseHandler response = ErrorResponse.of(e.getErrorCode());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-//
 
 
 

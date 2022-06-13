@@ -10,12 +10,16 @@ import Recruit from './mypage/recruit';
 import Participate from './mypage/participate';
 import Request from './mypage/request';
 import Arrive from './mypage/arrive';
+import Kakao from './callback/kakao';
+import Naver from './callback/naver';
 
 function Router() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/callback/kakao" element={<Kakao />} />
+        <Route path="/callback/naver" element={<Naver />} />
         <Route path="/home" element={<Home />} />
         <Route path="/testing" element={<Testing />} />
         <Route path="/post" element={<Post />} />

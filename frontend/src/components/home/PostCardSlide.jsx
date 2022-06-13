@@ -9,6 +9,7 @@ import StarOn from '@/assets/images/StarOn.png';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import { format, getDay, differenceInDays } from 'date-fns';
 import { viewDay } from '@/utils';
+import { Link } from 'react-router-dom';
 
 function PostCardSlide({ data }) {
 
@@ -28,38 +29,40 @@ function PostCardSlide({ data }) {
   }
   return (
     <Container>
-      <CardPost category={category()}>
-        <CardHead>
-          <h5>
-            <span>{`D-${renderDay()}`}</span>
-          </h5>
-          <CardHeadRight>
-            <p>{renderDate()}</p>
-            <p>
-              조회수
-              <span> {data.hit}</span>
-            </p>
-            <Star />
-          </CardHeadRight>
-        </CardHead>
-        <CardBody>
-          <CardProfile>
-            <ProfileImg alt="" />
-          </CardProfile>
-          <CardTxt>
-            <h4>{data.title}</h4>
-            <p>{data.nickname}</p>
-          </CardTxt>
-        </CardBody>
-        <CardFooter>
-          <CardTagColor category={category()}> {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}</CardTagColor>
-          <CardTagColor category={category()}>{data.approachCode ? '온라인' : '오프라인'}</CardTagColor>
-          <CardTag>
-            <span>{data.recruitedCrew}/{data.totalCrew}</span>
-            <span>명 모집됨</span>
-          </CardTag>
-        </CardFooter>
-      </CardPost>
+      <Link to={`/post/${data.boardId}`}>
+        <CardPost category={category()}>
+          <CardHead>
+            <h5>
+              <span>{`D-${renderDay()}`}</span>
+            </h5>
+            <CardHeadRight>
+              <p>{renderDate()}</p>
+              <p>
+                조회수
+                <span> {data.hit}</span>
+              </p>
+              <Star />
+            </CardHeadRight>
+          </CardHead>
+          <CardBody>
+            <CardProfile>
+              <ProfileImg profileImg={data.profileImage} alt="" />
+            </CardProfile>
+            <CardTxt>
+              <h4>{data.title}</h4>
+              <p>{data.nickname}</p>
+            </CardTxt>
+          </CardBody>
+          <CardFooter>
+            <CardTagColor category={category()}> {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}</CardTagColor>
+            <CardTagColor category={category()}>{data.approachCode ? '온라인' : '오프라인'}</CardTagColor>
+            <CardTag>
+              <span>{data.recruitedCrew}/{data.totalCrew}</span>
+              <span>명 모집됨</span>
+            </CardTag>
+          </CardFooter>
+        </CardPost>
+      </Link>
     </Container>
   );
 }
@@ -108,6 +111,7 @@ const CardHead = styled.div`
   h5 {
     font-size: 16px;
     font-weight: 700;
+    color: #000;
   }
 
   @media screen and (max-width: 820px) {
@@ -209,6 +213,7 @@ const CardTxt = styled.div`
     font-weight: 500;
     margin-bottom: 8px;
     line-height: 18px;
+    color: #000;
     ::after {
       content: none;
       display: none;
@@ -234,10 +239,14 @@ const CardProfile = styled.div`
 `;
 
 const ProfileImg = styled.div`
+  ${(props) => 
+    css`
+      background: url(${props.profileImg}) 100% 100%;
+    `
+  }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  background: url(${Profile4}) 100% 100%;
   background-size: 100% !important;
 `;
 
