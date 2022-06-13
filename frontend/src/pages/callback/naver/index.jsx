@@ -2,17 +2,22 @@ import Loader from '@/components/common/Loader';
 import axios from 'axios';
 import qs from 'qs';
 import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Cookies } from 'react-cookie';
 import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
+import { toast } from 'react-toastify';
 
 function Naver() {
   const navigate = useNavigate();
   const { search } = useLocation();
   const myCookies = new Cookies();
-  const { mutate } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
+  const {
+    data: myData,
+    error,
+    mutate,
+  } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
 
   useEffect(() => {
     const getToken = async () => {
@@ -36,7 +41,7 @@ function Naver() {
           case 200:
             console.log(data);
             mutate('/auth/token');
-            navigate('/');
+            navigate('/', { replace: true });
             break;
 
           default:
@@ -49,6 +54,13 @@ function Naver() {
 
     getToken();
   }, []);
+
+  if (myData && myData.data) {
+    toast.error('잘못된 접근입니다.');
+
+    return <Navigate to="/" replace={true} />;
+  }
+
   return (
     <LoadingList>
       <Loader></Loader>
