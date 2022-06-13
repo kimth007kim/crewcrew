@@ -317,7 +317,7 @@ public class AuthController {
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
 
-        return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK, new AccessTokenDto(tokenDto.getAccessToken()));
+        return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK, null);
 
     }
 

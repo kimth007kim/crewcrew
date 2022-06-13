@@ -69,15 +69,7 @@ public class UserService {
     }
 
 
-    @Transactional
-    public Long signup(SignUpRequestDto localSignUpRequestDto) {
-        if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(), "local").isPresent())
-            throw new EmailSignUpFailedCException();
-//            throw new CrewException(ErrorCode.EMAIL_CODE_NOT_MATCH);
-        return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();
-    }
 
-//    @Transactional
     public Long signup(SignUpLocalRequestDto localSignUpRequestDto) {
         if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(), "local").isPresent())
             throw new EmailSignUpFailedCException();
@@ -109,7 +101,7 @@ public class UserService {
         log.info(filename,"파일네임 파일네임");
 
         List<Long> input = likedCategoryService.deleteDuplicateCategory(categoryId);
-        SignUpLocalRequestDto signUpRequestDto = new SignUpLocalRequestDto(email, password, name, nickName, filename, input, message);
+        SignUpLocalRequestDto signUpRequestDto = new SignUpLocalRequestDto(email, password, name, nickName, filename, input, message,"local");
         Long signupId = signup(signUpRequestDto);
         User user = findByUid(signupId);
 

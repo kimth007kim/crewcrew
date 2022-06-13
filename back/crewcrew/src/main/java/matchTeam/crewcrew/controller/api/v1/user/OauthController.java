@@ -3,6 +3,7 @@ package matchTeam.crewcrew.controller.api.v1.user;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.config.security.JwtProvider;
+import matchTeam.crewcrew.dto.security.ResponseTokenDto;
 import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.social.*;
 import matchTeam.crewcrew.dto.user.AccessTokenDto;
@@ -16,10 +17,7 @@ import matchTeam.crewcrew.response.exception.auth.CUserNotFoundException;
 import matchTeam.crewcrew.response.exception.auth.KakaoUserNotExistException;
 import matchTeam.crewcrew.response.exception.auth.NaverUserNotExistException;
 import matchTeam.crewcrew.service.amazonS3.S3Uploader;
-import matchTeam.crewcrew.service.user.KakaoService;
-import matchTeam.crewcrew.service.user.LikedCategoryService;
-import matchTeam.crewcrew.service.user.NaverService;
-import matchTeam.crewcrew.service.user.UserService;
+import matchTeam.crewcrew.service.user.*;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -30,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
@@ -53,6 +52,7 @@ public class OauthController {
     private final KakaoService kakaoService;
     private final UserService userService;
     private final NaverService naverService;
+    private final CookieService cookieService;
     private final JwtProvider jwtProvider;
     private final LikedCategoryService likedCategoryService;
 
@@ -118,7 +118,7 @@ public class OauthController {
     )
     })
     public ResponseEntity<Object> redirectKakao(@ApiParam(value = "Authorization Code", required = true)
-                                                @RequestParam String code) {
+                                                @RequestParam String code, HttpServletResponse response) {
         RetKakaoOAuth kakaoResult = kakaoService.getKakaoTokenInfo(code);
         KakaoProfile kakaoProfile = kakaoService.getKakaoProfile(kakaoResult.getAccess_token());
         if (kakaoProfile == null) throw new KakaoUserNotExistException();
@@ -133,9 +133,12 @@ public class OauthController {
             throw new CSocialAgreementException();
         }
         if (user.isPresent()) {
-            TokenDto token = jwtProvider.createTokenDto(user.get().getUid(), user.get().getRoles(), false);
-            SocialLoginAccessTokenDto accessTokenDto = new SocialLoginAccessTokenDto(token.getAccessToken(), false);
-            return ResponseHandler.generateResponse("카카오 로그인 성공", HttpStatus.OK, accessTokenDto);
+            User user1 = user.get();
+            ResponseTokenDto token = jwtProvider.createResponseToken(user.get().getUid(), user.get().getRoles(), true);
+            cookieService.responseCookie(response,user1,token);
+            return ResponseHandler.generateResponse("카카오 로그인 성공", HttpStatus.OK, null);
+
+
         } else {
             String nickName = userService.nickNameGenerator(kakaoProfile.getProperties().getNickname());
             Long userId = userService.kakaoSignup(UserSignUpRequestDto.builder()
@@ -148,10 +151,12 @@ public class OauthController {
             String email_url = s3Uploader.nameFile(kakaoProfile.getKakao_account().getEmail(), "kakao");
             s3Uploader.urlConvert(email_url, kakaoProfile.getKakao_account().getProfile().getProfile_image_url(), NEW_USER);
 
-            TokenDto token = jwtProvider.createTokenDto(userId, NEW_USER.getRoles(), false);
-            SocialLoginAccessTokenDto accessTokenDto = new SocialLoginAccessTokenDto(token.getAccessToken(), true);
+//            TokenDto token = jwtProvider.createTokenDto(userId, NEW_USER.getRoles(), false);
 
-            return ResponseHandler.generateResponse("카카오 회원가입 성공", HttpStatus.OK, accessTokenDto);
+            ResponseTokenDto token = jwtProvider.createResponseToken(userId, NEW_USER.getRoles(), true);
+            cookieService.responseCookie(response,NEW_USER,token);
+
+            return ResponseHandler.generateResponse("카카오 회원가입 성공", HttpStatus.OK, null);
 
         }
 

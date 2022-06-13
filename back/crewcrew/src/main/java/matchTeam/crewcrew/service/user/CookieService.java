@@ -2,6 +2,8 @@ package matchTeam.crewcrew.service.user;
 
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.config.security.JwtProvider;
+import matchTeam.crewcrew.dto.security.ResponseTokenDto;
+import matchTeam.crewcrew.entity.user.User;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
@@ -63,4 +65,13 @@ public class CookieService {
         }
 
     }
+    public void responseCookie( HttpServletResponse response, User user, ResponseTokenDto token){
+        Cookie accessCookie =generateXAuthCookie("X-AUTH-TOKEN", token.getAccessToken(), token.getAccessTokenExpireDate());
+        Cookie refreshCookie =generateCookie("refreshToken", token.getRefreshToken(), token.getRefreshTokenExpireDate());
+        System.out.println("refreshCookie = " + refreshCookie);
+        System.out.println("accessCookie = " + accessCookie);
+        response.addCookie(accessCookie);
+        response.addCookie(refreshCookie);
+    }
+
 }
