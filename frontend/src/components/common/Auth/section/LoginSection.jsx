@@ -19,6 +19,7 @@ import Textfield from '../../TextfieldEmail';
 import TextfieldPW from '../../TextfieldPW';
 import { emojiSlice, isCheckPassword, isEmail, spaceSlice } from '@/utils';
 import fetcher from '@/utils/fetcher';
+import { useNavigate } from 'react-router-dom';
 
 function LoginSection({ IsClick, HandleClick, closeModal }) {
   const [IsChecked, setIsChecked] = useState(false);
@@ -33,6 +34,7 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
 
   const [cookies, setCookie, removeCookie] = useCookies(['user-cookie']);
   const myCookies = new Cookies();
+  const navigate = useNavigate();
 
   const {
     data: myData,
@@ -166,6 +168,8 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
     [email, password, IsChecked],
   );
 
+  const handleOauthLogin = (link) => {};
+
   return (
     <LoginContents active={IsClick === 0}>
       <form onSubmit={HandleSubmitLogin}>
@@ -213,16 +217,20 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
       <DividingLine>또는 간편하게</DividingLine>
       <SnsList>
         <li>
-          <ButtonNaver>
-            <NaverImg src={Naver} />
-            네이버 로그인
-          </ButtonNaver>
+          <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&state=STATE_STRING&client_id=CTJFctZzRNLw8XkP1xik&redirect_uri=https://crewcrew.org/callback/naver">
+            <ButtonNaver>
+              <NaverImg src={Naver} />
+              네이버 로그인
+            </ButtonNaver>
+          </a>
         </li>
         <li>
-          <ButtonKakao>
-            <KakaoImg src={Kakao} />
-            카카오 로그인
-          </ButtonKakao>
+          <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=99ba28ab4b31cad385145d741c0641fe&redirect_uri=https://crewcrew.org/callback/kakao">
+            <ButtonKakao>
+              <KakaoImg src={Kakao} />
+              카카오 로그인
+            </ButtonKakao>
+          </a>
         </li>
       </SnsList>
     </LoginContents>

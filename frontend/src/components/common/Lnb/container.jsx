@@ -97,6 +97,7 @@ function NavContainer() {
         const { data } = await axios.delete('/auth/logout', {
           withCredentials: true,
         });
+        window.location.reload();
         console.dir(data);
       } catch (error) {
         console.dir(error);
