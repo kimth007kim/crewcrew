@@ -48,14 +48,18 @@ public class CookieService {
         Cookie accessToken = getCookie(request,"X-AUTH-TOKEN");
         Cookie refreshToken = getCookie(request,"refreshToken");
         if (accessToken!=null){
-            accessToken.setValue(null);
-            accessToken.setMaxAge(0);
-            response.addCookie(accessToken);
+            Cookie logoutAccessToken = generateCookie("X-AUTH-TOKEN",null,0L);
+//            accessToken.setValue(null);
+//            accessToken.setMaxAge(0);
+//            response.addCookie(accessToken);
+            response.addCookie(logoutAccessToken);
         }
         if (refreshToken!=null){
-            refreshToken.setValue(null);
-            refreshToken.setMaxAge(0);
-            response.addCookie(refreshToken);
+            Cookie logoutRefreshToken = generateCookie("refreshToken",null,0L);
+//            refreshToken.setValue(null);
+//            refreshToken.setMaxAge(0);
+//            response.addCookie(refreshToken);
+            response.addCookie(logoutRefreshToken);
         }
 
     }

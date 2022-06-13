@@ -90,6 +90,7 @@ function Main() {
       const listData = [];
       data.data.forEach((dataDepth) => {
         dataDepth.children.forEach(e => {
+          
           listData.push({
             catParentName : dataDepth.categoryName,
             ...e
@@ -160,7 +161,6 @@ function Main() {
     axiosGetDeadLinePost();
   }, []);
 
-  console.log(catList)
 
   return (
     <MainMain>

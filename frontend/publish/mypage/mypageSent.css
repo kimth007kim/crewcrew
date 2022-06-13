@@ -2424,13 +2424,14 @@ section.MypageTop .SectionWrap850 {
 }
 
 .myInfoBtn {
+  border: none;
+  outline: none;
+  cursor: pointer;
   background-color: #fff;
   border: 1px solid #000;
   border-radius: 5px;
   padding: 6px 8px;
   font-size: 13px;
-  outline: none;
-  cursor: pointer;
 }
 
 .myInfoBtn.On {
@@ -2743,7 +2744,7 @@ textarea.TxtAreaInput.InputSetting:disabled:hover {
 }
 
 section.TimeLineSect {
-  padding-bottom: 88px;
+  padding-bottom: 28px;
 }
 
 .TimeLineBox {
@@ -2911,16 +2912,16 @@ section.TimeLineSect {
 }
 
 .TimeLine .Content .ContentBottom ul li button {
-  width: 100%;
-  height: 100%;
   border: none;
   outline: none;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
   background-color: #C4C4C4;
   border-radius: 5px;
   color: #fff;
   font-size: 13px;
   font-weight: 500;
-  cursor: pointer;
   -webkit-transition: .3s;
   transition: .3s;
 }
@@ -2957,7 +2958,7 @@ p.Nocontent em {
 }
 
 .PostListSect {
-  padding-bottom: 40px;
+  padding: 60px 0 40px;
 }
 
 .ListTap {
