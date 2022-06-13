@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -122,10 +123,38 @@ public class OauthController {
         KakaoProfile kakaoProfile = kakaoService.getKakaoProfile(kakaoResult.getAccess_token());
         if (kakaoProfile == null) throw new KakaoUserNotExistException();
         Optional<User> user = userService.findByEmailAndProvider(kakaoProfile.getKakao_account().getEmail(), "kakao");
-        if (user.isPresent()) {
-            return ResponseHandler.generateResponse("Kakao에서 발행한 AccessToken 발급 성공", HttpStatus.OK, new OauthRedirectDto("kakao", true, kakaoResult.getAccess_token()));
+//        if (user.isPresent()) {
+//            return ResponseHandler.generateResponse("Kakao에서 발행한 AccessToken 발급 성공", HttpStatus.OK, new OauthRedirectDto("kakao", true, kakaoResult.getAccess_token()));
+//        }
+//        return ResponseHandler.generateResponse("Kakao에서 발행한 AccessToken 발급 성공", HttpStatus.OK, new OauthRedirectDto("kakao", false, kakaoResult.getAccess_token()));
+
+        if (kakaoProfile.getKakao_account().getEmail() == null) {
+            kakaoService.kakaoUnlink(kakaoResult.getAccess_token());
+            throw new CSocialAgreementException();
         }
-        return ResponseHandler.generateResponse("Kakao에서 발행한 AccessToken 발급 성공", HttpStatus.OK, new OauthRedirectDto("kakao", false, kakaoResult.getAccess_token()));
+        if (user.isPresent()) {
+            TokenDto token = jwtProvider.createTokenDto(user.get().getUid(), user.get().getRoles(), false);
+            SocialLoginAccessTokenDto accessTokenDto = new SocialLoginAccessTokenDto(token.getAccessToken(), false);
+            return ResponseHandler.generateResponse("카카오 로그인 성공", HttpStatus.OK, accessTokenDto);
+        } else {
+            String nickName = userService.nickNameGenerator(kakaoProfile.getProperties().getNickname());
+            Long userId = userService.kakaoSignup(UserSignUpRequestDto.builder()
+                    .email(kakaoProfile.getKakao_account().getEmail())
+                    .name(kakaoProfile.getProperties().getNickname())
+                    .nickName(nickName)
+                    .provider("kakao")
+                    .build());
+            User NEW_USER = userService.findByUid(userId);
+            String email_url = s3Uploader.nameFile(kakaoProfile.getKakao_account().getEmail(), "kakao");
+            s3Uploader.urlConvert(email_url, kakaoProfile.getKakao_account().getProfile().getProfile_image_url(), NEW_USER);
+
+            TokenDto token = jwtProvider.createTokenDto(userId, NEW_USER.getRoles(), false);
+            SocialLoginAccessTokenDto accessTokenDto = new SocialLoginAccessTokenDto(token.getAccessToken(), true);
+
+            return ResponseHandler.generateResponse("카카오 회원가입 성공", HttpStatus.OK, accessTokenDto);
+
+        }
+
     }
 
     @ApiOperation(value = "네이버 redirect url", notes = "유저가 네이버 로그인을 한 이후에 네이버에서 발급받은 인증 코드(Acess Token)를 크루크루에  리턴 해줍니다.")
@@ -152,10 +181,38 @@ public class OauthController {
         NaverProfile naverProfile = naverService.getNaverProfile(naverResult.getAccess_token());
         if (naverProfile == null) throw new NaverUserNotExistException();
         Optional<User> user = userService.findByEmailAndProvider(naverProfile.getResponse().getEmail(), "naver");
+//        if (user.isPresent()) {
+//            return ResponseHandler.generateResponse("Naver에서 발행한 AccessToken 발급 성공", HttpStatus.OK, new OauthRedirectDto("naver", true, naverResult.getAccess_token()));
+//        }
+//        return ResponseHandler.generateResponse("Naver에서 발행한 AccessToken 발급 성공", HttpStatus.OK, new OauthRedirectDto("naver", false, naverResult.getAccess_token()));
+//        Optional<User> user = userService.findByEmailAndProvider(naverProfile.getResponse().getEmail(), "naver");
         if (user.isPresent()) {
-            return ResponseHandler.generateResponse("Naver에서 발행한 AccessToken 발급 성공", HttpStatus.OK, new OauthRedirectDto("naver", true, naverResult.getAccess_token()));
+            TokenDto token = jwtProvider.createTokenDto(user.get().getUid(), user.get().getRoles(), false);
+            SocialLoginAccessTokenDto accessTokenDto = new SocialLoginAccessTokenDto(token.getAccessToken(), false);
+
+            return ResponseHandler.generateResponse("네이버 로그인 성공", HttpStatus.OK, accessTokenDto);
+        } else {
+            String nickName = userService.nickNameGenerator(naverProfile.getResponse().getName());
+            Long userId = userService.naverSignup(UserSignUpRequestDto.builder()
+                    .email(naverProfile.getResponse().getEmail())
+                    .name(naverProfile.getResponse().getName())
+                    .nickName(nickName)
+                    .provider("naver")
+                    .build());
+            User NEW_USER = userService.findByUid(userId);
+            String email_url = s3Uploader.nameFile(naverProfile.getResponse().getEmail(), "naver");
+            userService.urlToImage(email_url, naverProfile.getResponse().getProfile_image(), NEW_USER);
+
+
+            TokenDto token = jwtProvider.createTokenDto(userId, NEW_USER.getRoles(), false);
+            SocialLoginAccessTokenDto accessTokenDto = new SocialLoginAccessTokenDto(token.getAccessToken(), true);
+
+            return ResponseHandler.generateResponse("네이버 회원가입 성공", HttpStatus.OK, accessTokenDto);
+
         }
-        return ResponseHandler.generateResponse("Naver에서 발행한 AccessToken 발급 성공", HttpStatus.OK, new OauthRedirectDto("naver", false, naverResult.getAccess_token()));
+
+
+
     }
 
     @GetMapping("/kakao/token/{accessToken}")
