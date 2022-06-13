@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import SwiperArrow from '@/assets/images/SwiperArrow.png';
 import SwiperArrowReverse from '@/assets/images/SwiperArrowReverse.png';
 import SettingWhite from '@/assets/images/SettingWhite.png';
+import SwiperBtSection from './SwiperBtSection';
 
 function ArriveCard({ data }) {
   const [isSwiperClick, setIsSwiperClick] = useState(false);
@@ -14,7 +15,7 @@ function ArriveCard({ data }) {
   return (
     <Container>
       <Wrapper>
-        <CardTop>
+        <CardTop active={isSwiperClick}>
           <CardHead>
             <TextBox>
               <Dday>D-2</Dday>
@@ -53,7 +54,7 @@ function ArriveCard({ data }) {
             </p>
             <button>참여자 확인 (8)</button>
           </BtTop>
-          <BtSwiper></BtSwiper>
+          <SwiperBtSection isSwiperClick={isSwiperClick}></SwiperBtSection>
         </CardBottom>
       </Wrapper>
       <SwiperBtn onClick={handleClick} active={isSwiperClick}>
@@ -82,6 +83,10 @@ const Wrapper = styled('div')`
   flex-direction: column;
   transition: height 0.5s, border 0.2s;
   cursor: default;
+
+  :hover {
+    border-color: #a8a8a8;
+  }
 `;
 
 const SwiperBtn = styled('div')`
@@ -111,6 +116,12 @@ const CardTop = styled('div')`
   position: relative;
   padding: 14px 0;
   box-sizing: border-box;
+
+  ${(props) =>
+    props.active &&
+    css`
+      border-bottom: 1px solid #e2e2e2;
+    `}
 `;
 
 const TextBox = styled('div')``;
@@ -401,9 +412,4 @@ const CardBottom = styled('div')`
       }
     }
   }
-`;
-
-const BtSwiper = styled('div')`
-  margin-bottom: 14px;
-  overflow: hidden;
 `;
