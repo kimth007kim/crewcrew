@@ -1,0 +1,200 @@
+@import "./mypage";
+
+@mixin font($cl, $sz, $we) {
+    color: $cl;
+    font-size: $sz;
+    font-weight: $we;
+}
+
+
+.ProfileSect{
+    padding: 60px 0;
+}
+
+.ProfileTop{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ProfileImg{
+    width: 100px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: $green1;
+    margin-bottom: 30px;
+
+    img{
+        width: 100%;
+    }
+}
+
+.ProfileName{
+    display: flex;
+    gap: 12px;
+    margin-bottom: 38px;
+
+    p{
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    .BtnChat{
+        @include button();
+        border-radius: 5px;
+        color: $white;
+        font-size: 13px;
+        transition: .3s;
+        background: #c4c4c4 url("/frontend/src/assets/images/ChatWhite.png") center/20px no-repeat;
+        text-indent: -9999px;
+        width: 30px;
+        height: 30px;
+
+        &:hover{
+            background-color: #B0B0B0;
+        }
+    }
+}
+
+.ProfileMessage{
+    text-align: center;
+
+    h3{
+        @include font($black4, 13px, 500);
+        margin-bottom: 12px;
+    }
+
+    p{
+        @include font($blue3, 15px, 700);
+        margin-bottom: 40px;
+    }
+}
+
+.ProfileTag{
+    width: 400px;
+    height: 146px;
+    margin: auto;
+    border: 1px solid #E2E2E2;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.Tags{
+    width: 100%;
+    height: 86px;
+    box-sizing: border-box;
+    padding: 0 20px;
+
+    &:nth-child(1){
+        border-right: 1px solid $black5;
+        width: calc(100% + 6px);
+    }
+    
+    h3{
+        @include font($black4, 13px, 500);
+        text-align: center;
+        line-height: 1;
+    }
+
+    .TagWrap{
+        height: 54px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 16px;
+
+        span{
+            @include font($white, 13px, 300);
+            padding: 3px 6px;
+            border-radius: 13px;
+        }
+
+        &.Study span{
+            background-color: #0F3FA6;
+        }
+
+        &.Hobby span{
+            background-color:#F7971E;
+        }
+    }
+}
+
+.CrewBoxWrap{
+    width: 392px;
+    margin: 40px auto 0;
+
+    .Tit::after{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 820px) {
+    
+    .ProfileSect{
+        padding: 30px 0 60px;
+    }
+
+    .ProfileName{
+        gap: 17px;
+
+        p{
+            font-size: 20px;
+        }
+    } 
+
+    .ProfileMessage{
+
+        p{
+            width: calc(100vw - 114px);
+            font-size: 15px;
+            line-height: 20px;
+        }
+    }
+
+    .ProfileTag{
+        width: calc(100vw - 40px);
+        height: 270px;
+        flex-direction: column;
+        padding: 0 20px;
+    }
+
+    .Tags{
+        height: 100%;
+        padding: 24px 0;
+
+        &:nth-child(1){
+            border-right: none;
+            border-bottom: 1px solid $black5;
+        }
+
+        .TagWrap{
+            gap: 10px 8px;
+        }
+    }
+
+    .CrewBoxWrap{
+        width: calc(100vw - 40px);
+    }
+}
+
+@media screen and (max-width: 300px){
+
+    .ProfileMessage p{
+        width: calc(100vw - 34px);
+    }
+
+    .ProfileTag{
+        width: calc(100vw - 20px);
+        padding: 0 10px;
+    }
+
+    .CrewBoxWrap{
+        width: calc(100vw - 20px);
+    }
+}
