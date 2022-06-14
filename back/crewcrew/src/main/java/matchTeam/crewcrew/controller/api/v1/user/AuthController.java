@@ -333,8 +333,11 @@ public class AuthController {
 
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
+        User user = userService.findByEmailAndProvider(userLoginRequestDto.getEmail(), "local").orElseThrow(()->new CrewException(ErrorCode.PK_USER_NOT_FOUND));
+        List<Long> likedCategoryId=likedCategoryService.findUsersLike(user);
+        UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), likedCategoryId, user.getMessage(), user.getProvider());
 
-        return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK, null);
+        return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK, userResponseDto);
 
     }
 

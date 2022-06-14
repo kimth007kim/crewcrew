@@ -184,9 +184,7 @@ public class OauthController {
     @ApiResponses({
             @ApiResponse(
                     code = 200
-                    , message = "카카오 에서 받은 AcessToken 확인 성공"
-                    , response = KakaoProfile.class
-            )
+                    , message = "카카오 에서 받은 AcessToken 확인 성공")
             , @ApiResponse(
             code = 1300
             , message = "카카오와 http통신이 실패하였습니다."
