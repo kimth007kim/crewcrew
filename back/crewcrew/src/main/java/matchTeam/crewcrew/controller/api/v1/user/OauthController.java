@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
@@ -116,7 +117,11 @@ public class OauthController {
         }
         if (user.isPresent()) {
             ResponseTokenDto token = jwtProvider.createResponseToken(user.get().getUid(), user.get().getRoles(), true);
-            cookieService.responseCookie(response,token);
+            Cookie accessCookie =cookieService.generateXAuthCookie("X-AUTH-TOKEN", token.getAccessToken(), token.getAccessTokenExpireDate());
+            Cookie refreshCookie =cookieService.generateCookie("refreshToken", token.getRefreshToken(), token.getRefreshTokenExpireDate());
+            response.addCookie(accessCookie);
+            response.addCookie(refreshCookie);
+//            cookieService.responseCookie(response, token);
             return ResponseHandler.generateResponse("카카오 로그인 성공", HttpStatus.OK, null);
 
 
@@ -124,7 +129,11 @@ public class OauthController {
             User new_user = userService.kakaoRegister(kakaoProfile);
 
             ResponseTokenDto token = jwtProvider.createResponseToken(new_user.getUid(), new_user.getRoles(), true);
-            cookieService.responseCookie(response,token);
+            Cookie accessCookie =cookieService.generateXAuthCookie("X-AUTH-TOKEN", token.getAccessToken(), token.getAccessTokenExpireDate());
+            Cookie refreshCookie =cookieService.generateCookie("refreshToken", token.getRefreshToken(), token.getRefreshTokenExpireDate());
+            response.addCookie(accessCookie);
+            response.addCookie(refreshCookie);
+//            cookieService.responseCookie(response, token);
 
 
             return ResponseHandler.generateResponse("카카오 회원가입 성공", HttpStatus.OK, null);
@@ -152,31 +161,33 @@ public class OauthController {
     })
 
     public ResponseEntity<Object> redirectNaver(@ApiParam(value = "Authorization Code", required = true)
-                                                @RequestParam String code,HttpServletResponse response) {
+                                                @RequestParam String code, HttpServletResponse response) {
         RetNaverOAuth naverResult = naverService.getNaverTokenInfo(code);
         NaverProfile naverProfile = naverService.getNaverProfile(naverResult.getAccess_token());
         if (naverProfile == null) throw new CrewException(ErrorCode.NAVER_NOT_EXIST);
         Optional<User> user = userService.findByEmailAndProvider(naverProfile.getResponse().getEmail(), "naver");
-//        if (user.isPresent()) {
-//            return ResponseHandler.generateResponse("Naver에서 발행한 AccessToken 발급 성공", HttpStatus.OK, new OauthRedirectDto("naver", true, naverResult.getAccess_token()));
-//        }
-//        return ResponseHandler.generateResponse("Naver에서 발행한 AccessToken 발급 성공", HttpStatus.OK, new OauthRedirectDto("naver", false, naverResult.getAccess_token()));
-//        Optional<User> user = userService.findByEmailAndProvider(naverProfile.getResponse().getEmail(), "naver");
         if (user.isPresent()) {
             ResponseTokenDto token = jwtProvider.createResponseToken(user.get().getUid(), user.get().getRoles(), true);
-            cookieService.responseCookie(response,token);
+            Cookie accessCookie =cookieService.generateXAuthCookie("X-AUTH-TOKEN", token.getAccessToken(), token.getAccessTokenExpireDate());
+            Cookie refreshCookie =cookieService.generateCookie("refreshToken", token.getRefreshToken(), token.getRefreshTokenExpireDate());
+            response.addCookie(accessCookie);
+            response.addCookie(refreshCookie);
+//            cookieService.responseCookie(response, token);
 
             return ResponseHandler.generateResponse("네이버 로그인 성공", HttpStatus.OK, null);
         } else {
             User new_user = userService.naverRegister(naverProfile);
 
             ResponseTokenDto token = jwtProvider.createResponseToken(new_user.getUid(), new_user.getRoles(), true);
-            cookieService.responseCookie(response,token);
+            Cookie accessCookie =cookieService.generateXAuthCookie("X-AUTH-TOKEN", token.getAccessToken(), token.getAccessTokenExpireDate());
+            Cookie refreshCookie =cookieService.generateCookie("refreshToken", token.getRefreshToken(), token.getRefreshTokenExpireDate());
+            response.addCookie(accessCookie);
+            response.addCookie(refreshCookie);
+//            cookieService.responseCookie(response, token);
 
             return ResponseHandler.generateResponse("네이버 회원가입 성공", HttpStatus.OK, null);
 
         }
-
 
 
     }
@@ -464,10 +475,9 @@ public class OauthController {
     @GetMapping("/test")
     public ResponseEntity<Object> passwordTest(String word) {
         userService.validationPasswd(word);
-        return ResponseHandler.generateResponse("엑세스토큰 으로 유저 정보 조회 성공", HttpStatus.OK, null );
+        return ResponseHandler.generateResponse("엑세스토큰 으로 유저 정보 조회 성공", HttpStatus.OK, null);
 
     }
-
 
 
 }
