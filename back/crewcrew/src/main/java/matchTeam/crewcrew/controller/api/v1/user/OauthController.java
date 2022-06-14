@@ -107,8 +107,8 @@ public class OauthController {
     )
     })
     public ResponseEntity<Object> redirectKakao(@ApiParam(value = "Authorization Code", required = true)
-                                                @RequestBody String code, HttpServletResponse response) {
-        RetKakaoOAuth kakaoResult = kakaoService.getKakaoTokenInfo(code);
+                                                @RequestBody CodeDto code, HttpServletResponse response) {
+        RetKakaoOAuth kakaoResult = kakaoService.getKakaoTokenInfo(code.getCode());
         KakaoProfile kakaoProfile = kakaoService.getKakaoProfile(kakaoResult.getAccess_token());
         if (kakaoProfile == null) throw new CrewException(ErrorCode.KAKAO_NOT_EXIST);
         Optional<User> user = userService.findByEmailAndProvider(kakaoProfile.getKakao_account().getEmail(), "kakao");
