@@ -154,6 +154,7 @@ public class OauthController {
 
     public ResponseEntity<Object> redirectNaver(@ApiParam(value = "Authorization Code", required = true)
                                                 @RequestBody String code, HttpServletResponse response) {
+        System.out.println("보낸 RequestBody 코드 = "+code);
         RetNaverOAuth naverResult = naverService.getNaverTokenInfo(code);
         NaverProfile naverProfile = naverService.getNaverProfile(naverResult.getAccess_token());
         if (naverProfile == null) throw new CrewException(ErrorCode.NAVER_NOT_EXIST);
