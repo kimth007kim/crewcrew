@@ -89,7 +89,7 @@ public class OauthController {
     }
 
     @ApiOperation(value = "카카오 redirect url", notes = "유저가 카카오 로그인을 한 이후에 네이버에서 발급받은 인증 코드(Acess Token)를 크루크루에  리턴 해줍니다.")
-    @GetMapping(value = "/kakao/redirect")
+    @PostMapping(value = "/kakao/redirect")
     @ApiResponses({
             @ApiResponse(
                     code = 200
@@ -135,7 +135,7 @@ public class OauthController {
     }
 
     @ApiOperation(value = "네이버 redirect url", notes = "유저가 네이버 로그인을 한 이후에 네이버에서 발급받은 인증 코드(Acess Token)를 크루크루에  리턴 해줍니다.")
-    @GetMapping(value = "/naver/redirect")
+    @PostMapping(value = "/naver/redirect")
     @ApiResponses({
             @ApiResponse(
                     code = 200
