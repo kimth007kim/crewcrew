@@ -65,11 +65,13 @@ public class CookieService {
         }
 
     }
-    public void responseCookie( HttpServletResponse response, User user, ResponseTokenDto token){
+    public void responseCookie( HttpServletResponse response, ResponseTokenDto token){
         Cookie accessCookie =generateXAuthCookie("X-AUTH-TOKEN", token.getAccessToken(), token.getAccessTokenExpireDate());
         Cookie refreshCookie =generateCookie("refreshToken", token.getRefreshToken(), token.getRefreshTokenExpireDate());
-        System.out.println("refreshCookie = " + refreshCookie);
-        System.out.println("accessCookie = " + accessCookie);
+        System.out.println("11여기 생성된 refreshToken= " + token.getRefreshToken());
+        System.out.println("11여기 생성된 accessToken= " + token.getAccessToken());
+        System.out.println("22여기 생성된 refreshCookie = " + refreshCookie);
+        System.out.println("22여기 생성된 accessCookie = " + accessCookie);
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
     }

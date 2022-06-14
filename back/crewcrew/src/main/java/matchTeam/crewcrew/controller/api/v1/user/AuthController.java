@@ -259,8 +259,7 @@ public class AuthController {
             @RequestParam(required = false) Integer Default,HttpServletResponse response) {
         System.out.println("-----file----------"+file);
             ResponseTokenDto responseTokenDto= userService.register(email,password,name,nickName,file,  categoryId,message,Default);
-            User user = userService.findByEmailAndProvider(email,"local").orElseThrow(()->new CrewException(ErrorCode.EXCEPTION));
-            cookieService.responseCookie(response,user,responseTokenDto);
+            cookieService.responseCookie(response,responseTokenDto);
         return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, null);
     }
 

@@ -115,9 +115,8 @@ public class OauthController {
             throw new CSocialAgreementException();
         }
         if (user.isPresent()) {
-            User user1 = user.get();
             ResponseTokenDto token = jwtProvider.createResponseToken(user.get().getUid(), user.get().getRoles(), true);
-            cookieService.responseCookie(response,user1,token);
+            cookieService.responseCookie(response,token);
             return ResponseHandler.generateResponse("카카오 로그인 성공", HttpStatus.OK, null);
 
 
@@ -125,7 +124,7 @@ public class OauthController {
             User new_user = userService.kakaoRegister(kakaoProfile);
 
             ResponseTokenDto token = jwtProvider.createResponseToken(new_user.getUid(), new_user.getRoles(), true);
-            cookieService.responseCookie(response,new_user,token);
+            cookieService.responseCookie(response,token);
 
 
             return ResponseHandler.generateResponse("카카오 회원가입 성공", HttpStatus.OK, null);
@@ -164,15 +163,15 @@ public class OauthController {
 //        return ResponseHandler.generateResponse("Naver에서 발행한 AccessToken 발급 성공", HttpStatus.OK, new OauthRedirectDto("naver", false, naverResult.getAccess_token()));
 //        Optional<User> user = userService.findByEmailAndProvider(naverProfile.getResponse().getEmail(), "naver");
         if (user.isPresent()) {
-            TokenDto token = jwtProvider.createTokenDto(user.get().getUid(), user.get().getRoles(), false);
-            SocialLoginAccessTokenDto accessTokenDto = new SocialLoginAccessTokenDto(token.getAccessToken(), false);
+            ResponseTokenDto token = jwtProvider.createResponseToken(user.get().getUid(), user.get().getRoles(), true);
+            cookieService.responseCookie(response,token);
 
-            return ResponseHandler.generateResponse("네이버 로그인 성공", HttpStatus.OK, accessTokenDto);
+            return ResponseHandler.generateResponse("네이버 로그인 성공", HttpStatus.OK, null);
         } else {
             User new_user = userService.naverRegister(naverProfile);
 
             ResponseTokenDto token = jwtProvider.createResponseToken(new_user.getUid(), new_user.getRoles(), true);
-            cookieService.responseCookie(response,new_user,token);
+            cookieService.responseCookie(response,token);
 
             return ResponseHandler.generateResponse("네이버 회원가입 성공", HttpStatus.OK, null);
 
