@@ -26,20 +26,16 @@ function Kakao() {
           ignoreQueryPrefix: true,
         });
 
-        const params = new URLSearchParams();
-        params.append('code', code);
-
         const context = {
-          params,
+          code,
         };
 
-        const { data } = await axios.get('/oauth/kakao/redirect', context, {
+        const { data } = await axios.post('/oauth/kakao/redirect', context, {
           withCredentials: true,
         });
 
         switch (data.status) {
           case 200:
-            console.log(data);
             mutate('/auth/token');
             navigate('/', { replace: true });
             break;
