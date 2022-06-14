@@ -72,6 +72,8 @@ public class CookieService {
         System.out.println("11여기 생성된 accessToken= " + token.getAccessToken());
         System.out.println("22여기 생성된 refreshCookie = " + refreshCookie);
         System.out.println("22여기 생성된 accessCookie = " + accessCookie);
+        System.out.println("333 지속시간 refreshToken"+token.getRefreshTokenExpireDate());
+        System.out.println("333 지속시간 accessToken"+token.getAccessTokenExpireDate());
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
     }
