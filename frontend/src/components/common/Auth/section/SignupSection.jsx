@@ -66,7 +66,7 @@ function SignupSection({ IsClick, HandleClick }) {
   const HandleNameChange = useCallback((e) => {
     const value = emojiSlice(e.target.value);
     setName(value);
-    if (value.length >= 2) {
+    if (value.length >= 2 && value.length < 10) {
       setNameValid(false);
     } else {
       setNameValid(true);
@@ -319,7 +319,7 @@ function SignupSection({ IsClick, HandleClick }) {
   }, [StepActive]);
 
   useEffect(() => {
-    if (name.length >= 2 && !nameValid) {
+    if (name.length >= 2 && !nameValid && name.length < 10) {
       CheckProgressF(0);
     } else {
       NotCheckProgressF(0);

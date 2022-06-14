@@ -130,7 +130,6 @@ function HeaderContent2({ state }) {
         inputDate.getMonth() === currentDate.getMonth() &&
         inputDate.getDate() < tomorrow.getDate()
       ) {
-        console.log(inputDate.getDate(), tomorrow.getDate());
         return state.setLastDate(tomorrow);
       }
     }

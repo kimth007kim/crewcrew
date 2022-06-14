@@ -31,7 +31,7 @@ import fetcher from '@/utils/fetcher';
 import useSWR from 'swr';
 import AuthModal from '@/components/common/Auth/AuthModal';
 import useQuery from '@/hooks/useQuery';
-import axios, {toast} from 'axios';
+import axios, { toast } from 'axios';
 
 const categoryIcon = [
   Category1,
@@ -76,30 +76,32 @@ function Main() {
     }
   };
 
- 
-
   const params = new URLSearchParams();
   const context = {
     params,
   };
-  params.append('order', "expired");
+  params.append('order', 'expired');
 
-  const CatList = useCallback( async() => {
-    try{
+  const CatList = useCallback(async () => {
+    try {
       const { data } = await axios.get('/category/list');
       const listData = [];
       data.data.forEach((dataDepth) => {
+<<<<<<< HEAD
         dataDepth.children.forEach(e => {
-          
+
+=======
+        dataDepth.children.forEach((e) => {
+>>>>>>> auth
           listData.push({
-            catParentName : dataDepth.categoryName,
-            ...e
+            catParentName: dataDepth.categoryName,
+            ...e,
           });
         });
       });
-      
-      switch(data.status) {
-        case 200: 
+
+      switch (data.status) {
+        case 200:
           setCatList(listData);
           break;
         case 2001:
@@ -109,17 +111,17 @@ function Main() {
         default:
           break;
       }
-    } catch(error) {
+    } catch (error) {
       toast.error(error);
       console.dir(error);
     }
   }, []);
 
-  const axiosGetNewPost = useCallback( async() => {
-    try{
+  const axiosGetNewPost = useCallback(async () => {
+    try {
       const { data } = await axios.get('/board/list');
-      switch(data.status) {
-        case 200: 
+      switch (data.status) {
+        case 200:
           setNewPost([...data.data.contents]);
           break;
         case 2001:
@@ -129,17 +131,17 @@ function Main() {
         default:
           break;
       }
-    } catch(error) {
+    } catch (error) {
       toast.error(error);
       console.dir(error);
     }
   }, []);
 
-  const axiosGetDeadLinePost = useCallback( async() => {
-    try{
+  const axiosGetDeadLinePost = useCallback(async () => {
+    try {
       const { data } = await axios.get('/board/list', context);
-      switch(data.status) {
-        case 200: 
+      switch (data.status) {
+        case 200:
           setDeadlinePost([...data.data.contents]);
           break;
         case 2001:
@@ -149,18 +151,17 @@ function Main() {
         default:
           break;
       }
-    } catch(error) {
+    } catch (error) {
       toast.error(error);
       console.dir(error);
     }
   }, []);
 
-  useEffect(()=> {
+  useEffect(() => {
     CatList();
     axiosGetNewPost();
     axiosGetDeadLinePost();
   }, []);
-
 
   return (
     <MainMain>
@@ -213,10 +214,10 @@ function Main() {
         <PostWrap>
           <h4>신규 크루원 모집글</h4>
           <p>이번주 새롭게 크루원을 모집하는 모집글을 소개해드려요.</p>
-          <SwiperSection data={newPost} post={'New'}/>
+          <SwiperSection data={newPost} post={'New'} />
           <h4>마감임박! 놓치지 말아요!</h4>
           <p>마감일이 가깝거나 모집인원을 거의 다 모은 크루원 모집글을 소개해드려요.</p>
-          <SwiperSection data={deadlinePost} post={'Deadline'}/>
+          <SwiperSection data={deadlinePost} post={'Deadline'} />
         </PostWrap>
       </MainPost>
       <Footer />
