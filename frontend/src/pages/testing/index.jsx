@@ -42,7 +42,7 @@ function Testing() {
           break;
       }
     } catch (error) {
-      console.log(error);
+      console.dir(error);
     }
   }, []);
 

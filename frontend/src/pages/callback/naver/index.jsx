@@ -26,20 +26,16 @@ function Naver() {
           ignoreQueryPrefix: true,
         });
 
-        const params = new URLSearchParams();
-        params.append('code', code);
-
         const context = {
-          params,
+          code,
         };
 
-        const { data } = await axios.get('/oauth/naver/redirect', context, {
+        const { data } = await axios.post('/oauth/naver/redirect', context, {
           withCredentials: true,
         });
 
         switch (data.status) {
           case 200:
-            console.log(data);
             mutate('/auth/token');
             navigate('/', { replace: true });
             break;

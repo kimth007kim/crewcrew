@@ -214,7 +214,7 @@ function SignupSection3({ IsClick, HandleClick }) {
               expires: afterh,
             });
           }
-          mutate('/auth/token');
+
           break;
         case 400:
         case 1101:
@@ -273,12 +273,13 @@ function SignupSection3({ IsClick, HandleClick }) {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
+            withCredentials: true,
           });
 
           switch (data.status) {
             case 200:
               HandleClick(4);
-              HandleLogin(data.email, password);
+              mutate('/auth/token');
               break;
             case 1004:
             case 1005:
