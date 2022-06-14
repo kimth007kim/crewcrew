@@ -38,7 +38,7 @@ public enum ErrorCode {
 
     //1100~1199 이메일 로그인 대한 예외
 
-    LOGIN_FAILED_BY_EMAIL(1101,"EMAIL NOT EXIST","존재하지 않는 이메일 입니다."),
+    EMAIL_NOT_EXIST(1101,"EMAIL NOT EXIST","존재하지 않는 이메일 입니다."),
     LOGIN_FAILED_BY_PASSWORD(1102,"PASSWORD INCORRECT","비밀번호가 이메일과 일치하지않습니다."),
 
     URL_MALFORMED_EXCEPTION(1200,"URL NOT VALID EXCEPTION","유효하지 않은 이미지 URL입니다."),

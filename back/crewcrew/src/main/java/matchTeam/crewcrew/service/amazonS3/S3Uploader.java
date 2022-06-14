@@ -7,9 +7,8 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import matchTeam.crewcrew.entity.user.User;
-import matchTeam.crewcrew.response.exception.auth.MalformedURLImageException;
-import matchTeam.crewcrew.response.exception.auth.S3FileNotFoundException;
-import matchTeam.crewcrew.response.exception.auth.S3UploadException;
+import matchTeam.crewcrew.response.ErrorCode;
+import matchTeam.crewcrew.response.exception.CrewException;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -61,7 +60,7 @@ public class S3Uploader {
             System.out.println("1 발동");
             if (Default == null || 0 >= Default || Default > 5) {
                 System.out.println("2 ");
-                throw new S3FileNotFoundException();
+                throw new CrewException(ErrorCode.S3_FILE_NOT_FOUND);
             } else {
                 System.out.println("3잘 넘어온 경우");
 //                시작경로 만든 메서드
@@ -88,7 +87,7 @@ public class S3Uploader {
                 String email_url = nameFile(email, provider);
                 filename = upload(file, email_url);
             } catch (IOException e) {
-                throw new S3UploadException();
+                throw new CrewException(ErrorCode.S3_UPLOAD_FAIL);
             }
         return filename;
         }
@@ -163,9 +162,9 @@ public class S3Uploader {
             fos.close();
             return file;
         } catch (FileNotFoundException e) {
-            throw new S3UploadException();
+            throw new CrewException(ErrorCode.S3_UPLOAD_FAIL);
         } catch (IOException e) {
-            throw new S3UploadException();
+            throw new CrewException(ErrorCode.S3_UPLOAD_FAIL);
         }
     }
 
@@ -183,8 +182,8 @@ public class S3Uploader {
         try {
             CopyObjectRequest copyObjectRequest = new CopyObjectRequest(this.bucket, source, this.bucket, destination);
             this.amazonS3Client.copyObject(copyObjectRequest);
-        } catch (S3UploadException s3UploadException) {
-            throw new S3UploadException();
+        } catch (Exception e) {
+            throw new CrewException(ErrorCode.S3_UPLOAD_FAIL);
         }
     }
 
@@ -197,9 +196,9 @@ public class S3Uploader {
             return filename;
 
         } catch (MalformedURLException e) {
-            throw new MalformedURLImageException();
+            throw new CrewException(ErrorCode.URL_MALFORMED_EXCEPTION);
         } catch (IOException e) {
-            throw new S3UploadException();
+            throw new CrewException(ErrorCode.S3_UPLOAD_FAIL);
         }
 
     }

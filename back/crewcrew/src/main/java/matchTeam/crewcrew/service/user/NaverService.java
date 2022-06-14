@@ -5,9 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import matchTeam.crewcrew.dto.social.NaverProfile;
 import matchTeam.crewcrew.dto.social.RetNaverOAuth;
-import matchTeam.crewcrew.response.exception.auth.CCommunicationException;
+import matchTeam.crewcrew.response.ErrorCode;
+import matchTeam.crewcrew.response.exception.CrewException;
 //import matchTeam.crewcrew.response.exception.auth.CKakaoCommunicationException;
-import matchTeam.crewcrew.response.exception.auth.CNaverCommunicationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
@@ -59,13 +59,13 @@ public class NaverService {
 
 
         String requestUri = env.getProperty("social.naver.url.token");
-        if(requestUri==null) throw new CCommunicationException();
+        if(requestUri==null) throw new CrewException(ErrorCode.NAVER_COMMUNICATION_FAILED);
         HttpEntity<MultiValueMap<String,String>> request = new HttpEntity<>(params,headers);
         ResponseEntity<String> response= restTemplate.postForEntity(requestUri,request,String.class);
 
         if(response.getStatusCode()== HttpStatus.OK)
             return gson.fromJson(response.getBody(), RetNaverOAuth.class);
-        throw new CNaverCommunicationException();
+        throw new CrewException(ErrorCode.NAVER_COMMUNICATION_FAILED);
     }
 
     public NaverProfile getNaverProfile(String token){
@@ -77,7 +77,7 @@ public class NaverService {
         MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
 
         String requestUrl = env.getProperty("social.naver.url.profile");
-        if(requestUrl==null) throw new CNaverCommunicationException();
+        if(requestUrl==null) throw new CrewException(ErrorCode.NAVER_COMMUNICATION_FAILED);
 
 
         HttpEntity<MultiValueMap<String,String>> request = new HttpEntity<>(null,headers);
@@ -89,8 +89,8 @@ public class NaverService {
             log.error("header : "+ response.getHeaders());
         }catch(Exception e){
             log.error(e.toString());
-            throw new CNaverCommunicationException();
+            throw new CrewException(ErrorCode.NAVER_COMMUNICATION_FAILED);
         }
-        throw new CNaverCommunicationException();
+        throw new CrewException(ErrorCode.NAVER_COMMUNICATION_FAILED);
     }
 }

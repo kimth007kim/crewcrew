@@ -6,38 +6,25 @@ import matchTeam.crewcrew.config.security.JwtProvider;
 import matchTeam.crewcrew.dto.security.ResponseTokenDto;
 import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.social.*;
-import matchTeam.crewcrew.dto.user.AccessTokenDto;
 import matchTeam.crewcrew.dto.user.UserSignUpRequestDto;
 import matchTeam.crewcrew.dto.user.example.OauthRedirectDto;
 import matchTeam.crewcrew.dto.user.example.OauthUrlResponseDto;
 import matchTeam.crewcrew.entity.user.User;
+import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.ResponseHandler;
+import matchTeam.crewcrew.response.exception.CrewException;
 import matchTeam.crewcrew.response.exception.auth.CSocialAgreementException;
-import matchTeam.crewcrew.response.exception.auth.CUserNotFoundException;
-import matchTeam.crewcrew.response.exception.auth.KakaoUserNotExistException;
-import matchTeam.crewcrew.response.exception.auth.NaverUserNotExistException;
 import matchTeam.crewcrew.service.amazonS3.S3Uploader;
 import matchTeam.crewcrew.service.user.*;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.Optional;
 
 @Api(tags = " 3. Oauth")
@@ -121,7 +108,7 @@ public class OauthController {
                                                 @RequestParam String code, HttpServletResponse response) {
         RetKakaoOAuth kakaoResult = kakaoService.getKakaoTokenInfo(code);
         KakaoProfile kakaoProfile = kakaoService.getKakaoProfile(kakaoResult.getAccess_token());
-        if (kakaoProfile == null) throw new KakaoUserNotExistException();
+        if (kakaoProfile == null) throw new CrewException(ErrorCode.KAKAO_NOT_EXIST);
         Optional<User> user = userService.findByEmailAndProvider(kakaoProfile.getKakao_account().getEmail(), "kakao");
 //        if (user.isPresent()) {
 //            return ResponseHandler.generateResponse("Kakao에서 발행한 AccessToken 발급 성공", HttpStatus.OK, new OauthRedirectDto("kakao", true, kakaoResult.getAccess_token()));
@@ -184,7 +171,7 @@ public class OauthController {
                                                 @RequestParam String code) {
         RetNaverOAuth naverResult = naverService.getNaverTokenInfo(code);
         NaverProfile naverProfile = naverService.getNaverProfile(naverResult.getAccess_token());
-        if (naverProfile == null) throw new NaverUserNotExistException();
+        if (naverProfile == null) throw new CrewException(ErrorCode.NAVER_NOT_EXIST);
         Optional<User> user = userService.findByEmailAndProvider(naverProfile.getResponse().getEmail(), "naver");
 //        if (user.isPresent()) {
 //            return ResponseHandler.generateResponse("Naver에서 발행한 AccessToken 발급 성공", HttpStatus.OK, new OauthRedirectDto("naver", true, naverResult.getAccess_token()));
@@ -244,7 +231,7 @@ public class OauthController {
             @ApiParam(value = "카카오에서 받은 Access 토큰", required = true)
             @RequestParam String accessToken) {
         KakaoProfile kakaoProfile = kakaoService.getKakaoProfile(accessToken);
-        if (kakaoProfile == null) throw new KakaoUserNotExistException();
+        if (kakaoProfile == null) throw new CrewException(ErrorCode.KAKAO_NOT_EXIST);
 
         return ResponseHandler.generateResponse("카카오 에서 받은 AcessToken 확인 성공", HttpStatus.OK, kakaoProfile);
     }
@@ -272,7 +259,7 @@ public class OauthController {
             @ApiParam(value = "네이버에서 받은 Access 토큰", required = true)
             @RequestParam String accessToken) {
         NaverProfile naverProfile = naverService.getNaverProfile(accessToken);
-        if (naverProfile == null) throw new CUserNotFoundException();
+        if (naverProfile == null) throw new CrewException(ErrorCode.PK_USER_NOT_FOUND);
 
         return ResponseHandler.generateResponse("네이버 에서 받은 AcessToken 확인 성공", HttpStatus.OK, naverProfile);
     }
@@ -308,7 +295,7 @@ public class OauthController {
             @ApiParam(value = "소셜 네이버 회원가입 dto", required = true)
             @RequestBody NaverLoginRequestDto naverLoginRequestDto) throws IOException {
         NaverProfile naverProfile = naverService.getNaverProfile(naverLoginRequestDto.getAccessToken());
-        if (naverProfile == null) throw new NaverUserNotExistException();
+        if (naverProfile == null) throw new CrewException(ErrorCode.NAVER_NOT_EXIST);
 
 
         Optional<User> user = userService.findByEmailAndProvider(naverProfile.getResponse().getEmail(), "naver");
@@ -369,7 +356,7 @@ public class OauthController {
             @ApiParam(value = "1. 카카오에서 받은 AccessToken을 매개변수로 삼아서 , \n 2-1. db에 회원가입이 되어있지 않으면 회원가입을하고 로그인을 해서 AccessToken을 반환합니다. \n 2-2. db에 있는 회원이면 바로 로그인을 해서 AccessToken을 반환합니다.", required = true)
             @RequestBody KakaoLoginRequestDto kakaoLoginRequestDto) throws IOException {
         KakaoProfile kakaoProfile = kakaoService.getKakaoProfile(kakaoLoginRequestDto.getAccessToken());
-        if (kakaoProfile == null) throw new CUserNotFoundException();
+        if (kakaoProfile == null) throw new CrewException(ErrorCode.KAKAO_NOT_EXIST);
         if (kakaoProfile.getKakao_account().getEmail() == null) {
             kakaoService.kakaoUnlink(kakaoLoginRequestDto.getAccessToken());
             throw new CSocialAgreementException();

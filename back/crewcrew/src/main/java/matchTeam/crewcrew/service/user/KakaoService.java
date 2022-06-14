@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import matchTeam.crewcrew.dto.social.KakaoProfile;
 import matchTeam.crewcrew.dto.social.RetKakaoOAuth;
-import matchTeam.crewcrew.response.exception.auth.CCommunicationException;
-import matchTeam.crewcrew.response.exception.auth.CKakaoCommunicationException;
+import matchTeam.crewcrew.response.ErrorCode;
+import matchTeam.crewcrew.response.exception.CrewException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
@@ -14,13 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -58,9 +51,9 @@ public class KakaoService {
             log.error("header : "+ response.getHeaders());
         }catch(Exception e){
             log.error(e.toString());
-            throw new CKakaoCommunicationException();
+            throw new CrewException(ErrorCode.KAKAO_COMMUNICATION_FAILED);
         }
-        throw new CKakaoCommunicationException();
+        throw new CrewException(ErrorCode.KAKAO_COMMUNICATION_FAILED);
     }
 
     public RetKakaoOAuth getKakaoTokenInfo(String code){
@@ -74,18 +67,18 @@ public class KakaoService {
         params.add("code",code);
 
         String requestUri = env.getProperty("social.kakao.url.token");
-        if(requestUri==null) throw new CKakaoCommunicationException();
+        if(requestUri==null) throw new CrewException(ErrorCode.KAKAO_COMMUNICATION_FAILED);
         HttpEntity<MultiValueMap<String,String>> request = new HttpEntity<>(params,headers);
         ResponseEntity<String> response= restTemplate.postForEntity(requestUri,request,String.class);
 
         if(response.getStatusCode()== HttpStatus.OK)
             return gson.fromJson(response.getBody(), RetKakaoOAuth.class);
-        throw new CKakaoCommunicationException();
+        throw new CrewException(ErrorCode.KAKAO_COMMUNICATION_FAILED);
     }
 
     public void kakaoUnlink(String accessToken) {
         String unlinkUrl =env.getProperty("social.kakao.url.unlink");
-        if(unlinkUrl==null) throw new CKakaoCommunicationException();
+        if(unlinkUrl==null) throw new CrewException(ErrorCode.KAKAO_COMMUNICATION_FAILED);
 
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -98,7 +91,7 @@ public class KakaoService {
             log.info("unlink "+ response.getBody());
             return;
         }
-        throw new CKakaoCommunicationException();
+        throw new CrewException(ErrorCode.KAKAO_COMMUNICATION_FAILED);
     }
 
 }

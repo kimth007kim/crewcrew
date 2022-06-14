@@ -2,20 +2,16 @@ package matchTeam.crewcrew.service.user;
 
 import lombok.AllArgsConstructor;
 import matchTeam.crewcrew.config.RedisUtil;
+import matchTeam.crewcrew.response.ErrorCode;
+import matchTeam.crewcrew.response.exception.CrewException;
 import matchTeam.crewcrew.response.exception.auth.CEmailCodeNotMatchException;
-import matchTeam.crewcrew.response.exception.auth.CNotVerifiedEmailException;
 import matchTeam.crewcrew.service.mail.TotalEmailService;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.Random;
 
@@ -141,7 +137,7 @@ public class EmailService {
         String check=redisUtil.getData(email);
         System.out.println("+_+_+_++_+_+++_+_+_+_+_+_++_+_+_++_+_+++_+_+_+_+_+_++_+_+_++_+_+++_+_+_+_+_+_+"+check);
         if (check == null){
-            throw new CNotVerifiedEmailException();
+            throw new CrewException(ErrorCode.EMAIL_CODE_NOT_VERIFIED);
         }
     }
 

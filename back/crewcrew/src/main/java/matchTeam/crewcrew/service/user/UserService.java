@@ -72,7 +72,7 @@ public class UserService {
 
     public Long signup(SignUpLocalRequestDto localSignUpRequestDto) {
         if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(), "local").isPresent())
-            throw new EmailSignUpFailedCException();
+            throw new CrewException(ErrorCode.USER_ALREADY_EXIST);
 //            throw new CrewException(ErrorCode.EMAIL_CODE_NOT_MATCH);
         return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();
     }
@@ -83,7 +83,7 @@ public class UserService {
         System.out.println("email: " + email + "password: " + password + "name: " + name + "nickname" + "file: " + file + "categoryId" + categoryId+" Default "+Default);
 
         if (findByEmailAndProvider(email, "local").isPresent()) {
-            throw new CUserAlreadyExistException();
+            throw new CrewException(ErrorCode.USER_ALREADY_EXIST);
         }
 
 
@@ -112,13 +112,13 @@ public class UserService {
 
     public ResponseTokenDto login(UserLoginRequestDto userLoginRequestDto) {
         //회원 정보 존재하는지 확인
-        User user = userRepository.findByEmailAndProvider(userLoginRequestDto.getEmail(), "local").orElseThrow(()-> new CrewException(ErrorCode.LOGIN_FAILED_BY_EMAIL));
+        User user = userRepository.findByEmailAndProvider(userLoginRequestDto.getEmail(), "local").orElseThrow(()-> new CrewException(ErrorCode.EMAIL_NOT_EXIST));
 //                orElseThrow(LoginFailedByEmailNotExistException::new);
         // 회원 패스워드 일치하는지 확인
         System.out.println(userLoginRequestDto.getPassword() + "  " + user.getPassword());
 
         if (!passwordEncoder.matches(userLoginRequestDto.getPassword(), user.getPassword()))
-            throw new LoginFailedByPasswordException();
+            throw new CrewException(ErrorCode.LOGIN_FAILED_BY_PASSWORD);
 
         log.info(userLoginRequestDto.getEmail(), userLoginRequestDto.getPassword(), userLoginRequestDto.isMaintain());
         // AccessToken ,Refresh Token 발급
@@ -178,7 +178,7 @@ public class UserService {
 
         if (!stringCheck(password)) {
             if (blankCheck(password)) {
-                throw new PasswordBlankException();
+                throw new CrewException(ErrorCode.PASSWORD_BLANK_EXCEPTION);
             }
             validationPasswd(password);
 //            changePassword(user, password);
@@ -254,7 +254,7 @@ public class UserService {
         Optional<User> user = userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider());
         System.out.println(user);
         if (userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider())
-                .isPresent()) throw new CKakaoUserAlreadyExistException();
+                .isPresent()) throw new CrewException(ErrorCode.KAKAKO_USER_ALREADY_EXIST);
         return userRepository.save(userSignUpRequestDto.toEntity("kakao")).getUid();
     }
 
@@ -262,7 +262,7 @@ public class UserService {
         Optional<User> user = userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider());
         System.out.println(user);
         if (userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider())
-                .isPresent()) throw new CUserAlreadyExistException();
+                .isPresent()) throw new CrewException(ErrorCode.USER_ALREADY_EXIST);
         return userRepository.save(userSignUpRequestDto.toEntity("naver")).getUid();
     }
 
@@ -280,13 +280,13 @@ public class UserService {
 
 
         if (m_blank.find()) {
-            throw new PasswordBlankException();
+            throw new CrewException(ErrorCode.PASSWORD_BLANK_EXCEPTION);
         }
         if (emoji_p.find()) {
-            throw new PasswordEmojiException();
+            throw new CrewException(ErrorCode.PASSWORD_EMOJI_EXCEPTION);
         }
         if (!m.matches()) {
-            throw new PasswordInvalidException();
+            throw new CrewException(ErrorCode.PASSWORD_INVALID_EXCEPTION);
         }
     }
 
@@ -311,10 +311,10 @@ public class UserService {
         if (nickName.length() <= 0) {
             System.out.println(nickName.length() + "에러 짧아서 발생");
 
-            throw new NickNameInvalidException();
+            throw new CrewException(ErrorCode.NICKNAME_INVALID_EXCEPTION);
         } else if (nickName.length() > 15) {
             System.out.println(nickName.length() + "에러 길어서 발생");
-            throw new NickNameInvalidException();
+            throw new CrewException(ErrorCode.NICKNAME_INVALID_EXCEPTION);
         }
     }
 
@@ -323,10 +323,10 @@ public class UserService {
         if (name.length() <= 0) {
             System.out.println(name.length() + "에러 짧아서 발생");
 
-            throw new NameInvalidException();
+            throw new CrewException(ErrorCode.USER_ALREADY_EXIST);
         } else if (name.length() > 10) {
             System.out.println(name.length() + "에러 길어서 발생");
-            throw new NameInvalidException();
+            throw new CrewException(ErrorCode.USER_ALREADY_EXIST);
         }
     }
 
@@ -335,10 +335,10 @@ public class UserService {
         if (message.length() <= 0) {
             System.out.println(message.length() + "에러 짧아서 발생");
 
-            throw new MessageInvalidException();
+            throw new CrewException(ErrorCode.MESSAGE_INVALID_EXCEPTION);
         } else if (message.length() > 25) {
             System.out.println(message.length() + "에러 길어서 발생");
-            throw new MessageInvalidException();
+            throw new CrewException(ErrorCode.MESSAGE_INVALID_EXCEPTION);
         }
     }
 
@@ -397,7 +397,7 @@ public class UserService {
 
     public void validateDuplicateByNickname(String nickname) {
         if (!userRepository.findByNickname(nickname).isEmpty()) {
-            throw new NickNameAlreadyExistException();
+            throw new CrewException(ErrorCode.USERNAME_ALREADY_EXIST);
         }
     }
 
@@ -419,7 +419,7 @@ public class UserService {
         System.out.println("Claims=  " + c + "  uid= " + uid);
 
         if (userRepository.findById(Long.valueOf(uid)).isEmpty()) {
-            throw new UidNotExistException();
+            throw new CrewException(ErrorCode.UID_NOT_EXIST);
         }
         User user = userRepository.findByUid(Long.valueOf(uid));
 
