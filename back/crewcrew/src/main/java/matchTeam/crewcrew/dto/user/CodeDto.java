@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class CodeDto {
-    String Code;
+    private String code;
 }
