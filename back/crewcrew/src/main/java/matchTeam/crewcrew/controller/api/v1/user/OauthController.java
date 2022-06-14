@@ -6,6 +6,7 @@ import matchTeam.crewcrew.config.security.JwtProvider;
 import matchTeam.crewcrew.dto.security.ResponseTokenDto;
 import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.social.*;
+import matchTeam.crewcrew.dto.user.CodeDto;
 import matchTeam.crewcrew.dto.user.UserSignUpRequestDto;
 import matchTeam.crewcrew.dto.user.example.OauthRedirectDto;
 import matchTeam.crewcrew.dto.user.example.OauthUrlResponseDto;
@@ -153,9 +154,9 @@ public class OauthController {
     })
 
     public ResponseEntity<Object> redirectNaver(@ApiParam(value = "Authorization Code", required = true)
-                                                @RequestBody String code, HttpServletResponse response) {
-        System.out.println("보낸 RequestBody 코드 = "+code);
-        RetNaverOAuth naverResult = naverService.getNaverTokenInfo(code);
+                                                @RequestBody CodeDto code, HttpServletResponse response) {
+        System.out.println("보낸 RequestBody 코드 = "+code.getCode());
+        RetNaverOAuth naverResult = naverService.getNaverTokenInfo(code.getCode());
         NaverProfile naverProfile = naverService.getNaverProfile(naverResult.getAccess_token());
         if (naverProfile == null) throw new CrewException(ErrorCode.NAVER_NOT_EXIST);
         Optional<User> user = userService.findByEmailAndProvider(naverProfile.getResponse().getEmail(), "naver");
