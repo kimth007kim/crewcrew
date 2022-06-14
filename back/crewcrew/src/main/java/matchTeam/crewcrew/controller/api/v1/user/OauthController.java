@@ -110,11 +110,6 @@ public class OauthController {
         KakaoProfile kakaoProfile = kakaoService.getKakaoProfile(kakaoResult.getAccess_token());
         if (kakaoProfile == null) throw new CrewException(ErrorCode.KAKAO_NOT_EXIST);
         Optional<User> user = userService.findByEmailAndProvider(kakaoProfile.getKakao_account().getEmail(), "kakao");
-//        if (user.isPresent()) {
-//            return ResponseHandler.generateResponse("Kakao에서 발행한 AccessToken 발급 성공", HttpStatus.OK, new OauthRedirectDto("kakao", true, kakaoResult.getAccess_token()));
-//        }
-//        return ResponseHandler.generateResponse("Kakao에서 발행한 AccessToken 발급 성공", HttpStatus.OK, new OauthRedirectDto("kakao", false, kakaoResult.getAccess_token()));
-
         if (kakaoProfile.getKakao_account().getEmail() == null) {
             kakaoService.kakaoUnlink(kakaoResult.getAccess_token());
             throw new CSocialAgreementException();
@@ -127,21 +122,11 @@ public class OauthController {
 
 
         } else {
-            String nickName = userService.nickNameGenerator(kakaoProfile.getProperties().getNickname());
-            Long userId = userService.kakaoSignup(UserSignUpRequestDto.builder()
-                    .email(kakaoProfile.getKakao_account().getEmail())
-                    .name(kakaoProfile.getProperties().getNickname())
-                    .nickName(nickName)
-                    .provider("kakao")
-                    .build());
-            User NEW_USER = userService.findByUid(userId);
-            String email_url = s3Uploader.nameFile(kakaoProfile.getKakao_account().getEmail(), "kakao");
-            s3Uploader.urlConvert(email_url, kakaoProfile.getKakao_account().getProfile().getProfile_image_url(), NEW_USER);
+            User new_user = userService.kakaoRegister(kakaoProfile);
 
-//            TokenDto token = jwtProvider.createTokenDto(userId, NEW_USER.getRoles(), false);
+            ResponseTokenDto token = jwtProvider.createResponseToken(new_user.getUid(), new_user.getRoles(), true);
+            cookieService.responseCookie(response,new_user,token);
 
-            ResponseTokenDto token = jwtProvider.createResponseToken(userId, NEW_USER.getRoles(), true);
-            cookieService.responseCookie(response,NEW_USER,token);
 
             return ResponseHandler.generateResponse("카카오 회원가입 성공", HttpStatus.OK, null);
 
@@ -168,7 +153,7 @@ public class OauthController {
     })
 
     public ResponseEntity<Object> redirectNaver(@ApiParam(value = "Authorization Code", required = true)
-                                                @RequestParam String code) {
+                                                @RequestParam String code,HttpServletResponse response) {
         RetNaverOAuth naverResult = naverService.getNaverTokenInfo(code);
         NaverProfile naverProfile = naverService.getNaverProfile(naverResult.getAccess_token());
         if (naverProfile == null) throw new CrewException(ErrorCode.NAVER_NOT_EXIST);
@@ -184,22 +169,12 @@ public class OauthController {
 
             return ResponseHandler.generateResponse("네이버 로그인 성공", HttpStatus.OK, accessTokenDto);
         } else {
-            String nickName = userService.nickNameGenerator(naverProfile.getResponse().getName());
-            Long userId = userService.naverSignup(UserSignUpRequestDto.builder()
-                    .email(naverProfile.getResponse().getEmail())
-                    .name(naverProfile.getResponse().getName())
-                    .nickName(nickName)
-                    .provider("naver")
-                    .build());
-            User NEW_USER = userService.findByUid(userId);
-            String email_url = s3Uploader.nameFile(naverProfile.getResponse().getEmail(), "naver");
-            userService.urlToImage(email_url, naverProfile.getResponse().getProfile_image(), NEW_USER);
+            User new_user = userService.naverRegister(naverProfile);
 
+            ResponseTokenDto token = jwtProvider.createResponseToken(new_user.getUid(), new_user.getRoles(), true);
+            cookieService.responseCookie(response,new_user,token);
 
-            TokenDto token = jwtProvider.createTokenDto(userId, NEW_USER.getRoles(), false);
-            SocialLoginAccessTokenDto accessTokenDto = new SocialLoginAccessTokenDto(token.getAccessToken(), true);
-
-            return ResponseHandler.generateResponse("네이버 회원가입 성공", HttpStatus.OK, accessTokenDto);
+            return ResponseHandler.generateResponse("네이버 회원가입 성공", HttpStatus.OK, null);
 
         }
 

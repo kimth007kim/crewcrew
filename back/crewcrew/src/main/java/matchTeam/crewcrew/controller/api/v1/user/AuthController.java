@@ -256,11 +256,12 @@ public class AuthController {
             @ApiParam(value = "한줄 메세지")
             @RequestParam(required = false) String message,
             @ApiParam(value = "디폴트 이미지 선택")
-            @RequestParam(required = false) Integer Default) {
+            @RequestParam(required = false) Integer Default,HttpServletResponse response) {
         System.out.println("-----file----------"+file);
-            UserResponseDto userResponseDto= userService.register(email,password,name,nickName,file,  categoryId,message,Default);
-
-        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, userResponseDto);
+            ResponseTokenDto responseTokenDto= userService.register(email,password,name,nickName,file,  categoryId,message,Default);
+            User user = userService.findByEmailAndProvider(email,"local").orElseThrow(()->new CrewException(ErrorCode.EXCEPTION));
+            cookieService.responseCookie(response,user,responseTokenDto);
+        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, null);
     }
 
     @GetMapping("/user/nickname/{nickName}")
