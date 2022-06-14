@@ -319,10 +319,10 @@ public class UserService {
         if (name.length() <= 0) {
             System.out.println(name.length() + "에러 짧아서 발생");
 
-            throw new CrewException(ErrorCode.USER_ALREADY_EXIST);
+            throw new CrewException(ErrorCode.NAME_INVALID_EXCEPTION);
         } else if (name.length() > 10) {
             System.out.println(name.length() + "에러 길어서 발생");
-            throw new CrewException(ErrorCode.USER_ALREADY_EXIST);
+            throw new CrewException(ErrorCode.NAME_INVALID_EXCEPTION);
         }
     }
 

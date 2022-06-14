@@ -279,8 +279,25 @@ public class AuthController {
     })
     public ResponseEntity<Object> checkNickName(@PathVariable String nickName) {
         userService.validateDuplicateByNickname(nickName);
-        userService.validateDuplicateByNickname(nickName);
         return ResponseHandler.generateResponse("닉네임 중복 확인 성공", HttpStatus.OK, true);
+    }
+    @GetMapping("/user/name/{name}")
+    @ApiOperation(value = "이름 유효성 체크", notes = "이름 유효성 체크")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "닉네임 중복 확인 성공"
+                    , response = boolean.class
+            )
+            , @ApiResponse(
+            code = 1012
+            , message = "이름이 0자이거나 10자를 초과하였습니다."
+    )
+
+    })
+    public ResponseEntity<Object> checkName(@PathVariable String name) {
+        userService.validationName(name);
+        return ResponseHandler.generateResponse("이름 중복 확인 성공", HttpStatus.OK, true);
     }
 
 
