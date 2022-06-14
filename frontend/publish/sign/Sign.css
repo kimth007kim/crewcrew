@@ -428,7 +428,7 @@ ul.InputList > li {
 }
 
 .InputFull:hover {
-  border: 1px solid #707070;
+  border: 1px solid #00b7ff;
 }
 
 .InputFull.On {
@@ -1816,7 +1816,7 @@ ul.ChooseListDetail {
 }
 
 ul.ChooseListDetail:hover {
-  border: 1px solid #707070;
+  border: 1px solid #00b7ff;
 }
 
 ul.ChooseListDetail.On {
@@ -2350,7 +2350,7 @@ ul.MailList {
 }
 
 ul.MailList:hover {
-  border: 1px solid #707070;
+  border: 1px solid #00b7ff;
 }
 
 ul.MailList.On {
