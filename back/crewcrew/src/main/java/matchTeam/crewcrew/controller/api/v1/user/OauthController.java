@@ -106,7 +106,7 @@ public class OauthController {
     )
     })
     public ResponseEntity<Object> redirectKakao(@ApiParam(value = "Authorization Code", required = true)
-                                                @RequestParam String code, HttpServletResponse response) {
+                                                @RequestBody String code, HttpServletResponse response) {
         RetKakaoOAuth kakaoResult = kakaoService.getKakaoTokenInfo(code);
         KakaoProfile kakaoProfile = kakaoService.getKakaoProfile(kakaoResult.getAccess_token());
         if (kakaoProfile == null) throw new CrewException(ErrorCode.KAKAO_NOT_EXIST);
@@ -153,7 +153,7 @@ public class OauthController {
     })
 
     public ResponseEntity<Object> redirectNaver(@ApiParam(value = "Authorization Code", required = true)
-                                                @RequestParam String code, HttpServletResponse response) {
+                                                @RequestBody String code, HttpServletResponse response) {
         RetNaverOAuth naverResult = naverService.getNaverTokenInfo(code);
         NaverProfile naverProfile = naverService.getNaverProfile(naverResult.getAccess_token());
         if (naverProfile == null) throw new CrewException(ErrorCode.NAVER_NOT_EXIST);
