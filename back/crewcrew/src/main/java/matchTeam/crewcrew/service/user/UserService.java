@@ -483,8 +483,14 @@ public class UserService {
                 .nickName(nickName)
                 .provider("naver")
                 .build());
-        System.out.println("==네이버에서 보낸 프로필 이미지=="+naverProfile.getResponse().getProfile_image());
         User user = findByUid(userId);
+//        https://ssl.pstatic.net/static/pwe/address/img_profile.png
+
+
+        System.out.println("==네이버에서 보낸 프로필 이미지=="+naverProfile.getResponse().getProfile_image());
+        System.out.println("https://ssl.pstatic.net/static/pwe/address/img_profile.png");
+        System.out.println(naverProfile.getResponse().getProfile_image().equals("https://ssl.pstatic.net/static/pwe/address/img_profile.png"));
+
         if (naverProfile.getResponse().getProfile_image().equals("https://ssl.pstatic.net/static/pwe/address/img_profile.png")){
             String file =s3Uploader.setDefaultImage(user.getEmail(),user.getProvider());
             setProfileImage(user,file);
@@ -498,6 +504,5 @@ public class UserService {
         setRandomMessage(user);
         return user;
     }
-
 
 }
