@@ -30,7 +30,6 @@ import useModal from '@/hooks/useModal';
 import fetcher from '@/utils/fetcher';
 import useSWR from 'swr';
 import AuthModal from '@/components/common/Auth/AuthModal';
-import useQuery from '@/hooks/useQuery';
 import axios, { toast } from 'axios';
 
 const categoryIcon = [
@@ -87,12 +86,7 @@ function Main() {
       const { data } = await axios.get('/category/list');
       const listData = [];
       data.data.forEach((dataDepth) => {
-<<<<<<< HEAD
-        dataDepth.children.forEach(e => {
-
-=======
         dataDepth.children.forEach((e) => {
->>>>>>> auth
           listData.push({
             catParentName: dataDepth.categoryName,
             ...e,

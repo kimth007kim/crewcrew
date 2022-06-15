@@ -7,7 +7,7 @@ import useSWR from 'swr';
 import fetcher from '../../../../utils/fetcher';
 import InfoInputList from '../InfoInputList';
 
-function MyInfoInput({ open }) {
+function MyInfoInput({ open, closeFunc }) {
   const cookies = new Cookies();
   const {
     data: myData,
@@ -49,6 +49,7 @@ function MyInfoInput({ open }) {
     setPwConfirmValid(false);
     setPwConfirmValidMsg('');
     setPasswordSetting(true);
+    closeFunc();
 
     setBtnActive(false);
   }, []);
@@ -221,7 +222,11 @@ const ButtonSave = styled('button')`
   @media screen and (max-width: 820px) {
     width: 100%;
     :hover {
-      background-color: #00b7ff !important;
+      background-color: #00b7ff;
+    }
+
+    :disabled {
+      background-color: #b0b0b0;
     }
   }
 `;

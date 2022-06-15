@@ -5,6 +5,8 @@ import MypageSubTop from '@/components/mypage/MypageSubTop';
 import styled from 'styled-components';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
+import RequestCard from '@/components/mypage/Card/RequestCard';
+import Button from '@/components/common/Button';
 
 function Request() {
   const cookies = new Cookies();
@@ -32,14 +34,7 @@ function Request() {
   }, []);
 
   useEffect(() => {
-    const apiCollect = async () => {
-      try {
-        await apiApplication();
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    apiCollect();
+    apiApplication();
   }, []);
 
   return (
@@ -50,14 +45,47 @@ function Request() {
         studyCnt={crewRequest ? crewRequest.applyToStudyCount : 0}
         hobbyCnt={crewRequest ? crewRequest.applyToHobbyCount : 0}
       ></MypageMainSubTop>
-      <Wrap>
+      <Wrap className="study">
         <SectionWrap>
           <h3>스터디 크루</h3>
           <CardWrapper>
             <ul>
-              <li></li>
+              <li>
+                <RequestCard></RequestCard>
+              </li>
+              <li>
+                <RequestCard></RequestCard>
+              </li>
+              <li>
+                <RequestCard></RequestCard>
+              </li>
             </ul>
+            <PaginationWrapper></PaginationWrapper>
           </CardWrapper>
+        </SectionWrap>
+      </Wrap>
+      <Wrap className="hobby">
+        <SectionWrap>
+          <h3>취미 크루</h3>
+          <NoContent>
+            <p>
+              <em>크루에 참여요청한 내역이 없습니다.</em>
+              <br></br>
+              크루에 참여하셔서 활동 이력을 남겨보세요!
+            </p>
+            <Button
+              widthSize={100}
+              heightSize={50}
+              paddings={0}
+              fontSize={15}
+              lineHeight={26}
+              borderRadius={10}
+              size={'regular'}
+              color={'lightBlue'}
+            >
+              크루참여
+            </Button>
+          </NoContent>
         </SectionWrap>
       </Wrap>
     </MyLayout>
@@ -65,10 +93,6 @@ function Request() {
 }
 
 export default Request;
-
-const Wrap = styled('section')`
-  background-color: #f6f7fb;
-`;
 
 const SectionWrap = styled('div')`
   max-width: 850px;
@@ -82,8 +106,52 @@ const SectionWrap = styled('div')`
   }
 `;
 
+const Wrap = styled('section')`
+  background-color: #f6f7fb;
+
+  &.study {
+    padding-top: 52px;
+    h3 {
+      color: #0f3fa6;
+    }
+    ${SectionWrap} {
+      border-bottom: 2px solid #d7dae4;
+    }
+  }
+  &.hobby h3 {
+    color: #f7971e;
+  }
+`;
+
 const CardWrapper = styled('div')`
   li {
     padding-bottom: 14px;
   }
+`;
+
+const NoContent = styled('div')`
+  padding: 100px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  p {
+    font-size: 15px;
+    line-height: 22px;
+    text-align: center;
+    font-weight: 400;
+    margin-bottom: 20px;
+
+    em {
+      font-weight: 700;
+    }
+  }
+`;
+
+const PaginationWrapper = styled('div')`
+  display: flex;
+  justify-content: space-between;
+  width: 598px;
+  padding: 48px 0 64px;
+  margin: 0 auto;
 `;

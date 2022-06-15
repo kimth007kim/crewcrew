@@ -9,7 +9,7 @@ import fetcher from '../../../../utils/fetcher';
 import InfoCat from '../InfoCat';
 import InfoProfile from '../InfoProfile';
 
-function MyInfoProfile({ open }) {
+function MyInfoProfile({ open, closeFunc }) {
   const cookies = new Cookies();
   const {
     data: myData,
@@ -62,6 +62,7 @@ function MyInfoProfile({ open }) {
 
     setFile(null);
     setCheckFlag(false);
+    closeFunc();
 
     const studyArr = [];
     const hobbyArr = [];
@@ -297,7 +298,11 @@ const ButtonSave = styled('button')`
   @media screen and (max-width: 820px) {
     width: 100%;
     :hover {
-      background-color: #00b7ff !important;
+      background-color: #00b7ff;
+    }
+
+    :disabled {
+      background-color: #b0b0b0;
     }
   }
 `;

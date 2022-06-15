@@ -113,6 +113,7 @@ const handleSize = ({ size }) => {
             padding: 8px 14px;
             font-size: var(--fs-b2);
             line-height: var(--lh-b2);
+            border-radius: 10px;
         `;
   }
 };
@@ -300,6 +301,7 @@ const ButtonStyled = styled.button`
   ${(props) => props.fontSize && `font-size: ${props.fontSize}px;`}
   ${(props) => props.lineHeight && `line-height: ${props.lineHeight}px;`}
   ${(props) => props.paddings && `padding: ${props.paddings};`}
+  ${(props) => props.borderRadius && `border-radius: ${props.borderRadius}px;`}
 `;
 
 const ButtonSpinner = styled.div`

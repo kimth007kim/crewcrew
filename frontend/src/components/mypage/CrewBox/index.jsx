@@ -152,12 +152,14 @@ function CrewBox() {
           total={crewRecruit ? crewRecruit.totalApplyCount : 0}
           count_one={crewRecruit ? crewRecruit.applyToStudyCount : 0}
           count_two={crewRecruit ? crewRecruit.applyToHobbyCount : 0}
+          onClick={() => handleLocate('/mypage/recruit')}
         />
         <BoxCard
           title="내게 도착한 참여요청"
           total={crewArrive ? crewArrive.totalApplyCount : 0}
           count_one={crewArrive ? crewArrive.applyToStudyCount : 0}
           count_two={crewArrive ? crewArrive.applyToHobbyCount : 0}
+          onClick={() => handleLocate('/mypage/arrive')}
         />
         <BoxCard
           title="나의 활동 크루"

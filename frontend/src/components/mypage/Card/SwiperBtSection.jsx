@@ -1,19 +1,18 @@
 /* eslint-disable import/no-unresolved */
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import SlideArrowNext from '@/assets/images/SlideArrowNext.png';
 import SlideArrowPrev from '@/assets/images/SlideArrowPrev.png';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import PostCardSlide from './PostCardSlide';
-import axios from 'axios';
+import SwiperCard from './SwiperCard';
 
 SwiperCore.use([Navigation, Pagination]);
-function SwiperSection({ data, post }) {
+function SwiperBtSection({ data, isSwiperClick }) {
   const [swiper, setSwiper] = useState(null);
   const [mainIndex, setMainIndex] = useState(0);
 
@@ -40,62 +39,31 @@ function SwiperSection({ data, post }) {
     observeParents: true,
     breakpoints: {
       768: {
-        spaceBetween: 30,
+        spaceBetween: 16,
       },
     },
   };
 
   return (
-    <PostSwiperContainer>
-      <PostSwiperWrapper>
-        <Swiper {...swiperParams} ref={setSwiper}>
-          {data.map((data) => (
-            <SwiperSlide key={data.boardId + post}>
-              <PostCardSlide data={data} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-        <ButtonPrev ref={btnPrevRef} />
-        <ButtonNext ref={btnNextRef} />
-      </PostSwiperWrapper>
-    </PostSwiperContainer>
+    <PostSwiperWrapper active={isSwiperClick}>
+      <Swiper {...swiperParams} ref={setSwiper} className="card_swiper">
+        <SwiperSlide>
+          <SwiperCard data={data} />
+        </SwiperSlide>
+        <SwiperSlide>
+          <SwiperCard data={data} />
+        </SwiperSlide>
+        <SwiperSlide>
+          <SwiperCard data={data} />
+        </SwiperSlide>
+      </Swiper>
+      <ButtonPrev ref={btnPrevRef} />
+      <ButtonNext ref={btnNextRef} />
+    </PostSwiperWrapper>
   );
 }
 
-export default SwiperSection;
-const PostSwiperContainer = styled.div`
-  position: relative;
-  margin: 36px 0 110px;
-  @media screen and (max-width: 820px) {
-    margin: 30px 0 70px;
-  }
-`;
-
-const PostSwiperWrapper = styled.div`
-  overflow: hidden;
-
-  .swiper-button-disabled {
-    opacity: 0;
-    cursor: default;
-  }
-
-  .swiper-slide {
-    width: 304px;
-    margin-bottom: 10px;
-  }
-
-  .swiper {
-    box-sizing: content-box;
-    padding-right: 10px;
-  }
-
-  @media screen and (max-width: 820px) {
-    .swiper-slide {
-      width: 226px;
-      margin-bottom: 10px;
-    }
-  }
-`;
+export default SwiperBtSection;
 
 const ButtonPrev = styled.div`
   position: absolute;
@@ -113,6 +81,7 @@ const ButtonPrev = styled.div`
   transition: 0.5s;
   left: -87px;
   background: url(${SlideArrowPrev}) no-repeat 50% 50%;
+
   @media screen and (max-width: 820px) {
     display: none;
   }
@@ -133,8 +102,65 @@ const ButtonNext = styled.div`
   background-size: 10px !important;
   background-color: #fff !important;
   opacity: 1;
+
   transition: 0.5s;
+
   @media screen and (max-width: 820px) {
     display: none;
+  }
+`;
+
+const PostSwiperWrapper = styled.div`
+  margin-bottom: 14px;
+  overflow: hidden;
+  .swiper-button-disabled {
+    opacity: 0;
+    cursor: default;
+  }
+
+  ${(props) =>
+    !props.active &&
+    css`
+      ${ButtonPrev} {
+        opacity: 0;
+        cursor: default;
+      }
+
+      ${ButtonNext} {
+        opacity: 0;
+        cursor: default;
+      }
+    `}
+
+  .swiper-slide {
+    flex-shrink: 0;
+    width: 300px;
+    height: 100%;
+    position: relative;
+    transition-property: transform;
+    transition-property: transform, -webkit-transform;
+  }
+
+  .card_swiper {
+    box-sizing: content-box;
+    padding: 0 16px;
+  }
+
+  .swiper-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    transition-property: transform;
+    transition-property: transform, -webkit-transform;
+    box-sizing: content-box;
+  }
+
+  @media screen and (max-width: 820px) {
+    .swiper-slide {
+      width: 226px;
+      margin-bottom: 10px;
+    }
   }
 `;

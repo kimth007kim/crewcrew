@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import PageArrowNext from '@/assets/images/PageArrowNext.png';
 import { css } from 'styled-components';
@@ -13,20 +13,48 @@ function BoxCard({
   deactive = false,
   onClick,
 }) {
+  const totalRef = useRef(null);
+  const studyRef = useRef(null);
+  const hobbyRef = useRef(null);
+
+  const numberTotal = useCallback((ref, limitNum) => {
+    let num = 0;
+    let timer = setInterval(() => {
+      if (ref && ref.current) {
+        ref.current.innerHTML = `${num}`;
+
+        if (limitNum <= num) {
+          ref.current.innerHTML = `${limitNum}`;
+          clearInterval(timer);
+        }
+      }
+      num += 1;
+      if (limitNum > 10) {
+        num += 10;
+      }
+    }, 20);
+  }, []);
+
+  useEffect(() => {
+    numberTotal(totalRef, total);
+    numberTotal(studyRef, count_one);
+    numberTotal(hobbyRef, count_two);
+  }, [total, count_one, count_two]);
+
   return (
     <Container onClick={onClick}>
       <NumDesc>
-        <span>{total}개</span>
+        <span ref={totalRef}>0</span>개
       </NumDesc>
       <BoxTitle>{title}</BoxTitle>
       <CrewCat deactive={deactive}>
         <li>
           <h4>{small_title1}</h4>
-          <p>{count_one}</p>
+          <p ref={studyRef}>0</p>
         </li>
         <li>
           <h4>{small_title2}</h4>
-          <p>{count_two}</p>
+          <p ref={hobbyRef}>0</p>
         </li>
       </CrewCat>
     </Container>
