@@ -1,7 +1,4 @@
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable prettier/prettier */
-/* eslint-disable indent */
-import React, { useCallback } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
@@ -39,19 +36,11 @@ function MobileNavButton({ icon, title, link = '/', selected }) {
 function NavMobile({ path, openModal }) {
   const { pathname } = useLocation();
   const cookies = new Cookies();
-  const {
-    data: myData,
-    error,
-    mutate,
-  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const [authVisible, openAuth, closeAuth] = useModal();
 
   const [postVisible, openPost, closePost] = useModal();
-
-  const handleAuthModal = useCallback(() => {
-    openAuth();
-  }, []);
 
   const handlePostModal = () => {
     if (myData && myData.data) {
@@ -97,29 +86,34 @@ function NavMobile({ path, openModal }) {
       </MobileGnb>
       <MobileNav>
         <MobileNavUl>
-          <MobileNavButton
-            icon={<HomeIcon selected={path === 'home'} />}
-            title="홈"
-            link="/"
-            selected={path === 'home'}
-          />
-          <MobileNavButton
-            icon={<PartIcon selected={pathname.startsWith('/post')} />}
-            title="크루참여"
-            link="/post"
-            selected={pathname.startsWith('/post')}
-          />
+          <li>
+            <MobileNavButton
+              icon={<HomeIcon selected={path === 'home'} />}
+              title="홈"
+              link="/"
+              selected={path === 'home'}
+            />
+          </li>
+          <li>
+            <MobileNavButton
+              icon={<PartIcon selected={pathname.startsWith('/post')} />}
+              title="크루참여"
+              link="/post"
+              selected={pathname.startsWith('/post')}
+            />
+          </li>
           <MobileNavLi selected={pathname.startsWith('/crew')} onClick={handlePostModal}>
             {<RecruIcon selected={pathname.startsWith('/crew')} />}
             {'팀원모집'}
           </MobileNavLi>
-
-          <MobileNavButton
-            icon={<ChatIcon selected={pathname.startsWith('/chat')} />}
-            title="채팅"
-            link="/"
-            selected={pathname.startsWith('/chat')}
-          />
+          <li>
+            <MobileNavButton
+              icon={<ChatIcon selected={pathname.startsWith('/chat')} />}
+              title="채팅"
+              link="/"
+              selected={pathname.startsWith('/chat')}
+            />
+          </li>
         </MobileNavUl>
       </MobileNav>
       <AuthModal closeModal={closeAuth} visible={authVisible} />

@@ -24,7 +24,6 @@ function PasswordSection({ HandleClick, IsClick }) {
   const [code, setCode] = useState('');
   const [codeValid, setCodeValid] = useState(false);
   const [codeValidMsg, setCodeValidMsg] = useState('코드 전송 후, 입력창에 코드를 입력해주세요');
-  const navigate = useNavigate();
 
   const [SendCode, setSendCode] = useState(false);
   const [CodeActive, setCodeActive] = useState(false);
