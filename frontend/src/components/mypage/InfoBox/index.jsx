@@ -1,8 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import InfoCat from './InfoCat';
-import InfoInputList from './InfoInputList';
-import InfoProfile from './InfoProfile';
 import MyInfoInput from './section/MyInfoInput';
 import MyInfoProfile from './section/MyInfoProfile';
 

@@ -1,7 +1,6 @@
-/* eslint-disable indent */
 import axios from 'axios';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Cookies, useCookies } from 'react-cookie';
+import { Cookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { css, keyframes } from 'styled-components';
@@ -46,13 +45,8 @@ function SignupSection3({ IsClick, HandleClick }) {
     '나를 소개하는 한 줄 메세지를 입력해주세요.(30자 이내)',
   );
 
-  const [cookies, setCookie, removeCookie] = useCookies(['user-token']);
   const myCookies = new Cookies();
-  const {
-    data: myData,
-    error: myError,
-    mutate,
-  } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
+  const { mutate } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
 
   // Recoil State
   const name = useRecoilValue(nameState);
@@ -189,46 +183,6 @@ function SignupSection3({ IsClick, HandleClick }) {
     (data) => hobbyList.filter((el) => el.categoryId === data.categoryId),
     [hobbyList],
   );
-
-  const HandleLogin = useCallback(async (emailParam, passwordParam) => {
-    try {
-      setBtnLoading(true);
-      const context = {
-        email: emailParam,
-        password: passwordParam,
-        maintain: false,
-      };
-
-      const { data } = await axios.post('/auth/login', context, {
-        withCredentials: true,
-      });
-
-      switch (data.status) {
-        case 200:
-          if (process.env.NODE_ENV !== 'production') {
-            const now = new Date();
-            const afterh = new Date();
-            afterh.setHours(now.getHours() + 72);
-            setCookie('X-AUTH-TOKEN', data.data.accessToken, {
-              path: '/',
-              expires: afterh,
-            });
-          }
-
-          break;
-        case 400:
-        case 1101:
-        case 1102:
-        default:
-          toast.error('회원가입 후 로그인에 대해 실패했습니다. 다시 시도해주시길 바랍니다.');
-          break;
-      }
-    } catch (error) {
-      toast.error('알 수 없는 오류가 발생했습니다. 새로고침 후 다시 시도해주시길 바랍니다');
-
-      console.dir(error);
-    }
-  }, []);
 
   const HandleRegister = useCallback(
     (e) => {

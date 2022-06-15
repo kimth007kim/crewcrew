@@ -1,24 +1,19 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { Cookies } from 'react-cookie';
 import { useRecoilValue } from 'recoil';
 import styled, { css, keyframes } from 'styled-components';
 import useSWR from 'swr';
 import IconFlag from '@/assets/images/IconFlag.png';
 import Profile1 from '@/assets/images/Profile1.png';
-import { nickNameState, uploadFileImgState } from '@/atoms/register';
+import { nickNameState } from '@/atoms/register';
 import fetcher from '@/utils/fetcher';
 import Button from '../../Button';
 
 function SignupSection4({ IsClick, closeModal, HandleClick }) {
   const cookies = new Cookies();
-  const {
-    data: myData,
-    error,
-    mutate,
-  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const nickName = useRecoilValue(nickNameState);
-  const fileimg = useRecoilValue(uploadFileImgState);
 
   const HandleComplete = useCallback((e) => {
     e.preventDefault();
@@ -27,8 +22,6 @@ function SignupSection4({ IsClick, closeModal, HandleClick }) {
     }, 200);
     closeModal();
   }, []);
-
-  useEffect(() => {}, []);
 
   return (
     <SignupContents active={IsClick === 4}>

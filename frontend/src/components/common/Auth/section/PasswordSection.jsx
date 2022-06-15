@@ -1,12 +1,7 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable array-callback-return */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-
 import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 import { debounce } from 'lodash';
 import Naver from '@/assets/images/Naver.png';
 import Kakao from '@/assets/images/Kakao.png';
@@ -24,7 +19,6 @@ function PasswordSection({ HandleClick, IsClick }) {
   const [code, setCode] = useState('');
   const [codeValid, setCodeValid] = useState(false);
   const [codeValidMsg, setCodeValidMsg] = useState('코드 전송 후, 입력창에 코드를 입력해주세요');
-  const navigate = useNavigate();
 
   const [SendCode, setSendCode] = useState(false);
   const [CodeActive, setCodeActive] = useState(false);

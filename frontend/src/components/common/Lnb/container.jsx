@@ -1,24 +1,22 @@
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable prettier/prettier */
-/* eslint-disable indent */
-import React, { useCallback, useState } from 'react';
-import styled, { css } from 'styled-components';
+import React, { useCallback } from 'react';
+import styled from 'styled-components';
 import { Cookies } from 'react-cookie';
 import useSWR from 'swr';
-import { NavLink, useNavigate } from 'react-router-dom';
-import LogoTxt from '../../../assets/images/LogoTxt.png';
-import IconButtonArrow from '../../../assets/images/ButtonArrow.png';
-import IconButtonArrowGhost from '../../../assets/images/ButtonArrowGhost.png';
-import Profile1 from '../../../assets/images/Profile1.png';
-import Profile2 from '../../../assets/images/Profile3.png';
-import Profile3 from '../../../assets/images/Profile5.png';
-import Profile4 from '../../../assets/images/Profile2.png';
-import NavIconPlus from '../../../assets/images/NavIconPlus.png';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import LogoTxt from '@/assets/images/LogoTxt.png';
+import IconButtonArrow from '@/assets/images/ButtonArrow.png';
+import IconButtonArrowGhost from '@/assets/images/ButtonArrowGhost.png';
+import Profile1 from '@/assets/images/Profile1.png';
+import Profile2 from '@/assets/images/Profile3.png';
+import Profile3 from '@/assets/images/Profile5.png';
+import Profile4 from '@/assets/images/Profile2.png';
+import NavIconPlus from '@/assets/images/NavIconPlus.png';
 import AuthModal from '../Auth/AuthModal';
-import fetcher from '../../../utils/fetcher';
-import useModal from '../../../hooks/useModal';
+import fetcher from '@/utils/fetcher';
+import useModal from '@/hooks/useModal';
 import NavCard from './NavCard';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Cards = [
   {
@@ -75,12 +73,9 @@ function NavButton({ ghost, title, clickFunc }) {
 
 function NavContainer() {
   const cookies = new Cookies();
-  const {
-    data: myData,
-    error,
-    mutate,
-  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [Dialog, openModal, closeModal] = useModal();
 
   const handleClick = useCallback(() => {
@@ -97,8 +92,21 @@ function NavContainer() {
         const { data } = await axios.delete('/auth/logout', {
           withCredentials: true,
         });
-        window.location.reload();
-        console.dir(data);
+        switch (data.status) {
+          case 200:
+            if (pathname.startsWith('/mypage')) {
+              navigate('/', { replace: true });
+            }
+            window.location.reload();
+            break;
+          case 1900:
+            toast.error(data.message);
+            break;
+
+          default:
+            toast.error(data.message);
+            break;
+        }
       } catch (error) {
         console.dir(error);
       }
@@ -110,9 +118,9 @@ function NavContainer() {
     <>
       <NavCont>
         <Navh1>
-          <a href="/">
+          <NavLink to="/">
             <LogoTxtImg src={LogoTxt} alt="CrewCrew" />
-          </a>
+          </NavLink>
         </Navh1>
         <NavContInner>
           {myData && myData.data ? (

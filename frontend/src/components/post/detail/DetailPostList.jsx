@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { css } from 'styled-components';
 import NavArrow from '@/assets/images/IconNavArrow.png';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { approachFilterState, arrayFilterState, articleFilterState } from '@/atoms/post';
 import Pagination from '../Pagination';
 import PostCard from '../PostCard';

@@ -1,7 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable array-callback-return */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-
 import React, { useCallback, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { debounce } from 'lodash';
@@ -19,7 +15,6 @@ import Textfield from '../../TextfieldEmail';
 import TextfieldPW from '../../TextfieldPW';
 import { emojiSlice, isCheckPassword, isEmail, spaceSlice } from '@/utils';
 import fetcher from '@/utils/fetcher';
-import { useNavigate } from 'react-router-dom';
 
 function LoginSection({ IsClick, HandleClick, closeModal }) {
   const [IsChecked, setIsChecked] = useState(false);
@@ -34,13 +29,8 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
 
   const [cookies, setCookie, removeCookie] = useCookies(['user-cookie']);
   const myCookies = new Cookies();
-  const navigate = useNavigate();
 
-  const {
-    data: myData,
-    error: myError,
-    mutate,
-  } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
+  const { mutate } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
 
   const EmailValidCheck = useCallback((value) => {
     if (!isEmail(value)) {
@@ -167,8 +157,6 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
     },
     [email, password, IsChecked],
   );
-
-  const handleOauthLogin = (link) => {};
 
   return (
     <LoginContents active={IsClick === 0}>

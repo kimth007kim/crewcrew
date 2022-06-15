@@ -8,15 +8,11 @@ import fetcher from '@/utils/fetcher';
 import Textfield from '@/components/common/TextfieldEmail';
 import SettingGray from '@/assets/images/SettingGray.png';
 import CheckImg from '@/assets/images/Checked_on.png';
-import { emojiSlice, spaceSlice } from '@/utils';
+import { emojiSlice } from '@/utils';
 
 function InfoProfile({ state }) {
   const cookies = new Cookies();
-  const {
-    data: myData,
-    error: myError,
-    mutate,
-  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const [nicknameFocus, setNicknameFocus] = useState(false);
 
@@ -150,14 +146,14 @@ function InfoProfile({ state }) {
 
   return (
     <InfoInputList>
-      {myData && myData.data && (
+      {
         <>
           <InputTop>
             <MyProfile ref={myImgRef}>
               {state.file ? (
                 <img src={URL.createObjectURL(state.file)} alt="" />
               ) : (
-                <img src={`${myData.data.file}`} alt="myprofile" />
+                <img src={`${myData && myData.data && myData.data.file}`} alt="myprofile" />
               )}
             </MyProfile>
             <InputHide
@@ -172,7 +168,11 @@ function InfoProfile({ state }) {
                 type="text"
                 onChange={HandleNicknameChange}
                 value={state.nickname}
-                label={state.nicknameSetting ? `${myData.data.nickName}` : '닉네임'}
+                label={
+                  state.nicknameSetting
+                    ? `${myData && myData.data && myData.data.nickName}`
+                    : '닉네임'
+                }
                 validMessage={state.nicknameValidMsg}
                 valid={state.nicknameValid}
                 onDelete={HandleNicknameDelete}
@@ -199,7 +199,11 @@ function InfoProfile({ state }) {
               type="text"
               onChange={HandleMessageChange}
               value={state.message}
-              label={state.messageSetting ? `${myData.data.message}` : '자기소개'}
+              label={
+                state.messageSetting
+                  ? `${myData && myData.data && myData.data.message}`
+                  : '자기소개'
+              }
               validMessage={state.messageValidMsg}
               valid={state.messageValid}
               onDelete={HandleMessageDelete}
@@ -211,7 +215,7 @@ function InfoProfile({ state }) {
             )}
           </InputWrap>
         </>
-      )}
+      }
     </InfoInputList>
   );
 }
@@ -219,6 +223,7 @@ function InfoProfile({ state }) {
 export default InfoProfile;
 
 const InfoInputList = styled('div')``;
+
 const InputTop = styled('div')`
   display: flex;
   align-items: flex-end;

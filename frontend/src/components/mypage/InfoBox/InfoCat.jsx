@@ -1,20 +1,9 @@
-/* eslint-disable react/jsx-curly-newline */
 import React, { useCallback } from 'react';
-import { Cookies } from 'react-cookie';
 import styled, { css } from 'styled-components';
-import useSWR from 'swr';
 import FilterIconX from '@/assets/images/FilterIconX.png';
 import { hobbyFilterArr, studyFilterArr } from '@/frontDB/filterDB';
-import fetcher from '@/utils/fetcher';
 
 function InfoCat({ state }) {
-  const cookies = new Cookies();
-  const {
-    data: myData,
-    error: myError,
-    mutate,
-  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
-
   // 각 필터 체크 여부 확인 함수
   const checkValue = useCallback((arr, value) => arr.some((item) => item.value === value), []);
 
@@ -30,6 +19,7 @@ function InfoCat({ state }) {
     }
     state.setCheckFlag(true);
   }, []);
+
   return (
     <Container>
       <CatBox>

@@ -15,6 +15,8 @@ import matchTeam.crewcrew.repository.board.BoardRepository;
 import matchTeam.crewcrew.repository.bookmark.BookmarkRepository;
 import matchTeam.crewcrew.repository.bookmark.BookmarkSearchRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
+import matchTeam.crewcrew.response.ErrorCode;
+import matchTeam.crewcrew.response.exception.CrewException;
 import matchTeam.crewcrew.response.exception.board.NotExistBoardInIdException;
 import matchTeam.crewcrew.response.exception.board.NotMatchBoardIdException;
 import matchTeam.crewcrew.response.exception.category.NotExistCategoryException;
@@ -23,6 +25,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -53,9 +57,23 @@ public class BookmarkService {
     public void checkValidSave(Long boardId, Long uid){
         userRepository.findById(uid).orElseThrow(UserNotFoundException::new);
         boardRepository.findById(boardId).orElseThrow(NotExistBoardInIdException::new);
+        if (bookmarkQueryRepository.isBookmarked(uid, boardId))
+            throw new CrewException(ErrorCode.ALREADY_EXIST_BOOKMARK_TO_POST);
     }
 
-    public boolean checkIsBookmarked(Long uid, Long boardId){
+    public void checkValidCancel(Long bookmarkId, Long userId){
+
+    }
+
+    public void cancelBookmark(Long bookmarkId, Long userId){
+        Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
+                .orElseThrow(() -> new CrewException(ErrorCode.NOT_EXIST_BOOKMARK_TO_CANCEL));
+        if (!Objects.equals(bookmark.getUid().getUid(), userId))
+            throw new CrewException(ErrorCode.NOT_MATCH_UID_WITH_BOOKMARK);
+        bookmarkRepository.delete(bookmark);
+    }
+
+    public boolean checkIsBookmarked(Long boardId, Long uid){
         userRepository.findById(uid).orElseThrow(UserNotFoundException::new);
         boardRepository.findById(boardId).orElseThrow(NotExistBoardInIdException::new);
         return bookmarkQueryRepository.isBookmarked(uid, boardId);
@@ -64,6 +82,14 @@ public class BookmarkService {
     @Transactional(readOnly = true)
     public Page<BoardPageDetailResponseDTO> search(Long userId, Pageable pageable) {
         return bookmarkQueryRepository.search(userId, pageable);
+    }
+
+    @Transactional
+    public void delete(Long id){
+        Board board = boardRepository.findById(id)
+                .orElseThrow(NotExistBoardInIdException::new);
+
+        boardRepository.delete(board);
     }
 
 }

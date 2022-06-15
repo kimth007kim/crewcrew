@@ -30,7 +30,6 @@ import useModal from '@/hooks/useModal';
 import fetcher from '@/utils/fetcher';
 import useSWR from 'swr';
 import AuthModal from '@/components/common/Auth/AuthModal';
-import useQuery from '@/hooks/useQuery';
 import axios, { toast } from 'axios';
 
 const categoryIcon = [

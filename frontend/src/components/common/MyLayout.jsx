@@ -5,15 +5,12 @@ import { Navigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import useSWR from 'swr';
+import ScrollButton from '../post/ScrollButton';
 import Lnb from './Lnb/Lnb';
 
 function MyLayout({ children, path = 'mypage' }) {
   const cookies = new Cookies();
-  const {
-    data: myData,
-    error,
-    mutate,
-  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData, error } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   if (myData === undefined) {
     return null;
@@ -28,6 +25,7 @@ function MyLayout({ children, path = 'mypage' }) {
   return (
     <>
       <Lnb path={path} />
+      <ScrollButton />
       <MainContainer>{children}</MainContainer>
     </>
   );

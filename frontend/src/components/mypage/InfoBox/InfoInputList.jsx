@@ -10,11 +10,7 @@ import TextfieldPW from '@/components/common/TextfieldPW';
 
 function InfoInputList({ state }) {
   const cookies = new Cookies();
-  const {
-    data: myData,
-    error: myError,
-    mutate,
-  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const [nameFocus, setNameFocus] = useState(false);
 
@@ -97,14 +93,14 @@ function InfoInputList({ state }) {
 
   return (
     <Container>
-      {myData && myData.data && (
+      {
         <>
           <InputWrap>
             <Textfield
               type="text"
               onChange={HandleNameChange}
               value={state.name}
-              label={state.nameSetting ? `${myData.data.name}` : '이름'}
+              label={state.nameSetting ? `${myData && myData.data && myData.data.name}` : '이름'}
               validMessage={state.nameValidMsg}
               valid={state.nameValid}
               focus={nameFocus}
@@ -118,40 +114,44 @@ function InfoInputList({ state }) {
           <InputWrap>
             <Textfield
               type="email"
-              label={myData.data.email}
+              label={myData && myData.data && myData.data.email}
               validMessage=""
               valid={false}
               disabled
             />
           </InputWrap>
-          <InputWrap>
-            <TextfieldPW
-              onChange={HandlePasswordChange}
-              value={state.password}
-              label="새 비밀번호"
-              validMessage={state.passwordValidMsg}
-              valid={state.passwordValid}
-              focus={passwordFocus}
-              disabled={state.passwordSetting}
-              onDelete={HandlePasswordDelete}
-            />
-            {state.passwordSetting && (
-              <TxtFieldSetting onClick={() => HandleFieldSet(state.setPasswordSetting)} />
-            )}
-          </InputWrap>
-          <InputWrap>
-            <TextfieldPW
-              label="비밀번호 확인"
-              onChange={HandlePWConfirmChange}
-              value={state.pwConfirm}
-              validMessage={state.pwConfirmValidMsg}
-              valid={state.pwConfirmValid}
-              onDelete={HandlePWConfirmDelete}
-              disabled={state.passwordSetting}
-            />
-          </InputWrap>
+          {myData && myData.data && myData.data.provider === 'local' && (
+            <>
+              <InputWrap>
+                <TextfieldPW
+                  onChange={HandlePasswordChange}
+                  value={state.password}
+                  label="새 비밀번호"
+                  validMessage={state.passwordValidMsg}
+                  valid={state.passwordValid}
+                  focus={passwordFocus}
+                  disabled={state.passwordSetting}
+                  onDelete={HandlePasswordDelete}
+                />
+                {state.passwordSetting && (
+                  <TxtFieldSetting onClick={() => HandleFieldSet(state.setPasswordSetting)} />
+                )}
+              </InputWrap>
+              <InputWrap>
+                <TextfieldPW
+                  label="비밀번호 확인"
+                  onChange={HandlePWConfirmChange}
+                  value={state.pwConfirm}
+                  validMessage={state.pwConfirmValidMsg}
+                  valid={state.pwConfirmValid}
+                  onDelete={HandlePWConfirmDelete}
+                  disabled={state.passwordSetting}
+                />
+              </InputWrap>
+            </>
+          )}
         </>
-      )}
+      }
     </Container>
   );
 }

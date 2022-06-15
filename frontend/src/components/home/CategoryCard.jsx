@@ -1,18 +1,15 @@
-/* eslint-disable no-confusing-arrow */
-/* eslint-disable operator-linebreak */
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 
 function CategoryCard({ data }) {
-
   const description = (data) => {
-    if(data){
+    if (data) {
       let description = data.replace('(', '');
       description = description.replace(')', '');
       return description;
     }
-  }
+  };
   return (
     <li>
       <Wrapper group={data.catParentName}>

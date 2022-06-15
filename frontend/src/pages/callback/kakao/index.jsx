@@ -37,7 +37,6 @@ function Kakao() {
         switch (data.status) {
           case 200:
             mutate('/auth/token');
-            navigate('/', { replace: true });
             break;
 
           default:
@@ -45,6 +44,8 @@ function Kakao() {
         }
       } catch (error) {
         console.dir(error);
+      } finally {
+        navigate(-1, { replace: true });
       }
     };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import PageArrowNext from '@/assets/images/PageArrowNext.png';
 import Timeline from './Timeline';

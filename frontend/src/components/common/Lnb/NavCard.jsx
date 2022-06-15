@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 function NavCard({ title, p, img, color, number, reverse }) {
   return (

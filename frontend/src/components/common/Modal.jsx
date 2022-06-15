@@ -1,5 +1,3 @@
-/* eslint-disable indent */
-/* eslint-disable react/jsx-no-useless-fragment */
 import React, { useCallback, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import styled, { keyframes, css } from 'styled-components';
@@ -47,7 +45,6 @@ function Modal({
       document.body.style.cssText = `
       position: fixed;
       top: -${window.scrollY}px;
-      overflow-y: scroll;
       width: 100%;`;
     } else {
       const scrollY = document.body.style.top;

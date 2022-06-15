@@ -1,18 +1,13 @@
-/* eslint-disable no-confusing-arrow */
-/* eslint-disable operator-linebreak */
-import React, {useCallback} from 'react';
+import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components';
-import Profile4 from '@/assets/images/Profile4.png';
+
 import ButtonStarWhite from '@/assets/images/ButtonStarWhite.png';
-import StarOff from '@/assets/images/StarOff.png';
-import StarOn from '@/assets/images/StarOn.png';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import { format, getDay, differenceInDays } from 'date-fns';
 import { viewDay } from '@/utils';
 import { Link } from 'react-router-dom';
 
 function PostCardSlide({ data }) {
-
   const renderDate = useCallback(() => {
     const date = new Date(data.createdDate);
     return `${format(date, 'M/d')} (${viewDay(getDay(date))})`;
@@ -25,8 +20,8 @@ function PostCardSlide({ data }) {
   }, []);
 
   const category = (id = data.categoryParentId) => {
-    return id === 1 ? 'study' : 'hobby'
-  }
+    return id === 1 ? 'study' : 'hobby';
+  };
   return (
     <Container>
       <Link to={`/post/${data.boardId}`}>
@@ -54,10 +49,17 @@ function PostCardSlide({ data }) {
             </CardTxt>
           </CardBody>
           <CardFooter>
-            <CardTagColor category={category()}> {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}</CardTagColor>
-            <CardTagColor category={category()}>{data.approachCode ? '온라인' : '오프라인'}</CardTagColor>
+            <CardTagColor category={category()}>
+              {' '}
+              {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
+            </CardTagColor>
+            <CardTagColor category={category()}>
+              {data.approachCode ? '온라인' : '오프라인'}
+            </CardTagColor>
             <CardTag>
-              <span>{data.recruitedCrew}/{data.totalCrew}</span>
+              <span>
+                {data.recruitedCrew}/{data.totalCrew}
+              </span>
               <span>명 모집됨</span>
             </CardTag>
           </CardFooter>
@@ -239,11 +241,10 @@ const CardProfile = styled.div`
 `;
 
 const ProfileImg = styled.div`
-  ${(props) => 
+  ${(props) =>
     css`
       background: url(${props.profileImg}) 100% 100%;
-    `
-  }
+    `}
   width: 100%;
   height: 100%;
   object-fit: cover;

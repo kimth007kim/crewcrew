@@ -1,87 +1,51 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
-import { format, getDay, differenceInDays } from 'date-fns';
-import ButtonStarWhite from '@/assets/images/ButtonStarWhite.png';
-import { cateogoryAll } from '@/frontDB/filterDB';
-import { viewDay } from '@/utils';
-import { useNavigate, useParams } from 'react-router-dom';
-import useQuery from '@/hooks/useQuery';
+import React from 'react';
+import styled from 'styled-components';
+import { css } from 'styled-components';
 
-function PostCard({ data }) {
-  const [IsDisable, setIsDisable] = useState(false);
-  const navigate = useNavigate();
-  const query = useQuery();
-  const { postId } = useParams();
-
-  const renderDate = useCallback(() => {
-    const date = new Date(data.createdDate);
-    return `${format(date, 'M/d')} (${viewDay(getDay(date))})`;
-  }, []);
-
-  const handleLocate = useCallback(() => {
-    const pageNum = query.get('page');
-    if (pageNum) {
-      return navigate(`/post/${data.boardId}?page=${pageNum}`);
-    }
-    navigate(`/post/${data.boardId}`);
-  }, [query.get('page')]);
-
-  const renderDay = useCallback(() => {
-    const date = new Date(data.expiredDate);
-    const nowDate = new Date();
-    return differenceInDays(date, nowDate) + 1;
-  }, []);
-
-  useEffect(() => {
-    const bool = !data.viewable || renderDay() < 0;
-    setIsDisable(bool);
-  }, []);
-
+function RequestCard({ data }) {
   return (
-    <Wrapper onClick={handleLocate} current={String(data.boardId) === postId}>
-      <CardHead isDisabled={IsDisable}>
+    <Container>
+      <CardHead>
         <ProfileBox>
-          <img src={`${data.profileImage}`} alt="" />
+          <img src="" alt="" />
         </ProfileBox>
         <TextBox>
-          <Dday>{IsDisable ? '마감' : `D-${renderDay()}`}</Dday>
-          <CardDate>{renderDate()}</CardDate>
-          <CardName>{data.nickname}</CardName>
+          <Dday>D-2</Dday>
+          <CardDate>2/4 (목)</CardDate>
+          <CardName>재영재영유재영아아아</CardName>
         </TextBox>
       </CardHead>
-      <CardBody isDisabled={IsDisable}>
+      <CardBody>
         <TextBox>
           <TitleBox>
-            <h5>{data.title}</h5>
-            <Star />
+            <h5>함께 크루원 모집 플랫폼 작업하실 분 모십니다~! 크루</h5>
           </TitleBox>
           <TextList>
-            <CategoryText
-              textColor={data.categoryParentId === 1 ? '#005ec5' : '#F7971E'}
-              isDisabled={IsDisable}
-            >
-              {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
+            <CategoryText textColor={`data.categoryParentId` === 1 ? '#005ec5' : '#F7971E'}>
+              고시/공무원
             </CategoryText>
-            <p>{data.approachCode ? '온라인' : '오프라인'}</p>
-            <p>{`${data.recruitedCrew}/${data.totalCrew}명`}</p>
-            <p>
-              조회수
-              {` ${data.hit}`}
-            </p>
+            <p>오프라인</p>
+            <p>10/10명</p>
+            <p>요청자 50</p>
           </TextList>
         </TextBox>
+        <DetailBox>
+          <p>
+            (03/22) <span>요청완료</span>
+          </p>
+          <button>상세확인</button>
+        </DetailBox>
         <ButtonBox>
-          <ButtonDetail>상세보기</ButtonDetail>
-          <ButtonParticipate disabled={IsDisable}>참여하기</ButtonParticipate>
+          <button>요청취소</button>
         </ButtonBox>
       </CardBody>
-    </Wrapper>
+    </Container>
   );
 }
 
-export default PostCard;
+export default RequestCard;
 
-const Wrapper = styled.div`
+const Container = styled('div')`
   height: 94px;
   background-color: #fff;
   border-radius: 10px;
@@ -92,20 +56,6 @@ const Wrapper = styled.div`
   transition: 0.2s;
   border: 1px solid transparent;
   cursor: pointer;
-  :hover {
-    border-color: #a8a8a8;
-  }
-  ${(props) =>
-    props.current &&
-    css`
-      border-color: #a8a8a8;
-    `}
-  @media screen and (max-width: 820px) {
-    height: 108px;
-    padding: 10px 12px 14px 12px;
-    flex-direction: column;
-    position: relative;
-  }
 `;
 
 const ProfileBox = styled.div``;
@@ -139,56 +89,9 @@ const CategoryText = styled.span`
   }
 `;
 
-const Star = styled.div`
-  width: 30px;
-  height: 30px;
-  background: #c4c4c4 url(${ButtonStarWhite}) center/20px no-repeat;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-left: 22px;
-  margin-right: 14px;
-  transition: 0.3s;
-
-  :hover {
-    background-color: #b0b0b0;
-  }
-
-  @media screen and (max-width: 820px) {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 20px;
-    height: 20px;
-    background-size: 14px;
-    margin: 0;
-  }
-`;
-
 const TextList = styled.div``;
 
 const ButtonBox = styled.div``;
-
-const ButtonDetail = styled.button`
-  cursor: pointer;
-  background-color: #c4c4c4;
-  :hover {
-    background-color: #b0b0b0;
-  }
-`;
-
-const ButtonParticipate = styled.button`
-  cursor: pointer;
-
-  background-color: #00b7ff;
-  :hover {
-    background-color: #00a3e3;
-  }
-
-  :disabled {
-    background-color: #e2e2e2;
-    cursor: default;
-  }
-`;
 
 const CardHead = styled.div`
   display: flex;
@@ -302,6 +205,7 @@ const CardBody = styled.div`
       align-items: center;
       h5 {
         width: 290px;
+        margin-top: 4px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -323,6 +227,11 @@ const CardBody = styled.div`
         font-size: 12px;
         font-weight: 400;
         color: #868686;
+
+        &:last-child {
+          color: #000;
+          font-weight: 700;
+        }
       }
 
       p:not(:last-child) {
@@ -344,6 +253,9 @@ const CardBody = styled.div`
     padding-left: 22px;
     box-sizing: border-box;
     border-left: 1px solid #a8a8a8;
+    min-width: 130px;
+    justify-content: flex-end;
+    border: none;
 
     button {
       width: 100px;
@@ -352,6 +264,8 @@ const CardBody = styled.div`
       border-radius: 10px;
       outline: none;
       color: #fff;
+      font-size: 15px;
+      background-color: #c4c4c4;
     }
   }
 
@@ -386,5 +300,55 @@ const CardBody = styled.div`
         }
       }
     }
+  }
+`;
+
+const DetailBox = styled('div')`
+  min-width: 158px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 24px;
+  box-sizing: border-box;
+  border-left: 1px solid #a8a8a8;
+  border-right: 1px solid #a8a8a8;
+
+  p {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 7px;
+    white-space: nowrap;
+
+    span {
+      font-weight: 500;
+    }
+  }
+
+  button {
+    width: 100%;
+    height: 30px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+
+    background-color: #c4c4c4;
+
+    ${(props) =>
+      props.color === 'nega' &&
+      css`
+        background-color: #f95884;
+      `}
+
+    ${(props) =>
+      props.color === 'posi' &&
+      css`
+        background-color: #00b7ff;
+      `}
   }
 `;
