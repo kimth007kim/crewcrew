@@ -459,7 +459,7 @@ public class UserService {
                 .provider("kakao")
                 .build());
         User user = findByUid(userId);
-        if (kakaoProfile.getKakao_account().getProfile().getProfile_image_url()==null){
+        if (kakaoProfile.getKakao_account().getProfile().is_default_image()==true){
             String file = s3Uploader.setDefaultImage(user.getEmail(),user.getProvider());
             setProfileImage(user,file);
         }else{
@@ -485,7 +485,7 @@ public class UserService {
                 .build());
         System.out.println("==네이버에서 보낸 프로필 이미지=="+naverProfile.getResponse().getProfile_image());
         User user = findByUid(userId);
-        if (naverProfile.getResponse().getProfile_image()==null){
+        if (naverProfile.getResponse().getProfile_image().equals("https://ssl.pstatic.net/static/pwe/address/img_profile.png")){
             String file =s3Uploader.setDefaultImage(user.getEmail(),user.getProvider());
             setProfileImage(user,file);
         }else{
