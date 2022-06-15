@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { Cookies } from 'react-cookie';
 import { useRecoilValue } from 'recoil';
 import styled, { css, keyframes } from 'styled-components';

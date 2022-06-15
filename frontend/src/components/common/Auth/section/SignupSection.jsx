@@ -1,7 +1,3 @@
-/* eslint-disable consistent-return */
-/* eslint-disable array-callback-return */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable indent */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { useRecoilState } from 'recoil';

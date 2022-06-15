@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { useRecoilValue } from 'recoil';

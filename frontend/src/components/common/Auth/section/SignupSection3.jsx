@@ -1,7 +1,6 @@
-/* eslint-disable indent */
 import axios from 'axios';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Cookies, useCookies } from 'react-cookie';
+import { Cookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { css, keyframes } from 'styled-components';

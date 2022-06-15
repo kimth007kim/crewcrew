@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { format, getDay, differenceInDays } from 'date-fns';
-import StarOffImg from '@/assets/images/StarOff.png';
-import StarOnImg from '@/assets/images/StarOn.png';
 import ButtonStarWhite from '@/assets/images/ButtonStarWhite.png';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import { viewDay } from '@/utils';

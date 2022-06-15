@@ -4,8 +4,8 @@ import { Cookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 import styled, { css } from 'styled-components';
 import useSWR from 'swr';
-import { hobbyFilterArr, studyFilterArr } from '../../../../frontDB/filterDB';
-import fetcher from '../../../../utils/fetcher';
+import { hobbyFilterArr, studyFilterArr } from '@/frontDB/filterDB';
+import fetcher from '@/utils/fetcher';
 import InfoCat from '../InfoCat';
 import InfoProfile from '../InfoProfile';
 

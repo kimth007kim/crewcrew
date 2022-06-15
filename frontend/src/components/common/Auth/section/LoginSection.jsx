@@ -1,7 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable array-callback-return */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-
 import React, { useCallback, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { debounce } from 'lodash';

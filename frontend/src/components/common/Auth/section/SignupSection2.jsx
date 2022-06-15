@@ -1,5 +1,3 @@
-/* eslint-disable indent */
-
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { toast } from 'react-toastify';

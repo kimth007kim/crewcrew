@@ -10,11 +10,7 @@ import TextfieldPW from '@/components/common/TextfieldPW';
 
 function InfoInputList({ state }) {
   const cookies = new Cookies();
-  const {
-    data: myData,
-    error: myError,
-    mutate,
-  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const [nameFocus, setNameFocus] = useState(false);
 

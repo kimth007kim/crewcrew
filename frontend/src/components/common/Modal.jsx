@@ -1,5 +1,3 @@
-/* eslint-disable indent */
-/* eslint-disable react/jsx-no-useless-fragment */
 import React, { useCallback, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import styled, { keyframes, css } from 'styled-components';

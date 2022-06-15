@@ -10,11 +10,7 @@ import Lnb from './Lnb/Lnb';
 
 function MyLayout({ children, path = 'mypage' }) {
   const cookies = new Cookies();
-  const {
-    data: myData,
-    error,
-    mutate,
-  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData, error } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   if (myData === undefined) {
     return null;

@@ -1,6 +1,3 @@
-/* eslint-disable indent */
-/* eslint-disable react/jsx-wrap-multilines */
-// eslint-disable-next-line react/jsx-wrap-multilines
 import React, { useCallback, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import Modal from '../Modal';

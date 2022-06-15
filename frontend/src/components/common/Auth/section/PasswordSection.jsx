@@ -1,12 +1,7 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable array-callback-return */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-
 import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 import { debounce } from 'lodash';
 import Naver from '@/assets/images/Naver.png';
 import Kakao from '@/assets/images/Kakao.png';

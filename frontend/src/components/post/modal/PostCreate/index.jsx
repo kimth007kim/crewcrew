@@ -15,11 +15,10 @@ import MainContent from './MainContent';
 
 function PostCreateModal({ closeModal, visible, category = 0 }) {
   const cookies = new Cookies();
-  const {
-    data: myData,
-    error: myError,
-    mutate,
-  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData, error: myError } = useSWR(
+    ['/auth/token', cookies.get('X-AUTH-TOKEN')],
+    fetcher,
+  );
 
   const nowDate = new Date();
 

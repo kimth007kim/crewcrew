@@ -8,15 +8,11 @@ import fetcher from '@/utils/fetcher';
 import Textfield from '@/components/common/TextfieldEmail';
 import SettingGray from '@/assets/images/SettingGray.png';
 import CheckImg from '@/assets/images/Checked_on.png';
-import { emojiSlice, spaceSlice } from '@/utils';
+import { emojiSlice } from '@/utils';
 
 function InfoProfile({ state }) {
   const cookies = new Cookies();
-  const {
-    data: myData,
-    error: myError,
-    mutate,
-  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const [nicknameFocus, setNicknameFocus] = useState(false);
 

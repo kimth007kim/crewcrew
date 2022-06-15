@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import BoxCard from './BoxCard';
 import { Cookies } from 'react-cookie';
 import axios from 'axios';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function CrewBox() {
   const cookies = new Cookies();

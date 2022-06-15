@@ -1,5 +1,4 @@
-/* eslint-disable import/no-unresolved */
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
 import styled from 'styled-components';
@@ -10,7 +9,6 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import PostCardSlide from './PostCardSlide';
-import axios from 'axios';
 
 SwiperCore.use([Navigation, Pagination]);
 function SwiperSection({ data, post }) {
