@@ -1,17 +1,11 @@
 package matchTeam.crewcrew.controller.api.v1;
 
-import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
-import matchTeam.crewcrew.dto.social.NaverLoginRequestDto;
-import matchTeam.crewcrew.dto.social.NaverProfile;
-import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.response.ResponseHandler;
-import matchTeam.crewcrew.response.exception.auth.CUserNotFoundException;
 import matchTeam.crewcrew.service.amazonS3.S3Uploader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
