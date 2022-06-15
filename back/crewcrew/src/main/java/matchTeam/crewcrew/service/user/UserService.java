@@ -9,6 +9,8 @@ import matchTeam.crewcrew.config.security.JwtProvider;
 import matchTeam.crewcrew.dto.security.ResponseTokenDto;
 import matchTeam.crewcrew.dto.security.TokenDto;
 import matchTeam.crewcrew.dto.security.TokenRequestDto;
+import matchTeam.crewcrew.dto.social.KakaoProfile;
+import matchTeam.crewcrew.dto.social.NaverProfile;
 import matchTeam.crewcrew.dto.user.*;
 import matchTeam.crewcrew.dto.user.example.UserResponseDto;
 import matchTeam.crewcrew.entity.security.RefreshToken;
@@ -69,29 +71,20 @@ public class UserService {
     }
 
 
-    @Transactional
-    public Long signup(SignUpRequestDto localSignUpRequestDto) {
-        if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(), "local").isPresent())
-            throw new EmailSignUpFailedCException();
-//            throw new CrewException(ErrorCode.EMAIL_CODE_NOT_MATCH);
-        return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();
-    }
-
-//    @Transactional
     public Long signup(SignUpLocalRequestDto localSignUpRequestDto) {
         if (userRepository.findByEmailAndProvider(localSignUpRequestDto.getEmail(), "local").isPresent())
-            throw new EmailSignUpFailedCException();
+            throw new CrewException(ErrorCode.USER_ALREADY_EXIST);
 //            throw new CrewException(ErrorCode.EMAIL_CODE_NOT_MATCH);
         return userRepository.save(localSignUpRequestDto.toEntity(passwordEncoder)).getUid();
     }
 
 
     @Transactional(rollbackFor = Exception.class)
-    public UserResponseDto register(String email, String password, String name, String nickName, MultipartFile file, List<Long> categoryId, String message, Integer Default) {
-        System.out.println("email: " + email + "password: " + password + "name: " + name + "nickname" + "file: " + file + "categoryId" + categoryId+" Default "+Default);
+    public ResponseTokenDto register(String email, String password, String name, String nickName, MultipartFile file, List<Long> categoryId, String message, Integer Default) {
+        System.out.println("email: " + email + "password: " + password + "name: " + name + "nickname" + "file: " + file + "categoryId" + categoryId + " Default " + Default);
 
         if (findByEmailAndProvider(email, "local").isPresent()) {
-            throw new CUserAlreadyExistException();
+            throw new CrewException(ErrorCode.USER_ALREADY_EXIST);
         }
 
 
@@ -106,27 +99,29 @@ public class UserService {
         String email_url = email.replace("@", "_");
 
         String filename = s3Uploader.addImageWhenSignUp(email_url, file, Default, "local");
-        log.info(filename,"파일네임 파일네임");
+        log.info(filename, "파일네임 파일네임");
 
         List<Long> input = likedCategoryService.deleteDuplicateCategory(categoryId);
-        SignUpLocalRequestDto signUpRequestDto = new SignUpLocalRequestDto(email, password, name, nickName, filename, input, message);
+        SignUpLocalRequestDto signUpRequestDto = new SignUpLocalRequestDto(email, password, name, nickName, filename, input, message, "local");
         Long signupId = signup(signUpRequestDto);
         User user = findByUid(signupId);
+        likedCategoryService.addLikedCategory(user,input);
+        ResponseTokenDto tokenDto = jwtProvider.createResponseToken(user.getUid(), user.getRoles(),true);
 
-        UserResponseDto userResponseDto = new UserResponseDto(signupId, signUpRequestDto.getEmail(), signUpRequestDto.getName(), signUpRequestDto.getNickName(), filename, signUpRequestDto.getCategoryId(), user.getMessage(), user.getProvider());
-        return userResponseDto;
+//        UserResponseDto userResponseDto = new UserResponseDto(signupId, signUpRequestDto.getEmail(), signUpRequestDto.getName(), signUpRequestDto.getNickName(), filename, signUpRequestDto.getCategoryId(), user.getMessage(), user.getProvider());
+        return tokenDto;
     }
 
 
     public ResponseTokenDto login(UserLoginRequestDto userLoginRequestDto) {
         //회원 정보 존재하는지 확인
-        User user = userRepository.findByEmailAndProvider(userLoginRequestDto.getEmail(), "local").orElseThrow(()-> new CrewException(ErrorCode.LOGIN_FAILED_BY_EMAIL));
+        User user = userRepository.findByEmailAndProvider(userLoginRequestDto.getEmail(), "local").orElseThrow(() -> new CrewException(ErrorCode.EMAIL_NOT_EXIST));
 //                orElseThrow(LoginFailedByEmailNotExistException::new);
         // 회원 패스워드 일치하는지 확인
         System.out.println(userLoginRequestDto.getPassword() + "  " + user.getPassword());
 
         if (!passwordEncoder.matches(userLoginRequestDto.getPassword(), user.getPassword()))
-            throw new LoginFailedByPasswordException();
+            throw new CrewException(ErrorCode.LOGIN_FAILED_BY_PASSWORD);
 
         log.info(userLoginRequestDto.getEmail(), userLoginRequestDto.getPassword(), userLoginRequestDto.isMaintain());
         // AccessToken ,Refresh Token 발급
@@ -135,16 +130,10 @@ public class UserService {
         System.out.println(user.getUid());
         ResponseTokenDto tokenDto = jwtProvider.createResponseToken(user.getUid(), user.getRoles(), userLoginRequestDto.isMaintain());
 
-        // RefreshToken 저장
-        RefreshToken refresh_Token = RefreshToken.builder()
-                .pkey(user.getUid())
-                .token(tokenDto.getRefreshToken())
-                .build();
-
 
 //        refreshTokenJpaRepository.save(refresh_Token);
         Long time = jwtProvider.refreshTokenTime(userLoginRequestDto.isMaintain());
-        redisutil.setDataExpire(refresh_Token.getToken(), Long.toString(id), time);
+        redisutil.setDataExpire(tokenDto.getRefreshToken(), Long.toString(id), time);
 
         return tokenDto;
 
@@ -186,7 +175,7 @@ public class UserService {
 
         if (!stringCheck(password)) {
             if (blankCheck(password)) {
-                throw new PasswordBlankException();
+                throw new CrewException(ErrorCode.PASSWORD_BLANK_EXCEPTION);
             }
             validationPasswd(password);
 //            changePassword(user, password);
@@ -262,7 +251,7 @@ public class UserService {
         Optional<User> user = userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider());
         System.out.println(user);
         if (userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider())
-                .isPresent()) throw new CKakaoUserAlreadyExistException();
+                .isPresent()) throw new CrewException(ErrorCode.KAKAKO_USER_ALREADY_EXIST);
         return userRepository.save(userSignUpRequestDto.toEntity("kakao")).getUid();
     }
 
@@ -270,10 +259,9 @@ public class UserService {
         Optional<User> user = userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider());
         System.out.println(user);
         if (userRepository.findByEmailAndProvider(userSignUpRequestDto.getEmail(), userSignUpRequestDto.getProvider())
-                .isPresent()) throw new CUserAlreadyExistException();
+                .isPresent()) throw new CrewException(ErrorCode.USER_ALREADY_EXIST);
         return userRepository.save(userSignUpRequestDto.toEntity("naver")).getUid();
     }
-
 
 
     public void validationPasswd(String pw) {
@@ -288,13 +276,13 @@ public class UserService {
 
 
         if (m_blank.find()) {
-            throw new PasswordBlankException();
+            throw new CrewException(ErrorCode.PASSWORD_BLANK_EXCEPTION);
         }
         if (emoji_p.find()) {
-            throw new PasswordEmojiException();
+            throw new CrewException(ErrorCode.PASSWORD_EMOJI_EXCEPTION);
         }
         if (!m.matches()) {
-            throw new PasswordInvalidException();
+            throw new CrewException(ErrorCode.PASSWORD_INVALID_EXCEPTION);
         }
     }
 
@@ -303,9 +291,6 @@ public class UserService {
         user.setProfileImage(image);
     }
 
-    public void setMessage(User user, String message) {
-        user.setMessage(message);
-    }
 
     public void changePassword(User user, String password) {
         String new_password = passwordEncoder.encode(password);
@@ -319,10 +304,10 @@ public class UserService {
         if (nickName.length() <= 0) {
             System.out.println(nickName.length() + "에러 짧아서 발생");
 
-            throw new NickNameInvalidException();
+            throw new CrewException(ErrorCode.NICKNAME_INVALID_EXCEPTION);
         } else if (nickName.length() > 15) {
             System.out.println(nickName.length() + "에러 길어서 발생");
-            throw new NickNameInvalidException();
+            throw new CrewException(ErrorCode.NICKNAME_INVALID_EXCEPTION);
         }
     }
 
@@ -331,10 +316,10 @@ public class UserService {
         if (name.length() <= 0) {
             System.out.println(name.length() + "에러 짧아서 발생");
 
-            throw new NameInvalidException();
+            throw new CrewException(ErrorCode.NAME_INVALID_EXCEPTION);
         } else if (name.length() > 10) {
             System.out.println(name.length() + "에러 길어서 발생");
-            throw new NameInvalidException();
+            throw new CrewException(ErrorCode.NAME_INVALID_EXCEPTION);
         }
     }
 
@@ -343,10 +328,10 @@ public class UserService {
         if (message.length() <= 0) {
             System.out.println(message.length() + "에러 짧아서 발생");
 
-            throw new MessageInvalidException();
+            throw new CrewException(ErrorCode.MESSAGE_INVALID_EXCEPTION);
         } else if (message.length() > 25) {
             System.out.println(message.length() + "에러 길어서 발생");
-            throw new MessageInvalidException();
+            throw new CrewException(ErrorCode.MESSAGE_INVALID_EXCEPTION);
         }
     }
 
@@ -405,7 +390,7 @@ public class UserService {
 
     public void validateDuplicateByNickname(String nickname) {
         if (!userRepository.findByNickname(nickname).isEmpty()) {
-            throw new NickNameAlreadyExistException();
+            throw new CrewException(ErrorCode.USERNAME_ALREADY_EXIST);
         }
     }
 
@@ -427,7 +412,7 @@ public class UserService {
         System.out.println("Claims=  " + c + "  uid= " + uid);
 
         if (userRepository.findById(Long.valueOf(uid)).isEmpty()) {
-            throw new UidNotExistException();
+            throw new CrewException(ErrorCode.UID_NOT_EXIST);
         }
         User user = userRepository.findByUid(Long.valueOf(uid));
 
@@ -436,14 +421,14 @@ public class UserService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void profileEdit(ProfileChangeRequestDto profileChangeRequestDto,User user,MultipartFile file){
+    public void profileEdit(ProfileChangeRequestDto profileChangeRequestDto, User user, MultipartFile file) {
         String password = profileChangeRequestDto.getPassword();
         String nickName = profileChangeRequestDto.getNickName();
         String name = profileChangeRequestDto.getName();
-        List<Long> categoryId= profileChangeRequestDto.getCategoryId();
+        List<Long> categoryId = profileChangeRequestDto.getCategoryId();
         String message = profileChangeRequestDto.getMessage();
-        if (categoryId == null){
-            categoryId=new ArrayList<Long>();
+        if (categoryId == null) {
+            categoryId = new ArrayList<Long>();
         }
 
         if (file != null && !file.isEmpty()) {
@@ -459,11 +444,66 @@ public class UserService {
             }
             setProfileImage(user, filename);
         }
-        validProfileChange(user,password,name,nickName,categoryId,message);
+        validProfileChange(user, password, name, nickName, categoryId, message);
         profileChange(user, password, name, nickName, categoryId, message);
 
 
     }
+    @Transactional(rollbackFor = Exception.class)
+    public User kakaoRegister(KakaoProfile kakaoProfile) {
+        String nickName = nickNameGenerator(kakaoProfile.getProperties().getNickname());
+        Long userId = kakaoSignup(UserSignUpRequestDto.builder()
+                .email(kakaoProfile.getKakao_account().getEmail())
+                .name(kakaoProfile.getProperties().getNickname())
+                .nickName(nickName)
+                .provider("kakao")
+                .build());
+        User user = findByUid(userId);
+        if (kakaoProfile.getKakao_account().getProfile().is_default_image()==true){
+            String file = s3Uploader.setDefaultImage(user.getEmail(),user.getProvider());
+            setProfileImage(user,file);
+        }else{
+            String email_url = s3Uploader.nameFile(kakaoProfile.getKakao_account().getEmail(), "kakao");
+            String file =s3Uploader.urlConvert(email_url, kakaoProfile.getKakao_account().getProfile().getProfile_image_url(), user);
+            setProfileImage(user,file);
+        }
+        ArrayList<Long> Default = new ArrayList<>(Arrays.asList(7L,14L));
+        likedCategoryService.addLikedCategory(user,Default);
+        setRandomMessage(user);
 
+        return user;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public User naverRegister(NaverProfile naverProfile) {
+        String nickName = nickNameGenerator(naverProfile.getResponse().getName());
+        Long userId = naverSignup(UserSignUpRequestDto.builder()
+                .email(naverProfile.getResponse().getEmail())
+                .name(naverProfile.getResponse().getName())
+                .nickName(nickName)
+                .provider("naver")
+                .build());
+        User user = findByUid(userId);
+//        https://ssl.pstatic.net/static/pwe/address/img_profile.png
+
+
+//        System.out.println("==네이버에서 보낸 프로필 이미지=="+naverProfile.getResponse().getProfile_image());
+//        System.out.println("https://ssl.pstatic.net/static/pwe/address/img_profile.png");
+//        System.out.println(naverProfile.getResponse().getProfile_image().equals("https://ssl.pstatic.net/static/pwe/address/img_profile.png"));
+
+        if (naverProfile.getResponse().getProfile_image().equals("https://ssl.pstatic.net/static/pwe/address/img_profile.png")==true){
+
+            String file =s3Uploader.setDefaultImage(user.getEmail(),user.getProvider());
+            setProfileImage(user,file);
+        }else{
+            String email_url = s3Uploader.nameFile(naverProfile.getResponse().getEmail(), "naver");
+            urlToImage(email_url, naverProfile.getResponse().getProfile_image(), user);
+
+        }
+        ArrayList<Long> Default = new ArrayList<>(Arrays.asList(7L,14L));
+        likedCategoryService.addLikedCategory(user,Default);
+        setRandomMessage(user);
+        return user;
+    }
 
 }

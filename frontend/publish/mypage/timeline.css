@@ -428,7 +428,7 @@ ul.InputList > li {
 }
 
 .InputFull:hover {
-  border: 1px solid #707070;
+  border: 1px solid #00b7ff;
 }
 
 .InputFull.On {
@@ -1816,7 +1816,7 @@ ul.ChooseListDetail {
 }
 
 ul.ChooseListDetail:hover {
-  border: 1px solid #707070;
+  border: 1px solid #00b7ff;
 }
 
 ul.ChooseListDetail.On {
@@ -2994,11 +2994,7 @@ p.Nocontent em {
   transition: .3s;
 }
 
-.ListTap li button:hover {
-  border: 2px solid #868686;
-}
-
-.ListTap li button.On {
+.ListTap li button:hover, .ListTap li button.On {
   border: 2px solid #00b7ff;
   color: #00b7ff;
   font-weight: 500;

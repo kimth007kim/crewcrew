@@ -8,6 +8,7 @@ import matchTeam.crewcrew.entity.user.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
+import java.util.List;
 
 @Builder
 @Getter
@@ -19,6 +20,7 @@ public class UserSignUpRequestDto {
     private String name;
     private String nickName;
     private String provider;
+//    private List<Long> categoryId;
 //
     public User toEntity(String prov) {
         return User.builder()

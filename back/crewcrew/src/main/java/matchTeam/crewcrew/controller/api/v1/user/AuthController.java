@@ -66,13 +66,13 @@ public class AuthController {
         //email 주소 형식 에  맞는지 확인하는 메서드
         String email = userEmailCodeDto.getEmail();
         if (emailService.isValidEmailAddress(email) == false) {
-            throw new CNotValidEmailException();
+            throw new CrewException(ErrorCode.EMAIL_NOT_VALID);
 //            1001 이메일이 유효하지 않다.
         }
 
         //이미 가입되었는지 확인하는 메서드
         if (userService.findByEmailAndProvider(email, "local").isPresent()) {
-            throw new CUserAlreadyExistException();
+            throw new CrewException(ErrorCode.USER_ALREADY_EXIST);
 //            1002 이미 존재하는 유저이다.
         }
         // 이메일 전송하는메서드
@@ -99,7 +99,7 @@ public class AuthController {
         //email 주소 형식 에  맞는지 확인하는 메서드
         User user = userService.findByUid(id);
         if (user == null) {
-            throw new UidNotExistException();
+            throw new CrewException(ErrorCode.UID_NOT_EXIST);
         }
         UserResponseDto userResponseDto = new UserResponseDto(id, user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), likedCategoryService.findUsersLike(user), user.getMessage(), user.getProvider());
 
@@ -256,11 +256,11 @@ public class AuthController {
             @ApiParam(value = "한줄 메세지")
             @RequestParam(required = false) String message,
             @ApiParam(value = "디폴트 이미지 선택")
-            @RequestParam(required = false) Integer Default) {
+            @RequestParam(required = false) Integer Default,HttpServletResponse response) {
         System.out.println("-----file----------"+file);
-            UserResponseDto userResponseDto= userService.register(email,password,name,nickName,file,  categoryId,message,Default);
-
-        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, userResponseDto);
+            ResponseTokenDto responseTokenDto= userService.register(email,password,name,nickName,file,  categoryId,message,Default);
+            cookieService.responseCookie(response,responseTokenDto);
+        return ResponseHandler.generateResponse("회원가입 성공", HttpStatus.OK, null);
     }
 
     @GetMapping("/user/nickname/{nickName}")
@@ -279,8 +279,25 @@ public class AuthController {
     })
     public ResponseEntity<Object> checkNickName(@PathVariable String nickName) {
         userService.validateDuplicateByNickname(nickName);
-        userService.validateDuplicateByNickname(nickName);
         return ResponseHandler.generateResponse("닉네임 중복 확인 성공", HttpStatus.OK, true);
+    }
+    @GetMapping("/user/name/{name}")
+    @ApiOperation(value = "이름 유효성 체크", notes = "이름 유효성 체크")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "닉네임 중복 확인 성공"
+                    , response = boolean.class
+            )
+            , @ApiResponse(
+            code = 1012
+            , message = "이름이 0자이거나 10자를 초과하였습니다."
+    )
+
+    })
+    public ResponseEntity<Object> checkName(@PathVariable String name) {
+        userService.validationName(name);
+        return ResponseHandler.generateResponse("이름 중복 확인 성공", HttpStatus.OK, true);
     }
 
 
@@ -316,8 +333,11 @@ public class AuthController {
 
         response.addCookie(accessCookie);
         response.addCookie(refreshCookie);
-
-        return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK, new AccessTokenDto(tokenDto.getAccessToken()));
+//        User user = userService.findByEmailAndProvider(userLoginRequestDto.getEmail(), "local").orElseThrow(()->new CrewException(ErrorCode.PK_USER_NOT_FOUND));
+//        List<Long> likedCategoryId=likedCategoryService.findUsersLike(user);
+//        UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), likedCategoryId, user.getMessage(), user.getProvider());
+        AccessTokenDto token = new AccessTokenDto(tokenDto.getAccessToken());
+        return ResponseHandler.generateResponse("로그인 성공", HttpStatus.OK, token);
 
     }
 
@@ -381,7 +401,7 @@ public class AuthController {
     public ResponseEntity<Object> findPassword(
 //            @ApiParam(value = "PasswordFindDTO", required = true)
             @RequestBody PasswordFindDTO passwordFindDTO) throws MessagingException, IOException {
-        User user = userService.findByEmailAndProvider(passwordFindDTO.getEmail(), "local").orElseThrow(()-> new CrewException(ErrorCode.LOGIN_FAILED_BY_EMAIL));
+        User user = userService.findByEmailAndProvider(passwordFindDTO.getEmail(), "local").orElseThrow(()-> new CrewException(ErrorCode.EMAIL_NOT_EXIST));
         String code = emailService.findPassword(passwordFindDTO.getEmail(), user.getName());
         // 나중에 이름이나 닉네임으로 추가 인증
 //        if(user.getName().equals(name)){
@@ -422,7 +442,7 @@ public class AuthController {
     public ResponseEntity<Object> passwordConfirm(
             @ApiParam(value = "PasswordFindDTO", required = true)
             @RequestBody PasswordConfirmDTO passwordConfirmDTO) {
-        userService.findByEmailAndProvider(passwordConfirmDTO.getEmail(), "local").orElseThrow(LoginFailedByEmailNotExistException::new);
+        userService.findByEmailAndProvider(passwordConfirmDTO.getEmail(), "local").orElseThrow(()-> new CrewException(ErrorCode.EMAIL_NOT_EXIST));
         emailService.codeForPasswordFinder(passwordConfirmDTO.getEmail(), passwordConfirmDTO.getCode());
         User user = userService.findByEmailAndProvider(passwordConfirmDTO.getEmail(), "local").get();
         userService.validationPasswd(passwordConfirmDTO.getChange_password());
@@ -456,7 +476,7 @@ public class AuthController {
     public ResponseEntity<Object> passwordCheck(
             @ApiParam(value = "PasswordCheckDTO", required = true)
             @RequestBody PasswordCheckDTO passwordCheckDTO) {
-        userService.findByEmailAndProvider(passwordCheckDTO.getEmail(), "local").orElseThrow(LoginFailedByEmailNotExistException::new);
+        userService.findByEmailAndProvider(passwordCheckDTO.getEmail(), "local").orElseThrow(()->new CrewException(ErrorCode.EMAIL_NOT_EXIST));
         emailService.codeForPasswordFinder(passwordCheckDTO.getEmail(), passwordCheckDTO.getCode());
         // 나중에 이름이나 닉네임으로 추가 인증
         return ResponseHandler.generateResponse("인증 코드 일치", HttpStatus.OK, null);

@@ -180,8 +180,6 @@ public class BoardController {
         return ResponseHandler.generateResponse("게시글 리스트 다중 조건 조회 성공", HttpStatus.OK, pageResponseDTO);
     }
 
-
-
     @ApiOperation(value = "게시글 수정(게시글 번호로 수정)", notes = "게시글 번호로 수정한다.")
     @ApiResponses({
             @ApiResponse(

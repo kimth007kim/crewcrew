@@ -2,30 +2,18 @@ package matchTeam.crewcrew.controller.api.v1.profile;
 
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
-import matchTeam.crewcrew.dto.user.LikedCategoryDto;
-import matchTeam.crewcrew.dto.user.ProfileChangTestDto;
 import matchTeam.crewcrew.dto.user.ProfileChangeRequestDto;
-import matchTeam.crewcrew.dto.user.example.UserResponseDto;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.response.ResponseHandler;
-import matchTeam.crewcrew.response.exception.auth.CUserNotFoundException;
-import matchTeam.crewcrew.response.exception.auth.LoginFailedByEmailNotExistException;
 import matchTeam.crewcrew.service.amazonS3.S3Uploader;
-import matchTeam.crewcrew.service.user.EmailService;
-import matchTeam.crewcrew.service.user.LikedCategoryService;
 import matchTeam.crewcrew.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Api(tags = "9. Profile")
 @RequiredArgsConstructor

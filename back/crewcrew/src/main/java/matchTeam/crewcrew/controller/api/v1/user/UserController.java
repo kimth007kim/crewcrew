@@ -3,19 +3,17 @@ package matchTeam.crewcrew.controller.api.v1.user;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.config.security.JwtProvider;
-import matchTeam.crewcrew.dto.social.NaverProfile;
 import matchTeam.crewcrew.dto.user.example.UserResponseDto;
 import matchTeam.crewcrew.entity.user.User;
+import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.ResponseHandler;
-import matchTeam.crewcrew.response.exception.auth.CUserNotFoundException;
-import matchTeam.crewcrew.response.exception.auth.LoginFailedByEmailNotExistException;
+import matchTeam.crewcrew.response.exception.CrewException;
 import matchTeam.crewcrew.service.user.LikedCategoryService;
 import matchTeam.crewcrew.service.user.UserService;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Api(tags={ "2. User"})
 @RestController("/v1")
@@ -71,7 +69,7 @@ public class UserController {
     @GetMapping("/user/email/{email}")
     public ResponseEntity<Object> findAllUser(
             @ApiParam(value = "회원 email",required =true)@PathVariable String email) {
-        User user= userService.findByEmail(email).orElseThrow(LoginFailedByEmailNotExistException::new);
+        User user= userService.findByEmail(email).orElseThrow(()->new CrewException(ErrorCode.EMAIL_NOT_EXIST));
         List<Long> liked =likedCategoryService.findUsersLike(user);
         UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(),user.getName(),user.getNickname(),user.getProfileImage(),liked,user.getMessage(),user.getProvider());
         return ResponseHandler.generateResponse("회원 단건 검색 성공", HttpStatus.OK, userResponseDto);

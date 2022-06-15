@@ -13,6 +13,10 @@
         font-weight: 500;
         text-align: center;
         margin: 50px 0 40px;
+
+        em{
+            color: $blue3;
+        }
     }
 }
 
@@ -26,32 +30,27 @@
     }
 }
 
-.LinkWrapper{
-    max-width: 580px;
+.LinkBox{
+    width: 188px;
+    height: 56px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 500;
+    color: $black3;
+    transition: .3s;
+    box-sizing: border-box;
+    border: 2px solid transparent;
     margin: auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px 10px;
 
-    .LinkBox{
-        width: 100%;
-        height: 56px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: $white;
-        border-radius: 10px;
-        cursor: pointer;
-        font-size: 20px;
-        font-weight: 500;
-        color: $black3;
-        transition: .3s;
-        box-sizing: border-box;
-        border: 2px solid transparent;
-
-        &:hover{
-            border: 2px solid $black3;
-        }
+    &:hover{
+        border: 2px solid $blue3;
+        color: $blue3;
+        font-weight: 700;
     }
 }
 
@@ -63,7 +62,7 @@
 
     .errorBody{
         min-height: calc(100vh - 130px);
-        padding: 50px 0 30px;
+        padding: 60px 0 30px;
 
         p.ErrMsg{
             font-size: 13px;
@@ -72,23 +71,11 @@
     }
     
     .ErrIMG{
-        width: 248px;
-        height: 160px;
+        width: 192px;
+        height: 124px;
     }
 
-    .LinkWrapper{
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-    }
-}
-
-@media screen and (max-width: 300px) {
-
-    .LinkWrapper{
-        gap: 13px;
-    }
-
-    .LinkBox span{
-        display: none;
+    .LinkBox{
+        width: 152px;
     }
 }

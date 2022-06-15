@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import matchTeam.crewcrew.entity.user.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignUpLocalRequestDto {
+public class SignUpSocialRequestDto {
     @ApiModelProperty(value="이메일 주소", example = "abc@naver.com",dataType = "String")
     private String email;
     @ApiModelProperty(value="비밀번호",example = "abcd12345678",dataType = "String")
@@ -39,22 +38,8 @@ public class SignUpLocalRequestDto {
     public User toEntity(PasswordEncoder passwordEncoder) {
         return User.builder()
                 .email(email)
-                .password(passwordEncoder.encode(password))
                 .nickname(nickName)
                 .profileImage(file)
-                .message(message)
-                .provider("local")
-                .name(name)
-                .roles(Collections.singletonList("ROLE_USER"))
-                .build();
-    }
-
-    public User toEntity() {
-        return User.builder()
-                .email(email)
-                .nickname(nickName)
-                .profileImage(file)
-                .message(message)
                 .provider(provider)
                 .name(name)
                 .roles(Collections.singletonList("ROLE_USER"))

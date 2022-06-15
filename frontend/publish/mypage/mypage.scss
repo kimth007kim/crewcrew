@@ -611,11 +611,7 @@ p.Nocontent{
             cursor: pointer;
             transition: .3s;
 
-            &:hover{
-                border: 2px solid $black3;
-            }
-
-            &.On{
+            &:hover, &.On{
                 border: 2px solid $blue3;
                 color: $blue3;
                 font-weight: 500;
