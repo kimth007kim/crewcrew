@@ -2337,6 +2337,10 @@ main {
   margin: 50px 0 40px;
 }
 
+.errorBody p.ErrMsg em {
+  color: #00b7ff;
+}
+
 .ErrIMG {
   width: 403px;
   height: 260px;
@@ -2347,18 +2351,8 @@ main {
   background: url("/frontend/src/assets/images/404.png") center/contain no-repeat;
 }
 
-.LinkWrapper {
-  max-width: 580px;
-  margin: auto;
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-columns: (1fr)[3];
-      grid-template-columns: repeat(3, 1fr);
-  gap: 12px 10px;
-}
-
-.LinkWrapper .LinkBox {
-  width: 100%;
+.LinkBox {
+  width: 188px;
   height: 56px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2380,10 +2374,13 @@ main {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   border: 2px solid transparent;
+  margin: auto;
 }
 
-.LinkWrapper .LinkBox:hover {
-  border: 2px solid #868686;
+.LinkBox:hover {
+  border: 2px solid #00b7ff;
+  color: #00b7ff;
+  font-weight: 700;
 }
 
 @media screen and (max-width: 820px) {
@@ -2392,29 +2389,18 @@ main {
   }
   .errorBody {
     min-height: calc(100vh - 130px);
-    padding: 50px 0 30px;
+    padding: 60px 0 30px;
   }
   .errorBody p.ErrMsg {
     font-size: 13px;
     line-height: 20px;
   }
   .ErrIMG {
-    width: 248px;
-    height: 160px;
+    width: 192px;
+    height: 124px;
   }
-  .LinkWrapper {
-    -ms-grid-columns: 1fr 1fr;
-        grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-}
-
-@media screen and (max-width: 300px) {
-  .LinkWrapper {
-    gap: 13px;
-  }
-  .LinkBox span {
-    display: none;
+  .LinkBox {
+    width: 152px;
   }
 }
 /*# sourceMappingURL=error.css.map */

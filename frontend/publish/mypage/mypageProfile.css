@@ -2994,11 +2994,7 @@ p.Nocontent em {
   transition: .3s;
 }
 
-.ListTap li button:hover {
-  border: 2px solid #868686;
-}
-
-.ListTap li button.On {
+.ListTap li button:hover, .ListTap li button.On {
   border: 2px solid #00b7ff;
   color: #00b7ff;
   font-weight: 500;
