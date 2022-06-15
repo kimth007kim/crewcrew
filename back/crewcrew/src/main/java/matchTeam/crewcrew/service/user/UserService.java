@@ -483,6 +483,7 @@ public class UserService {
                 .nickName(nickName)
                 .provider("naver")
                 .build());
+        System.out.println("==네이버에서 보낸 프로필 이미지=="+naverProfile.getResponse().getProfile_image());
         User user = findByUid(userId);
         if (naverProfile.getResponse().getProfile_image()==null){
             String file =s3Uploader.setDefaultImage(user.getEmail(),user.getProvider());
