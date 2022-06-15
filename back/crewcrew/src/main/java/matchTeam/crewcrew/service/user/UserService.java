@@ -487,15 +487,14 @@ public class UserService {
 //        https://ssl.pstatic.net/static/pwe/address/img_profile.png
 
 
-        System.out.println("==네이버에서 보낸 프로필 이미지=="+naverProfile.getResponse().getProfile_image());
-        System.out.println("https://ssl.pstatic.net/static/pwe/address/img_profile.png");
-        System.out.println(naverProfile.getResponse().getProfile_image().equals("https://ssl.pstatic.net/static/pwe/address/img_profile.png"));
+//        System.out.println("==네이버에서 보낸 프로필 이미지=="+naverProfile.getResponse().getProfile_image());
+//        System.out.println("https://ssl.pstatic.net/static/pwe/address/img_profile.png");
+//        System.out.println(naverProfile.getResponse().getProfile_image().equals("https://ssl.pstatic.net/static/pwe/address/img_profile.png"));
 
         if (naverProfile.getResponse().getProfile_image().equals("https://ssl.pstatic.net/static/pwe/address/img_profile.png")==true){
 
             String file =s3Uploader.setDefaultImage(user.getEmail(),user.getProvider());
             setProfileImage(user,file);
-            log.info("프로필 이미지 기본값으로 등록 완료");
         }else{
             String email_url = s3Uploader.nameFile(naverProfile.getResponse().getEmail(), "naver");
             urlToImage(email_url, naverProfile.getResponse().getProfile_image(), user);
