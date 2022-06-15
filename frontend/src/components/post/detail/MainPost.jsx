@@ -6,10 +6,11 @@ import Markdown from '@/lib/Markdown';
 import { viewDay } from '@/utils';
 import { differenceInDays, format, getDay } from 'date-fns';
 import { cateogoryAll } from '@/frontDB/filterDB';
+import axios from 'axios';
 
 function MainPost({ data }) {
   const [IsDisable, setIsDisable] = useState(false);
-
+  console.log(data)
   const renderDate = useCallback(() => {
     const date = new Date(data.createdDate);
     return `${format(date, 'M/d')} (${viewDay(getDay(date))})`;
@@ -20,6 +21,20 @@ function MainPost({ data }) {
     const nowDate = new Date();
     return differenceInDays(date, nowDate) + 1;
   }, []);
+
+  const bookmark = async() => {
+    try{
+        const params = new URLSearchParams();
+        params.append('boardId', data.boardId);
+        params.append('userId', data.uid);
+        const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, params, {
+          withCredentials: true,
+        });
+        console.log(bookmarkdata.data);
+    } catch(err) {
+      console.error(error);
+    }
+  }
 
   useEffect(() => {
     const bool = !data.viewable || renderDay() < 0;
@@ -40,7 +55,7 @@ function MainPost({ data }) {
             <h4>{data.title}</h4>
           </li>
           <li>
-            <ButtonStar type="button" active />
+            <ButtonStar type="button" onClick={bookmark}/>
           </li>
           <li>
             <Button type="button" disabled={IsDisable}>

@@ -87,12 +87,7 @@ function Main() {
       const { data } = await axios.get('/category/list');
       const listData = [];
       data.data.forEach((dataDepth) => {
-<<<<<<< HEAD
-        dataDepth.children.forEach(e => {
-
-=======
         dataDepth.children.forEach((e) => {
->>>>>>> auth
           listData.push({
             catParentName: dataDepth.categoryName,
             ...e,
