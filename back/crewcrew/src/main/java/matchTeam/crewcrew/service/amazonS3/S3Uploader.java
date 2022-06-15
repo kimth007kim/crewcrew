@@ -32,10 +32,15 @@ public class S3Uploader {
     public String bucket;
 
 
-    public String setDefaultImage(String email, Integer number) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(email);
-        sb.append("_local");
+    public String setDefaultImage(String email,String provider) {
+        int random = (int) ((Math.random() * 5 + 1));
+        String result = setDefaultImage(email, provider,random);
+        return result;
+
+    }
+
+    private String setDefaultImage(String email,String provider, int number) {
+        String folder = nameFile(email,provider);
 
 
         StringBuilder start = new StringBuilder();
@@ -45,18 +50,19 @@ public class S3Uploader {
         String source = start.toString();
 
 //                도착경로 만드는 메서드
-        String destination = sb.toString() + "/profile";
+        StringBuilder sb = new StringBuilder();
+        sb.append(folder);
+        sb.append("/");
+        sb.append(generateName());
+        String destination =sb.toString();
         copy(source, destination);
 
-        return destination;
-
+        return amazonS3Client.getUrl(bucket, destination).toString();
     }
 
 
-
-
     public String addImageWhenSignUp(String email, MultipartFile file, Integer Default, String provider) {
-        if (file==null) {
+        if (file == null) {
             System.out.println("1 발동");
             if (Default == null || 0 >= Default || Default > 5) {
                 System.out.println("2 ");
@@ -71,8 +77,8 @@ public class S3Uploader {
                 String source = start.toString();
 
 //                도착경로 만드는 메서드
-                StringBuilder destination= new StringBuilder();
-                destination.append(nameFile(email,provider));
+                StringBuilder destination = new StringBuilder();
+                destination.append(nameFile(email, provider));
                 destination.append("/");
                 destination.append(generateName());
 
@@ -81,7 +87,7 @@ public class S3Uploader {
                 copy(source, result);
                 return amazonS3Client.getUrl(bucket, result).toString();
             }
-        }else {
+        } else {
             String filename;
             try {
                 String email_url = nameFile(email, provider);
@@ -89,7 +95,7 @@ public class S3Uploader {
             } catch (IOException e) {
                 throw new CrewException(ErrorCode.S3_UPLOAD_FAIL);
             }
-        return filename;
+            return filename;
         }
 
     }
@@ -117,7 +123,8 @@ public class S3Uploader {
         String uploadImageUrl = putS3(uploadFile, fileName);
         return uploadImageUrl;
     }
-    public String generateName(){
+
+    public String generateName() {
         return String.valueOf(UUID.randomUUID());
     }
 

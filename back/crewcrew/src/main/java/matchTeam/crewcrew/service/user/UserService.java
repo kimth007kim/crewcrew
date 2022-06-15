@@ -291,9 +291,6 @@ public class UserService {
         user.setProfileImage(image);
     }
 
-    public void setMessage(User user, String message) {
-        user.setMessage(message);
-    }
 
     public void changePassword(User user, String password) {
         String new_password = passwordEncoder.encode(password);
@@ -463,9 +460,14 @@ public class UserService {
                 .build());
         User user = findByUid(userId);
         String email_url = s3Uploader.nameFile(kakaoProfile.getKakao_account().getEmail(), "kakao");
-        s3Uploader.urlConvert(email_url, kakaoProfile.getKakao_account().getProfile().getProfile_image_url(), user);
+        if (kakaoProfile.getKakao_account().getProfile().getProfile_image_url()==null){
+            s3Uploader.setDefaultImage(user.getEmail(),user.getProvider());
+        }else{
+            s3Uploader.urlConvert(email_url, kakaoProfile.getKakao_account().getProfile().getProfile_image_url(), user);
+        }
         ArrayList<Long> Default = new ArrayList<>(Arrays.asList(7L,14L));
         likedCategoryService.addLikedCategory(user,Default);
+        setRandomMessage(user);
 
         return user;
     }
@@ -480,10 +482,15 @@ public class UserService {
                 .provider("naver")
                 .build());
         User user = findByUid(userId);
-        String email_url = s3Uploader.nameFile(naverProfile.getResponse().getEmail(), "naver");
-        urlToImage(email_url, naverProfile.getResponse().getProfile_image(), user);
+        if (naverProfile.getResponse().getProfile_image()==null){
+            s3Uploader.setDefaultImage(user.getEmail(),user.getProvider());
+        }else{
+            String email_url = s3Uploader.nameFile(naverProfile.getResponse().getEmail(), "naver");
+            urlToImage(email_url, naverProfile.getResponse().getProfile_image(), user);
+        }
         ArrayList<Long> Default = new ArrayList<>(Arrays.asList(7L,14L));
         likedCategoryService.addLikedCategory(user,Default);
+        setRandomMessage(user);
         return user;
     }
 
