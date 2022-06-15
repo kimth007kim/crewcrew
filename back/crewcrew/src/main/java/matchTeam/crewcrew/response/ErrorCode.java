@@ -58,7 +58,7 @@ public enum ErrorCode {
     S3_UPLOAD_FAIL(1501,"S3 UPLOAD FAIL","S3에 업로드하는것을 실패하였습니다."),
     S3_FILE_NOT_FOUND(1502,"S3 FILE NOT FOUND","S3에 업로드할 파일을 찾을 수 없습니다."),
 
-    
+
 
 
 
@@ -110,17 +110,20 @@ public enum ErrorCode {
     NOT_MATCH_BOARD_OWNER(2406, "NOT_MATCH_BOARD_OWNER", "게시판 작성자가 조회하지 않았습니다."),
     NOT_EXIST_APPLY(2407, "NOT_EXITS_APPLY", "존재하지 않는 신청서입니다."),
 
-    
+
     // 3000~3100 마이페이지 예외
     EMPTY_CATEGORY_EXCEPTION(3001, "CATEGORY IS EMPTY", "카테고리가 선택되지 않았습니다."),
     EMPTY_NICKNAME_EXCEPTION(3002, "NICKNAME IS EMPTY", "닉네임이 입력되지 않았습니다."),
     EMPTY_NAME_EXCEPTION(3003, "NAME IS EMPTY", "이름이 입력되지 않았습니다."),
     EMPTY_MESSAGE_EXCEPTION(3004, "MESSAGE IS EMPTY", "메세지가 입력되지 않았습니다."),
     CATEGORY_STUDY_NULL_EXCEPTION(3005,"CATEGORY STUDY IS NULL","카테고리에서 스터디 항목이 선택되지 않았습니다."),
-    CATEGORY_HOBBY_NULL_EXCEPTION(3006,"CATEGORY STUDY IS NULL","카테고리에서 취미 항목이 선택되지 않았습니다.");
+    CATEGORY_HOBBY_NULL_EXCEPTION(3006,"CATEGORY STUDY IS NULL","카테고리에서 취미 항목이 선택되지 않았습니다."),
 
+    // 4000~ 북마크 예외
+    NOT_EXIST_BOOKMARK_TO_CANCEL(4001, "BOOKMARK IS EMPTY", "없는 북마크를 삭제하려고 했습니다."),
+    ALREADY_EXIST_BOOKMARK_TO_POST(4002, "BOOKMARK IS ALREADY EXIST", "이미 존재하는 북마크를 생성하도록 요청했습니다."),
 
-
+    NOT_MATCH_UID_WITH_BOOKMARK(4101, "UID IS NOT MATCH WITH BOOKMARK", "해당 북마크에 대한 권한이 없는 유저가 북마크 삭제를 요청했습니다.");
 
     private int status;
     private final String code;
