@@ -1,6 +1,3 @@
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable prettier/prettier */
-/* eslint-disable indent */
 import React, { useCallback, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useLocation, NavLink } from 'react-router-dom';
@@ -33,11 +30,7 @@ import PostCreateModal from '../../post/modal/PostCreate';
 
 function Lnb({ path }) {
   const cookies = new Cookies();
-  const {
-    data: myData,
-    error,
-    mutate,
-  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const [on, changeOn] = useState(false);
   const { pathname } = useLocation();
@@ -72,28 +65,36 @@ function Lnb({ path }) {
           </NavPCHeader>
           <NavPCBody>
             <NavPCBodyUl>
-              <NavLink to="/">
-                <HomeIcon selected={path === 'home'}>
+              <li>
+                <NavLink to="/">
+                  <HomeIcon selected={path === 'home'}>
+                    <span />
+                    <p>홈</p>
+                  </HomeIcon>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/post">
+                  <PartIcon selected={pathname.startsWith('/post')}>
+                    <span />
+                    <p>크루참여</p>
+                  </PartIcon>
+                </NavLink>
+              </li>
+              <li>
+                <RecruIcon selected={pathname.startsWith('/crew')} onClick={handlePostModal}>
                   <span />
-                  <p>홈</p>
-                </HomeIcon>
-              </NavLink>
-              <NavLink to="/post">
-                <PartIcon selected={pathname.startsWith('/post')}>
-                  <span />
-                  <p>크루참여</p>
-                </PartIcon>
-              </NavLink>
-              <RecruIcon selected={pathname.startsWith('/crew')} onClick={handlePostModal}>
-                <span />
-                <p>팀원모집</p>
-              </RecruIcon>
-              <NavLink to="/">
-                <ChatIcon selected={pathname.startsWith('/chat')}>
-                  <span />
-                  <p>채팅</p>
-                </ChatIcon>
-              </NavLink>
+                  <p>팀원모집</p>
+                </RecruIcon>
+              </li>
+              <li>
+                <NavLink to="/">
+                  <ChatIcon selected={pathname.startsWith('/chat')}>
+                    <span />
+                    <p>채팅</p>
+                  </ChatIcon>
+                </NavLink>
+              </li>
             </NavPCBodyUl>
           </NavPCBody>
           <NavPCFooter>
@@ -230,7 +231,7 @@ const NavPCBodyUl = styled.ul`
   height: 100%;
 `;
 
-const NavPCBodyLi = styled.li`
+const NavPCBodyDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -244,7 +245,7 @@ const NavPCBodyLi = styled.li`
   cursor: pointer;
 `;
 
-const HomeIcon = styled(NavPCBodyLi)`
+const HomeIcon = styled(NavPCBodyDiv)`
   p {
     ${(props) =>
       props.selected &&
@@ -286,7 +287,7 @@ const HomeIcon = styled(NavPCBodyLi)`
   }
 `;
 
-const PartIcon = styled(NavPCBodyLi)`
+const PartIcon = styled(NavPCBodyDiv)`
   p {
     ${(props) =>
       props.selected &&
@@ -329,7 +330,7 @@ const PartIcon = styled(NavPCBodyLi)`
   }
 `;
 
-const RecruIcon = styled(NavPCBodyLi)`
+const RecruIcon = styled(NavPCBodyDiv)`
   p {
     ${(props) =>
       props.selected &&
@@ -372,7 +373,7 @@ const RecruIcon = styled(NavPCBodyLi)`
   }
 `;
 
-const ChatIcon = styled(NavPCBodyLi)`
+const ChatIcon = styled(NavPCBodyDiv)`
   p {
     ${(props) =>
       props.selected &&
@@ -464,6 +465,8 @@ const NavPCFooterB = styled.div`
 
 const ProfileNullImg = styled.img`
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const NavArrow = styled.div`

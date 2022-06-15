@@ -21,7 +21,6 @@ function Footer() {
             <li>김도희</li>
             <li>이하늘</li>
             <li>박한결</li>
-            <li>이재혁</li>
             <li>오주영</li>
             <li>유재영</li>
           </ul>
