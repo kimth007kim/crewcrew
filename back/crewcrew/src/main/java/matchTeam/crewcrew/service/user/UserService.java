@@ -459,11 +459,13 @@ public class UserService {
                 .provider("kakao")
                 .build());
         User user = findByUid(userId);
-        String email_url = s3Uploader.nameFile(kakaoProfile.getKakao_account().getEmail(), "kakao");
         if (kakaoProfile.getKakao_account().getProfile().getProfile_image_url()==null){
-            s3Uploader.setDefaultImage(user.getEmail(),user.getProvider());
+            String file = s3Uploader.setDefaultImage(user.getEmail(),user.getProvider());
+            setProfileImage(user,file);
         }else{
-            s3Uploader.urlConvert(email_url, kakaoProfile.getKakao_account().getProfile().getProfile_image_url(), user);
+            String email_url = s3Uploader.nameFile(kakaoProfile.getKakao_account().getEmail(), "kakao");
+            String file =s3Uploader.urlConvert(email_url, kakaoProfile.getKakao_account().getProfile().getProfile_image_url(), user);
+            setProfileImage(user,file);
         }
         ArrayList<Long> Default = new ArrayList<>(Arrays.asList(7L,14L));
         likedCategoryService.addLikedCategory(user,Default);
@@ -483,10 +485,12 @@ public class UserService {
                 .build());
         User user = findByUid(userId);
         if (naverProfile.getResponse().getProfile_image()==null){
-            s3Uploader.setDefaultImage(user.getEmail(),user.getProvider());
+            String file =s3Uploader.setDefaultImage(user.getEmail(),user.getProvider());
+            setProfileImage(user,file);
         }else{
             String email_url = s3Uploader.nameFile(naverProfile.getResponse().getEmail(), "naver");
             urlToImage(email_url, naverProfile.getResponse().getProfile_image(), user);
+
         }
         ArrayList<Long> Default = new ArrayList<>(Arrays.asList(7L,14L));
         likedCategoryService.addLikedCategory(user,Default);
