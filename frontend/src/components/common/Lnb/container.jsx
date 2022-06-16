@@ -73,14 +73,12 @@ function NavButton({ ghost, title, clickFunc }) {
 }
 
 function NavContainer() {
-  const [isBookmark, setIsBookmark] = useState(false);
   const [bookmarkArr, setBookmarkArr] = useState([]);
   const cookies = new Cookies();
   const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [Dialog, openModal, closeModal] = useModal();
-
   const handleClick = useCallback(() => {
     openModal();
     axiosGetBookmark();
@@ -102,6 +100,7 @@ function NavContainer() {
               navigate('/', { replace: true });
             }
             window.location.reload();
+            //cookies.remove('X-AUTH-TOKEN');
             break;
           case 1900:
             toast.error(data.message);
@@ -128,10 +127,7 @@ function NavContainer() {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
         },
       });
-      if(data.status == 200) {
-        setIsBookmark(true);
-        setBookmarkArr([...data.data.contents]);
-      }
+      data.status == 200 && setBookmarkArr([...data.data.contents]);
     } catch (error) {
       toast.error(error);
       console.dir(error);
@@ -140,27 +136,18 @@ function NavContainer() {
 
   useEffect(() => {
     axiosGetBookmark();
-  }, []);
+  }, [myData]);
 
-  const renderBookmarked = (data) => {
-    if (data.length > 0) {
-      return (
-        <ul>
-          {bookmarkArr.map(bm => (
-            <BookmarkLi key={`${bm.boardId}bookmarked`}>
-              <PostCardSlide data={bm}/>
-            </BookmarkLi>
-          ))}
-          <BookmarkLi>
-            <NavCardPlusPost to="/post">
-              <PlusIcon />
-              <span>모집글 둘러보러 가기</span>
-            </NavCardPlusPost>
+  const renderBookmarked = () => {
+    return (
+      <>
+        {bookmarkArr.map(data => (
+          <BookmarkLi key={`${data.boardId}bookmarked`}>
+            <PostCardSlide data={data}/>
           </BookmarkLi>
-          
-        </ul>
-      )
-    }
+        ))}
+      </>
+    )
   }
   return (
     <>
@@ -211,11 +198,8 @@ function NavContainer() {
 
           {myData && myData.data ? (
             <NavPostCardWrapper>
-
-              {isBookmark ? (
-                renderBookmarked(bookmarkArr)
-              ) : (
                 <ul>
+                  {bookmarkArr.length > 0 && renderBookmarked()}
                   <BookmarkLi>
                     <NavCardPlusPost to="/post">
                     <PlusIcon />
@@ -223,8 +207,6 @@ function NavContainer() {
                     </NavCardPlusPost>
                   </BookmarkLi>
                 </ul>
-              )}
-            
             </NavPostCardWrapper>
           ) : (
             <NavCardList>
@@ -462,6 +444,7 @@ const NavPostCardWrapper = styled.div`
   }
   @media screen and (max-width: 820px) {
     margin-top: 25px;
+    max-height: calc(100vh - 312px);
   }
 `;
 
