@@ -66,6 +66,8 @@ public class BookmarkSearchRepository {
         return !bm.isEmpty();
     }
 
+
+
     private OrderSpecifier<?> findOrder(String order){
         if (!hasText(order)){
             return OrderByNull.DEFAULT;

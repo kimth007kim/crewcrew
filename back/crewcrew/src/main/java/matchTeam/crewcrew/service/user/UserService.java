@@ -416,7 +416,6 @@ public class UserService {
         }
         User user = userRepository.findByUid(Long.valueOf(uid));
 
-
         return user;
     }
 
