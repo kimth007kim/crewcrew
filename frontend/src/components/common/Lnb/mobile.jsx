@@ -340,7 +340,7 @@ const MobileNavUl = styled.ul`
   margin-top: 7px;
 `;
 
-const MobileNavLi = styled.li`
+const MobileNavLi = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
