@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components';
 
 import ButtonStarWhite from '@/assets/images/ButtonStarWhite.png';
+import ButtonStarOn from '@/assets/images/ButtonStarOn.png';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import { format, getDay, differenceInDays } from 'date-fns';
 import { viewDay } from '@/utils';
@@ -36,7 +37,7 @@ function PostCardSlide({ data }) {
                 조회수
                 <span> {data.hit}</span>
               </p>
-              <Star />
+              <Star bookmark={data.isBookmarked}/>
             </CardHeadRight>
           </CardHead>
           <CardBody>
@@ -252,9 +253,17 @@ const ProfileImg = styled.div`
 `;
 
 const Star = styled.div`
+    ${(props) => 
+      props.bookmark ?
+        css `
+          background: #c4c4c4 url(${ButtonStarOn}) center/20px no-repeat;
+        ` : 
+        css `
+          background: #c4c4c4 url(${ButtonStarWhite}) center/20px no-repeat;
+        `
+    }
   width: 30px;
   height: 30px;
-  background: #c4c4c4 url(${ButtonStarWhite}) center/20px no-repeat;
   cursor: pointer;
   margin-left: 10px;
   border-radius: 5px;
