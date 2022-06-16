@@ -143,7 +143,7 @@ function NavContainer() {
       <>
         {bookmarkArr.map(data => (
           <BookmarkLi key={`${data.boardId}bookmarked`}>
-            <PostCardSlide data={data}/>
+            <PostCardSlide data={data} cookies={cookies.get('X-AUTH-TOKEN')}/>
           </BookmarkLi>
         ))}
       </>

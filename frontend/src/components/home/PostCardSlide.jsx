@@ -48,7 +48,7 @@ function PostCardSlide({ data, cookies }) {
         });
         if(bookmarkdata.data.status == 200) bookmarked = true;
       } else {
-        const bookmarkdata = await axios.delete(`/bookmark/${data.bookmarkId}`, '', {
+        const bookmarkdata = await axios.delete(`/bookmark/${data.boardId}`, '', {
           withCredentials: true,
           headers: {
             'X-AUTH-TOKEN': cookies,
