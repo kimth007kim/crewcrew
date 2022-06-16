@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
 import ButtonStarWhite from '@/assets/images/ButtonStarWhite.png';
@@ -6,9 +6,12 @@ import ButtonStarOn from '@/assets/images/ButtonStarOn.png';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import { format, getDay, differenceInDays } from 'date-fns';
 import { viewDay } from '@/utils';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-function PostCardSlide({ data }) {
+function PostCardSlide({ data, cookies }) {
+  const [isBookmark, setIsBookmark] = useState(false);
+  const navigate = useNavigate();
   const renderDate = useCallback(() => {
     const date = new Date(data.createdDate);
     return `${format(date, 'M/d')} (${viewDay(getDay(date))})`;
@@ -23,10 +26,47 @@ function PostCardSlide({ data }) {
   const category = (id = data.categoryParentId) => {
     return id === 1 ? 'study' : 'hobby';
   };
+
+  const handleLocate = () => {
+    navigate(`/post/${data.boardId}`);
+  }
+
+  useEffect(() => {
+    data.isBookmarked ? setIsBookmark(true) : setIsBookmark(false);
+  }, [])
+
+  const bookmark = async(e) => {
+    e.stopPropagation();
+    let bookmarked = data.isBookmarked;
+    try{
+      const params = new URLSearchParams();
+      if(!isBookmark){
+        const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, params, {
+          withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies,
+          },
+        });
+        if(bookmarkdata.data.status == 200) bookmarked = true;
+      } else {
+        const bookmarkdata = await axios.delete(`/bookmark/${data.bookmarkId}`, params, {
+          withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies,
+          },
+        });
+        if(bookmarkdata.data.status == 200) bookmarked = false;
+      }
+    } catch(err) {
+      console.error(error);
+    } finally {
+      bookmarked ? setIsBookmark(true) : setIsBookmark(false);
+    }
+  }
+
   return (
     <Container>
-      <Link to={`/post/${data.boardId}`}>
-        <CardPost category={category()}>
+        <CardPost category={category()} onClick={handleLocate}>
           <CardHead>
             <h5>
               <span>{`D-${renderDay()}`}</span>
@@ -37,7 +77,7 @@ function PostCardSlide({ data }) {
                 조회수
                 <span> {data.hit}</span>
               </p>
-              <Star bookmark={data.isBookmarked}/>
+              <Star bookmark={isBookmark} onClick={bookmark}/>
             </CardHeadRight>
           </CardHead>
           <CardBody>
@@ -65,7 +105,6 @@ function PostCardSlide({ data }) {
             </CardTag>
           </CardFooter>
         </CardPost>
-      </Link>
     </Container>
   );
 }

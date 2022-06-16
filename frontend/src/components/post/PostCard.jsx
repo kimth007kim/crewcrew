@@ -2,12 +2,16 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { format, getDay, differenceInDays } from 'date-fns';
 import ButtonStarWhite from '@/assets/images/ButtonStarWhite.png';
+import ButtonStarOn from '@/assets/images/ButtonStarOn.png';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import { viewDay } from '@/utils';
 import { useNavigate, useParams } from 'react-router-dom';
 import useQuery from '@/hooks/useQuery';
+import { Cookies } from 'react-cookie';
 
 function PostCard({ data }) {
+  const cookies = new Cookies();
+  const [isBookmark, setIsBookmark] = useState(false);
   const [IsDisable, setIsDisable] = useState(false);
   const navigate = useNavigate();
   const query = useQuery();
@@ -32,9 +36,40 @@ function PostCard({ data }) {
     return differenceInDays(date, nowDate) + 1;
   }, []);
 
+  const bookmark = async(e) => {
+    e.stopPropagation();
+    let bookmarked = data.isBookmarked;
+    console.log(data)
+    try{
+      params.append('userId', data.uid);
+      if(!isBookmark){
+        const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, {
+          withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+          },
+        });
+        if(bookmarkdata.data.status == 200) bookmarked = true;
+      } else {
+        const bookmarkdata = await axios.delete(`/bookmark/${data.bookmarkId}`, {
+          withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+          },
+        });
+        if(bookmarkdata.data.status == 200) bookmarked = false;
+      }
+    } catch(err) {
+      console.error(error);
+    } finally {
+      bookmarked ? setIsBookmark(true) : setIsBookmark(false);
+    }
+  }
+
   useEffect(() => {
     const bool = !data.viewable || renderDay() < 0;
     setIsDisable(bool);
+    data.isBookmarked ? setIsBookmark(true) : setIsBookmark(false);
   }, []);
 
   return (
@@ -53,7 +88,7 @@ function PostCard({ data }) {
         <TextBox>
           <TitleBox>
             <h5>{data.title}</h5>
-            <Star />
+            <Star bookmark={isBookmark} onClick={bookmark}/>
           </TitleBox>
           <TextList>
             <CategoryText
@@ -140,9 +175,17 @@ const CategoryText = styled.span`
 `;
 
 const Star = styled.div`
+    ${(props) => 
+      props.bookmark ?
+        css `
+          background: #c4c4c4 url(${ButtonStarOn}) center/20px no-repeat;
+        ` : 
+        css `
+          background: #c4c4c4 url(${ButtonStarWhite}) center/20px no-repeat;
+        `
+    }
   width: 30px;
   height: 30px;
-  background: #c4c4c4 url(${ButtonStarWhite}) center/20px no-repeat;
   border-radius: 5px;
   cursor: pointer;
   margin-left: 22px;

@@ -7,8 +7,10 @@ import { viewDay } from '@/utils';
 import { differenceInDays, format, getDay } from 'date-fns';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import axios from 'axios';
+import { Cookies } from 'react-cookie';
 
 function MainPost({ data }) {
+  const cookies = new Cookies();
   const [IsDisable, setIsDisable] = useState(false);
   console.log(data)
   const renderDate = useCallback(() => {
@@ -25,10 +27,11 @@ function MainPost({ data }) {
   const bookmark = async() => {
     try{
         const params = new URLSearchParams();
-        params.append('boardId', data.boardId);
-        params.append('userId', data.uid);
         const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, params, {
           withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+          },
         });
         console.log(bookmarkdata.data);
     } catch(err) {
