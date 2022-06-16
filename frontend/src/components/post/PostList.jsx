@@ -144,6 +144,7 @@ function PostList() {
   const handleHistoryback = useCallback(() => {
     navigate(-1);
   }, []);
+
   const renderPostList = () => {
     if (PostListData.length > 0) {
       return (
@@ -187,6 +188,7 @@ function PostList() {
       </EmptyList>
     );
   };
+
   useEffect(() => {
     const pageNum = query.get('page');
     const pageSearch = query.get('search');
