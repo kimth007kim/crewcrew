@@ -5,9 +5,14 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.board.*;
 import matchTeam.crewcrew.dto.bookmark.BookmarkSaveResponseDTO;
+import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.bookmark.Bookmark;
 import matchTeam.crewcrew.entity.user.User;
+import matchTeam.crewcrew.repository.board.BoardRepository;
+import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.ResponseHandler;
+import matchTeam.crewcrew.response.exception.CrewException;
+import matchTeam.crewcrew.service.board.BoardService;
 import matchTeam.crewcrew.service.bookmark.BookmarkService;
 import matchTeam.crewcrew.service.user.UserService;
 import org.springframework.data.domain.Page;
@@ -23,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 public class BookmarkController {
     private final BookmarkService bookmarkService;
     private final UserService userService;
+    private final BoardRepository boardRepository;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/bookmark/{boardId}")
@@ -37,11 +43,12 @@ public class BookmarkController {
     }
 
     @ResponseStatus(value = HttpStatus.OK)
-    @DeleteMapping(value = "/bookmark/{bookmarkId}")
-    public ResponseEntity<Object> cancelBookmark(@RequestHeader("X-AUTH-TOKEN") String token, @PathVariable Long bookmarkId){
+    @DeleteMapping(value = "/bookmark/{boardId}")
+    public ResponseEntity<Object> cancelBookmark(@RequestHeader("X-AUTH-TOKEN") String token, @PathVariable Long boardId){
         User user = userService.tokenChecker(token);
-        bookmarkService.cancelBookmark(bookmarkId, user.getUid());
-        return ResponseHandler.generateResponse(bookmarkId+"번 북마크 삭제 성공", HttpStatus.OK, bookmarkId);
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> new CrewException(ErrorCode.NOT_EXIST_BOARD_IN_ID));
+        bookmarkService.cancelBookmark(board, user);
+        return ResponseHandler.generateResponse(boardId+ "번 게시물에 대한 북마크 삭제 성공", HttpStatus.OK, boardId);
     }
 
     @GetMapping("/bookmark/list")
