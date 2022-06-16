@@ -8,6 +8,7 @@ import { viewDay } from '@/utils';
 import { useNavigate, useParams } from 'react-router-dom';
 import useQuery from '@/hooks/useQuery';
 import { Cookies } from 'react-cookie';
+import axios from 'axios';
 
 function PostCard({ data }) {
   const cookies = new Cookies();
@@ -39,11 +40,9 @@ function PostCard({ data }) {
   const bookmark = async(e) => {
     e.stopPropagation();
     let bookmarked = data.isBookmarked;
-    console.log(data)
     try{
-      params.append('userId', data.uid);
       if(!isBookmark){
-        const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, {
+        const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, '', {
           withCredentials: true,
           headers: {
             'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
@@ -51,7 +50,7 @@ function PostCard({ data }) {
         });
         if(bookmarkdata.data.status == 200) bookmarked = true;
       } else {
-        const bookmarkdata = await axios.delete(`/bookmark/${data.bookmarkId}`, {
+        const bookmarkdata = await axios.delete(`/bookmark/${data.bookmarkId}`, '', {
           withCredentials: true,
           headers: {
             'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),

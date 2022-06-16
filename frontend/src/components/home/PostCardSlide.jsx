@@ -39,9 +39,8 @@ function PostCardSlide({ data, cookies }) {
     e.stopPropagation();
     let bookmarked = data.isBookmarked;
     try{
-      const params = new URLSearchParams();
       if(!isBookmark){
-        const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, params, {
+        const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`,'', {
           withCredentials: true,
           headers: {
             'X-AUTH-TOKEN': cookies,
@@ -49,7 +48,7 @@ function PostCardSlide({ data, cookies }) {
         });
         if(bookmarkdata.data.status == 200) bookmarked = true;
       } else {
-        const bookmarkdata = await axios.delete(`/bookmark/${data.bookmarkId}`, params, {
+        const bookmarkdata = await axios.delete(`/bookmark/${data.bookmarkId}`, '', {
           withCredentials: true,
           headers: {
             'X-AUTH-TOKEN': cookies,

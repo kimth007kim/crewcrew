@@ -151,26 +151,10 @@ function Main() {
     }
   }, []);
 
-  const axiosGetBookmark = useCallback( async() => {
-    try{
-      const { data } = await axios.get('/bookmark/list', {
-        withCredentials: true,
-        headers: {
-          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
-        },
-      });
-      console.log(data)
-    } catch (error) {
-      toast.error(error);
-      console.dir(error);
-    }
-  }, [])
-
   useEffect(() => {
     CatList();
     axiosGetNewPost();
     axiosGetDeadLinePost();
-    axiosGetBookmark();
   }, []);
 
   return (

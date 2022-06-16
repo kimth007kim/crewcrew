@@ -26,8 +26,7 @@ function MainPost({ data }) {
 
   const bookmark = async() => {
     try{
-        const params = new URLSearchParams();
-        const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, params, {
+        const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, '', {
           withCredentials: true,
           headers: {
             'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
