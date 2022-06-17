@@ -75,12 +75,6 @@ function Main() {
     }
   };
 
-  const params = new URLSearchParams();
-  const context = {
-    params,
-  };
-  params.append('order', 'expired');
-
   const CatList = useCallback(async () => {
     try {
       const { data } = await axios.get('/category/list');
@@ -133,6 +127,12 @@ function Main() {
 
   const axiosGetDeadLinePost = useCallback(async () => {
     try {
+      const params = new URLSearchParams();
+      const context = {
+        params,
+      };
+      params.append('order', 'expired');
+
       const { data } = await axios.get('/board/list', context);
       switch (data.status) {
         case 200:
@@ -229,7 +229,6 @@ const MainMain = styled.main`
   margin-left: 142px;
   box-sizing: border-box;
   overflow-x: hidden;
-  word-break: keep-all;
 
   @media screen and (max-width: 820px) {
     width: 100%;

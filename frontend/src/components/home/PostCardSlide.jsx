@@ -237,7 +237,7 @@ const CardProfile = styled.div`
   height: 36px;
   border-radius: 50%;
   overflow: hidden;
-  background-color: #8d2bf5;
+  background-color: transparent;
 `;
 
 const ProfileImg = styled.div`
