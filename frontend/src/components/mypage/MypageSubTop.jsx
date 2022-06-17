@@ -28,7 +28,7 @@ const Container = styled('section')`
   overflow: hidden;
   box-sizing: content-box;
   @media screen and (max-width: 820px) {
-    height: 64px;
+    height: 44px;
   }
 `;
 
@@ -83,7 +83,13 @@ const TopCont = styled('div')`
 
       a {
         background-size: 8px;
-        padding-right: 12px;
+        padding-right: 8px;
+        margin: 0;
+
+        &::after {
+          margin-left: 8px;
+          background-size: 8px;
+        }
       }
     }
   }
@@ -93,6 +99,12 @@ const TopCont = styled('div')`
 
     h2 {
       line-height: 30px;
+      a {
+        padding-right: 6px;
+        &::after {
+          margin-left: 6px;
+        }
+      }
     }
   }
 `;
@@ -109,11 +121,11 @@ const ButtonIntro = styled('div')`
   transition: 0.3s;
 
   @media screen and (max-width: 820px) {
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
     right: 20px;
     opacity: 1;
-    top: 18px;
+    top: 10px;
   }
 
   @media screen and (max-width: 300px) {

@@ -1,43 +1,114 @@
-import React from 'react';
+import { cateogoryAll } from '@/frontDB/filterDB';
+import { renderDate, renderDay } from '@/utils';
+import { format } from 'date-fns';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { css } from 'styled-components';
 
 function RequestCard({ data }) {
+  const [IsDisable, setIsDisable] = useState(false);
+
+  useEffect(() => {
+    const bool = !data.viewable || renderDay(data.expiredDate) < 0;
+    setIsDisable(bool);
+  }, []);
+
+  const renderProgress = () => {
+    if (data.progress === 0) {
+      return (
+        <>
+          <DetailBox>
+            <p>
+              <span>{data && format(new Date(data.appliedDate), '(MM/dd)')}</span> 요청완료
+            </p>
+            <button>상세확인</button>
+          </DetailBox>
+          <ButtonBox>
+            <button>요청취소</button>
+          </ButtonBox>
+        </>
+      );
+    }
+    if (data.progress === 1) {
+      return (
+        <>
+          <DetailBox color="nega">
+            <p>
+              <span>{data && format(new Date(data.appliedDate), '(MM/dd)')}</span> 참여취소
+            </p>
+            <button>사유확인</button>
+          </DetailBox>
+          <ButtonBox>
+            <button>내역삭제</button>
+          </ButtonBox>
+        </>
+      );
+    }
+    if (data.progress === 2) {
+      return (
+        <>
+          <DetailBox color="nega">
+            <p>
+              <span>{data && format(new Date(data.appliedDate), '(MM/dd)')}</span> 요청거절
+            </p>
+            <button>사유확인</button>
+          </DetailBox>
+          <ButtonBox>
+            <button>내역삭제</button>
+          </ButtonBox>
+        </>
+      );
+    }
+    if (data.progress === 3) {
+      return (
+        <>
+          <DetailBox color="posi">
+            <p>
+              <span>{data && format(new Date(data.appliedDate), '(MM/dd)')}</span> 참여중
+            </p>
+            <button>크루원채팅</button>
+          </DetailBox>
+          <ButtonBox>
+            <button>요청취소</button>
+          </ButtonBox>
+        </>
+      );
+    }
+  };
+
   return (
     <Container>
-      <CardHead>
+      <CardHead isDisabled={IsDisable}>
         <ProfileBox>
-          <img src="" alt="" />
+          <img src={`${data.profileImage}`} alt="" />
         </ProfileBox>
         <TextBox>
-          <Dday>D-2</Dday>
-          <CardDate>2/4 (목)</CardDate>
-          <CardName>재영재영유재영아아아</CardName>
+          <Dday>{IsDisable ? '마감' : `D-${renderDay(data.expiredDate)}`}</Dday>
+          <CardDate>{renderDate(data.appliedDate)}</CardDate>
+          <CardName>{data.nickName}</CardName>
         </TextBox>
       </CardHead>
-      <CardBody>
+      <CardBody isDisabled={IsDisable}>
         <TextBox>
           <TitleBox>
-            <h5>함께 크루원 모집 플랫폼 작업하실 분 모십니다~! 크루</h5>
+            <h5>{data.title}</h5>
           </TitleBox>
           <TextList>
-            <CategoryText textColor={`data.categoryParentId` === 1 ? '#005ec5' : '#F7971E'}>
-              고시/공무원
+            <CategoryText
+              textColor={data.categoryParentId === 1 ? '#005ec5' : '#F7971E'}
+              isDisabled={IsDisable}
+            >
+              {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
             </CategoryText>
-            <p>오프라인</p>
-            <p>10/10명</p>
-            <p>요청자 50</p>
+            <p>{data.approachCode ? '온라인' : '오프라인'}</p>
+            <p>{`${data.recruitedCrew}/${data.totalCrew}명`}</p>
+            <p>
+              요청자
+              {` ${data.appliedCrew}`}
+            </p>
           </TextList>
         </TextBox>
-        <DetailBox>
-          <p>
-            (03/22) <span>요청완료</span>
-          </p>
-          <button>상세확인</button>
-        </DetailBox>
-        <ButtonBox>
-          <button>요청취소</button>
-        </ButtonBox>
+        {renderProgress()}
       </CardBody>
     </Container>
   );
@@ -56,6 +127,13 @@ const Container = styled('div')`
   transition: 0.2s;
   border: 1px solid transparent;
   cursor: pointer;
+
+  @media screen and (max-width: 820px) {
+    height: 146px;
+    padding: 12px 10px 16px 16px;
+    flex-direction: column;
+    position: relative;
+  }
 `;
 
 const ProfileBox = styled.div``;
@@ -147,10 +225,14 @@ const CardHead = styled.div`
 
   @media screen and (max-width: 820px) {
     width: 100%;
-    height: 16px;
+    height: 30px;
     border: none;
+    align-items: center;
     ${ProfileBox} {
-      display: none;
+      display: block;
+      min-width: 30px;
+      height: 30px;
+      margin-right: 12px;
     }
     ${TextBox} {
       display: flex;
@@ -159,21 +241,16 @@ const CardHead = styled.div`
       padding: 0;
       ${Dday} {
         margin: 0;
+        font-size: 18px;
         margin-right: auto;
       }
 
       ${CardDate} {
-        margin: 0;
-        order: 1;
-        margin-left: 12px;
-        padding-right: 28px;
+        display: none;
       }
 
       ${CardName} {
-        margin: 0;
-        font-size: 12px;
-        font-weight: 300;
-        color: #868686;
+        display: none;
       }
     }
   }
@@ -266,26 +343,48 @@ const CardBody = styled.div`
       color: #fff;
       font-size: 15px;
       background-color: #c4c4c4;
+      cursor: pointer;
     }
   }
 
   @media screen and (max-width: 820px) {
     padding: 0;
+    margin-top: 12px;
+    align-items: flex-start;
     ${ButtonBox} {
-      display: none;
+      display: block;
+      min-width: 74px;
+      height: 30px;
+      right: 10px;
+      top: 59px;
+      position: absolute;
+      padding: 0;
+
+      button {
+        width: 100%;
+        border-radius: 5px;
+        font-size: 13px;
+      }
     }
 
     ${TextBox} {
       ${TitleBox} {
-        margin-top: 18px;
+        width: 206px;
+        height: 42px;
+        margin-top: 0;
         h5 {
+          width: 100%;
+          overflow: visible;
+          white-space: normal;
+          line-height: 21px;
+          margin-top: 0;
           font-size: 14px;
         }
       }
 
       ${TextList} {
-        display: flex;
-        margin-top: 17px;
+        margin-top: 20px;
+        min-width: 100%;
         p {
           font-size: 12px;
           font-weight: 400;
@@ -298,6 +397,14 @@ const CardBody = styled.div`
         ${CategoryText} {
           font-weight: 700;
         }
+      }
+    }
+  }
+
+  @media screen and (max-width: 300px) {
+    ${TextBox} {
+      ${TitleBox} {
+        width: 150px;
       }
     }
   }
@@ -350,5 +457,37 @@ const DetailBox = styled('div')`
       css`
         background-color: #00b7ff;
       `}
+  }
+
+  @media screen and (max-width: 820px) {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    height: 30px;
+    position: absolute;
+    top: 12px;
+    right: 10px;
+    border: none;
+    padding: 0;
+
+    p {
+      font-size: 13px;
+      margin: 0;
+    }
+
+    button {
+      width: 0;
+      min-width: 74px;
+    }
+  }
+
+  @media screen and (max-width: 300px) {
+    min-width: 0;
+
+    p {
+      span {
+        display: none;
+      }
+    }
   }
 `;

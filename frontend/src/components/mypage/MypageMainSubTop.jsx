@@ -85,6 +85,16 @@ const Wrapper = styled('div')`
     font-weight: 400;
     line-height: 20px;
   }
+
+  @media screen and (max-width: 820px) {
+    padding: 0 20px;
+    padding-top: 36px;
+  }
+
+  @media screen and (max-width: 300px) {
+    padding: 0 10px;
+    padding-top: 36px;
+  }
 `;
 
 const Content = styled('div')`
@@ -100,12 +110,24 @@ const Content = styled('div')`
       color: #00b7ff;
     }
   }
+
+  @media screen and (max-width: 820px) {
+    padding: 45px 0;
+
+    h4 {
+      font-size: 32px;
+    }
+  }
 `;
 
 const BoxWrap = styled('div')`
   display: flex;
   gap: 48px;
   justify-content: space-between;
+
+  @media screen and (max-width: 820px) {
+    gap: 20px;
+  }
 `;
 
 const SentBox = styled('div')`
@@ -163,6 +185,34 @@ const SentBox = styled('div')`
     .arrow {
       opacity: 1;
       transition-delay: 0.1s;
+    }
+  }
+
+  @media screen and (max-width: 820px) {
+    height: 86px;
+    padding: 0;
+
+    p {
+      &:nth-child(1) {
+        font-size: 32px;
+      }
+
+      &:nth-child(2) {
+        font-size: 13px;
+        margin-top: 6px;
+      }
+    }
+
+    :hover {
+      background-color: ${(props) => props.color};
+
+      p {
+        width: 100%;
+      }
+
+      .arrow {
+        opacity: 0;
+      }
     }
   }
 `;
