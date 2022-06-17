@@ -2,7 +2,7 @@ import React, { useState , useEffect , useCallback } from 'react';
 import styled from 'styled-components';
 import MyListButton from '../Button/MyListButton';
 import PostCard from '@/components/post/PostCard';
-import MyPagination from '../MyPagination';
+import MyPaginationMain from '../MyPaginationMain';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
 import useQuery from '@/hooks/useQuery';
@@ -24,7 +24,7 @@ function MypagePostList() {
        setActive(data);
     }
 
-    const axiosGetBookmark = useCallback( async(page = 1) => {
+    const axiosGetBookmark = useCallback( async(page) => {
         const Token = cookies.get('X-AUTH-TOKEN');
         if(!Token) return false;
         try{
@@ -56,8 +56,8 @@ function MypagePostList() {
         }
       };
 
-      const handleHistoryback = useCallback(() => {
-        navigate(-1);
+      const LandingPost = useCallback(() => {
+        navigate('/post');
       }, []);
 
       const renderBookmarkList = () => {
@@ -73,7 +73,7 @@ function MypagePostList() {
                             ))}
                         </ul>
                     </PostWrapper>
-                    <MyPagination
+                    <MyPaginationMain
                         data={pageData}
                         currentPage={currentPage}
                         postsPerPage={postsPerPage}
@@ -81,13 +81,35 @@ function MypagePostList() {
                     />
                 </>
             )
+        } else {
+            return (
+                <EmptyList>
+                    <p>
+                        <em>스크랩한 모집글이 없습니다.</em><br/>
+                        모집글을 둘러보고 <span>관심가는 크루에 참여해보세요!</span>
+                    </p>
+                    <button type="button" onClick={LandingPost}>크루참여</button>
+                </EmptyList>
+            )
         }
+      }
+
+      const renderRecentPost = () => {
+        return (
+            <EmptyList>
+                <p>
+                    <em>최근 본 모집글이 없습니다.</em><br/>
+                    모집글을 둘러보고 <span>관심가는 크루에 참여해보세요!</span>
+                </p>
+                <button type="button" onClick={LandingPost}>크루참여</button>
+            </EmptyList>
+        )
       }
 
       useEffect(() => {
         const pageNum = query.get('page');
         setCurrentPage(pageNum || 1);
-        axiosGetBookmark(pageNum);
+        axiosGetBookmark(pageNum - 1);
       }, [query.get('page')]);
 
       useEffect(() => {
@@ -107,7 +129,7 @@ function MypagePostList() {
                         <li key={e}><MyListButton data={e} active={active} onClick={() => tapBtnClick(e)} /></li>
                     ))}
                 </ListTap>
-                { active == dataList[0] ? renderBookmarkList() : ''}
+                { active == dataList[0] ? renderBookmarkList() : renderRecentPost()}
             </Wrapper>
         </Container>
     )
@@ -119,10 +141,6 @@ const Container = styled('section')`
   background-color: #f6f7fb;
   padding: 60px 0 40px;
   position: relative;
-
-  @media screen and (max-width: 820px) {
-    padding: 20px 0 70px;
-  }
 `;
 
 const Wrapper = styled('div')`
@@ -131,6 +149,10 @@ const Wrapper = styled('div')`
 
   @media screen and (max-width: 820px) {
     padding: 0 20px;
+  }
+
+  @media screen and (max-width: 820px) {
+    padding: 0 10px;
   }
 `;
 
@@ -142,6 +164,10 @@ const ListTap = styled('ul')`
     @media screen and (max-width: 820px) {
         width: 100%;
         gap: 16px;
+
+        li{
+            width: 100%;
+        }
     }
 `
 
@@ -150,3 +176,54 @@ const PostWrapper = styled.div`
     padding-bottom: 14px;
   }
 `;
+
+const EmptyList = styled.div`
+    border-top: 1px solid #868686;
+    padding: 100px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    p {
+        font-size: 15px;
+        line-height: 22px;
+        text-align: center;
+        font-weight: 400;
+        margin-bottom: 20px;
+
+        em{
+            font-weight: 700;
+        }
+    }
+
+    button{
+        width: 100px;
+        height: 50px;
+        padding: 0;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        transition: .3s;
+        font-size: 15px;
+        font-weight: 500;
+        border-radius: 10px;
+        line-height: 26px;
+        background-color: #00b7ff;
+        color: #fff;
+
+        :hover{
+            background-color: #005ec5;
+        }
+    }
+
+    @media screen and (max-width: 820px){
+        padding: 48px 0;
+    }
+
+    @media screen and (max-width: 300px){
+
+        span{
+            display: block;
+        }
+    }
+`

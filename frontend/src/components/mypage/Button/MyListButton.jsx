@@ -36,6 +36,10 @@ const MyBtn = styled.button`
         font-weight: 500;
     }
 
+    @media screen and (max-width: 820px) {
+        width: 100%;
+    }
+
     ${(props) => props.active == props.data && css`
         border: 2px solid #00b7ff;
         color: #00b7ff;
