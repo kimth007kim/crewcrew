@@ -45,7 +45,7 @@ function Kakao() {
       } catch (error) {
         console.dir(error);
       } finally {
-        navigate(-1, { replace: true });
+        navigate('/', { replace: true });
       }
     };
 
