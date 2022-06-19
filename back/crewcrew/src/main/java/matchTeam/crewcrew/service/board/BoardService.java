@@ -64,7 +64,6 @@ public class BoardService {
     public void delete(Long id){
         Board board = boardRepository.findById(id)
                 .orElseThrow(NotExistBoardInIdException::new);
-
         boardRepository.delete(board);
     }
 

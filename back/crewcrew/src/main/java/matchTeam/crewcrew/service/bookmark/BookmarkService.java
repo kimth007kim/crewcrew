@@ -55,7 +55,7 @@ public class BookmarkService {
                 .build();
     }
 
-    public void checkValidSave(Long boardId, Long uid){
+    public void checkValidSave(Long uid, Long boardId){
         userRepository.findById(uid).orElseThrow(UserNotFoundException::new);
         boardRepository.findById(boardId).orElseThrow(NotExistBoardInIdException::new);
         if (bookmarkQueryRepository.isBookmarked(uid, boardId))
@@ -70,6 +70,7 @@ public class BookmarkService {
         bookmarkRepository.delete(bookmark);
     }*/
 
+    @Transactional
     public Long cancelBookmark(Board board, User user){
         Bookmark bookmark = bookmarkRepository.findByUidAndBoardId(user, board)
                 .orElseThrow(() -> new CrewException(ErrorCode.NOT_EXIST_BOOKMARK_TO_CANCEL));
@@ -79,12 +80,9 @@ public class BookmarkService {
         return bookmark.getBookmarkId();
     }
 
-    public boolean checkIsBookmarked(Long boardId, Long uid){
-        userRepository.findById(uid).orElseThrow(UserNotFoundException::new);
-        boardRepository.findById(boardId).orElseThrow(NotExistBoardInIdException::new);
+    public boolean checkIsBookmarked(Long uid, Long boardId){
         return bookmarkQueryRepository.isBookmarked(uid, boardId);
     }
-
 
     @Transactional(readOnly = true)
     public Page<BoardPageDetailResponseDTO> search(Long userId, Pageable pageable) {
