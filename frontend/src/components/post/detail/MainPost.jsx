@@ -12,7 +12,7 @@ import { Cookies } from 'react-cookie';
 function MainPost({ data }) {
   const cookies = new Cookies();
   const [IsDisable, setIsDisable] = useState(false);
-  console.log(data)
+  const [isBookmarked, setIsBookmarked] = useState(false);
   const renderDate = useCallback(() => {
     const date = new Date(data.createdDate);
     return `${format(date, 'M/d')} (${viewDay(getDay(date))})`;
@@ -24,23 +24,48 @@ function MainPost({ data }) {
     return differenceInDays(date, nowDate) + 1;
   }, []);
 
-  const bookmark = async() => {
+  const bookmarkClick = async() => {
     try{
-        const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, '', {
-          withCredentials: true,
-          headers: {
-            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
-          },
-        });
-        console.log(bookmarkdata.data);
+        if(!isBookmarked){
+          const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, '', {
+            withCredentials: true,
+            headers: {
+              'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+            },
+          });
+          bookmarkdata.data.status == 200 && setIsBookmarked(true);
+        } else {
+          const bookmarkdata = await axios.delete(`/bookmark/${data.boardId}`, {
+            withCredentials: true,
+            headers: {
+              'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+            },
+          });
+          bookmarkdata.data.status == 200 && setIsBookmarked(false);
+        }
     } catch(err) {
       console.error(error);
     }
   }
 
+  const bookmarkGet = useCallback( async() => {
+    try{
+      const bookmarkdata = await axios.get(`/bookmark/${data.boardId}`, {
+        withCredentials: true,
+        headers: {
+          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+        },
+      });
+      bookmarkdata.data.status == 200 && setIsBookmarked(bookmarkdata.data.data);
+    } catch(err) {
+      console.error(error);
+    }
+  }, [])
+
   useEffect(() => {
     const bool = !data.viewable || renderDay() < 0;
     setIsDisable(bool);
+    bookmarkGet();
   }, []);
 
   return (
@@ -57,7 +82,7 @@ function MainPost({ data }) {
             <h4>{data.title}</h4>
           </li>
           <li>
-            <ButtonStar type="button" onClick={bookmark}/>
+            <ButtonStar type="button" onClick={bookmarkClick} bookmark={isBookmarked}/>
           </li>
           <li>
             <Button type="button" disabled={IsDisable}>
@@ -241,8 +266,6 @@ const ButtonStar = styled('button')`
   height: 50px;
   border: 1px solid #e2e2e2;
   color: #868686;
-
-  background-image: url(${StarOff});
   background-repeat: no-repeat;
   background-size: 30px;
   background-position: 50%;
@@ -252,11 +275,15 @@ const ButtonStar = styled('button')`
     border: 1px solid #a8a8a8;
   }
 
-  ${(props) =>
-    props.active &&
-    css`
+  ${(props) => 
+    props.bookmark ?
+      css `
       background-image: url(${StarOn});
-    `}
+      ` : 
+      css `
+      background-image: url(${StarOff});
+      `
+  }
 `;
 
 const Button = styled('button')`

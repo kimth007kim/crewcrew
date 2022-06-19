@@ -50,7 +50,7 @@ function PostCard({ data }) {
         });
         if(bookmarkdata.data.status == 200) bookmarked = true;
       } else {
-        const bookmarkdata = await axios.delete(`/bookmark/${data.boardId}`, '', {
+        const bookmarkdata = await axios.delete(`/bookmark/${data.boardId}`, {
           withCredentials: true,
           headers: {
             'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
