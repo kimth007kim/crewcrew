@@ -13,7 +13,7 @@ import { changedBookmark } from '@/atoms/post';
 
 function PostCardSlide({ data, cookies }) {
   const [isBookmark, setIsBookmark] = useState(false);
-  const [bookmarkChanged, setBookmarkChanged] = useRecoilState(changedBookmark);
+  const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
   const navigate = useNavigate();
   const renderDate = useCallback(() => {
     const date = new Date(data.createdDate);
@@ -30,8 +30,8 @@ function PostCardSlide({ data, cookies }) {
     return id === 1 ? 'study' : 'hobby';
   };
 
-  const bookmarkChange = () => {
-    setBookmarkChanged((state) => !state);
+  const changeBookmark = () => {
+    setchangeBookmarked((state) => !state);
   };
 
   const handleLocate = () => {
@@ -49,7 +49,7 @@ function PostCardSlide({ data, cookies }) {
           },
         });
         if (bookmarkdata.data.status === 200) {
-          bookmarkChange();
+          changeBookmark();
         }
       } else {
         const bookmarkdata = await axios.delete(`/bookmark/${data.boardId}`, {
@@ -59,7 +59,7 @@ function PostCardSlide({ data, cookies }) {
           },
         });
         if (bookmarkdata.data.status === 200) {
-          bookmarkChange();
+          changeBookmark();
         }
       }
     } catch (err) {
@@ -67,7 +67,7 @@ function PostCardSlide({ data, cookies }) {
     }
   };
 
-  const bookmarkGet = useCallback(async () => {
+  const getBookmark = useCallback(async () => {
     try {
       const bookmarkdata = await axios.get(`/bookmark/${data.boardId}`, {
         withCredentials: true,
@@ -82,8 +82,8 @@ function PostCardSlide({ data, cookies }) {
   }, []);
 
   useEffect(() => {
-    bookmarkGet();
-  }, [bookmarkChanged]);
+    getBookmark();
+  }, [changeBookmarked]);
 
   return (
     <Container>

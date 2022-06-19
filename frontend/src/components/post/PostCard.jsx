@@ -16,7 +16,7 @@ function PostCard({ data }) {
   const cookies = new Cookies();
   const [isBookmark, setIsBookmark] = useState(false);
   const [IsDisable, setIsDisable] = useState(false);
-  const [bookmarkChanged, setBookmarkChanged] = useRecoilState(changedBookmark);
+  const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
   const navigate = useNavigate();
   const query = useQuery();
   const { postId } = useParams();
@@ -51,7 +51,7 @@ function PostCard({ data }) {
           },
         });
         if (bookmarkdata.data.status === 200) {
-          bookmarkChange();
+          changeBookmark();
         }
       } else {
         const bookmarkdata = await axios.delete(`/bookmark/${data.boardId}`, {
@@ -61,7 +61,7 @@ function PostCard({ data }) {
           },
         });
         if (bookmarkdata.data.status === 200) {
-          bookmarkChange();
+          changeBookmark();
         }
       }
     } catch (err) {
@@ -69,11 +69,11 @@ function PostCard({ data }) {
     }
   };
 
-  const bookmarkChange = () => {
-    setBookmarkChanged((state) => !state);
+  const changeBookmark = () => {
+    setchangeBookmarked((state) => !state);
   };
 
-  const bookmarkGet = useCallback(async () => {
+  const getBookmark = useCallback(async () => {
     try {
       const bookmarkdata = await axios.get(`/bookmark/${data.boardId}`, {
         withCredentials: true,
@@ -94,8 +94,8 @@ function PostCard({ data }) {
   }, []);
 
   useEffect(() => {
-    bookmarkGet();
-  }, [bookmarkChanged]);
+    getBookmark();
+  }, [changeBookmarked]);
 
   return (
     <Wrapper onClick={handleLocate} current={String(data.boardId) === postId}>

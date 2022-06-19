@@ -76,7 +76,7 @@ function NavButton({ ghost, title, clickFunc }) {
 
 function NavContainer() {
   const [bookmarkArr, setBookmarkArr] = useState([]);
-  const [bookmarkChanged, setBookmarkChanged] = useRecoilState(changedBookmark);
+  const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
   const cookies = new Cookies();
   const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
   const navigate = useNavigate();
@@ -138,7 +138,7 @@ function NavContainer() {
 
   useEffect(() => {
     axiosGetBookmark();
-  }, [myData, bookmarkChanged]);
+  }, [myData, changeBookmarked]);
 
   const renderBookmarked = () => {
     return (
