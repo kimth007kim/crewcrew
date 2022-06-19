@@ -12,6 +12,7 @@ import matchTeam.crewcrew.repository.board.BoardRepository;
 import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.response.exception.CrewException;
+import matchTeam.crewcrew.response.exception.board.NotExistBoardInIdException;
 import matchTeam.crewcrew.service.board.BoardService;
 import matchTeam.crewcrew.service.bookmark.BookmarkService;
 import matchTeam.crewcrew.service.user.UserService;
@@ -37,7 +38,7 @@ public class BookmarkController {
         Long userId = user.getUid();
 
         //유효한 리퀘스트인지 확인
-        bookmarkService.checkValidSave(boardId, userId);
+        bookmarkService.checkValidSave(userId, boardId);
         BookmarkSaveResponseDTO saveBookmark = bookmarkService.save(boardId, userId);
         return ResponseHandler.generateResponse("북마크 저장 성공", HttpStatus.OK, saveBookmark);
     }
@@ -51,6 +52,16 @@ public class BookmarkController {
         return ResponseHandler.generateResponse(boardId+ "번 게시물에 대한 북마크 삭제 성공", HttpStatus.OK, boardId);
     }
 
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping("/bookmark/{boardId}")
+    public ResponseEntity<Object> getIsBookmarked(@RequestHeader("X-AUTH-TOKEN") String token, @PathVariable Long boardId){
+        User user = userService.tokenChecker(token);
+        boardRepository.findById(boardId).orElseThrow(NotExistBoardInIdException::new);
+        boolean isBookmarked = bookmarkService.checkIsBookmarked(user.getUid(), boardId);
+        return ResponseHandler.generateResponse("게시물 북마크 여부 조회 성공", HttpStatus.OK, isBookmarked);
+    }
+
+    @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/bookmark/list")
     public ResponseEntity<Object> getBookmarkList(@RequestHeader("X-AUTH-TOKEN") String token, @PageableDefault(size = 5) Pageable pageable){
         User user = userService.tokenChecker(token);

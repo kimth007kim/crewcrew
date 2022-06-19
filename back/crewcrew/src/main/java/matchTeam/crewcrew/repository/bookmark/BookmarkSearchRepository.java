@@ -43,16 +43,18 @@ public class BookmarkSearchRepository {
                         bookmark.uid.uid.eq(userId)
                 ).offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(findOrder("recent"), board.createdDate.desc())
+                .orderBy(findOrder("recent"), bookmark.bookmarkId.desc())
                 .fetch();
 
-        JPAQuery<Board> countQuery = queryFactory
-                .select(board)
+        JPAQuery<Bookmark> countQuery = queryFactory
+                .select(bookmark)
                 .from(board)
+                .innerJoin(bookmark)
+                .on(board.id.eq(bookmark.boardId.id))
                 .where(
-                        board.viewable.eq(true)
-                ).orderBy(findOrder("recent"),
-                        board.createdDate.desc());
+                        board.viewable.eq(true),
+                        bookmark.uid.uid.eq(userId)
+                ).orderBy(bookmark.bookmarkId.desc());
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
@@ -63,10 +65,8 @@ public class BookmarkSearchRepository {
                 .from(bookmark)
                 .where(bookmark.boardId.id.eq(boardId).and(bookmark.uid.uid.eq(userId)))
                 .fetch();
-        return !bm.isEmpty();
+        return bm.size() != 0;
     }
-
-
 
     private OrderSpecifier<?> findOrder(String order){
         if (!hasText(order)){
