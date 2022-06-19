@@ -8,11 +8,14 @@ import { differenceInDays, format, getDay } from 'date-fns';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
+import { useRecoilState } from 'recoil';
+import { changedBookmark } from '@/atoms/post';
 
 function MainPost({ data }) {
   const cookies = new Cookies();
   const [IsDisable, setIsDisable] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [bookmarkChanged, setBookmarkChanged] = useRecoilState(changedBookmark);
   const renderDate = useCallback(() => {
     const date = new Date(data.createdDate);
     return `${format(date, 'M/d')} (${viewDay(getDay(date))})`;
@@ -33,7 +36,9 @@ function MainPost({ data }) {
               'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
             },
           });
-          bookmarkdata.data.status == 200 && setIsBookmarked(true);
+          if(bookmarkdata.data.status == 200){
+            bookmarkChange();
+          }
         } else {
           const bookmarkdata = await axios.delete(`/bookmark/${data.boardId}`, {
             withCredentials: true,
@@ -41,7 +46,9 @@ function MainPost({ data }) {
               'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
             },
           });
-          bookmarkdata.data.status == 200 && setIsBookmarked(false);
+          if(bookmarkdata.data.status == 200){
+            bookmarkChange();
+          }
         }
     } catch(err) {
       console.error(error);
@@ -60,13 +67,20 @@ function MainPost({ data }) {
     } catch(err) {
       console.error(error);
     }
-  }, [])
+  }, []);
+
+  const bookmarkChange = () => {
+    setBookmarkChanged(state => !state);
+  };
 
   useEffect(() => {
     const bool = !data.viewable || renderDay() < 0;
     setIsDisable(bool);
-    bookmarkGet();
   }, []);
+
+  useEffect(() => {
+    bookmarkGet();
+  }, [bookmarkChanged])
 
   return (
     <Container>

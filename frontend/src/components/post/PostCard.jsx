@@ -9,11 +9,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useQuery from '@/hooks/useQuery';
 import { Cookies } from 'react-cookie';
 import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import { changedBookmark } from '@/atoms/post';
 
 function PostCard({ data }) {
   const cookies = new Cookies();
   const [isBookmark, setIsBookmark] = useState(false);
   const [IsDisable, setIsDisable] = useState(false);
+  const [bookmarkChanged, setBookmarkChanged] = useRecoilState(changedBookmark);
   const navigate = useNavigate();
   const query = useQuery();
   const { postId } = useParams();
@@ -37,18 +40,19 @@ function PostCard({ data }) {
     return differenceInDays(date, nowDate) + 1;
   }, []);
 
-  const bookmark = async(e) => {
+  const bookmark = async (e) => {
     e.stopPropagation();
-    let bookmarked = data.isBookmarked;
-    try{
-      if(!isBookmark){
+    try {
+      if (!isBookmark) {
         const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, '', {
           withCredentials: true,
           headers: {
             'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
           },
         });
-        if(bookmarkdata.data.status == 200) bookmarked = true;
+        if (bookmarkdata.data.status === 200) {
+          bookmarkChange();
+        }
       } else {
         const bookmarkdata = await axios.delete(`/bookmark/${data.boardId}`, {
           withCredentials: true,
@@ -56,20 +60,42 @@ function PostCard({ data }) {
             'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
           },
         });
-        if(bookmarkdata.data.status == 200) bookmarked = false;
+        if (bookmarkdata.data.status === 200) {
+          bookmarkChange();
+        }
       }
-    } catch(err) {
-      console.error(error);
-    } finally {
-      bookmarked ? setIsBookmark(true) : setIsBookmark(false);
+    } catch (err) {
+      console.error(err);
     }
-  }
+  };
+
+  const bookmarkChange = () => {
+    setBookmarkChanged((state) => !state);
+  };
+
+  const bookmarkGet = useCallback(async () => {
+    try {
+      const bookmarkdata = await axios.get(`/bookmark/${data.boardId}`, {
+        withCredentials: true,
+        headers: {
+          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+        },
+      });
+      bookmarkdata.data.status === 200 && setIsBookmark(bookmarkdata.data.data);
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
 
   useEffect(() => {
     const bool = !data.viewable || renderDay() < 0;
     setIsDisable(bool);
     data.isBookmarked ? setIsBookmark(true) : setIsBookmark(false);
   }, []);
+
+  useEffect(() => {
+    bookmarkGet();
+  }, [bookmarkChanged]);
 
   return (
     <Wrapper onClick={handleLocate} current={String(data.boardId) === postId}>
@@ -87,7 +113,7 @@ function PostCard({ data }) {
         <TextBox>
           <TitleBox>
             <h5>{data.title}</h5>
-            <Star bookmark={isBookmark} onClick={bookmark}/>
+            <Star bookmark={isBookmark} onClick={bookmark} />
           </TitleBox>
           <TextList>
             <CategoryText
@@ -174,15 +200,14 @@ const CategoryText = styled.span`
 `;
 
 const Star = styled.div`
-    ${(props) => 
-      props.bookmark ?
-        css `
+  ${(props) =>
+    props.bookmark
+      ? css`
           background: #c4c4c4 url(${ButtonStarOn}) center/20px no-repeat;
-        ` : 
-        css `
-          background: #c4c4c4 url(${ButtonStarWhite}) center/20px no-repeat;
         `
-    }
+      : css`
+          background: #c4c4c4 url(${ButtonStarWhite}) center/20px no-repeat;
+        `}
   width: 30px;
   height: 30px;
   border-radius: 5px;

@@ -73,7 +73,7 @@ function DetailPostList({ data }) {
             <ul>
               {PostListData.map((post) => (
                 <li key={post.boardId}>
-                  <PostCard data={post} />
+                  <PostCard data={post}/>
                 </li>
               ))}
             </ul>

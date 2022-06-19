@@ -49,7 +49,7 @@ function SwiperSection({ data, post, cookies }) {
         <Swiper {...swiperParams} ref={setSwiper}>
           {data.map((data) => (
             <SwiperSlide key={data.boardId + post}>
-              <PostCardSlide data={data} cookies={cookies}/>
+              <PostCardSlide data={data} cookies={cookies} />
             </SwiperSlide>
           ))}
         </Swiper>

@@ -18,6 +18,8 @@ import useModal from '@/hooks/useModal';
 import NavCard from './NavCard';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useRecoilState } from 'recoil';
+import { changedBookmark } from '@/atoms/post';
 
 const Cards = [
   {
@@ -74,6 +76,7 @@ function NavButton({ ghost, title, clickFunc }) {
 
 function NavContainer() {
   const [bookmarkArr, setBookmarkArr] = useState([]);
+  const [bookmarkChanged, setBookmarkChanged] = useRecoilState(changedBookmark);
   const cookies = new Cookies();
   const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
   const navigate = useNavigate();
@@ -81,7 +84,6 @@ function NavContainer() {
   const [Dialog, openModal, closeModal] = useModal();
   const handleClick = useCallback(() => {
     openModal();
-    axiosGetBookmark();
   }, []);
 
   const locateMypage = useCallback(() => {
@@ -117,17 +119,17 @@ function NavContainer() {
     axiosDelete();
   }, []);
 
-  const axiosGetBookmark = useCallback( async() => {
+  const axiosGetBookmark = useCallback(async () => {
     const Token = cookies.get('X-AUTH-TOKEN');
-    if(!Token) return false;
-    try{
+    if (!Token) return false;
+    try {
       const { data } = await axios.get('/bookmark/list', {
         withCredentials: true,
         headers: {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
         },
       });
-      data.status == 200 && setBookmarkArr([...data.data.contents]);
+      data.status === 200 && setBookmarkArr([...data.data.contents]);
     } catch (error) {
       toast.error(error);
       console.dir(error);
@@ -136,19 +138,19 @@ function NavContainer() {
 
   useEffect(() => {
     axiosGetBookmark();
-  }, [myData]);
+  }, [myData, bookmarkChanged]);
 
   const renderBookmarked = () => {
     return (
       <>
-        {bookmarkArr.map(data => (
+        {bookmarkArr.map((data) => (
           <BookmarkLi key={`${data.boardId}bookmarked`}>
-            <PostCardSlide data={data} cookies={cookies.get('X-AUTH-TOKEN')}/>
+            <PostCardSlide data={data} cookies={cookies.get('X-AUTH-TOKEN')} />
           </BookmarkLi>
         ))}
       </>
-    )
-  }
+    );
+  };
   return (
     <>
       <NavCont>
@@ -198,15 +200,15 @@ function NavContainer() {
 
           {myData && myData.data ? (
             <NavPostCardWrapper>
-                <ul>
-                  {bookmarkArr.length > 0 && renderBookmarked()}
-                  <BookmarkLi>
-                    <NavCardPlusPost to="/post">
+              <ul>
+                {bookmarkArr.length > 0 && renderBookmarked()}
+                <BookmarkLi>
+                  <NavCardPlusPost to="/post">
                     <PlusIcon />
                     <span>모집글 둘러보러 가기</span>
-                    </NavCardPlusPost>
-                  </BookmarkLi>
-                </ul>
+                  </NavCardPlusPost>
+                </BookmarkLi>
+              </ul>
             </NavPostCardWrapper>
           ) : (
             <NavCardList>
@@ -438,7 +440,7 @@ const NavPostCardWrapper = styled.div`
   max-height: calc(100vh - 494px);
   overflow-y: auto;
   margin-right: -10px;
-  
+
   ::-webkit-scrollbar {
     display: none;
   }

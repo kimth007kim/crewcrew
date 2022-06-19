@@ -208,10 +208,14 @@ function Main() {
         <PostWrap>
           <h4>신규 크루원 모집글</h4>
           <p>이번주 새롭게 크루원을 모집하는 모집글을 소개해드려요.</p>
-          <SwiperSection data={newPost} post={'New'} cookies={cookies.get('X-AUTH-TOKEN')}/>
+          <SwiperSection data={newPost} post={'New'} cookies={cookies.get('X-AUTH-TOKEN')} />
           <h4>마감임박! 놓치지 말아요!</h4>
           <p>마감일이 가깝거나 모집인원을 거의 다 모은 크루원 모집글을 소개해드려요.</p>
-          <SwiperSection data={deadlinePost} post={'Deadline'} cookies={cookies.get('X-AUTH-TOKEN')} />
+          <SwiperSection
+            data={deadlinePost}
+            post={'Deadline'}
+            cookies={cookies.get('X-AUTH-TOKEN')}
+          />
         </PostWrap>
       </MainPost>
       <Footer />

@@ -6,11 +6,14 @@ import ButtonStarOn from '@/assets/images/ButtonStarOn.png';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import { format, getDay, differenceInDays } from 'date-fns';
 import { viewDay } from '@/utils';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useRecoilState } from 'recoil';
+import { changedBookmark } from '@/atoms/post';
 
 function PostCardSlide({ data, cookies }) {
   const [isBookmark, setIsBookmark] = useState(false);
+  const [bookmarkChanged, setBookmarkChanged] = useRecoilState(changedBookmark);
   const navigate = useNavigate();
   const renderDate = useCallback(() => {
     const date = new Date(data.createdDate);
@@ -27,26 +30,27 @@ function PostCardSlide({ data, cookies }) {
     return id === 1 ? 'study' : 'hobby';
   };
 
+  const bookmarkChange = () => {
+    setBookmarkChanged((state) => !state);
+  };
+
   const handleLocate = () => {
     navigate(`/post/${data.boardId}`);
-  }
+  };
 
-  useEffect(() => {
-    data.isBookmarked ? setIsBookmark(true) : setIsBookmark(false);
-  }, [])
-
-  const bookmark = async(e) => {
+  const bookmark = async (e) => {
     e.stopPropagation();
-    let bookmarked = data.isBookmarked;
-    try{
-      if(!isBookmark){
-        const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`,'', {
+    try {
+      if (!isBookmark) {
+        const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, '', {
           withCredentials: true,
           headers: {
             'X-AUTH-TOKEN': cookies,
           },
         });
-        if(bookmarkdata.data.status == 200) bookmarked = true;
+        if (bookmarkdata.data.status === 200) {
+          bookmarkChange();
+        }
       } else {
         const bookmarkdata = await axios.delete(`/bookmark/${data.boardId}`, {
           withCredentials: true,
@@ -54,56 +58,74 @@ function PostCardSlide({ data, cookies }) {
             'X-AUTH-TOKEN': cookies,
           },
         });
-        if(bookmarkdata.data.status == 200) bookmarked = false;
+        if (bookmarkdata.data.status === 200) {
+          bookmarkChange();
+        }
       }
-    } catch(err) {
-      console.error(error);
-    } finally {
-      bookmarked ? setIsBookmark(true) : setIsBookmark(false);
+    } catch (err) {
+      console.error(err);
     }
-  }
+  };
+
+  const bookmarkGet = useCallback(async () => {
+    try {
+      const bookmarkdata = await axios.get(`/bookmark/${data.boardId}`, {
+        withCredentials: true,
+        headers: {
+          'X-AUTH-TOKEN': cookies,
+        },
+      });
+      bookmarkdata.data.status === 200 && setIsBookmark(bookmarkdata.data.data);
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+
+  useEffect(() => {
+    bookmarkGet();
+  }, [bookmarkChanged]);
 
   return (
     <Container>
-        <CardPost category={category()} onClick={handleLocate}>
-          <CardHead>
-            <h5>
-              <span>{`D-${renderDay()}`}</span>
-            </h5>
-            <CardHeadRight>
-              <p>{renderDate()}</p>
-              <p>
-                조회수
-                <span> {data.hit}</span>
-              </p>
-              <Star bookmark={isBookmark} onClick={bookmark}/>
-            </CardHeadRight>
-          </CardHead>
-          <CardBody>
-            <CardProfile>
-              <ProfileImg profileImg={data.profileImage} alt="" />
-            </CardProfile>
-            <CardTxt>
-              <h4>{data.title}</h4>
-              <p>{data.nickname}</p>
-            </CardTxt>
-          </CardBody>
-          <CardFooter>
-            <CardTagColor category={category()}>
-              {' '}
-              {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
-            </CardTagColor>
-            <CardTagColor category={category()}>
-              {data.approachCode ? '온라인' : '오프라인'}
-            </CardTagColor>
-            <CardTag>
-              <span>
-                {data.recruitedCrew}/{data.totalCrew}
-              </span>
-              <span>명 모집됨</span>
-            </CardTag>
-          </CardFooter>
-        </CardPost>
+      <CardPost category={category()} onClick={handleLocate}>
+        <CardHead>
+          <h5>
+            <span>{`D-${renderDay()}`}</span>
+          </h5>
+          <CardHeadRight>
+            <p>{renderDate()}</p>
+            <p>
+              조회수
+              <span> {data.hit}</span>
+            </p>
+            <Star bookmark={isBookmark} onClick={bookmark} />
+          </CardHeadRight>
+        </CardHead>
+        <CardBody>
+          <CardProfile>
+            <ProfileImg profileImg={data.profileImage} alt="" />
+          </CardProfile>
+          <CardTxt>
+            <h4>{data.title}</h4>
+            <p>{data.nickname}</p>
+          </CardTxt>
+        </CardBody>
+        <CardFooter>
+          <CardTagColor category={category()}>
+            {' '}
+            {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
+          </CardTagColor>
+          <CardTagColor category={category()}>
+            {data.approachCode ? '온라인' : '오프라인'}
+          </CardTagColor>
+          <CardTag>
+            <span>
+              {data.recruitedCrew}/{data.totalCrew}
+            </span>
+            <span>명 모집됨</span>
+          </CardTag>
+        </CardFooter>
+      </CardPost>
     </Container>
   );
 }
@@ -291,15 +313,14 @@ const ProfileImg = styled.div`
 `;
 
 const Star = styled.div`
-    ${(props) => 
-      props.bookmark ?
-        css `
+  ${(props) =>
+    props.bookmark
+      ? css`
           background: #c4c4c4 url(${ButtonStarOn}) center/20px no-repeat;
-        ` : 
-        css `
-          background: #c4c4c4 url(${ButtonStarWhite}) center/20px no-repeat;
         `
-    }
+      : css`
+          background: #c4c4c4 url(${ButtonStarWhite}) center/20px no-repeat;
+        `}
   width: 30px;
   height: 30px;
   cursor: pointer;

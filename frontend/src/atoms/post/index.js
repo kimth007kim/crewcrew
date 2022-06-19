@@ -17,3 +17,8 @@ export const approachFilterState = atom({
   key: 'approachFilter',
   default: [...approachArr],
 });
+
+export const changedBookmark = atom({
+  key: 'changedBookmark',
+  default: false
+});
