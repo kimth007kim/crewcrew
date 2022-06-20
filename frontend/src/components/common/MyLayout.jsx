@@ -5,7 +5,7 @@ import { Navigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import useSWR from 'swr';
-import ScrollButton from '../post/ScrollButton';
+import ScrollButton from './ScrollButton';
 import Lnb from './Lnb/Lnb';
 
 function MyLayout({ children, path = 'mypage' }) {
