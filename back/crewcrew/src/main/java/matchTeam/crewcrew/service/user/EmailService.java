@@ -64,10 +64,10 @@ public class EmailService {
         sb.append(email);
         String result=redisUtil.getData(sb.toString());
         if (result == null){
-            throw new CEmailCodeNotMatchException();
+            throw new CrewException(ErrorCode.EMAIL_CODE_NOT_MATCH);
         }
         if (!result.equals(code)){
-            throw new CEmailCodeNotMatchException();
+            throw new CrewException(ErrorCode.EMAIL_CODE_NOT_MATCH);
         }
     }
 
@@ -124,10 +124,10 @@ public class EmailService {
         System.out.println(sb);
         String result=redisUtil.getData(sb.toString());
         if (result == null){
-            throw new CEmailCodeNotMatchException();
+            throw new CrewException(ErrorCode.EMAIL_CODE_NOT_MATCH);
         }
         if (!result.equals(code)){
-            throw new CEmailCodeNotMatchException();
+            throw new CrewException(ErrorCode.EMAIL_CODE_NOT_MATCH);
         }
         redisUtil.setDataExpire(email,"true",60*30L);
     }
