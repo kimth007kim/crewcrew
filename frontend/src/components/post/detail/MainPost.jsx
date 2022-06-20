@@ -27,50 +27,50 @@ function MainPost({ data }) {
     return differenceInDays(date, nowDate) + 1;
   }, []);
 
-  const bookmarkClick = async() => {
-    try{
-        if(!isBookmarked){
-          const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, '', {
-            withCredentials: true,
-            headers: {
-              'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
-            },
-          });
-          if(bookmarkdata.data.status == 200){
-            bookmarkChange();
-          }
-        } else {
-          const bookmarkdata = await axios.delete(`/bookmark/${data.boardId}`, {
-            withCredentials: true,
-            headers: {
-              'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
-            },
-          });
-          if(bookmarkdata.data.status == 200){
-            bookmarkChange();
-          }
+  const bookmarkClick = async () => {
+    try {
+      if (!isBookmarked) {
+        const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, '', {
+          withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+          },
+        });
+        if (bookmarkdata.data.status === 200) {
+          bookmarkChange();
         }
-    } catch(err) {
-      console.error(error);
+      } else {
+        const bookmarkdata = await axios.delete(`/bookmark/${data.boardId}`, {
+          withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+          },
+        });
+        if (bookmarkdata.data.status === 200) {
+          bookmarkChange();
+        }
+      }
+    } catch (err) {
+      console.error(err);
     }
-  }
+  };
 
-  const bookmarkGet = useCallback( async() => {
-    try{
+  const bookmarkGet = useCallback(async () => {
+    try {
       const bookmarkdata = await axios.get(`/bookmark/${data.boardId}`, {
         withCredentials: true,
         headers: {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
         },
       });
-      bookmarkdata.data.status == 200 && setIsBookmarked(bookmarkdata.data.data);
-    } catch(err) {
-      console.error(error);
+      bookmarkdata.data.status === 200 && setIsBookmarked(bookmarkdata.data.data);
+    } catch (err) {
+      console.error(err);
     }
   }, []);
 
   const bookmarkChange = () => {
-    setBookmarkChanged(state => !state);
+    setBookmarkChanged((state) => !state);
   };
 
   useEffect(() => {
@@ -80,7 +80,7 @@ function MainPost({ data }) {
 
   useEffect(() => {
     bookmarkGet();
-  }, [bookmarkChanged])
+  }, [bookmarkChanged]);
 
   return (
     <Container>
@@ -96,7 +96,7 @@ function MainPost({ data }) {
             <h4>{data.title}</h4>
           </li>
           <li>
-            <ButtonStar type="button" onClick={bookmarkClick} bookmark={isBookmarked}/>
+            <ButtonStar type="button" onClick={bookmarkClick} bookmark={isBookmarked} />
           </li>
           <li>
             <Button type="button" disabled={IsDisable}>
@@ -289,15 +289,14 @@ const ButtonStar = styled('button')`
     border: 1px solid #a8a8a8;
   }
 
-  ${(props) => 
-    props.bookmark ?
-      css `
-      background-image: url(${StarOn});
-      ` : 
-      css `
-      background-image: url(${StarOff});
-      `
-  }
+  ${(props) =>
+    props.bookmark
+      ? css`
+          background-image: url(${StarOn});
+        `
+      : css`
+          background-image: url(${StarOff});
+        `}
 `;
 
 const Button = styled('button')`

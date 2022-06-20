@@ -9,6 +9,7 @@ import PostCard from '../PostCard';
 import Loader from '@/components/common/Loader';
 import useQuery from '@/hooks/useQuery';
 import { allFilter } from '@/frontDB/filterDB';
+import { Link } from 'react-router-dom';
 
 function DetailPostList({ data }) {
   const [approach, setApproach] = useRecoilState(approachFilterState);
@@ -30,6 +31,7 @@ function DetailPostList({ data }) {
     if (article.htmlId === 'postRecent') {
       return (
         <h4>
+          <Link to="/post" />
           <span>최근 크루원 모집글</span>
         </h4>
       );
@@ -37,6 +39,7 @@ function DetailPostList({ data }) {
     if (article.htmlId === 'postPopular') {
       return (
         <h4>
+          <Link to="/post" />
           <span>많이 조회된 크루원 모집글</span>
         </h4>
       );
@@ -44,6 +47,7 @@ function DetailPostList({ data }) {
     if (article.htmlId === 'postDeadline') {
       return (
         <h4>
+          <Link to="/post" />
           <span>마감임박! 크루원 모집글</span>
         </h4>
       );
@@ -73,7 +77,7 @@ function DetailPostList({ data }) {
             <ul>
               {PostListData.map((post) => (
                 <li key={post.boardId}>
-                  <PostCard data={post}/>
+                  <PostCard data={post} />
                 </li>
               ))}
             </ul>
@@ -194,17 +198,20 @@ const FilterWrapper = styled.div`
     margin-bottom: 10px;
     position: relative;
     color: #000;
+    display: flex;
+    align-items: center;
 
-    &::before {
+    a {
       content: '';
       display: inline-block;
-      width: 7px;
-      height: 14px;
+      width: 12px;
+      height: 18px;
       margin-left: 8px;
       background-image: url(${NavArrow});
-      background-size: 100%;
+      background-size: 7px 14px;
       background-repeat: no-repeat;
-      margin-right: 15px;
+      background-position: center;
+      margin-right: 10px;
     }
   }
   @media screen and (max-width: 820px) {
@@ -222,7 +229,7 @@ const FilterWrapper = styled.div`
       height: 64px;
       border-right: 1px solid #e2e2e2;
 
-      &::before {
+      a {
         position: absolute;
         left: 50%;
         top: 50%;
