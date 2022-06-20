@@ -11,7 +11,7 @@ function MyPage() {
       <MypageTop />
       <MypageMainTop />
       <MypageTimeline />
-      <MypagePostList/>
+      <MypagePostList />
     </MyLayout>
   );
 }
