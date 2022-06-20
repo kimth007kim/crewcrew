@@ -130,7 +130,7 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
                 });
               }
 
-              mutate('/auth/token');
+              mutate('/auth/token', true);
               closeModal();
               break;
             case 400:
