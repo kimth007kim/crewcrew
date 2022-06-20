@@ -277,6 +277,7 @@ const CardTxt = styled.div`
     margin-bottom: 8px;
     line-height: 18px;
     color: #000;
+    word-break: initial;
     ::after {
       content: none;
       display: none;
