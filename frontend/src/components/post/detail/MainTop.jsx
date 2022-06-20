@@ -149,11 +149,11 @@ const ButtonIntro = styled('div')`
   transition: 0.3s;
 
   @media screen and (max-width: 820px) {
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
     right: 20px;
     opacity: 1;
-    top: 17px;
+    top: 22px;
   }
 
   @media screen and (max-width: 300px) {

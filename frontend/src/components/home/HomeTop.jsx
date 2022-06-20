@@ -249,8 +249,8 @@ const ButtonIntro = styled.div`
     opacity: 1;
   }
   @media screen and (max-width: 820px) {
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
     top: 17px;
     right: 20px;
     opacity: 1;

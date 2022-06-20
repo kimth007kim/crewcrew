@@ -11,7 +11,7 @@ function MypageTop() {
     <Container>
       <TopCont>
         <h2>
-          <LinkHistory onClick={() => navigate(-1)}/>
+          <LinkHistory onClick={() => navigate(-1)} />
           마이페이지
         </h2>
       </TopCont>
@@ -30,7 +30,7 @@ const Container = styled('section')`
   overflow: hidden;
   box-sizing: content-box;
   @media screen and (max-width: 820px) {
-    height: 64px;
+    height: 44px;
   }
 `;
 
@@ -87,11 +87,11 @@ const LinkHistory = styled('a')`
   box-sizing: content-box;
   cursor: pointer;
 
-  @media screen and (max-width: 820px){
+  @media screen and (max-width: 820px) {
     background-size: 8px;
     padding-right: 12px;
   }
-`
+`;
 const ButtonIntro = styled('div')`
   width: 45px;
   height: 45px;
@@ -105,11 +105,11 @@ const ButtonIntro = styled('div')`
   transition: 0.3s;
 
   @media screen and (max-width: 820px) {
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
     right: 20px;
     opacity: 1;
-    top: 18px;
+    top: 10px;
   }
 
   @media screen and (max-width: 300px) {
