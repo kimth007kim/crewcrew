@@ -36,7 +36,7 @@ function PostCreateModal({ closeModal, visible, category = 0 }) {
   const bodyRef = useRef(null);
   const editorRef = useRef(null);
 
-  const handleRegisterBtn = async () => {
+  const handlePostUpload = async () => {
     try {
       setLoading(true);
 
@@ -182,7 +182,7 @@ function PostCreateModal({ closeModal, visible, category = 0 }) {
                   types="fill"
                   size="fullregular"
                   color="lightBlue"
-                  onClick={handleRegisterBtn}
+                  onClick={handlePostUpload}
                   loadings={loading}
                 >
                   업로드

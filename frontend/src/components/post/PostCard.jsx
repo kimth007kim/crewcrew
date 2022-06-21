@@ -11,15 +11,23 @@ import { Cookies } from 'react-cookie';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { changedBookmark } from '@/atoms/post';
+import useModal from '@/hooks/useModal';
+import ParticipateModal from './modal/Participate';
+import useSWR from 'swr';
+import fetcher from '@/utils/fetcher';
 
 function PostCard({ data }) {
   const cookies = new Cookies();
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+
   const [isBookmark, setIsBookmark] = useState(false);
   const [IsDisable, setIsDisable] = useState(false);
   const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
   const navigate = useNavigate();
   const query = useQuery();
   const { postId } = useParams();
+
+  const [participateVisible, openParticipate, closeParticipate] = useModal();
 
   const renderDate = useCallback(() => {
     const date = new Date(data.createdDate);
@@ -87,6 +95,18 @@ function PostCard({ data }) {
     }
   }, []);
 
+  const handleOpenPartiModal = useCallback(
+    (e) => {
+      e.stopPropagation();
+      if (myData && myData.data) {
+        openParticipate();
+      } else {
+        const login = window.alert('로그인 후 이용가능합니다.');
+      }
+    },
+    [myData],
+  );
+
   useEffect(() => {
     const bool = !data.viewable || renderDay() < 0;
     setIsDisable(bool);
@@ -98,44 +118,53 @@ function PostCard({ data }) {
   }, [changeBookmarked]);
 
   return (
-    <Wrapper onClick={handleLocate} current={String(data.boardId) === postId}>
-      <CardHead isDisabled={IsDisable}>
-        <ProfileBox>
-          <img src={`${data.profileImage}`} alt="" />
-        </ProfileBox>
-        <TextBox>
-          <Dday>{IsDisable ? '마감' : `D-${renderDay()}`}</Dday>
-          <CardDate>{renderDate()}</CardDate>
-          <CardName>{data.nickname}</CardName>
-        </TextBox>
-      </CardHead>
-      <CardBody isDisabled={IsDisable}>
-        <TextBox>
-          <TitleBox>
-            <h5>{data.title}</h5>
-            <Star bookmark={isBookmark} onClick={bookmark} />
-          </TitleBox>
-          <TextList>
-            <CategoryText
-              textColor={data.categoryParentId === 1 ? '#005ec5' : '#F7971E'}
-              isDisabled={IsDisable}
-            >
-              {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
-            </CategoryText>
-            <p>{data.approachCode ? '온라인' : '오프라인'}</p>
-            <p>{`${data.recruitedCrew}/${data.totalCrew}명`}</p>
-            <p>
-              조회수
-              {` ${data.hit}`}
-            </p>
-          </TextList>
-        </TextBox>
-        <ButtonBox>
-          <ButtonDetail>상세보기</ButtonDetail>
-          <ButtonParticipate disabled={IsDisable}>참여하기</ButtonParticipate>
-        </ButtonBox>
-      </CardBody>
-    </Wrapper>
+    <>
+      <Wrapper onClick={handleLocate} current={String(data.boardId) === postId}>
+        <CardHead isDisabled={IsDisable}>
+          <ProfileBox>
+            <img src={`${data.profileImage}`} alt="" />
+          </ProfileBox>
+          <TextBox>
+            <Dday>{IsDisable ? '마감' : `D-${renderDay()}`}</Dday>
+            <CardDate>{renderDate()}</CardDate>
+            <CardName>{data.nickname}</CardName>
+          </TextBox>
+        </CardHead>
+        <CardBody isDisabled={IsDisable}>
+          <TextBox>
+            <TitleBox>
+              <h5>{data.title}</h5>
+              <Star bookmark={isBookmark} onClick={bookmark} />
+            </TitleBox>
+            <TextList>
+              <CategoryText
+                textColor={data.categoryParentId === 1 ? '#005ec5' : '#F7971E'}
+                isDisabled={IsDisable}
+              >
+                {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
+              </CategoryText>
+              <p>{data.approachCode ? '온라인' : '오프라인'}</p>
+              <p>{`${data.recruitedCrew}/${data.totalCrew}명`}</p>
+              <p>
+                조회수
+                {` ${data.hit}`}
+              </p>
+            </TextList>
+          </TextBox>
+          <ButtonBox>
+            <ButtonDetail>상세보기</ButtonDetail>
+            <ButtonParticipate disabled={IsDisable} onClick={handleOpenPartiModal}>
+              참여하기
+            </ButtonParticipate>
+          </ButtonBox>
+        </CardBody>
+      </Wrapper>
+      <ParticipateModal
+        closeModal={closeParticipate}
+        postData={data}
+        visible={participateVisible}
+      />
+    </>
   );
 }
 

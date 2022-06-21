@@ -5,6 +5,8 @@ import { Cookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/common/Button';
 import Textfield from '../../components/common/TextfieldEmail';
+import ParticipateModal from '@/components/post/modal/Participate';
+import useModal from '@/hooks/useModal';
 
 function Testing() {
   const cookies = new Cookies();
@@ -12,6 +14,7 @@ function Testing() {
 
   const [state, setstate] = useState('');
   const [Valid, setValid] = useState(true);
+  const [postVisible, openPost, closePost] = useModal();
 
   const HandleChange = (e) => {
     setstate(e.target.value);
@@ -71,6 +74,8 @@ function Testing() {
         이게 왜 색깔이 안되지 글꼴 깨짐현상 발생 ㅏㅇ아아
       </span>
       <Button onClick={handleTestCookie}>쿠키테스트</Button>
+      <Button onClick={openPost}>모달테스트</Button>
+      <ParticipateModal closeModal={closePost} visible={postVisible}></ParticipateModal>
     </div>
   );
 }
