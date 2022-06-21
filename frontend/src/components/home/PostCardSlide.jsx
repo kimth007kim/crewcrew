@@ -55,8 +55,9 @@ function PostCardSlide({ data, cookies }) {
   const bookmark = async (e) => {
     e.stopPropagation();
     try {
-      if (!myData.data) {
+      if (myData && !myData.data) {
         window.alert('로그인 후 이용가능합니다.');
+        return false;
       }
       if (!isBookmark) {
         const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, '', {
@@ -85,6 +86,7 @@ function PostCardSlide({ data, cookies }) {
   };
 
   const getBookmark = useCallback(async () => {
+    if (myData && !myData.data) return false;
     try {
       const bookmarkdata = await axios.get(`/bookmark/${data.boardId}`, {
         withCredentials: true,
@@ -96,7 +98,7 @@ function PostCardSlide({ data, cookies }) {
     } catch (err) {
       console.error(err);
     }
-  }, []);
+  }, [myData]);
 
   useEffect(() => {
     getBookmark();

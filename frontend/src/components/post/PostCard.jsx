@@ -50,6 +50,10 @@ function PostCard({ data }) {
 
   const bookmark = async (e) => {
     e.stopPropagation();
+    if (myData && !myData.data) {
+      window.alert('로그인 후 이용가능합니다.');
+      return false;
+    }
     try {
       if (!isBookmark) {
         const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, '', {

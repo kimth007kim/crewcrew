@@ -8,6 +8,8 @@ import { Cookies } from 'react-cookie';
 import useQuery from '@/hooks/useQuery';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import useSWR from 'swr';
+import fetcher from '@/utils/fetcher';
 
 function MypagePostList() {
   const navigate = useNavigate();
@@ -20,31 +22,34 @@ function MypagePostList() {
   const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(query.get('page') || 1);
   const [postsPerPage, setPostsPerPage] = useState(10);
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const tapBtnClick = (data) => {
     setActive(data);
   };
 
-  const axiosGetBookmark = useCallback(async (page) => {
-    const Token = cookies.get('X-AUTH-TOKEN');
-    if (!Token) return false;
-    try {
-      const { data } = await axios.get(`/bookmark/list?page=${page}`, {
-        withCredentials: true,
-        headers: {
-          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
-        },
-      });
-      if (data.status === 200) {
-        setPageData({ ...data.data });
-        setBookmarkArr([...data.data.contents]);
-        setTotalPage(data.data.totalPages);
+  const axiosGetBookmark = useCallback(
+    async (page) => {
+      if (myData && !myData.data) return false;
+      try {
+        const { data } = await axios.get(`/bookmark/list?page=${page}&order=recent`, {
+          withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+          },
+        });
+        if (data.status === 200) {
+          setPageData({ ...data.data });
+          setBookmarkArr([...data.data.contents]);
+          setTotalPage(data.data.totalPages);
+        }
+      } catch (error) {
+        toast.error(error);
+        console.dir(error);
       }
-    } catch (error) {
-      toast.error(error);
-      console.dir(error);
-    }
-  }, []);
+    },
+    [myData],
+  );
 
   const handleResize = () => {
     if (window.innerWidth > 768) {

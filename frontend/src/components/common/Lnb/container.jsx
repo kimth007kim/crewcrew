@@ -120,10 +120,9 @@ function NavContainer() {
   }, []);
 
   const axiosGetBookmark = useCallback(async () => {
-    const Token = cookies.get('X-AUTH-TOKEN');
-    if (!Token) return false;
+    if (myData && !myData.data) return false;
     try {
-      const { data } = await axios.get('/bookmark/list', {
+      const { data } = await axios.get('/bookmark/list?order=bookmarked', {
         withCredentials: true,
         headers: {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
@@ -134,7 +133,7 @@ function NavContainer() {
       toast.error(error);
       console.dir(error);
     }
-  }, []);
+  }, [myData]);
 
   useEffect(() => {
     axiosGetBookmark();
