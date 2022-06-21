@@ -85,8 +85,8 @@ public class BookmarkService {
     }
 
     @Transactional(readOnly = true)
-    public Page<BoardPageDetailResponseDTO> search(Long userId, Pageable pageable) {
-        return bookmarkQueryRepository.search(userId, pageable);
+    public Page<BoardPageDetailResponseDTO> search(Long userId, Pageable pageable, String order) {
+        return bookmarkQueryRepository.search(userId, pageable, order);
     }
 
 /*    @Transactional
