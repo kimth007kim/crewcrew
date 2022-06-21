@@ -49,6 +49,7 @@ function SignupSection({ IsClick, HandleClick }) {
   const [CodeFocus, setCodeFocus] = useState(false);
   const [ProgressF, setProgressF] = useRecoilState(sectionProgress1);
 
+  const [checkCodeEmail, setCheckCodeEmail] = useState(false);
   const [SendCode, setSendCode] = useState(false);
   const [CodeActive, setCodeActive] = useState(false);
   const [CodeComplete, setCodeComplete] = useState(false);
@@ -163,7 +164,8 @@ function SignupSection({ IsClick, HandleClick }) {
   const HandleCodeChange = (e) => {
     let value = emojiSlice(e.target.value);
     value = spaceSlice(value);
-    value = value.slice(0, 8);
+    value = value.slice(0, 6);
+    setCheckCodeEmail(false);
     if (!SendCode) {
       value = value.slice(0, 0);
     }
@@ -279,11 +281,12 @@ function SignupSection({ IsClick, HandleClick }) {
         const context = {
           email: completeEmail,
         };
-        setSendCode(true);
         const { data } = await axios.post('/auth/email/send', context);
 
         switch (data.status) {
           case 200:
+            setSendCode(true);
+            setCheckCodeEmail(true);
             setCodeValidMsg('코드를 이메일로 전송했습니다! 확인해주세요.');
             break;
           case 1001:
@@ -333,12 +336,12 @@ function SignupSection({ IsClick, HandleClick }) {
   }, [emailIdValid, emailId, emailValid, email]);
 
   useEffect(() => {
-    if (code.length >= 5 && !codeValid) {
+    if (code.length >= 6 && !codeValid && CodeComplete) {
       CheckProgressF(2);
     } else {
       NotCheckProgressF(2);
     }
-  }, [codeValid, code]);
+  }, [codeValid, code, CodeComplete]);
 
   useEffect(() => {
     if (password && !passwordValid && isCheckPassword(password)) {
@@ -367,6 +370,7 @@ function SignupSection({ IsClick, HandleClick }) {
       setCodeActive(false);
       setCodeComplete(false);
       setSendCode(false);
+      setCheckCodeEmail(false);
       setCodeValidMsg('코드 전송 후, 입력창에 코드를 입력해주세요');
       setProgressF([
         {
@@ -501,7 +505,7 @@ function SignupSection({ IsClick, HandleClick }) {
               </Button>
             </div>
           </ListFlex>
-          <InputText Focused={CodeFocus} Valid={codeValid}>
+          <InputText Focused={CodeFocus || checkCodeEmail || CodeComplete} Valid={codeValid}>
             {codeValidMsg}
           </InputText>
         </InputLi>
