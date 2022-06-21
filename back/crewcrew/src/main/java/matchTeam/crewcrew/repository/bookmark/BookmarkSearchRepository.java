@@ -30,7 +30,7 @@ import static org.springframework.util.StringUtils.hasText;
 public class BookmarkSearchRepository {
 
     private final JPAQueryFactory queryFactory;
-    public Page<BoardPageDetailResponseDTO> search(Long userId, Pageable pageable) {
+    public Page<BoardPageDetailResponseDTO> search(Long userId, Pageable pageable, String order) {
         List<BoardPageDetailResponseDTO> content = queryFactory
                 .select(Projections.constructor(BoardPageDetailResponseDTO.class, board, new CaseBuilder()
                         .when(bookmark.boardId.id.isNull())
@@ -43,7 +43,7 @@ public class BookmarkSearchRepository {
                         bookmark.uid.uid.eq(userId)
                 ).offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(findOrder("recent"), bookmark.bookmarkId.desc())
+                .orderBy(findOrder(order))
                 .fetch();
 
         JPAQuery<Bookmark> countQuery = queryFactory
@@ -74,10 +74,8 @@ public class BookmarkSearchRepository {
         }
         else if (order.equals("recent")){
             return board.createdDate.desc();
-        }else if (order.equals("popular")){
-            return board.hit.desc();
-        }else if (order.equals("expired")){
-            return board.expiredDate.asc();
+        }else if (order.equals("bookmarked")){
+            return bookmark.bookmarkId.desc();
         } else {
             throw new NotExistOrderKeywordException();
         }

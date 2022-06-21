@@ -1,6 +1,7 @@
 package matchTeam.crewcrew.controller.api.v1.bookmark;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.board.*;
@@ -61,11 +62,13 @@ public class BookmarkController {
         return ResponseHandler.generateResponse("게시물 북마크 여부 조회 성공", HttpStatus.OK, isBookmarked);
     }
 
+    @ApiOperation(value = "북마크된 게시글 리스트 조회", notes = "order는 recent/bookmarked 옵션 중 하나 선택")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/bookmark/list")
-    public ResponseEntity<Object> getBookmarkList(@RequestHeader("X-AUTH-TOKEN") String token, @PageableDefault(size = 5) Pageable pageable){
+    public ResponseEntity<Object> getBookmarkList(@RequestHeader("X-AUTH-TOKEN") String token, @PageableDefault(size = 5) Pageable pageable, @ApiParam(value = "북마크 순서 기준", required = true)
+    @RequestParam String order){
         User user = userService.tokenChecker(token);
-        Page<BoardPageDetailResponseDTO> result = bookmarkService.search(user.getUid(), pageable);
+        Page<BoardPageDetailResponseDTO> result = bookmarkService.search(user.getUid(), pageable, order);
         BoardPageResponseDTO pageResponseDTO = BoardPageResponseDTO.toDTO(result);
         return ResponseHandler.generateResponse("북마크된 게시글 리스트 조회 성공", HttpStatus.OK, pageResponseDTO);
     }
