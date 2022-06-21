@@ -36,6 +36,7 @@ public class BookmarkController {
     @PostMapping(value = "/bookmark/{boardId}")
     public ResponseEntity<Object> saveBookmark(@RequestHeader("X-AUTH-TOKEN") String token, @PathVariable Long boardId){
         User user = userService.tokenChecker(token);
+        if (user == null) throw new CrewException(ErrorCode.NOT_EXIST_LOGINED_USER);
         Long userId = user.getUid();
 
         //유효한 리퀘스트인지 확인
@@ -48,6 +49,7 @@ public class BookmarkController {
     @DeleteMapping(value = "/bookmark/{boardId}")
     public ResponseEntity<Object> cancelBookmark(@RequestHeader("X-AUTH-TOKEN") String token, @PathVariable Long boardId){
         User user = userService.tokenChecker(token);
+        if (user == null) throw new CrewException(ErrorCode.NOT_EXIST_LOGINED_USER);
         Board board = boardRepository.findById(boardId).orElseThrow(() -> new CrewException(ErrorCode.NOT_EXIST_BOARD_IN_ID));
         bookmarkService.cancelBookmark(board, user);
         return ResponseHandler.generateResponse(boardId+ "번 게시물에 대한 북마크 삭제 성공", HttpStatus.OK, boardId);
@@ -57,6 +59,7 @@ public class BookmarkController {
     @GetMapping("/bookmark/{boardId}")
     public ResponseEntity<Object> getIsBookmarked(@RequestHeader("X-AUTH-TOKEN") String token, @PathVariable Long boardId){
         User user = userService.tokenChecker(token);
+        if (user == null) throw new CrewException(ErrorCode.NOT_EXIST_LOGINED_USER);
         boardRepository.findById(boardId).orElseThrow(NotExistBoardInIdException::new);
         boolean isBookmarked = bookmarkService.checkIsBookmarked(user.getUid(), boardId);
         return ResponseHandler.generateResponse("게시물 북마크 여부 조회 성공", HttpStatus.OK, isBookmarked);
@@ -68,6 +71,7 @@ public class BookmarkController {
     public ResponseEntity<Object> getBookmarkList(@RequestHeader("X-AUTH-TOKEN") String token, @PageableDefault(size = 5) Pageable pageable, @ApiParam(value = "북마크 순서 기준", required = true)
     @RequestParam String order){
         User user = userService.tokenChecker(token);
+        if (user == null) throw new CrewException(ErrorCode.NOT_EXIST_LOGINED_USER);
         Page<BoardPageDetailResponseDTO> result = bookmarkService.search(user.getUid(), pageable, order);
         BoardPageResponseDTO pageResponseDTO = BoardPageResponseDTO.toDTO(result);
         return ResponseHandler.generateResponse("북마크된 게시글 리스트 조회 성공", HttpStatus.OK, pageResponseDTO);

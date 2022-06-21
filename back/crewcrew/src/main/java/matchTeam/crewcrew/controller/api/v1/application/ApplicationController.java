@@ -11,7 +11,9 @@ import matchTeam.crewcrew.entity.user.LikedCategory;
 
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.repository.application.ApplicationRepository;
+import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.ResponseHandler;
+import matchTeam.crewcrew.response.exception.CrewException;
 import matchTeam.crewcrew.service.announcement.AnnouncementService;
 import matchTeam.crewcrew.service.application.ApplicationProgressService;
 import matchTeam.crewcrew.service.application.ApplicationService;
@@ -87,6 +89,7 @@ import static java.util.stream.Collectors.joining;
     public ResponseEntity<Object> fillInApplication(@RequestHeader("X-AUTH-TOKEN") String token,
                                                     @ApiParam(value = "지원서 작성 요청 DTO", required = true) @RequestBody ApplicationSaveRequestDTO info) throws MessagingException{
         User user = userService.tokenChecker(token);
+
         ApplicationSaveResponseDTO result = applicationService.save(user, info);
         announcementService.save(result);
         applicationProgressService.increaseApply(info.getBoardId());

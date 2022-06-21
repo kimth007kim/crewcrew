@@ -123,7 +123,9 @@ public enum ErrorCode {
     NOT_EXIST_BOOKMARK_TO_CANCEL(4001, "BOOKMARK IS EMPTY", "없는 북마크를 삭제하려고 했습니다."),
     ALREADY_EXIST_BOOKMARK_TO_POST(4002, "BOOKMARK IS ALREADY EXIST", "이미 존재하는 북마크를 생성하도록 요청했습니다."),
 
-    NOT_MATCH_UID_WITH_BOOKMARK(4101, "UID IS NOT MATCH WITH BOOKMARK", "해당 북마크에 대한 권한이 없는 유저가 북마크 삭제를 요청했습니다.");
+    NOT_MATCH_UID_WITH_BOOKMARK(4101, "UID IS NOT MATCH WITH BOOKMARK", "해당 북마크에 대한 권한이 없는 유저가 북마크 삭제를 요청했습니다."),
+
+    NOT_EXIST_LOGINED_USER(4201, "USER IS NOT EXIST", "로그인하지 않은 상태로 북마크 관련 요청을 했습니다.");
 
     private int status;
     private final String code;
