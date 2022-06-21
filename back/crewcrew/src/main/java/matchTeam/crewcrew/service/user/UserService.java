@@ -505,4 +505,9 @@ public class UserService {
         return user;
     }
 
+    public void deleteUser(Long id){
+        User user = userRepository.findById(id).orElseThrow(()-> new CrewException(ErrorCode.UID_NOT_EXIST));
+        userRepository.delete(user);
+    }
+
 }

@@ -554,10 +554,10 @@ public class AuthController {
         return ResponseHandler.generateResponse("로그아웃 성공", HttpStatus.OK, null);
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<Object> test() {
-        int a= 1;
-        if (a==1) throw new CrewException(ErrorCode.APPLY_TO_BOARD_WRITER);
+    @DeleteMapping("/user")
+    public ResponseEntity<Object> test(Long id) {
+
+        userService.deleteUser(id);
         return ResponseHandler.generateResponse("로그아웃 성공", HttpStatus.OK, null);
     }
 

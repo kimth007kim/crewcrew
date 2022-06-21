@@ -25,6 +25,8 @@ public class KakaoService {
     @Value("${url.base}")
     private String baseUrl;
 
+    @Value("${social.kakao.admin-key}")
+    private String adminKey;
     @Value("${social.kakao.client-id}")
     private String kakaoClientId;
 
@@ -82,7 +84,8 @@ public class KakaoService {
 
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.set("Authorization","Bearer "+accessToken);
+//        headers.set("Authorization","Bearer "+accessToken);
+        headers.set("Authorization","KakaoAK "+adminKey);
 
         HttpEntity<MultiValueMap<String,String>> request  = new HttpEntity<>(null,headers);
         ResponseEntity<String> response = restTemplate.postForEntity(unlinkUrl,request,String.class);
@@ -93,5 +96,6 @@ public class KakaoService {
         }
         throw new CrewException(ErrorCode.KAKAO_COMMUNICATION_FAILED);
     }
+
 
 }

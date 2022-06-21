@@ -3,9 +3,13 @@ package matchTeam.crewcrew.controller.api.v1.profile;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.user.ProfileChangeRequestDto;
+import matchTeam.crewcrew.dto.user.example.UserResponseDto;
 import matchTeam.crewcrew.entity.user.User;
+import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.ResponseHandler;
+import matchTeam.crewcrew.response.exception.CrewException;
 import matchTeam.crewcrew.service.amazonS3.S3Uploader;
+import matchTeam.crewcrew.service.user.LikedCategoryService;
 import matchTeam.crewcrew.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +27,7 @@ import java.io.IOException;
 public class ProfileController {
 
     private final UserService userService;
+    private final LikedCategoryService likedCategoryService;
     private final S3Uploader s3Uploader;
 
 
@@ -116,5 +121,30 @@ public class ProfileController {
 
     }
 
+
+
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200
+                    , message = "번 유저 조회 성공"
+            )
+            , @ApiResponse(
+            code = 1006
+            , message = "존재하지 않는 id 값입니다. "
+            )
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> findByUid(@PathVariable Long id) {
+        //email 주소 형식 에  맞는지 확인하는 메서드
+        User user = userService.findByUid(id);
+        if (user == null) {
+            throw new CrewException(ErrorCode.UID_NOT_EXIST);
+        }
+        UserResponseDto userResponseDto = new UserResponseDto(id, user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), likedCategoryService.findUsersLike(user), user.getMessage(), user.getProvider());
+        StringBuilder sb = new StringBuilder();
+        sb.append(id.toString());
+        sb.append("번 유저 조회 성공");
+        return ResponseHandler.generateResponse(sb.toString(), HttpStatus.OK, userResponseDto);
+    }
 
 }

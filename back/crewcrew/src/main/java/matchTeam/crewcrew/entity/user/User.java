@@ -61,7 +61,10 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     @JsonManagedReference
     private final List<LikedCategory> likedCategories= new ArrayList<>();
 

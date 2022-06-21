@@ -4,6 +4,7 @@ import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.entity.user.LikedCategory;
 import matchTeam.crewcrew.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -18,6 +19,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByNickname(String Nickname);
 //    @Query("select u.likedCategories from User u where  u.uid=:uid")
 //    List<LikedCategory> findByUserCategory(@Param("uid") Long uid);
-
+    @Modifying
+    @Query("delete from User l where l.uid=:uid")
+    void deleteUserByUid(@Param("uid")Long uid);
 
 }
