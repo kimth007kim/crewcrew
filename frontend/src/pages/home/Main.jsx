@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable indent */
 import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Cookies } from 'react-cookie';
@@ -21,7 +19,7 @@ import Profile5 from '@/assets/images/Profile5.png';
 import ArrowCircle from '@/assets/images/ArrowCircle.png';
 import IconNavArrowRev from '@/assets/images/IconNavArrow_Rev.png';
 import HomeTop from '@/components/home/HomeTop';
-import ScrollButton from '@/components/post/ScrollButton';
+import ScrollButton from '@/components/common/ScrollButton';
 import SwiperSection from '@/components/home/SwiperSection';
 import CategoryCard from '@/components/home/CategoryCard';
 import Footer from '@/components/common/Footer';
@@ -75,7 +73,7 @@ function Main() {
     }
   };
 
-  const CatList = useCallback(async () => {
+  const getCategoryList = useCallback(async () => {
     try {
       const { data } = await axios.get('/category/list');
       const listData = [];
@@ -152,7 +150,7 @@ function Main() {
   }, []);
 
   useEffect(() => {
-    CatList();
+    getCategoryList();
     axiosGetNewPost();
     axiosGetDeadLinePost();
   }, []);

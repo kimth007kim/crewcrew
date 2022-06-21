@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Lnb from '@/components/common/Lnb/Lnb';
 import PostList from '@/components/post/PostList';
 import PostTop from '@/components/post/PostTop';
-import ScrollButton from '@/components/post/ScrollButton';
+import ScrollButton from '@/components/common/ScrollButton';
 
 function Post() {
   return (

@@ -7,7 +7,7 @@ import Lnb from '@/components/common/Lnb/Lnb';
 import DetailPostList from '@/components/post/detail/DetailPostList';
 import MainPost from '@/components/post/detail/MainPost';
 import MainTop from '@/components/post/detail/MainTop';
-import ScrollButton from '@/components/post/ScrollButton';
+import ScrollButton from '@/components/common/ScrollButton';
 import useQuery from '@/hooks/useQuery';
 
 function PostDetail() {

@@ -10,12 +10,21 @@ import axios from 'axios';
 import { Cookies } from 'react-cookie';
 import { useRecoilState } from 'recoil';
 import { changedBookmark } from '@/atoms/post';
+import useModal from '@/hooks/useModal';
+import useSWR from 'swr';
+import fetcher from '@/utils/fetcher';
+import ParticipateModal from '../modal/Participate';
 
 function MainPost({ data }) {
   const cookies = new Cookies();
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+
   const [IsDisable, setIsDisable] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [bookmarkChanged, setBookmarkChanged] = useRecoilState(changedBookmark);
+
+  const [participateVisible, openParticipate, closeParticipate] = useModal();
+
   const renderDate = useCallback(() => {
     const date = new Date(data.createdDate);
     return `${format(date, 'M/d')} (${viewDay(getDay(date))})`;
@@ -73,6 +82,18 @@ function MainPost({ data }) {
     setBookmarkChanged((state) => !state);
   };
 
+  const handleOpenPartiModal = useCallback(
+    (e) => {
+      e.stopPropagation();
+      if (myData && myData.data) {
+        openParticipate();
+      } else {
+        const login = window.alert('로그인 후 이용가능합니다.');
+      }
+    },
+    [myData],
+  );
+
   useEffect(() => {
     const bool = !data.viewable || renderDay() < 0;
     setIsDisable(bool);
@@ -83,40 +104,47 @@ function MainPost({ data }) {
   }, [bookmarkChanged]);
 
   return (
-    <Container>
-      <Wrapper>
-        <ul>
-          <li>{IsDisable ? '마감' : `D-${renderDay()}`}</li>
-          <li>{data.nickname}</li>
-          <li>{renderDate()}</li>
-        </ul>
-        <TitleMobile>{data.title}</TitleMobile>
-        <ul>
-          <li>
-            <h4>{data.title}</h4>
-          </li>
-          <li>
-            <ButtonStar type="button" onClick={bookmarkClick} bookmark={isBookmarked} />
-          </li>
-          <li>
-            <Button type="button" disabled={IsDisable}>
-              참여하기
-            </Button>
-          </li>
-        </ul>
-        <TopUList textColor={data.categoryParentId === 1 ? '#005ec5' : '#F7971E'}>
-          <li>
-            {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
-          </li>
-          <li>{data.approachCode ? '온라인' : '오프라인'}</li>
-          <li>{`${data.recruitedCrew}/${data.totalCrew}명`}</li>
-          <li>{`조회수 ${data.hit}`}</li>
-        </TopUList>
-        <MarkDownbody>
-          <Markdown>{data.boardContent}</Markdown>
-        </MarkDownbody>
-      </Wrapper>
-    </Container>
+    <>
+      <Container>
+        <Wrapper>
+          <ul>
+            <li>{IsDisable ? '마감' : `D-${renderDay()}`}</li>
+            <li>{data.nickname}</li>
+            <li>{renderDate()}</li>
+          </ul>
+          <TitleMobile>{data.title}</TitleMobile>
+          <ul>
+            <li>
+              <h4>{data.title}</h4>
+            </li>
+            <li>
+              <ButtonStar type="button" onClick={bookmarkClick} bookmark={isBookmarked} />
+            </li>
+            <li>
+              <Button type="button" disabled={IsDisable} onClick={handleOpenPartiModal}>
+                참여하기
+              </Button>
+            </li>
+          </ul>
+          <TopUList textColor={data.categoryParentId === 1 ? '#005ec5' : '#F7971E'}>
+            <li>
+              {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
+            </li>
+            <li>{data.approachCode ? '온라인' : '오프라인'}</li>
+            <li>{`${data.recruitedCrew}/${data.totalCrew}명`}</li>
+            <li>{`조회수 ${data.hit}`}</li>
+          </TopUList>
+          <MarkDownbody>
+            <Markdown>{data.boardContent}</Markdown>
+          </MarkDownbody>
+        </Wrapper>
+      </Container>
+      <ParticipateModal
+        closeModal={closeParticipate}
+        postData={data}
+        visible={participateVisible}
+      />
+    </>
   );
 }
 

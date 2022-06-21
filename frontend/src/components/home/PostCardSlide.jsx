@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
+import { Cookies } from 'react-cookie';
 
 import ButtonStarWhite from '@/assets/images/ButtonStarWhite.png';
 import ButtonStarOn from '@/assets/images/ButtonStarOn.png';
@@ -10,11 +11,24 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { changedBookmark } from '@/atoms/post';
+import useSWR from 'swr';
+import fetcher from '@/utils/fetcher';
+import useModal from '@/hooks/useModal';
+import AuthModal from '../common/Auth/AuthModal';
 
 function PostCardSlide({ data, cookies }) {
   const [isBookmark, setIsBookmark] = useState(false);
   const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
+  const myCookies = new Cookies();
+  const {
+    data: myData,
+    error,
+    mutate,
+  } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
+
   const navigate = useNavigate();
+  const [authVisible, openAuth, closeAuth] = useModal();
+
   const renderDate = useCallback(() => {
     const date = new Date(data.createdDate);
     return `${format(date, 'M/d')} (${viewDay(getDay(date))})`;
@@ -41,6 +55,9 @@ function PostCardSlide({ data, cookies }) {
   const bookmark = async (e) => {
     e.stopPropagation();
     try {
+      if (!myData.data) {
+        window.alert('로그인 후 이용가능합니다.');
+      }
       if (!isBookmark) {
         const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, '', {
           withCredentials: true,
@@ -86,47 +103,50 @@ function PostCardSlide({ data, cookies }) {
   }, [changeBookmarked]);
 
   return (
-    <Container>
-      <CardPost category={category()} onClick={handleLocate}>
-        <CardHead>
-          <h5>
-            <span>{`D-${renderDay()}`}</span>
-          </h5>
-          <CardHeadRight>
-            <p>{renderDate()}</p>
-            <p>
-              조회수
-              <span> {data.hit}</span>
-            </p>
-            <Star bookmark={isBookmark} onClick={bookmark} />
-          </CardHeadRight>
-        </CardHead>
-        <CardBody>
-          <CardProfile>
-            <ProfileImg profileImg={data.profileImage} alt="" />
-          </CardProfile>
-          <CardTxt>
-            <h4>{data.title}</h4>
-            <p>{data.nickname}</p>
-          </CardTxt>
-        </CardBody>
-        <CardFooter>
-          <CardTagColor category={category()}>
-            {' '}
-            {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
-          </CardTagColor>
-          <CardTagColor category={category()}>
-            {data.approachCode ? '온라인' : '오프라인'}
-          </CardTagColor>
-          <CardTag>
-            <span>
-              {data.recruitedCrew}/{data.totalCrew}
-            </span>
-            <span>명 모집됨</span>
-          </CardTag>
-        </CardFooter>
-      </CardPost>
-    </Container>
+    <>
+      <Container>
+        <CardPost category={category()} onClick={handleLocate}>
+          <CardHead>
+            <h5>
+              <span>{`D-${renderDay()}`}</span>
+            </h5>
+            <CardHeadRight>
+              <p>{renderDate()}</p>
+              <p>
+                조회수
+                <span> {data.hit}</span>
+              </p>
+              <Star bookmark={isBookmark} onClick={bookmark} />
+            </CardHeadRight>
+          </CardHead>
+          <CardBody>
+            <CardProfile>
+              <ProfileImg profileImg={data.profileImage} alt="" />
+            </CardProfile>
+            <CardTxt>
+              <h4>{data.title}</h4>
+              <p>{data.nickname}</p>
+            </CardTxt>
+          </CardBody>
+          <CardFooter>
+            <CardTagColor category={category()}>
+              {' '}
+              {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
+            </CardTagColor>
+            <CardTagColor category={category()}>
+              {data.approachCode ? '온라인' : '오프라인'}
+            </CardTagColor>
+            <CardTag>
+              <span>
+                {data.recruitedCrew}/{data.totalCrew}
+              </span>
+              <span>명 모집됨</span>
+            </CardTag>
+          </CardFooter>
+        </CardPost>
+      </Container>
+      <AuthModal closeModal={closeAuth} visible={authVisible} />
+    </>
   );
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import Lnb from '@/components/common/Lnb/Lnb';
-import ScrollButton from '@/components/post/ScrollButton';
+import ScrollButton from '@/components/common/ScrollButton';
 import Err404 from '@/assets/images/Err404.png';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
