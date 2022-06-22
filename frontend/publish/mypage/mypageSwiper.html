@@ -22,7 +22,7 @@
 
         <section class="MainTop">
             <div class="TopCont">
-                <h2><a href="#" class="arrowAfter">마이페이지</a>내게 도착한 참여요청</h2>
+                <h2><a href="#" class="arrowAfter">마이페이지</a>내가 모집중인 크루</h2>
             </div>
             </div>
             <div class="ButtonIntro"></div>
@@ -30,8 +30,16 @@
 
         <section class="MypageSentTop">
             <div class="SectionWrap850">
-                <h3>내게 도착한 참여요청</h3>
-                <p>내게 도착한 참여요청을 이곳에서 간편하게 관리하세요!</p>
+                <h3>내가 모집중인 크루</h3>
+                <p>내가 모집중인 크루를 이곳에서 간편하게 관리하세요!</p>
+                <div class="filterWrapper">
+                    <p>내가 모집중인 크루</p>
+                    <ul>
+                        <li>내가 참여요청한 크루</li>
+                        <li>내가 모집중인 크루</li>
+                        <li>나의 활동 크루</li>
+                    </ul>
+                </div>
                 <div class="SentContent">
                     <h4>전체 <span>9999개</span></h4>
                     <div class="SentBoxWrap">
@@ -60,161 +68,169 @@
                             <div class="SwiperCardWrapper"> <!--스와이퍼 카드 드롭다운 버튼을 위한 래핑-->
                                 <div class="PostCard Swiper">
                                     <div class="SwiperCardTop"> <!--카드상단-->
-                                        <div class="PostCardHead">
-                                            <div class="TextBox">
-                                                <p class="Dday">D-2</p>
+                                        <div class="CardTopHeader">
+                                            <div class="PostCardHead">
+                                                <div class="TextBox">
+                                                    <p class="Dday">D-2</p>
+                                                </div>
+                                                <div class="DetailBox">
+                                                    <p><span>(8/10명)</span> 모집완료</p>
+                                                    <button class="Detail">크루원채팅</button>
+                                                </div>
                                             </div>
-                                            <div class="DetailBox">
-                                                <p><span>(8/10명)</span> 모집완료</p>
-                                                <button class="Detail">크루원채팅</button>
+                                            <div class="PostCardBody">
+                                                <div class="TextBox">
+                                                    <div class="TitleBox">
+                                                        <h5>함께 크루원 모집 플랫폼 작업하실 분 모십니다~! 크루</h5>
+                                                    </div>
+                                                    <div class="TextList">
+                                                        <p class="Category Study">고시/공무원</p>
+                                                        <p>오프라인</p>
+                                                    </div>
+                                                    <div class="ButtonBox">
+                                                        <button class="Del">삭제</button>
+                                                        <button class="Set">세팅</button>
+                                                    </div>
+                                                    <p class="Waiting">대기자<em>3</em></p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="PostCardBody">
-                                            <div class="TextBox">
-                                                <div class="TitleBox">
-                                                    <h5>함께 크루원 모집 플랫폼 작업하실 분 모십니다~! 크루</h5>
+                                        <div class="CardTopFooter">
+                                            <p>참여자 및 대기자 관리</p>
+                                            <div class="CardToggle">
+                                                <p inert>참여자 8명</p>
+                                                <div class="ToggleBtn">
+                                                    <div class="ToggleIndicator"></div>
                                                 </div>
-                                                <div class="TextList">
-                                                    <p class="Category Study">고시/공무원</p>
-                                                    <p>오프라인</p>
-                                                </div>
-                                                <div class="ButtonBox">
-                                                    <button class="Del">삭제</button>
-                                                    <button class="Set">세팅</button>
-                                                </div>
-                                                <p class="Waiting">대기자<em>3</em></p>
+                                                <p>대기자 3명</p>
                                             </div>
+                                            <div class="SwiperBtn">카드 펼치기/닫기</div>
                                         </div>
                                     </div>
                                     <div class="SwiperCardBottom"> <!--카드하단-->
-                                        <div class="BtTop">
-                                            <p>대기자 <em>3</em></p>
-                                            <button>참여자 확인 (8)</button>
-                                        </div>
-                                            <div class="BtSwiper"> <!--overflow히든처리를 위한 래퍼-->
-                                                <div class="CardSwiper swiper1">
-                                                    <ul class="SlideWrapper swiper-wrapper">
-                                                        <li class="swiper-slide"> <!--스와이퍼슬라이드-->
-                                                            <div class="SwiperCard"> <!--슬라이드카드-->
-                                                                <div class="SwiperCardHead">
-                                                                    <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
-                                                                    <div class="CardTxt">
-                                                                        <h4>재영재영유재영</h4>
-                                                                        <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="SwiperCardBody">
-                                                                    <h5>관심 스터디 크루</h5>
-                                                                    <ul class="IntList Study">
-                                                                        <li>취업</li>
-                                                                        <li>어학</li>
-                                                                        <li>고시/공무원</li>
-                                                                        <li>프로젝트</li>
-                                                                    </ul>
-                                                                    <h5>관심 취미 크루</h5>
-                                                                    <ul class="IntList Hobby">
-                                                                        <li>게임</li>
-                                                                        <li>트렌드</li>
-                                                                        <li>요리</li>
-                                                                        <li>예술</li>
-                                                                        <li>덕질</li>
-                                                                        <li>운동</li>
-                                                                        <li>기타</li>
-                                                                    </ul>
+                                        <div class="BtSwiper"> <!--overflow히든처리를 위한 래퍼-->
+                                            <div class="CardSwiper swiper1">
+                                                <ul class="SlideWrapper swiper-wrapper">
+                                                    <li class="swiper-slide"> <!--스와이퍼슬라이드-->
+                                                        <div class="SwiperCard"> <!--슬라이드카드-->
+                                                            <div class="SwiperCardHead">
+                                                                <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                                                <div class="CardTxt">
+                                                                    <h4>재영재영유재영</h4>
+                                                                    <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
                                                                 </div>
                                                             </div>
-                                                            <div class="SwiperSlideBtn"><!--슬라이드하단-->
-                                                                <p>03/28 요청</p>
-                                                                <div class="BtnWrapper">
-                                                                    <button class="BtnChat">채팅</button>
-                                                                    <button class="BtnColor Nega">거절</button>
-                                                                    <button class="BtnColor Posi">수락</button>
-                                                                </div>
+                                                            <div class="SwiperCardBody">
+                                                                <h5>관심 스터디 크루</h5>
+                                                                <ul class="IntList Study">
+                                                                    <li>취업</li>
+                                                                    <li>어학</li>
+                                                                    <li>고시/공무원</li>
+                                                                    <li>프로젝트</li>
+                                                                </ul>
+                                                                <h5>관심 취미 크루</h5>
+                                                                <ul class="IntList Hobby">
+                                                                    <li>게임</li>
+                                                                    <li>트렌드</li>
+                                                                    <li>요리</li>
+                                                                    <li>예술</li>
+                                                                    <li>덕질</li>
+                                                                    <li>운동</li>
+                                                                    <li>기타</li>
+                                                                </ul>
                                                             </div>
-                                                        </li>
+                                                        </div>
+                                                        <div class="SwiperSlideBtn"><!--슬라이드하단-->
+                                                            <p>03/28 요청</p>
+                                                            <div class="BtnWrapper">
+                                                                <button class="BtnChat">채팅</button>
+                                                                <button class="BtnColor Nega">거절</button>
+                                                                <button class="BtnColor Posi">수락</button>
+                                                            </div>
+                                                        </div>
+                                                    </li>
 
-                                                        <li class="swiper-slide"> <!--스와이퍼슬라이드-->
-                                                            <div class="SwiperCard"> <!--슬라이드카드-->
-                                                                <div class="SwiperCardHead">
-                                                                    <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
-                                                                    <div class="CardTxt">
-                                                                        <h4>재영재영유재영</h4>
-                                                                        <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="SwiperCardBody">
-                                                                    <h5>관심 스터디 크루</h5>
-                                                                    <ul class="IntList Study">
-                                                                        <li>취업</li>
-                                                                        <li>어학</li>
-                                                                        <li>고시/공무원</li>
-                                                                        <li>프로젝트</li>
-                                                                    </ul>
-                                                                    <h5>관심 취미 크루</h5>
-                                                                    <ul class="IntList Hobby">
-                                                                        <li>게임</li>
-                                                                        <li>트렌드</li>
-                                                                        <li>요리</li>
-                                                                        <li>예술</li>
-                                                                        <li>덕질</li>
-                                                                        <li>운동</li>
-                                                                        <li>기타</li>
-                                                                    </ul>
+                                                    <li class="swiper-slide"> <!--스와이퍼슬라이드-->
+                                                        <div class="SwiperCard"> <!--슬라이드카드-->
+                                                            <div class="SwiperCardHead">
+                                                                <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                                                <div class="CardTxt">
+                                                                    <h4>재영재영유재영</h4>
+                                                                    <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
                                                                 </div>
                                                             </div>
-                                                            <div class="SwiperSlideBtn"><!--슬라이드하단-->
-                                                                <p>03/28 요청</p>
-                                                                <div class="BtnWrapper">
-                                                                    <button class="BtnChat">채팅</button>
-                                                                    <button class="BtnColor Nega">거절</button>
-                                                                    <button class="BtnColor Posi">수락</button>
+                                                            <div class="SwiperCardBody">
+                                                                <h5>관심 스터디 크루</h5>
+                                                                <ul class="IntList Study">
+                                                                    <li>취업</li>
+                                                                    <li>어학</li>
+                                                                    <li>고시/공무원</li>
+                                                                    <li>프로젝트</li>
+                                                                </ul>
+                                                                <h5>관심 취미 크루</h5>
+                                                                <ul class="IntList Hobby">
+                                                                    <li>게임</li>
+                                                                    <li>트렌드</li>
+                                                                    <li>요리</li>
+                                                                    <li>예술</li>
+                                                                    <li>덕질</li>
+                                                                    <li>운동</li>
+                                                                    <li>기타</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="SwiperSlideBtn"><!--슬라이드하단-->
+                                                            <p>03/28 요청</p>
+                                                            <div class="BtnWrapper">
+                                                                <button class="BtnChat">채팅</button>
+                                                                <button class="BtnColor Nega">거절</button>
+                                                                <button class="BtnColor Posi">수락</button>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="swiper-slide"> <!--스와이퍼슬라이드-->
+                                                        <div class="SwiperCard"> <!--슬라이드카드-->
+                                                            <div class="SwiperCardHead">
+                                                                <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                                                <div class="CardTxt">
+                                                                    <h4>재영재영유재영</h4>
+                                                                    <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
                                                                 </div>
                                                             </div>
-                                                        </li>
-
-                                                        <li class="swiper-slide"> <!--스와이퍼슬라이드-->
-                                                            <div class="SwiperCard"> <!--슬라이드카드-->
-                                                                <div class="SwiperCardHead">
-                                                                    <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
-                                                                    <div class="CardTxt">
-                                                                        <h4>재영재영유재영</h4>
-                                                                        <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="SwiperCardBody">
-                                                                    <h5>관심 스터디 크루</h5>
-                                                                    <ul class="IntList Study">
-                                                                        <li>취업</li>
-                                                                        <li>어학</li>
-                                                                        <li>고시/공무원</li>
-                                                                        <li>프로젝트</li>
-                                                                    </ul>
-                                                                    <h5>관심 취미 크루</h5>
-                                                                    <ul class="IntList Hobby">
-                                                                        <li>게임</li>
-                                                                        <li>트렌드</li>
-                                                                        <li>요리</li>
-                                                                        <li>예술</li>
-                                                                        <li>덕질</li>
-                                                                        <li>운동</li>
-                                                                        <li>기타</li>
-                                                                    </ul>
-                                                                </div>
+                                                            <div class="SwiperCardBody">
+                                                                <h5>관심 스터디 크루</h5>
+                                                                <ul class="IntList Study">
+                                                                    <li>취업</li>
+                                                                    <li>어학</li>
+                                                                    <li>고시/공무원</li>
+                                                                    <li>프로젝트</li>
+                                                                </ul>
+                                                                <h5>관심 취미 크루</h5>
+                                                                <ul class="IntList Hobby">
+                                                                    <li>게임</li>
+                                                                    <li>트렌드</li>
+                                                                    <li>요리</li>
+                                                                    <li>예술</li>
+                                                                    <li>덕질</li>
+                                                                    <li>운동</li>
+                                                                    <li>기타</li>
+                                                                </ul>
                                                             </div>
-                                                            <div class="SwiperSlideBtn"><!--슬라이드하단-->
-                                                                <p>03/28 요청</p>
-                                                                <div class="BtnWrapper">
-                                                                    <button class="BtnChat">채팅</button>
-                                                                    <button class="BtnColor Nega">거절</button>
-                                                                    <button class="BtnColor Posi">수락</button>
-                                                                </div>
+                                                        </div>
+                                                        <div class="SwiperSlideBtn"><!--슬라이드하단-->
+                                                            <p>03/28 요청</p>
+                                                            <div class="BtnWrapper">
+                                                                <button class="BtnChat">채팅</button>
+                                                                <button class="BtnColor Nega">거절</button>
+                                                                <button class="BtnColor Posi">수락</button>
                                                             </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
 
                                                 
-                                            </div>
+                                        </div>
 
                                     </div>
                                 </div>
@@ -222,9 +238,6 @@
                                 <div class="ButtonPrev1 ButtonPrev swiper-button-disabled"></div>
                                 <div class="ButtonNext1 ButtonNext"></div>
                                 
-                                <div class="SwiperBtn"> <!--드롭다운 버튼-->
-                                    대기자
-                                </div>
                             </div>
                         </li> <!--카드 1개 끝-->
 
@@ -232,171 +245,173 @@
                             <div class="SwiperCardWrapper"> <!--스와이퍼 카드 드롭다운 버튼을 위한 래핑-->
                                 <div class="PostCard Swiper">
                                     <div class="SwiperCardTop"> <!--카드상단-->
-                                        <div class="PostCardHead">
-                                            <div class="TextBox">
-                                                <p class="Dday">D-362</p>
+                                        <div class="CardTopHeader">
+                                            <div class="PostCardHead">
+                                                <div class="TextBox">
+                                                    <p class="Dday">D-2</p>
+                                                </div>
+                                                <div class="DetailBox">
+                                                    <p><span>(8/10명)</span> 모집완료</p>
+                                                    <button class="Detail">크루원채팅</button>
+                                                </div>
                                             </div>
-                                            <div class="DetailBox">
-                                                <p><span>(8/10명)</span> 모집완료</p>
-                                                <button class="Detail">크루원채팅</button>
+                                            <div class="PostCardBody">
+                                                <div class="TextBox">
+                                                    <div class="TitleBox">
+                                                        <h5>함께 크루원 모집 플랫폼 작업하실 분 모십니다~! 크루</h5>
+                                                    </div>
+                                                    <div class="TextList">
+                                                        <p class="Category Study">고시/공무원</p>
+                                                        <p>오프라인</p>
+                                                    </div>
+                                                    <div class="ButtonBox">
+                                                        <button class="Del">삭제</button>
+                                                        <button class="Set">세팅</button>
+                                                    </div>
+                                                    <p class="Waiting">대기자<em>3</em></p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="PostCardBody">
-                                            <div class="TextBox">
-                                                <div class="TitleBox">
-                                                    <h5>함께 크루원 모집 플랫폼 작업하실 분 모십니다~! 크루</h5>
+                                        <div class="CardTopFooter">
+                                            <p>참여자 및 대기자 관리</p>
+                                            <div class="CardToggle On">
+                                                <p>참여자 8명</p>
+                                                <div class="ToggleBtn">
+                                                    <div class="ToggleIndicator"></div>
                                                 </div>
-                                                <div class="TextList">
-                                                    <p class="Category Study">고시/공무원</p>
-                                                    <p>오프라인</p>
-                                                </div>
-                                                <div class="ButtonBox">
-                                                    <button class="Del">삭제</button>
-                                                    <button class="Set">세팅</button>
-                                                </div>
-                                                <p class="Waiting">대기자<em>3</em></p>
+                                                <p inert>대기자 3명</p>
                                             </div>
+                                            <div class="SwiperBtn">카드 펼치기/닫기</div>
                                         </div>
                                     </div>
                                     <div class="SwiperCardBottom"> <!--카드하단-->
-                                        <div class="BtTop">
-                                            <p>대기자 <em>3</em></p>
-                                            <button>참여자 확인 (8)</button>
-                                        </div>
-                                            <div class="BtSwiper"> <!--overflow히든처리를 위한 래퍼-->
-                                                <div class="CardSwiper swiper2">
-                                                    <ul class="SlideWrapper swiper-wrapper">
-                                                        <li class="swiper-slide"> <!--스와이퍼슬라이드-->
-                                                            <div class="SwiperCard"> <!--슬라이드카드-->
-                                                                <div class="SwiperCardHead">
-                                                                    <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
-                                                                    <div class="CardTxt">
-                                                                        <h4>재영재영유재영</h4>
-                                                                        <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="SwiperCardBody">
-                                                                    <h5>관심 스터디 크루</h5>
-                                                                    <ul class="IntList Study">
-                                                                        <li>취업</li>
-                                                                        <li>어학</li>
-                                                                        <li>고시/공무원</li>
-                                                                        <li>프로젝트</li>
-                                                                    </ul>
-                                                                    <h5>관심 취미 크루</h5>
-                                                                    <ul class="IntList Hobby">
-                                                                        <li>게임</li>
-                                                                        <li>트렌드</li>
-                                                                        <li>요리</li>
-                                                                        <li>예술</li>
-                                                                        <li>덕질</li>
-                                                                        <li>운동</li>
-                                                                        <li>기타</li>
-                                                                    </ul>
+                                        <div class="BtSwiper"> <!--overflow히든처리를 위한 래퍼-->
+                                            <div class="CardSwiper swiper1">
+                                                <ul class="SlideWrapper swiper-wrapper">
+                                                    <li class="swiper-slide"> <!--스와이퍼슬라이드-->
+                                                        <div class="SwiperCard"> <!--슬라이드카드-->
+                                                            <div class="SwiperCardHead">
+                                                                <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                                                <div class="CardTxt">
+                                                                    <h4>재영재영유재영</h4>
+                                                                    <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
                                                                 </div>
                                                             </div>
-                                                            <div class="SwiperSlideBtn"><!--슬라이드하단-->
-                                                                <p>03/28 요청</p>
-                                                                <div class="BtnWrapper">
-                                                                    <button class="BtnChat">채팅</button>
-                                                                    <button class="BtnColor Nega">거절</button>
-                                                                    <button class="BtnColor Posi">수락</button>
-                                                                </div>
+                                                            <div class="SwiperCardBody">
+                                                                <h5>관심 스터디 크루</h5>
+                                                                <ul class="IntList Study">
+                                                                    <li>취업</li>
+                                                                    <li>어학</li>
+                                                                    <li>고시/공무원</li>
+                                                                    <li>프로젝트</li>
+                                                                </ul>
+                                                                <h5>관심 취미 크루</h5>
+                                                                <ul class="IntList Hobby">
+                                                                    <li>게임</li>
+                                                                    <li>트렌드</li>
+                                                                    <li>요리</li>
+                                                                    <li>예술</li>
+                                                                    <li>덕질</li>
+                                                                    <li>운동</li>
+                                                                    <li>기타</li>
+                                                                </ul>
                                                             </div>
-                                                        </li>
+                                                        </div>
+                                                        <div class="SwiperSlideBtn"><!--슬라이드하단-->
+                                                            <p>03/28 요청</p>
+                                                            <div class="BtnWrapper">
+                                                                <button class="BtnChat">채팅</button>
+                                                                <button class="BtnColor Nega">참여취소</button>
+                                                            </div>
+                                                        </div>
+                                                    </li>
 
-                                                        <li class="swiper-slide"> <!--스와이퍼슬라이드-->
-                                                            <div class="SwiperCard"> <!--슬라이드카드-->
-                                                                <div class="SwiperCardHead">
-                                                                    <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
-                                                                    <div class="CardTxt">
-                                                                        <h4>재영재영유재영</h4>
-                                                                        <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="SwiperCardBody">
-                                                                    <h5>관심 스터디 크루</h5>
-                                                                    <ul class="IntList Study">
-                                                                        <li>취업</li>
-                                                                        <li>어학</li>
-                                                                        <li>고시/공무원</li>
-                                                                        <li>프로젝트</li>
-                                                                    </ul>
-                                                                    <h5>관심 취미 크루</h5>
-                                                                    <ul class="IntList Hobby">
-                                                                        <li>게임</li>
-                                                                        <li>트렌드</li>
-                                                                        <li>요리</li>
-                                                                        <li>예술</li>
-                                                                        <li>덕질</li>
-                                                                        <li>운동</li>
-                                                                        <li>기타</li>
-                                                                    </ul>
+                                                    <li class="swiper-slide"> <!--스와이퍼슬라이드-->
+                                                        <div class="SwiperCard"> <!--슬라이드카드-->
+                                                            <div class="SwiperCardHead">
+                                                                <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                                                <div class="CardTxt">
+                                                                    <h4>재영재영유재영</h4>
+                                                                    <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
                                                                 </div>
                                                             </div>
-                                                            <div class="SwiperSlideBtn"><!--슬라이드하단-->
-                                                                <p>03/28 요청</p>
-                                                                <div class="BtnWrapper">
-                                                                    <button class="BtnChat">채팅</button>
-                                                                    <button class="BtnColor Nega">거절</button>
-                                                                    <button class="BtnColor Posi">수락</button>
+                                                            <div class="SwiperCardBody">
+                                                                <h5>관심 스터디 크루</h5>
+                                                                <ul class="IntList Study">
+                                                                    <li>취업</li>
+                                                                    <li>어학</li>
+                                                                    <li>고시/공무원</li>
+                                                                    <li>프로젝트</li>
+                                                                </ul>
+                                                                <h5>관심 취미 크루</h5>
+                                                                <ul class="IntList Hobby">
+                                                                    <li>게임</li>
+                                                                    <li>트렌드</li>
+                                                                    <li>요리</li>
+                                                                    <li>예술</li>
+                                                                    <li>덕질</li>
+                                                                    <li>운동</li>
+                                                                    <li>기타</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="SwiperSlideBtn"><!--슬라이드하단-->
+                                                            <p>03/28 요청</p>
+                                                            <div class="BtnWrapper">
+                                                                <button class="BtnChat">채팅</button>
+                                                                <button class="BtnColor Nega">참여취소</button>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="swiper-slide"> <!--스와이퍼슬라이드-->
+                                                        <div class="SwiperCard"> <!--슬라이드카드-->
+                                                            <div class="SwiperCardHead">
+                                                                <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                                                <div class="CardTxt">
+                                                                    <h4>재영재영유재영</h4>
+                                                                    <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
                                                                 </div>
                                                             </div>
-                                                        </li>
-
-                                                        <li class="swiper-slide"> <!--스와이퍼슬라이드-->
-                                                            <div class="SwiperCard"> <!--슬라이드카드-->
-                                                                <div class="SwiperCardHead">
-                                                                    <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
-                                                                    <div class="CardTxt">
-                                                                        <h4>재영재영유재영</h4>
-                                                                        <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="SwiperCardBody">
-                                                                    <h5>관심 스터디 크루</h5>
-                                                                    <ul class="IntList Study">
-                                                                        <li>취업</li>
-                                                                        <li>어학</li>
-                                                                        <li>고시/공무원</li>
-                                                                        <li>프로젝트</li>
-                                                                    </ul>
-                                                                    <h5>관심 취미 크루</h5>
-                                                                    <ul class="IntList Hobby">
-                                                                        <li>게임</li>
-                                                                        <li>트렌드</li>
-                                                                        <li>요리</li>
-                                                                        <li>예술</li>
-                                                                        <li>덕질</li>
-                                                                        <li>운동</li>
-                                                                        <li>기타</li>
-                                                                    </ul>
-                                                                </div>
+                                                            <div class="SwiperCardBody">
+                                                                <h5>관심 스터디 크루</h5>
+                                                                <ul class="IntList Study">
+                                                                    <li>취업</li>
+                                                                    <li>어학</li>
+                                                                    <li>고시/공무원</li>
+                                                                    <li>프로젝트</li>
+                                                                </ul>
+                                                                <h5>관심 취미 크루</h5>
+                                                                <ul class="IntList Hobby">
+                                                                    <li>게임</li>
+                                                                    <li>트렌드</li>
+                                                                    <li>요리</li>
+                                                                    <li>예술</li>
+                                                                    <li>덕질</li>
+                                                                    <li>운동</li>
+                                                                    <li>기타</li>
+                                                                </ul>
                                                             </div>
-                                                            <div class="SwiperSlideBtn"><!--슬라이드하단-->
-                                                                <p>03/28 요청</p>
-                                                                <div class="BtnWrapper">
-                                                                    <button class="BtnChat">채팅</button>
-                                                                    <button class="BtnColor Nega">거절</button>
-                                                                    <button class="BtnColor Posi">수락</button>
-                                                                </div>
+                                                        </div>
+                                                        <div class="SwiperSlideBtn"><!--슬라이드하단-->
+                                                            <p>03/28 요청</p>
+                                                            <div class="BtnWrapper">
+                                                                <button class="BtnChat">채팅</button>
+                                                                <button class="BtnColor Nega">참여취소</button>
                                                             </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
 
                                                 
-                                            </div>
+                                        </div>
 
                                     </div>
                                 </div>
 
-                                <div class="ButtonPrev2 ButtonPrev swiper-button-disabled"></div>
-                                <div class="ButtonNext2 ButtonNext"></div>
+                                <div class="ButtonPrev1 ButtonPrev swiper-button-disabled"></div>
+                                <div class="ButtonNext1 ButtonNext"></div>
                                 
-                                <div class="SwiperBtn"> <!--드롭다운 버튼-->
-                                    대기자
-                                </div>
                             </div>
                         </li> <!--카드 1개 끝-->
 
@@ -404,171 +419,176 @@
                             <div class="SwiperCardWrapper"> <!--스와이퍼 카드 드롭다운 버튼을 위한 래핑-->
                                 <div class="PostCard Swiper">
                                     <div class="SwiperCardTop"> <!--카드상단-->
-                                        <div class="PostCardHead">
-                                            <div class="TextBox">
-                                                <p class="Dday">D-362</p>
+                                        <div class="CardTopHeader">
+                                            <div class="PostCardHead">
+                                                <div class="TextBox">
+                                                    <p class="Dday">D-2</p>
+                                                </div>
+                                                <div class="DetailBox">
+                                                    <p><span>(8/10명)</span> 모집완료</p>
+                                                    <button class="Detail">크루원채팅</button>
+                                                </div>
                                             </div>
-                                            <div class="DetailBox">
-                                                <p><span>(8/10명)</span> 모집완료</p>
-                                                <button class="Detail">크루원채팅</button>
+                                            <div class="PostCardBody">
+                                                <div class="TextBox">
+                                                    <div class="TitleBox">
+                                                        <h5>함께 크루원 모집 플랫폼 작업하실 분 모십니다~! 크루</h5>
+                                                    </div>
+                                                    <div class="TextList">
+                                                        <p class="Category Study">고시/공무원</p>
+                                                        <p>오프라인</p>
+                                                    </div>
+                                                    <div class="ButtonBox">
+                                                        <button class="Del">삭제</button>
+                                                        <button class="Set">세팅</button>
+                                                    </div>
+                                                    <p class="Waiting">대기자<em>3</em></p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="PostCardBody">
-                                            <div class="TextBox">
-                                                <div class="TitleBox">
-                                                    <h5>함께 크루원 모집 플랫폼 작업하실 분 모십니다~! 크루</h5>
+                                        <div class="CardTopFooter">
+                                            <p>참여자 및 대기자 관리</p>
+                                            <div class="CardToggle">
+                                                <p inert>참여자 8명</p>
+                                                <div class="ToggleBtn">
+                                                    <div class="ToggleIndicator"></div>
                                                 </div>
-                                                <div class="TextList">
-                                                    <p class="Category Study">고시/공무원</p>
-                                                    <p>오프라인</p>
-                                                </div>
-                                                <div class="ButtonBox">
-                                                    <button class="Del">삭제</button>
-                                                    <button class="Set">세팅</button>
-                                                </div>
-                                                <p class="Waiting">대기자<em>3</em></p>
+                                                <p>대기자 3명</p>
                                             </div>
+                                            <div class="SwiperBtn">카드 펼치기/닫기</div>
                                         </div>
                                     </div>
                                     <div class="SwiperCardBottom"> <!--카드하단-->
-                                        <div class="BtTop">
-                                            <p>대기자 <em>3</em></p>
-                                            <button>참여자 확인 (8)</button>
-                                        </div>
-                                            <div class="BtSwiper"> <!--overflow히든처리를 위한 래퍼-->
-                                                <div class="CardSwiper swiper3">
-                                                    <ul class="SlideWrapper swiper-wrapper">
-                                                        <li class="swiper-slide"> <!--스와이퍼슬라이드-->
-                                                            <div class="SwiperCard"> <!--슬라이드카드-->
-                                                                <div class="SwiperCardHead">
-                                                                    <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
-                                                                    <div class="CardTxt">
-                                                                        <h4>재영재영유재영</h4>
-                                                                        <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="SwiperCardBody">
-                                                                    <h5>관심 스터디 크루</h5>
-                                                                    <ul class="IntList Study">
-                                                                        <li>취업</li>
-                                                                        <li>어학</li>
-                                                                        <li>고시/공무원</li>
-                                                                        <li>프로젝트</li>
-                                                                    </ul>
-                                                                    <h5>관심 취미 크루</h5>
-                                                                    <ul class="IntList Hobby">
-                                                                        <li>게임</li>
-                                                                        <li>트렌드</li>
-                                                                        <li>요리</li>
-                                                                        <li>예술</li>
-                                                                        <li>덕질</li>
-                                                                        <li>운동</li>
-                                                                        <li>기타</li>
-                                                                    </ul>
+                                        <div class="BtSwiper"> <!--overflow히든처리를 위한 래퍼-->
+                                            <div class="CardSwiper swiper1">
+                                                <ul class="SlideWrapper swiper-wrapper">
+                                                    <li class="swiper-slide"> <!--스와이퍼슬라이드-->
+                                                        <div class="SwiperCard"> <!--슬라이드카드-->
+                                                            <div class="SwiperCardHead">
+                                                                <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                                                <div class="CardTxt">
+                                                                    <h4>재영재영유재영</h4>
+                                                                    <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
                                                                 </div>
                                                             </div>
-                                                            <div class="SwiperSlideBtn"><!--슬라이드하단-->
-                                                                <p>03/28 요청</p>
-                                                                <div class="BtnWrapper">
-                                                                    <button class="BtnChat">채팅</button>
-                                                                    <button class="BtnColor Nega">거절</button>
-                                                                    <button class="BtnColor Posi">수락</button>
-                                                                </div>
+                                                            <div class="SwiperCardBody">
+                                                                <h5>관심 스터디 크루</h5>
+                                                                <ul class="IntList Study">
+                                                                    <li>취업</li>
+                                                                    <li>어학</li>
+                                                                    <li>고시/공무원</li>
+                                                                    <li>프로젝트</li>
+                                                                </ul>
+                                                                <h5>관심 취미 크루</h5>
+                                                                <ul class="IntList Hobby">
+                                                                    <li>게임</li>
+                                                                    <li>트렌드</li>
+                                                                    <li>요리</li>
+                                                                    <li>예술</li>
+                                                                    <li>덕질</li>
+                                                                    <li>운동</li>
+                                                                    <li>기타</li>
+                                                                </ul>
                                                             </div>
-                                                        </li>
+                                                        </div>
+                                                        <div class="SwiperSlideBtn"><!--슬라이드하단-->
+                                                            <p>03/28 요청</p>
+                                                            <div class="BtnWrapper">
+                                                                <button class="BtnChat">채팅</button>
+                                                                <button class="BtnColor Nega">거절</button>
+                                                                <button class="BtnColor Posi">수락</button>
+                                                            </div>
+                                                        </div>
+                                                    </li>
 
-                                                        <li class="swiper-slide"> <!--스와이퍼슬라이드-->
-                                                            <div class="SwiperCard"> <!--슬라이드카드-->
-                                                                <div class="SwiperCardHead">
-                                                                    <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
-                                                                    <div class="CardTxt">
-                                                                        <h4>재영재영유재영</h4>
-                                                                        <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="SwiperCardBody">
-                                                                    <h5>관심 스터디 크루</h5>
-                                                                    <ul class="IntList Study">
-                                                                        <li>취업</li>
-                                                                        <li>어학</li>
-                                                                        <li>고시/공무원</li>
-                                                                        <li>프로젝트</li>
-                                                                    </ul>
-                                                                    <h5>관심 취미 크루</h5>
-                                                                    <ul class="IntList Hobby">
-                                                                        <li>게임</li>
-                                                                        <li>트렌드</li>
-                                                                        <li>요리</li>
-                                                                        <li>예술</li>
-                                                                        <li>덕질</li>
-                                                                        <li>운동</li>
-                                                                        <li>기타</li>
-                                                                    </ul>
+                                                    <li class="swiper-slide"> <!--스와이퍼슬라이드-->
+                                                        <div class="SwiperCard"> <!--슬라이드카드-->
+                                                            <div class="SwiperCardHead">
+                                                                <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                                                <div class="CardTxt">
+                                                                    <h4>재영재영유재영</h4>
+                                                                    <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
                                                                 </div>
                                                             </div>
-                                                            <div class="SwiperSlideBtn"><!--슬라이드하단-->
-                                                                <p>03/28 요청</p>
-                                                                <div class="BtnWrapper">
-                                                                    <button class="BtnChat">채팅</button>
-                                                                    <button class="BtnColor Nega">거절</button>
-                                                                    <button class="BtnColor Posi">수락</button>
+                                                            <div class="SwiperCardBody">
+                                                                <h5>관심 스터디 크루</h5>
+                                                                <ul class="IntList Study">
+                                                                    <li>취업</li>
+                                                                    <li>어학</li>
+                                                                    <li>고시/공무원</li>
+                                                                    <li>프로젝트</li>
+                                                                </ul>
+                                                                <h5>관심 취미 크루</h5>
+                                                                <ul class="IntList Hobby">
+                                                                    <li>게임</li>
+                                                                    <li>트렌드</li>
+                                                                    <li>요리</li>
+                                                                    <li>예술</li>
+                                                                    <li>덕질</li>
+                                                                    <li>운동</li>
+                                                                    <li>기타</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="SwiperSlideBtn"><!--슬라이드하단-->
+                                                            <p>03/28 요청</p>
+                                                            <div class="BtnWrapper">
+                                                                <button class="BtnChat">채팅</button>
+                                                                <button class="BtnColor Nega">거절</button>
+                                                                <button class="BtnColor Posi">수락</button>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="swiper-slide"> <!--스와이퍼슬라이드-->
+                                                        <div class="SwiperCard"> <!--슬라이드카드-->
+                                                            <div class="SwiperCardHead">
+                                                                <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                                                <div class="CardTxt">
+                                                                    <h4>재영재영유재영</h4>
+                                                                    <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
                                                                 </div>
                                                             </div>
-                                                        </li>
-
-                                                        <li class="swiper-slide"> <!--스와이퍼슬라이드-->
-                                                            <div class="SwiperCard"> <!--슬라이드카드-->
-                                                                <div class="SwiperCardHead">
-                                                                    <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
-                                                                    <div class="CardTxt">
-                                                                        <h4>재영재영유재영</h4>
-                                                                        <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="SwiperCardBody">
-                                                                    <h5>관심 스터디 크루</h5>
-                                                                    <ul class="IntList Study">
-                                                                        <li>취업</li>
-                                                                        <li>어학</li>
-                                                                        <li>고시/공무원</li>
-                                                                        <li>프로젝트</li>
-                                                                    </ul>
-                                                                    <h5>관심 취미 크루</h5>
-                                                                    <ul class="IntList Hobby">
-                                                                        <li>게임</li>
-                                                                        <li>트렌드</li>
-                                                                        <li>요리</li>
-                                                                        <li>예술</li>
-                                                                        <li>덕질</li>
-                                                                        <li>운동</li>
-                                                                        <li>기타</li>
-                                                                    </ul>
-                                                                </div>
+                                                            <div class="SwiperCardBody">
+                                                                <h5>관심 스터디 크루</h5>
+                                                                <ul class="IntList Study">
+                                                                    <li>취업</li>
+                                                                    <li>어학</li>
+                                                                    <li>고시/공무원</li>
+                                                                    <li>프로젝트</li>
+                                                                </ul>
+                                                                <h5>관심 취미 크루</h5>
+                                                                <ul class="IntList Hobby">
+                                                                    <li>게임</li>
+                                                                    <li>트렌드</li>
+                                                                    <li>요리</li>
+                                                                    <li>예술</li>
+                                                                    <li>덕질</li>
+                                                                    <li>운동</li>
+                                                                    <li>기타</li>
+                                                                </ul>
                                                             </div>
-                                                            <div class="SwiperSlideBtn"><!--슬라이드하단-->
-                                                                <p>03/28 요청</p>
-                                                                <div class="BtnWrapper">
-                                                                    <button class="BtnChat">채팅</button>
-                                                                    <button class="BtnColor Nega">거절</button>
-                                                                    <button class="BtnColor Posi">수락</button>
-                                                                </div>
+                                                        </div>
+                                                        <div class="SwiperSlideBtn"><!--슬라이드하단-->
+                                                            <p>03/28 요청</p>
+                                                            <div class="BtnWrapper">
+                                                                <button class="BtnChat">채팅</button>
+                                                                <button class="BtnColor Nega">거절</button>
+                                                                <button class="BtnColor Posi">수락</button>
                                                             </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
 
                                                 
-                                            </div>
+                                        </div>
 
                                     </div>
                                 </div>
 
-                                <div class="ButtonPrev3 ButtonPrev swiper-button-disabled"></div>
-                                <div class="ButtonNext3 ButtonNext"></div>
+                                <div class="ButtonPrev1 ButtonPrev swiper-button-disabled"></div>
+                                <div class="ButtonNext1 ButtonNext"></div>
                                 
-                                <div class="SwiperBtn"> <!--드롭다운 버튼-->
-                                    대기자
-                                </div>
                             </div>
                         </li> <!--카드 1개 끝-->
 
@@ -576,171 +596,176 @@
                             <div class="SwiperCardWrapper"> <!--스와이퍼 카드 드롭다운 버튼을 위한 래핑-->
                                 <div class="PostCard Swiper">
                                     <div class="SwiperCardTop"> <!--카드상단-->
-                                        <div class="PostCardHead">
-                                            <div class="TextBox">
-                                                <p class="Dday">D-362</p>
+                                        <div class="CardTopHeader">
+                                            <div class="PostCardHead">
+                                                <div class="TextBox">
+                                                    <p class="Dday">D-2</p>
+                                                </div>
+                                                <div class="DetailBox">
+                                                    <p><span>(8/10명)</span> 모집완료</p>
+                                                    <button class="Detail">크루원채팅</button>
+                                                </div>
                                             </div>
-                                            <div class="DetailBox">
-                                                <p><span>(8/10명)</span> 모집완료</p>
-                                                <button class="Detail">크루원채팅</button>
+                                            <div class="PostCardBody">
+                                                <div class="TextBox">
+                                                    <div class="TitleBox">
+                                                        <h5>함께 크루원 모집 플랫폼 작업하실 분 모십니다~! 크루</h5>
+                                                    </div>
+                                                    <div class="TextList">
+                                                        <p class="Category Study">고시/공무원</p>
+                                                        <p>오프라인</p>
+                                                    </div>
+                                                    <div class="ButtonBox">
+                                                        <button class="Del">삭제</button>
+                                                        <button class="Set">세팅</button>
+                                                    </div>
+                                                    <p class="Waiting">대기자<em>3</em></p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="PostCardBody">
-                                            <div class="TextBox">
-                                                <div class="TitleBox">
-                                                    <h5>함께 크루원 모집 플랫폼 작업하실 분 모십니다~! 크루</h5>
+                                        <div class="CardTopFooter">
+                                            <p>참여자 및 대기자 관리</p>
+                                            <div class="CardToggle">
+                                                <p inert>참여자 8명</p>
+                                                <div class="ToggleBtn">
+                                                    <div class="ToggleIndicator"></div>
                                                 </div>
-                                                <div class="TextList">
-                                                    <p class="Category Study">고시/공무원</p>
-                                                    <p>오프라인</p>
-                                                </div>
-                                                <div class="ButtonBox">
-                                                    <button class="Del">삭제</button>
-                                                    <button class="Set">세팅</button>
-                                                </div>
-                                                <p class="Waiting">대기자<em>3</em></p>
+                                                <p>대기자 3명</p>
                                             </div>
+                                            <div class="SwiperBtn">카드 펼치기/닫기</div>
                                         </div>
                                     </div>
                                     <div class="SwiperCardBottom"> <!--카드하단-->
-                                        <div class="BtTop">
-                                            <p>대기자 <em>3</em></p>
-                                            <button>참여자 확인 (8)</button>
-                                        </div>
-                                            <div class="BtSwiper"> <!--overflow히든처리를 위한 래퍼-->
-                                                <div class="CardSwiper swiper4">
-                                                    <ul class="SlideWrapper swiper-wrapper">
-                                                        <li class="swiper-slide"> <!--스와이퍼슬라이드-->
-                                                            <div class="SwiperCard"> <!--슬라이드카드-->
-                                                                <div class="SwiperCardHead">
-                                                                    <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
-                                                                    <div class="CardTxt">
-                                                                        <h4>재영재영유재영</h4>
-                                                                        <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="SwiperCardBody">
-                                                                    <h5>관심 스터디 크루</h5>
-                                                                    <ul class="IntList Study">
-                                                                        <li>취업</li>
-                                                                        <li>어학</li>
-                                                                        <li>고시/공무원</li>
-                                                                        <li>프로젝트</li>
-                                                                    </ul>
-                                                                    <h5>관심 취미 크루</h5>
-                                                                    <ul class="IntList Hobby">
-                                                                        <li>게임</li>
-                                                                        <li>트렌드</li>
-                                                                        <li>요리</li>
-                                                                        <li>예술</li>
-                                                                        <li>덕질</li>
-                                                                        <li>운동</li>
-                                                                        <li>기타</li>
-                                                                    </ul>
+                                        <div class="BtSwiper"> <!--overflow히든처리를 위한 래퍼-->
+                                            <div class="CardSwiper swiper1">
+                                                <ul class="SlideWrapper swiper-wrapper">
+                                                    <li class="swiper-slide"> <!--스와이퍼슬라이드-->
+                                                        <div class="SwiperCard"> <!--슬라이드카드-->
+                                                            <div class="SwiperCardHead">
+                                                                <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                                                <div class="CardTxt">
+                                                                    <h4>재영재영유재영</h4>
+                                                                    <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
                                                                 </div>
                                                             </div>
-                                                            <div class="SwiperSlideBtn"><!--슬라이드하단-->
-                                                                <p>03/28 요청</p>
-                                                                <div class="BtnWrapper">
-                                                                    <button class="BtnChat">채팅</button>
-                                                                    <button class="BtnColor Nega">거절</button>
-                                                                    <button class="BtnColor Posi">수락</button>
-                                                                </div>
+                                                            <div class="SwiperCardBody">
+                                                                <h5>관심 스터디 크루</h5>
+                                                                <ul class="IntList Study">
+                                                                    <li>취업</li>
+                                                                    <li>어학</li>
+                                                                    <li>고시/공무원</li>
+                                                                    <li>프로젝트</li>
+                                                                </ul>
+                                                                <h5>관심 취미 크루</h5>
+                                                                <ul class="IntList Hobby">
+                                                                    <li>게임</li>
+                                                                    <li>트렌드</li>
+                                                                    <li>요리</li>
+                                                                    <li>예술</li>
+                                                                    <li>덕질</li>
+                                                                    <li>운동</li>
+                                                                    <li>기타</li>
+                                                                </ul>
                                                             </div>
-                                                        </li>
+                                                        </div>
+                                                        <div class="SwiperSlideBtn"><!--슬라이드하단-->
+                                                            <p>03/28 요청</p>
+                                                            <div class="BtnWrapper">
+                                                                <button class="BtnChat">채팅</button>
+                                                                <button class="BtnColor Nega">거절</button>
+                                                                <button class="BtnColor Posi">수락</button>
+                                                            </div>
+                                                        </div>
+                                                    </li>
 
-                                                        <li class="swiper-slide"> <!--스와이퍼슬라이드-->
-                                                            <div class="SwiperCard"> <!--슬라이드카드-->
-                                                                <div class="SwiperCardHead">
-                                                                    <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
-                                                                    <div class="CardTxt">
-                                                                        <h4>재영재영유재영</h4>
-                                                                        <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="SwiperCardBody">
-                                                                    <h5>관심 스터디 크루</h5>
-                                                                    <ul class="IntList Study">
-                                                                        <li>취업</li>
-                                                                        <li>어학</li>
-                                                                        <li>고시/공무원</li>
-                                                                        <li>프로젝트</li>
-                                                                    </ul>
-                                                                    <h5>관심 취미 크루</h5>
-                                                                    <ul class="IntList Hobby">
-                                                                        <li>게임</li>
-                                                                        <li>트렌드</li>
-                                                                        <li>요리</li>
-                                                                        <li>예술</li>
-                                                                        <li>덕질</li>
-                                                                        <li>운동</li>
-                                                                        <li>기타</li>
-                                                                    </ul>
+                                                    <li class="swiper-slide"> <!--스와이퍼슬라이드-->
+                                                        <div class="SwiperCard"> <!--슬라이드카드-->
+                                                            <div class="SwiperCardHead">
+                                                                <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                                                <div class="CardTxt">
+                                                                    <h4>재영재영유재영</h4>
+                                                                    <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
                                                                 </div>
                                                             </div>
-                                                            <div class="SwiperSlideBtn"><!--슬라이드하단-->
-                                                                <p>03/28 요청</p>
-                                                                <div class="BtnWrapper">
-                                                                    <button class="BtnChat">채팅</button>
-                                                                    <button class="BtnColor Nega">거절</button>
-                                                                    <button class="BtnColor Posi">수락</button>
+                                                            <div class="SwiperCardBody">
+                                                                <h5>관심 스터디 크루</h5>
+                                                                <ul class="IntList Study">
+                                                                    <li>취업</li>
+                                                                    <li>어학</li>
+                                                                    <li>고시/공무원</li>
+                                                                    <li>프로젝트</li>
+                                                                </ul>
+                                                                <h5>관심 취미 크루</h5>
+                                                                <ul class="IntList Hobby">
+                                                                    <li>게임</li>
+                                                                    <li>트렌드</li>
+                                                                    <li>요리</li>
+                                                                    <li>예술</li>
+                                                                    <li>덕질</li>
+                                                                    <li>운동</li>
+                                                                    <li>기타</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="SwiperSlideBtn"><!--슬라이드하단-->
+                                                            <p>03/28 요청</p>
+                                                            <div class="BtnWrapper">
+                                                                <button class="BtnChat">채팅</button>
+                                                                <button class="BtnColor Nega">거절</button>
+                                                                <button class="BtnColor Posi">수락</button>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="swiper-slide"> <!--스와이퍼슬라이드-->
+                                                        <div class="SwiperCard"> <!--슬라이드카드-->
+                                                            <div class="SwiperCardHead">
+                                                                <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                                                <div class="CardTxt">
+                                                                    <h4>재영재영유재영</h4>
+                                                                    <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
                                                                 </div>
                                                             </div>
-                                                        </li>
-
-                                                        <li class="swiper-slide"> <!--스와이퍼슬라이드-->
-                                                            <div class="SwiperCard"> <!--슬라이드카드-->
-                                                                <div class="SwiperCardHead">
-                                                                    <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
-                                                                    <div class="CardTxt">
-                                                                        <h4>재영재영유재영</h4>
-                                                                        <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="SwiperCardBody">
-                                                                    <h5>관심 스터디 크루</h5>
-                                                                    <ul class="IntList Study">
-                                                                        <li>취업</li>
-                                                                        <li>어학</li>
-                                                                        <li>고시/공무원</li>
-                                                                        <li>프로젝트</li>
-                                                                    </ul>
-                                                                    <h5>관심 취미 크루</h5>
-                                                                    <ul class="IntList Hobby">
-                                                                        <li>게임</li>
-                                                                        <li>트렌드</li>
-                                                                        <li>요리</li>
-                                                                        <li>예술</li>
-                                                                        <li>덕질</li>
-                                                                        <li>운동</li>
-                                                                        <li>기타</li>
-                                                                    </ul>
-                                                                </div>
+                                                            <div class="SwiperCardBody">
+                                                                <h5>관심 스터디 크루</h5>
+                                                                <ul class="IntList Study">
+                                                                    <li>취업</li>
+                                                                    <li>어학</li>
+                                                                    <li>고시/공무원</li>
+                                                                    <li>프로젝트</li>
+                                                                </ul>
+                                                                <h5>관심 취미 크루</h5>
+                                                                <ul class="IntList Hobby">
+                                                                    <li>게임</li>
+                                                                    <li>트렌드</li>
+                                                                    <li>요리</li>
+                                                                    <li>예술</li>
+                                                                    <li>덕질</li>
+                                                                    <li>운동</li>
+                                                                    <li>기타</li>
+                                                                </ul>
                                                             </div>
-                                                            <div class="SwiperSlideBtn"><!--슬라이드하단-->
-                                                                <p>03/28 요청</p>
-                                                                <div class="BtnWrapper">
-                                                                    <button class="BtnChat">채팅</button>
-                                                                    <button class="BtnColor Nega">거절</button>
-                                                                    <button class="BtnColor Posi">수락</button>
-                                                                </div>
+                                                        </div>
+                                                        <div class="SwiperSlideBtn"><!--슬라이드하단-->
+                                                            <p>03/28 요청</p>
+                                                            <div class="BtnWrapper">
+                                                                <button class="BtnChat">채팅</button>
+                                                                <button class="BtnColor Nega">거절</button>
+                                                                <button class="BtnColor Posi">수락</button>
                                                             </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
 
                                                 
-                                            </div>
+                                        </div>
 
                                     </div>
                                 </div>
 
-                                <div class="ButtonPrev4 ButtonPrev swiper-button-disabled"></div>
-                                <div class="ButtonNext4 ButtonNext"></div>
+                                <div class="ButtonPrev1 ButtonPrev swiper-button-disabled"></div>
+                                <div class="ButtonNext1 ButtonNext"></div>
                                 
-                                <div class="SwiperBtn"> <!--드롭다운 버튼-->
-                                    대기자
-                                </div>
                             </div>
                         </li> <!--카드 1개 끝-->
 
@@ -748,179 +773,183 @@
                             <div class="SwiperCardWrapper"> <!--스와이퍼 카드 드롭다운 버튼을 위한 래핑-->
                                 <div class="PostCard Swiper">
                                     <div class="SwiperCardTop"> <!--카드상단-->
-                                        <div class="PostCardHead">
-                                            <div class="TextBox">
-                                                <p class="Dday">D-362</p>
+                                        <div class="CardTopHeader">
+                                            <div class="PostCardHead">
+                                                <div class="TextBox">
+                                                    <p class="Dday">D-2</p>
+                                                </div>
+                                                <div class="DetailBox">
+                                                    <p><span>(8/10명)</span> 모집완료</p>
+                                                    <button class="Detail">크루원채팅</button>
+                                                </div>
                                             </div>
-                                            <div class="DetailBox">
-                                                <p><span>(8/10명)</span> 모집완료</p>
-                                                <button class="Detail">크루원채팅</button>
+                                            <div class="PostCardBody">
+                                                <div class="TextBox">
+                                                    <div class="TitleBox">
+                                                        <h5>함께 크루원 모집 플랫폼 작업하실 분 모십니다~! 크루</h5>
+                                                    </div>
+                                                    <div class="TextList">
+                                                        <p class="Category Study">고시/공무원</p>
+                                                        <p>오프라인</p>
+                                                    </div>
+                                                    <div class="ButtonBox">
+                                                        <button class="Del">삭제</button>
+                                                        <button class="Set">세팅</button>
+                                                    </div>
+                                                    <p class="Waiting">대기자<em>3</em></p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="PostCardBody">
-                                            <div class="TextBox">
-                                                <div class="TitleBox">
-                                                    <h5>함께 크루원 모집 플랫폼 작업하실 분 모십니다~! 크루</h5>
+                                        <div class="CardTopFooter">
+                                            <p>참여자 및 대기자 관리</p>
+                                            <div class="CardToggle">
+                                                <p inert>참여자 8명</p>
+                                                <div class="ToggleBtn">
+                                                    <div class="ToggleIndicator"></div>
                                                 </div>
-                                                <div class="TextList">
-                                                    <p class="Category Study">고시/공무원</p>
-                                                    <p>오프라인</p>
-                                                </div>
-                                                <div class="ButtonBox">
-                                                    <button class="Del">삭제</button>
-                                                    <button class="Set">세팅</button>
-                                                </div>
-                                                <p class="Waiting">대기자<em>3</em></p>
+                                                <p>대기자 3명</p>
                                             </div>
+                                            <div class="SwiperBtn">카드 펼치기/닫기</div>
                                         </div>
                                     </div>
                                     <div class="SwiperCardBottom"> <!--카드하단-->
-                                        <div class="BtTop">
-                                            <p>대기자 <em>3</em></p>
-                                            <button>참여자 확인 (8)</button>
-                                        </div>
-                                            <div class="BtSwiper"> <!--overflow히든처리를 위한 래퍼-->
-                                                <div class="CardSwiper swiper5">
-                                                    <ul class="SlideWrapper swiper-wrapper">
-                                                        <li class="swiper-slide"> <!--스와이퍼슬라이드-->
-                                                            <div class="SwiperCard"> <!--슬라이드카드-->
-                                                                <div class="SwiperCardHead">
-                                                                    <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
-                                                                    <div class="CardTxt">
-                                                                        <h4>재영재영유재영</h4>
-                                                                        <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="SwiperCardBody">
-                                                                    <h5>관심 스터디 크루</h5>
-                                                                    <ul class="IntList Study">
-                                                                        <li>취업</li>
-                                                                        <li>어학</li>
-                                                                        <li>고시/공무원</li>
-                                                                        <li>프로젝트</li>
-                                                                    </ul>
-                                                                    <h5>관심 취미 크루</h5>
-                                                                    <ul class="IntList Hobby">
-                                                                        <li>게임</li>
-                                                                        <li>트렌드</li>
-                                                                        <li>요리</li>
-                                                                        <li>예술</li>
-                                                                        <li>덕질</li>
-                                                                        <li>운동</li>
-                                                                        <li>기타</li>
-                                                                    </ul>
+                                        <div class="BtSwiper"> <!--overflow히든처리를 위한 래퍼-->
+                                            <div class="CardSwiper swiper1">
+                                                <ul class="SlideWrapper swiper-wrapper">
+                                                    <li class="swiper-slide"> <!--스와이퍼슬라이드-->
+                                                        <div class="SwiperCard"> <!--슬라이드카드-->
+                                                            <div class="SwiperCardHead">
+                                                                <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                                                <div class="CardTxt">
+                                                                    <h4>재영재영유재영</h4>
+                                                                    <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
                                                                 </div>
                                                             </div>
-                                                            <div class="SwiperSlideBtn"><!--슬라이드하단-->
-                                                                <p>03/28 요청</p>
-                                                                <div class="BtnWrapper">
-                                                                    <button class="BtnChat">채팅</button>
-                                                                    <button class="BtnColor Nega">거절</button>
-                                                                    <button class="BtnColor Posi">수락</button>
-                                                                </div>
+                                                            <div class="SwiperCardBody">
+                                                                <h5>관심 스터디 크루</h5>
+                                                                <ul class="IntList Study">
+                                                                    <li>취업</li>
+                                                                    <li>어학</li>
+                                                                    <li>고시/공무원</li>
+                                                                    <li>프로젝트</li>
+                                                                </ul>
+                                                                <h5>관심 취미 크루</h5>
+                                                                <ul class="IntList Hobby">
+                                                                    <li>게임</li>
+                                                                    <li>트렌드</li>
+                                                                    <li>요리</li>
+                                                                    <li>예술</li>
+                                                                    <li>덕질</li>
+                                                                    <li>운동</li>
+                                                                    <li>기타</li>
+                                                                </ul>
                                                             </div>
-                                                        </li>
+                                                        </div>
+                                                        <div class="SwiperSlideBtn"><!--슬라이드하단-->
+                                                            <p>03/28 요청</p>
+                                                            <div class="BtnWrapper">
+                                                                <button class="BtnChat">채팅</button>
+                                                                <button class="BtnColor Nega">거절</button>
+                                                                <button class="BtnColor Posi">수락</button>
+                                                            </div>
+                                                        </div>
+                                                    </li>
 
-                                                        <li class="swiper-slide"> <!--스와이퍼슬라이드-->
-                                                            <div class="SwiperCard"> <!--슬라이드카드-->
-                                                                <div class="SwiperCardHead">
-                                                                    <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
-                                                                    <div class="CardTxt">
-                                                                        <h4>재영재영유재영</h4>
-                                                                        <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="SwiperCardBody">
-                                                                    <h5>관심 스터디 크루</h5>
-                                                                    <ul class="IntList Study">
-                                                                        <li>취업</li>
-                                                                        <li>어학</li>
-                                                                        <li>고시/공무원</li>
-                                                                        <li>프로젝트</li>
-                                                                    </ul>
-                                                                    <h5>관심 취미 크루</h5>
-                                                                    <ul class="IntList Hobby">
-                                                                        <li>게임</li>
-                                                                        <li>트렌드</li>
-                                                                        <li>요리</li>
-                                                                        <li>예술</li>
-                                                                        <li>덕질</li>
-                                                                        <li>운동</li>
-                                                                        <li>기타</li>
-                                                                    </ul>
+                                                    <li class="swiper-slide"> <!--스와이퍼슬라이드-->
+                                                        <div class="SwiperCard"> <!--슬라이드카드-->
+                                                            <div class="SwiperCardHead">
+                                                                <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                                                <div class="CardTxt">
+                                                                    <h4>재영재영유재영</h4>
+                                                                    <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
                                                                 </div>
                                                             </div>
-                                                            <div class="SwiperSlideBtn"><!--슬라이드하단-->
-                                                                <p>03/28 요청</p>
-                                                                <div class="BtnWrapper">
-                                                                    <button class="BtnChat">채팅</button>
-                                                                    <button class="BtnColor Nega">거절</button>
-                                                                    <button class="BtnColor Posi">수락</button>
+                                                            <div class="SwiperCardBody">
+                                                                <h5>관심 스터디 크루</h5>
+                                                                <ul class="IntList Study">
+                                                                    <li>취업</li>
+                                                                    <li>어학</li>
+                                                                    <li>고시/공무원</li>
+                                                                    <li>프로젝트</li>
+                                                                </ul>
+                                                                <h5>관심 취미 크루</h5>
+                                                                <ul class="IntList Hobby">
+                                                                    <li>게임</li>
+                                                                    <li>트렌드</li>
+                                                                    <li>요리</li>
+                                                                    <li>예술</li>
+                                                                    <li>덕질</li>
+                                                                    <li>운동</li>
+                                                                    <li>기타</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div class="SwiperSlideBtn"><!--슬라이드하단-->
+                                                            <p>03/28 요청</p>
+                                                            <div class="BtnWrapper">
+                                                                <button class="BtnChat">채팅</button>
+                                                                <button class="BtnColor Nega">거절</button>
+                                                                <button class="BtnColor Posi">수락</button>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="swiper-slide"> <!--스와이퍼슬라이드-->
+                                                        <div class="SwiperCard"> <!--슬라이드카드-->
+                                                            <div class="SwiperCardHead">
+                                                                <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
+                                                                <div class="CardTxt">
+                                                                    <h4>재영재영유재영</h4>
+                                                                    <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
                                                                 </div>
                                                             </div>
-                                                        </li>
-
-                                                        <li class="swiper-slide"> <!--스와이퍼슬라이드-->
-                                                            <div class="SwiperCard"> <!--슬라이드카드-->
-                                                                <div class="SwiperCardHead">
-                                                                    <div class="CardProfile"><img src="../../src/assets/images/Profile4.png" alt=""></div>
-                                                                    <div class="CardTxt">
-                                                                        <h4>재영재영유재영</h4>
-                                                                        <p>자기소개글입니다.자기소개글입니다.자기소개글입니다.</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="SwiperCardBody">
-                                                                    <h5>관심 스터디 크루</h5>
-                                                                    <ul class="IntList Study">
-                                                                        <li>취업</li>
-                                                                        <li>어학</li>
-                                                                        <li>고시/공무원</li>
-                                                                        <li>프로젝트</li>
-                                                                    </ul>
-                                                                    <h5>관심 취미 크루</h5>
-                                                                    <ul class="IntList Hobby">
-                                                                        <li>게임</li>
-                                                                        <li>트렌드</li>
-                                                                        <li>요리</li>
-                                                                        <li>예술</li>
-                                                                        <li>덕질</li>
-                                                                        <li>운동</li>
-                                                                        <li>기타</li>
-                                                                    </ul>
-                                                                </div>
+                                                            <div class="SwiperCardBody">
+                                                                <h5>관심 스터디 크루</h5>
+                                                                <ul class="IntList Study">
+                                                                    <li>취업</li>
+                                                                    <li>어학</li>
+                                                                    <li>고시/공무원</li>
+                                                                    <li>프로젝트</li>
+                                                                </ul>
+                                                                <h5>관심 취미 크루</h5>
+                                                                <ul class="IntList Hobby">
+                                                                    <li>게임</li>
+                                                                    <li>트렌드</li>
+                                                                    <li>요리</li>
+                                                                    <li>예술</li>
+                                                                    <li>덕질</li>
+                                                                    <li>운동</li>
+                                                                    <li>기타</li>
+                                                                </ul>
                                                             </div>
-                                                            <div class="SwiperSlideBtn"><!--슬라이드하단-->
-                                                                <p>03/28 요청</p>
-                                                                <div class="BtnWrapper">
-                                                                    <button class="BtnChat">채팅</button>
-                                                                    <button class="BtnColor Nega">거절</button>
-                                                                    <button class="BtnColor Posi">수락</button>
-                                                                </div>
+                                                        </div>
+                                                        <div class="SwiperSlideBtn"><!--슬라이드하단-->
+                                                            <p>03/28 요청</p>
+                                                            <div class="BtnWrapper">
+                                                                <button class="BtnChat">채팅</button>
+                                                                <button class="BtnColor Nega">거절</button>
+                                                                <button class="BtnColor Posi">수락</button>
                                                             </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
 
                                                 
-                                            </div>
+                                        </div>
 
                                     </div>
                                 </div>
 
-                                <div class="ButtonPrev5 ButtonPrev swiper-button-disabled"></div>
-                                <div class="ButtonNext5 ButtonNext"></div>
+                                <div class="ButtonPrev1 ButtonPrev swiper-button-disabled"></div>
+                                <div class="ButtonNext1 ButtonNext"></div>
                                 
-                                <div class="SwiperBtn"> <!--드롭다운 버튼-->
-                                    대기자
-                                </div>
                             </div>
                         </li> <!--카드 1개 끝-->
-
 
                         
                     </ul>
-
-                    <div class="PaginationWrapper"></div>
+                </div>
+                <div class="PaginationWrapper"></div>
             </div>
         </section>
         <section class="MypageSentPost Hobby">
