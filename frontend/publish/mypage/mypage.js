@@ -62,7 +62,7 @@ window.addEventListener('DOMContentLoaded', function () {
     //툴팁 가리기
     if (ToolTipNode.length) {
       //ToolTip이 존재할떄
-      if (e.target.classList[0] != 'Name' && e.target.classList[0] != 'ProfileIMG') {
+      if (e.target.classList[0] !== 'Name' && e.target.classList[0] !== 'ProfileIMG') {
         //프로필이미지나 닉네임 이외 클릭했을 때
         ToolTipNode.forEach((el) => (el.style.display = 'none'));
       } else {
@@ -167,7 +167,7 @@ window.addEventListener('DOMContentLoaded', function () {
   checkProp?.forEach((e) => {
     //체크버튼 다 누를때 모두체크 활성화
     e.addEventListener('change', function () {
-      if (document.querySelectorAll('.checkProp:checked').length == checkProp.length) {
+      if (document.querySelectorAll('.checkProp:checked').length === checkProp.length) {
         checkAll.checked = true;
       } else {
         checkAll.checked = false;
@@ -191,7 +191,7 @@ window.addEventListener('DOMContentLoaded', function () {
   const TLFilter = document.querySelector('.filterWrapper');
   TLFilter?.addEventListener('click', function (e) {
     window.innerWidth > 820 && this.classList.toggle('On');
-    if (e.target.tagName == 'LI') {
+    if (e.target.tagName === 'LI') {
       this.children[0].innerHTML = e.target.outerText;
       window.innerWidth <= 820 && this.classList.remove('On');
     }
