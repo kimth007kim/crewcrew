@@ -18,7 +18,6 @@ function NotFound() {
               <em>이용에 불편드려 죄송합니다.</em>
               <br />
               서비스 개편으로 찾으시는 페이지가 변경되어 현재 사용할 수 없습니다.
-              <span>혹시 아래 페이지들이 당신이 찾는 페이지일까요?</span>
             </ErrMsg>
             <Link to="/">
               <LinkBox>홈으로 이동</LinkBox>
