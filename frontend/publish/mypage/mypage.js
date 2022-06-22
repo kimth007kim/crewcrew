@@ -196,7 +196,7 @@ window.addEventListener('DOMContentLoaded', function () {
       window.innerWidth <= 820 && this.classList.remove('On');
     }
   });
-  TLFilter?.children[0]?.addEventListener('click', function (e) {
+  TLFilter?.children[0]?.addEventListener('click', function () {
     window.innerWidth <= 820 && TLFilter.classList.toggle('On');
   });
 
@@ -208,19 +208,8 @@ window.addEventListener('DOMContentLoaded', function () {
       CardToggle[i].classList.toggle('On');
       CardToggle[i].children[0].inert = !CardToggle[i].children[0].inert;
       CardToggle[i].children[2].inert = !CardToggle[i].children[2].inert;
-      const oldComponent = e.closest('.SwiperCardTop').children[0].children[1].children[0];
-      oldComponent.lastElementChild.remove();
-      if (CardToggle[i].classList.contains('On')) {
-        let newComponent = document.createElement('div');
-        newComponent.classList.add('RightBtnBox');
-        newComponent.innerHTML = '<button class="ClosePost">마감하기</button>';
-        oldComponent.appendChild(newComponent);
-      } else {
-        let newComponent = document.createElement('p');
-        newComponent.classList.add('Waiting');
-        newComponent.innerHTML = '대기자<em>3</em>';
-        oldComponent.appendChild(newComponent);
-      }
+      e.closest('.PostCard.Swiper').classList.add('On');
+      e.closest('.PostCard.Swiper').children[1].style.height = `${SwiperCardHeight}px`;
     });
   });
 
