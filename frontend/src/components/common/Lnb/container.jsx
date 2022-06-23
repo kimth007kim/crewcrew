@@ -120,7 +120,9 @@ function NavContainer() {
   }, []);
 
   const axiosGetBookmark = useCallback(async () => {
-    if (myData && !myData.data) return false;
+    if (myData && !myData.data) {
+      return;
+    }
     try {
       const { data } = await axios.get('/bookmark/list?order=bookmarked', {
         withCredentials: true,

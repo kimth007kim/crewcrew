@@ -9,22 +9,20 @@ import { format, getDay, differenceInDays } from 'date-fns';
 import { viewDay } from '@/utils';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { changedBookmark } from '@/atoms/post';
 import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
 import useModal from '@/hooks/useModal';
 import AuthModal from '../common/Auth/AuthModal';
+import { loginCheck } from '@/atoms/login';
 
 function PostCardSlide({ data, cookies }) {
   const [isBookmark, setIsBookmark] = useState(false);
   const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
+  const isLogin = useRecoilValue(loginCheck);
   const myCookies = new Cookies();
-  const {
-    data: myData,
-    error,
-    mutate,
-  } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
 
   const navigate = useNavigate();
   const [authVisible, openAuth, closeAuth] = useModal();
@@ -102,7 +100,7 @@ function PostCardSlide({ data, cookies }) {
 
   useEffect(() => {
     getBookmark();
-  }, [changeBookmarked]);
+  }, [changeBookmarked, isLogin]);
 
   return (
     <>
