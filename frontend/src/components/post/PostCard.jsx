@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import { format, getDay, differenceInDays } from 'date-fns';
 import ButtonStarWhite from '@/assets/images/ButtonStarWhite.png';
 import ButtonStarOn from '@/assets/images/ButtonStarOn.png';
+import ProfileNull from '@/assets/images/Profile4.png';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import { viewDay } from '@/utils';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -113,6 +114,9 @@ function PostCard({ data }) {
     (e) => {
       e.stopPropagation();
       if (myData && myData.data) {
+        if (data.uid === myData.data.uid) {
+          return window.alert('자신의 게시글에 지원할 수 없습니다.');
+        }
         openParticipate();
       } else {
         const login = window.alert('로그인 후 이용가능합니다.');
@@ -134,8 +138,12 @@ function PostCard({ data }) {
     <>
       <Wrapper onClick={handleLocate} current={String(data.boardId) === postId}>
         <CardHead isDisabled={IsDisable}>
-          <ProfileBox>
-            <img src={`${data.profileImage}`} alt="" />
+          <ProfileBox profile={data.profileImage}>
+            {data.profileImage ? (
+              <img src={`${data.profileImage}`} alt="" />
+            ) : (
+              <img src={`${ProfileNull}`} alt="" />
+            )}
           </ProfileBox>
           <TextBox>
             <Dday>{IsDisable ? '마감' : `D-${renderDay()}`}</Dday>
@@ -210,7 +218,13 @@ const Wrapper = styled.div`
   }
 `;
 
-const ProfileBox = styled.div``;
+const ProfileBox = styled.div`
+  ${(props) =>
+    !props.profile &&
+    css`
+      background-color: #8d2bf5;
+    `}
+`;
 
 const TextBox = styled.div``;
 
@@ -309,12 +323,11 @@ const CardHead = styled.div`
     min-width: 60px;
     height: 60px;
     border-radius: 50%;
-    background-color: transparent;
+
     overflow: hidden;
     img {
       width: 100%;
       height: 100%;
-      -o-object-fit: cover;
       object-fit: cover;
     }
   }
