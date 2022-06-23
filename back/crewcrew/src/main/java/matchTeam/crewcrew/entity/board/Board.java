@@ -29,6 +29,7 @@ public class Board extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uid")
     @OnDelete(action = OnDeleteAction.CASCADE)
+
     private User user;
 
     @NotBlank

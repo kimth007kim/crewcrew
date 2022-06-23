@@ -81,6 +81,7 @@ public class  GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+
     /**
      * 비즈니스 로직 수행 도중, 해당 도메인 객체의 상태가 로직을 수행할 수 없을 때 발생
      */
@@ -155,11 +156,11 @@ public class  GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ErrorResponseHandler> globalException(CrewException e) {
-        final ErrorResponseHandler response = ErrorResponse.of(e.getErrorCode());
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+//    @ExceptionHandler(Exception.class)
+//    protected ResponseEntity<ErrorResponseHandler> globalException(CrewException e) {
+//        final ErrorResponseHandler response = ErrorResponse.of(e.getErrorCode());
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
 
 
 
