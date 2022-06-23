@@ -49,7 +49,9 @@ function Modal({
     } else {
       const scrollY = document.body.style.top;
       document.body.style.cssText = '';
-      window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+      if (parseInt(scrollY) < 0) {
+        window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+      }
     }
   }, [visible]);
 
