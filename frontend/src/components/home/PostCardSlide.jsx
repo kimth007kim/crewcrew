@@ -9,16 +9,18 @@ import { format, getDay, differenceInDays } from 'date-fns';
 import { viewDay } from '@/utils';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { changedBookmark } from '@/atoms/post';
 import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
 import useModal from '@/hooks/useModal';
 import AuthModal from '../common/Auth/AuthModal';
+import { loginCheck } from '@/atoms/login';
 
 function PostCardSlide({ data, cookies }) {
   const [isBookmark, setIsBookmark] = useState(false);
   const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
+  const isLogin = useRecoilValue(loginCheck);
   const myCookies = new Cookies();
   const {
     data: myData,
@@ -56,7 +58,7 @@ function PostCardSlide({ data, cookies }) {
     e.stopPropagation();
     try {
       if (!myData.data) {
-        window.alert('로그인 후 이용가능합니다.');
+        return window.alert('로그인 후 이용가능합니다.');
       }
       if (!isBookmark) {
         const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, '', {
@@ -100,7 +102,7 @@ function PostCardSlide({ data, cookies }) {
 
   useEffect(() => {
     getBookmark();
-  }, [changeBookmarked]);
+  }, [changeBookmarked, isLogin]);
 
   return (
     <>

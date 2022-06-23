@@ -9,8 +9,10 @@ import MainPost from '@/components/post/detail/MainPost';
 import MainTop from '@/components/post/detail/MainTop';
 import ScrollButton from '@/components/common/ScrollButton';
 import useQuery from '@/hooks/useQuery';
+import { Cookies } from 'react-cookie';
 
 function PostDetail() {
+  const cookies = new Cookies();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -42,6 +44,9 @@ function PostDetail() {
 
         const context = {
           params,
+          headers: {
+            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+          },
         };
 
         const { data } = await axios.get(`/board/${postId}`, context);

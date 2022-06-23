@@ -9,12 +9,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useQuery from '@/hooks/useQuery';
 import { Cookies } from 'react-cookie';
 import axios from 'axios';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { changedBookmark } from '@/atoms/post';
 import useModal from '@/hooks/useModal';
 import ParticipateModal from './modal/Participate';
 import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
+import { loginCheck } from '@/atoms/login';
 
 function PostCard({ data }) {
   const cookies = new Cookies();
@@ -23,6 +24,8 @@ function PostCard({ data }) {
   const [isBookmark, setIsBookmark] = useState(false);
   const [IsDisable, setIsDisable] = useState(false);
   const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
+  const isLogin = useRecoilValue(loginCheck);
+
   const navigate = useNavigate();
   const query = useQuery();
   const { postId } = useParams();
@@ -51,6 +54,10 @@ function PostCard({ data }) {
   const bookmark = async (e) => {
     e.stopPropagation();
     try {
+      if (myData && !myData.data) {
+        const login = window.alert('로그인 후 이용가능합니다.');
+        return;
+      }
       if (!isBookmark) {
         const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, '', {
           withCredentials: true,
@@ -83,6 +90,9 @@ function PostCard({ data }) {
 
   const getBookmark = useCallback(async () => {
     try {
+      if (myData && !myData.data) {
+        return;
+      }
       const bookmarkdata = await axios.get(`/bookmark/${data.boardId}`, {
         withCredentials: true,
         headers: {
@@ -93,7 +103,7 @@ function PostCard({ data }) {
     } catch (err) {
       console.error(err);
     }
-  }, []);
+  }, [myData]);
 
   const handleOpenPartiModal = useCallback(
     (e) => {
@@ -110,12 +120,11 @@ function PostCard({ data }) {
   useEffect(() => {
     const bool = !data.viewable || renderDay() < 0;
     setIsDisable(bool);
-    data.isBookmarked ? setIsBookmark(true) : setIsBookmark(false);
   }, []);
 
   useEffect(() => {
     getBookmark();
-  }, [changeBookmarked]);
+  }, [changeBookmarked, isLogin]);
 
   return (
     <>
