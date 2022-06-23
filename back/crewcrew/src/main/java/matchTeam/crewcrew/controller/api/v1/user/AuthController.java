@@ -555,10 +555,10 @@ public class AuthController {
     }
 
     @DeleteMapping("/user")
-    public ResponseEntity<Object> test(Long id) {
-
-        userService.deleteUser(id);
-        return ResponseHandler.generateResponse("로그아웃 성공", HttpStatus.OK, null);
+    public ResponseEntity<Object> test(@RequestHeader("X-AUTH-TOKEN") String token) {
+        User user = userService.tokenChecker(token);
+        userService.deleteUser(user);
+        return ResponseHandler.generateResponse("회원 탈퇴 성공", HttpStatus.OK, null);
     }
 
 

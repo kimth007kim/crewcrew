@@ -76,6 +76,7 @@ public class KakaoService {
     }
 
     public void kakaoUnlink(String accessToken) {
+//        RetKakaoOAuth retKakaoOAuth = new
         String unlinkUrl =env.getProperty("social.kakao.url.unlink");
         if(unlinkUrl==null) throw new CrewException(ErrorCode.KAKAO_COMMUNICATION_FAILED);
 
@@ -93,6 +94,8 @@ public class KakaoService {
         }
         throw new CrewException(ErrorCode.KAKAO_COMMUNICATION_FAILED);
     }
+
+
 
 
 }

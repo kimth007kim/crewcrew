@@ -44,6 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
 //                            .antMatchers("/*/user").hasAnyRole("USER")
                             .antMatchers("/","/*/signup","/*/login","/auth/**","/oauth/**", "/message/**", "/bookmark/**").permitAll()
+                            .antMatchers("/chat/**","/ws/**","/ws-stomp/**").permitAll()
                             .antMatchers("/exception/**","/s3/**").permitAll()
                             .antMatchers("/board/**").permitAll()
                             .antMatchers("/boardlist/**").permitAll()
@@ -51,6 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                             .antMatchers("/profile/**").permitAll()
                             .antMatchers("/application/**").permitAll()
                             .anyRequest().hasRole("USER")
+//                            .anyRequest().permitAll()
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
@@ -63,7 +65,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**",
+        web.ignoring().antMatchers("/resources/**","/css/**","fonts/**","/js/**","/v2/api-docs", "/swagger-resources/**",
                 "/swagger-ui.html", "/webjars/**", "/swagger/**", "/h2-console/**");
     }
 
