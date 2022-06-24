@@ -1,4 +1,6 @@
-window.addEventListener('DOMContentLoaded', function () {
+import includeFunc from './layout/Include.js';
+
+export const CommonFunc = function () {
   const body = document.querySelector('body');
   const buttonTop = document.querySelector('.ScrollTop');
   const buttonBottom = document.querySelector('.ScrollBottom');
@@ -256,7 +258,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
     isOn = !isOn;
   });
-});
+};
 
 const SignLength = document.querySelectorAll('.InputList>li')?.length;
 const Signwidth = 100 / SignLength; //회원가입 진행도 1개당 올라가는 width
@@ -285,3 +287,5 @@ export const ProgressTransition = () => {
     }
   }
 };
+
+includeFunc();
