@@ -1,3 +1,7 @@
+import { CommonFunc } from '../Common.js';
+
+window.addEventListener('DOMContentLoaded', CommonFunc);
+
 window.addEventListener('DOMContentLoaded', function () {
   const InfoBody = document.querySelector('.myInfoBody');
   const InfoButton = document.querySelector('.ButtonFull3');

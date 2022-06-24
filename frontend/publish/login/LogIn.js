@@ -1,3 +1,7 @@
+import { CommonFunc } from '../Common.js';
+
+window.addEventListener('DOMContentLoaded', CommonFunc);
+
 window.addEventListener('DOMContentLoaded', () => {
   const modalTitle = document.querySelectorAll('.ModalTitle li');
   modalTitle.forEach((e) => {
@@ -23,5 +27,4 @@ window.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.ModalWrapper').classList.add('Modal'); // 사라지는 이벤트가 끝난 후 모달창 제거해야 함(0.5초후)
     this.style.zIndex = '-1'; // 개발 과정에선 무시
   });
-
 });

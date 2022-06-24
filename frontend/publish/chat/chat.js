@@ -1,3 +1,7 @@
+import { CommonFunc } from '../Common.js';
+
+window.addEventListener('DOMContentLoaded', CommonFunc);
+
 window.addEventListener('DOMContentLoaded', function () {
   const Search = document.querySelector('button.Search');
   Search?.addEventListener('click', function () {
