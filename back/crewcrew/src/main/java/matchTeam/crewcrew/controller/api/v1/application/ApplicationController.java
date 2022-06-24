@@ -108,8 +108,7 @@ import static java.util.stream.Collectors.joining;
         context.setVariable("interestStudyCategory", likedCategoryService.findUsersStudyLike(user).stream().collect(joining(",")));
         context.setVariable("interestHobbyCategory", likedCategoryService.findUsersHobbyLike(user).stream().collect(joining(",")));;
         context.setVariable("profileImageURL", user.getProfileImage());
-
-        context.setVariable("url", "crewcrew.org/board/" + board.getBoardId());
+        context.setVariable("url", "https://crewcrew.org/board/" + board.getBoardId());
         totalEmailService.sendJavaMail("[크루크루] 지원서 도착", userService.findByUid(board.getUid()).getEmail(), "mailform/apply", context);
         return ResponseHandler.generateResponse("지원서 작성 성공",HttpStatus.OK, result);
     }
