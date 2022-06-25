@@ -12,6 +12,7 @@ import Request from './mypage/request';
 import Arrive from './mypage/arrive';
 import Kakao from './callback/kakao';
 import Naver from './callback/naver';
+import Chat from './chat';
 
 function Router() {
   return (
@@ -29,6 +30,7 @@ function Router() {
         <Route path="/mypage/recruit" element={<Recruit />} />
         <Route path="/mypage/participate" element={<Participate />} />
         <Route path="/mypage/arrive" element={<Arrive />} />
+        <Route path="/mypage/chat" element={<Chat />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
