@@ -1,38 +1,18 @@
 package matchTeam.crewcrew.repository.chat;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import matchTeam.crewcrew.dto.chat.ChatRoom;
+import matchTeam.crewcrew.entity.chat.ChatRoom;
+import matchTeam.crewcrew.entity.user.test.Member;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-@Slf4j
-@AllArgsConstructor
 @Repository
-public class ChatRoomRepository {
-    private Map<String, ChatRoom> chatRoomMap;
+public interface ChatRoomRepository extends JpaRepository<ChatRoom, UUID> {
+    List<ChatRoom> findAll();
 
-    @PostConstruct
-    private void init() {
-        chatRoomMap = new LinkedHashMap<>();
-    }
-
-    public List<ChatRoom> findAllRoom() {
-        List<ChatRoom> chatRooms = new ArrayList<>(chatRoomMap.values());
-        Collections.reverse(chatRooms);
-        return chatRooms;
-    }
-
-    public ChatRoom findRoomById(String roomId) {
-        return chatRoomMap.get(roomId);
-    }
-
-    public ChatRoom createChatRoom(String name) {
-        ChatRoom chatRoom = ChatRoom.create(name);
-        chatRoomMap.put(chatRoom.getRoomId(), chatRoom);
-        return chatRoom;
-    }
-
+    Optional<ChatRoom> findById(UUID roomId);
+    List<ChatRoom> findBySubscriberOrPublisher(Member member1,Member member2);
 }

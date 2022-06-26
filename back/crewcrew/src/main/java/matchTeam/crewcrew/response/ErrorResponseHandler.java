@@ -78,6 +78,7 @@ public class ErrorResponseHandler {
         this.error = errorCode.getError();
     }
 
+
     private ErrorResponseHandler(ErrorCode errorCode, List<FieldError> errors) {
         setErrorCode(errorCode);
 //        this.error="True";
@@ -92,13 +93,9 @@ public class ErrorResponseHandler {
     public static ErrorResponseHandler of(ErrorCode errorCode) {
         return new ErrorResponseHandler(errorCode, Collections.emptyList());
     }
+    public static ErrorResponseHandler of(){
+        return new ErrorResponseHandler(ErrorCode.EXCEPTION,Collections.emptyList());
 
-    public static ErrorResponseHandler of(ErrorCode errorCode, BindingResult bindingResult) {
-        return new ErrorResponseHandler(errorCode, bindingResult.getFieldErrors());
-    }
-
-    public static ErrorResponseHandler of(ErrorCode errorCode, String exceptionMessage) {
-        return new ErrorResponseHandler(errorCode, exceptionMessage);
     }
 
 
