@@ -23,6 +23,7 @@ function MypagePostList() {
   const [currentPage, setCurrentPage] = useState(query.get('page') || 1);
   const [postsPerPage, setPostsPerPage] = useState(10);
   const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const [bookmarkLoaded, setBookmarkLoaded] = useState(false);
 
   const tapBtnClick = (data) => {
     setActive(data);
@@ -46,6 +47,8 @@ function MypagePostList() {
       } catch (error) {
         toast.error(error);
         console.dir(error);
+      } finally {
+        setBookmarkLoaded(true);
       }
     },
     [myData],
@@ -117,6 +120,13 @@ function MypagePostList() {
     );
   };
 
+  const NavigateVailidBookmarkedPage = () => {
+    const pageNum = query.get('page');
+    if (pageNum && pageNum >= 2 && !bookmarkArr.length) {
+      navigate('/mypage');
+    }
+  };
+
   useEffect(() => {
     const pageNum = query.get('page');
     setCurrentPage(pageNum || 1);
@@ -131,6 +141,10 @@ function MypagePostList() {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    bookmarkLoaded && NavigateVailidBookmarkedPage();
+  }, [bookmarkLoaded]);
 
   return (
     <Container>
