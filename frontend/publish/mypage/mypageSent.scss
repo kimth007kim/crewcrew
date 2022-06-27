@@ -255,7 +255,7 @@ section.MypageSentTop{
         width: 32px;
         height: 24px;
         border-radius: 5px;
-        text-indent: -999px;
+        text-indent: -9999px;
         color: #a8a8a8;
         background: url('/frontend/src/assets/images/SwiperArrow.png') center/10px no-repeat;
         cursor: pointer;
@@ -302,6 +302,7 @@ section.MypageSentTop{
         align-items: center;
         padding: 12px 26px 12px 16px;
         box-sizing: border-box;
+        position: relative;
     
         &>p{
             @include font($black4, 15px, 700);
@@ -316,6 +317,9 @@ section.MypageSentTop{
         display: flex;
         align-items: center;
         gap: 16px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
 
         p{
             @include font(#D9D9D9, 18px, 700);
@@ -341,7 +345,7 @@ section.MypageSentTop{
                 border-radius: 50%;
                 position: absolute;
                 top: 3px;
-                left: 3px;
+                left: 4px;
                 transition: .3s;
             }
         }
@@ -823,6 +827,8 @@ section.MypageSentTop{
 
         .CardToggle{
             gap: 8px;
+            position: static;
+            transform: none;
 
             p{
                 font-size: 13px;
