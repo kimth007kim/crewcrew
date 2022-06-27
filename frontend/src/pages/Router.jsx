@@ -13,6 +13,7 @@ import Arrive from './mypage/arrive';
 import Kakao from './callback/kakao';
 import Naver from './callback/naver';
 import Chat from './chat';
+import ChatDetail from './chat/chatId';
 
 function Router() {
   return (
@@ -31,6 +32,7 @@ function Router() {
         <Route path="/mypage/participate" element={<Participate />} />
         <Route path="/mypage/arrive" element={<Arrive />} />
         <Route path="/mypage/chat" element={<Chat />} />
+        <Route path="/mypage/chat/:chatId" element={<ChatDetail />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

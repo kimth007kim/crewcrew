@@ -88,7 +88,7 @@ function Lnb({ path }) {
                 </RecruIcon>
               </li>
               <li>
-                <NavLink to="/">
+                <NavLink to="/mypage/chat">
                   <ChatIcon selected={pathname.startsWith('/chat')}>
                     <span />
                     <p>채팅</p>

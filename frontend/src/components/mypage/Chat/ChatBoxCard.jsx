@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import IconFlag from '@/assets/images/IconFlag.png';
 import ProfileMail from '@/assets/images/ProfileMail.png';
 import LogInCheck_off from '@/assets/images/LogInCheck_off.png';
 import LogInCheck_on from '@/assets/images/LogInCheck_on.png';
+import { useNavigate } from 'react-router-dom';
 
 function ChatBoxCard({ isSetting }) {
+  const navigate = useNavigate();
+
+  const onClickNavigate = useCallback(() => {
+    navigate('1');
+  }, []);
+
   return (
-    <Container>
+    <Container onClick={onClickNavigate}>
       <ContentSet active={isSetting}>
         <InputHide></InputHide>
         <LabelCheck>
@@ -17,8 +24,8 @@ function ChatBoxCard({ isSetting }) {
       <ContentCard>
         <ContentHead>
           <HeadBox className="profile">
-            <img src={ProfileMail} alt="" className="profile" />
-            <img src={IconFlag} alt="" className="flag" />
+            <img src={ProfileMail} alt="profile" className="profile" />
+            <img src={IconFlag} alt="flag" className="flag" />
             <p>재영재영유재영유재영</p>
           </HeadBox>
           <HeadBox className="post">
