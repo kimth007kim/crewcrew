@@ -6,7 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ChatRoomCreateDTO {
-    private Long pub;
-    private Long sub;
+    private Long board_id;
+    private Long subscriber_id;
+    private Long publisher_id;
 
 }

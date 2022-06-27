@@ -15,6 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ChatRoomResponseDTO {
     private UUID roomId;
+    private Long uid;
     private Long pub;
     private Long sub;
     private LocalDateTime date;

@@ -17,6 +17,7 @@ import matchTeam.crewcrew.response.exception.CrewException;
 import matchTeam.crewcrew.service.chat.ChatMessageService;
 import matchTeam.crewcrew.service.chat.ChatRoomService;
 import matchTeam.crewcrew.response.ResponseHandler;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,6 +55,7 @@ public class ChatRestController {
         return ResponseHandler.generateResponse("모든 멤버 조회 완료", HttpStatus.OK, members);
     }
 
+
     @ApiOperation(value = "멤버를 삭제합니다.")
     @DeleteMapping("/members/{uid}")
     public ResponseEntity<Object> deleteMember(@PathVariable Long uid){
@@ -63,7 +65,12 @@ public class ChatRestController {
         return ResponseHandler.generateResponse(uid+"번 멤버 삭제완료", HttpStatus.OK, null);
     }
 
-
+    @ApiOperation(value = "모든 채팅방을 확인합니다.")
+    @GetMapping("/rooms/every")
+    public ResponseEntity<Object> err(Long uid){
+        List<ChatRoom> rooms = chatRoomService.listRoom(uid);
+        return ResponseHandler.generateResponse("모든 채팅방 조회 성공", HttpStatus.OK, rooms);
+    }
 
     @ApiOperation(value = "모든 채팅방을 확인합니다.")
     @GetMapping("/rooms")
@@ -71,6 +78,9 @@ public class ChatRestController {
         List<ChatRoomResponseDTO> rooms = chatRoomService.findAllRoom();
         return ResponseHandler.generateResponse("모든 채팅방 조회 성공", HttpStatus.OK, rooms);
     }
+    // publisher 가 존재하지않음
+    // subscriber 방장이 존재하지않음
+    //board 가 존재하지않음
     @ApiOperation(value = "채팅방을 생성합니다.")
     @PostMapping("/room")
     public ResponseEntity<Object> createRoom(@RequestBody ChatRoomCreateDTO chatRoomCreateDTO){
@@ -91,15 +101,13 @@ public class ChatRestController {
         List<ChatMessageResponseDTO> messages = chatRoomService.messageByRoomId(roomId);
         return ResponseHandler.generateResponse("특정룸의 룸Id로 모든 메세지 조회 성공", HttpStatus.OK, messages);
     }
-//    @ApiOperation(value = "MemberID로 모든 채팅방 리스트 조회")
-//    @GetMapping("/room/{memberID}")
-//    public ResponseEntity<Object> memberRoom(@PathVariable Long memberID){
-//        ChatRoom room =chatRoomService.findRoomById(memberID);
-//        return ResponseHandler.generateResponse("Id로 특정 채팅방 조회 성공", HttpStatus.OK, room);
-//    }
 
-
-
+    @ApiOperation(value = "페이징 처리한 룸아이디로 보는 메시지")
+    @GetMapping("/room/{roomId}/{page}")
+    public ResponseEntity<Object> pagenation(@PathVariable("roomId") UUID roomId,@PathVariable("page") int page){
+        List<ChatMessageResponseDTO> result =  chatRoomService.messageByRoomId(roomId,page,10);
+        return ResponseHandler.generateResponse("(페이지네이션) 특정룸의 룸Id로 모든 메세지 조회 성공", HttpStatus.OK, result);
+    }
 
 
 

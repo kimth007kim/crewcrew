@@ -101,7 +101,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
         } catch (Exception e) {
-
+            log.info(" 여기가 exception 여기가 exception");
         }
 
         filterChain.doFilter(request, response);

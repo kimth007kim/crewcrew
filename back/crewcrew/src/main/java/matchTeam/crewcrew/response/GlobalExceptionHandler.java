@@ -81,11 +81,11 @@ public class  GlobalExceptionHandler {
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.ILLEGAL_STATE);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    @ExceptionHandler(ServletException.class)
-    protected ResponseEntity<ErrorResponseHandler> handleException(ServletException e) {
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EXCEPTION);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+//    @ExceptionHandler(ServletException.class)
+//    protected ResponseEntity<ErrorResponseHandler> handleException(ServletException e) {
+//        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EXCEPTION);
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
 
 
     /**
@@ -106,11 +106,11 @@ public class  GlobalExceptionHandler {
      */
 
 
-    @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ErrorResponseHandler> handleException(Exception e) {
-        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EXCEPTION);
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(Exception.class)
+//    protected ResponseEntity<ErrorResponseHandler> handleException(Exception e) {
+//        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EXCEPTION);
+//        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
 
     /**
@@ -161,6 +161,7 @@ public class  GlobalExceptionHandler {
         final ErrorResponseHandler response = ErrorResponse.of(e.getErrorCode());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
 //    @ExceptionHandler(Exception.class)
 //    protected ResponseEntity<ErrorResponseHandler> globalException(CrewException e) {
 //        final ErrorResponseHandler response = ErrorResponse.of(e.getErrorCode());

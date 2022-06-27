@@ -2,6 +2,7 @@ package matchTeam.crewcrew.entity.chat;
 
 import lombok.*;
 import matchTeam.crewcrew.entity.BaseTimeEntity;
+import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.entity.user.test.Member;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,18 +25,23 @@ public class ChatRoom  extends BaseTimeEntity {
 
     private String name;
 
-    @OneToOne(fetch=FetchType.EAGER)
+    @ManyToOne
+    @JoinColumn(name="bid")
+    private Board board;
+
+    @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "publisher")
     private Member publisher;
 
-    @OneToOne(fetch=FetchType.EAGER)
+    @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "subscriber")
     private Member subscriber;
 
-    public ChatRoom toEntity(Member publisher,Member subscriber) {
+    public ChatRoom toEntity(Member publisher,Member subscriber,Board board) {
         return ChatRoom.builder()
                 .publisher(publisher)
                 .subscriber(subscriber)
+                .board(board)
                 .build();
     }
 
