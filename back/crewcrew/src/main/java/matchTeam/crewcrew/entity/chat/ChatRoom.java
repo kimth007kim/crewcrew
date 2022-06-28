@@ -29,11 +29,11 @@ public class ChatRoom  extends BaseTimeEntity {
     @JoinColumn(name="bid")
     private Board board;
 
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "publisher")
     private Member publisher;
 
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "subscriber")
     private Member subscriber;
 

@@ -1,6 +1,8 @@
 package matchTeam.crewcrew.entity.user.test;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import matchTeam.crewcrew.entity.chat.ChatRoom;
 
@@ -11,8 +13,14 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    @Column
+    private String nickName;
+    @Column
+    private String image;
+
 }

@@ -39,6 +39,10 @@ public class ChatController {
 
         chatMessageService.saveMessage(chatRoom, member, chatMessageDTO.getContent());
         System.out.println("/sub/chat/room/"+chatMessageDTO.getRoomId());
+
+
+        // TODO 여기를 DTO로 바꾸게 하는것 이 관건
+
         messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessageDTO.getRoomId(), chatMessageDTO);
     }
 }
