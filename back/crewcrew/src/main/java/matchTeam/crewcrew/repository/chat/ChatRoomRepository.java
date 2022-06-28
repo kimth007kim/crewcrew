@@ -1,5 +1,6 @@
 package matchTeam.crewcrew.repository.chat;
 
+import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.chat.ChatRoom;
 import matchTeam.crewcrew.entity.user.test.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +16,6 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, UUID> {
 
     Optional<ChatRoom> findById(UUID roomId);
     List<ChatRoom> findBySubscriberOrPublisher(Member member1,Member member2);
+//    List<ChatRoom> findBySubscriberAndPublisher(Member sub,Member);
+    Optional<ChatRoom> findBySubscriberAndPublisherAndBoard(Member sub, Member pub, Board board);
 }

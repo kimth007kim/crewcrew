@@ -11,6 +11,7 @@ import matchTeam.crewcrew.entity.chat.ChatMessage;
 import matchTeam.crewcrew.entity.chat.ChatRoom;
 import matchTeam.crewcrew.entity.user.test.Member;
 import matchTeam.crewcrew.entity.user.test.MemberRepository;
+import matchTeam.crewcrew.entity.user.test.MemberService;
 import matchTeam.crewcrew.repository.chat.ChatMessageRepository;
 import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.exception.CrewException;
@@ -33,6 +34,7 @@ import java.util.UUID;
 @RestController
 public class ChatRestController {
     private final ChatRoomService chatRoomService;
+    private final MemberService memberService;
     private final ChatMessageService chatMessageService;
     private final MemberRepository memberRepository;
 
@@ -41,10 +43,13 @@ public class ChatRestController {
     public ResponseEntity<Object> createMember(){
         Member member = new Member();
         memberRepository.save(member);
-        StringBuilder sb = new StringBuilder();
-        sb.append(member.getId());
-        sb.append("번 멤버 생성 성공");
-        return ResponseHandler.generateResponse(sb.toString(), HttpStatus.OK, null);
+        Long id =member.getId();
+
+        memberService.register(member);
+        StringBuilder result = new StringBuilder();
+        result.append(member.getId());
+        result.append("번 멤버 생성 성공");
+        return ResponseHandler.generateResponse(result.toString(), HttpStatus.OK, member);
     }
 
     @ApiOperation(value = "모든 멤버를 확인합니다.")
