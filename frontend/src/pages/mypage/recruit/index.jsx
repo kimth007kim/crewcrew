@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
 import Button from '@/components/common/Button';
+import RecruitCard from '@/components/mypage/Card/RecruitCard';
 
 function Recruit() {
   const cookies = new Cookies();
@@ -51,9 +52,15 @@ function Recruit() {
           <h3>스터디 크루</h3>
           <CardWrapper>
             <ul>
-              <li></li>
-              <li></li>
-              <li></li>
+              <li>
+                <RecruitCard />
+              </li>
+              <li>
+                <RecruitCard />
+              </li>
+              <li>
+                <RecruitCard />
+              </li>
             </ul>
             <PaginationWrapper></PaginationWrapper>
           </CardWrapper>
