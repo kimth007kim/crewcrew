@@ -16,11 +16,9 @@ let client = null;
 
 function ChatDetail() {
   const cookies = new Cookies();
+  const currentRoomId = 'f32e57b2-519a-42e8-ab93-3db4335f12f7';
   const { data: myData, error } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
-  const { data: chatData, mutate: mutateChat } = useSWR(
-    `/talk/room/2c2a0ea4-7471-4d5b-977a-7fbaa9370978`,
-    fetcher,
-  );
+  const { data: chatData, mutate: mutateChat } = useSWR(`/talk/room/${currentRoomId}`, fetcher);
 
   const [contentList, setContentList] = useState([]);
   const [content, setContent] = useState('');
@@ -44,8 +42,8 @@ function ChatDetail() {
           destination: '/pub/chat/message',
           body: JSON.stringify({
             type: 'TALK',
-            roomId: '2c2a0ea4-7471-4d5b-977a-7fbaa9370978',
-            uid: 6,
+            roomId: currentRoomId,
+            uid: 1,
             content,
           }),
         });
@@ -55,7 +53,7 @@ function ChatDetail() {
         setContent('');
       }
     },
-    [content, client],
+    [content, client, myData],
   );
 
   const onKeyDownChat = useCallback(
@@ -74,7 +72,7 @@ function ChatDetail() {
 
   const subscribe = () => {
     if (client !== null) {
-      client.subscribe(`/sub/chat/room/2c2a0ea4-7471-4d5b-977a-7fbaa9370978`, (data) => {
+      client.subscribe(`/sub/chat/room/${currentRoomId}`, (data) => {
         // const newContent = JSON.parse(data.body);
 
         // addContentList(newContent);

@@ -6,27 +6,35 @@ import styled from 'styled-components';
 import useSWR from 'swr';
 import ChatShowImg from '@/assets/images/ChatShow.png';
 import { useMemo } from 'react';
-import regexifyString from 'regexify-string';
 
 function ChatCard({ data }) {
   const myCookies = new Cookies();
   const { data: myData } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
 
+  const meCheck = data.publisher.uid === 1;
+  let otherUser = null;
+
+  if (!meCheck) {
+    otherUser = data.publisher;
+  } else {
+    otherUser = data.subscriber;
+  }
+
   return (
     <>
-      {data.mid === myData.data.uid ? (
+      {meCheck ? (
         <ChatDt className="me">
           <ChatTxt>{data.content}</ChatTxt>
           <ChatTime>{dayjs(data.date).format('HH:mm')}</ChatTime>
-          <ChatShow></ChatShow>
+          {!data.readCnt && <ChatShow></ChatShow>}
         </ChatDt>
       ) : (
         <ChatDt className="other">
           <ChatProfile>
             <ProfileImg>
-              <img src={data.profileImg} alt="" />
+              <img src={otherUser.image} alt="" />
             </ProfileImg>
-            <h4>이게이게이게에게</h4>
+            <h4>{otherUser.nickName}</h4>
           </ChatProfile>
           {/* 채팅 메시지 */}
           <ChatTxt>{data.content}</ChatTxt>
