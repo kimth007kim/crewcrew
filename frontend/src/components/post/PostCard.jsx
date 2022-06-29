@@ -3,11 +3,8 @@ import styled, { css } from 'styled-components';
 import { format, getDay, differenceInDays } from 'date-fns';
 import ButtonStarWhite from '@/assets/images/ButtonStarWhite.png';
 import ButtonStarOn from '@/assets/images/ButtonStarOn.png';
-<<<<<<< HEAD
 import SettingWhite from '@/assets/images/SettingWhite.png';
-=======
-import ProfileNull from '@/assets/images/Profile4.png';
->>>>>>> post/oh
+import ProfileNull from '@/assets/images/ProfileNull.png';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import { viewDay } from '@/utils';
 import { useNavigate, useParams } from 'react-router-dom';
