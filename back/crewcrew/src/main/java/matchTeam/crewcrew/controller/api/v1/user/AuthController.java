@@ -554,11 +554,11 @@ public class AuthController {
         return ResponseHandler.generateResponse("로그아웃 성공", HttpStatus.OK, null);
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<Object> test() {
-        int a= 1;
-        if (a==1) throw new CrewException(ErrorCode.APPLY_TO_BOARD_WRITER);
-        return ResponseHandler.generateResponse("로그아웃 성공", HttpStatus.OK, null);
+    @DeleteMapping("/user")
+    public ResponseEntity<Object> test(@RequestHeader("X-AUTH-TOKEN") String token) {
+        User user = userService.tokenChecker(token);
+        userService.deleteUser(user);
+        return ResponseHandler.generateResponse("회원 탈퇴 성공", HttpStatus.OK, null);
     }
 
 

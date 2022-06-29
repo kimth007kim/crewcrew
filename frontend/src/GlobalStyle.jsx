@@ -58,6 +58,10 @@ const GlobalStyle = createGlobalStyle`
       width: 100%;
       background-color: transparent;
     }
+
+    form{
+      display: contents;
+    }
 `;
 
 export default GlobalStyle;

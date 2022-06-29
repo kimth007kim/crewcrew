@@ -2,16 +2,35 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { format, getDay, differenceInDays } from 'date-fns';
 import ButtonStarWhite from '@/assets/images/ButtonStarWhite.png';
+import ButtonStarOn from '@/assets/images/ButtonStarOn.png';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import { viewDay } from '@/utils';
 import { useNavigate, useParams } from 'react-router-dom';
 import useQuery from '@/hooks/useQuery';
+import { Cookies } from 'react-cookie';
+import axios from 'axios';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { changedBookmark } from '@/atoms/post';
+import useModal from '@/hooks/useModal';
+import ParticipateModal from './modal/Participate';
+import useSWR from 'swr';
+import fetcher from '@/utils/fetcher';
+import { loginCheck } from '@/atoms/login';
 
 function PostCard({ data }) {
+  const cookies = new Cookies();
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+
+  const [isBookmark, setIsBookmark] = useState(false);
   const [IsDisable, setIsDisable] = useState(false);
+  const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
+  const isLogin = useRecoilValue(loginCheck);
+
   const navigate = useNavigate();
   const query = useQuery();
   const { postId } = useParams();
+
+  const [participateVisible, openParticipate, closeParticipate] = useModal();
 
   const renderDate = useCallback(() => {
     const date = new Date(data.createdDate);
@@ -32,50 +51,133 @@ function PostCard({ data }) {
     return differenceInDays(date, nowDate) + 1;
   }, []);
 
+  const bookmark = async (e) => {
+    e.stopPropagation();
+    if (myData && !myData.data) {
+      window.alert('로그인 후 이용가능합니다.');
+      return false;
+    }
+    try {
+      if (myData && !myData.data) {
+        const login = window.alert('로그인 후 이용가능합니다.');
+        return;
+      }
+      if (!isBookmark) {
+        const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, '', {
+          withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+          },
+        });
+        if (bookmarkdata.data.status === 200) {
+          changeBookmark();
+        }
+      } else {
+        const bookmarkdata = await axios.delete(`/bookmark/${data.boardId}`, {
+          withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+          },
+        });
+        if (bookmarkdata.data.status === 200) {
+          changeBookmark();
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const changeBookmark = () => {
+    setchangeBookmarked((state) => !state);
+  };
+
+  const getBookmark = useCallback(async () => {
+    try {
+      if (myData && !myData.data) {
+        return;
+      }
+      const bookmarkdata = await axios.get(`/bookmark/${data.boardId}`, {
+        withCredentials: true,
+        headers: {
+          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+        },
+      });
+      bookmarkdata.data.status === 200 && setIsBookmark(bookmarkdata.data.data);
+    } catch (err) {
+      console.error(err);
+    }
+  }, [myData]);
+
+  const handleOpenPartiModal = useCallback(
+    (e) => {
+      e.stopPropagation();
+      if (myData && myData.data) {
+        openParticipate();
+      } else {
+        const login = window.alert('로그인 후 이용가능합니다.');
+      }
+    },
+    [myData],
+  );
+
   useEffect(() => {
     const bool = !data.viewable || renderDay() < 0;
     setIsDisable(bool);
   }, []);
 
+  useEffect(() => {
+    getBookmark();
+  }, [changeBookmarked, isLogin]);
+
   return (
-    <Wrapper onClick={handleLocate} current={String(data.boardId) === postId}>
-      <CardHead isDisabled={IsDisable}>
-        <ProfileBox>
-          <img src={`${data.profileImage}`} alt="" />
-        </ProfileBox>
-        <TextBox>
-          <Dday>{IsDisable ? '마감' : `D-${renderDay()}`}</Dday>
-          <CardDate>{renderDate()}</CardDate>
-          <CardName>{data.nickname}</CardName>
-        </TextBox>
-      </CardHead>
-      <CardBody isDisabled={IsDisable}>
-        <TextBox>
-          <TitleBox>
-            <h5>{data.title}</h5>
-            <Star />
-          </TitleBox>
-          <TextList>
-            <CategoryText
-              textColor={data.categoryParentId === 1 ? '#005ec5' : '#F7971E'}
-              isDisabled={IsDisable}
-            >
-              {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
-            </CategoryText>
-            <p>{data.approachCode ? '온라인' : '오프라인'}</p>
-            <p>{`${data.recruitedCrew}/${data.totalCrew}명`}</p>
-            <p>
-              조회수
-              {` ${data.hit}`}
-            </p>
-          </TextList>
-        </TextBox>
-        <ButtonBox>
-          <ButtonDetail>상세보기</ButtonDetail>
-          <ButtonParticipate disabled={IsDisable}>참여하기</ButtonParticipate>
-        </ButtonBox>
-      </CardBody>
-    </Wrapper>
+    <>
+      <Wrapper onClick={handleLocate} current={String(data.boardId) === postId}>
+        <CardHead isDisabled={IsDisable}>
+          <ProfileBox>
+            <img src={`${data.profileImage}`} alt="" />
+          </ProfileBox>
+          <TextBox>
+            <Dday>{IsDisable ? '마감' : `D-${renderDay()}`}</Dday>
+            <CardDate>{renderDate()}</CardDate>
+            <CardName>{data.nickname}</CardName>
+          </TextBox>
+        </CardHead>
+        <CardBody isDisabled={IsDisable}>
+          <TextBox>
+            <TitleBox>
+              <h5>{data.title}</h5>
+              <Star bookmark={isBookmark} onClick={bookmark} />
+            </TitleBox>
+            <TextList>
+              <CategoryText
+                textColor={data.categoryParentId === 1 ? '#005ec5' : '#F7971E'}
+                isDisabled={IsDisable}
+              >
+                {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
+              </CategoryText>
+              <p>{data.approachCode ? '온라인' : '오프라인'}</p>
+              <p>{`${data.recruitedCrew}/${data.totalCrew}명`}</p>
+              <p>
+                조회수
+                {` ${data.hit}`}
+              </p>
+            </TextList>
+          </TextBox>
+          <ButtonBox>
+            <ButtonDetail>상세보기</ButtonDetail>
+            <ButtonParticipate disabled={IsDisable} onClick={handleOpenPartiModal}>
+              참여하기
+            </ButtonParticipate>
+          </ButtonBox>
+        </CardBody>
+      </Wrapper>
+      <ParticipateModal
+        closeModal={closeParticipate}
+        postData={data}
+        visible={participateVisible}
+      />
+    </>
   );
 }
 
@@ -140,9 +242,16 @@ const CategoryText = styled.span`
 `;
 
 const Star = styled.div`
+  ${(props) =>
+    props.bookmark
+      ? css`
+          background: #c4c4c4 url(${ButtonStarOn}) center/20px no-repeat;
+        `
+      : css`
+          background: #c4c4c4 url(${ButtonStarWhite}) center/20px no-repeat;
+        `}
   width: 30px;
   height: 30px;
-  background: #c4c4c4 url(${ButtonStarWhite}) center/20px no-repeat;
   border-radius: 5px;
   cursor: pointer;
   margin-left: 22px;

@@ -28,6 +28,13 @@ public class ErrorResponse {
                 .error(true)
                 .build();
     }
+    public static ErrorResponseHandler of() {
+        return ErrorResponseHandler.builder()
+                .message(ErrorCode.EXCEPTION.getMessage())
+                .status(ErrorCode.EXCEPTION.getStatus())
+                .error(true)
+                .build();
+    }
 }
 
 

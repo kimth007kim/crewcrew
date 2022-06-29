@@ -15,6 +15,8 @@ import Textfield from '../../TextfieldEmail';
 import TextfieldPW from '../../TextfieldPW';
 import { emojiSlice, isCheckPassword, isEmail, spaceSlice } from '@/utils';
 import fetcher from '@/utils/fetcher';
+import { loginCheck } from '@/atoms/login';
+import { useRecoilState } from 'recoil';
 
 function LoginSection({ IsClick, HandleClick, closeModal }) {
   const [IsChecked, setIsChecked] = useState(false);
@@ -26,6 +28,7 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
   const [passwordValid, setPasswordValid] = useState(false);
   const [passwordMsg, setPasswordMsg] = useState('숫자/영문/특수문자 포함 8~20글자');
   const [BtnLoading, setBtnLoading] = useState(false);
+  const [isLogin, setIsLogin] = useRecoilState(loginCheck);
 
   const [cookies, setCookie, removeCookie] = useCookies(['user-cookie']);
   const myCookies = new Cookies();
@@ -129,8 +132,9 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
                   expires: afterh,
                 });
               }
+              setIsLogin(true);
 
-              mutate('/auth/token');
+              mutate('/auth/token', true);
               closeModal();
               break;
             case 400:

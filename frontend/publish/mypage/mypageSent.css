@@ -3478,14 +3478,15 @@ section.MypageSentTop .SectionWrap850 {
 }
 
 section.MypageSentTop .SectionWrap850 > p {
-  margin-top: 8px;
-  font-size: 13px;
   color: #868686;
+  font-size: 13px;
   font-weight: 400;
+  margin-top: 8px;
   line-height: 20px;
 }
 
 section.MypageSentTop h3 {
+  color: #000;
   font-size: 20px;
   font-weight: 700;
 }
@@ -3495,6 +3496,7 @@ section.MypageSentTop h3 {
 }
 
 .SentContent h4 {
+  color: #000;
   font-size: 42px;
   font-weight: 700;
   text-align: center;
@@ -3566,7 +3568,6 @@ section.MypageSentTop h3 {
 }
 
 .SentBox p {
-  color: #fff;
   line-height: 1;
   width: 100%;
   text-align: center;
@@ -3575,11 +3576,13 @@ section.MypageSentTop h3 {
 }
 
 .SentBox p:nth-child(1) {
+  color: #fff;
   font-size: 48px;
   font-weight: 700;
 }
 
 .SentBox p:nth-child(2) {
+  color: #fff;
   font-size: 18px;
   font-weight: 500;
   margin-top: 22px;
@@ -3614,6 +3617,7 @@ section.MypageSentTop h3 {
 }
 
 .MypageSentPost h3 {
+  color: #000;
   font-size: 20px;
   font-weight: 700;
   padding: 38px 0 24px;
@@ -3697,18 +3701,14 @@ section.MypageSentTop h3 {
 }
 
 .SwiperCardWrapper .SwiperBtn {
-  width: 74px;
-  height: 26px;
-  border-radius: 0 0 5px 5px;
-  font-size: 12px;
+  width: 32px;
+  height: 24px;
+  border-radius: 5px;
+  text-indent: -9999px;
   color: #a8a8a8;
-  line-height: 26px;
-  padding-left: 12px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  background: #fff url("/frontend/src/assets/images/SwiperArrow.png") center right 10px/10px no-repeat;
+  background: url("/frontend/src/assets/images/SwiperArrow.png") center/10px no-repeat;
   cursor: pointer;
-  margin-left: calc(100% - 116px);
+  border: 1px solid #D9D9D9;
 }
 
 .PostCard.Swiper {
@@ -3727,7 +3727,7 @@ section.MypageSentTop h3 {
   height: auto;
 }
 
-.PostCard.Swiper.On ~ .SwiperBtn {
+.PostCard.Swiper.On .SwiperBtn {
   background-image: url("/frontend/src/assets/images/SwiperArrowReverse.png");
 }
 
@@ -3737,23 +3737,104 @@ section.MypageSentTop h3 {
           transition-delay: .2s;
 }
 
-.PostCard.Swiper.On .SwiperCardTop {
+.PostCard.Swiper .SwiperCardTop {
+  width: 100%;
+  position: relative;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.PostCard.Swiper .CardTopHeader {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 14px 0;
   border-bottom: 1px solid #e2e2e2;
 }
 
-.PostCard.Swiper .SwiperCardTop {
-  width: 100%;
-  min-height: 94px;
+.PostCard.Swiper .CardTopFooter {
+  height: 54px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 12px 26px 12px 16px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  position: relative;
+}
+
+.PostCard.Swiper .CardTopFooter > p {
+  color: #a8a8a8;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.PostCard.Swiper .CardTopFooter > p em {
+  color: #00b7ff;
+}
+
+.PostCard.Swiper .CardToggle {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  gap: 16px;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+
+.PostCard.Swiper .CardToggle p {
+  color: #D9D9D9;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.PostCard.Swiper .CardToggle p:first-of-type {
+  color: #00b7ff;
+}
+
+.PostCard.Swiper .CardToggle .ToggleBtn {
+  width: 58px;
+  height: 30px;
+  border-radius: 15px;
+  background-color: #d9d9d9;
   position: relative;
-  padding: 14px 0;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  cursor: pointer;
+}
+
+.PostCard.Swiper .CardToggle .ToggleBtn .ToggleIndicator {
+  width: 24px;
+  aspect-ratio: 1;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.PostCard.Swiper .CardToggle.On p:first-of-type {
+  color: #D9D9D9;
+}
+
+.PostCard.Swiper .CardToggle.On p:last-of-type {
+  color: #00b7ff;
+}
+
+.PostCard.Swiper .CardToggle.On .ToggleBtn .ToggleIndicator {
+  left: 31px;
 }
 
 .PostCard.Swiper .PostCardHead {
@@ -3812,6 +3893,7 @@ section.MypageSentTop h3 {
 }
 
 .PostCard.Swiper .PostCardHead .DetailBox p {
+  color: #000;
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 7px;
@@ -3826,12 +3908,12 @@ section.MypageSentTop h3 {
   border: none;
   outline: none;
   cursor: pointer;
-  width: 100%;
-  height: 30px;
-  border-radius: 5px;
   color: #fff;
   font-size: 13px;
   font-weight: 500;
+  width: 100%;
+  height: 30px;
+  border-radius: 5px;
   -webkit-transition: .3s;
   transition: .3s;
   background-color: #00B7FF;
@@ -3901,6 +3983,9 @@ section.MypageSentTop h3 {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   border-left: 1px solid #a8a8a8;
+  color: #a8a8a8;
+  font-size: 15px;
+  font-weight: 700;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -3909,9 +3994,6 @@ section.MypageSentTop h3 {
       -ms-flex-pack: justify;
           justify-content: space-between;
   padding: 2px 0;
-  font-size: 15px;
-  color: #a8a8a8;
-  font-weight: 700;
 }
 
 @media screen and (max-width: 820px) {
@@ -3925,8 +4007,9 @@ section.MypageSentTop h3 {
 }
 
 .PostCard.Swiper .PostCardBody p.Waiting em {
-  font-size: 32px;
   color: #00b7ff;
+  font-size: 32px;
+  font-weight: 700;
 }
 
 .PostCard.Swiper .PostCardBody .RightBtnBox {
@@ -3963,11 +4046,12 @@ section.MypageSentTop h3 {
   border: none;
   outline: none;
   cursor: pointer;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
   width: 100px;
   height: 50px;
   border-radius: 10px;
-  color: #fff;
-  font-size: 15px;
   -webkit-transition: .3s;
   transition: .3s;
 }
@@ -4004,50 +4088,6 @@ section.MypageSentTop h3 {
   -webkit-transition: .5s;
   transition: .5s;
   border-radius: 0 0 10px 10px;
-}
-
-.PostCard.Swiper .SwiperCardBottom .BtTop {
-  height: 54px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  padding: 12px 26px 12px 16px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-}
-
-.PostCard.Swiper .SwiperCardBottom .BtTop p {
-  font-size: 18px;
-  font-weight: 700;
-  color: #a8a8a8;
-}
-
-.PostCard.Swiper .SwiperCardBottom .BtTop p em {
-  color: #00b7ff;
-}
-
-.PostCard.Swiper .SwiperCardBottom .BtTop button {
-  border: none;
-  outline: none;
-  cursor: pointer;
-  background-color: #868686;
-  width: 110px;
-  height: 30px;
-  border-radius: 5px;
-  color: #fff;
-  font-size: 13px;
-  -webkit-transition: .3s;
-  transition: .3s;
-}
-
-.PostCard.Swiper .SwiperCardBottom .BtTop button:hover {
-  background-color: #747474;
 }
 
 .PostCard.Swiper.Accepted .PostCardHead {
@@ -4153,15 +4193,16 @@ section.MypageSentTop h3 {
 }
 
 .SwiperCardHead .CardTxt h4 {
+  color: #000;
   font-size: 15px;
   font-weight: 700;
   margin-bottom: 10px;
 }
 
 .SwiperCardHead .CardTxt p {
+  color: #00b7ff;
   font-size: 13px;
   font-weight: 400;
-  color: #00b7ff;
   line-height: 20px;
 }
 
@@ -4174,10 +4215,10 @@ section.MypageSentTop h3 {
 }
 
 .SwiperCardBody h5 {
-  margin: 20px 0 12px;
+  color: #a8a8a8;
   font-size: 13px;
   font-weight: 500;
-  color: #a8a8a8;
+  margin: 20px 0 12px;
 }
 
 .SwiperCardBody .IntList {
@@ -4190,13 +4231,13 @@ section.MypageSentTop h3 {
 }
 
 .SwiperCardBody .IntList li {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 300;
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
   padding: 4px 16px;
-  font-size: 13px;
-  font-weight: 300;
-  color: #fff;
   border-radius: 13px;
 }
 
@@ -4258,7 +4299,7 @@ section.MypageSentTop h3 {
 }
 
 .SwiperSlideBtn .BtnWrapper button.BtnColor {
-  width: 50px;
+  padding: 0 14px;
 }
 
 .SwiperSlideBtn .BtnWrapper button.BtnColor.Nega {
@@ -4277,10 +4318,70 @@ section.MypageSentTop h3 {
   background-color: #00A3E3;
 }
 
+.filterWrapper {
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  border: 1px solid #e2e2e2;
+  background: #fff url("/frontend/src/assets/images/ArrowDown.png") top 12px right 9px/11px no-repeat;
+  cursor: pointer;
+  -webkit-transition: border .3s, .5s;
+  transition: border .3s, .5s;
+  overflow: hidden;
+  padding: 0 10px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  position: absolute;
+  top: 36px;
+  right: 0;
+}
+
+.filterWrapper:hover {
+  border: 1px solid #B0B0B0;
+}
+
+.filterWrapper.On {
+  width: 156px;
+  height: 125px;
+  border: 1px solid #00B7FF;
+  background: #fff url("/frontend/src/assets/images/ArrowUpOn.png") top 12px right 9px/11px no-repeat;
+}
+
+.filterWrapper.On p, .filterWrapper.On ul {
+  opacity: 1;
+  -webkit-transition: .5s .45s;
+  transition: .5s .45s;
+}
+
+.filterWrapper p, .filterWrapper ul {
+  opacity: 0;
+  -webkit-transition: .3s 0s;
+  transition: .3s 0s;
+}
+
+.filterWrapper p {
+  color: #a8a8a8;
+  font-size: 13px;
+  font-weight: 500;
+  height: 30px;
+  border-bottom: 1px solid #e2e2e2;
+  line-height: 30px;
+}
+
+.filterWrapper li {
+  padding: 9px 0 5px;
+  color: #000;
+  font-size: 13px;
+  font-weight: 500;
+  -webkit-transition: .3s;
+  transition: .3s;
+}
+
+.filterWrapper li:hover {
+  color: #00b7ff;
+}
+
 @media screen and (max-width: 820px) {
-  .SwiperCardWrapper .SwiperBtn {
-    margin-left: calc(100% - 84px);
-  }
   .PostCard.Swiper.On p.Waiting {
     display: none;
   }
@@ -4293,7 +4394,38 @@ section.MypageSentTop h3 {
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
-    padding: 12px 10px 16px 10px;
+    padding: 0 10px;
+  }
+  .PostCard.Swiper .CardTopHeader {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .PostCard.Swiper .CardTopFooter {
+    padding: 0;
+  }
+  .PostCard.Swiper .CardTopFooter > p {
+    display: none;
+  }
+  .PostCard.Swiper .CardToggle {
+    gap: 8px;
+    position: static;
+    -webkit-transform: none;
+            transform: none;
+  }
+  .PostCard.Swiper .CardToggle p {
+    font-size: 13px;
+  }
+  .PostCard.Swiper .CardToggle .ToggleBtn {
+    width: 48px;
+    height: 26px;
+  }
+  .PostCard.Swiper .CardToggle .ToggleBtn .ToggleIndicator {
+    width: 20px;
+  }
+  .PostCard.Swiper .CardToggle.On .ToggleBtn .ToggleIndicator {
+    left: 25px;
   }
   .PostCard.Swiper .PostCardHead {
     min-width: 100%;
@@ -4450,6 +4582,9 @@ section.MypageSentTop h3 {
   .SwiperSlideBtn .BtnWrapper {
     gap: 4px;
   }
+  .filterWrapper {
+    right: 20px;
+  }
 }
 
 @media screen and (max-width: 300px) {
@@ -4464,6 +4599,34 @@ section.MypageSentTop h3 {
   }
   .BtSwiper .CardSwiper > ul > li {
     width: calc(100% - 20px);
+  }
+  .filterWrapper {
+    right: 10px;
+    padding: 0 8px;
+  }
+  .filterWrapper.On {
+    width: 110px;
+    height: 120px;
+  }
+  .filterWrapper p, .filterWrapper li {
+    font-size: 11px;
+  }
+  .filterWrapper p {
+    border: none;
+    padding-right: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+  }
+  .filterWrapper p::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: #e2e2e2;
+    position: absolute;
+    bottom: 0;
   }
 }
 /*# sourceMappingURL=mypageSent.css.map */

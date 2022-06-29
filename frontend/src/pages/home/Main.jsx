@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable indent */
 import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Cookies } from 'react-cookie';
@@ -21,7 +19,7 @@ import Profile5 from '@/assets/images/Profile5.png';
 import ArrowCircle from '@/assets/images/ArrowCircle.png';
 import IconNavArrowRev from '@/assets/images/IconNavArrow_Rev.png';
 import HomeTop from '@/components/home/HomeTop';
-import ScrollButton from '@/components/post/ScrollButton';
+import ScrollButton from '@/components/common/ScrollButton';
 import SwiperSection from '@/components/home/SwiperSection';
 import CategoryCard from '@/components/home/CategoryCard';
 import Footer from '@/components/common/Footer';
@@ -75,13 +73,7 @@ function Main() {
     }
   };
 
-  const params = new URLSearchParams();
-  const context = {
-    params,
-  };
-  params.append('order', 'expired');
-
-  const CatList = useCallback(async () => {
+  const getCategoryList = useCallback(async () => {
     try {
       const { data } = await axios.get('/category/list');
       const listData = [];
@@ -133,6 +125,12 @@ function Main() {
 
   const axiosGetDeadLinePost = useCallback(async () => {
     try {
+      const params = new URLSearchParams();
+      const context = {
+        params,
+      };
+      params.append('order', 'expired');
+
       const { data } = await axios.get('/board/list', context);
       switch (data.status) {
         case 200:
@@ -152,7 +150,7 @@ function Main() {
   }, []);
 
   useEffect(() => {
-    CatList();
+    getCategoryList();
     axiosGetNewPost();
     axiosGetDeadLinePost();
   }, []);
@@ -208,10 +206,14 @@ function Main() {
         <PostWrap>
           <h4>신규 크루원 모집글</h4>
           <p>이번주 새롭게 크루원을 모집하는 모집글을 소개해드려요.</p>
-          <SwiperSection data={newPost} post={'New'} />
+          <SwiperSection data={newPost} post={'New'} cookies={cookies.get('X-AUTH-TOKEN')} />
           <h4>마감임박! 놓치지 말아요!</h4>
           <p>마감일이 가깝거나 모집인원을 거의 다 모은 크루원 모집글을 소개해드려요.</p>
-          <SwiperSection data={deadlinePost} post={'Deadline'} />
+          <SwiperSection
+            data={deadlinePost}
+            post={'Deadline'}
+            cookies={cookies.get('X-AUTH-TOKEN')}
+          />
         </PostWrap>
       </MainPost>
       <Footer />
@@ -229,7 +231,6 @@ const MainMain = styled.main`
   margin-left: 142px;
   box-sizing: border-box;
   overflow-x: hidden;
-  word-break: keep-all;
 
   @media screen and (max-width: 820px) {
     width: 100%;

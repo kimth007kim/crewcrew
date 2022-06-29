@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.servlet.ServletException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.AccessDeniedException;
@@ -78,17 +79,23 @@ public class  GlobalExceptionHandler {
     @ExceptionHandler(IllegalStateException.class)
     protected ResponseEntity<ErrorResponseHandler> handleIllegalStatementException(IllegalStateException e){
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.ILLEGAL_STATE);
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
+//    @ExceptionHandler(ServletException.class)
+//    protected ResponseEntity<ErrorResponseHandler> handleException(ServletException e) {
+//        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EXCEPTION);
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
+
 
     /**
      * 비즈니스 로직 수행 도중, 해당 도메인 객체의 상태가 로직을 수행할 수 없을 때 발생
      */
-//    @ExceptionHandler(IllegalArgumentException.class)
-//    protected ResponseEntity<ErrorResponseHandler> handleIllegalArgumentException(IllegalArgumentException e){
-//        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.ILLEGAL_ARGUMENT);
-//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-//    }
+    @ExceptionHandler(IllegalArgumentException.class)
+    protected ResponseEntity<ErrorResponseHandler> handleIllegalArgumentException(IllegalArgumentException e){
+        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.ILLEGAL_ARGUMENT);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 
     /**
      * 여기서 작성하지 않은 다른 모든 예외에 대해 처리한다. 이 때 500 status code와 함께 반환한다.
@@ -155,11 +162,11 @@ public class  GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ErrorResponseHandler> globalException(CrewException e) {
-        final ErrorResponseHandler response = ErrorResponse.of(e.getErrorCode());
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+//    @ExceptionHandler(Exception.class)
+//    protected ResponseEntity<ErrorResponseHandler> globalException(CrewException e) {
+//        final ErrorResponseHandler response = ErrorResponse.of(e.getErrorCode());
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
 
 
 

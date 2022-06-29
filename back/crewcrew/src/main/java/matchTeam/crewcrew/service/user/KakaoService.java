@@ -24,7 +24,6 @@ public class KakaoService {
     private final Gson gson;
     @Value("${url.base}")
     private String baseUrl;
-
     @Value("${social.kakao.client-id}")
     private String kakaoClientId;
 
@@ -77,12 +76,14 @@ public class KakaoService {
     }
 
     public void kakaoUnlink(String accessToken) {
+//        RetKakaoOAuth retKakaoOAuth = new
         String unlinkUrl =env.getProperty("social.kakao.url.unlink");
         if(unlinkUrl==null) throw new CrewException(ErrorCode.KAKAO_COMMUNICATION_FAILED);
 
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.set("Authorization","Bearer "+accessToken);
+//        headers.set("Authorization","KakaoAK "+adminKey);
 
         HttpEntity<MultiValueMap<String,String>> request  = new HttpEntity<>(null,headers);
         ResponseEntity<String> response = restTemplate.postForEntity(unlinkUrl,request,String.class);
@@ -93,5 +94,8 @@ public class KakaoService {
         }
         throw new CrewException(ErrorCode.KAKAO_COMMUNICATION_FAILED);
     }
+
+
+
 
 }

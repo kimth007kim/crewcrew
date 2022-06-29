@@ -1,15 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import FilterArrowImg from '@/assets/images/IconNavArrow_Big.png';
 import IconLinkIntro from '@/assets/images/IconLinkIntro.png';
 
 function MypageTop() {
+  const navigate = useNavigate();
+
   return (
     <Container>
       <TopCont>
         <h2>
-          <Link to="/mypage" />
+          <LinkHistory onClick={() => navigate(-1)} />
           마이페이지
         </h2>
       </TopCont>
@@ -28,7 +30,7 @@ const Container = styled('section')`
   overflow: hidden;
   box-sizing: content-box;
   @media screen and (max-width: 820px) {
-    height: 64px;
+    height: 44px;
   }
 `;
 
@@ -52,20 +54,6 @@ const TopCont = styled('div')`
     display: flex;
     color: #000;
     align-items: center;
-
-    a {
-      display: block;
-      background-image: url(${FilterArrowImg});
-      background-size: 9px;
-      background-repeat: no-repeat;
-      background-position: 0 1px;
-      width: 9px;
-      height: 20px;
-      padding-right: 20px;
-      text-decoration: none;
-      color: #868686;
-      box-sizing: content-box;
-    }
   }
 
   @media screen and (max-width: 820px) {
@@ -73,11 +61,6 @@ const TopCont = styled('div')`
 
     h2 {
       font-size: 15px;
-
-      a {
-        background-size: 8px;
-        padding-right: 12px;
-      }
     }
   }
 
@@ -87,6 +70,26 @@ const TopCont = styled('div')`
     h2 {
       line-height: 30px;
     }
+  }
+`;
+
+const LinkHistory = styled('a')`
+  display: block;
+  background-image: url(${FilterArrowImg});
+  background-size: 9px;
+  background-repeat: no-repeat;
+  background-position: 0 1px;
+  width: 9px;
+  height: 20px;
+  padding-right: 20px;
+  text-decoration: none;
+  color: #868686;
+  box-sizing: content-box;
+  cursor: pointer;
+
+  @media screen and (max-width: 820px) {
+    background-size: 8px;
+    padding-right: 12px;
   }
 `;
 const ButtonIntro = styled('div')`
@@ -102,11 +105,11 @@ const ButtonIntro = styled('div')`
   transition: 0.3s;
 
   @media screen and (max-width: 820px) {
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
     right: 20px;
     opacity: 1;
-    top: 18px;
+    top: 10px;
   }
 
   @media screen and (max-width: 300px) {

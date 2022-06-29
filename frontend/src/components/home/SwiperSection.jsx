@@ -11,7 +11,7 @@ import 'swiper/css/pagination';
 import PostCardSlide from './PostCardSlide';
 
 SwiperCore.use([Navigation, Pagination]);
-function SwiperSection({ data, post }) {
+function SwiperSection({ data, post, cookies }) {
   const [swiper, setSwiper] = useState(null);
   const [mainIndex, setMainIndex] = useState(0);
 
@@ -49,7 +49,7 @@ function SwiperSection({ data, post }) {
         <Swiper {...swiperParams} ref={setSwiper}>
           {data.map((data) => (
             <SwiperSlide key={data.boardId + post}>
-              <PostCardSlide data={data} />
+              <PostCardSlide data={data} cookies={cookies} />
             </SwiperSlide>
           ))}
         </Swiper>

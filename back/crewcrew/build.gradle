@@ -19,7 +19,18 @@ repositories {
 }
 
 dependencies {
-	// thymeleaf
+	// 채팅을 위한 dependency
+	implementation 'org.webjars:sockjs-client:1.1.2'
+	implementation 'org.webjars:stomp-websocket:2.3.3-1'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	// view 관련 dependency 채팅 구현후 삭제
+	implementation 'org.webjars.bower:bootstrap:4.3.1'
+	implementation 'org.webjars.bower:vue:2.5.16'
+	implementation 'org.webjars.bower:axios:0.17.1'
+	// 채팅
+
+
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 
@@ -83,7 +94,9 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
-
+//	testCompileOnly("org.assertj:assertj-core:3.11.1")
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 
 
 
