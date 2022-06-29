@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CrewCrew</title>
+  <link rel="stylesheet" href="./handleRequest.css" />
+</head>
+
+<body>
+  <!--로그인 버튼 클릭 시 Modal클래스 추가-->
+  <div class="ModalWrapper Modal">
+    <div class="ModalBg"></div>
+
+    <div class="ModalBox">
+      <div class="ModalHeader">
+        <ul class="ModalTop">
+          <li></li>
+          <!--이전 단계로 가는 버튼 있을 시 여기 생성-->
+          <li>
+            <span class="ModalClose"></span>
+          </li>
+        </ul>
+        <p class="TitleMsg">정말 채팅방을 삭제하시겠습니까?<br>
+          삭제시 상대방이 더이상 회원님에게 채팅을 할 수 없어요!</p>
+      </div>
+
+      <div class="ModalBody">
+        <h4 class="RequestSort">삭제되는 채팅방</h4>
+        <div class="RequestCard Chat">
+          <div class="HeadBox Profile">
+            <img src="/frontend/src/assets/images/ProfileMail.png" alt="" class="ProfileImg">
+            <img src="/frontend/src/assets/images/IconFlag.png" alt="" class="ProfileFlag">
+            <p>재영재영유재영유재영</p>
+          </div>
+          <div class="HeadBox Post">
+            <p><span class="Study">고시/공무원</span>함께 크루원 모집 플랫폼을 작업하실 분을 모십니다~!</p>
+          </div>
+        </div>
+        <div class="BtnList">
+          <button>취소</button>
+          <button class="Del">삭제</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

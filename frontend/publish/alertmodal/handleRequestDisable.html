@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrewCrew</title>
+    <link rel="stylesheet" href="./handleRequest.css" />
+</head>
+<body><!--로그인 버튼 클릭 시 Modal클래스 추가-->
+    <div class="ModalWrapper Modal">
+      <div class="ModalBg"></div>
+      
+      <div class="ModalBox">
+        <div class="ModalHeader">
+          <ul class="ModalTop">
+            <li></li> <!--이전 단계로 가는 버튼 있을 시 여기 생성-->
+            <li>
+              <span class="ModalClose"></span>
+            </li>
+          </ul>
+          <p class="TitleMsg">내역을 삭제하시겠습니까?<br>
+            지금 삭제하면 내역을 다시 확인할 수 없어요!</p>
+        </div>
+  
+        <div class="ModalBody">
+          <h4 class="RequestSort">삭제되는 내역</h4>
+          <div class="RequestCard Disabled">
+            <p class="RequestCardHead"><span>03월22일</span> 참여중</p>
+            <h4>테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트</h4>
+            <ul class="RequestCardFooter">
+                <li class="Hobby">요리</li>
+                <li>오프라인</li>
+                <li>8/10명</li>
+            </ul>
+          </div>
+          <div class="BtnList">
+            <button>취소</button>
+            <button class="Del">삭제</button>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+</body>
+</html>
