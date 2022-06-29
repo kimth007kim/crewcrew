@@ -45,7 +45,8 @@ function MainContent(props, ref) {
   }, []);
 
   const onChangeTitleText = useCallback((e) => {
-    const value = e.target.value;
+    let value = e.target.value;
+    value = emojiSlice(value).slice(0, 30);
     state.setTitleText(value);
   }, []);
 
@@ -83,6 +84,7 @@ function MainContent(props, ref) {
             onChange={onChangeInviteLink}
             onDelete={deleteInviteLink}
             disabled={false}
+            otherHover
           />
         </InputBox>
       </ToolTipWrapper>
@@ -97,6 +99,7 @@ function MainContent(props, ref) {
           onChange={onChangeTitleText}
           onDelete={deleteTitleText}
           disabled={false}
+          otherHover
         />
       </InputBox>
       <Title>내용</Title>
@@ -185,4 +188,10 @@ const ToolTip = styled('span')`
 const InputBox = styled('div')`
   position: relative;
   margin-bottom: 16px;
+`;
+
+const CustomEditor = styled(Editor)`
+  .toastui-editor-defaultUI {
+    border: 1px solid #00b7ff;
+  }
 `;

@@ -18,6 +18,11 @@ export const LabelBtn = styled('label')`
   outline: none;
   transition: 0.3s;
   transition-property: color border-color background-color;
+
+  :hover {
+    border-color: #00b7ff;
+    color: #00b7ff;
+  }
 `;
 
 export const InputHide = styled('input')`
@@ -32,8 +37,29 @@ export const InputHide = styled('input')`
       props.bgColor &&
       css`
         background-color: ${props.bgColor};
+        border-color: transparent;
         color: #fff;
+
+        :hover {
+          background-color: #005ec5;
+        }
       `}
+  }
+
+  @media screen and (max-width: 820px) {
+    &:checked + ${LabelBtn} {
+      ${(props) =>
+        props.bgColor &&
+        css`
+          background-color: ${props.bgColor};
+          border-color: transparent;
+          color: #fff;
+
+          :hover {
+            background-color: ${props.bgColor};
+          }
+        `}
+    }
   }
 `;
 
