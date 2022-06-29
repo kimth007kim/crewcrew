@@ -13,6 +13,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -47,7 +49,7 @@ public class Board extends BaseTimeEntity {
 
     @Column(name = "applied_crew")
     private Integer appliedCrew;
-    
+
     @Column(name = "recruited_crew", columnDefinition = "integer default 0")
     private Integer recruitedCrew;
 
@@ -72,6 +74,8 @@ public class Board extends BaseTimeEntity {
 
     @Column
     private Boolean viewable;
+
+
 
     /*
     @Column(name = "created_date")
