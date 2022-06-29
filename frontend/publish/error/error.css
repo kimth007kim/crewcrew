@@ -4,7 +4,7 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: 'SUIT', 'sans-serif';
+  font-family: "SUIT", "sans-serif";
 }
 
 ul {
@@ -42,10 +42,8 @@ em {
   border: none;
   outline: none;
   cursor: pointer;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  -webkit-transition: .3s;
-  transition: .3s;
+  box-sizing: border-box;
+  transition: 0.3s;
   padding-top: 12px;
   padding-bottom: 12px;
   font-size: 20px;
@@ -57,16 +55,13 @@ em {
   height: 50px;
   color: #fff;
 }
-
 .ButtonFull:hover {
   background-color: #005ec5;
 }
-
 .ButtonFull.Disable {
   background-color: #e2e2e2;
   cursor: default;
 }
-
 .ButtonFull.Disable:hover {
   background-color: #e2e2e2;
 }
@@ -76,10 +71,8 @@ em {
   border: none;
   outline: none;
   cursor: pointer;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  -webkit-transition: .3s;
-  transition: .3s;
+  box-sizing: border-box;
+  transition: 0.3s;
   padding-top: 17px;
   padding-bottom: 17px;
   font-size: 13px;
@@ -91,36 +84,25 @@ em {
   color: #fff;
   padding-left: 26px;
   padding-right: 20px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: space-between;
+  align-items: center;
 }
-
 .ButtonFull2:hover {
   background-color: #00b7ff;
 }
-
 .ButtonFull2.Disable {
   background-color: #e2e2e2;
   cursor: default;
 }
-
 .ButtonFull2.Disable:hover {
   background-color: #e2e2e2;
 }
-
 .ButtonFull2 span {
   background-size: 100% !important;
   width: 6px;
   height: 12px;
 }
-
 .ButtonFull2 span {
   background: url("../../src/assets/images/ButtonArrow.png") 50% 50% no-repeat;
 }
@@ -130,10 +112,8 @@ em {
   border: none;
   outline: none;
   cursor: pointer;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  -webkit-transition: .3s;
-  transition: .3s;
+  box-sizing: border-box;
+  transition: 0.3s;
   padding-top: 12px;
   padding-bottom: 12px;
   font-size: 15px;
@@ -144,16 +124,13 @@ em {
   height: 50px;
   color: #fff;
 }
-
 .ButtonFull3:hover {
   background-color: #005ec5;
 }
-
 .ButtonFull3.Disable {
   background-color: #e2e2e2;
   cursor: default;
 }
-
 .ButtonFull3.Disable:hover {
   background-color: #e2e2e2;
 }
@@ -163,10 +140,8 @@ em {
   border: none;
   outline: none;
   cursor: pointer;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  -webkit-transition: .3s;
-  transition: .3s;
+  box-sizing: border-box;
+  transition: 0.3s;
   padding-top: 12px;
   padding-bottom: 12px;
   font-size: 20px;
@@ -179,20 +154,16 @@ em {
   border: 1px solid #e2e2e2;
   color: #868686;
 }
-
 .ButtonFullGhost:hover {
   background-color: #fff;
 }
-
 .ButtonFullGhost.Disable {
   background-color: #e2e2e2;
   cursor: default;
 }
-
 .ButtonFullGhost.Disable:hover {
   background-color: #e2e2e2;
 }
-
 .ButtonFullGhost:hover {
   border: 1px solid #a8a8a8;
 }
@@ -202,10 +173,8 @@ em {
   border: none;
   outline: none;
   cursor: pointer;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  -webkit-transition: .3s;
-  transition: .3s;
+  box-sizing: border-box;
+  transition: 0.3s;
   padding-top: 17px;
   padding-bottom: 17px;
   font-size: 13px;
@@ -217,42 +186,30 @@ em {
   color: #fff;
   padding-left: 26px;
   padding-right: 20px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: space-between;
+  align-items: center;
   border: 1px solid #e2e2e2;
   color: #868686;
 }
-
 .ButtonFull2Ghost:hover {
   background-color: #fff;
 }
-
 .ButtonFull2Ghost.Disable {
   background-color: #e2e2e2;
   cursor: default;
 }
-
 .ButtonFull2Ghost.Disable:hover {
   background-color: #e2e2e2;
 }
-
 .ButtonFull2Ghost span {
   background-size: 100% !important;
   width: 6px;
   height: 12px;
 }
-
 .ButtonFull2Ghost:hover {
   border: 1px solid #a8a8a8;
 }
-
 .ButtonFull2Ghost span {
   background: url("../../src/assets/images/ButtonArrowGhost.png") 50% 50% no-repeat;
 }
@@ -262,24 +219,19 @@ em {
     padding: 8px 0;
     height: 30px;
     font-size: 11px;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    justify-content: center;
   }
   .ButtonFull2 span, .ButtonFull2Ghost span {
     display: none;
   }
 }
-
 .ButtonFullSmall {
   width: 100%;
   border: none;
   outline: none;
   cursor: pointer;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  -webkit-transition: .3s;
-  transition: .3s;
+  box-sizing: border-box;
+  transition: 0.3s;
   padding-top: 11px;
   padding-bottom: 11px;
   font-size: 13px;
@@ -291,12 +243,9 @@ em {
   height: 40px;
   color: #fff;
 }
-
 .ButtonFullSmall:hover {
-  -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
 }
-
 .ButtonFullSmall.Disable {
   background-color: #e2e2e2;
   cursor: default;
@@ -307,10 +256,8 @@ em {
   border: none;
   outline: none;
   cursor: pointer;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  -webkit-transition: .3s;
-  transition: .3s;
+  box-sizing: border-box;
+  transition: 0.3s;
   padding-top: 11px;
   padding-bottom: 11px;
   font-size: 13px;
@@ -318,40 +265,28 @@ em {
   border-radius: 6px;
   line-height: 20px;
   /*padding, font-size, font-weight, line-height, border-radius*/
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   letter-spacing: -0.05em;
   height: 40px;
 }
-
 .ButtonSns:hover {
-  -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
-
 .ButtonSns.Kakao {
   background-color: #fee500;
   font-weight: 400;
 }
-
 .ButtonSns.Kakao img {
   width: 13px;
   margin-right: 4px;
   margin-top: 2px;
 }
-
 .ButtonSns.Naver {
   background-color: #03c75a;
   color: #fff;
 }
-
 .ButtonSns.Naver img {
   width: 10px;
   margin-right: 6px;
@@ -360,29 +295,20 @@ em {
 .ButtonPost {
   width: 100%;
   height: 50px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   background-color: #fff;
   border-radius: 10px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   cursor: pointer;
   color: #a8a8a8;
   font-size: 15px;
   font-weight: 500;
   border: 1px solid #e2e2e2;
   outline: none;
-  -webkit-transition: .3s;
-  transition: .3s;
+  transition: 0.3s;
 }
-
 .ButtonPost:hover {
   border-color: #00b7ff;
   color: #00b7ff;
@@ -393,7 +319,6 @@ em {
   border-color: transparent;
   color: #fff;
 }
-
 .InputPostRadio:checked ~ .ButtonPost:hover {
   border-color: transparent;
   color: #fff;
@@ -402,17 +327,15 @@ em {
 
 @media screen and (max-width: 820px) {
   .ButtonPost:hover,
-  .InputPostRadio:checked ~ .ButtonPost:hover {
+.InputPostRadio:checked ~ .ButtonPost:hover {
     background-color: #00b7ff;
   }
 }
-
 /*input*/
 ul.InputList > li {
   position: relative;
   height: 75px;
-  -webkit-transition: .3s;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .InputFull {
@@ -422,20 +345,16 @@ ul.InputList > li {
   border: 1px solid #e2e2e2;
   outline: none;
   padding: 16px 12px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   font-size: 13px;
 }
-
 .InputFull:hover {
   border: 1px solid #00b7ff;
 }
-
 .InputFull.On {
   border: 1px solid #00b7ff;
   caret-color: #00b7ff;
 }
-
 .InputFull.Error {
   border: 1px solid #ff0045;
   caret-color: #ff0045;
@@ -449,19 +368,16 @@ ul.InputList > li {
   font-weight: 300;
   padding: 0 4px 0 7px;
   background-color: #fff;
-  -webkit-transition: .5s;
-  transition: .5s;
+  transition: 0.5s;
   line-height: 24px;
   color: #a8a8a8;
 }
-
 .LabelFull.On {
   top: -12px;
   color: #00b7ff;
   font-size: 13px;
   font-weight: 500;
 }
-
 .LabelFull.Error {
   top: -12px;
   color: #ff0045;
@@ -476,8 +392,7 @@ ul.InputList > li {
   font-size: 13px;
   font-weight: 300;
   padding: 0 4px 0 7px;
-  -webkit-transition: .5s;
-  transition: .5s;
+  transition: 0.5s;
   line-height: 24px;
   color: #a8a8a8;
   cursor: pointer;
@@ -486,7 +401,6 @@ ul.InputList > li {
       -ms-user-select: none;
           user-select: none;
 }
-
 .LabelAttached.On {
   color: #707070;
 }
@@ -499,20 +413,17 @@ ul.InputList > li {
   width: 100%;
   top: 50px;
   opacity: 0;
-  -webkit-transition: .5s;
-  transition: .5s;
+  transition: 0.5s;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
 }
-
 .InputTxt.On {
   color: #00b7ff;
   opacity: 1;
   top: 54px;
 }
-
 .InputTxt.Error {
   color: #ff0045;
   opacity: 1;
@@ -531,7 +442,6 @@ ul.InputList > li {
   background: url("../../src/assets/images/InputDel.png");
   background-size: 100%;
 }
-
 .InputDel.On {
   display: block;
 }
@@ -547,19 +457,15 @@ ul.InputList > li {
   /*width,heigh,top,right*/
   background: url("../../src/assets/images/PasswordShow.png");
   background-size: 100%;
-  -webkit-transition: .3s;
-  transition: .3s;
+  transition: 0.3s;
 }
-
 .PasswordShow.Over {
   display: block;
 }
-
 .PasswordShow.On {
   background: url("../../src/assets/images/PasswordShow_On.png");
   background-size: 100%;
 }
-
 .PasswordShow.Error {
   background: url("../../src/assets/images/PasswordShow_Error.png");
   background-size: 100%;
@@ -569,12 +475,8 @@ ul.InputList > li {
 .InputDouble {
   font-size: 10px;
   color: #fff;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   width: 48px;
   height: 20px;
   background-color: #707070;
@@ -586,22 +488,15 @@ ul.InputList > li {
   cursor: pointer;
   /*width, height, fontsize, top, right*/
 }
-
 .InputDouble.On {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
 
 .InputAdd {
   font-size: 10px;
   color: #fff;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   width: 30px;
   height: 20px;
   background-color: #707070;
@@ -613,16 +508,10 @@ ul.InputList > li {
   cursor: pointer;
   /*width, height, fontsize, top, right*/
 }
-
 .InputAdd.On {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
-
 .InputAdd.On {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
 
@@ -639,7 +528,6 @@ ul.InputList > li {
   background-size: 100%;
   cursor: default;
 }
-
 .InputChecked.On {
   display: block;
 }
@@ -652,11 +540,8 @@ ul.InputList > li {
   position: absolute;
   display: none;
 }
-
 .InputHide ~ .LabelCheck {
   /*로그인 상태 유지*/
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   line-height: 21px;
   cursor: pointer;
@@ -666,17 +551,14 @@ ul.InputList > li {
           user-select: none;
   white-space: nowrap;
 }
-
 .InputHide ~ .LabelCheck span {
   display: block;
   width: 20px;
   height: 20px;
   margin-right: 10px;
   background: url("../../src/assets/images/LogInCheck_off.png") center/100% no-repeat;
-  -webkit-transition: background .2s;
-  transition: background .2s;
+  transition: background 0.2s;
 }
-
 .InputHide:checked ~ .LabelCheck span {
   background: url("../../src/assets/images/LogInCheck_on.png");
   background-size: 100%;
@@ -685,19 +567,16 @@ ul.InputList > li {
 textarea.TxtAreaInput {
   width: 100%;
   height: 100%;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   border-radius: 10px;
   padding: 20px 12px;
   resize: none;
   outline: none;
-  -webkit-transition: .3s;
-  transition: .3s;
+  transition: 0.3s;
   font-weight: 500;
   font-size: 16px;
   border: 1px solid #e2e2e2;
 }
-
 textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   border: 1px solid #00b7ff;
 }
@@ -706,29 +585,22 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   width: 100%;
   background-color: #fff;
   border-radius: 2px 2px 15px 15px;
-  -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-          box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
   cursor: pointer;
 }
-
 .CardPost.Study {
   border-top: 6px solid #005ec5;
 }
-
 .CardPost.Study .CardTag.Color {
   background-color: #005ec5;
 }
-
 .CardPost.Hobby {
   border-top: 6px solid #F7971E;
 }
-
 .CardPost.Hobby .CardTag.Color {
   background-color: #F7971E;
 }
-
 .CardPost p {
   font-size: 12px;
   font-weight: 400;
@@ -737,40 +609,23 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
 
 .CardHead {
   padding: 10px 12px 10px 15px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  box-sizing: border-box;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  align-items: center;
+  justify-content: space-between;
 }
-
 .CardHead h5 {
   font-size: 16px;
   font-weight: 700;
 }
-
 .CardHead .CardHeadRight {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+  align-items: center;
+  justify-content: flex-end;
 }
-
 .CardHead .CardHeadRight p {
   margin-left: 10px;
 }
-
 .CardHead .CardHeadRight .Star {
   width: 30px;
   height: 30px;
@@ -778,14 +633,11 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   border-radius: 5px;
   cursor: pointer;
   margin-left: 10px;
-  -webkit-transition: .3s;
-  transition: .3s;
+  transition: 0.3s;
 }
-
 .CardHead .CardHeadRight .Star:hover {
   background-color: #b0b0b0;
 }
-
 .CardHead .CardHeadRight .Star.On {
   background-image: url("../../src/assets/images/StarOn.png");
 }
@@ -793,16 +645,10 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
 .CardBody {
   height: 82px;
   padding: 10px 12px 0 15px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  box-sizing: border-box;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  justify-content: space-between;
 }
-
 .CardBody .CardProfile {
   min-width: 36px;
   height: 36px;
@@ -810,19 +656,16 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   overflow: hidden;
   background-color: #8d2bf5;
 }
-
 .CardBody .CardProfile img {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
 }
-
 .CardBody .CardTxt {
   width: 100%;
   margin-left: 15px;
 }
-
 .CardBody .CardTxt h4 {
   font-size: 15px;
   font-weight: 500;
@@ -832,16 +675,10 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
 
 .CardFooter {
   padding: 10px 12px 10px 15px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  box-sizing: border-box;
   display: flex;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+  justify-content: flex-end;
 }
-
 .CardFooter .CardTag {
   width: -webkit-fit-content;
   width: -moz-fit-content;
@@ -854,7 +691,6 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   color: #fff;
   font-weight: 300;
 }
-
 .CardFooter .CardTag:not(:last-child) {
   margin-right: 8px;
 }
@@ -862,28 +698,18 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
 .CardEmpty {
   height: 120px;
   padding: 0 32px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  -webkit-box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-          box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   background-color: #fff;
 }
-
 .CardEmpty .CardAdd {
   min-width: 52px;
   height: 52px;
 }
-
 .CardEmpty p {
   font-size: 20px;
   font-weight: 500;
@@ -904,10 +730,12 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
     height: 20px;
     background-size: 14px;
   }
+
   .CardBody {
     padding: 0 5px 0 15px;
     height: 64px;
   }
+
   .CardFooter {
     padding: 5px 5px 5px 5px;
   }
@@ -920,6 +748,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   .CardFooter .CardTag:not(:last-child) {
     margin-right: 4px;
   }
+
   .CardEmpty {
     height: 82px;
   }
@@ -932,49 +761,36 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
     margin-left: 16px;
   }
 }
-
 .PostCard {
   height: 94px;
   background-color: #fff;
   border-radius: 10px;
   padding: 16px 22px 16px 18px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  box-sizing: border-box;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-transition: .2s;
-  transition: .2s;
+  align-items: center;
+  transition: 0.2s;
   border: 1px solid transparent;
   cursor: pointer;
 }
-
 .PostCard:hover {
   border-color: #a8a8a8;
 }
-
 .PostCard.Disable .PostCardHead .TextBox .Dday, .PostCard.Disable .PostCardBody .TextBox .TitleBox h5, .PostCard.Disable .PostCardBody .TextBox .TextList .Category {
   color: #a8a8a8;
 }
-
 .PostCard.Disable .PostCardBody .ButtonBox button.Participate {
   background-color: #f0f0f0;
   cursor: default;
 }
 
 .PostCardHead {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   min-width: 204px;
   height: 100%;
   border-right: 1px solid #a8a8a8;
   position: relative;
 }
-
 .PostCardHead .ProfileBox {
   min-width: 60px;
   height: 60px;
@@ -982,20 +798,17 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   background-color: #8d2bf5;
   overflow: hidden;
 }
-
 .PostCardHead .ProfileBox img {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
 }
-
 .PostCardHead .TextBox {
   width: 100%;
   height: 100%;
   padding: 0 14px;
 }
-
 .PostCardHead .TextBox .Dday {
   margin-top: 4px;
   font-size: 16px;
@@ -1003,14 +816,12 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   color: #00b7ff;
   text-align: right;
 }
-
 .PostCardHead .TextBox .Date {
   margin-top: 0;
   font-size: 12px;
   font-weight: 300;
   color: #868686;
 }
-
 .PostCardHead .TextBox .Name {
   margin-top: 2px;
   font-size: 13px;
@@ -1019,31 +830,20 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
 }
 
 .PostCardBody {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   width: 100%;
   height: 100%;
   padding-left: 15px;
 }
-
 .PostCardBody .TextBox {
   width: 100%;
   height: 100%;
 }
-
 .PostCardBody .TextBox .TitleBox {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
 }
-
 .PostCardBody .TextBox .TitleBox h5 {
   width: 290px;
   overflow: hidden;
@@ -1053,7 +853,6 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   font-weight: 700;
   color: #000;
 }
-
 .PostCardBody .TextBox .TitleBox .Star {
   width: 30px;
   height: 30px;
@@ -1062,63 +861,45 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   cursor: pointer;
   margin-left: 22px;
   margin-right: 14px;
-  -webkit-transition: .3s;
-  transition: .3s;
+  transition: 0.3s;
 }
-
 .PostCardBody .TextBox .TitleBox .Star:hover {
   background-color: #b0b0b0;
 }
-
 .PostCardBody .TextBox .TitleBox .Star.On {
   background-image: url("../../src/assets/images/StarOn.png");
 }
-
 .PostCardBody .TextBox .TextList {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   margin-top: 15px;
 }
-
 .PostCardBody .TextBox .TextList p {
   font-size: 12px;
   font-weight: 400;
   color: #868686;
 }
-
 .PostCardBody .TextBox .TextList p:not(:last-child) {
   margin-right: 20px;
 }
-
 .PostCardBody .TextBox .TextList .Category {
   font-weight: 700;
 }
-
 .PostCardBody .TextBox .TextList .Category.Study {
   color: #005ec5;
 }
-
 .PostCardBody .TextBox .TextList .Category.Hobby {
   color: #F7971E;
 }
-
 .PostCardBody .ButtonBox {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  justify-content: space-between;
   height: 60px;
   gap: 14px;
   padding: 5px 0;
   padding-left: 22px;
   border-left: 1px solid #a8a8a8;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
-
 .PostCardBody .ButtonBox button {
   width: 100px;
   height: 100%;
@@ -1127,22 +908,17 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   outline: none;
   color: #fff;
   cursor: pointer;
-  -webkit-transition: .3s;
-  transition: .3s;
+  transition: 0.3s;
 }
-
 .PostCardBody .ButtonBox button.Detail {
   background-color: #c4c4c4;
 }
-
 .PostCardBody .ButtonBox button.Detail:hover {
   background-color: #B0B0B0;
 }
-
 .PostCardBody .ButtonBox button.Participate {
   background-color: #00b7ff;
 }
-
 .PostCardBody .ButtonBox button.Participate:hover {
   background-color: #00A3E3;
 }
@@ -1151,12 +927,10 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   .PostCard {
     height: 108px;
     padding: 10px 12px 14px 12px;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    flex-direction: column;
     position: relative;
   }
+
   .PostCardHead {
     width: 100%;
     height: 16px;
@@ -1166,15 +940,9 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
     display: none;
   }
   .PostCardHead .TextBox {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-pack: end;
-        -ms-flex-pack: end;
-            justify-content: flex-end;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    justify-content: flex-end;
+    align-items: center;
     padding: 0;
   }
   .PostCardHead .TextBox p.Dday, .PostCardHead .TextBox p.Date, .PostCardHead .TextBox p.Name {
@@ -1184,9 +952,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
     margin-right: auto;
   }
   .PostCardHead .TextBox p.Date {
-    -webkit-box-ordinal-group: 2;
-        -ms-flex-order: 1;
-            order: 1;
+    order: 1;
     margin-left: 12px;
     padding-right: 28px;
   }
@@ -1195,6 +961,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
     font-weight: 300;
     color: #868686;
   }
+
   .PostCardBody {
     padding: 0;
   }
@@ -1223,55 +990,40 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
     display: none;
   }
 }
-
 @media screen and (max-width: 300px) {
   .PostCardHead .TextBox p.Date {
     margin-left: 10px;
     padding-right: 26px;
   }
 }
-
 .PostCard.Cent .PostCardBody .TextBox .TitleBox h5 {
   width: 290px;
   margin-top: 4px;
 }
-
 .PostCard.Cent .PostCardBody .TextBox p:last-child {
   color: #000;
   font-weight: 700;
 }
-
 .PostCard.Cent .PostCardBody .DetailBox {
   min-width: 158px;
   height: 60px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  flex-direction: column;
+  justify-content: center;
   padding: 0 24px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   border-left: 1px solid #A8A8A8;
   border-right: 1px solid #a8a8a8;
 }
-
 .PostCard.Cent .PostCardBody .DetailBox p {
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 7px;
   white-space: nowrap;
 }
-
 .PostCard.Cent .PostCardBody .DetailBox p span {
   font-weight: 500;
 }
-
 .PostCard.Cent .PostCardBody .DetailBox button {
   width: 100%;
   height: 30px;
@@ -1282,42 +1034,31 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  -webkit-transition: .3s;
-  transition: .3s;
+  transition: 0.3s;
 }
-
 .PostCard.Cent .PostCardBody .DetailBox button.Detail {
   background-color: #c4c4c4;
 }
-
 .PostCard.Cent .PostCardBody .DetailBox button.Detail:hover {
   background-color: #B0B0B0;
 }
-
 .PostCard.Cent .PostCardBody .DetailBox button.Nega {
   background-color: #F95884;
 }
-
 .PostCard.Cent .PostCardBody .DetailBox button.Nega:hover {
   background-color: #E9416E;
 }
-
 .PostCard.Cent .PostCardBody .DetailBox button.Posi {
   background-color: #00B7FF;
 }
-
 .PostCard.Cent .PostCardBody .DetailBox button.Posi:hover {
   background-color: #00A3E3;
 }
-
 .PostCard.Cent .PostCardBody .ButtonBox {
   min-width: 130px;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+  justify-content: flex-end;
   border: none;
 }
-
 .PostCard.Cent .PostCardBody .ButtonBox button.Detail {
   font-size: 15px;
 }
@@ -1329,28 +1070,22 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   background-color: rgba(0, 0, 0, 0.8);
   position: absolute;
   padding: 8px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   cursor: default;
   display: none;
   z-index: 10;
 }
-
 .ProfileToolTip p.ToolTipName {
   font-size: 12px;
   font-weight: 400;
   color: #fff;
 }
-
 .ProfileToolTip .ToolTipBtn {
   height: 30px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   gap: 8px;
   margin-top: 10px;
 }
-
 .ProfileToolTip .ToolTipBtn button {
   width: 100%;
   height: 100%;
@@ -1358,26 +1093,21 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   border: none;
   outline: none;
   cursor: pointer;
-  -webkit-transition: .3s;
-  transition: .3s;
+  transition: 0.3s;
 }
-
 .ProfileToolTip .ToolTipBtn button.Chat {
   max-width: 30px;
   background: url("/frontend/src/assets/images/IconChat.png") center/20px 18px no-repeat #C4C4C4;
 }
-
 .ProfileToolTip .ToolTipBtn button.Chat:hover {
   background-color: #b0b0b0;
 }
-
 .ProfileToolTip .ToolTipBtn button.Profile {
   background-color: #868686;
   color: #fff;
   font-size: 13px;
   font-weight: 500;
 }
-
 .ProfileToolTip .ToolTipBtn button.Profile:hover {
   background-color: #747474;
 }
@@ -1389,9 +1119,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
   }
   .PostCard.Cent .PostCardHead {
     height: 30px;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    align-items: center;
   }
   .PostCard.Cent .PostCardHead .ProfileBox {
     display: block;
@@ -1406,9 +1134,7 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
     display: none;
   }
   .PostCard.Cent .PostCardBody {
-    -webkit-box-align: start;
-        -ms-flex-align: start;
-            align-items: flex-start;
+    align-items: flex-start;
     margin-top: 12px;
   }
   .PostCard.Cent .PostCardBody .TextBox .TitleBox {
@@ -1428,13 +1154,9 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
     min-width: 100%;
   }
   .PostCard.Cent .PostCardBody .DetailBox {
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: row;
-            flex-direction: row;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
     gap: 8px;
     height: 30px;
     position: absolute;
@@ -1465,7 +1187,6 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
     font-size: 13px;
   }
 }
-
 @media screen and (max-width: 300px) {
   .PostCard.Cent .PostCardBody .TextBox .TitleBox {
     width: 150px;
@@ -1477,7 +1198,6 @@ textarea.TxtAreaInput:focus, textarea.TxtAreaInput:hover {
     display: none;
   }
 }
-
 * {
   scroll-behavior: smooth;
 }
@@ -1497,21 +1217,13 @@ body.Modal {
   position: fixed;
   top: 0;
   left: 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
 }
-
 .ModalWrapper.Modal .ModalBg {
-  opacity: .5;
+  opacity: 0.5;
 }
-
 .ModalWrapper.Modal .ModalBox {
   opacity: 1;
 }
@@ -1519,7 +1231,6 @@ body.Modal {
 .ModalBg {
   background-color: #000;
   opacity: 0;
-  -webkit-transition: opacity 1s;
   transition: opacity 1s;
   width: 100%;
   height: 100vh;
@@ -1531,31 +1242,23 @@ body.Modal {
   padding: 0 40px;
   width: 534px;
   background-color: #fff;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   z-index: 1;
   opacity: 0;
-  -webkit-transition: .5s;
-  transition: .5s;
+  transition: 0.5s;
   color: #868686;
   border-radius: 20px;
   height: 685px;
-  -webkit-box-shadow: 0 0 30px rgba(0, 0, 0, 0.16);
-          box-shadow: 0 0 30px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.16);
 }
 
 .ModalTop {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  justify-content: space-between;
   margin-bottom: 35px;
   margin-top: 48px;
   height: 18px;
 }
-
 .ModalTop .ModalClose {
   display: block;
   width: 14px;
@@ -1565,7 +1268,6 @@ body.Modal {
   cursor: pointer;
   margin-right: 10px;
 }
-
 .ModalTop .ModalArrow {
   font-size: 18px;
   color: #868686;
@@ -1573,38 +1275,26 @@ body.Modal {
   line-height: 1;
   font-weight: 300;
 }
-
 .ModalTop .ModalArrow img {
   width: 8px;
   margin-right: 15px;
 }
 
 .ModalTitle {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   padding-bottom: 10px;
 }
-
 .ModalTitle li {
   width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   font-size: 18px;
   font-weight: 300;
   cursor: pointer;
-  -webkit-transition: .5s;
-  transition: .5s;
+  transition: 0.5s;
   height: 45px;
 }
-
 .ModalTitle li.On {
   font-size: 32px;
   color: #000;
@@ -1614,10 +1304,8 @@ body.Modal {
 
 .ModalContents {
   opacity: 0;
-  -webkit-transition: .5s;
-  transition: .5s;
+  transition: 0.5s;
 }
-
 .ModalContents.On {
   opacity: 1;
 }
@@ -1627,35 +1315,24 @@ body.Modal {
 }
 
 .ListFlex {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
-
 .ListFlex li {
   width: 100%;
   margin-right: 16px;
 }
-
 .ListFlex li:last-child {
   margin-right: 0;
 }
 
 .SubList {
   margin: 30px 0 58px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
-
 .SubList li {
   width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
   font-size: 15px;
   font-weight: 300;
   color: #868686;
@@ -1666,18 +1343,11 @@ p.SnsTitle {
   font-size: 13px;
   color: #000;
   font-weight: 300;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  align-items: center;
+  justify-content: space-between;
   white-space: nowrap;
 }
-
 p.SnsTitle::before, p.SnsTitle::after {
   content: "";
   display: block;
@@ -1685,27 +1355,21 @@ p.SnsTitle::before, p.SnsTitle::after {
   width: 100%;
   background-color: #e2e2e2;
 }
-
 p.SnsTitle::before {
   margin-right: 11px;
 }
-
 p.SnsTitle::after {
   margin-left: 11px;
 }
 
 .SnsList {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   padding-bottom: 80px;
 }
-
 .SnsList li {
   width: 100%;
   margin-right: 16px;
 }
-
 .SnsList li:last-child {
   margin: 0;
 }
@@ -1714,8 +1378,7 @@ p.SnsTitle::after {
   width: 100%;
   border: none;
   outline: none;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   font-size: 16px;
   line-height: 1;
   color: #a8a8a8;
@@ -1723,8 +1386,7 @@ p.SnsTitle::after {
   height: 50px;
   font-weight: 300;
   padding: 8px 4px 8px 12px;
-  -webkit-transition: .5s;
-  transition: .5s;
+  transition: 0.5s;
   cursor: pointer;
 }
 
@@ -1737,8 +1399,7 @@ p.SnsTitle::after {
   font-size: 13px;
   line-height: 14px;
   color: #000;
-  -webkit-transition: .2s;
-  transition: .2s;
+  transition: 0.2s;
   position: relative;
   white-space: nowrap;
   -webkit-user-select: none;
@@ -1756,8 +1417,7 @@ p.SnsTitle::after {
   font-size: 13px;
   line-height: 14px;
   color: #000;
-  -webkit-transition: .2s;
-  transition: .2s;
+  transition: 0.2s;
   position: relative;
   white-space: nowrap;
   -webkit-user-select: none;
@@ -1769,7 +1429,6 @@ p.SnsTitle::after {
   padding-right: 26px;
   cursor: pointer;
 }
-
 .ChooseUnder .ChooseCancel {
   display: block;
 }
@@ -1779,7 +1438,6 @@ p.SnsTitle::after {
   color: #fff;
   padding-right: 26px;
 }
-
 .InputChoose:checked ~ .LabelChoose .Choose .ChooseCancel {
   display: block;
 }
@@ -1797,7 +1455,6 @@ ul.InputList.SignStep3 li.ChooseList {
   padding: 4px 6px 2px;
   padding-right: 0;
 }
-
 .LabelChoose:hover p {
   background-color: #e2e2e2;
 }
@@ -1807,33 +1464,26 @@ ul.ChooseListDetail {
   border: 1px solid #e2e2e2;
   border-radius: 10px;
   height: 50px;
-  -webkit-transition: height .3s;
-  transition: height .3s;
+  transition: height 0.3s;
   overflow: hidden;
   background-color: #fff;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
-
 ul.ChooseListDetail:hover {
   border: 1px solid #00b7ff;
 }
-
 ul.ChooseListDetail.On {
   border: 1px solid #00b7ff;
 }
-
 ul.ChooseListDetail li {
   width: 100%;
   position: relative;
 }
-
 ul.ChooseListDetail li:first-child {
   height: 50px;
 }
-
 ul.ChooseListDetail li:first-child::after {
-  content: '';
+  content: "";
   display: block;
   height: 1px;
   width: calc(100% - 24px);
@@ -1843,23 +1493,18 @@ ul.ChooseListDetail li:first-child::after {
 
 ul.ChooseListUnder {
   margin-top: 4px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
   position: relative;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
   display: none;
 }
-
 ul.ChooseListUnder li {
   margin-left: 8px;
   margin-top: 6px;
 }
-
 ul.ChooseListUnder::-webkit-scrollbar {
   display: none;
 }
@@ -1881,12 +1526,8 @@ ul.ChooseListUnder::-webkit-scrollbar {
 .ChooseComplete {
   font-size: 13px;
   color: #fff;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   width: 36px;
   height: 20px;
   background-color: #707070;
@@ -1898,31 +1539,22 @@ ul.ChooseListUnder::-webkit-scrollbar {
   cursor: pointer;
   /*width, height, fontsize, top, right*/
   background-color: #e2e2e2;
-  -webkit-transition: .3s;
-  transition: .3s;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  transition: 0.3s;
   display: flex;
 }
-
 .ChooseComplete.On {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
-
 .ChooseComplete:hover {
   background-color: #00b7ff;
 }
-
 .ChooseComplete.On {
   background-color: #00b7ff;
 }
 
 main {
   margin-left: 142px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   overflow-x: hidden;
 }
 
@@ -1930,12 +1562,14 @@ main {
   body.Modal, .ModalWrapper, .ModalBg {
     height: 100%;
   }
+
   .ModalWrapper.Modal .ModalBox {
     margin-top: 40px;
     height: calc(100% - 40px);
     position: fixed;
     bottom: 0;
   }
+
   .ModalBox {
     padding: 0 20px;
     width: 100%;
@@ -1943,6 +1577,7 @@ main {
     height: 0;
     margin-top: 100vh;
   }
+
   .InputList {
     padding-top: 25px;
     overflow-y: auto;
@@ -1951,6 +1586,7 @@ main {
   .InputList::-webkit-scrollbar {
     display: none;
   }
+
   .ModalTop {
     margin-top: 40px;
     margin-bottom: 45px;
@@ -1958,72 +1594,66 @@ main {
   .ModalTop .ModalClose {
     margin-right: 0;
   }
+
   .ModalBody {
     height: calc(100vh - 194px);
   }
+
   .ModalBody::-webkit-scrollbar {
     display: none;
   }
+
   .SnsList li {
     margin-right: 10px;
   }
+
   .ListFlex li {
     margin-right: 10px;
   }
+
   ul.ChooseListDetail li:not(:first-child) {
     padding: 8px 0;
   }
+
   .ChooseComplete {
     top: 12px;
     width: 40px;
     height: 24px;
     border-radius: 12px;
   }
+
   main {
     width: 100%;
     padding: 60px 0 70px;
     margin: 0;
   }
 }
-
 .ScrollButton {
   position: fixed;
   width: 45px;
   height: 110px;
   right: 45px;
   bottom: 45px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between;
   z-index: 9;
 }
-
 .ScrollButton .ScrollTop, .ScrollButton .ScrollBottom {
   width: 45px;
   height: 45px;
   background-size: 100% !important;
   cursor: pointer;
   opacity: 1;
-  -webkit-transition: .3s;
-  transition: .3s;
+  transition: 0.3s;
 }
-
 .ScrollButton .ScrollTop.Disable, .ScrollButton .ScrollBottom.Disable {
-  opacity: .3;
+  opacity: 0.3;
   cursor: default;
 }
-
 .ScrollButton .ScrollTop {
   background: url("/frontend/src/assets/images/ButtonScrollTop.png");
 }
-
 .ScrollButton .ScrollBottom {
   background: url("/frontend/src/assets/images/ButtonScrollBottom.png");
 }
@@ -2034,7 +1664,6 @@ main {
   position: relative;
   overflow: hidden;
 }
-
 .MainTop .ButtonIntro {
   width: 45px;
   height: 45px;
@@ -2044,11 +1673,9 @@ main {
   position: absolute;
   top: 63px;
   right: 45px;
-  opacity: .5;
-  -webkit-transition: .3s;
-  transition: .3s;
+  opacity: 0.5;
+  transition: 0.3s;
 }
-
 .MainTop .ButtonIntro:hover {
   opacity: 1;
 }
@@ -2056,66 +1683,47 @@ main {
 .TopCont {
   position: absolute;
   left: 50%;
-  -webkit-transform: translateX(-50%);
-          transform: translateX(-50%);
+  transform: translateX(-50%);
   height: 100%;
   z-index: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: column;
+  align-items: center;
 }
-
 .TopCont > img {
   width: 70px;
   margin: 66px auto 20px;
 }
-
 .TopCont h2 {
   font-size: 48px;
   color: #fff;
   font-weight: 700;
   line-height: 60px;
 }
-
 .TopCont h3 {
   font-size: 20px;
   color: #fff;
   font-weight: 300;
   line-height: 36px;
 }
-
 .TopCont .InputWrapper {
   width: 506px;
   height: 50px;
   border: 1px solid #e2e2e2;
   border-radius: 25px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   margin-top: 25px;
   overflow: hidden;
   background-color: #fff;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
 }
-
 .TopCont .InputWrapper img {
   width: 26px;
   height: 26px;
   margin-left: 18px;
   margin-bottom: 4px;
 }
-
 .TopCont .InputWrapper input {
   width: calc(100% - 76px);
   height: 100%;
@@ -2125,19 +1733,12 @@ main {
   font-size: 13px;
   font-weight: 400;
 }
-
-.TopCont .InputWrapper input::-webkit-input-placeholder {
+.TopCont .InputWrapper input::-moz-placeholder {
   color: #a8a8a8;
 }
-
 .TopCont .InputWrapper input:-ms-input-placeholder {
   color: #a8a8a8;
 }
-
-.TopCont .InputWrapper input::-ms-input-placeholder {
-  color: #a8a8a8;
-}
-
 .TopCont .InputWrapper input::placeholder {
   color: #a8a8a8;
 }
@@ -2146,6 +1747,7 @@ main {
   .ScrollButton {
     display: none;
   }
+
   .MainTop {
     height: 240px;
   }
@@ -2156,11 +1758,11 @@ main {
     right: 20px;
     opacity: 1;
   }
+
   .TopCont {
     width: calc(100vw - 40px);
     left: 50%;
-    -webkit-transform: translateX(-50%);
-            transform: translateX(-50%);
+    transform: translateX(-50%);
   }
   .TopCont > img {
     width: 42px;
@@ -2191,11 +1793,11 @@ main {
     margin-left: 12px;
   }
 }
-
 @media screen and (max-width: 300px) {
   .MainTop .ButtonIntro {
     right: 10px;
   }
+
   .TopCont h2, .TopCont h3 {
     text-align: center;
     word-break: keep-all;
@@ -2212,7 +1814,6 @@ main {
     margin-top: 50px;
   }
 }
-
 .SectionWrap850 {
   max-width: 850px;
   margin: auto;
@@ -2224,80 +1825,60 @@ main {
     padding: 0 20px;
   }
 }
-
 @media screen and (max-width: 300px) {
   .SectionWrap850 {
     padding: 0 10px;
   }
 }
-
 .PaginationWrapper {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  justify-content: space-between;
   width: 598px;
   padding: 48px 0 64px;
   margin: 0 auto;
 }
-
 .PaginationWrapper div {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   background-color: #fff;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   font-size: 15px;
   font-weight: 700;
   color: #000;
   border: 1px solid transparent;
-  -webkit-transition: .2s;
-  transition: .2s;
+  transition: 0.2s;
   cursor: pointer;
 }
-
 .PaginationWrapper div:hover {
   border-color: #a8a8a8;
 }
-
 .PaginationWrapper div.On {
   background-color: #00b7ff;
   color: #fff;
   border-color: transparent;
   cursor: default;
 }
-
 .PaginationWrapper div.Prev2 {
   background-repeat: no-repeat;
   background-size: 13px;
   background-position: 9px;
   background-image: url("/frontend/src/assets/images/PageArrow2Prev.png");
 }
-
 .PaginationWrapper div.Prev {
   background-repeat: no-repeat;
   background-size: 6px;
   background-position: 12px;
   background-image: url("/frontend/src/assets/images/PageArrowPrev.png");
 }
-
 .PaginationWrapper div.Next {
   background-repeat: no-repeat;
   background-size: 6px;
   background-position: 14px;
   background-image: url("/frontend/src/assets/images/PageArrowNext.png");
 }
-
 .PaginationWrapper div.Next2 {
   background-repeat: no-repeat;
   background-size: 13px;
@@ -2319,15 +1900,12 @@ main {
     background-position: center;
   }
 }
-
 .errorBody {
   min-height: 100vh;
   background-color: #f6f7fb;
   padding: 127px 0 0;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
-
 .errorBody p.ErrMsg {
   font-size: 16px;
   line-height: 24px;
@@ -2336,7 +1914,6 @@ main {
   text-align: center;
   margin: 50px 0 40px;
 }
-
 .errorBody p.ErrMsg em {
   color: #00b7ff;
 }
@@ -2346,7 +1923,6 @@ main {
   height: 260px;
   margin: auto;
 }
-
 .ErrIMG.Err404 {
   background: url("/frontend/src/assets/images/Err404.png") center/contain no-repeat;
 }
@@ -2354,29 +1930,20 @@ main {
 .LinkBox {
   width: 188px;
   height: 56px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   background-color: #fff;
   border-radius: 10px;
   cursor: pointer;
   font-size: 20px;
   font-weight: 500;
   color: #868686;
-  -webkit-transition: 0.3s;
   transition: 0.3s;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   border: 2px solid transparent;
   margin: auto;
 }
-
 .LinkBox:hover {
   border: 2px solid #00b7ff;
   color: #00b7ff;
@@ -2387,6 +1954,7 @@ main {
   br.pc {
     display: none;
   }
+
   .errorBody {
     min-height: calc(100vh - 130px);
     padding: 60px 0 30px;
@@ -2395,12 +1963,13 @@ main {
     font-size: 13px;
     line-height: 20px;
   }
+
   .ErrIMG {
     width: 192px;
     height: 124px;
   }
+
   .LinkBox {
     width: 152px;
   }
-}
-/*# sourceMappingURL=error.css.map */
+}/*# sourceMappingURL=error.css.map */
