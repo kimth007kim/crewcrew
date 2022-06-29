@@ -29,6 +29,10 @@ import fetcher from '@/utils/fetcher';
 import useSWR from 'swr';
 import AuthModal from '@/components/common/Auth/AuthModal';
 import axios, { toast } from 'axios';
+import { allFilter, approachArr, articleArr } from '@/frontDB/filterDB';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { loginCheck } from '@/atoms/login';
 
 const categoryIcon = [
   Category1,
@@ -59,19 +63,26 @@ function Main() {
 
   const [authVisible, openAuth, closeAuth] = useModal();
   const [postVisible, openPost, closePost] = useModal();
+  const isLogin = useRecoilValue(loginCheck);
 
-  const handlePostModal = (category) => {
-    if (myData && myData.data) {
-      setCategoryCheck(category);
-      openPost();
-    } else {
-      const login = window.confirm('로그인 후 이용가능합니다. 로그인하시겠습니까?');
-      if (login) {
-        return openAuth();
+  const navigate = useNavigate();
+
+  const handlePostModal = useCallback(
+    (category) => {
+      console.log(myData, isLogin);
+      if (myData && myData.data) {
+        setCategoryCheck(category);
+        openPost();
+      } else {
+        const login = window.confirm('로그인 후 이용가능합니다. 로그인하시겠습니까?');
+        if (login) {
+          return openAuth();
+        }
+        return;
       }
-      return;
-    }
-  };
+    },
+    [isLogin, myData],
+  );
 
   const getCategoryList = useCallback(async () => {
     try {
@@ -149,6 +160,16 @@ function Main() {
     }
   }, []);
 
+  const navigatePost = (type = 0) => {
+    const filterContext = {
+      article: articleArr[type],
+      approach: [...approachArr],
+      categorylist: [...allFilter],
+    };
+    localStorage.postFilter = JSON.stringify(filterContext);
+    return navigate('/post');
+  };
+
   useEffect(() => {
     getCategoryList();
     axiosGetNewPost();
@@ -204,10 +225,11 @@ function Main() {
       </MainWrite>
       <MainPost>
         <PostWrap>
-          <h4>신규 크루원 모집글</h4>
+          <h4 onClick={() => navigatePost(0)}>신규 크루원 모집글</h4>
           <p>이번주 새롭게 크루원을 모집하는 모집글을 소개해드려요.</p>
           <SwiperSection data={newPost} post={'New'} cookies={cookies.get('X-AUTH-TOKEN')} />
-          <h4>마감임박! 놓치지 말아요!</h4>
+
+          <h4 onClick={() => navigatePost(2)}>마감임박! 놓치지 말아요!</h4>
           <p>마감일이 가깝거나 모집인원을 거의 다 모은 크루원 모집글을 소개해드려요.</p>
           <SwiperSection
             data={deadlinePost}
@@ -532,6 +554,7 @@ const PostWrap = styled.div`
     display: flex;
     color: #000;
     align-items: center;
+    cursor: pointer;
     @media screen and (max-width: 820px) {
       font-size: 18px;
       line-height: 26px;
