@@ -8,12 +8,13 @@ import { differenceInDays, format, getDay } from 'date-fns';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { changedBookmark } from '@/atoms/post';
 import useModal from '@/hooks/useModal';
 import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
 import ParticipateModal from '../modal/Participate';
+import { loginCheck } from '@/atoms/login';
 
 function MainPost({ data }) {
   const cookies = new Cookies();
@@ -22,6 +23,7 @@ function MainPost({ data }) {
   const [IsDisable, setIsDisable] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [bookmarkChanged, setBookmarkChanged] = useRecoilState(changedBookmark);
+  const isLogin = useRecoilValue(loginCheck);
 
   const [participateVisible, openParticipate, closeParticipate] = useModal();
 
@@ -38,6 +40,10 @@ function MainPost({ data }) {
 
   const bookmarkClick = async () => {
     try {
+      if (myData && !myData.data) {
+        const login = window.alert('로그인 후 이용가능합니다.');
+        return;
+      }
       if (!isBookmarked) {
         const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, '', {
           withCredentials: true,
@@ -66,6 +72,9 @@ function MainPost({ data }) {
 
   const bookmarkGet = useCallback(async () => {
     try {
+      if (myData && !myData.data) {
+        return;
+      }
       const bookmarkdata = await axios.get(`/bookmark/${data.boardId}`, {
         withCredentials: true,
         headers: {
@@ -76,7 +85,7 @@ function MainPost({ data }) {
     } catch (err) {
       console.error(err);
     }
-  }, []);
+  }, [myData]);
 
   const bookmarkChange = () => {
     setBookmarkChanged((state) => !state);
@@ -86,6 +95,9 @@ function MainPost({ data }) {
     (e) => {
       e.stopPropagation();
       if (myData && myData.data) {
+        if (data.uid === myData.data.uid) {
+          return window.alert('자신의 게시글에 지원할 수 없습니다.');
+        }
         openParticipate();
       } else {
         const login = window.alert('로그인 후 이용가능합니다.');
@@ -101,7 +113,7 @@ function MainPost({ data }) {
 
   useEffect(() => {
     bookmarkGet();
-  }, [bookmarkChanged]);
+  }, [bookmarkChanged, isLogin]);
 
   return (
     <>

@@ -112,7 +112,7 @@ function ParticipateModal({ closeModal, visible, postData }) {
     }
   };
 
-  if ((myData && !myData.data) || (postData && myData && postData.uid === myData.data.uid)) {
+  if (myData && !myData.data) {
     return null;
   }
 

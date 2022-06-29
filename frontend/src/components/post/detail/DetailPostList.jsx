@@ -75,8 +75,8 @@ function DetailPostList({ data }) {
         <>
           <PostWrapper>
             <ul>
-              {PostListData.map((post) => (
-                <li key={post.boardId}>
+              {PostListData.map((post, i) => (
+                <li key={post.boardId + post.uid + i * 10}>
                   <PostCard data={post} />
                 </li>
               ))}
