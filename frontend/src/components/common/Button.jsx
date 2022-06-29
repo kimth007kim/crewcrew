@@ -289,6 +289,11 @@ const ButtonStyled = styled.button`
     background-color: var(--bg-hover);
     color: var(--text-hover);
     border-color: var(--line-hover);
+
+    @media screen and (max-width: 820px) {
+      background-color: var(--bg);
+      border-color: var(--line);
+    }
   }
   &:disabled {
     background-color: var(--bg-disabled);
