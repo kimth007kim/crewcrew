@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import FilterArrowImg from '@/assets/images/IconNavArrow_Big.png';
 import IconLinkIntro from '@/assets/images/IconLinkIntro.png';
 
-function MypageTop() {
+function MypageTop({ title = '마이페이지' }) {
   const navigate = useNavigate();
 
   return (
@@ -12,7 +12,7 @@ function MypageTop() {
       <TopCont>
         <h2>
           <LinkHistory onClick={() => navigate(-1)} />
-          마이페이지
+          {title}
         </h2>
       </TopCont>
       <ButtonIntro />

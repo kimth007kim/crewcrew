@@ -4,7 +4,7 @@ import ButtonScrollTop from '@/assets/images/ButtonScrollTop.png';
 import ButtonScrollBottom from '@/assets/images/ButtonScrollBottom.png';
 
 function ScrollButton() {
-  const [buttonTopDis, setButtonTopDis] = useState(true);
+  const [buttonTopDis, setButtonTopDis] = useState(false);
   const [buttonBottomDis, setButtonBottomDis] = useState(false);
 
   const handleClickScrollTop = useCallback(() => {
@@ -40,6 +40,7 @@ function ScrollButton() {
 
   // Sticky Menu Area
   useEffect(() => {
+    isDisable();
     window.addEventListener('scroll', isDisable);
     return () => {
       window.removeEventListener('scroll', isDisable);
