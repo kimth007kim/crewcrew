@@ -195,6 +195,7 @@ function HeaderContent2({ state }) {
             dateFormat={'yyyy-MM-dd'}
             locale={ko}
             minDate={new Date(nowDate.setDate(nowDate.getDate() + 1))}
+            maxDate={new Date(nowDate.setDate(nowDate.getDate() + 365))}
             onChange={(date) => onChangeDate(date)}
             selected={state.lastDate}
             value={state.lastDate}
@@ -420,22 +421,6 @@ const InputPostPeople = styled('input')`
   }
 `;
 
-const InputDateWrap = styled('div')`
-  position: relative;
-  ::after {
-    content: '';
-    position: absolute;
-    top: 13px;
-    right: 15px;
-    background: url(${IconCalendar}) no-repeat 50% 50%;
-    background-size: 26px;
-    width: 26px;
-    height: 26px;
-    cursor: pointer;
-    z-index: 2000;
-  }
-`;
-
 const CustomInput = styled(InputMask)`
   width: 100%;
   height: 50px;
@@ -451,6 +436,13 @@ const CustomInput = styled(InputMask)`
   color: #707070;
   padding: 0 12px;
   position: relative;
+  :hover {
+    border-color: #00b7ff;
+  }
+
+  :focus {
+    border-color: #00b7ff;
+  }
 
   ::after {
     content: '';
@@ -466,20 +458,4 @@ const CustomInput = styled(InputMask)`
   }
 `;
 
-const CustomDatePicker = styled(DatePickers)`
-  .react-datepicker-wrapper {
-    position: relative;
-    ::after {
-      content: '';
-      position: absolute;
-      top: 13px;
-      right: 15px;
-      background: url(${IconCalendar}) no-repeat 50% 50%;
-      background-size: 26px;
-      width: 26px;
-      height: 26px;
-      cursor: pointer;
-      z-index: 2000;
-    }
-  }
-`;
+const CustomDatePicker = styled(DatePickers)``;

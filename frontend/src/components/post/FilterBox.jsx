@@ -87,6 +87,7 @@ function FilterBox({ handleGetAxios }) {
       approach: selectedApproach,
       categorylist: checkedList,
     };
+
     if (checkedList.length === 0) {
       filterContext.categorylist = [...allFilter];
     }

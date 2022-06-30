@@ -110,7 +110,7 @@ function NavMobile({ path, openModal }) {
             <MobileNavButton
               icon={<ChatIcon selected={pathname.startsWith('/chat')} />}
               title="채팅"
-              link="/"
+              link="/mypage/chat"
               selected={pathname.startsWith('/chat')}
             />
           </li>

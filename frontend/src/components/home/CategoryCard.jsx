@@ -1,8 +1,10 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { approachArr, articleArr, hobbyFilterArr, studyFilterArr } from '@/frontDB/filterDB';
 
 function CategoryCard({ data }) {
+  const navigate = useNavigate();
   const description = (data) => {
     if (data) {
       let description = data.replace('(', '');
@@ -10,15 +12,27 @@ function CategoryCard({ data }) {
       return description;
     }
   };
+
+  const navigatePost = () => {
+    const category = [...studyFilterArr, ...hobbyFilterArr].filter(
+      (el) => el.value === `${data.categoryId}`,
+    );
+    const filterContext = {
+      article: articleArr[0],
+      approach: [...approachArr],
+      categorylist: [...category],
+    };
+    localStorage.postFilter = JSON.stringify(filterContext);
+    return navigate('/post');
+  };
+
   return (
     <li>
-      <Wrapper group={data.catParentName}>
-        <Link to="/post">
-          <h5>{data.categoryName}</h5>
-          <p>{data.categoryName !== '기타' && description(data.description)}</p>
-          <p>{data.catParentName}</p>
-          <div className="Icon" />
-        </Link>
+      <Wrapper group={data.catParentName} onClick={navigatePost}>
+        <h5>{data.categoryName}</h5>
+        <p>{data.categoryName !== '기타' && description(data.description)}</p>
+        <p>{data.catParentName}</p>
+        <div className="Icon" />
       </Wrapper>
     </li>
   );

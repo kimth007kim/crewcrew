@@ -1,0 +1,233 @@
+@import "../common";
+
+@mixin font($sz, $we, $cl) {
+    font-size: $sz;
+    font-weight: $we;
+    color: $cl;
+}
+
+@mixin button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+@mixin backgroundColor($bg, $hover){
+    background-color: $bg;
+
+    &:hover{
+        background-color: $hover;
+    }
+}
+
+@mixin textOverflow {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ModalBox{
+    display: flex;
+    flex-direction: column;
+}
+
+.ModalTop{
+    margin-bottom: 18px;
+}
+
+.TitleMsg{
+    @include font(18px, 700, $black1);
+    line-height: 30px;
+    padding-bottom: 23px;
+
+
+    border-bottom: 1px solid $black4;
+
+    span{
+        color: $blue3;
+    }
+}
+
+.ModalBody{
+    display: flex;
+    flex-direction: column;
+    padding: 48px 0 40px;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.RequestSort{
+    margin-bottom: 24px;
+    text-align: center;
+    @include font(13px, 500, $black4);
+}
+
+.RequestCard{
+    border-left: 1px solid $black4;
+    padding-left: 25px;
+    display: flex;
+    flex-direction: column;
+
+    .RequestCardHead{
+        @include font(14px, 700, $black1);
+        margin-bottom: 18px;
+
+        span{
+            font-weight: 500;
+        }
+    }
+
+    h4{
+        @include font(16px, 700, $black1);
+        margin-bottom: 10px;
+    }
+
+    .RequestCardFooter{
+        display: flex;
+        gap: 12px;
+
+        li{
+            @include font(12px, 500, $black3);
+
+            &:first-child{
+
+                &.Study{
+                    color: #0F3FA6;
+                }
+
+                &.Hobby{
+                    color: #F7971E;
+                }
+            }
+        }
+    }
+    
+    &.Disabled{
+
+        h4, .RequestCardFooter li:is(.Study, .Hobby){
+            color: $black4;
+        }
+    }
+
+    &.Chat{
+        gap: 12px;
+        color: $black1;
+    }
+}
+
+.HeadBox{
+    background-color: #fff;
+    border-radius: 15px;
+    height: 30px;
+    border: 1px solid #E2E2E2;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+
+    &.Profile{
+        padding-right: 12px;
+
+        .ProfileImg{
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-left: 3px;
+        }
+
+        .ProfileFlag{
+            width: 14px;
+            height: 14px;
+            margin-left: 12px;
+        }
+
+        p{
+            font-size: 15px;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+    }
+
+    &.Post{
+        padding: 8px 16px;
+
+        p{
+            font-size: 12px;
+            color: #a8a8a8;
+            font-weight: 500;
+
+            span{
+                font-weight: 700;
+                margin-right: 8px;
+
+                &.Study{
+                    color: #0F3FA6;
+                }
+
+                &.Hobby{
+                    color: #f7971e;
+                }
+            }
+        }
+    }
+}
+
+.BtnList{
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+
+    button{
+        @include button();
+        @include backgroundColor(#C4C4C4, #B0B0B0);
+        width: 113px;
+        height: 50px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 700;
+        color: $white;
+        transition: .3s;
+
+        &.Del{
+            @include backgroundColor(#F95884, #E9416E);
+        }
+    }
+}
+
+@media screen and(max-width: 820px) {
+    
+    .TitleMsg{
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    .HeadBox{
+        width: fit-content;
+
+        &.Profile{
+
+            p{
+                font-size: 14px;
+            }
+        }
+
+        &.Post{
+            max-width: 100%;
+
+            p{
+                @include textOverflow();
+            }
+        }
+    }
+}
+
+@media screen and(max-width: 300px) {
+
+    .RequestCard{
+        padding-left: 16px;
+    }
+    
+    .BtnList{
+        justify-content: space-between;
+    }
+}

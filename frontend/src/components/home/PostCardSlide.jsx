@@ -17,7 +17,7 @@ import useModal from '@/hooks/useModal';
 import AuthModal from '../common/Auth/AuthModal';
 import { loginCheck } from '@/atoms/login';
 
-function PostCardSlide({ data, cookies }) {
+function PostCardSlide({ data, cookies, isLnb = false }) {
   const [isBookmark, setIsBookmark] = useState(false);
   const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
   const isLogin = useRecoilValue(loginCheck);
@@ -53,7 +53,7 @@ function PostCardSlide({ data, cookies }) {
   const bookmark = async (e) => {
     e.stopPropagation();
     try {
-      if (myData && !myData.data) {
+      if (!myData?.data) {
         window.alert('로그인 후 이용가능합니다.');
         return false;
       }
@@ -66,6 +66,7 @@ function PostCardSlide({ data, cookies }) {
         });
         if (bookmarkdata.data.status === 200) {
           changeBookmark();
+          setIsBookmark(true);
         }
       } else {
         const bookmarkdata = await axios.delete(`/bookmark/${data.boardId}`, {
@@ -76,6 +77,7 @@ function PostCardSlide({ data, cookies }) {
         });
         if (bookmarkdata.data.status === 200) {
           changeBookmark();
+          setIsBookmark(false);
         }
       }
     } catch (err) {
@@ -84,7 +86,7 @@ function PostCardSlide({ data, cookies }) {
   };
 
   const getBookmark = useCallback(async () => {
-    if (myData && !myData.data) return false;
+    if (!myData?.data) return false;
     try {
       const bookmarkdata = await axios.get(`/bookmark/${data.boardId}`, {
         withCredentials: true,
@@ -100,7 +102,7 @@ function PostCardSlide({ data, cookies }) {
 
   useEffect(() => {
     getBookmark();
-  }, [changeBookmarked, isLogin]);
+  }, [isLogin]);
 
   return (
     <>

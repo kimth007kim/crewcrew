@@ -3,6 +3,8 @@ import styled, { css } from 'styled-components';
 import { format, getDay, differenceInDays } from 'date-fns';
 import ButtonStarWhite from '@/assets/images/ButtonStarWhite.png';
 import ButtonStarOn from '@/assets/images/ButtonStarOn.png';
+import SettingWhite from '@/assets/images/SettingWhite.png';
+import ProfileNull from '@/assets/images/ProfileNull.png';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import { viewDay } from '@/utils';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -20,7 +22,6 @@ import { loginCheck } from '@/atoms/login';
 function PostCard({ data }) {
   const cookies = new Cookies();
   const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
-
   const [isBookmark, setIsBookmark] = useState(false);
   const [IsDisable, setIsDisable] = useState(false);
   const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
@@ -53,12 +54,12 @@ function PostCard({ data }) {
 
   const bookmark = async (e) => {
     e.stopPropagation();
-    if (myData && !myData.data) {
+    if (!myData?.data) {
       window.alert('로그인 후 이용가능합니다.');
       return false;
     }
     try {
-      if (myData && !myData.data) {
+      if (!myData?.data) {
         const login = window.alert('로그인 후 이용가능합니다.');
         return;
       }
@@ -71,6 +72,7 @@ function PostCard({ data }) {
         });
         if (bookmarkdata.data.status === 200) {
           changeBookmark();
+          setIsBookmark(true);
         }
       } else {
         const bookmarkdata = await axios.delete(`/bookmark/${data.boardId}`, {
@@ -81,6 +83,7 @@ function PostCard({ data }) {
         });
         if (bookmarkdata.data.status === 200) {
           changeBookmark();
+          setIsBookmark(false);
         }
       }
     } catch (err) {
@@ -94,7 +97,7 @@ function PostCard({ data }) {
 
   const getBookmark = useCallback(async () => {
     try {
-      if (myData && !myData.data) {
+      if (!myData?.data) {
         return;
       }
       const bookmarkdata = await axios.get(`/bookmark/${data.boardId}`, {
@@ -112,7 +115,7 @@ function PostCard({ data }) {
   const handleOpenPartiModal = useCallback(
     (e) => {
       e.stopPropagation();
-      if (myData && myData.data) {
+      if (myData?.data) {
         openParticipate();
       } else {
         const login = window.alert('로그인 후 이용가능합니다.');
@@ -128,14 +131,18 @@ function PostCard({ data }) {
 
   useEffect(() => {
     getBookmark();
-  }, [changeBookmarked, isLogin]);
+  }, [isLogin]);
 
   return (
     <>
       <Wrapper onClick={handleLocate} current={String(data.boardId) === postId}>
         <CardHead isDisabled={IsDisable}>
-          <ProfileBox>
-            <img src={`${data.profileImage}`} alt="" />
+          <ProfileBox profile={data.profileImage}>
+            {data.profileImage ? (
+              <img src={`${data.profileImage}`} alt="" />
+            ) : (
+              <img src={`${ProfileNull}`} alt="" />
+            )}
           </ProfileBox>
           <TextBox>
             <Dday>{IsDisable ? '마감' : `D-${renderDay()}`}</Dday>
@@ -210,7 +217,13 @@ const Wrapper = styled.div`
   }
 `;
 
-const ProfileBox = styled.div``;
+const ProfileBox = styled.div`
+  ${(props) =>
+    !props.profile &&
+    css`
+      background-color: #8d2bf5;
+    `}
+`;
 
 const TextBox = styled.div``;
 
@@ -280,6 +293,7 @@ const ButtonBox = styled.div``;
 const ButtonDetail = styled.button`
   cursor: pointer;
   background-color: #c4c4c4;
+  transition: 0.3s;
   :hover {
     background-color: #b0b0b0;
   }
@@ -287,8 +301,10 @@ const ButtonDetail = styled.button`
 
 const ButtonParticipate = styled.button`
   cursor: pointer;
+  text-indent: -9999px;
+  background: #00b7ff url(${SettingWhite}) center/24px no-repeat;
+  transition: 0.3s;
 
-  background-color: #00b7ff;
   :hover {
     background-color: #00a3e3;
   }
@@ -309,12 +325,11 @@ const CardHead = styled.div`
     min-width: 60px;
     height: 60px;
     border-radius: 50%;
-    background-color: transparent;
+
     overflow: hidden;
     img {
       width: 100%;
       height: 100%;
-      -o-object-fit: cover;
       object-fit: cover;
     }
   }

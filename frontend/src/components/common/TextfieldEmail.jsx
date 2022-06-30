@@ -12,6 +12,7 @@ function Textfield({
   onDelete,
   disabled = false,
   focus,
+  otherHover,
 }) {
   const [Focused, setFocused] = useState(false);
   const [Hover, setHover] = useState(false);
@@ -58,6 +59,7 @@ function Textfield({
         TextIn={!!value}
         autoComplete="off"
         disabled={disabled}
+        otherHover={otherHover}
       />
       <Label Focused={Focused} TextIn={!!value} Valid={valid}>
         {label}
@@ -100,6 +102,7 @@ const Input = styled.input`
     props.Hover &&
     css`
       border-color: #707070;
+      ${props.otherHover && `border-color: #00b7ff;`}
     `};
 
   ${(props) =>

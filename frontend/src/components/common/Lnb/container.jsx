@@ -120,7 +120,7 @@ function NavContainer() {
   }, []);
 
   const axiosGetBookmark = useCallback(async () => {
-    if (myData && !myData.data) {
+    if (!myData?.data) {
       return;
     }
     try {
@@ -146,7 +146,7 @@ function NavContainer() {
       <>
         {bookmarkArr.map((data) => (
           <BookmarkLi key={`${data.boardId}bookmarked`}>
-            <PostCardSlide data={data} cookies={cookies.get('X-AUTH-TOKEN')} />
+            <PostCardSlide data={data} cookies={cookies.get('X-AUTH-TOKEN')} isLnb={true} />
           </BookmarkLi>
         ))}
       </>
@@ -161,7 +161,7 @@ function NavContainer() {
           </NavLink>
         </Navh1>
         <NavContInner>
-          {myData && myData.data ? (
+          {myData?.data ? (
             <Navh1p>
               {`${myData.data.nickName}님,`}
               <br />
@@ -175,7 +175,7 @@ function NavContainer() {
             </Navh1p>
           )}
           <NavButtonList>
-            {myData && myData.data ? (
+            {myData?.data ? (
               <>
                 <NavButton title="마이 페이지" clickFunc={locateMypage} />
                 <NavButton ghost title="로그아웃" clickFunc={handleLogout} />
@@ -187,7 +187,7 @@ function NavContainer() {
               </>
             )}
           </NavButtonList>
-          {myData && myData.data ? (
+          {myData?.data ? (
             <>
               <Navh2>내가 스크랩한 모집글</Navh2>
               <Navh2p>내가 스크랩한 글의 현황을 확인하세요!</Navh2p>
@@ -199,7 +199,7 @@ function NavContainer() {
             </>
           )}
 
-          {myData && myData.data ? (
+          {myData?.data ? (
             <NavPostCardWrapper>
               <ul>
                 {bookmarkArr.length > 0 && renderBookmarked()}
