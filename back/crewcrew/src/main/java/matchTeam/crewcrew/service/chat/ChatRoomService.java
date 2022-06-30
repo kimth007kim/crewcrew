@@ -67,6 +67,7 @@ public class ChatRoomService {
         ChatRoom room = isValidRoom(roomId);
         List<ChatMessage> messages = chatMessageRepository.findByChatRoom(room);
         List<ChatMessageResponseDTO> result = messageToResponse(roomId, messages);
+        Collections.reverse(result);
         return result;
 
     }
@@ -77,6 +78,7 @@ public class ChatRoomService {
         Pageable pageable = PageRequest.of(page, size);
         List<ChatMessage> messages = chatMessageRepository.findByChatRoomOrderByCreatedDateDesc(room, pageable);
         List<ChatMessageResponseDTO> result = messageToResponse(roomId, messages);
+//        Collections.reverse(result);
         return result;
     }
 
@@ -111,7 +113,6 @@ public class ChatRoomService {
                 result.add(chatMessageResponseDTO);
             }
         }
-        Collections.reverse(result);
         return result;
     }
 
