@@ -28,13 +28,10 @@ import static org.springframework.util.StringUtils.hasText;
 @RequiredArgsConstructor
 @Repository
 public class BookmarkSearchRepository {
-
     private final JPAQueryFactory queryFactory;
     public Page<BoardPageDetailResponseDTO> search(Long userId, Pageable pageable, String order) {
         List<BoardPageDetailResponseDTO> content = queryFactory
-                .select(Projections.constructor(BoardPageDetailResponseDTO.class, board, new CaseBuilder()
-                        .when(bookmark.boardId.id.isNull())
-                        .then(false).otherwise(true)))
+                .select(Projections.constructor(BoardPageDetailResponseDTO.class, board))
                 .from(board)
                 .innerJoin(bookmark)
                 .on(board.id.eq(bookmark.boardId.id))
