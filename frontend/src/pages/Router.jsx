@@ -14,6 +14,7 @@ import Kakao from './callback/kakao';
 import Naver from './callback/naver';
 import Chat from './chat';
 import ChatDetail from './chat/chatId';
+import Profile from './mypage/profile';
 
 function Router() {
   return (
@@ -33,6 +34,7 @@ function Router() {
         <Route path="/mypage/arrive" element={<Arrive />} />
         <Route path="/mypage/chat" element={<Chat />} />
         <Route path="/mypage/chat/:chatId" element={<ChatDetail />} />
+        <Route path="/mypage/profile/:uid" element={<Profile />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

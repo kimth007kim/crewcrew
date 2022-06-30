@@ -423,7 +423,7 @@ ul.InputList>li{
     width: $width;
     height: $height;
     background-color: $black2;
-    border-radius: $height / 2;
+    border-radius: calc($height / 2);
     position: absolute;
     display: none;
     top: $top;
