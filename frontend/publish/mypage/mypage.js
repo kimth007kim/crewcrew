@@ -118,6 +118,7 @@ window.addEventListener('DOMContentLoaded', function () {
       } else {
         ThisSwiperCard.children[1].style.height = 0;
       }
+      this.classList.contains('Absolute') && this.classList.toggle('On');
     });
   });
 

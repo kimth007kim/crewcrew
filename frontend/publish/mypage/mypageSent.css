@@ -3045,16 +3045,6 @@ section.MypageSentTop h3 {
 .SwiperCardWrapper {
   position: relative;
 }
-.SwiperCardWrapper .SwiperBtn {
-  width: 32px;
-  height: 24px;
-  border-radius: 5px;
-  text-indent: -9999px;
-  color: #a8a8a8;
-  background: url("/frontend/src/assets/images/SwiperArrow.png") center/10px no-repeat;
-  cursor: pointer;
-  border: 1px solid #D9D9D9;
-}
 
 .PostCard.Swiper {
   padding: 0;
@@ -3341,6 +3331,68 @@ section.MypageSentTop h3 {
 }
 .PostCard.Swiper.Accepted .PostCardBody .TextBox .TitleBox h5 {
   width: calc(100% - 176px);
+}
+
+.PostCard.Swiper:where(.Disable, .Accepted) .BtTop {
+  margin: 16px;
+  color: #a8a8a8;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 0 !important;
+}
+.PostCard.Swiper:where(.Disable, .Accepted) .BtTop em {
+  color: #00b7ff;
+}
+.PostCard.Swiper:where(.Disable, .Accepted) .CardTopHeader {
+  position: relative;
+  border: none;
+}
+.PostCard.Swiper:where(.Disable, .Accepted) .CardTopHeader::after {
+  content: "";
+  display: block;
+  width: calc(100% + 20px);
+  height: 1px;
+  background-color: transparent;
+  transition: 0.3s;
+  position: absolute;
+  bottom: 0;
+  left: -10px;
+}
+.PostCard.Swiper:where(.Disable, .Accepted).On .CardTopHeader::after {
+  background-color: #e2e2e2;
+}
+
+.SwiperBtn {
+  width: 32px;
+  height: 24px;
+  border-radius: 5px;
+  color: #a8a8a8;
+  background: url("/frontend/src/assets/images/SwiperArrow.png") center/10px no-repeat;
+  cursor: pointer;
+  border: 1px solid #D9D9D9;
+}
+.SwiperBtn.Absolute {
+  width: 74px;
+  height: 26px;
+  background-color: #fff;
+  background-position: right 8px center;
+  border: none;
+  border-radius: 0 0 5px 5px;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  box-sizing: border-box;
+  margin: 0 38px 20px auto;
+}
+.SwiperBtn.Absolute.On {
+  background-image: url("/frontend/src/assets/images/SwiperArrowReverse.png");
+}
+@media screen and (max-width: 820px) {
+  .SwiperBtn.Absolute {
+    margin-right: 10px;
+  }
 }
 
 .BtSwiper {
@@ -3701,7 +3753,11 @@ section.MypageSentTop h3 {
     width: 100%;
   }
   .PostCard.Swiper.Accepted .PostCardBody .TextBox .TitleBox h5 {
-    width: 100%;
+    width: calc(100% - 83px);
+  }
+  .PostCard.Swiper.Accepted .RightBtnBox {
+    top: 18px;
+    height: 30px;
   }
 
   .BtSwiper .CardSwiper {
