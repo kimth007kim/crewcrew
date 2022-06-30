@@ -81,11 +81,6 @@ public class  GlobalExceptionHandler {
         final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.ILLEGAL_STATE);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-//    @ExceptionHandler(ServletException.class)
-//    protected ResponseEntity<ErrorResponseHandler> handleException(ServletException e) {
-//        final ErrorResponseHandler response = ErrorResponseHandler.of(ErrorCode.EXCEPTION);
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
 
 
     /**
