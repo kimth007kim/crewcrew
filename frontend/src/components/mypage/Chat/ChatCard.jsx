@@ -26,11 +26,8 @@ function ChatCard({ data }) {
     () =>
       regexifyString({
         input: data.content,
-        pattern: /(\\r\\n|\\r|\\n)/g,
+        pattern: /\n+/g,
         decorator(match, index) {
-          if (match) {
-            console.log(match);
-          }
           return <br key={index} />;
         },
       }),
@@ -41,7 +38,7 @@ function ChatCard({ data }) {
     <>
       {meCheck ? (
         <ChatDt className="me">
-          <ChatTxt>{data.content}</ChatTxt>
+          <ChatTxt>{result}</ChatTxt>
           <ChatTime>{dayjs(data.date).format('HH:mm')}</ChatTime>
           {!data.readCnt && <ChatShow></ChatShow>}
         </ChatDt>

@@ -19,20 +19,20 @@ let client = null;
 function ChatDetail() {
   const cookies = new Cookies();
   const currentRoomId = 'f32e57b2-519a-42e8-ab93-3db4335f12f7';
-  const { data: myData, error } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
   const {
     data: chatData,
     mutate: mutateChat,
     setSize,
   } = useSWRInfinite((index) => `/talk/room/${currentRoomId}/${index}`, fetcher);
 
-  const [contentList, setContentList] = useState([]);
   const [content, setContent] = useState('');
 
   let isReachingEnd = false;
 
   const chatBtnRef = useRef(null);
   const scrollbarRef = useRef(null);
+  const inputRef = useRef(null);
 
   const onChangeContent = useCallback(
     (e) => {
@@ -57,7 +57,10 @@ function ChatDetail() {
         });
 
         mutateChat().then(() => {
-          scrollbarRef.current?.scrollToBottom();
+          setTimeout(() => {
+            scrollbarRef.current?.scrollToBottom();
+          }, 50);
+          inputRef.current.focus();
         });
         setContent('');
       }
@@ -185,12 +188,12 @@ function ChatDetail() {
                 <ChatInput
                   cols="30"
                   rows="10"
-                  id=""
-                  name=""
+                  name="chat-input"
                   placeholder="보낼 채팅 내용을 입력해주세요."
                   value={content}
                   onChange={onChangeContent}
                   onKeyDown={onKeyDownChat}
+                  ref={inputRef}
                 ></ChatInput>
                 <ChatButton type="submit" disabled={!content?.trim()} ref={chatBtnRef}>
                   채팅보내기
