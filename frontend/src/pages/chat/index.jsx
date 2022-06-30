@@ -7,10 +7,12 @@ import SettingWhite from '@/assets/images/SettingWhite.png';
 import LogInCheck_off from '@/assets/images/LogInCheck_off.png';
 import LogInCheck_on from '@/assets/images/LogInCheck_on.png';
 import ChatBoxCard from '@/components/mypage/Chat/ChatBoxCard';
+import { useNavigate } from 'react-router-dom';
 
 function Chat() {
   const [isSearch, setIsSearch] = useState(false);
   const [isSetting, setIsSetting] = useState(false);
+  const navigate = useNavigate();
 
   const toggleSearch = useCallback(() => {
     setIsSearch(!isSearch);
@@ -19,6 +21,10 @@ function Chat() {
   const toggleSetting = useCallback(() => {
     setIsSetting(!isSetting);
   }, [isSetting]);
+
+  const onClickNavigate = useCallback((id) => {
+    navigate(`${id}`);
+  }, []);
 
   return (
     <MyLayout>
@@ -42,10 +48,22 @@ function Chat() {
             <ChatBoxBody Search={isSearch}>
               <form action="">
                 <ChatBoxList>
-                  <ChatBoxCard isSetting={isSetting}></ChatBoxCard>
-                  <ChatBoxCard isSetting={isSetting}></ChatBoxCard>
-                  <ChatBoxCard isSetting={isSetting}></ChatBoxCard>
-                  <ChatBoxCard isSetting={isSetting}></ChatBoxCard>
+                  <ChatBoxCard
+                    isSetting={isSetting}
+                    onClick={() => onClickNavigate(1)}
+                  ></ChatBoxCard>
+                  <ChatBoxCard
+                    isSetting={isSetting}
+                    onClick={() => onClickNavigate(1)}
+                  ></ChatBoxCard>
+                  <ChatBoxCard
+                    isSetting={isSetting}
+                    onClick={() => onClickNavigate(1)}
+                  ></ChatBoxCard>
+                  <ChatBoxCard
+                    isSetting={isSetting}
+                    onClick={() => onClickNavigate(1)}
+                  ></ChatBoxCard>
                 </ChatBoxList>
                 <DeleteBox active={isSetting}>
                   <CheckAllBox>

@@ -5,7 +5,8 @@ import { Cookies } from 'react-cookie';
 import styled from 'styled-components';
 import useSWR from 'swr';
 import ChatShowImg from '@/assets/images/ChatShow.png';
-import { useMemo } from 'react';
+import { useMemo, memo } from 'react';
+import regexifyString from 'regexify-string';
 
 function ChatCard({ data }) {
   const myCookies = new Cookies();
@@ -19,6 +20,22 @@ function ChatCard({ data }) {
   } else {
     otherUser = data.subscriber;
   }
+
+  // \d 숫자  +는 1개 이상 ? 0개나 1개, * 0개 이상 g는 모두 찾기
+  const result = useMemo(
+    () =>
+      regexifyString({
+        input: data.content,
+        pattern: /(\\r\\n|\\r|\\n)/g,
+        decorator(match, index) {
+          if (match) {
+            console.log(match);
+          }
+          return <br key={index} />;
+        },
+      }),
+    [data.content],
+  );
 
   return (
     <>
@@ -37,7 +54,7 @@ function ChatCard({ data }) {
             <h4>{otherUser.nickName}</h4>
           </ChatProfile>
           {/* 채팅 메시지 */}
-          <ChatTxt>{data.content}</ChatTxt>
+          <ChatTxt>{result}</ChatTxt>
           {/* {채팅 만들어진 시각} */}
           <ChatTime>{dayjs(data.date).format('HH:mm')}</ChatTime>
         </ChatDt>
@@ -46,10 +63,11 @@ function ChatCard({ data }) {
   );
 }
 
-export default ChatCard;
+export default memo(ChatCard);
 
 const ChatTxt = styled('div')`
   width: fit-content;
+
   padding: 12px;
   box-sizing: border-box;
   border: 1px solid #e2e2e2;
@@ -57,7 +75,8 @@ const ChatTxt = styled('div')`
   font-size: 13px;
   line-height: 20px;
   color: #707070;
-  white-space: pre;
+  overflow: hidden;
+  word-break: break-all;
 `;
 
 const ChatTime = styled('p')`

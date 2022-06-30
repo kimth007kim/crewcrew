@@ -4,17 +4,10 @@ import IconFlag from '@/assets/images/IconFlag.png';
 import ProfileMail from '@/assets/images/ProfileMail.png';
 import LogInCheck_off from '@/assets/images/LogInCheck_off.png';
 import LogInCheck_on from '@/assets/images/LogInCheck_on.png';
-import { useNavigate } from 'react-router-dom';
 
-function ChatBoxCard({ isSetting }) {
-  const navigate = useNavigate();
-
-  const onClickNavigate = useCallback(() => {
-    navigate('1');
-  }, []);
-
+function ChatBoxCard({ isSetting, onClick }) {
   return (
-    <Container onClick={onClickNavigate}>
+    <Container onClick={onClick}>
       <ContentSet active={isSetting}>
         <InputHide></InputHide>
         <LabelCheck>
