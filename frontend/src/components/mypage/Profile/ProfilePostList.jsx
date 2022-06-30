@@ -11,11 +11,11 @@ import { toast } from 'react-toastify';
 import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
 
-function MypagePostList() {
+function ProfilePostList() {
   const navigate = useNavigate();
   const query = useQuery();
   const cookies = new Cookies();
-  const dataList = ['bookmark', 'recent'];
+  const dataList = ['recruit', 'participate'];
   const [bookmarkArr, setBookmarkArr] = useState([]);
   const [active, setActive] = useState(dataList[0]);
   const [pageData, setPageData] = useState(null);
@@ -29,9 +29,9 @@ function MypagePostList() {
     setActive(data);
   };
 
-  const axiosGetBookmark = useCallback(
+  /*const axiosGetBookmark = useCallback(
     async (page) => {
-      if (!myData?.data) return false;
+      if (myData && !myData.data) return false;
       try {
         const { data } = await axios.get(`/bookmark/list?page=${page}&order=recent`, {
           withCredentials: true,
@@ -52,7 +52,7 @@ function MypagePostList() {
       }
     },
     [myData],
-  );
+  );*/
 
   const handleResize = () => {
     if (window.innerWidth > 768) {
@@ -68,8 +68,8 @@ function MypagePostList() {
     navigate('/post');
   }, []);
 
-  const renderBookmarkList = () => {
-    if (bookmarkArr.length > 0) {
+  const renderRecruitList = () => {
+    /*if (bookmarkArr.length > 0) {
       return (
         <>
           <PostWrapper>
@@ -102,14 +102,11 @@ function MypagePostList() {
           </button>
         </EmptyList>
       );
-    }
-  };
-
-  const renderRecentPost = () => {
+    }*/
     return (
       <EmptyList>
         <p>
-          <em>최근 본 모집글이 없습니다.</em>
+          <em>모집중인 크루가 없습니다.</em>
           <br />
           모집글을 둘러보고 <span>관심가는 크루에 참여해보세요!</span>
         </p>
@@ -120,17 +117,32 @@ function MypagePostList() {
     );
   };
 
-  const NavigateVailidBookmarkedPage = () => {
+  const renderParticipatePost = () => {
+    return (
+      <EmptyList>
+        <p>
+          <em>참여중인 크루가 없습니다.</em>
+          <br />
+          모집글을 둘러보고 <span>관심가는 크루에 참여해보세요!</span>
+        </p>
+        <button type="button" onClick={LandingPost}>
+          크루참여
+        </button>
+      </EmptyList>
+    );
+  };
+
+  /*const NavigateVailidBookmarkedPage = () => {
     const pageNum = query.get('page');
     if (pageNum && pageNum >= 2 && !bookmarkArr.length) {
       navigate('/mypage');
     }
-  };
+  };*/
 
   useEffect(() => {
     const pageNum = query.get('page');
     setCurrentPage(pageNum || 1);
-    axiosGetBookmark(pageNum - 1);
+    //axiosGetBookmark(pageNum - 1);
   }, [query.get('page')]);
 
   useEffect(() => {
@@ -142,9 +154,9 @@ function MypagePostList() {
     };
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     bookmarkLoaded && NavigateVailidBookmarkedPage();
-  }, [bookmarkLoaded]);
+  }, [bookmarkLoaded]);*/
 
   return (
     <Container>
@@ -156,13 +168,13 @@ function MypagePostList() {
             </li>
           ))}
         </ListTap>
-        {active === dataList[0] ? renderBookmarkList() : renderRecentPost()}
+        {active === dataList[0] ? renderRecruitList() : renderParticipatePost()}
       </Wrapper>
     </Container>
   );
 }
 
-export default MypagePostList;
+export default ProfilePostList;
 
 const Container = styled('section')`
   background-color: #f6f7fb;

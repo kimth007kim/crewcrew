@@ -1,17 +1,15 @@
 import React from 'react';
-import MypageMainTop from '@/components/mypage/MypageMainTop';
-import MypageTimeline from '@/components/mypage/MypageTimeline';
+import ProfileSection from '@/components/mypage/Profile/ProfileSection';
 import MypageTop from '@/components/mypage/MypageTop';
 import MyLayout from '@/components/common/MyLayout';
-import MypagePostList from '@/components/mypage/Timeline/MypagePostList';
+import ProfilePostList from '@/components/mypage/Profile/ProfilePostList';
 
 function Profile() {
   return (
     <MyLayout>
-      <MypageTop />
-      <MypageMainTop />
-      <MypageTimeline />
-      <MypagePostList />
+      <MypageTop title={'재영재영유재영유재영'} />
+      <ProfileSection />
+      <ProfilePostList />
     </MyLayout>
   );
 }
