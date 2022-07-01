@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.chat.ChatMessageDTO;
 import matchTeam.crewcrew.dto.chat.ChatMessageResponseDTO;
 import matchTeam.crewcrew.entity.chat.ChatRoom;
-import matchTeam.crewcrew.entity.user.test.Member;
-import matchTeam.crewcrew.entity.user.test.MemberRepository;
+import matchTeam.crewcrew.entity.user.User;
+import matchTeam.crewcrew.repository.user.UserRepository;
 import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.exception.CrewException;
 import matchTeam.crewcrew.service.chat.ChatMessageService;
@@ -26,26 +26,26 @@ public class ChatController {
     private final SimpMessageSendingOperations messagingTemplate;
     private final ChatMessageService chatMessageService;
     private final ChatRoomService chatRoomService;
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     @MessageMapping("/chat/message")
     public void message(ChatMessageDTO chatMessageDTO) {
-        if (ChatMessageDTO.MessageType.ENTER.equals(chatMessageDTO.getType()))
-            chatMessageDTO.setContent(chatMessageDTO.getUid() + "님이 입장하셨습니다.");
+//        if (ChatMessageDTO.MessageType.ENTER.equals(chatMessageDTO.getType()))
+//            chatMessageDTO.setContent(chatMessageDTO.getUid() + "님이 입장하셨습니다.");
 
 
-        Member member = memberRepository.findById(chatMessageDTO.getUid()).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
-        System.out.println(member.getId());
+        User user = userRepository.findById(chatMessageDTO.getUid()).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
+
         ChatRoom chatRoom = chatRoomService.isValidRoom(chatMessageDTO.getRoomId());
-        System.out.println(chatRoom.getRoomId());
 
-        List<ChatMessageResponseDTO> result= chatMessageService.saveMessage(chatRoom, member, chatMessageDTO.getContent());
+        chatRoomService.findByRoomIdAndSubscriberOrPublisher(chatRoom.getRoomId(),user,user);
+//        List<ChatMessageResponseDTO> result= chatMessageService.saveMessage(chatRoom, user, chatMessageDTO.getContent());
         System.out.println("/sub/chat/room/"+chatMessageDTO.getRoomId());
 
 
         // TODO 여기를 DTO로 바꾸게 하는것 이 관건
 
-        messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessageDTO.getRoomId(), result);
-        System.out.println(result);
+        messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessageDTO.getRoomId(), chatMessageDTO);
+//        System.out.println(result);
     }
 }
