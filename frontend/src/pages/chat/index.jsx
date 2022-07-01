@@ -12,6 +12,15 @@ import { useNavigate } from 'react-router-dom';
 function Chat() {
   const [isSearch, setIsSearch] = useState(false);
   const [isSetting, setIsSetting] = useState(false);
+  const [chattingList, setChattingList] = useState([
+    { chatId: 1 },
+    { chatId: 2 },
+    { chatId: 3 },
+    { chatId: 4 },
+    { chatId: 5 },
+    { chatId: 6 },
+  ]);
+  const [isCheckChatList, setIsCheckChatList] = useState([]);
   const navigate = useNavigate();
 
   const toggleSearch = useCallback(() => {
@@ -20,11 +29,37 @@ function Chat() {
 
   const toggleSetting = useCallback(() => {
     setIsSetting(!isSetting);
+    setIsCheckChatList([]);
   }, [isSetting]);
 
-  const onClickNavigate = useCallback((id) => {
-    navigate(`${id}`);
+  const onClickCancelSetting = useCallback(() => {
+    setIsSetting(false);
+    setIsCheckChatList([]);
   }, []);
+
+  const onClickNavigate = useCallback(
+    (e, id) => {
+      e.stopPropagation();
+      if (!isSetting) {
+        return navigate(`${id}`);
+      }
+      if (isCheckChatList.includes(id)) {
+        setIsCheckChatList(isCheckChatList.filter((checkId) => checkId !== id));
+        return;
+      }
+      setIsCheckChatList([...isCheckChatList, id]);
+    },
+    [isSetting, isCheckChatList],
+  );
+
+  const onClickCheckAll = useCallback(() => {
+    const checkAll = chattingList.map((data) => data.chatId);
+    if (isCheckChatList.length === chattingList.length) {
+      setIsCheckChatList([]);
+      return;
+    }
+    setIsCheckChatList(checkAll);
+  }, [chattingList, isCheckChatList]);
 
   return (
     <MyLayout>
@@ -45,35 +80,35 @@ function Chat() {
                 </SearchInputWrap>
               </form>
             </ChatBoxSearch>
+
             <ChatBoxBody Search={isSearch}>
               <form action="">
                 <ChatBoxList>
-                  <ChatBoxCard
-                    isSetting={isSetting}
-                    onClick={() => onClickNavigate(1)}
-                  ></ChatBoxCard>
-                  <ChatBoxCard
-                    isSetting={isSetting}
-                    onClick={() => onClickNavigate(1)}
-                  ></ChatBoxCard>
-                  <ChatBoxCard
-                    isSetting={isSetting}
-                    onClick={() => onClickNavigate(1)}
-                  ></ChatBoxCard>
-                  <ChatBoxCard
-                    isSetting={isSetting}
-                    onClick={() => onClickNavigate(1)}
-                  ></ChatBoxCard>
+                  {chattingList.map((data, index) => (
+                    <ChatBoxCard
+                      isSetting={isSetting}
+                      onClick={(e) => onClickNavigate(e, data.chatId)}
+                      key={index}
+                      check={isCheckChatList.includes(data.chatId)}
+                    ></ChatBoxCard>
+                  ))}
+
+                  {isSetting && <SettingFakeDiv></SettingFakeDiv>}
                 </ChatBoxList>
                 <DeleteBox active={isSetting}>
                   <CheckAllBox>
                     <InputHide></InputHide>
-                    <LabelCheck>
+                    <LabelCheck
+                      onClick={onClickCheckAll}
+                      active={isCheckChatList.length === chattingList.length}
+                    >
                       <span></span>
                     </LabelCheck>
                   </CheckAllBox>
-                  <button type="reset">선택취소</button>
-                  <button>삭제</button>
+                  <button type="reset" onClick={onClickCancelSetting}>
+                    선택취소
+                  </button>
+                  <button type="submit">삭제</button>
                 </DeleteBox>
               </form>
             </ChatBoxBody>
@@ -349,6 +384,13 @@ const LabelCheck = styled('label')`
     height: 20px;
     background: url(${LogInCheck_off}) center/100% no-repeat;
     transition: background 0.2s;
+
+    ${(props) =>
+      props.active &&
+      css`
+        background: url(${LogInCheck_on});
+        background-size: 100%;
+      `};
   }
 `;
 
@@ -358,4 +400,9 @@ const InputHide = styled('input')`
   clip: rect(1px, 1px, 1px, 1px);
   position: absolute;
   display: none;
+`;
+
+const SettingFakeDiv = styled('div')`
+  width: 100%;
+  height: 60px;
 `;
