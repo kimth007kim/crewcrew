@@ -47,7 +47,6 @@ function ProfileTag({ data }) {
     setStudyTagArr(studyArr);
     setHobbyTagArr(hobbyArr);
   }, [data]);
-  console.log(studyTagArr, hobbyTagArr);
   return (
     <Container>
       <Tags>
