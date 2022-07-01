@@ -32,7 +32,7 @@ function Router() {
         <Route path="/mypage/activity" element={<MyActivity />} />
         <Route path="/mypage/chat" element={<Chat />} />
         <Route path="/mypage/chat/:chatId" element={<ChatDetail />} />
-        <Route path="/mypage/profile/:uid" element={<Profile />} />
+        <Route path="/profile/:uid" element={<Profile />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
