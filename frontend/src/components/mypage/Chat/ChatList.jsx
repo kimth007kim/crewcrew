@@ -5,17 +5,16 @@ import styled from 'styled-components';
 import ChatCard from './ChatCard';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 
-function ChatList({ chatSections }, scrollRef) {
-  //   const onScroll = useCallback((values) => {
-  //     if (values.scrollTop === 0) {
-  //       console.log('가장 위');
-  //       setSize((prevSize) => prevSize + 1).then(() => {
-  //         // 스크롤 위치 유지
-  //         const current = scrollRef?.current;
-  //         current?.scrollTop(current?.getScrollHeight() - values.scrollHeight);
-  //       });
-  //     }
-  //   }, []);
+function ChatList({ chatSections, setSize }, scrollRef) {
+  const onScroll = useCallback((values) => {
+    if (values.scrollTop === 0) {
+      setSize((prevSize) => prevSize + 1).then(() => {
+        // 스크롤 위치 유지
+        const current = scrollRef?.current;
+        current?.scrollTop(current?.getScrollHeight() - values.scrollHeight);
+      });
+    }
+  }, []);
 
   // 로딩 시 스크롤바 제일 아래로
   useEffect(() => {
@@ -34,6 +33,7 @@ function ChatList({ chatSections }, scrollRef) {
         )}
         renderThumbVertical={(props) => <div {...props} className="thumb-vertical" />}
         renderView={(props) => <div {...props} className="view" />}
+        onScrollFrame={onScroll}
       >
         {Object.entries(chatSections).map(([date, chats]) => {
           return (

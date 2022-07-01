@@ -12,7 +12,7 @@ function SwiperCard() {
           </CardProfile>
           <CardTxt>
             <h4>재영재영재영</h4>
-            <p>자기소개글입니다</p>
+            <p>자기소개글입니다자기소개글입니다자기소개글입니다자기소개글입니다</p>
           </CardTxt>
         </CardHead>
         <CardBody>
@@ -90,6 +90,31 @@ const CardHead = styled('div')`
       line-height: 20px;
     }
   }
+
+  @media screen and (max-width: 820px) {
+    height: 100px;
+    padding: 12px;
+    position: relative;
+
+    ${CardProfile} {
+      position: absolute;
+      min-width: 24px;
+      height: 24px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    ${CardTxt} {
+      h4 {
+        margin: 0 0 10px 36px;
+        line-height: 25px;
+      }
+    }
+  }
 `;
 
 const LabelList = styled('ul')``;
@@ -127,6 +152,28 @@ const CardBody = styled('div')`
     &.hobby {
       li {
         background-color: #f7971e;
+      }
+    }
+  }
+
+  @media screen and (max-width: 820px) {
+    padding: 0 12px 12px;
+
+    ${LabelList} {
+      li {
+        padding: 3px 8px;
+      }
+
+      &.study {
+        li {
+          background-color: #0f3fa6;
+        }
+      }
+
+      &.hobby {
+        li {
+          background-color: #f7971e;
+        }
       }
     }
   }
@@ -187,6 +234,16 @@ const CardBtn = styled('div')`
           background-color: #00a3e3;
         }
       }
+    }
+  }
+
+  @media screen and (max-width: 820px) {
+    p {
+      margin-left: 8px;
+    }
+
+    ${BtnWrapper} {
+      gap: 4px;
     }
   }
 `;

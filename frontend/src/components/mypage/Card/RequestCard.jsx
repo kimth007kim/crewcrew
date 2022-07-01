@@ -14,14 +14,13 @@ function RequestCard({ data }) {
   }, []);
 
   const renderProgress = () => {
-    if (data.progress === 0) {
+    if (data.progress === 1) {
       return (
         <>
           <DetailBox>
             <p>
               <span>{data && format(new Date(data.appliedDate), '(MM/dd)')}</span> 요청완료
             </p>
-            <button>상세확인</button>
           </DetailBox>
           <ButtonBox>
             <button>요청취소</button>
@@ -29,14 +28,14 @@ function RequestCard({ data }) {
         </>
       );
     }
-    if (data.progress === 1) {
+
+    if (data.progress === 0) {
       return (
         <>
           <DetailBox color="nega">
             <p>
-              <span>{data && format(new Date(data.appliedDate), '(MM/dd)')}</span> 참여취소
+              <span>{data && format(new Date(data.appliedDate), '(MM/dd)')}</span> 요청거절
             </p>
-            <button>사유확인</button>
           </DetailBox>
           <ButtonBox>
             <button>내역삭제</button>
@@ -47,21 +46,6 @@ function RequestCard({ data }) {
     if (data.progress === 2) {
       return (
         <>
-          <DetailBox color="nega">
-            <p>
-              <span>{data && format(new Date(data.appliedDate), '(MM/dd)')}</span> 요청거절
-            </p>
-            <button>사유확인</button>
-          </DetailBox>
-          <ButtonBox>
-            <button>내역삭제</button>
-          </ButtonBox>
-        </>
-      );
-    }
-    if (data.progress === 3) {
-      return (
-        <>
           <DetailBox color="posi">
             <p>
               <span>{data && format(new Date(data.appliedDate), '(MM/dd)')}</span> 참여중
@@ -69,7 +53,7 @@ function RequestCard({ data }) {
             <button>크루원채팅</button>
           </DetailBox>
           <ButtonBox>
-            <button>요청취소</button>
+            <button>참여취소</button>
           </ButtonBox>
         </>
       );
@@ -427,8 +411,15 @@ const DetailBox = styled('div')`
     margin-bottom: 7px;
     white-space: nowrap;
 
+    ${(props) =>
+      props.color === 'nega' &&
+      css`
+        color: #f95884;
+      `}
+
     span {
       font-weight: 500;
+      color: #000;
     }
   }
 
@@ -445,12 +436,6 @@ const DetailBox = styled('div')`
     transition: 0.3s;
 
     background-color: #c4c4c4;
-
-    ${(props) =>
-      props.color === 'nega' &&
-      css`
-        background-color: #f95884;
-      `}
 
     ${(props) =>
       props.color === 'posi' &&

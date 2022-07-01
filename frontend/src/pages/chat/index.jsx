@@ -7,10 +7,12 @@ import SettingWhite from '@/assets/images/SettingWhite.png';
 import LogInCheck_off from '@/assets/images/LogInCheck_off.png';
 import LogInCheck_on from '@/assets/images/LogInCheck_on.png';
 import ChatBoxCard from '@/components/mypage/Chat/ChatBoxCard';
+import { useNavigate } from 'react-router-dom';
 
 function Chat() {
   const [isSearch, setIsSearch] = useState(false);
   const [isSetting, setIsSetting] = useState(false);
+  const navigate = useNavigate();
 
   const toggleSearch = useCallback(() => {
     setIsSearch(!isSearch);
@@ -19,6 +21,10 @@ function Chat() {
   const toggleSetting = useCallback(() => {
     setIsSetting(!isSetting);
   }, [isSetting]);
+
+  const onClickNavigate = useCallback((id) => {
+    navigate(`${id}`);
+  }, []);
 
   return (
     <MyLayout>
@@ -42,10 +48,22 @@ function Chat() {
             <ChatBoxBody Search={isSearch}>
               <form action="">
                 <ChatBoxList>
-                  <ChatBoxCard isSetting={isSetting}></ChatBoxCard>
-                  <ChatBoxCard isSetting={isSetting}></ChatBoxCard>
-                  <ChatBoxCard isSetting={isSetting}></ChatBoxCard>
-                  <ChatBoxCard isSetting={isSetting}></ChatBoxCard>
+                  <ChatBoxCard
+                    isSetting={isSetting}
+                    onClick={() => onClickNavigate(1)}
+                  ></ChatBoxCard>
+                  <ChatBoxCard
+                    isSetting={isSetting}
+                    onClick={() => onClickNavigate(1)}
+                  ></ChatBoxCard>
+                  <ChatBoxCard
+                    isSetting={isSetting}
+                    onClick={() => onClickNavigate(1)}
+                  ></ChatBoxCard>
+                  <ChatBoxCard
+                    isSetting={isSetting}
+                    onClick={() => onClickNavigate(1)}
+                  ></ChatBoxCard>
                 </ChatBoxList>
                 <DeleteBox active={isSetting}>
                   <CheckAllBox>
@@ -77,12 +95,24 @@ const Container = styled('section')`
   form {
     display: content;
   }
+
+  @media screen and (max-width: 820px) {
+    min-height: 0;
+  }
 `;
 
 const SectionWrap = styled('div')`
   max-width: 850px;
   margin: auto;
   position: relative;
+
+  @media screen and (max-width: 820px) {
+    padding: 0 20px;
+  }
+
+  @media screen and (max-width: 300px) {
+    padding: 0 10px;
+  }
 `;
 
 const BoxWrapper = styled('div')`
@@ -119,6 +149,10 @@ const BoxHead = styled('div')`
       height: 26px;
       background: transparent url(${serchSmall}) center/100% no-repeat;
     }
+  }
+
+  @media screen and (max-width: 300px) {
+    padding: 0 10px;
   }
 `;
 
@@ -198,6 +232,23 @@ const SearchInputWrap = styled('div')`
       font-weight: 500;
     }
   }
+
+  @media screen and (max-width: 820px) {
+    margin: 9px 20px;
+    padding: 0 16px;
+    gap: 8px;
+    height: 36px;
+
+    input {
+      font-size: 11px;
+    }
+  }
+
+  @media screen and (max-width: 300px) {
+    margin: 9px 10px;
+    width: calc(100% - 20px);
+    padding: 0 12px;
+  }
 `;
 
 const ChatBoxBody = styled('div')`
@@ -210,6 +261,10 @@ const ChatBoxBody = styled('div')`
     css`
       height: calc(100vh - 314px);
     `};
+
+  @media screen and (max-width: 820px) {
+    height: calc(100vh - 280px);
+  }
 `;
 
 const ChatBoxList = styled('ul')``;
@@ -255,6 +310,16 @@ const DeleteBox = styled('div')`
       background-color: #c4c4c4;
     }
   }
+
+  @media screen and (max-width: 300px) {
+    button {
+      width: 52px;
+      height: 30px;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 5px;
+    }
+  }
 `;
 
 const CheckAllBox = styled('div')`
@@ -265,6 +330,10 @@ const CheckAllBox = styled('div')`
   justify-content: center;
   align-items: center;
   margin-right: auto;
+
+  @media screen and (max-width: 300px) {
+    width: 40px;
+  }
 `;
 
 const LabelCheck = styled('label')`

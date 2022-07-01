@@ -1,6 +1,9 @@
-import React, { useCallback, useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import styled, { css } from 'styled-components';
 import ArrowCircle from '@/assets/images/ArrowCircle.png';
+import ArrowDown from '@/assets/images/ArrowDown.png';
+import ArrowUpOn from '@/assets/images/ArrowUpOn.png';
+import { useNavigate } from 'react-router-dom';
 
 function MypageMainSubTop({
   total = 0,
@@ -12,6 +15,8 @@ function MypageMainSubTop({
   const totalRef = useRef(null);
   const studyRef = useRef(null);
   const hobbyRef = useRef(null);
+  const [toggleFilter, setToggleFilter] = useState(false);
+  const navigate = useNavigate();
 
   const numberTotal = useCallback((ref, limitNum) => {
     let num = 0;
@@ -31,6 +36,24 @@ function MypageMainSubTop({
     }, 20);
   }, []);
 
+  const navigatePage = useCallback((e, link) => {
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+    navigate(`${link}`);
+  }, []);
+
+  const stopEvent = useCallback((e) => {
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+  }, []);
+
+  const onToggleFilter = useCallback(
+    (e) => {
+      setToggleFilter(!toggleFilter);
+    },
+    [toggleFilter],
+  );
+
   useEffect(() => {
     numberTotal(totalRef, total);
     numberTotal(studyRef, studyCnt);
@@ -39,9 +62,17 @@ function MypageMainSubTop({
 
   return (
     <section>
-      <Wrapper>
+      <Wrapper onClick={stopEvent}>
         <h3>{title}</h3>
         <p>{desc}</p>
+        <FilterWrapper onClick={onToggleFilter} active={toggleFilter}>
+          <p>{title}</p>
+          <ul>
+            <li onClick={(e) => navigatePage(e, '/mypage/request')}>내가 참여요청한 크루</li>
+            <li onClick={(e) => navigatePage(e, '/mypage/recruit')}>내가 모집중인 크루</li>
+            <li onClick={(e) => navigatePage(e, '/mypage/activity')}>나의 활동 크루</li>
+          </ul>
+        </FilterWrapper>
         <Content>
           <h4>
             {'전체 '}
@@ -78,7 +109,7 @@ const Wrapper = styled('div')`
     font-weight: 700;
   }
 
-  p {
+  & > p {
     margin-top: 8px;
     font-size: 13px;
     color: #868686;
@@ -94,6 +125,109 @@ const Wrapper = styled('div')`
   @media screen and (max-width: 300px) {
     padding: 0 10px;
     padding-top: 36px;
+  }
+`;
+
+const FilterWrapper = styled('div')`
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  border: 1px solid #e2e2e2;
+  background: #fff url(${ArrowDown}) top 12px right 9px/11px no-repeat;
+  cursor: pointer;
+  transition: border 0.3s, 0.5s;
+  overflow: hidden;
+  padding: 0 10px;
+  box-sizing: border-box;
+  position: absolute;
+  top: 36px;
+  right: 0;
+
+  :hover {
+    border: 1px solid #b0b0b0;
+  }
+
+  p {
+    color: #a8a8a8;
+    font-size: 13px;
+    font-weight: 500;
+    height: 31px;
+    border-bottom: 1px solid #e2e2e2;
+    line-height: 30px;
+  }
+
+  li {
+    padding: 9px 0 5px;
+    color: #000;
+    font-size: 13px;
+    font-weight: 500;
+    transition: 0.3s;
+
+    :hover {
+      color: #00b7ff;
+    }
+  }
+
+  p,
+  ul {
+    opacity: 0;
+    transition: 0.3s 0s;
+  }
+
+  ${(props) =>
+    props.active &&
+    css`
+      width: 156px;
+      height: 125px;
+      border: 1px solid #00b7ff;
+      background: #fff url(${ArrowUpOn}) top 12px right 9px/11px no-repeat;
+      p,
+      ul {
+        opacity: 1;
+        transition: 0.5s 0.45s;
+      }
+      :hover {
+        border-color: #00b7ff;
+      }
+    `}
+
+  @media screen and (max-width: 820px) {
+    right: 20px;
+  }
+
+  @media screen and (max-width: 300px) {
+    right: 10px;
+    padding: 0 8px;
+
+    p {
+      font-size: 11px;
+      border: none;
+      padding-right: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      position: relative;
+      ::after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 1px;
+        background-color: #e2e2e2;
+        position: absolute;
+        bottom: 0;
+      }
+    }
+
+    li {
+      font-size: 11px;
+    }
+
+    ${(props) =>
+      props.active &&
+      css`
+        width: 110px;
+        height: 120px;
+      `}
   }
 `;
 

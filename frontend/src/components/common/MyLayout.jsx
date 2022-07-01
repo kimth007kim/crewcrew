@@ -12,14 +12,14 @@ function MyLayout({ children, path = 'mypage' }) {
   const cookies = new Cookies();
   const { data: myData, error } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
-  if (myData === undefined) {
-    return null;
-  }
-
   if (error || (myData && myData.data === null)) {
     toast.error('로그인 후 이용 가능합니다. 잘못된 접근입니다.');
 
     return <Navigate to="/" />;
+  }
+
+  if (myData === undefined) {
+    return null;
   }
 
   return (

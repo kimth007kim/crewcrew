@@ -7,13 +7,12 @@ import Post from './post';
 import MyPage from './mypage';
 import PostDetail from './post/id';
 import Recruit from './mypage/recruit';
-import Participate from './mypage/participate';
 import Request from './mypage/request';
-import Arrive from './mypage/arrive';
 import Kakao from './callback/kakao';
 import Naver from './callback/naver';
 import Chat from './chat';
 import ChatDetail from './chat/chatId';
+import MyActivity from './mypage/myactivity';
 import Profile from './mypage/profile';
 
 function Router() {
@@ -30,8 +29,7 @@ function Router() {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/mypage/request" element={<Request />} />
         <Route path="/mypage/recruit" element={<Recruit />} />
-        <Route path="/mypage/participate" element={<Participate />} />
-        <Route path="/mypage/arrive" element={<Arrive />} />
+        <Route path="/mypage/activity" element={<MyActivity />} />
         <Route path="/mypage/chat" element={<Chat />} />
         <Route path="/mypage/chat/:chatId" element={<ChatDetail />} />
         <Route path="/mypage/profile/:uid" element={<Profile />} />

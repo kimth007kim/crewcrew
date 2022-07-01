@@ -1,7 +1,7 @@
 import React from 'react';
 
-function Participate() {
+function MyActivity() {
   return <div>Participate</div>;
 }
 
-export default Participate;
+export default MyActivity;

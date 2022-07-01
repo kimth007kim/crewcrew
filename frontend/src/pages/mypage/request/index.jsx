@@ -320,16 +320,3 @@ const NoContent = styled('div')`
     }
   }
 `;
-
-const PaginationWrapper = styled('div')`
-  display: flex;
-  justify-content: space-between;
-  width: 598px;
-  padding: 48px 0 64px;
-  margin: 0 auto;
-
-  @media screen and (max-width: 820px) {
-    width: 100%;
-    padding: 28px 0 80px;
-  }
-`;
