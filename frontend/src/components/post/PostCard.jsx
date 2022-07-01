@@ -18,6 +18,7 @@ import ParticipateModal from './modal/Participate';
 import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
 import { loginCheck } from '@/atoms/login';
+import { lnbBookmarkDelete } from '@/atoms/post';
 
 function PostCard({ data }) {
   const cookies = new Cookies();
@@ -25,6 +26,7 @@ function PostCard({ data }) {
   const [isBookmark, setIsBookmark] = useState(false);
   const [IsDisable, setIsDisable] = useState(false);
   const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
+  const [deletedBookmark, setDeletedBookmark] = useRecoilState(lnbBookmarkDelete);
   const isLogin = useRecoilValue(loginCheck);
 
   const navigate = useNavigate();
@@ -73,6 +75,7 @@ function PostCard({ data }) {
         if (bookmarkdata.data.status === 200) {
           changeBookmark();
           setIsBookmark(true);
+          setDeletedBookmark(false);
         }
       } else {
         const bookmarkdata = await axios.delete(`/bookmark/${data.boardId}`, {
@@ -84,6 +87,7 @@ function PostCard({ data }) {
         if (bookmarkdata.data.status === 200) {
           changeBookmark();
           setIsBookmark(false);
+          setDeletedBookmark(false);
         }
       }
     } catch (err) {
@@ -124,6 +128,12 @@ function PostCard({ data }) {
     [myData],
   );
 
+  const DeletedBookmarkOnLnb = () => {
+    if (deletedBookmark === data.boardId) {
+      setIsBookmark(false);
+    }
+  };
+
   useEffect(() => {
     const bool = !data.viewable || renderDay() < 0;
     setIsDisable(bool);
@@ -132,6 +142,10 @@ function PostCard({ data }) {
   useEffect(() => {
     getBookmark();
   }, [isLogin]);
+
+  useEffect(() => {
+    DeletedBookmarkOnLnb();
+  }, [deletedBookmark]);
 
   return (
     <>

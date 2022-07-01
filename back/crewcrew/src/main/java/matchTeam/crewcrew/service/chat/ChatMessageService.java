@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -29,6 +30,7 @@ public class ChatMessageService {
 
         return result;
     }
+
 
 
 //    public List<ChatMessage> findChatByMember(){

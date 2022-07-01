@@ -2,6 +2,7 @@ package matchTeam.crewcrew.repository.chat;
 
 import matchTeam.crewcrew.entity.chat.ChatMessage;
 import matchTeam.crewcrew.entity.chat.ChatRoom;
+import matchTeam.crewcrew.entity.user.test.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,6 @@ import java.util.List;
 public interface ChatMessageRepository extends JpaRepository<ChatMessage,Long> {
     List<ChatMessage> findByChatRoom(ChatRoom chatRoom);
     List<ChatMessage> findByChatRoomOrderByCreatedDateDesc(ChatRoom chatRoom,Pageable pageable);
+    List<ChatMessage> findByChatRoomAndMember(ChatRoom chatRoom, Member meber);
+
 }

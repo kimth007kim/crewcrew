@@ -114,7 +114,12 @@ public class ChatRestController {
         return ResponseHandler.generateResponse("(페이지네이션) 특정룸의 룸Id로 모든 메세지 조회 성공", HttpStatus.OK, result);
     }
 
-
+    @ApiOperation(value = "읽음 처리 하는 메서드")
+    @PatchMapping("/room/{roomId}/{uid}")
+    public ResponseEntity<Object> readMessage(@PathVariable("roomId") UUID roomId, @PathVariable("uid") Long uid){
+        chatRoomService.readMessage(roomId,uid);
+        return ResponseHandler.generateResponse("해당 방의 읽음처리 성공", HttpStatus.OK, null);
+    }
 
 
 }
