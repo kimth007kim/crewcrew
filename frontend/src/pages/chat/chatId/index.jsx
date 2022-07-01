@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import SockJS from 'sockjs-client';
+import useSWRInfinite from 'swr/infinite';
 import { Client } from '@stomp/stompjs';
 import MyLayout from '@/components/common/MyLayout';
 import MypageTop from '@/components/mypage/MypageTop';
@@ -11,20 +12,27 @@ import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
 import makeSection from '@/utils/makeSection';
 import ChatList from '@/components/mypage/Chat/ChatList';
+import axios from 'axios';
 
 let client = null;
 
 function ChatDetail() {
   const cookies = new Cookies();
   const currentRoomId = 'f32e57b2-519a-42e8-ab93-3db4335f12f7';
-  const { data: myData, error } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
-  const { data: chatData, mutate: mutateChat } = useSWR(`/talk/room/${currentRoomId}`, fetcher);
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const {
+    data: chatData,
+    mutate: mutateChat,
+    setSize,
+  } = useSWRInfinite((index) => `/talk/room/${currentRoomId}/${index}`, fetcher);
 
-  const [contentList, setContentList] = useState([]);
   const [content, setContent] = useState('');
+
+  let isReachingEnd = false;
 
   const chatBtnRef = useRef(null);
   const scrollbarRef = useRef(null);
+  const inputRef = useRef(null);
 
   const onChangeContent = useCallback(
     (e) => {
@@ -47,8 +55,12 @@ function ChatDetail() {
             content,
           }),
         });
+
         mutateChat().then(() => {
-          scrollbarRef.current?.scrollToBottom();
+          setTimeout(() => {
+            scrollbarRef.current?.scrollToBottom();
+          }, 50);
+          inputRef.current.focus();
         });
         setContent('');
       }
@@ -68,14 +80,16 @@ function ChatDetail() {
     [onSubmitContent],
   );
 
-  const chatSections = makeSection(chatData && chatData.data ? [...chatData.data].reverse() : []);
+  const readChat = () => {
+    axios
+      .patch(`/talk/room/${currentRoomId}/2`, {}, { withCredentials: true })
+      .then((data) => {})
+      .catch((err) => console.dir(err));
+  };
 
   const subscribe = () => {
     if (client !== null) {
-      client.subscribe(`/sub/chat/room/${currentRoomId}`, (data) => {
-        // const newContent = JSON.parse(data.body);
-
-        // addContentList(newContent);
+      client.subscribe(`/sub/chat/room/${currentRoomId}`, () => {
         mutateChat().then(() => {
           if (scrollbarRef.current) {
             if (
@@ -119,16 +133,30 @@ function ChatDetail() {
   // 로딩 시 스크롤바 제일 아래로
   useEffect(() => {
     if (chatData) {
-      if (scrollbarRef.current) {
+      if (scrollbarRef.current & (chatData.length < 1)) {
         scrollbarRef.current.scrollToBottom();
       }
     }
+    readChat();
   }, [chatData, scrollbarRef]);
 
   useEffect(() => {
     connect();
+
     return () => disConnect();
   }, []);
+
+  let chatSections = [];
+
+  if (chatData) {
+    const arrayData = chatData.map((data) => {
+      return data.data;
+    });
+
+    isReachingEnd = arrayData[arrayData.length - 1]?.length < 20;
+
+    chatSections = makeSection(arrayData ? arrayData.flat().reverse() : []);
+  }
 
   return (
     <MyLayout>
@@ -149,18 +177,23 @@ function ChatDetail() {
                 함께 크루원 모집 플랫폼 작업하실분 모십니다~!크루크루
               </p>
             </BoxHead>
-            <ChatList chatSections={chatSections} ref={scrollbarRef}></ChatList>
+            <ChatList
+              chatSections={chatSections}
+              ref={scrollbarRef}
+              setSize={setSize}
+              isReachingEnd={isReachingEnd}
+            ></ChatList>
             <ChatBoxBottom>
               <form onSubmit={onSubmitContent}>
                 <ChatInput
                   cols="30"
                   rows="10"
-                  id=""
-                  name=""
+                  name="chat-input"
                   placeholder="보낼 채팅 내용을 입력해주세요."
                   value={content}
                   onChange={onChangeContent}
                   onKeyDown={onKeyDownChat}
+                  ref={inputRef}
                 ></ChatInput>
                 <ChatButton type="submit" disabled={!content?.trim()} ref={chatBtnRef}>
                   채팅보내기

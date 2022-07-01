@@ -10,7 +10,6 @@ function CrewBox() {
 
   const [crewRequest, setCrewRequest] = useState(null);
   const [crewRecruit, setCrewRecruit] = useState(null);
-  const [crewArrive, setCrewArrive] = useState(null);
   const [crewActivity, setCrewActivity] = useState(null);
 
   const navigate = useNavigate();
@@ -61,27 +60,6 @@ function CrewBox() {
     }
   }, []);
 
-  const apiArrived = useCallback(async () => {
-    try {
-      const { data } = await axios.get('/application/arrived', {
-        withCredentials: true,
-        headers: {
-          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
-        },
-      });
-      switch (data.status) {
-        case 200:
-          setCrewArrive({ ...data.data });
-          break;
-
-        default:
-          break;
-      }
-    } catch (error) {
-      console.dir(error);
-    }
-  }, []);
-
   const apiActivity = useCallback(async () => {
     try {
       let context = {};
@@ -122,15 +100,10 @@ function CrewBox() {
   }, []);
 
   useEffect(() => {
-    const apiCollect = async () => {
-      try {
-        await apiApplication();
-        await apiRecruit();
-        await apiArrived();
-        await apiActivity();
-      } catch (error) {
-        console.error(error);
-      }
+    const apiCollect = () => {
+      apiApplication();
+      apiRecruit();
+      apiActivity();
     };
     apiCollect();
   }, []);
@@ -153,13 +126,6 @@ function CrewBox() {
           count_one={crewRecruit ? crewRecruit.applyToStudyCount : 0}
           count_two={crewRecruit ? crewRecruit.applyToHobbyCount : 0}
           onClick={() => handleLocate('/mypage/recruit')}
-        />
-        <BoxCard
-          title="내게 도착한 참여요청"
-          total={crewArrive ? crewArrive.totalApplyCount : 0}
-          count_one={crewArrive ? crewArrive.applyToStudyCount : 0}
-          count_two={crewArrive ? crewArrive.applyToHobbyCount : 0}
-          onClick={() => handleLocate('/mypage/arrive')}
         />
         <BoxCard
           title="나의 활동 크루"

@@ -69,7 +69,6 @@ function Main() {
 
   const handlePostModal = useCallback(
     (category) => {
-      console.log(myData, isLogin);
       if (myData && myData.data) {
         setCategoryCheck(category);
         openPost();
@@ -246,8 +245,6 @@ function Main() {
 }
 
 export default Main;
-
-// @media screen and (max-width: 820px) {
 
 const MainMain = styled.main`
   margin-left: 142px;
