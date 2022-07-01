@@ -3,6 +3,7 @@ package matchTeam.crewcrew.controller.api.v1.chat;
 
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.chat.ChatMessageDTO;
+import matchTeam.crewcrew.dto.chat.ChatMessageResponseDTO;
 import matchTeam.crewcrew.entity.chat.ChatRoom;
 import matchTeam.crewcrew.entity.user.test.Member;
 import matchTeam.crewcrew.entity.user.test.MemberRepository;
@@ -14,6 +15,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -37,12 +39,13 @@ public class ChatController {
         ChatRoom chatRoom = chatRoomService.isValidRoom(chatMessageDTO.getRoomId());
         System.out.println(chatRoom.getRoomId());
 
-        chatMessageService.saveMessage(chatRoom, member, chatMessageDTO.getContent());
+        List<ChatMessageResponseDTO> result= chatMessageService.saveMessage(chatRoom, member, chatMessageDTO.getContent());
         System.out.println("/sub/chat/room/"+chatMessageDTO.getRoomId());
 
 
         // TODO 여기를 DTO로 바꾸게 하는것 이 관건
 
-        messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessageDTO.getRoomId(), chatMessageDTO);
+        messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessageDTO.getRoomId(), result);
+        System.out.println(result);
     }
 }

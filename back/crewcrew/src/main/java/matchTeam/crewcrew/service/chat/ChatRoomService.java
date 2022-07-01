@@ -19,6 +19,7 @@ import matchTeam.crewcrew.response.exception.CrewException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -65,7 +66,8 @@ public class ChatRoomService {
     public List<ChatMessageResponseDTO> messageByRoomId(UUID roomId) {
         ChatRoom room = isValidRoom(roomId);
         List<ChatMessage> messages = chatMessageRepository.findByChatRoom(room);
-        List<ChatMessageResponseDTO> result =messageToResponse(roomId, messages);
+        List<ChatMessageResponseDTO> result = messageToResponse(roomId, messages);
+        Collections.reverse(result);
         return result;
 
     }
@@ -75,7 +77,8 @@ public class ChatRoomService {
         ChatRoom room = isValidRoom(roomId);
         Pageable pageable = PageRequest.of(page, size);
         List<ChatMessage> messages = chatMessageRepository.findByChatRoomOrderByCreatedDateDesc(room, pageable);
-        List<ChatMessageResponseDTO> result =messageToResponse(roomId, messages);
+        List<ChatMessageResponseDTO> result = messageToResponse(roomId, messages);
+//        Collections.reverse(result);
         return result;
     }
 
@@ -110,7 +113,6 @@ public class ChatRoomService {
                 result.add(chatMessageResponseDTO);
             }
         }
-        Collections.reverse(result);
         return result;
     }
 
@@ -188,11 +190,33 @@ public class ChatRoomService {
         }
 
     }
+    @Transactional
+    public void readMessage(UUID roomId, Long uid) {
+        ChatRoom room = isValidRoom(roomId);
+        Member publisher = room.getPublisher();
+        Member subscriber = room.getSubscriber();
+
+        if (uid != publisher.getId() && uid != subscriber.getId()) {
+
+            // TODO 여기를 EXCEPTION 변경
+            throw new CrewException(ErrorCode.UID_NOT_EXIST);
+        }
+        Long another = null;
+
+        if (uid == publisher.getId())
+            another = subscriber.getId();
+        else
+            another = publisher.getId();
+
+        Member other = memberRepository.findById(another).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
+        List<ChatMessage> messages = chatMessageRepository.findByChatRoomAndMember(room, other);
+
+        for ( ChatMessage m :messages){
+            System.out.println(m.getContent());
+            m.setReadCnt(0);
+            chatMessageRepository.save(m);
+        }
 
 
-//    //MemberId로 모든 채팅방 체크
-//    public void findChatMessageByID(Member meber){
-//
-//    }
-
+    }
 }

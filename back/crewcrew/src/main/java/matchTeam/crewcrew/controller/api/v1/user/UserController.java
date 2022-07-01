@@ -53,35 +53,6 @@ public class UserController {
                     required= true,dataType = "String",paramType = "header"
             )
     })
-
-    @ApiOperation(value ="회원 단건 검색(이메일)" ,notes="이메일로 유저를 검색합니다.")
-    @ApiResponses({
-            @ApiResponse(
-                    code = 200
-                    , message = "회원 단건 검색 성공"
-                    , response = UserResponseDto.class
-            )
-            , @ApiResponse(
-            code = 1101
-            , message = "존재하지 않는 이메일 입니다."
-            )
-    })
-    @GetMapping("/user/email/{email}")
-    public ResponseEntity<Object> findAllUser(
-            @ApiParam(value = "회원 email",required =true)@PathVariable String email) {
-        User user= userService.findByEmail(email).orElseThrow(()->new CrewException(ErrorCode.EMAIL_NOT_EXIST));
-        List<Long> liked =likedCategoryService.findUsersLike(user);
-        UserResponseDto userResponseDto = new UserResponseDto(user.getUid(), user.getEmail(),user.getName(),user.getNickname(),user.getProfileImage(),liked,user.getMessage(),user.getProvider());
-        return ResponseHandler.generateResponse("회원 단건 검색 성공", HttpStatus.OK, userResponseDto);
-
-    }
-    @ApiImplicitParams({
-            @ApiImplicitParam(
-                    name="X-AUTH-TOKEN",
-                    value="로그인 성공후 AccessToken",
-                    required= true,dataType = "String",paramType = "header"
-            )
-    })
     @ApiResponses({
 
             @ApiResponse(
@@ -108,8 +79,6 @@ public class UserController {
         return ResponseHandler.generateResponse("엑세스토큰 으로 유저 정보 조회 성공", HttpStatus.OK,userResponseDto );
 
     }
-
-
 
 
 

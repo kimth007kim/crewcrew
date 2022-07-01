@@ -82,29 +82,6 @@ public class AuthController {
     }
 
 
-    @ApiOperation(value = "UID로 유저 정보 조회하기", notes = "uid 로 유저의 정보를 찾아봅니다")
-    @ApiResponses({
-            @ApiResponse(
-                    code = 200
-                    , message = "유저 조회 성공"
-                    , response = UserResponseDto.class
-            )
-            , @ApiResponse(
-            code = 1008
-            , message = "존재하지 않는 id 값입니다."
-    )
-    })
-    @GetMapping("/uid/{id}")
-    public ResponseEntity<Object> findByUid(@PathVariable Long id) {
-        //email 주소 형식 에  맞는지 확인하는 메서드
-        User user = userService.findByUid(id);
-        if (user == null) {
-            throw new CrewException(ErrorCode.UID_NOT_EXIST);
-        }
-        UserResponseDto userResponseDto = new UserResponseDto(id, user.getEmail(), user.getName(), user.getNickname(), user.getProfileImage(), likedCategoryService.findUsersLike(user), user.getMessage(), user.getProvider());
-
-        return ResponseHandler.generateResponse("유저 조회 성공", HttpStatus.OK, userResponseDto);
-    }
 
 
     @ApiOperation(value = "이메일 인증코드 유효성 검사", notes = "이메일로 발송한 인증코드와 사용자가 입력한 인증코드가 맞는지 확인합니다.")

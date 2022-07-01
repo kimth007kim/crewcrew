@@ -20,5 +20,10 @@ export const approachFilterState = atom({
 
 export const changedBookmark = atom({
   key: 'changedBookmark',
-  default: false
+  default: false,
+});
+
+export const lnbBookmarkDelete = atom({
+  key: 'lnbBookmarkDelete',
+  default: false,
 });
