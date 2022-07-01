@@ -14,7 +14,7 @@ function ChatBoxCard({ isSetting, onClick }) {
           <span></span>
         </LabelCheck>
       </ContentSet>
-      <ContentCard>
+      <ContentCard active={isSetting}>
         <ContentHead>
           <HeadBox className="profile">
             <img src={ProfileMail} alt="profile" className="profile" />
@@ -72,6 +72,14 @@ const Container = styled('li')`
       left: -6px;
     }
   }
+
+  @media screen and (max-width: 820px) {
+    height: auto;
+  }
+
+  @media screen and (max-width: 300px) {
+    padding: 8px 4px;
+  }
 `;
 
 const ContentSet = styled('div')`
@@ -85,16 +93,42 @@ const ContentSet = styled('div')`
     css`
       min-width: 40px;
     `};
+
+  @media screen and (max-width: 300px) {
+    ${(props) =>
+      props.active &&
+      css`
+        min-width: 30px;
+      `};
+  }
 `;
 
 const ContentCard = styled('div')`
   width: 100%;
   transition: 0.5s;
+
+  ${(props) =>
+    props.active &&
+    css`
+      width: calc(100% - 40px);
+    `};
+
+  @media screen and (max-width: 300px) {
+    ${(props) =>
+      props.active &&
+      css`
+        width: calc(100% - 30px);
+      `};
+  }
 `;
 
 const ContentHead = styled('div')`
   display: flex;
   gap: 8px;
+
+  @media screen and (max-width: 820px) {
+    flex-direction: column;
+  }
 `;
 
 const CategoryTxt = styled('span')`
@@ -147,6 +181,26 @@ const HeadBox = styled('div')`
       font-weight: 500;
     }
   }
+
+  @media screen and (max-width: 820px) {
+    width: fit-content;
+
+    &.profile {
+      p {
+        font-size: 14px;
+      }
+    }
+
+    &.post {
+      max-width: 100%;
+
+      p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
 `;
 
 const ContentBody = styled('div')`
@@ -158,6 +212,20 @@ const ContentBody = styled('div')`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  @media screen and (max-width: 820px) {
+    margin: 10px 0;
+
+    p {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      white-space: normal;
+      font-size: 12px;
+      line-height: 18px;
+      height: 36px;
+    }
   }
 `;
 
@@ -197,6 +265,13 @@ const ContentFooter = styled('div')`
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+  }
+
+  @media screen and (max-width: 820px) {
+    gap: 10px;
+    p {
+      font-size: 11px;
     }
   }
 `;
