@@ -3,7 +3,6 @@ package matchTeam.crewcrew.controller.api.v1.chat;
 
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.chat.ChatMessageDTO;
-import matchTeam.crewcrew.dto.chat.ChatMessageResponseDTO;
 import matchTeam.crewcrew.entity.chat.ChatRoom;
 import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.repository.user.UserRepository;
@@ -15,8 +14,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 
-import java.util.List;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Controller
@@ -39,7 +36,7 @@ public class ChatController {
         ChatRoom chatRoom = chatRoomService.isValidRoom(chatMessageDTO.getRoomId());
 
         chatRoomService.findByRoomIdAndSubscriberOrPublisher(chatRoom.getRoomId(),user,user);
-//        List<ChatMessageResponseDTO> result= chatMessageService.saveMessage(chatRoom, user, chatMessageDTO.getContent());
+        chatMessageService.saveMessage(chatRoom, user, chatMessageDTO.getContent());
         System.out.println("/sub/chat/room/"+chatMessageDTO.getRoomId());
 
 

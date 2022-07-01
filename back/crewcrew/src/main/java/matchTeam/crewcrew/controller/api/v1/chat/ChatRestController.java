@@ -39,45 +39,6 @@ public class ChatRestController {
     private final UserService userService;
     private final ChatMessageService chatMessageService;
 
-//    @ApiOperation(value = "멤버를 생성합니다.")
-//    @PostMapping("/member")
-//    public ResponseEntity<Object> createMember(){
-//        User member = new Member();
-//        memberRepository.save(member);
-//        Long id =member.getId();
-//
-//        memberService.register(member);
-//        StringBuilder result = new StringBuilder();
-//        result.append(member.getId());
-//        result.append("번 멤버 생성 성공");
-//        return ResponseHandler.generateResponse(result.toString(), HttpStatus.OK, member);
-//    }
-
-//    @ApiOperation(value = "모든 멤버를 확인합니다.")
-//    @GetMapping("/members")
-//    public ResponseEntity<Object> members(){
-//        Member member = new Member();
-//        List<Member> members =memberRepository.findAll();
-//        return ResponseHandler.generateResponse("모든 멤버 조회 완료", HttpStatus.OK, members);
-//    }
-
-
-//    @ApiOperation(value = "멤버를 삭제합니다.")
-//    @DeleteMapping("/members/{uid}")
-//    public ResponseEntity<Object> deleteMember(@PathVariable Long uid){
-//        Member member= memberRepository.findById(uid).orElseThrow(()-> new CrewException(ErrorCode.UID_NOT_EXIST));
-//
-//        memberRepository.delete(member);
-//        return ResponseHandler.generateResponse(uid+"번 멤버 삭제완료", HttpStatus.OK, null);
-//    }
-//
-//    @ApiOperation(value = "모든 채팅방을 확인합니다.")
-//    @GetMapping("/rooms/every")
-//    public ResponseEntity<Object> err(Long uid){
-//        List<ChatRoom> rooms = chatRoomService.listRoom(uid);
-//        return ResponseHandler.generateResponse("모든 채팅방 조회 성공", HttpStatus.OK, rooms);
-//    }
-
     @ApiOperation(value = "모든 채팅방을 확인합니다.")
     @GetMapping("/rooms")
     public ResponseEntity<Object> rooms() {
@@ -99,9 +60,9 @@ public class ChatRestController {
 
     @ApiOperation(value = "X-AUTH-TOKEN으로 특정 멤버가 속한 모든 채팅방 조회")
     @GetMapping("/user/")
-    public ResponseEntity<Object> memberId(@PathVariable Long memberID, @RequestHeader("X-AUTH-TOKEN") String token) {
+    public ResponseEntity<Object> memberId( @RequestHeader("X-AUTH-TOKEN") String token) {
         User user = userService.tokenChecker(token);
-        List<ChatRoomResponseDTO> messages = chatRoomService.roomlist(memberID);
+        List<ChatRoomResponseDTO> messages = chatRoomService.roomlist(user.getUid());
         return ResponseHandler.generateResponse("member가 속한 방 리스트 조회 완료", HttpStatus.OK, messages);
     }
 
