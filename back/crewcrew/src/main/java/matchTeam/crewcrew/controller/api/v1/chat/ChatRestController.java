@@ -59,7 +59,7 @@ public class ChatRestController {
     }
 
     @ApiOperation(value = "X-AUTH-TOKEN으로 특정 멤버가 속한 모든 채팅방 조회")
-    @GetMapping("/user/")
+    @GetMapping("/user")
     public ResponseEntity<Object> memberId( @RequestHeader("X-AUTH-TOKEN") String token) {
         User user = userService.tokenChecker(token);
         List<ChatRoomResponseDTO> messages = chatRoomService.roomlist(user.getUid());
