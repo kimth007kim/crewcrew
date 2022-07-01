@@ -19,7 +19,9 @@ function ChatList({ chatSections, setSize }, scrollRef) {
   // 로딩 시 스크롤바 제일 아래로
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollToBottom();
+      setTimeout(() => {
+        scrollRef.current?.scrollToBottom();
+      }, 75);
     }
   }, [scrollRef]);
 
@@ -60,6 +62,10 @@ const ChatBoxBody = styled('div')`
 
   * {
     scroll-behavior: initial;
+  }
+
+  @media screen and (max-width: 820px) {
+    height: calc(100vh - 380px);
   }
 `;
 

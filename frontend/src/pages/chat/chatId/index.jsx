@@ -59,7 +59,7 @@ function ChatDetail() {
         mutateChat().then(() => {
           setTimeout(() => {
             scrollbarRef.current?.scrollToBottom();
-          }, 50);
+          }, 100);
           inputRef.current.focus();
         });
         setContent('');
@@ -130,15 +130,10 @@ function ChatDetail() {
     }
   };
 
-  // 로딩 시 스크롤바 제일 아래로
+  // 로딩 시 read
   useEffect(() => {
-    if (chatData) {
-      if (scrollbarRef.current & (chatData.length < 1)) {
-        scrollbarRef.current.scrollToBottom();
-      }
-    }
     readChat();
-  }, [chatData, scrollbarRef]);
+  }, [chatData]);
 
   useEffect(() => {
     connect();
@@ -218,12 +213,20 @@ const Container = styled('section')`
   form {
     display: content;
   }
+
+  @media screen and (max-width: 820px) {
+    min-height: 0;
+  }
 `;
 
 const SectionWrap = styled('div')`
   max-width: 850px;
   margin: auto;
   position: relative;
+
+  @media screen and (max-width: 820px) {
+    padding: 0;
+  }
 `;
 
 const BoxWrapper = styled('div')`
@@ -290,6 +293,19 @@ const BoxHead = styled('div')`
       }
     }
   }
+
+  @media screen and (max-width: 820px) {
+    p {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: calc(100% - 38px);
+    }
+  }
+
+  @media screen and (max-width: 300px) {
+    padding: 20px 10px;
+  }
 `;
 
 const HeadTop = styled('div')`
@@ -304,6 +320,11 @@ const ChatBoxBottom = styled('div')`
   padding: 10px;
   box-sizing: border-box;
   display: flex;
+
+  @media screen and (max-width: 820px) {
+    height: auto;
+    padding: 5px;
+  }
 `;
 
 const ChatInput = styled('textarea')`
@@ -319,6 +340,13 @@ const ChatInput = styled('textarea')`
 
   ::placeholder {
     color: #a8a8a8;
+  }
+
+  @media screen and (max-width: 820px) {
+    margin: 11px auto 11px 7px;
+    width: calc(100% - 68px);
+    height: 20px;
+    line-height: 17px;
   }
 `;
 
@@ -346,5 +374,10 @@ const ChatButton = styled('button')`
 
   :hover {
     background-color: #00a3e3;
+  }
+
+  @media screen and (max-width: 820px) {
+    width: 40px;
+    height: 40px;
   }
 `;

@@ -1,16 +1,16 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import IconFlag from '@/assets/images/IconFlag.png';
 import ProfileMail from '@/assets/images/ProfileMail.png';
 import LogInCheck_off from '@/assets/images/LogInCheck_off.png';
 import LogInCheck_on from '@/assets/images/LogInCheck_on.png';
 
-function ChatBoxCard({ isSetting, onClick }) {
+function ChatBoxCard({ isSetting, onClick, check }) {
   return (
     <Container onClick={onClick}>
       <ContentSet active={isSetting}>
         <InputHide></InputHide>
-        <LabelCheck>
+        <LabelCheck active={check}>
           <span></span>
         </LabelCheck>
       </ContentSet>
@@ -71,6 +71,10 @@ const Container = styled('li')`
       bottom: -6px;
       left: -6px;
     }
+  }
+
+  :hover {
+    background-color: #f3f3f3;
   }
 
   @media screen and (max-width: 820px) {

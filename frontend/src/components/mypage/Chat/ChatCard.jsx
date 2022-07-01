@@ -146,4 +146,60 @@ const ChatDt = styled('div')`
       right: -40px;
     }
   }
+
+  @media screen and (max-width: 820px) {
+    &.me {
+      margin: 24px 20px 0 auto;
+
+      ${ChatTxt} {
+        max-width: calc(100vw - 118px);
+      }
+
+      ${ChatTime} {
+        bottom: 0;
+        left: -40px;
+      }
+    }
+
+    &.other {
+      margin: 20px auto 0 20px;
+
+      ${ChatTxt} {
+        max-width: calc(100vw - 158px);
+      }
+
+      ${ChatTime} {
+        bottom: 0;
+        right: -40px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 300px) {
+    &.me {
+      margin: 24px 10px 0 auto;
+
+      ${ChatTxt} {
+        max-width: calc(100vw - 60px);
+      }
+
+      ${ChatTime} {
+        bottom: 0;
+        left: -40px;
+      }
+    }
+
+    &.other {
+      margin: 20px auto 0 10px;
+
+      ${ChatTxt} {
+        max-width: calc(100vw - 100px);
+      }
+
+      ${ChatTime} {
+        bottom: 0;
+        right: -40px;
+      }
+    }
+  }
 `;
