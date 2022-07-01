@@ -17,6 +17,7 @@ import ParticipateModal from '../modal/Participate';
 import { loginCheck } from '@/atoms/login';
 
 function MainPost({ data }) {
+  console.log(data);
   const cookies = new Cookies();
   const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 

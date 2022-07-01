@@ -1,19 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import Profile2 from '@/assets/images/Profile2.png';
 
-function ProfileTop() {
+function ProfileTop({ data }) {
   return (
     <Container>
       <ProfileImg>
-        <img src={Profile2} alt="프로필이미지" />
+        <img src={data.file} alt="프로필이미지" />
       </ProfileImg>
       <ProfileName>
-        <p>재영재영유재영유재영</p>
+        <p>{data.nickName}</p>
       </ProfileName>
       <ProfileMsg>
         <h3>한줄메세지</h3>
-        <p>한줄메세지입니다</p>
+        <p>{data.message ?? '한줄메세지가 없습니다'}</p>
       </ProfileMsg>
     </Container>
   );
@@ -32,7 +31,6 @@ const ProfileImg = styled('div')`
   aspect-ratio: 1;
   border-radius: 50%;
   overflow: hidden;
-  background-color: #8ed819;
   margin-bottom: 30px;
 
   img {

@@ -1,20 +1,62 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
+import { studyFilterArr, hobbyFilterArr } from '@/frontDB/filterDB';
 
-function ProfileTag() {
+function ProfileTag({ data }) {
+  const [studyTagArr, setStudyTagArr] = useState([]);
+  const [hobbyTagArr, setHobbyTagArr] = useState([]);
+  let studyArr = [],
+    hobbyArr = [];
+  data?.forEach((data) => {
+    if (data < 8) {
+      studyFilterArr.forEach((db) => {
+        data.toString() === db.value && studyArr.push(db);
+      });
+    } else {
+      hobbyFilterArr.forEach((db) => {
+        data.toString() === db.value && hobbyArr.push(db);
+      });
+    }
+  });
+
+  const renderStudyTag = () => {
+    if (studyTagArr.length > 0) {
+      return (
+        <>
+          {studyTagArr.map((data) => (
+            <span key={data.htmlId}>{data.name}</span>
+          ))}
+        </>
+      );
+    }
+  };
+
+  const renderHobbyTag = () => {
+    if (hobbyTagArr.length > 0) {
+      return (
+        <>
+          {hobbyTagArr.map((data) => (
+            <span key={data.htmlId}>{data.name}</span>
+          ))}
+        </>
+      );
+    }
+  };
+
+  useEffect(() => {
+    setStudyTagArr(studyArr);
+    setHobbyTagArr(hobbyArr);
+  }, [data]);
+  console.log(studyTagArr, hobbyTagArr);
   return (
     <Container>
       <Tags>
         <h3>관심분야(스터디)</h3>
-        <TagWrap cat={'study'}>
-          <span>어학</span>
-        </TagWrap>
+        <TagWrap cat={'study'}>{renderStudyTag()}</TagWrap>
       </Tags>
       <Tags>
         <h3>관심분야(취미)</h3>
-        <TagWrap cat={'hobby'}>
-          <span>게임</span>
-        </TagWrap>
+        <TagWrap cat={'hobby'}>{renderHobbyTag()}</TagWrap>
       </Tags>
     </Container>
   );
@@ -32,6 +74,18 @@ const Container = styled('div')`
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+
+  @media screen and (max-width: 820px) {
+    width: calc(100vw - 40px);
+    height: 270px;
+    flex-direction: column;
+    padding: 0 20px;
+  }
+
+  @media screen and (max-width: 300px) {
+    width: calc(100vw - 20px);
+    padding: 0 10px;
+  }
 `;
 
 const Tags = styled('div')`
@@ -51,6 +105,16 @@ const Tags = styled('div')`
     font-weight: 500;
     text-align: center;
     line-height: 1;
+  }
+
+  @media screen and (max-width: 820px) {
+    height: 100%;
+    padding: 24px 0;
+
+    :nth-child(1) {
+      border-right: none;
+      border-bottom: 1px solid #e2e2e2;
+    }
   }
 `;
 

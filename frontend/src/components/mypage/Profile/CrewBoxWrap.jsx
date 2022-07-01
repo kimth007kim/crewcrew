@@ -18,4 +18,14 @@ const Container = styled('div')`
   margin: 40px auto 0;
   display: flex;
   gap: 28px;
+
+  @media screen and (max-width: 820px) {
+    width: calc(100vw - 40px);
+    gap: 16px;
+  }
+
+  @media screen and (max-width: 300px) {
+    width: calc(100vw - 20px);
+    gap: 8px;
+  }
 `;

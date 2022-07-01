@@ -34,6 +34,17 @@ const Container = styled('div')`
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 5px 5px 10px rgb(0 0 0 / 10%);
+
+  @media screen and (max-width: 820px) {
+    height: calc((100vw - 56px) / 2);
+    justify-content: flex-start;
+    padding: 8px;
+  }
+
+  @media screen and (max-width: 300px) {
+    padding: 4px;
+    height: calc((100vw - 28px) / 2);
+  }
 `;
 
 const Num = styled('p')`
@@ -42,6 +53,14 @@ const Num = styled('p')`
   font-size: 32px;
   font-weight: 700;
   color: #00b7ff;
+
+  @media screen and (max-width: 820px) {
+    margin: 10px 0 10px;
+  }
+
+  @media screen and (max-width: 300px) {
+    margin: 0 0 4px;
+  }
 `;
 
 const Tit = styled('p')`
@@ -51,6 +70,14 @@ const Tit = styled('p')`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media screen and (max-width: 820px) {
+    margin-bottom: 0;
+  }
+
+  @media screen and (max-width: 300px) {
+    letter-spacing: -0.03em;
+  }
 `;
 
 const CrewCat = styled('ul')`
@@ -77,12 +104,22 @@ const CrewCat = styled('ul')`
       text-align: center;
       margin-top: 4px;
     }
-    
-    p{
+
+    p {
       font-size: 18px;
       font-weight: 700;
       text-align: center;
       line-height: 1;
       margin-top: 4px;
     }
+  }
+
+  @media screen and (max-width: 820px) {
+    margin-top: auto;
+    gap: 10px;
+  }
+
+  @media screen and (max-width: 300px) {
+    gap: 4px;
+  }
 `;
