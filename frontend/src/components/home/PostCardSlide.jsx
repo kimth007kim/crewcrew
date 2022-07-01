@@ -16,10 +16,12 @@ import fetcher from '@/utils/fetcher';
 import useModal from '@/hooks/useModal';
 import AuthModal from '../common/Auth/AuthModal';
 import { loginCheck } from '@/atoms/login';
+import { lnbBookmarkDelete } from '@/atoms/post';
 
 function PostCardSlide({ data, cookies, isLnb = false }) {
   const [isBookmark, setIsBookmark] = useState(false);
   const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
+  const [deletedBookmark, setDeletedBookmark] = useRecoilState(lnbBookmarkDelete);
   const isLogin = useRecoilValue(loginCheck);
   const myCookies = new Cookies();
   const { data: myData } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
@@ -67,6 +69,7 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
         if (bookmarkdata.data.status === 200) {
           changeBookmark();
           setIsBookmark(true);
+          setDeletedBookmark(false);
         }
       } else {
         const bookmarkdata = await axios.delete(`/bookmark/${data.boardId}`, {
@@ -78,10 +81,17 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
         if (bookmarkdata.data.status === 200) {
           changeBookmark();
           setIsBookmark(false);
+          isLnb ? setDeletedBookmark(data.boardId) : setDeletedBookmark(false);
         }
       }
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const DeletedBookmarkOnLnb = () => {
+    if (deletedBookmark === data.boardId) {
+      setIsBookmark(false);
     }
   };
 
@@ -103,6 +113,10 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
   useEffect(() => {
     getBookmark();
   }, [isLogin]);
+
+  useEffect(() => {
+    DeletedBookmarkOnLnb();
+  }, [deletedBookmark]);
 
   return (
     <>
