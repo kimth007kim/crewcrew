@@ -112,6 +112,7 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
 
   useEffect(() => {
     getBookmark();
+    return () => setIsBookmark(false);
   }, [isLogin]);
 
   useEffect(() => {
