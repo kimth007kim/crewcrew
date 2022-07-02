@@ -9,11 +9,11 @@ import matchTeam.crewcrew.dto.chat.UserProfileDTO;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.chat.ChatMessage;
 import matchTeam.crewcrew.entity.chat.ChatRoom;
-import matchTeam.crewcrew.entity.user.test.Member;
-import matchTeam.crewcrew.entity.user.test.MemberRepository;
+import matchTeam.crewcrew.entity.user.User;
 import matchTeam.crewcrew.repository.board.BoardRepository;
 import matchTeam.crewcrew.repository.chat.ChatMessageRepository;
 import matchTeam.crewcrew.repository.chat.ChatRoomRepository;
+import matchTeam.crewcrew.repository.user.UserRepository;
 import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.exception.CrewException;
 import org.springframework.data.domain.PageRequest;
@@ -28,7 +28,8 @@ import java.util.*;
 @Service
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
-    private final MemberRepository memberRepository;
+    //    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
     private final BoardRepository boardRepository;
     private final ChatMessageRepository chatMessageRepository;
 
@@ -48,13 +49,13 @@ public class ChatRoomService {
             if (board != null) {
                 bid = board.getId();
             }
-            Member publisher = room.getPublisher();
+            User publisher = room.getPublisher();
             if (publisher != null) {
-                pid = publisher.getId();
+                pid = publisher.getUid();
             }
-            Member subscriber = room.getSubscriber();
+            User subscriber = room.getSubscriber();
             if (subscriber != null) {
-                sid = subscriber.getId();
+                sid = subscriber.getUid();
             }
             ChatRoomResponseDTO chatRoomResponseDTO = new ChatRoomResponseDTO(room.getRoomId(), bid, pid, sid, room.getCreatedDate());
             result.add(chatRoomResponseDTO);
@@ -85,10 +86,10 @@ public class ChatRoomService {
 
     public List<ChatMessageResponseDTO> messageToResponse(UUID roomId, List<ChatMessage> messages) {
         ChatRoom room = isValidRoom(roomId);
-        Member member1 = room.getPublisher();
-        Long mid1 = member1.getId();
-        Member member2 = room.getSubscriber();
-        Long mid2 = member2.getId();
+        User user1 = room.getPublisher();
+        Long uid1 = user1.getUid();
+        User user2 = room.getSubscriber();
+        Long uid2 = user2.getUid();
 
         int length = messages.size();
         List<ChatMessageResponseDTO> result = new ArrayList<>();
@@ -97,18 +98,18 @@ public class ChatRoomService {
         for (int i = 0; i < length; i++) {
             ChatMessage message = messages.get(i);
             Long uid = null;
-            Member member = message.getMember();
-            if (member != null) {
-                uid = member.getId();
+            User user = message.getUser();
+            if (user != null) {
+                uid = user.getUid();
             }
-            if (uid == mid1) {
-                UserProfileDTO publisher = new UserProfileDTO(mid1, member1.getNickName(), member1.getImage());
-                UserProfileDTO subscriber = new UserProfileDTO(mid2, member2.getNickName(), member2.getImage());
+            if (uid == uid1) {
+                UserProfileDTO publisher = new UserProfileDTO(uid1, user1.getNickname(), user1.getProfileImage());
+                UserProfileDTO subscriber = new UserProfileDTO(uid2, user2.getNickname(), user2.getProfileImage());
                 ChatMessageResponseDTO chatMessageResponseDTO = new ChatMessageResponseDTO(message.getMessageId(), roomId, publisher, subscriber, message.getContent(), message.getCreatedDate(), message.getReadCnt());
                 result.add(chatMessageResponseDTO);
             } else {
-                UserProfileDTO publisher = new UserProfileDTO(mid2, member2.getNickName(), member2.getImage());
-                UserProfileDTO subscriber = new UserProfileDTO(mid1, member1.getNickName(), member1.getImage());
+                UserProfileDTO publisher = new UserProfileDTO(uid2, user2.getNickname(), user2.getProfileImage());
+                UserProfileDTO subscriber = new UserProfileDTO(uid1, user1.getNickname(), user1.getProfileImage());
                 ChatMessageResponseDTO chatMessageResponseDTO = new ChatMessageResponseDTO(message.getMessageId(), roomId, publisher, subscriber, message.getContent(), message.getCreatedDate(), message.getReadCnt());
                 result.add(chatMessageResponseDTO);
             }
@@ -117,13 +118,13 @@ public class ChatRoomService {
     }
 
     public List<ChatRoom> listRoom(Long uid) {
-        Member member = memberRepository.findById(uid).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
+        User member = userRepository.findById(uid).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
         List<ChatRoom> rooms = chatRoomRepository.findBySubscriberOrPublisher(member, member);
         return rooms;
     }
 
     public List<ChatRoomResponseDTO> roomlist(Long uid) {
-        Member member = memberRepository.findById(uid).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
+        User member = userRepository.findById(uid).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
         List<ChatRoom> rooms = chatRoomRepository.findBySubscriberOrPublisher(member, member);
         int length = rooms.size();
 
@@ -141,13 +142,13 @@ public class ChatRoomService {
             if (board != null) {
                 bid = board.getId();
             }
-            Member publisher = room.getPublisher();
+            User publisher = room.getPublisher();
             if (publisher != null) {
-                pid = publisher.getId();
+                pid = publisher.getUid();
             }
-            Member subscriber = room.getSubscriber();
+            User subscriber = room.getSubscriber();
             if (subscriber != null) {
-                sid = subscriber.getId();
+                sid = subscriber.getUid();
             }
             ChatRoomResponseDTO chatRoomResponseDTO = new ChatRoomResponseDTO(room.getRoomId(), bid, pid, sid, room.getCreatedDate());
             result.add(chatRoomResponseDTO);
@@ -160,58 +161,47 @@ public class ChatRoomService {
         ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(() -> new CrewException(ErrorCode.ACCESS_DENIED));
         return chatRoom;
     }
+    public void findByRoomIdAndSubscriberOrPublisher(UUID roomId,User pub,User sub){
+        Optional<ChatRoom> room =chatRoomRepository.findByRoomIdAndSubscriberOrPublisher(roomId,pub,sub);
+       if( room.isEmpty())
+           throw new CrewException(ErrorCode.CHAT_NOT_ALLOWED_USER);
+    }
 
-    public ChatRoom createChatRoom(ChatRoomCreateDTO chatRoomCreateDTO) {
-        Optional<Board> board = boardRepository.findById(chatRoomCreateDTO.getBoard_id());
-//        Board board = boardRepository.findById(chatRoomCreateDTO.getBoard_id()).orElseThrow(()->new CrewException(ErrorCode.NOT_EXIST_BOARD_IN_ID))
-        Member pubs = memberRepository.findById(chatRoomCreateDTO.getPublisher_id()).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
-        Member subs = memberRepository.findById(chatRoomCreateDTO.getSubscriber_id()).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
-        Board now = null;
-        if (board.isPresent()) {
-            now = board.get();
-        }
-        Optional<ChatRoom> already = chatRoomRepository.findBySubscriberAndPublisherAndBoard(subs, pubs, now);
-
-
+    public ChatRoom createChatRoom(User subs, Long board_seq) {
+        Board board = boardRepository.findById(board_seq).orElseThrow(() -> new CrewException(ErrorCode.NOT_EXIST_BOARD_IN_ID));
+        User pubs = board.getUser();
+        Optional<ChatRoom> already = chatRoomRepository.findBySubscriberAndPublisherAndBoard(subs, pubs, board);
         if (already.isPresent()) {
             ChatRoom chatRoom = already.get();
             return chatRoom;
         }
 
-        if (board.isEmpty()) {
-
-            ChatRoom chatRoom = ChatRoom.builder().publisher(pubs).subscriber(subs).board(null).build();
-            chatRoomRepository.save(chatRoom);
-            return chatRoom;
-        } else {
-            ChatRoom chatRoom = ChatRoom.builder().publisher(pubs).subscriber(subs).board(board.get()).build();
-            chatRoomRepository.save(chatRoom);
-            return chatRoom;
-        }
-
+        ChatRoom chatRoom = ChatRoom.builder().publisher(pubs).subscriber(subs).board(board).build();
+        chatRoomRepository.save(chatRoom);
+        return chatRoom;
     }
-    @Transactional
+
     public void readMessage(UUID roomId, Long uid) {
         ChatRoom room = isValidRoom(roomId);
-        Member publisher = room.getPublisher();
-        Member subscriber = room.getSubscriber();
+        User publisher = room.getPublisher();
+        User subscriber = room.getSubscriber();
 
-        if (uid != publisher.getId() && uid != subscriber.getId()) {
+        if (uid != publisher.getUid() && uid != subscriber.getUid()) {
 
             // TODO 여기를 EXCEPTION 변경
             throw new CrewException(ErrorCode.UID_NOT_EXIST);
         }
         Long another = null;
 
-        if (uid == publisher.getId())
-            another = subscriber.getId();
+        if (uid == publisher.getUid())
+            another = subscriber.getUid();
         else
-            another = publisher.getId();
+            another = publisher.getUid();
 
-        Member other = memberRepository.findById(another).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
-        List<ChatMessage> messages = chatMessageRepository.findByChatRoomAndMember(room, other);
+        User other = userRepository.findById(another).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
+        List<ChatMessage> messages = chatMessageRepository.findByChatRoomAndUser(room, other);
 
-        for ( ChatMessage m :messages){
+        for (ChatMessage m : messages) {
             System.out.println(m.getContent());
             m.setReadCnt(0);
             chatMessageRepository.save(m);
