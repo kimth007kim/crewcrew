@@ -13,8 +13,8 @@ public class QMyWaitingCrewResponseDTO extends ConstructorExpression<MyWaitingCr
 
     private static final long serialVersionUID = -2123186391L;
 
-    public QMyWaitingCrewResponseDTO(com.querydsl.core.types.Expression<Long> waitingCrew, com.querydsl.core.types.Expression<? extends java.util.List<ArrivedApplierDetailsDTO>> content) {
-        super(MyWaitingCrewResponseDTO.class, new Class<?>[]{long.class, java.util.List.class}, waitingCrew, content);
+    public QMyWaitingCrewResponseDTO(com.querydsl.core.types.Expression<Long> countCrew, com.querydsl.core.types.Expression<? extends java.util.List<ArrivedApplierDetailsDTO>> content) {
+        super(MyWaitingCrewResponseDTO.class, new Class<?>[]{long.class, java.util.List.class}, countCrew, content);
     }
 
 }

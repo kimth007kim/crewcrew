@@ -2,6 +2,7 @@ package matchTeam.crewcrew.service.application;
 
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.application.*;
+import matchTeam.crewcrew.dto.board.BoardPageDetailResponseDTO;
 import matchTeam.crewcrew.dto.board.BoardResponseDTO;
 import matchTeam.crewcrew.entity.application.Application;
 import matchTeam.crewcrew.entity.board.Board;
@@ -64,36 +65,6 @@ public class ApplicationService {
         return queryRepository.getMyApplicationDetails(req, categoryParentId, pageable);
     }
 
-    @Transactional(readOnly = true)
-    public ApplicationCountResponseDTO findArrivedApplication(User req){
-
-        userRepository.findById(req.getUid()).orElseThrow(NotExistUidToApplyException::new);
-        return queryRepository.getArrivedApplication(req.getUid());
-    }
-
-    @Transactional(readOnly = true)
-    public Page<ApplicationDetailResponseDTO> findArrivedApplicationDetails(User req, Long categoryParentId, Pageable pageable){
-        userRepository.findById(req.getUid()).orElseThrow(NotExistUidToApplyException::new);
-        validCategoryParentId(categoryParentId);
-        return queryRepository.getArrivedApplicationDetails(req, categoryParentId, pageable);
-    }
-
-    @Transactional(readOnly = true)
-    public ArrivedApplicationUserDetailsResponseDTO findArrivedApplicationApplier(User req, Long boardId){
-        User user = userRepository.findById(req.getUid()).orElseThrow(NotExistUidToApplyException::new);
-        Board board = boardRepository.findById(boardId).orElseThrow(NotExistBoardInIdException::new);
-
-        if (! user.getUid().equals(board.getUser().getUid())){
-            throw new NotMatchBoardOwnerException();
-        }
-
-        List<ArrivedApplierDetailsDTO> arrivedApplier = queryRepository.getArrivedApplier(req, boardId);
-        for (ArrivedApplierDetailsDTO res: arrivedApplier) {
-            res.setLikedCategoryList(likedCategoryRepository.findByUser(userRepository.findByUid(res.getUid())));
-        }
-
-        return ArrivedApplicationUserDetailsResponseDTO.toDTO(arrivedApplier, queryRepository.getTheNumberOfWaiting(req, boardId));
-    }
 
     @Transactional
     public ApplicationUserDetailsResponseDTO updateApply(UpdateApplyRequestDTO reqInfo, User reqUser){
@@ -106,7 +77,10 @@ public class ApplicationService {
 
     @Transactional(readOnly = true)
     public ApplicationMyCrewResponseDTO findMyCrewCount(User req){
-        return ApplicationMyCrewResponseDTO.builder().myCrewCount(queryRepository.getMyCrewCount(req)).build();
+        return ApplicationMyCrewResponseDTO.builder()
+                .myExpiredBoardCnt(queryRepository.getMyCrewCount(req))
+                .myAcceptedApplyBoardCnt(queryRepository.getAcceptedApplicationCnt(req))
+                .build();
     }
 
     @Transactional(readOnly = true)
@@ -114,25 +88,47 @@ public class ApplicationService {
         return queryRepository.getMyCrewCountDetails(req, pageable);
     }
 
+    @Transactional(readOnly = true)
+    public MyWaitingCrewResponseDTO findMyExpiredBoardApplierDetails(User req, Long boardId){
+        Long crewCount = queryRepository.getMyExpiredBoardApplierCount(req, boardId);
+        List<ArrivedApplierDetailsDTO> crewDetails = queryRepository.getMyExpiredBoardApplierDetails(req, boardId);
+
+        for (ArrivedApplierDetailsDTO crewDetail: crewDetails) {
+            User byUid = userRepository.findByUid(crewDetail.getUid());
+            crewDetail.setLikedCategoryList(likedCategoryRepository.findByUser(byUid));
+        }
+
+        return MyWaitingCrewResponseDTO.builder()
+                .countCrew(crewCount)
+                .content(crewDetails).build();
+
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ApplicationDetailResponseDTO> findParticipatedBoardDetails(User req, Pageable pageable){
+        userRepository.findById(req.getUid()).orElseThrow(NotExistUidToApplyException::new);
+        return queryRepository.getParticipatedBoardDetails(req, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public MyWaitingCrewResponseDTO findParticipatedApplierDetails(User req, Long boardId){
+        List<ArrivedApplierDetailsDTO> crewDetails = queryRepository.getParticipatedBoardApplier(req, boardId);
+
+        for (ArrivedApplierDetailsDTO crewDetail: crewDetails) {
+            User byUid = userRepository.findByUid(crewDetail.getUid());
+            crewDetail.setLikedCategoryList(likedCategoryRepository.findByUser(byUid));
+        }
+
+
+        return MyWaitingCrewResponseDTO.builder()
+                .countCrew((long) crewDetails.size())
+                .content(crewDetails).build();
+    }
+
     @Transactional
     public void extendExpiredDate(Long boardId){
         Board board = boardRepository.findById(boardId).orElseThrow(NotExistBoardInIdException::new);
         board.extendExpired();
-    }
-
-    @Transactional(readOnly = true)
-    public ApplicationParticipatedCrewResponseDTO findMyParticipatedCount(User req){
-        return ApplicationParticipatedCrewResponseDTO.builder().participatedCount(queryRepository.getParticipatedCrewCount(req)).build();
-    }
-
-    @Transactional(readOnly = true)
-    public Page<ApplicationParticipatedDetailResponseDTO> findMyParticipatedDetails(User req, Pageable pageable){
-        return queryRepository.getMyParticipatedDetails(req,pageable);
-    }
-
-    @Transactional(readOnly = true)
-    public List<ArrivedApplierDetailsDTO> findAnotherApplier(User req, Long boardId){
-        return queryRepository.getAnotherApplier(req, boardId);
     }
 
     @Transactional(readOnly = true)
@@ -152,9 +148,12 @@ public class ApplicationService {
         Long crewCount = queryRepository.getWaitingCrewCount(req, boardId, statusCode);
         List<ArrivedApplierDetailsDTO> crewDetails = queryRepository.getWaitingCrewDetails(req, boardId, statusCode);
 
+        for (ArrivedApplierDetailsDTO crewDetail: crewDetails) {
+            crewDetail.setLikedCategoryList(likedCategoryRepository.findByUser(req));
+        }
 
         return MyWaitingCrewResponseDTO.builder()
-                .waitingCrew(crewCount)
+                .countCrew(crewCount)
                 .content(crewDetails).build();
     }
 
