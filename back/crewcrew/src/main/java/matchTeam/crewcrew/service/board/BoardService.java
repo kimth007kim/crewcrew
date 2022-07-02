@@ -91,6 +91,15 @@ public class BoardService {
         return  boardQueryRepository.search(boardSpecs, pageable);
     }
 
+    @Transactional
+    public BoardResponseDTO closedBoard(Long boardId, User req){
+        Board board = boardRepository.findById(boardId).orElseThrow(NotExistBoardInIdException::new);
+        checkMathchingUid(req.getUid(), board.getUser().getUid());
+        board.closedBoard();
+
+        return BoardResponseDTO.toDTO(board);
+    }
+
     public void checkValidSave(BoardSaveRequestDTO saveRequestDTO){
         //제목이 비어있을 경우
         if (saveRequestDTO.getTitle().isBlank()) {

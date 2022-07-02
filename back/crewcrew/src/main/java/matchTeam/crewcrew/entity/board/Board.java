@@ -118,6 +118,10 @@ public class Board extends BaseTimeEntity {
         this.kakaoChat = kakaoChat;
     }
 
+    public void closedBoard(){
+        this.viewable = false;
+    }
+
     public void extendExpired(){
         this.expiredDate = LocalDate.now(ZoneId.of("Asia/Seoul")).plusDays(7);
         this.viewable = true;

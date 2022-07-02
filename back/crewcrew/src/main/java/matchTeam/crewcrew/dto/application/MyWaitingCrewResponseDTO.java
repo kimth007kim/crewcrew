@@ -20,15 +20,15 @@ public class MyWaitingCrewResponseDTO {
 
 
     @ApiModelProperty
-    private Long waitingCrew = 0L;
+    private Long countCrew = 0L;
 
     @ApiModelProperty
     private List<ArrivedApplierDetailsDTO> content;
 
     @QueryProjection
     @Builder
-    public MyWaitingCrewResponseDTO(Long waitingCrew, List<ArrivedApplierDetailsDTO> content) {
-        this.waitingCrew = waitingCrew;
+    public MyWaitingCrewResponseDTO(Long countCrew, List<ArrivedApplierDetailsDTO> content) {
+        this.countCrew = countCrew;
         this.content = content;
     }
 
