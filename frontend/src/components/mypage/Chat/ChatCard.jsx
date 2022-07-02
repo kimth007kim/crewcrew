@@ -12,7 +12,7 @@ function ChatCard({ data }) {
   const myCookies = new Cookies();
   const { data: myData } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
 
-  const meCheck = data.publisher.uid === 1;
+  const meCheck = data.publisher.uid === myData.data.uid;
   let otherUser = null;
 
   if (!meCheck) {

@@ -1,6 +1,6 @@
 import MyLayout from '@/components/common/MyLayout';
 import MypageTop from '@/components/mypage/MypageTop';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import serchSmall from '@/assets/images/serchSmall.png';
 import SettingWhite from '@/assets/images/SettingWhite.png';
@@ -8,18 +8,15 @@ import LogInCheck_off from '@/assets/images/LogInCheck_off.png';
 import LogInCheck_on from '@/assets/images/LogInCheck_on.png';
 import ChatBoxCard from '@/components/mypage/Chat/ChatBoxCard';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Cookies } from 'react-cookie';
 
 function Chat() {
+  const cookies = new Cookies();
+
   const [isSearch, setIsSearch] = useState(false);
   const [isSetting, setIsSetting] = useState(false);
-  const [chattingList, setChattingList] = useState([
-    { chatId: 1 },
-    { chatId: 2 },
-    { chatId: 3 },
-    { chatId: 4 },
-    { chatId: 5 },
-    { chatId: 6 },
-  ]);
+  const [chattingList, setChattingList] = useState([]);
   const [isCheckChatList, setIsCheckChatList] = useState([]);
   const navigate = useNavigate();
 
@@ -38,16 +35,16 @@ function Chat() {
   }, []);
 
   const onClickNavigate = useCallback(
-    (e, id) => {
+    (e, roomId) => {
       e.stopPropagation();
       if (!isSetting) {
-        return navigate(`${id}`);
+        return navigate(`1054/${roomId}`);
       }
-      if (isCheckChatList.includes(id)) {
-        setIsCheckChatList(isCheckChatList.filter((checkId) => checkId !== id));
+      if (isCheckChatList.includes(roomId)) {
+        setIsCheckChatList(isCheckChatList.filter((checkId) => checkId !== roomId));
         return;
       }
-      setIsCheckChatList([...isCheckChatList, id]);
+      setIsCheckChatList([...isCheckChatList, roomId]);
     },
     [isSetting, isCheckChatList],
   );
@@ -60,6 +57,33 @@ function Chat() {
     }
     setIsCheckChatList(checkAll);
   }, [chattingList, isCheckChatList]);
+
+  const apiRoomList = useCallback(async () => {
+    try {
+      const { data: roomData } = await axios.get('/talk/user', {
+        withCredentials: true,
+        headers: {
+          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+        },
+      });
+
+      switch (roomData.status) {
+        case 200:
+          setChattingList(roomData.data);
+          break;
+
+        default:
+          console.dir(roomData.message);
+          break;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    apiRoomList();
+  }, []);
 
   return (
     <MyLayout>
@@ -84,14 +108,15 @@ function Chat() {
             <ChatBoxBody Search={isSearch}>
               <form action="">
                 <ChatBoxList>
-                  {chattingList.map((data, index) => (
-                    <ChatBoxCard
-                      isSetting={isSetting}
-                      onClick={(e) => onClickNavigate(e, data.chatId)}
-                      key={index}
-                      check={isCheckChatList.includes(data.chatId)}
-                    ></ChatBoxCard>
-                  ))}
+                  {chattingList.length > 0 &&
+                    chattingList.map((data, index) => (
+                      <ChatBoxCard
+                        isSetting={isSetting}
+                        onClick={(e) => onClickNavigate(e, data.roomId)}
+                        key={index}
+                        check={isCheckChatList.includes(data.roomId)}
+                      ></ChatBoxCard>
+                    ))}
 
                   {isSetting && <SettingFakeDiv></SettingFakeDiv>}
                 </ChatBoxList>
