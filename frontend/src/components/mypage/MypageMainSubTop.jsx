@@ -11,6 +11,9 @@ function MypageMainSubTop({
   hobbyCnt = 0,
   title = '내가 참여요청한 크루',
   desc = '내가 참여요청한 크루의 현황을 이곳에서 확인하고 관리하세요!',
+  disable,
+  small_title1 = '스터디 크루',
+  small_title2 = '취미 크루',
 }) {
   const totalRef = useRef(null);
   const studyRef = useRef(null);
@@ -79,14 +82,14 @@ function MypageMainSubTop({
             <span ref={totalRef} data-rate={total}></span>
           </h4>
           <BoxWrap>
-            <SentBox color="#0575e6" hoverColor="#005ec5">
+            <SentBox color="#0575e6" hoverColor="#005ec5" disable={disable}>
               <p ref={studyRef}>{studyCnt}개</p>
-              <p>스터디 크루</p>
+              <p>{small_title1}</p>
               <div className="arrow"></div>
             </SentBox>
-            <SentBox color="#ffd458" hoverColor="#fcb90d">
+            <SentBox color="#ffd458" hoverColor="#fcb90d" disable={disable}>
               <p ref={hobbyRef}>{hobbyCnt}개</p>
-              <p>취미 크루</p>
+              <p>{small_title2}</p>
               <div className="arrow"></div>
             </SentBox>
           </BoxWrap>
@@ -322,6 +325,15 @@ const SentBox = styled('div')`
     }
   }
 
+  ${(props) =>
+    props.disable &&
+    css`
+      background-color: #c4c4c4;
+      :hover {
+        background-color: #707070;
+      }
+    `}
+
   @media screen and (max-width: 820px) {
     height: 86px;
     padding: 0;
@@ -348,5 +360,14 @@ const SentBox = styled('div')`
         opacity: 0;
       }
     }
+
+    ${(props) =>
+      props.disable &&
+      css`
+        background-color: #c4c4c4;
+        :hover {
+          background-color: #707070;
+        }
+      `}
   }
 `;

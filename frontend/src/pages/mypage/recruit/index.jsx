@@ -68,7 +68,7 @@ function Recruit() {
       </Wrap>
       <Wrap className="hobby">
         <SectionWrap>
-          <h3>스터디 크루</h3>
+          <h3>취미 크루</h3>
           <NoContent>
             <p>
               <em>내가 모집중인 크루가 없습니다.</em>
@@ -85,7 +85,7 @@ function Recruit() {
               size={'regular'}
               color={'lightBlue'}
             >
-              크루참여
+              크루원 모집
             </Button>
           </NoContent>
         </SectionWrap>
