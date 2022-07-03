@@ -134,6 +134,7 @@ function CrewBox() {
           total={crewActivity ? crewActivity.myCrewCount + crewActivity.participatedCount : 0}
           count_one={crewActivity ? crewActivity.myCrewCount : 0}
           count_two={crewActivity ? crewActivity.participatedCount : 0}
+          onClick={() => handleLocate('/mypage/activity')}
           deactive={true}
         />
       </CrewBoxWrap>

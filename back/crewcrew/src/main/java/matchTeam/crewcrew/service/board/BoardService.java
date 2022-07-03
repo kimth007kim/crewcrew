@@ -5,6 +5,7 @@ import matchTeam.crewcrew.dto.board.*;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.entity.user.User;
+import matchTeam.crewcrew.repository.application.ApplicationQueryRepository;
 import matchTeam.crewcrew.repository.board.BoardSearchRepository;
 import matchTeam.crewcrew.dto.board.BoardSpecs;
 import matchTeam.crewcrew.repository.board.BoardRepository;
@@ -29,6 +30,7 @@ public class BoardService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final BoardSearchRepository boardQueryRepository;
+    private final ApplicationQueryRepository applicationQueryRepository;
     private final Integer[] approachCode = {0, 1};
 
     @Transactional
@@ -89,6 +91,35 @@ public class BoardService {
         return findBoardDTOs;*/
 
         return  boardQueryRepository.search(boardSpecs, pageable);
+    }
+
+    @Transactional
+    public BoardResponseDTO closedBoard(Long boardId, User req){
+        Board board = boardRepository.findById(boardId).orElseThrow(NotExistBoardInIdException::new);
+        checkMathchingUid(req.getUid(), board.getUser().getUid());
+        board.closedBoard();
+
+        return BoardResponseDTO.toDTO(board);
+    }
+
+    @Transactional(readOnly = true)
+    public BoardCountByUidResponseDTO findProfileByUidCount(Long uid){
+        return BoardCountByUidResponseDTO.builder()
+                .recruitedCrewCnt(boardQueryRepository.getRecruitedCrewCountByUid(uid))
+                .acceptedCrewCnt(applicationQueryRepository.getAcceptedCrewCountByUid(uid))
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<BoardPageDetailResponseDTO> findRecruitedBoardByUid(Long uid, Pageable pageable) {
+
+        return  boardQueryRepository.getRecruitedBoardByUid(uid, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<BoardPageDetailResponseDTO> findAcceptedBoardByUid(Long uid, Pageable pageable) {
+
+        return applicationQueryRepository.getAcceptedBoardByUid(uid, pageable);
     }
 
     public void checkValidSave(BoardSaveRequestDTO saveRequestDTO){

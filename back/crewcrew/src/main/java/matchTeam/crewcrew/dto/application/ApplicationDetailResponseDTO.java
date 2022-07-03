@@ -54,11 +54,16 @@ public class ApplicationDetailResponseDTO {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @ApiModelProperty(value = "참여요청한 날짜", notes = "참여요청한 날짜(년월일)")
+    @ApiModelProperty(value = "참여요청한 날짜", notes = "참여요청한 날짜(년월일)", example = "2022-06-01")
     private LocalDateTime appliedDate;
 
     @ApiModelProperty(value = "만료날짜", notes = "년원일", example = "2023-02-27")
     private LocalDate expiredDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value = "참여요청한 날짜", notes = "참여요청한 날짜(년월일)", example = "2022-06-01")
+    private LocalDateTime createdDate;
 
     @ApiModelProperty(value = "만료여부", notes = "만료여부를 true(만료x) or false(만료됨)로 표현", example = "1")
     private Boolean viewable;
@@ -83,6 +88,7 @@ public class ApplicationDetailResponseDTO {
         this.totalCrew = res.getTotalCrew();
         this.appliedDate = application.getCreatedDate();
         this.expiredDate = res.getExpiredDate();
+        this.createdDate = res.getCreatedDate();
         this.viewable = res.getViewable();
         this.progress = application.getProgress();
     }

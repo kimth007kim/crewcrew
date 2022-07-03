@@ -276,5 +276,36 @@ public class BoardController {
         return ResponseHandler.generateResponse(boardId+"번 게시글이 삭제 성공", HttpStatus.OK, boardId);
     }
 
+    @ApiOperation(value = "uid로 프로필페이지에서 모집중인 크루 참여중인 크루 개수 조회하기", notes = "uid로 프로필페이지에서 모집중인 크루 참여중인 크루 개수 조회한다.")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping("/profile/board/{uid}")
+    public ResponseEntity<Object> getProfileByUid(@ApiParam(value = "유저의 uid", required = true)
+                                         @PathVariable Long uid){
+
+        BoardCountByUidResponseDTO count = boardService.findProfileByUidCount(uid);
+        return ResponseHandler.generateResponse("uid로 프로필페이지에서 모집중인 크루 참여중인 크루 개수 조회하기", HttpStatus.OK, count);
+    }
+
+    @ApiOperation(value = "uid로 프로필페이지에서 모집중인 크루 목록 조회하기", notes = "uid로 프로필페이지에서 모집중인 크루 참여중인 크루 개수 조회한다.")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping("/profile/board/recruited/{uid}")
+    public ResponseEntity<Object> getRecruitedBoardByUid(@ApiParam(value = "유저의 uid", required = true) @PathVariable Long uid,
+                                                         @PageableDefault(size = 5) Pageable pageable){
+
+        Page<BoardPageDetailResponseDTO> dtos = boardService.findRecruitedBoardByUid(uid, pageable);
+        BoardPageResponseDTO pageResponseDTO = BoardPageResponseDTO.toDTO(dtos);
+        return ResponseHandler.generateResponse("uid로 프로필페이지에서 모집중인 크루 목록 조회하기 성공", HttpStatus.OK, pageResponseDTO);
+    }
+
+    @ApiOperation(value = "uid로 프로필페이지에서 참여중인 크루 목록 조회하기", notes = "uid로 프로필페이지에서 모집중인 크루 참여중인 크루 개수 조회한다.")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping("/profile/board/accepted/{uid}")
+    public ResponseEntity<Object> getAcceptedBoardByUid(@ApiParam(value = "유저의 uid", required = true) @PathVariable Long uid,
+                                                        @PageableDefault(size = 5) Pageable pageable){
+
+        Page<BoardPageDetailResponseDTO> dtos = boardService.findAcceptedBoardByUid(uid, pageable);
+        BoardPageResponseDTO pageResponseDTO = BoardPageResponseDTO.toDTO(dtos);
+        return ResponseHandler.generateResponse("uid로 프로필페이지에서 참여중인 크루 목록 조회하기 성공", HttpStatus.OK, pageResponseDTO);
+    }
 
 }

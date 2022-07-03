@@ -1,6 +1,6 @@
 import MyLayout from '@/components/common/MyLayout';
 import MypageTop from '@/components/mypage/MypageTop';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import serchSmall from '@/assets/images/serchSmall.png';
 import SettingWhite from '@/assets/images/SettingWhite.png';
@@ -8,10 +8,16 @@ import LogInCheck_off from '@/assets/images/LogInCheck_off.png';
 import LogInCheck_on from '@/assets/images/LogInCheck_on.png';
 import ChatBoxCard from '@/components/mypage/Chat/ChatBoxCard';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Cookies } from 'react-cookie';
 
 function Chat() {
+  const cookies = new Cookies();
+
   const [isSearch, setIsSearch] = useState(false);
   const [isSetting, setIsSetting] = useState(false);
+  const [chattingList, setChattingList] = useState([]);
+  const [isCheckChatList, setIsCheckChatList] = useState([]);
   const navigate = useNavigate();
 
   const toggleSearch = useCallback(() => {
@@ -20,10 +26,63 @@ function Chat() {
 
   const toggleSetting = useCallback(() => {
     setIsSetting(!isSetting);
+    setIsCheckChatList([]);
   }, [isSetting]);
 
-  const onClickNavigate = useCallback((id) => {
-    navigate(`${id}`);
+  const onClickCancelSetting = useCallback(() => {
+    setIsSetting(false);
+    setIsCheckChatList([]);
+  }, []);
+
+  const onClickNavigate = useCallback(
+    (e, roomId) => {
+      e.stopPropagation();
+      if (!isSetting) {
+        return navigate(`1054/${roomId}`);
+      }
+      if (isCheckChatList.includes(roomId)) {
+        setIsCheckChatList(isCheckChatList.filter((checkId) => checkId !== roomId));
+        return;
+      }
+      setIsCheckChatList([...isCheckChatList, roomId]);
+    },
+    [isSetting, isCheckChatList],
+  );
+
+  const onClickCheckAll = useCallback(() => {
+    const checkAll = chattingList.map((data) => data.chatId);
+    if (isCheckChatList.length === chattingList.length) {
+      setIsCheckChatList([]);
+      return;
+    }
+    setIsCheckChatList(checkAll);
+  }, [chattingList, isCheckChatList]);
+
+  const apiRoomList = useCallback(async () => {
+    try {
+      const { data: roomData } = await axios.get('/talk/user', {
+        withCredentials: true,
+        headers: {
+          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+        },
+      });
+
+      switch (roomData.status) {
+        case 200:
+          setChattingList(roomData.data);
+          break;
+
+        default:
+          console.dir(roomData.message);
+          break;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    apiRoomList();
   }, []);
 
   return (
@@ -45,35 +104,36 @@ function Chat() {
                 </SearchInputWrap>
               </form>
             </ChatBoxSearch>
+
             <ChatBoxBody Search={isSearch}>
               <form action="">
                 <ChatBoxList>
-                  <ChatBoxCard
-                    isSetting={isSetting}
-                    onClick={() => onClickNavigate(1)}
-                  ></ChatBoxCard>
-                  <ChatBoxCard
-                    isSetting={isSetting}
-                    onClick={() => onClickNavigate(1)}
-                  ></ChatBoxCard>
-                  <ChatBoxCard
-                    isSetting={isSetting}
-                    onClick={() => onClickNavigate(1)}
-                  ></ChatBoxCard>
-                  <ChatBoxCard
-                    isSetting={isSetting}
-                    onClick={() => onClickNavigate(1)}
-                  ></ChatBoxCard>
+                  {chattingList.length > 0 &&
+                    chattingList.map((data, index) => (
+                      <ChatBoxCard
+                        isSetting={isSetting}
+                        onClick={(e) => onClickNavigate(e, data.roomId)}
+                        key={index}
+                        check={isCheckChatList.includes(data.roomId)}
+                      ></ChatBoxCard>
+                    ))}
+
+                  {isSetting && <SettingFakeDiv></SettingFakeDiv>}
                 </ChatBoxList>
                 <DeleteBox active={isSetting}>
                   <CheckAllBox>
                     <InputHide></InputHide>
-                    <LabelCheck>
+                    <LabelCheck
+                      onClick={onClickCheckAll}
+                      active={isCheckChatList.length === chattingList.length}
+                    >
                       <span></span>
                     </LabelCheck>
                   </CheckAllBox>
-                  <button type="reset">선택취소</button>
-                  <button>삭제</button>
+                  <button type="reset" onClick={onClickCancelSetting}>
+                    선택취소
+                  </button>
+                  <button type="submit">삭제</button>
                 </DeleteBox>
               </form>
             </ChatBoxBody>
@@ -349,6 +409,13 @@ const LabelCheck = styled('label')`
     height: 20px;
     background: url(${LogInCheck_off}) center/100% no-repeat;
     transition: background 0.2s;
+
+    ${(props) =>
+      props.active &&
+      css`
+        background: url(${LogInCheck_on});
+        background-size: 100%;
+      `};
   }
 `;
 
@@ -358,4 +425,9 @@ const InputHide = styled('input')`
   clip: rect(1px, 1px, 1px, 1px);
   position: absolute;
   display: none;
+`;
+
+const SettingFakeDiv = styled('div')`
+  width: 100%;
+  height: 60px;
 `;

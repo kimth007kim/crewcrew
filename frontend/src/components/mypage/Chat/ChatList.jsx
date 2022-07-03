@@ -4,6 +4,7 @@ import { forwardRef } from 'react';
 import styled from 'styled-components';
 import ChatCard from './ChatCard';
 import { Scrollbars } from 'react-custom-scrollbars-2';
+import NocontProfile2 from '@/assets/images/NocontProfile2.png';
 
 function ChatList({ chatSections, setSize }, scrollRef) {
   const onScroll = useCallback((values) => {
@@ -19,33 +20,51 @@ function ChatList({ chatSections, setSize }, scrollRef) {
   // 로딩 시 스크롤바 제일 아래로
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollToBottom();
+      setTimeout(() => {
+        scrollRef.current?.scrollToBottom();
+      }, 100);
     }
   }, [scrollRef]);
 
   return (
     <ChatBoxBody>
-      <CustomScrollBars
-        autoHide
-        ref={scrollRef}
-        renderTrackVertical={({ style, ...props }) => (
-          <div {...props} className="track-vertical" style={{ width: '10px' }} />
-        )}
-        renderThumbVertical={(props) => <div {...props} className="thumb-vertical" />}
-        renderView={(props) => <div {...props} className="view" />}
-        onScrollFrame={onScroll}
-      >
-        {Object.entries(chatSections).map(([date, chats]) => {
-          return (
-            <ChatDtWrapper key={date}>
-              <DtDate>{dayjs(date).format('MM.DD')}</DtDate>
-              {chats.map((chat) => (
-                <ChatCard key={chat.messageId} data={chat}></ChatCard>
-              ))}
-            </ChatDtWrapper>
-          );
-        })}
-      </CustomScrollBars>
+      {Object.keys(chatSections).length > 0 ? (
+        <CustomScrollBars
+          autoHide
+          ref={scrollRef}
+          renderTrackVertical={({ style, ...props }) => (
+            <div {...props} className="track-vertical" style={{ width: '10px' }} />
+          )}
+          renderThumbVertical={(props) => <div {...props} className="thumb-vertical" />}
+          renderView={(props) => <div {...props} className="view" />}
+          onScrollFrame={onScroll}
+        >
+          {Object.entries(chatSections).map(([date, chats]) => {
+            return (
+              <ChatDtWrapper key={date}>
+                <DtDate>{dayjs(date).format('MM.DD')}</DtDate>
+                {chats.map((chat) => (
+                  <ChatCard key={chat.messageId} data={chat}></ChatCard>
+                ))}
+              </ChatDtWrapper>
+            );
+          })}
+        </CustomScrollBars>
+      ) : (
+        <NoContent>
+          <div className="illust">
+            <img src={NocontProfile2} alt="noContentImg" />
+          </div>
+          <p>
+            <em>
+              <span></span>
+              {' 님에게 채팅을 보내세요'}
+            </em>
+            <br />
+            "보낸 채팅은 채팅목록에서 확인할 수 있습니다."
+          </p>
+        </NoContent>
+      )}
     </ChatBoxBody>
   );
 }
@@ -60,6 +79,10 @@ const ChatBoxBody = styled('div')`
 
   * {
     scroll-behavior: initial;
+  }
+
+  @media screen and (max-width: 820px) {
+    height: calc(100vh - 380px);
   }
 `;
 
@@ -95,4 +118,46 @@ const DtDate = styled('p')`
   position: sticky;
   top: 0;
   z-index: 1;
+`;
+
+const NoContent = styled('div')`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+
+  .illust {
+    width: 240px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  p {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: center;
+
+    em {
+      font-weight: 700;
+
+      span {
+        color: #00b7ff;
+      }
+    }
+  }
+
+  @media screen and (max-width: 820px) {
+    .illust {
+      width: 200px;
+    }
+  }
 `;

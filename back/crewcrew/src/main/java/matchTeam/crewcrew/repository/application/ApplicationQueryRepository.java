@@ -8,7 +8,9 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.application.*;
+import matchTeam.crewcrew.dto.board.BoardPageDetailResponseDTO;
 import matchTeam.crewcrew.dto.board.BoardResponseDTO;
+import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -84,36 +86,26 @@ public class ApplicationQueryRepository {
     }
 
     /***
-     * 내게 도착한 요청을 조회하는 메소드
-     * @param reqUid 내게 도착한 참여요청 조회를 요구하는 사용자의 uid
-     * @return
+     * 참여 수락된 글 갯수 조회하는 메소드
      */
-    public ApplicationCountResponseDTO getArrivedApplication(Long reqUid) {
-        List<ApplicationResponseDTO> fetch = queryFactory
-                .select(Projections.constructor(ApplicationResponseDTO.class, category.categoryParent.id, category.categoryParent.id.count()))
-                .from(category)
-                .innerJoin(board)
-                .on(category.id.eq(board.category.id))
+    public Long getAcceptedApplicationCnt(User req) {
+        return queryFactory
+                .selectDistinct(new CaseBuilder()
+                        .when(board.id.count().isNull())
+                        .then(0L).otherwise(board.id.count()))
+                .from(board)
                 .innerJoin(application)
-                .on(application.board.id.eq(board.id))
-                .where(board.user.uid.eq(reqUid))
-                .groupBy(category.categoryParent.id)
-                .orderBy(category.categoryParent.id.asc())
-                .fetch();
-
-        ApplicationCountResponseDTO result = ApplicationCountResponseDTO.builder()
-                .results(fetch).build();
-
-        return result;
+                .on(board.id.eq(application.board.id))
+                .where(application.user.uid.eq(req.getUid()).and(application.progress.eq(2)))
+                .fetchOne();
     }
 
     /***
-     * 내게 도착한 요청의 상세 정보를 조회하는 메소드
-
+     * 참여수락된 게시글 조회
      * @param pageable 페이징 관련 변수
      * @return
      */
-    public Page<ApplicationDetailResponseDTO> getArrivedApplicationDetails(User req, Long categoryParentId, Pageable pageable){
+    public Page<ApplicationDetailResponseDTO> getParticipatedBoardDetails(User req, Pageable pageable){
         List<ApplicationDetailResponseDTO> fetch = queryFactory
                 .select(Projections.constructor(ApplicationDetailResponseDTO.class, board, application))
                 .from(board)
@@ -121,7 +113,7 @@ public class ApplicationQueryRepository {
                 .on(board.category.id.eq(category.id))
                 .innerJoin(application)
                 .on(application.board.id.eq(board.id))
-                .where(application.progress.eq(1).and(board.user.uid.eq(req.getUid()).and(category.categoryParent.id.eq(categoryParentId))))
+                .where(application.progress.eq(2).and(application.user.uid.eq(req.getUid())))
                 .orderBy(application.createdDate.desc())
                 .fetch();
 
@@ -132,26 +124,24 @@ public class ApplicationQueryRepository {
                 .on(board.category.id.eq(category.id))
                 .innerJoin(application)
                 .on(application.board.id.eq(board.id))
-                .where(application.progress.eq(1).and(board.user.uid.eq(req.getUid()).and(category.categoryParent.id.eq(categoryParentId))))
+                .where(application.progress.eq(2).and(application.user.uid.eq(req.getUid())))
                 .orderBy(application.createdDate.desc());
 
         return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchCount);
     }
 
     /***
-     * 도착한 신청서를 작성한 사람을 조회
+     * 참여수락된 글의 다른 사람 조회
      * @return
      */
-    public List<ArrivedApplierDetailsDTO> getArrivedApplier(User req, Long boardId){
+    public List<ArrivedApplierDetailsDTO> getParticipatedBoardApplier(User req, Long boardId){
         return queryFactory
                 .selectDistinct(Projections.constructor(ArrivedApplierDetailsDTO.class, user, application))
-                .from(user)
-                    .innerJoin(application)
+                .from(application)
+                    .innerJoin(user)
                     .on(application.user.uid.eq(user.uid))
-                    .innerJoin(board)
-                    .on(board.id.eq(application.board.id))
-                .where(application.progress.eq(1).and(board.id.eq(boardId).and(board.user.uid.eq(req.getUid()))))
-                .orderBy(application.createdDate.desc())
+                .where(application.progress.eq(2).and(application.board.id.eq(boardId)).and(application.user.uid.ne(req.getUid())))
+                .orderBy(application.createdDate.asc())
                 .fetch();
     }
 
@@ -211,7 +201,7 @@ public class ApplicationQueryRepository {
                                 and(board.viewable.eq(false)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(board.expiredDate.asc())
+                .orderBy(board.expiredDate.asc(), board.createdDate.asc())
                 .fetch();
 
         JPAQuery<BoardResponseDTO> countQuery = queryFactory
@@ -222,7 +212,7 @@ public class ApplicationQueryRepository {
                                 and(board.viewable.eq(false)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(board.expiredDate.asc());
+                .orderBy(board.expiredDate.asc(), board.createdDate.asc());
 
         return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchCount);
     }
@@ -333,6 +323,42 @@ public class ApplicationQueryRepository {
                 .fetchOne();
     }
 
+    public Long getAcceptedCrewCountByUid(Long uid) {
+        return queryFactory
+                .select(new CaseBuilder()
+                        .when(application.user.uid.count().isNull())
+                        .then(0L).otherwise(board.id.count()))
+                .from(application)
+                .where(application.user.uid.eq(uid).and(application.progress.eq(2)))
+                .fetchOne();
+    }
+
+    public Page<BoardPageDetailResponseDTO> getAcceptedBoardByUid(Long uid, Pageable pageable) {
+        List<BoardPageDetailResponseDTO> content = queryFactory
+                .select(Projections.constructor(BoardPageDetailResponseDTO.class, board))
+                .from(application)
+                .innerJoin(board)
+                .on(application.board.id.eq(board.id))
+                .where(application.user.uid.eq(uid).and(application.progress.eq(2)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(board.createdDate.desc())
+                .fetch();
+
+        JPAQuery<Board> countQuery = queryFactory
+                .select(board)
+                .from(application)
+                .innerJoin(board)
+                .on(application.board.id.eq(board.id))
+                .where(application.user.uid.eq(uid).and(application.progress.eq(2)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(board.createdDate.desc());
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
+
     public List<ArrivedApplierDetailsDTO> getWaitingCrewDetails(User req, Long boardId, Integer statusCode) {
         return queryFactory
                 .select(Projections.constructor(ArrivedApplierDetailsDTO.class, user, application))
@@ -342,6 +368,34 @@ public class ApplicationQueryRepository {
                 .innerJoin(user)
                 .on(application.user.uid.eq(user.uid))
                 .where(board.id.eq(boardId).and(board.user.uid.eq(req.getUid())).and(application.progress.eq(statusCode)))
+                .fetch();
+    }
+
+    public Long getMyExpiredBoardApplierCount(User req, Long boardId) {
+        return queryFactory
+                .select(new CaseBuilder()
+                        .when(application.user.uid.count().isNull())
+                        .then(0L).otherwise(board.id.count()))
+                .from(application)
+                .innerJoin(user)
+                .on(application.user.uid.eq(user.uid))
+                .innerJoin(board)
+                .on(application.board.id.eq(board.id))
+                .where(board.id.eq(boardId).and(board.user.uid.eq(req.getUid())).and(board.viewable.eq(false)).and(application.progress.eq(2)))
+                .groupBy(board.id)
+                .fetchOne();
+    }
+
+    public List<ArrivedApplierDetailsDTO> getMyExpiredBoardApplierDetails(User req, Long boardId) {
+        return queryFactory
+                .select(Projections.constructor(ArrivedApplierDetailsDTO.class, user, application))
+                .from(application)
+                .innerJoin(user)
+                .on(application.user.uid.eq(user.uid))
+                .innerJoin(board)
+                .on(application.board.id.eq(board.id))
+                .where(board.id.eq(boardId).and(board.user.uid.eq(req.getUid())).and(board.viewable.eq(false)).and(application.progress.eq(2)))
+                .orderBy(application.createdDate.asc())
                 .fetch();
     }
 

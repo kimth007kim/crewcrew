@@ -12,7 +12,7 @@ function ChatCard({ data }) {
   const myCookies = new Cookies();
   const { data: myData } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
 
-  const meCheck = data.publisher.uid === 1;
+  const meCheck = data.publisher.uid === myData.data.uid;
   let otherUser = null;
 
   if (!meCheck) {
@@ -144,6 +144,62 @@ const ChatDt = styled('div')`
     ${ChatTime} {
       bottom: 0;
       right: -40px;
+    }
+  }
+
+  @media screen and (max-width: 820px) {
+    &.me {
+      margin: 24px 20px 0 auto;
+
+      ${ChatTxt} {
+        max-width: calc(100vw - 118px);
+      }
+
+      ${ChatTime} {
+        bottom: 0;
+        left: -40px;
+      }
+    }
+
+    &.other {
+      margin: 20px auto 0 20px;
+
+      ${ChatTxt} {
+        max-width: calc(100vw - 158px);
+      }
+
+      ${ChatTime} {
+        bottom: 0;
+        right: -40px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 300px) {
+    &.me {
+      margin: 24px 10px 0 auto;
+
+      ${ChatTxt} {
+        max-width: calc(100vw - 60px);
+      }
+
+      ${ChatTime} {
+        bottom: 0;
+        left: -40px;
+      }
+    }
+
+    &.other {
+      margin: 20px auto 0 10px;
+
+      ${ChatTxt} {
+        max-width: calc(100vw - 100px);
+      }
+
+      ${ChatTime} {
+        bottom: 0;
+        right: -40px;
+      }
     }
   }
 `;

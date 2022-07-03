@@ -39,7 +39,7 @@ public class ArrivedApplierDetailsDTO {
     @DateTimeFormat(pattern = "MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd")
     @ApiModelProperty(value = "신청날짜", notes = "월일", example = "03-28")
-    private LocalDateTime createdDate;
+    private LocalDateTime appliedDate;
 
     @Builder
     public ArrivedApplierDetailsDTO(User res, Application ap) {
@@ -49,7 +49,7 @@ public class ArrivedApplierDetailsDTO {
         this.profileImage = res.getProfileImage();
         this.commentary = ap.getCommentary();
         this.progress = ap.getProgress();
-        this.createdDate = ap.getCreatedDate();
+        this.appliedDate = ap.getCreatedDate();
     }
 
     public void setLikedCategoryList(List<Long> likedCategoryList){

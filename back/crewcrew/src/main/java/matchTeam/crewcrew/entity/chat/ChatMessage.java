@@ -3,7 +3,6 @@ package matchTeam.crewcrew.entity.chat;
 import lombok.*;
 import matchTeam.crewcrew.entity.BaseTimeEntity;
 import matchTeam.crewcrew.entity.user.User;
-import matchTeam.crewcrew.entity.user.test.Member;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -26,8 +25,8 @@ public class ChatMessage  extends BaseTimeEntity {
     private ChatRoom chatRoom;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "mid")
-    private Member member;
+    @JoinColumn(name = "uid")
+    private User user;
 
     @Column(length = 250)
     private String content;
@@ -35,10 +34,10 @@ public class ChatMessage  extends BaseTimeEntity {
     @Column
     private int readCnt;
 
-    public ChatMessage toEntity(ChatRoom chatRoom,Member member, String content) {
+    public ChatMessage toEntity(ChatRoom chatRoom,User user, String content) {
         return ChatMessage.builder()
                 .chatRoom(chatRoom)
-                .member(member)
+                .user(user)
                 .content(content)
                 .build();
     }

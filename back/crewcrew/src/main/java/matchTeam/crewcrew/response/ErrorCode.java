@@ -125,7 +125,14 @@ public enum ErrorCode {
 
     NOT_MATCH_UID_WITH_BOOKMARK(4101, "UID IS NOT MATCH WITH BOOKMARK", "해당 북마크에 대한 권한이 없는 유저가 북마크 삭제를 요청했습니다."),
 
-    NOT_EXIST_LOGINED_USER(4201, "USER IS NOT EXIST", "로그인하지 않은 상태로 북마크 관련 요청을 했습니다.");
+    NOT_EXIST_LOGINED_USER(4201, "USER IS NOT EXIST", "로그인하지 않은 상태로 북마크 관련 요청을 했습니다."),
+
+
+    //5000~ 채팅 예외
+
+    CHAT_NOT_ALLOWED_USER(5001, "THIS USER IS NOT ALLOWED TO TALK THIS CHATROOM", "현재 방에 참여하지않은 유저입니다.");
+
+
 
     private int status;
     private final String code;

@@ -4,7 +4,6 @@ import lombok.*;
 import matchTeam.crewcrew.entity.BaseTimeEntity;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.user.User;
-import matchTeam.crewcrew.entity.user.test.Member;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
@@ -26,18 +25,18 @@ public class ChatRoom  extends BaseTimeEntity {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name="bid")
+    @JoinColumn(name="board_seq")
     private Board board;
 
     @OneToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name = "publisher")
-    private Member publisher;
+    @JoinColumn(name = "publisherId")
+    private User publisher;
 
     @OneToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name = "subscriber")
-    private Member subscriber;
+    @JoinColumn(name = "subscriberId")
+    private User subscriber;
 
-    public ChatRoom toEntity(Member publisher,Member subscriber,Board board) {
+    public ChatRoom toEntity(User publisher,User subscriber,Board board) {
         return ChatRoom.builder()
                 .publisher(publisher)
                 .subscriber(subscriber)

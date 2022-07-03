@@ -8,10 +8,12 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ApplicationMyCrewResponseDTO {
 
-    private Long myCrewCount = 0L;
+    private Long myExpiredBoardCnt = 0L;
+    private Long myAcceptedApplyBoardCnt = 0L;
 
     @Builder
-    public ApplicationMyCrewResponseDTO(Long myCrewCount) {
-        this.myCrewCount = myCrewCount;
+    public ApplicationMyCrewResponseDTO(Long myExpiredBoardCnt, Long myAcceptedApplyBoardCnt) {
+        this.myExpiredBoardCnt = myExpiredBoardCnt;
+        this.myAcceptedApplyBoardCnt = myAcceptedApplyBoardCnt;
     }
 }
