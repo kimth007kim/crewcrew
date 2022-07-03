@@ -34,11 +34,11 @@ public class QChatRoom extends EntityPathBase<ChatRoom> {
 
     public final StringPath name = createString("name");
 
-    public final matchTeam.crewcrew.entity.user.test.QMember publisher;
+    public final matchTeam.crewcrew.entity.user.QUser publisher;
 
     public final ComparablePath<java.util.UUID> roomId = createComparable("roomId", java.util.UUID.class);
 
-    public final matchTeam.crewcrew.entity.user.test.QMember subscriber;
+    public final matchTeam.crewcrew.entity.user.QUser subscriber;
 
     public QChatRoom(String variable) {
         this(ChatRoom.class, forVariable(variable), INITS);
@@ -59,8 +59,8 @@ public class QChatRoom extends EntityPathBase<ChatRoom> {
     public QChatRoom(Class<? extends ChatRoom> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.board = inits.isInitialized("board") ? new matchTeam.crewcrew.entity.board.QBoard(forProperty("board"), inits.get("board")) : null;
-        this.publisher = inits.isInitialized("publisher") ? new matchTeam.crewcrew.entity.user.test.QMember(forProperty("publisher")) : null;
-        this.subscriber = inits.isInitialized("subscriber") ? new matchTeam.crewcrew.entity.user.test.QMember(forProperty("subscriber")) : null;
+        this.publisher = inits.isInitialized("publisher") ? new matchTeam.crewcrew.entity.user.QUser(forProperty("publisher")) : null;
+        this.subscriber = inits.isInitialized("subscriber") ? new matchTeam.crewcrew.entity.user.QUser(forProperty("subscriber")) : null;
     }
 
 }

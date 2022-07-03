@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.application.*;
 import matchTeam.crewcrew.dto.board.BoardPageDetailResponseDTO;
 import matchTeam.crewcrew.dto.board.BoardResponseDTO;
+import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -321,6 +322,42 @@ public class ApplicationQueryRepository {
                 .groupBy(board.id)
                 .fetchOne();
     }
+
+    public Long getAcceptedCrewCountByUid(Long uid) {
+        return queryFactory
+                .select(new CaseBuilder()
+                        .when(application.user.uid.count().isNull())
+                        .then(0L).otherwise(board.id.count()))
+                .from(application)
+                .where(application.user.uid.eq(uid).and(application.progress.eq(2)))
+                .fetchOne();
+    }
+
+    public Page<BoardPageDetailResponseDTO> getAcceptedBoardByUid(Long uid, Pageable pageable) {
+        List<BoardPageDetailResponseDTO> content = queryFactory
+                .select(Projections.constructor(BoardPageDetailResponseDTO.class, board))
+                .from(application)
+                .innerJoin(board)
+                .on(application.board.id.eq(board.id))
+                .where(application.user.uid.eq(uid).and(application.progress.eq(2)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(board.createdDate.desc())
+                .fetch();
+
+        JPAQuery<Board> countQuery = queryFactory
+                .select(board)
+                .from(application)
+                .innerJoin(board)
+                .on(application.board.id.eq(board.id))
+                .where(application.user.uid.eq(uid).and(application.progress.eq(2)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(board.createdDate.desc());
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
 
     public List<ArrivedApplierDetailsDTO> getWaitingCrewDetails(User req, Long boardId, Integer statusCode) {
         return queryFactory

@@ -3,6 +3,7 @@ package matchTeam.crewcrew.repository.board;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import static matchTeam.crewcrew.entity.application.QApplication.application;
 import static matchTeam.crewcrew.entity.board.QBoard.board;
 import static matchTeam.crewcrew.entity.bookmark.QBookmark.bookmark;
 import static org.springframework.util.CollectionUtils.isEmpty;
@@ -65,6 +67,42 @@ public class BoardSearchRepository{
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
+
+    public Long getRecruitedCrewCountByUid(Long uid){
+        return queryFactory
+                .selectDistinct(new CaseBuilder()
+                        .when(board.user.uid.count().isNull())
+                        .then(0L).otherwise(board.id.count()))
+                .from(board)
+                .where(board.user.uid.eq(uid).and(board.viewable.eq(true)))
+                .fetchOne();
+    }
+
+    public Page<BoardPageDetailResponseDTO> getRecruitedBoardByUid(Long uid, Pageable pageable) {
+        List<BoardPageDetailResponseDTO> content = queryFactory
+                .select(Projections.constructor(BoardPageDetailResponseDTO.class, board))
+                .from(board)
+                .where(
+                        board.user.uid.eq(uid)
+                                .and(board.viewable.eq(true))
+                ).offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(board.createdDate.desc())
+                .fetch();
+
+        JPAQuery<Board> countQuery = queryFactory
+                .select(board)
+                .from(board)
+                .where(
+                        board.user.uid.eq(uid)
+                                .and(board.viewable.eq(true))
+                ).offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(board.createdDate.desc());
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
 
     private OrderSpecifier<?> findOrder(String order){
         if (! hasText(order)){

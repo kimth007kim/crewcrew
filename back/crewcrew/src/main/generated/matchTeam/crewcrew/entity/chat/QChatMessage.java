@@ -31,14 +31,14 @@ public class QChatMessage extends EntityPathBase<ChatMessage> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
-    public final matchTeam.crewcrew.entity.user.test.QMember member;
-
     public final NumberPath<Long> messageId = createNumber("messageId", Long.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
     public final NumberPath<Integer> readCnt = createNumber("readCnt", Integer.class);
+
+    public final matchTeam.crewcrew.entity.user.QUser user;
 
     public QChatMessage(String variable) {
         this(ChatMessage.class, forVariable(variable), INITS);
@@ -59,7 +59,7 @@ public class QChatMessage extends EntityPathBase<ChatMessage> {
     public QChatMessage(Class<? extends ChatMessage> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.chatRoom = inits.isInitialized("chatRoom") ? new QChatRoom(forProperty("chatRoom"), inits.get("chatRoom")) : null;
-        this.member = inits.isInitialized("member") ? new matchTeam.crewcrew.entity.user.test.QMember(forProperty("member")) : null;
+        this.user = inits.isInitialized("user") ? new matchTeam.crewcrew.entity.user.QUser(forProperty("user")) : null;
     }
 
 }
