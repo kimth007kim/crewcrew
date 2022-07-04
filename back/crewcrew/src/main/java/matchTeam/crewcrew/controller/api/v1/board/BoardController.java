@@ -283,6 +283,7 @@ public class BoardController {
                                          @PathVariable Long uid){
 
         BoardCountByUidResponseDTO count = boardService.findProfileByUidCount(uid);
+        System.out.println("count.getAcceptedCrewCntInHobby() = " + count.getAcceptedCrewCntInHobby());
         return ResponseHandler.generateResponse("uid로 프로필페이지에서 모집중인 크루 참여중인 크루 개수 조회하기", HttpStatus.OK, count);
     }
 

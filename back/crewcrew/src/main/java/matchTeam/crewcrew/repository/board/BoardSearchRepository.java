@@ -7,6 +7,8 @@ import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import matchTeam.crewcrew.dto.application.ApplicationCountResponseDTO;
+import matchTeam.crewcrew.dto.application.ApplicationResponseDTO;
 import matchTeam.crewcrew.dto.board.BoardPageDetailResponseDTO;
 import matchTeam.crewcrew.dto.board.BoardResponseDTO;
 import matchTeam.crewcrew.dto.board.QBoardResponseDTO;
@@ -26,6 +28,7 @@ import java.util.List;
 
 import static matchTeam.crewcrew.entity.application.QApplication.application;
 import static matchTeam.crewcrew.entity.board.QBoard.board;
+import static matchTeam.crewcrew.entity.board.QCategory.category;
 import static matchTeam.crewcrew.entity.bookmark.QBookmark.bookmark;
 import static org.springframework.util.CollectionUtils.isEmpty;
 import static org.springframework.util.StringUtils.hasText;
@@ -68,14 +71,20 @@ public class BoardSearchRepository{
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
 
-    public Long getRecruitedCrewCountByUid(Long uid){
-        return queryFactory
-                .selectDistinct(new CaseBuilder()
-                        .when(board.user.uid.count().isNull())
-                        .then(0L).otherwise(board.id.count()))
+    public ApplicationCountResponseDTO getRecruitedCrewCountByUid(Long uid){
+        List<ApplicationResponseDTO> fetch = queryFactory
+                .select(Projections.constructor(ApplicationResponseDTO.class, category.categoryParent.id, category.categoryParent.id.count()))
                 .from(board)
+                .innerJoin(category)
+                .on(board.category.id.eq(category.id))
                 .where(board.user.uid.eq(uid).and(board.viewable.eq(true)))
-                .fetchOne();
+                .groupBy(category.categoryParent.id)
+                .fetch();
+
+        ApplicationCountResponseDTO result = ApplicationCountResponseDTO.builder()
+                .results(fetch).build();
+
+        return result;
     }
 
     public Page<BoardPageDetailResponseDTO> getRecruitedBoardByUid(Long uid, Pageable pageable) {

@@ -1,6 +1,7 @@
 package matchTeam.crewcrew.service.board;
 
 import lombok.RequiredArgsConstructor;
+import matchTeam.crewcrew.dto.application.ApplicationCountResponseDTO;
 import matchTeam.crewcrew.dto.board.*;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.board.Category;
@@ -104,9 +105,16 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public BoardCountByUidResponseDTO findProfileByUidCount(Long uid){
+        ApplicationCountResponseDTO recruitedCrewCountByUid = boardQueryRepository.getRecruitedCrewCountByUid(uid);
+        ApplicationCountResponseDTO acceptedCrewCountByUid = applicationQueryRepository.getAcceptedCrewCountByUid(uid);
+
         return BoardCountByUidResponseDTO.builder()
-                .recruitedCrewCnt(boardQueryRepository.getRecruitedCrewCountByUid(uid))
-                .acceptedCrewCnt(applicationQueryRepository.getAcceptedCrewCountByUid(uid))
+                .recruitedCrewCntInStudy(recruitedCrewCountByUid.getApplyToStudyCount())
+                .recruitedCrewCntInHobby(recruitedCrewCountByUid.getApplyToHobbyCount())
+                .totRecruitedCrewCnt(recruitedCrewCountByUid.getTotalApplyCount())
+                .acceptedCrewCntInStudy(acceptedCrewCountByUid.getApplyToStudyCount())
+                .acceptedCrewCntInHobby(acceptedCrewCountByUid.getApplyToHobbyCount())
+                .totAcceptedCrewCnt(acceptedCrewCountByUid.getTotalApplyCount())
                 .build();
     }
 
