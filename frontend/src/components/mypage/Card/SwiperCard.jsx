@@ -1,36 +1,61 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { format } from 'date-fns';
 import ChatWhite from '@/assets/images/ChatWhite.png';
+import { hobbyFilterArr, studyFilterArr } from '@/frontDB/filterDB';
 
-function SwiperCard() {
+function SwiperCard({ data, boardId }) {
+  const [studyList, setStudyList] = useState([]);
+  const [hobbyList, setHobbyList] = useState([]);
+
+  useEffect(() => {
+    const studyArr = [];
+    const hobbyArr = [];
+
+    data.likedCategoryList.forEach((id) => {
+      const categoryID = String(id);
+      const tmpHobbyArr = hobbyFilterArr.filter((el) => el.value === categoryID);
+      const tmpStudyArr = studyFilterArr.filter((el) => el.value === categoryID);
+      if (tmpHobbyArr.length > 0) {
+        hobbyArr.push(...tmpHobbyArr);
+      } else {
+        studyArr.push(...tmpStudyArr);
+      }
+    });
+
+    setStudyList([...studyArr]);
+    setHobbyList([...hobbyArr]);
+  }, []);
+
   return (
     <>
       <Container>
         <CardHead>
           <CardProfile>
-            <img src="" alt="" />
+            <img src={data.profileImage} alt="" />
           </CardProfile>
           <CardTxt>
-            <h4>재영재영재영</h4>
-            <p>자기소개글입니다자기소개글입니다자기소개글입니다자기소개글입니다</p>
+            <h4>{data.nickName}</h4>
+            <p>{data.commentary}</p>
           </CardTxt>
         </CardHead>
         <CardBody>
           <h5>관심 스터디 크루</h5>
           <LabelList className="study">
-            <li>취업</li>
-            <li>어학</li>
-            <li>고시/공무원</li>
+            {studyList.map((item) => (
+              <li key={`${item.htmlId}`}>{item.name}</li>
+            ))}
           </LabelList>
           <h5>관심 취미 크루</h5>
           <LabelList className="hobby">
-            <li>게임</li>
-            <li>트렌드</li>
+            {hobbyList.map((item) => (
+              <li key={`${item.htmlId}`}>{item.name}</li>
+            ))}
           </LabelList>
         </CardBody>
       </Container>
       <CardBtn>
-        <p>03/28 요청</p>
+        <p>{format(new Date(data.appliedDate), 'MM/dd')} 요청</p>
         <BtnWrapper>
           <button className="chat">채팅</button>
           <button className="nega">거절</button>

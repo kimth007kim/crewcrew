@@ -1,13 +1,23 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import SwiperArrow from '@/assets/images/SwiperArrow.png';
 import SwiperArrowReverse from '@/assets/images/SwiperArrowReverse.png';
 import SettingWhite from '@/assets/images/SettingWhite.png';
 import SwiperBtSection from './SwiperBtSection';
+import { renderDate, renderDay } from '@/utils';
+import { cateogoryAll } from '@/frontDB/filterDB';
+import axios from 'axios';
+import { Cookies } from 'react-cookie';
 
-function RecruitCard({ data }) {
+function RecruitCard({ postData }) {
+  const cookies = new Cookies();
+
+  const [IsDisable, setIsDisable] = useState(false);
   const [isSwiperClick, setIsSwiperClick] = useState(false);
   const [toggleCheck, setToggleCheck] = useState(false);
+
+  const [participantList, setParticipantList] = useState([]);
+  const [waitingList, setWaitingList] = useState([]);
 
   const handleClick = useCallback(() => {
     setIsSwiperClick(!isSwiperClick);
@@ -29,6 +39,64 @@ function RecruitCard({ data }) {
     setIsSwiperClick(true);
   }, [toggleCheck]);
 
+  useEffect(() => {
+    const bool = !postData.viewable || renderDay(postData.expiredDate) < 0;
+    setIsDisable(bool);
+  }, []);
+
+  const getParticipant = useCallback(async () => {
+    try {
+      const { data } = await axios.get(
+        `/application/recruiting/applier/${postData.boardId}?statusCode=2`,
+        {
+          withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+          },
+        },
+      );
+      switch (data.status) {
+        case 200:
+          setParticipantList([...data.data.content]);
+          break;
+
+        default:
+          break;
+      }
+    } catch (error) {
+      console.dir(error);
+    }
+  }, []);
+
+  const getWaiting = useCallback(async () => {
+    try {
+      const { data } = await axios.get(
+        `/application/recruiting/applier/${postData.boardId}?statusCode=1`,
+        {
+          withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+          },
+        },
+      );
+      switch (data.status) {
+        case 200:
+          setWaitingList([...data.data.content]);
+          break;
+
+        default:
+          break;
+      }
+    } catch (error) {
+      console.dir(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    getParticipant();
+    getWaiting();
+  }, []);
+
   return (
     <Container>
       <Wrapper>
@@ -36,12 +104,12 @@ function RecruitCard({ data }) {
           <CardTopHeader>
             <CardHead>
               <TextBox>
-                <Dday>D-2</Dday>
-                <PostDate>2/4 (목) 게시</PostDate>
+                <Dday>{IsDisable ? '마감' : `D-${renderDay(postData.expiredDate)}`}</Dday>
+                <PostDate>{renderDate(postData.createdDate)} 게시</PostDate>
               </TextBox>
               <DetailBox>
                 <p>
-                  <span>(8/10명)</span> 모집완료
+                  <span>{`(${postData.recruitedCrew}/${postData.totalCrew}명)`}</span> 모집완료
                 </p>
                 <button>크루원채팅</button>
               </DetailBox>
@@ -49,13 +117,17 @@ function RecruitCard({ data }) {
             <CardBody>
               <TextBox>
                 <TitleBox>
-                  <h5>함께 크루원 모집 플랫폼 작업하실 분 모십니다~!</h5>
+                  <h5>{postData.title}</h5>
                 </TitleBox>
                 <TextList>
-                  <CategoryText textColor={1 === 1 ? '#005ec5' : '#F7971E'}>
-                    고시/공무원
+                  <CategoryText textColor={postData.categoryParentId === 1 ? '#005ec5' : '#F7971E'}>
+                    {
+                      cateogoryAll.filter(
+                        (category) => `${postData.categoryId}` === category.value,
+                      )[0].name
+                    }
                   </CategoryText>
-                  <p>오프라인</p>
+                  <p>{postData.approachCode ? '온라인' : '오프라인'}</p>
                 </TextList>
                 <ButtonBox>
                   <button>삭제</button>
@@ -71,13 +143,13 @@ function RecruitCard({ data }) {
             <p>참여자 및 대기자 관리</p>
             <CardToggle>
               <ToggleText active={!toggleCheck} onClick={() => onClickToggleText(false)}>
-                참여자 8명
+                참여자 {postData.recruitedCrew}명
               </ToggleText>
               <ToggleBtn onClick={onClickToggle}>
                 <ToggleIndicator active={toggleCheck}></ToggleIndicator>
               </ToggleBtn>
               <ToggleText active={toggleCheck} onClick={() => onClickToggleText(true)}>
-                대기자 3명
+                대기자 {postData.appliedCrew}명
               </ToggleText>
             </CardToggle>
             <SwiperBtn onClick={handleClick} active={isSwiperClick}>
@@ -86,7 +158,12 @@ function RecruitCard({ data }) {
           </CardTopFooter>
         </CardTop>
         <CardBottom active={isSwiperClick}>
-          <SwiperBtSection isSwiperClick={isSwiperClick}></SwiperBtSection>
+          <SwiperBtSection
+            isSwiperClick={isSwiperClick}
+            toggleCheck={toggleCheck}
+            participantList={participantList}
+            waitingList={waitingList}
+          ></SwiperBtSection>
         </CardBottom>
       </Wrapper>
     </Container>

@@ -1,5 +1,5 @@
 /* eslint-disable import/no-unresolved */
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
 import styled, { css } from 'styled-components';
@@ -12,7 +12,7 @@ import 'swiper/css/pagination';
 import SwiperCard from './SwiperCard';
 
 SwiperCore.use([Navigation, Pagination]);
-function SwiperBtSection({ data, isSwiperClick }) {
+function SwiperBtSection({ isSwiperClick, participantList, waitingList, toggleCheck, boardId }) {
   const [swiper, setSwiper] = useState(null);
   const [mainIndex, setMainIndex] = useState(0);
 
@@ -47,15 +47,19 @@ function SwiperBtSection({ data, isSwiperClick }) {
   return (
     <PostSwiperWrapper active={isSwiperClick}>
       <Swiper {...swiperParams} ref={setSwiper} className="card_swiper">
-        <SwiperSlide>
-          <SwiperCard data={data} />
-        </SwiperSlide>
-        <SwiperSlide>
-          <SwiperCard data={data} />
-        </SwiperSlide>
-        <SwiperSlide>
-          <SwiperCard data={data} />
-        </SwiperSlide>
+        {!toggleCheck
+          ? participantList.length > 0 &&
+            participantList.map((p) => (
+              <SwiperSlide key={p && p.apId}>
+                <SwiperCard data={p} boardId={boardId} />
+              </SwiperSlide>
+            ))
+          : waitingList.length > 0 &&
+            waitingList.map((w) => (
+              <SwiperSlide key={w.apId}>
+                <SwiperCard data={w} boardId={boardId} />
+              </SwiperSlide>
+            ))}
       </Swiper>
       <ButtonPrev ref={btnPrevRef} />
       <ButtonNext ref={btnNextRef} />

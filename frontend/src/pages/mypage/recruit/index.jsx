@@ -7,12 +7,26 @@ import axios from 'axios';
 import { Cookies } from 'react-cookie';
 import Button from '@/components/common/Button';
 import RecruitCard from '@/components/mypage/Card/RecruitCard';
+import MyPagination from '@/components/mypage/MyPagination';
 
 function Recruit() {
   const cookies = new Cookies();
   const [crewRecruit, setCrewRecruit] = useState(null);
+  const [postsPerPage, setPostsPerPage] = useState(10);
 
-  const apiRecruit = useCallback(async () => {
+  // 스터디 리스트
+  const [studyAppList, setStudyAppList] = useState([]);
+  const [studyPageData, setStudyPageData] = useState(null);
+  const [studyTotalPage, setStudyTotalPage] = useState(0);
+  const [studyCurrentPage, setStudyCurrentPage] = useState(1);
+
+  // 취미 리스트
+  const [hobbyAppList, setHobbyAppList] = useState([]);
+  const [hobbyPageData, setHobbyPageData] = useState(null);
+  const [hobbyTotalPage, setHobbyTotalPage] = useState(0);
+  const [hobbyCurrentPage, setHobbyCurrentPage] = useState(1);
+
+  const getRecruit = useCallback(async () => {
     try {
       const { data } = await axios.get('/application/recruiting', {
         withCredentials: true,
@@ -33,8 +47,148 @@ function Recruit() {
     }
   }, []);
 
+  const getRecruitStudyList = useCallback(async () => {
+    try {
+      const { data } = await axios.get('/application/recruiting/1', {
+        withCredentials: true,
+        headers: {
+          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+        },
+      });
+      switch (data.status) {
+        case 200:
+          setStudyAppList([...data.data.contents]);
+          setStudyPageData({
+            ...data.data,
+          });
+          setStudyTotalPage(data.data.totalPages);
+          break;
+
+        default:
+          break;
+      }
+    } catch (error) {
+      console.dir(error);
+    }
+  }, []);
+
+  const getRecruitHobbyList = useCallback(async () => {
+    try {
+      const { data } = await axios.get('/application/recruiting/2', {
+        withCredentials: true,
+        headers: {
+          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+        },
+      });
+      switch (data.status) {
+        case 200:
+          setHobbyAppList([...data.data.contents]);
+          setHobbyPageData({
+            ...data.data,
+          });
+          setHobbyTotalPage(data.data.totalPages);
+          break;
+
+        default:
+          break;
+      }
+    } catch (error) {
+      console.dir(error);
+    }
+  }, []);
+
+  const renderStudyList = () => {
+    if (studyAppList.length > 0) {
+      return (
+        <CardWrapper>
+          <ul>
+            {studyAppList.map((post) => (
+              <li key={post.title + post.boardId}>
+                <RecruitCard postData={post}></RecruitCard>
+              </li>
+            ))}
+          </ul>
+          <MyPagination
+            data={studyPageData}
+            currentPage={studyCurrentPage}
+            postsPerPage={postsPerPage}
+            totalPage={studyTotalPage}
+          ></MyPagination>
+        </CardWrapper>
+      );
+    }
+
+    return (
+      <NoContent>
+        <p>
+          <em>크루에 참여요청한 내역이 없습니다.</em>
+          <br></br>
+          크루에 참여하셔서<br className="fold"></br> 활동 이력을 남겨보세요!
+        </p>
+        <Button
+          widthSize={100}
+          heightSize={50}
+          paddings={0}
+          fontSize={15}
+          lineHeight={26}
+          borderRadius={10}
+          size={'regular'}
+          color={'lightBlue'}
+        >
+          크루참여
+        </Button>
+      </NoContent>
+    );
+  };
+
+  const renderHobbyList = () => {
+    if (hobbyAppList.length > 0) {
+      return (
+        <CardWrapper>
+          <ul>
+            {hobbyAppList.map((post) => (
+              <li key={post.title + post.boardId}>
+                <RecruitCard postData={post}></RecruitCard>
+              </li>
+            ))}
+          </ul>
+          <MyPagination
+            data={hobbyPageData}
+            currentPage={hobbyCurrentPage}
+            postsPerPage={postsPerPage}
+            totalPage={hobbyTotalPage}
+          ></MyPagination>
+        </CardWrapper>
+      );
+    }
+
+    return (
+      <NoContent>
+        <p>
+          <em>크루에 참여요청한 내역이 없습니다.</em>
+          <br></br>
+          크루에 참여하셔서<br className="fold"></br> 활동 이력을 남겨보세요!
+        </p>
+        <Button
+          widthSize={100}
+          heightSize={50}
+          paddings={0}
+          fontSize={15}
+          lineHeight={26}
+          borderRadius={10}
+          size={'regular'}
+          color={'lightBlue'}
+        >
+          크루참여
+        </Button>
+      </NoContent>
+    );
+  };
+
   useEffect(() => {
-    apiRecruit();
+    getRecruit();
+    getRecruitStudyList();
+    getRecruitHobbyList();
   }, []);
 
   return (
@@ -50,44 +204,13 @@ function Recruit() {
       <Wrap className="study">
         <SectionWrap>
           <h3>스터디 크루</h3>
-          <CardWrapper>
-            <ul>
-              <li>
-                <RecruitCard />
-              </li>
-              <li>
-                <RecruitCard />
-              </li>
-              <li>
-                <RecruitCard />
-              </li>
-            </ul>
-            <PaginationWrapper></PaginationWrapper>
-          </CardWrapper>
+          {renderStudyList()}
         </SectionWrap>
       </Wrap>
       <Wrap className="hobby">
         <SectionWrap>
           <h3>취미 크루</h3>
-          <NoContent>
-            <p>
-              <em>내가 모집중인 크루가 없습니다.</em>
-              <br></br>
-              크루 모집글을 작성해 크루원을 모집하세요!
-            </p>
-            <Button
-              widthSize={100}
-              heightSize={50}
-              paddings={0}
-              fontSize={15}
-              lineHeight={26}
-              borderRadius={10}
-              size={'regular'}
-              color={'lightBlue'}
-            >
-              크루원 모집
-            </Button>
-          </NoContent>
+          {renderHobbyList()}
         </SectionWrap>
       </Wrap>
     </MyLayout>
