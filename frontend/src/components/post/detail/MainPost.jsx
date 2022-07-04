@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import StarOff from '@/assets/images/ButtonStar.png';
 import StarOn from '@/assets/images/ButtonStarOn.png';
+import SettingWhite from '@/assets/images/SettingWhite.png';
 import Markdown from '@/lib/Markdown';
 import { viewDay } from '@/utils';
 import { differenceInDays, format, getDay } from 'date-fns';
@@ -17,7 +18,6 @@ import ParticipateModal from '../modal/Participate';
 import { loginCheck } from '@/atoms/login';
 
 function MainPost({ data }) {
-  console.log(data);
   const cookies = new Cookies();
   const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
@@ -134,7 +134,12 @@ function MainPost({ data }) {
               <ButtonStar type="button" onClick={bookmarkClick} bookmark={isBookmarked} />
             </li>
             <li>
-              <Button type="button" disabled={IsDisable} onClick={handleOpenPartiModal}>
+              <Button
+                type="button"
+                disabled={IsDisable}
+                onClick={handleOpenPartiModal}
+                myPost={myData?.data?.uid === data.uid}
+              >
                 참여하기
               </Button>
             </li>
@@ -365,6 +370,13 @@ const Button = styled('button')`
     background-color: #e2e2e2;
     cursor: default;
   }
+
+  ${(props) =>
+    props.myPost &&
+    css`
+      text-indent: -9999px;
+      background: #00b7ff url(${SettingWhite}) center/24px no-repeat;
+    `}
 `;
 
 const MarkDownbody = styled('div')`

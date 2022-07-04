@@ -187,7 +187,11 @@ function PostCard({ data }) {
           </TextBox>
           <ButtonBox>
             <ButtonDetail>상세보기</ButtonDetail>
-            <ButtonParticipate disabled={IsDisable} onClick={handleOpenPartiModal}>
+            <ButtonParticipate
+              disabled={IsDisable}
+              onClick={handleOpenPartiModal}
+              myPost={myData?.data?.uid === data.uid}
+            >
               참여하기
             </ButtonParticipate>
           </ButtonBox>
@@ -315,8 +319,7 @@ const ButtonDetail = styled.button`
 
 const ButtonParticipate = styled.button`
   cursor: pointer;
-  text-indent: -9999px;
-  background: #00b7ff url(${SettingWhite}) center/24px no-repeat;
+  background-color: #00b7ff;
   transition: 0.3s;
 
   :hover {
@@ -327,6 +330,13 @@ const ButtonParticipate = styled.button`
     background-color: #e2e2e2;
     cursor: default;
   }
+
+  ${(props) =>
+    props.myPost &&
+    css`
+      text-indent: -9999px;
+      background: #00b7ff url(${SettingWhite}) center/24px no-repeat;
+    `}
 `;
 
 const CardHead = styled.div`
