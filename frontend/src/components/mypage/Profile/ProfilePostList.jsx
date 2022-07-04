@@ -18,7 +18,7 @@ function ProfilePostList() {
   const cookies = new Cookies();
   const dataList = ['recruit', 'participate'];
   const [userBoardAccepted, setUserBoardAccepted] = useState([]);
-  const [userBoradRecruited, setUserBoardRecruited] = useState([]);
+  const [userBoardRecruited, setUserBoardRecruited] = useState([]);
   const [active, setActive] = useState(dataList[0]);
   const [pageData, setPageData] = useState(null);
   const [totalPage, setTotalPage] = useState(0);
@@ -37,6 +37,7 @@ function ProfilePostList() {
       try {
         const { data } = await axios.get(`/profile/board/accepted/${uid}?page=${page}`);
         if (data.status === 200) {
+          setUserBoardRecruited([]);
           setUserBoardAccepted([...data.data.contents]);
           setPageData({ ...data.data });
           setTotalPage(data.data.totalPages);
@@ -57,6 +58,7 @@ function ProfilePostList() {
       try {
         const { data } = await axios.get(`/profile/board/recruited/${uid}?page=${page}`);
         if (data.status === 200) {
+          setUserBoardAccepted([]);
           setUserBoardRecruited([...data.data.contents]);
           setPageData({ ...data.data });
           setTotalPage(data.data.totalPages);
@@ -86,12 +88,12 @@ function ProfilePostList() {
   }, []);
 
   const renderRecruitList = () => {
-    if (userBoradRecruited.length > 0) {
+    if (userBoardRecruited.length > 0) {
       return (
         <>
           <PostWrapper>
             <ul>
-              {userBoradRecruited.map((data) => (
+              {userBoardRecruited.map((data) => (
                 <li key={data.boardId}>
                   <PostCard data={data} />
                 </li>
@@ -159,10 +161,12 @@ function ProfilePostList() {
     }
   };
 
-  const NavigateVailidPartiPage = () => {
+  const NavigateVailidPartiPage = (cat = dataList[0]) => {
     const pageNum = query.get('page');
-    if (pageNum && pageNum >= 2 && !userBoardAccepted.length && !userBoradRecruited.length) {
-      navigate(`/profile/${uid}`);
+    if (pageNum && pageNum >= 2) {
+      cat === dataList[0]
+        ? !userBoardRecruited.length && navigate(`/profile/${uid}`)
+        : !userBoardAccepted.length && navigate(`/profile/${uid}`);
     }
   };
 
@@ -170,6 +174,7 @@ function ProfilePostList() {
     const pageNum = query.get('page');
     setCurrentPage(pageNum || 1);
     active === dataList[0] ? getUserBoardRecruited(pageNum - 1) : getUserBoardAccepted(pageNum - 1);
+    NavigateVailidPartiPage(active);
   }, [query.get('page'), active]);
 
   useEffect(() => {
