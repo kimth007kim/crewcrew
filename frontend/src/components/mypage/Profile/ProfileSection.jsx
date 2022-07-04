@@ -4,13 +4,13 @@ import ProfileTop from './ProfileTop';
 import ProfileTag from './ProfileTag';
 import CrewBoxWrap from './CrewBoxWrap';
 
-function ProfileSection({ data }) {
+function ProfileSection({ userInfo, userBoard }) {
   return (
     <Container>
       <Wrapper>
-        <ProfileTop data={data} />
-        <ProfileTag data={data.categoryId} />
-        <CrewBoxWrap />
+        <ProfileTop data={userInfo} />
+        <ProfileTag data={userInfo.categoryId} />
+        <CrewBoxWrap userBoard={userBoard} />
       </Wrapper>
     </Container>
   );

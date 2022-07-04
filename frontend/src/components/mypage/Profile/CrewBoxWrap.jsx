@@ -2,11 +2,21 @@ import React from 'react';
 import styled from 'styled-components';
 import CrewBox from './CrewBox';
 
-function CrewBoxWrap() {
+function CrewBoxWrap({ userBoard }) {
   return (
     <Container>
-      <CrewBox cat={'recruit'} />
-      <CrewBox cat={'participate'} />
+      <CrewBox
+        cat={'recruit'}
+        totalNum={userBoard.totRecruitedCrewCnt}
+        study={userBoard.recruitedCrewCntInStudy}
+        hobby={userBoard.recruitedCrewCntInHobby}
+      />
+      <CrewBox
+        cat={'participate'}
+        totalNum={userBoard.totAcceptedCrewCnt}
+        study={userBoard.acceptedCrewCntInStudy}
+        hobby={userBoard.acceptedCrewCntInHobby}
+      />
     </Container>
   );
 }

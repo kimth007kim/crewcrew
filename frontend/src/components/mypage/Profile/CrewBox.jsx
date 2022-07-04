@@ -1,19 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function CrewBox({ cat }) {
+function CrewBox({ cat, totalNum, study, hobby }) {
   return (
     <Container>
-      <Num>3개</Num>
+      <Num>{totalNum}개</Num>
       <Tit>{cat === 'recruit' ? '모집중인 크루' : '참여중인 크루'}</Tit>
       <CrewCat>
         <li>
           <h4>스터디</h4>
-          <p>2</p>
+          <p>{study}</p>
         </li>
         <li>
           <h4>취미</h4>
-          <p>2</p>
+          <p>{hobby}</p>
         </li>
       </CrewCat>
     </Container>

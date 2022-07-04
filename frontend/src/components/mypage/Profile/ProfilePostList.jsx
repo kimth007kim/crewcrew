@@ -2,11 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import MyListButton from '../Button/MyListButton';
 import PostCard from '@/components/post/PostCard';
-import MyPaginationMain from '../MyPaginationMain';
+import PagenationProfile from '@/components/mypage/Profile/PagenationProfile';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
 import useQuery from '@/hooks/useQuery';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
@@ -14,45 +14,62 @@ import fetcher from '@/utils/fetcher';
 function ProfilePostList() {
   const navigate = useNavigate();
   const query = useQuery();
+  const uid = useParams().uid;
   const cookies = new Cookies();
   const dataList = ['recruit', 'participate'];
-  const [bookmarkArr, setBookmarkArr] = useState([]);
+  const [userBoardAccepted, setUserBoardAccepted] = useState([]);
+  const [userBoradRecruited, setUserBoardRecruited] = useState([]);
   const [active, setActive] = useState(dataList[0]);
   const [pageData, setPageData] = useState(null);
   const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(query.get('page') || 1);
   const [postsPerPage, setPostsPerPage] = useState(10);
   const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
-  const [bookmarkLoaded, setBookmarkLoaded] = useState(false);
+  const [postLoaded, setPostLoaded] = useState(false);
 
   const tapBtnClick = (data) => {
     setActive(data);
   };
 
-  /*const axiosGetBookmark = useCallback(
+  const getUserBoardAccepted = useCallback(
     async (page) => {
-      if (myData && !myData.data) return false;
+      if (!myData?.data) return false;
       try {
-        const { data } = await axios.get(`/bookmark/list?page=${page}&order=recent`, {
-          withCredentials: true,
-          headers: {
-            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
-          },
-        });
+        const { data } = await axios.get(`/profile/board/accepted/${uid}?page=${page}`);
         if (data.status === 200) {
+          setUserBoardAccepted([...data.data.contents]);
           setPageData({ ...data.data });
-          setBookmarkArr([...data.data.contents]);
           setTotalPage(data.data.totalPages);
         }
       } catch (error) {
         toast.error(error);
         console.dir(error);
       } finally {
-        setBookmarkLoaded(true);
+        setPostLoaded(true);
       }
     },
     [myData],
-  );*/
+  );
+
+  const getUserBoardRecruited = useCallback(
+    async (page) => {
+      if (!myData?.data) return false;
+      try {
+        const { data } = await axios.get(`/profile/board/recruited/${uid}?page=${page}`);
+        if (data.status === 200) {
+          setUserBoardRecruited([...data.data.contents]);
+          setPageData({ ...data.data });
+          setTotalPage(data.data.totalPages);
+        }
+      } catch (error) {
+        toast.error(error);
+        console.dir(error);
+      } finally {
+        setPostLoaded(true);
+      }
+    },
+    [myData],
+  );
 
   const handleResize = () => {
     if (window.innerWidth > 768) {
@@ -69,19 +86,19 @@ function ProfilePostList() {
   }, []);
 
   const renderRecruitList = () => {
-    /*if (bookmarkArr.length > 0) {
+    if (userBoradRecruited.length > 0) {
       return (
         <>
           <PostWrapper>
             <ul>
-              {bookmarkArr.map((data) => (
+              {userBoradRecruited.map((data) => (
                 <li key={data.boardId}>
                   <PostCard data={data} />
                 </li>
               ))}
             </ul>
           </PostWrapper>
-          <MyPaginationMain
+          <PagenationProfile
             data={pageData}
             currentPage={currentPage}
             postsPerPage={postsPerPage}
@@ -102,48 +119,58 @@ function ProfilePostList() {
           </button>
         </EmptyList>
       );
-    }*/
-    return (
-      <EmptyList>
-        <p>
-          <em>모집중인 크루가 없습니다.</em>
-          <br />
-          모집글을 둘러보고 <span>관심가는 크루에 참여해보세요!</span>
-        </p>
-        <button type="button" onClick={LandingPost}>
-          크루참여
-        </button>
-      </EmptyList>
-    );
+    }
   };
 
   const renderParticipatePost = () => {
-    return (
-      <EmptyList>
-        <p>
-          <em>참여중인 크루가 없습니다.</em>
-          <br />
-          모집글을 둘러보고 <span>관심가는 크루에 참여해보세요!</span>
-        </p>
-        <button type="button" onClick={LandingPost}>
-          크루참여
-        </button>
-      </EmptyList>
-    );
+    if (userBoardAccepted.length > 0) {
+      return (
+        <>
+          <PostWrapper>
+            <ul>
+              {userBoardAccepted.map((data) => (
+                <li key={data.boardId}>
+                  <PostCard data={data} />
+                </li>
+              ))}
+            </ul>
+          </PostWrapper>
+          <PagenationProfile
+            data={pageData}
+            currentPage={currentPage}
+            postsPerPage={postsPerPage}
+            totalPage={totalPage}
+          />
+        </>
+      );
+    } else {
+      return (
+        <EmptyList>
+          <p>
+            <em>스크랩한 모집글이 없습니다.</em>
+            <br />
+            모집글을 둘러보고 <span>관심가는 크루에 참여해보세요!</span>
+          </p>
+          <button type="button" onClick={LandingPost}>
+            크루참여
+          </button>
+        </EmptyList>
+      );
+    }
   };
 
-  /*const NavigateVailidBookmarkedPage = () => {
+  const NavigateVailidPartiPage = () => {
     const pageNum = query.get('page');
-    if (pageNum && pageNum >= 2 && !bookmarkArr.length) {
-      navigate('/mypage');
+    if (pageNum && pageNum >= 2 && !userBoardAccepted.length && !userBoradRecruited.length) {
+      navigate(`/profile/${uid}`);
     }
-  };*/
+  };
 
   useEffect(() => {
     const pageNum = query.get('page');
     setCurrentPage(pageNum || 1);
-    //axiosGetBookmark(pageNum - 1);
-  }, [query.get('page')]);
+    active === dataList[0] ? getUserBoardRecruited(pageNum - 1) : getUserBoardAccepted(pageNum - 1);
+  }, [query.get('page'), active]);
 
   useEffect(() => {
     handleResize();
@@ -154,9 +181,9 @@ function ProfilePostList() {
     };
   }, []);
 
-  /*useEffect(() => {
-    bookmarkLoaded && NavigateVailidBookmarkedPage();
-  }, [bookmarkLoaded]);*/
+  useEffect(() => {
+    postLoaded && NavigateVailidPartiPage();
+  }, [postLoaded]);
 
   return (
     <Container>

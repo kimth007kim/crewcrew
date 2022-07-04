@@ -38,7 +38,7 @@ function CrewBox() {
       console.dir(error);
     }
   }, []);
-
+  console.log(crewRequest);
   const apiRecruit = useCallback(async () => {
     try {
       const { data } = await axios.get('/application/recruiting', {
