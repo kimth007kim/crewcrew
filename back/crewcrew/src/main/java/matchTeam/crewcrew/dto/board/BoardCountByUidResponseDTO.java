@@ -8,12 +8,20 @@ import lombok.NoArgsConstructor;
 @Getter
 public class BoardCountByUidResponseDTO {
 
-    private Long recruitedCrewCnt = 0L;
-    private Long acceptedCrewCnt = 0L;
+    private Long recruitedCrewCntInStudy = 0L;
+    private Long recruitedCrewCntInHobby = 0L;
+    private Long totRecruitedCrewCnt = 0L;
+    private Long acceptedCrewCntInStudy = 0L;
+    private Long acceptedCrewCntInHobby = 0L;
+    private Long totAcceptedCrewCnt = 0L;
 
     @Builder
-    public BoardCountByUidResponseDTO(Long recruitedCrewCnt, Long acceptedCrewCnt) {
-        this.recruitedCrewCnt = recruitedCrewCnt;
-        this.acceptedCrewCnt = acceptedCrewCnt;
+    public BoardCountByUidResponseDTO(Long recruitedCrewCntInStudy, Long recruitedCrewCntInHobby, Long totRecruitedCrewCnt, Long acceptedCrewCntInStudy, Long acceptedCrewCntInHobby, Long totAcceptedCrewCnt) {
+        this.recruitedCrewCntInStudy = recruitedCrewCntInStudy;
+        this.recruitedCrewCntInHobby = recruitedCrewCntInHobby;
+        this.totRecruitedCrewCnt = totRecruitedCrewCnt;
+        this.acceptedCrewCntInStudy = acceptedCrewCntInStudy;
+        this.acceptedCrewCntInHobby = acceptedCrewCntInHobby;
+        this.totAcceptedCrewCnt = totAcceptedCrewCnt;
     }
 }

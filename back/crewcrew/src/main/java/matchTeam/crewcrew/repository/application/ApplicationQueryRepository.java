@@ -323,14 +323,22 @@ public class ApplicationQueryRepository {
                 .fetchOne();
     }
 
-    public Long getAcceptedCrewCountByUid(Long uid) {
-        return queryFactory
-                .select(new CaseBuilder()
-                        .when(application.user.uid.count().isNull())
-                        .then(0L).otherwise(board.id.count()))
+    public ApplicationCountResponseDTO getAcceptedCrewCountByUid(Long uid) {
+        List<ApplicationResponseDTO> fetch = queryFactory
+                .select(Projections.constructor(ApplicationResponseDTO.class, category.categoryParent.id, category.categoryParent.id.count()))
                 .from(application)
+                .innerJoin(board)
+                .on(application.board.id.eq(board.id))
+                .innerJoin(category)
+                .on(board.category.id.eq(category.id))
                 .where(application.user.uid.eq(uid).and(application.progress.eq(2)))
-                .fetchOne();
+                .groupBy(category.categoryParent.id)
+                .fetch();
+
+        ApplicationCountResponseDTO result = ApplicationCountResponseDTO.builder()
+                .results(fetch).build();
+
+        return result;
     }
 
     public Page<BoardPageDetailResponseDTO> getAcceptedBoardByUid(Long uid, Pageable pageable) {
