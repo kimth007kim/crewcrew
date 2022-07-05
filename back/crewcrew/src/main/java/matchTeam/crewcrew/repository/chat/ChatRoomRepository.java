@@ -17,5 +17,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, UUID> {
     Optional<ChatRoom> findById(UUID roomId);
     List<ChatRoom> findBySubscriberOrPublisher(User member1, User member2);
     Optional<ChatRoom> findByRoomIdAndSubscriberOrPublisher(UUID roomId, User member1, User member2);
+    Optional<ChatRoom> findByRoomIdAndPublisher(UUID roomId, User user);
+    Optional<ChatRoom> findByRoomIdAndSubscriber(UUID roomId, User user);
     Optional<ChatRoom> findBySubscriberAndPublisherAndBoard(User sub, User pub, Board board);
 }

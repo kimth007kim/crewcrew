@@ -19,7 +19,7 @@ function ProfilePostList() {
   const dataList = ['recruit', 'participate'];
   const [userBoardAccepted, setUserBoardAccepted] = useState([]);
   const [userBoardRecruited, setUserBoardRecruited] = useState([]);
-  const [active, setActive] = useState(dataList[0]);
+  const [active, setActive] = useState(localStorage.getItem('listCategory'));
   const [pageData, setPageData] = useState(null);
   const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(query.get('page') || 1);
@@ -28,7 +28,10 @@ function ProfilePostList() {
   const [postLoaded, setPostLoaded] = useState(false);
 
   const tapBtnClick = (data) => {
-    setActive(data);
+    data === dataList[0]
+      ? (localStorage.listCategory = 'recruit')
+      : (localStorage.listCategory = 'participate');
+    setActive(localStorage.getItem('listCategory'));
   };
 
   const getUserBoardAccepted = useCallback(
@@ -180,6 +183,10 @@ function ProfilePostList() {
   useEffect(() => {
     handleResize();
     window.addEventListener('resize', handleResize);
+    if (localStorage.getItem('listCategory') === null) {
+      localStorage.listCategory = 'recruit';
+      setActive(localStorage.getItem('listCategory'));
+    }
 
     return () => {
       window.removeEventListener('resize', handleResize);
