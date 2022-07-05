@@ -1,24 +1,54 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import SwiperArrow from '@/assets/images/SwiperArrow.png';
 import SwiperArrowReverse from '@/assets/images/SwiperArrowReverse.png';
 import SettingWhite from '@/assets/images/SettingWhite.png';
 import { Cookies } from 'react-cookie';
 import SwiperBtSection from './SwiperBtSection';
+import { renderDate, renderDay } from '@/utils';
+import { cateogoryAll } from '@/frontDB/filterDB';
+import axios from 'axios';
 
-function ActivityCard() {
+function ActivityCard({ postData }) {
   const cookies = new Cookies();
 
   const [IsDisable, setIsDisable] = useState(false);
   const [isSwiperClick, setIsSwiperClick] = useState(false);
-  const [toggleCheck, setToggleCheck] = useState(false);
 
   const [participantList, setParticipantList] = useState([]);
-  const [waitingList, setWaitingList] = useState([]);
 
   const handleClick = useCallback(() => {
     setIsSwiperClick(!isSwiperClick);
   }, [isSwiperClick]);
+
+  const getParticipant = useCallback(async () => {
+    try {
+      const { data } = await axios.get(`/application/myCrew/details/applier/${postData.boardId}`, {
+        withCredentials: true,
+        headers: {
+          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+        },
+      });
+      switch (data.status) {
+        case 200:
+          setParticipantList([...data.data.content]);
+          break;
+
+        default:
+          break;
+      }
+    } catch (error) {
+      console.dir(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    const bool = !postData.viewable || renderDay(postData.expiredDate) < 0;
+    setIsDisable(bool);
+    getParticipant();
+  }, []);
+
+  const deadlineDate = renderDay(postData.expiredDate);
 
   return (
     <Container>
@@ -28,11 +58,11 @@ function ActivityCard() {
             <CardHead>
               <TextBox>
                 <Dday>마감</Dday>
-                <PostDate>2/4 (목) 게시</PostDate>
+                <PostDate>{renderDate(postData.createdDate)} 게시</PostDate>
               </TextBox>
               <DetailBox>
                 <p>
-                  <span>{`(8/10명)`}</span> 모집완료
+                  <span>{`(${postData.recruitedCrew}/${postData.totalCrew}명)`}</span> 모집완료
                 </p>
                 <button>크루원채팅</button>
               </DetailBox>
@@ -40,13 +70,20 @@ function ActivityCard() {
             <CardBody>
               <TextBox>
                 <TitleBox>
-                  <h5>함께 크루원 모집 플랫폼 작업하실분 모십니다~! 크루</h5>
+                  <h5>{postData.title}</h5>
                 </TitleBox>
                 <TextList>
-                  <CategoryText textColor={1 === 1 ? '#005ec5' : '#F7971E'} isDisabled>
-                    고시/공무원
+                  <CategoryText
+                    textColor={postData.categoryParentId === 1 ? '#005ec5' : '#F7971E'}
+                    isDisabled
+                  >
+                    {
+                      cateogoryAll.filter(
+                        (category) => `${postData.categoryId}` === category.value,
+                      )[0].name
+                    }
                   </CategoryText>
-                  <p>{1 ? '온라인' : '오프라인'}</p>
+                  <p>{postData.approachCode ? '온라인' : '오프라인'}</p>
                 </TextList>
                 <ButtonBox>
                   <button>삭제</button>
@@ -54,7 +91,8 @@ function ActivityCard() {
                 </ButtonBox>
                 <RightBtnBox>
                   <button className="deadline">
-                    마감일 +10<span>일</span>
+                    마감일 {deadlineDate < -10 ? '+10' : deadlineDate * -1}
+                    <span>일</span>
                   </button>
                 </RightBtnBox>
               </TextBox>
@@ -64,14 +102,13 @@ function ActivityCard() {
         <CardBottom active={isSwiperClick}>
           <BtTop>
             <p>
-              참여자 <em>0</em>
+              참여자 <em>{postData.recruitedCrew}</em>
             </p>
           </BtTop>
           <SwiperBtSection
             isSwiperClick={isSwiperClick}
-            toggleCheck={toggleCheck}
             participantList={participantList}
-            waitingList={waitingList}
+            waitingList={[]}
           ></SwiperBtSection>
         </CardBottom>
       </Wrapper>

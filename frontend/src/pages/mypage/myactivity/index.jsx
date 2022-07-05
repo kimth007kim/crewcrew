@@ -11,39 +11,68 @@ import styled from 'styled-components';
 function MyActivity() {
   const cookies = new Cookies();
   const [crewActivity, setCrewActivity] = useState(null);
+  const [deadlineList, setDeadlineList] = useState([]);
+  const [acceptList, setAcceptList] = useState([]);
 
   const apiActivity = useCallback(async () => {
     try {
-      let context = {};
-      const { data: crewData } = await axios.get('/application/myCrew', {
+      const { data } = await axios.get('/application/myCrew', {
         withCredentials: true,
         headers: {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
         },
       });
-      switch (crewData.status) {
+      switch (data.status) {
         case 200:
-          context = { ...crewData.data };
+          setCrewActivity({ ...data.data });
           break;
 
         default:
-          console.dir(crewData.message);
+          console.dir(data.message);
           break;
       }
-      const { data: participateData } = await axios.get('/application/participated', {
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  const getActivityDeadline = useCallback(async () => {
+    try {
+      const { data } = await axios.get('/application/myCrew/details', {
         withCredentials: true,
         headers: {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
         },
       });
-      switch (participateData.status) {
+      switch (data.status) {
         case 200:
-          setCrewActivity({ ...context, ...participateData.data });
+          setDeadlineList([...data.data.content]);
           break;
 
         default:
-          console.dir(participateData.message);
+          console.dir(data.message);
+          break;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
 
+  const getActivityAccept = useCallback(async () => {
+    try {
+      const { data } = await axios.get('/application/myCrew/participated/details', {
+        withCredentials: true,
+        headers: {
+          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+        },
+      });
+      switch (data.status) {
+        case 200:
+          setAcceptList([...data.data.contents]);
+          break;
+
+        default:
+          console.dir(data.message);
           break;
       }
     } catch (error) {
@@ -53,15 +82,19 @@ function MyActivity() {
 
   useEffect(() => {
     apiActivity();
+    getActivityDeadline();
+    getActivityAccept();
   }, []);
 
   return (
     <MyLayout>
       <MypageSubTop title="나의 활동 크루"></MypageSubTop>
       <MypageMainSubTop
-        total={crewActivity ? crewActivity.myCrewCount + crewActivity.participatedCount : 0}
-        studyCnt={crewActivity ? crewActivity.myCrewCount : 0}
-        hobbyCnt={crewActivity ? crewActivity.participatedCount : 0}
+        total={
+          crewActivity ? crewActivity.myAcceptedApplyBoardCnt + crewActivity.myExpiredBoardCnt : 0
+        }
+        studyCnt={crewActivity ? crewActivity.myExpiredBoardCnt : 0}
+        hobbyCnt={crewActivity ? crewActivity.myAcceptedApplyBoardCnt : 0}
         title="나의 활동 크루"
         desc="내가 활동중인 크루를 이곳에서 간편하게 관리하세요!"
         disable={true}
@@ -73,12 +106,12 @@ function MyActivity() {
           <h3>내가 쓴 마감글</h3>
           <CardWrapper>
             <ul>
-              <li>
-                <ActivityCard></ActivityCard>
-              </li>
-              <li>
-                <ActivityCard></ActivityCard>
-              </li>
+              {deadlineList.length > 0 &&
+                deadlineList.map((v) => (
+                  <li key={v.boardId}>
+                    <ActivityCard postData={v}></ActivityCard>
+                  </li>
+                ))}
             </ul>
           </CardWrapper>
         </SectionWrap>

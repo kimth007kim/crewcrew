@@ -38,7 +38,7 @@ function CrewBox() {
       console.dir(error);
     }
   }, []);
-  console.log(crewRequest);
+
   const apiRecruit = useCallback(async () => {
     try {
       const { data } = await axios.get('/application/recruiting', {
@@ -62,36 +62,19 @@ function CrewBox() {
 
   const apiActivity = useCallback(async () => {
     try {
-      let context = {};
-      const { data: crewData } = await axios.get('/application/myCrew', {
+      const { data } = await axios.get('/application/myCrew', {
         withCredentials: true,
         headers: {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
         },
       });
-      switch (crewData.status) {
+      switch (data.status) {
         case 200:
-          context = { ...crewData.data };
+          setCrewActivity({ ...data.data });
           break;
 
         default:
-          console.dir(crewData.message);
-          break;
-      }
-      const { data: participateData } = await axios.get('/application/participated', {
-        withCredentials: true,
-        headers: {
-          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
-        },
-      });
-      switch (participateData.status) {
-        case 200:
-          setCrewActivity({ ...context, ...participateData.data });
-          break;
-
-        default:
-          console.dir(participateData.message);
-
+          console.dir(data.message);
           break;
       }
     } catch (error) {
@@ -131,9 +114,11 @@ function CrewBox() {
           title="나의 활동 크루"
           small_title1="내 마감글"
           small_title2="참여중 글"
-          total={crewActivity ? crewActivity.myCrewCount + crewActivity.participatedCount : 0}
-          count_one={crewActivity ? crewActivity.myCrewCount : 0}
-          count_two={crewActivity ? crewActivity.participatedCount : 0}
+          total={
+            crewActivity ? crewActivity.myAcceptedApplyBoardCnt + crewActivity.myExpiredBoardCnt : 0
+          }
+          count_one={crewActivity ? crewActivity.myExpiredBoardCnt : 0}
+          count_two={crewActivity ? crewActivity.myAcceptedApplyBoardCnt : 0}
           onClick={() => handleLocate('/mypage/activity')}
           deactive={true}
         />

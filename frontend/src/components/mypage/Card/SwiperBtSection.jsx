@@ -12,7 +12,13 @@ import 'swiper/css/pagination';
 import SwiperCard from './SwiperCard';
 
 SwiperCore.use([Navigation, Pagination]);
-function SwiperBtSection({ isSwiperClick, participantList, waitingList, toggleCheck, boardId }) {
+function SwiperBtSection({
+  isSwiperClick,
+  participantList,
+  waitingList,
+  toggleCheck = false,
+  boardId,
+}) {
   const [swiper, setSwiper] = useState(null);
   const [mainIndex, setMainIndex] = useState(0);
 
