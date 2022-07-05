@@ -19,15 +19,17 @@ function ChatDetailBox({ roomId }) {
   const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const getKey = (pageIndex, previousPageData) => {
-    if (previousPageData && !previousPageData.length) return null; // 끝에 도달
+    if (previousPageData && previousPageData.data.length < 10) {
+      return null;
+    }
     return [`/talk/room/${roomId}/${pageIndex}`, cookies.get('X-AUTH-TOKEN')];
   };
 
   const { data: chatData, mutate: mutateChat, setSize } = useSWRInfinite(getKey, fetcher);
 
   const [content, setContent] = useState('');
-
-  let isReachingEnd = false;
+  const [roomInfo, setRoomInfo] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const chatBtnRef = useRef(null);
   const scrollbarRef = useRef(null);
@@ -58,13 +60,13 @@ function ChatDetailBox({ roomId }) {
         mutateChat().then(() => {
           setTimeout(() => {
             scrollbarRef.current?.scrollToBottom();
-          }, 100);
+          }, 50);
           inputRef.current.focus();
         });
         setContent('');
       }
     },
-    [content, client, myData, roomId],
+    [content, client, myData, roomId, scrollbarRef],
   );
 
   const onKeyDownChat = useCallback(
@@ -98,14 +100,15 @@ function ChatDetailBox({ roomId }) {
   const subscribe = () => {
     if (client !== null) {
       client.subscribe(`/sub/chat/room/${roomId}`, (data) => {
-        console.log(data);
         mutateChat().then(() => {
           if (scrollbarRef.current) {
             if (
               scrollbarRef.current.getScrollHeight() <
-              scrollbarRef.current.getClientHeight() + scrollbarRef.current.getScrollTop() + 50
+              scrollbarRef.current.getClientHeight() + scrollbarRef.current.getScrollTop() + 200
             ) {
-              scrollbarRef.current.scrollToBottom();
+              setTimeout(() => {
+                scrollbarRef.current.scrollToBottom();
+              }, 100);
             }
           }
         });
@@ -116,16 +119,11 @@ function ChatDetailBox({ roomId }) {
   const connect = () => {
     client = new Client({
       brokerURL: 'wss://api.crewcrew.org/ws-stomp',
-      // connectHeaders: {
-      //   login: myData.data.id,
-      //   passcode: 'password',
-      // },
+
       webSocketFactory: function () {
         return new SockJS(`${process.env.API_URL}/ws-stomp`);
       },
-      debug: function (log) {
-        console.log(log);
-      },
+      debug: function () {},
 
       onConnect: () => {
         subscribe();
@@ -141,6 +139,36 @@ function ChatDetailBox({ roomId }) {
     }
   };
 
+  const getRoomInfo = useCallback(async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(`/talk/room/${roomId}/detail`, {
+        withCredentials: true,
+        headers: {
+          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+        },
+      });
+
+      switch (data.status) {
+        case 200:
+          setRoomInfo({ ...data.data });
+          break;
+
+        default:
+          console.dir(data.message);
+          break;
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    getRoomInfo();
+  }, [roomId]);
+
   // // 로딩 시 read
   useEffect(() => {
     readChat();
@@ -152,6 +180,7 @@ function ChatDetailBox({ roomId }) {
     return () => disConnect();
   }, []);
 
+  let isReachingEnd = false;
   let chatSections = [];
 
   if (chatData) {
@@ -159,7 +188,7 @@ function ChatDetailBox({ roomId }) {
       return data.data;
     });
 
-    isReachingEnd = arrayData[arrayData.length - 1]?.length < 20;
+    isReachingEnd = arrayData[arrayData.length - 1]?.length < 10;
 
     chatSections = makeSection(arrayData ? arrayData.flat().reverse() : []);
   }
@@ -169,14 +198,14 @@ function ChatDetailBox({ roomId }) {
       <BoxHead>
         <HeadTop>
           <h3>
-            인생인생인생
-            <img src={IconFlag} alt="flag" />
+            {roomInfo && roomInfo.other.nickName}
+            {roomInfo && roomInfo.captain && <img src={IconFlag} alt="flag" />}
           </h3>
           <button className="del">삭제</button>
         </HeadTop>
         <p>
-          <CategoryTxt>고시/공무원</CategoryTxt>
-          함께 크루원 모집 플랫폼 작업하실분 모십니다~!크루크루
+          <CategoryTxt>{roomInfo && roomInfo.categoryName}</CategoryTxt>
+          {roomInfo && roomInfo.boardTitle}
         </p>
       </BoxHead>
       <ChatList
@@ -184,6 +213,7 @@ function ChatDetailBox({ roomId }) {
         ref={scrollbarRef}
         setSize={setSize}
         isReachingEnd={isReachingEnd}
+        loading={loading}
       ></ChatList>
       <ChatBoxBottom>
         <form onSubmit={onSubmitContent}>

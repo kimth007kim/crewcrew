@@ -5,10 +5,11 @@ import styled from 'styled-components';
 import ChatCard from './ChatCard';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import NocontProfile2 from '@/assets/images/NocontProfile2.png';
+import Loader from '@/components/common/Loader';
 
-function ChatList({ chatSections, setSize }, scrollRef) {
+function ChatList({ chatSections, setSize, isReachingEnd, loading }, scrollRef) {
   const onScroll = useCallback((values) => {
-    if (values.scrollTop === 0) {
+    if (values.scrollTop === 0 && !isReachingEnd) {
       setSize((prevSize) => prevSize + 1).then(() => {
         // 스크롤 위치 유지
         const current = scrollRef?.current;
@@ -17,18 +18,17 @@ function ChatList({ chatSections, setSize }, scrollRef) {
     }
   }, []);
 
-  // 로딩 시 스크롤바 제일 아래로
-  useEffect(() => {
-    if (scrollRef.current) {
-      setTimeout(() => {
-        scrollRef.current?.scrollToBottom();
-      }, 100);
+  const renderSection = useCallback(() => {
+    if (loading) {
+      return (
+        <LoadingWrapper>
+          <Loader />
+        </LoadingWrapper>
+      );
     }
-  }, [scrollRef]);
 
-  return (
-    <ChatBoxBody>
-      {Object.keys(chatSections).length > 0 ? (
+    if (Object.keys(chatSections).length > 0) {
+      return (
         <CustomScrollBars
           autoHide
           ref={scrollRef}
@@ -43,14 +43,16 @@ function ChatList({ chatSections, setSize }, scrollRef) {
             return (
               <ChatDtWrapper key={date}>
                 <DtDate>{dayjs(date).format('MM.DD')}</DtDate>
-                {chats.map((chat) => (
-                  <ChatCard key={chat.messageId} data={chat}></ChatCard>
+                {chats.map((chat, index) => (
+                  <ChatCard key={index + chat.content + chat.messageId} data={chat}></ChatCard>
                 ))}
               </ChatDtWrapper>
             );
           })}
         </CustomScrollBars>
-      ) : (
+      );
+    } else {
+      return (
         <NoContent>
           <div className="illust">
             <img src={NocontProfile2} alt="noContentImg" />
@@ -64,9 +66,18 @@ function ChatList({ chatSections, setSize }, scrollRef) {
             "보낸 채팅은 채팅목록에서 확인할 수 있습니다."
           </p>
         </NoContent>
-      )}
-    </ChatBoxBody>
-  );
+      );
+    }
+  }, [loading, chatSections]);
+
+  // 로딩 시 스크롤바 제일 아래로
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current?.scrollToBottom();
+    }
+  }, [scrollRef.current, loading]);
+
+  return <ChatBoxBody>{renderSection()}</ChatBoxBody>;
 }
 
 export default forwardRef(ChatList);
@@ -118,6 +129,14 @@ const DtDate = styled('p')`
   position: sticky;
   top: 0;
   z-index: 1;
+`;
+
+const LoadingWrapper = styled('div')`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
 `;
 
 const NoContent = styled('div')`

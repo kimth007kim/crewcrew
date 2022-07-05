@@ -1,11 +1,16 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import IconFlag from '@/assets/images/IconFlag.png';
-import ProfileMail from '@/assets/images/ProfileMail.png';
 import LogInCheck_off from '@/assets/images/LogInCheck_off.png';
 import LogInCheck_on from '@/assets/images/LogInCheck_on.png';
+import { format } from 'date-fns';
+import { cateogoryAll } from '@/frontDB/filterDB';
 
-function ChatBoxCard({ isSetting, onClick, check }) {
+function ChatBoxCard({ isSetting, onClick, check, data }) {
+  const categoryData = cateogoryAll.filter(
+    (category) => `${data.categoryId}` === category.value,
+  )[0];
+
   return (
     <Container onClick={onClick}>
       <ContentSet active={isSetting}>
@@ -14,33 +19,32 @@ function ChatBoxCard({ isSetting, onClick, check }) {
           <span></span>
         </LabelCheck>
       </ContentSet>
+
       <ContentCard active={isSetting}>
         <ContentHead>
           <HeadBox className="profile">
-            <img src={ProfileMail} alt="profile" className="profile" />
-            <img src={IconFlag} alt="flag" className="flag" />
-            <p>재영재영유재영유재영</p>
+            <img src={data.other.profileImage} alt="profile" className="profile" />
+            {data.captain && <img src={IconFlag} alt="flag" className="flag" />}
+            <p>{data.other.nickName}</p>
           </HeadBox>
           <HeadBox className="post">
             <p>
-              <CategoryTxt>고시/공무원</CategoryTxt>
-              함께 크루원 모집 플랫폼작업하실분
+              <CategoryTxt textColor={categoryData.color}>{categoryData.name}</CategoryTxt>
+              {data.boardTitle}
             </p>
           </HeadBox>
         </ContentHead>
         <ContentBody>
-          <p>
-            안녕하세요. 요청한 내용 보고 궁금한 점이 있어 채팅 남깁니다. 안녕하세요. 요청한 내용
-            보고 궁금한 점이 있어 채팅 남깁니다. 안녕하세요. 요청한 내용 보고 궁금한 점이 있어 채팅
-            남깁니다.
-          </p>
+          <p>{data.other.uid ? data.recentMessageContent : '이 채팅방은 삭제되었습니다'}</p>
         </ContentBody>
         <ContentFooter>
-          <PDate>05.10</PDate>
-          <PNew>
-            NEW
-            <span>2</span>
-          </PNew>
+          <PDate>{format(new Date(data.recentMessageTime), 'MM.dd')}</PDate>
+          {data.unReadCnt !== 0 && (
+            <PNew>
+              NEW
+              <span>{data.unReadCnt}</span>
+            </PNew>
+          )}
         </ContentFooter>
       </ContentCard>
     </Container>
@@ -87,6 +91,7 @@ const Container = styled('li')`
 `;
 
 const ContentSet = styled('div')`
+  width: 0px;
   min-width: 0px;
   padding-top: 5px;
   overflow: hidden;
@@ -140,6 +145,12 @@ const CategoryTxt = styled('span')`
   margin-right: 8px;
 
   color: #0f3fa6;
+
+  ${(props) =>
+    props.textColor &&
+    css`
+      color: ${props.textColor};
+    `}
 `;
 
 const HeadBox = styled('div')`

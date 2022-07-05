@@ -10,6 +10,8 @@ import ChatBoxCard from '@/components/mypage/Chat/ChatBoxCard';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
+import NocontProfile from '@/assets/images/NocontProfile.png';
+import Loader from '@/components/common/Loader';
 
 function Chat() {
   const cookies = new Cookies();
@@ -18,6 +20,7 @@ function Chat() {
   const [isSetting, setIsSetting] = useState(false);
   const [chattingList, setChattingList] = useState([]);
   const [isCheckChatList, setIsCheckChatList] = useState([]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const toggleSearch = useCallback(() => {
@@ -58,8 +61,9 @@ function Chat() {
     setIsCheckChatList(checkAll);
   }, [chattingList, isCheckChatList]);
 
-  const apiRoomList = useCallback(async () => {
+  const getRoomList = useCallback(async () => {
     try {
+      setLoading(true);
       const { data: roomData } = await axios.get('/talk/user', {
         withCredentials: true,
         headers: {
@@ -78,11 +82,74 @@ function Chat() {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
+  const renderSection = useCallback(() => {
+    if (loading) {
+      return (
+        <LoadingWrapper>
+          <Loader />
+        </LoadingWrapper>
+      );
+    }
+
+    if (chattingList.length > 0) {
+      return (
+        <>
+          <ChatBoxList>
+            {chattingList.map((data, index) => (
+              <ChatBoxCard
+                key={index}
+                isSetting={isSetting}
+                onClick={(e) => onClickNavigate(e, data.roomId)}
+                data={data}
+                check={isCheckChatList.includes(data.roomId)}
+              ></ChatBoxCard>
+            ))}
+            {isSetting && <SettingFakeDiv></SettingFakeDiv>}
+          </ChatBoxList>
+          <DeleteBox active={isSetting}>
+            <CheckAllBox>
+              <InputHide></InputHide>
+              <LabelCheck
+                onClick={onClickCheckAll}
+                active={isCheckChatList.length === chattingList.length}
+              >
+                <span></span>
+              </LabelCheck>
+            </CheckAllBox>
+            <button type="reset" onClick={onClickCancelSetting}>
+              선택취소
+            </button>
+            <button type="submit">삭제</button>
+          </DeleteBox>
+        </>
+      );
+    } else {
+      return (
+        <NoContent>
+          <div className="illust">
+            <img src={NocontProfile} alt="noContentImg" />
+          </div>
+          <p>
+            <em>
+              <span></span>
+              {'진행중인 채팅이 없습니다'}
+            </em>
+            <br />
+            "언제든지 채팅을 시작해보세요!"
+          </p>
+          <button>크루참여</button>
+        </NoContent>
+      );
+    }
+  }, [loading, isSetting, isCheckChatList]);
+
   useEffect(() => {
-    apiRoomList();
+    getRoomList();
   }, []);
 
   return (
@@ -106,36 +173,7 @@ function Chat() {
             </ChatBoxSearch>
 
             <ChatBoxBody Search={isSearch}>
-              <form action="">
-                <ChatBoxList>
-                  {chattingList.length > 0 &&
-                    chattingList.map((data, index) => (
-                      <ChatBoxCard
-                        isSetting={isSetting}
-                        onClick={(e) => onClickNavigate(e, data.roomId)}
-                        key={index}
-                        check={isCheckChatList.includes(data.roomId)}
-                      ></ChatBoxCard>
-                    ))}
-
-                  {isSetting && <SettingFakeDiv></SettingFakeDiv>}
-                </ChatBoxList>
-                <DeleteBox active={isSetting}>
-                  <CheckAllBox>
-                    <InputHide></InputHide>
-                    <LabelCheck
-                      onClick={onClickCheckAll}
-                      active={isCheckChatList.length === chattingList.length}
-                    >
-                      <span></span>
-                    </LabelCheck>
-                  </CheckAllBox>
-                  <button type="reset" onClick={onClickCancelSetting}>
-                    선택취소
-                  </button>
-                  <button type="submit">삭제</button>
-                </DeleteBox>
-              </form>
+              <form action="">{renderSection()}</form>
             </ChatBoxBody>
           </BoxWrapper>
         </SectionWrap>
@@ -327,6 +365,14 @@ const ChatBoxBody = styled('div')`
   }
 `;
 
+const LoadingWrapper = styled('div')`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
 const ChatBoxList = styled('ul')``;
 
 const DeleteBox = styled('div')`
@@ -430,4 +476,60 @@ const InputHide = styled('input')`
 const SettingFakeDiv = styled('div')`
   width: 100%;
   height: 60px;
+`;
+
+const NoContent = styled('div')`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+
+  .illust {
+    width: 240px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  p {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: center;
+
+    em {
+      font-weight: 700;
+
+      span {
+        color: #00b7ff;
+      }
+    }
+  }
+
+  button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: #00b7ff;
+    width: 74px;
+    height: 30px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    transition: 0.3s;
+  }
+
+  @media screen and (max-width: 820px) {
+    .illust {
+      width: 200px;
+    }
+  }
 `;
