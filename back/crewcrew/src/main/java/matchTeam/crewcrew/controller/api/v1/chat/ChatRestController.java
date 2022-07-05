@@ -5,23 +5,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import matchTeam.crewcrew.dto.chat.*;
-import matchTeam.crewcrew.dto.user.ProfileChangeRequestDto;
-import matchTeam.crewcrew.entity.chat.ChatMessage;
 import matchTeam.crewcrew.entity.chat.ChatRoom;
 import matchTeam.crewcrew.entity.user.User;
-import matchTeam.crewcrew.repository.chat.ChatMessageRepository;
-import matchTeam.crewcrew.repository.user.UserRepository;
-import matchTeam.crewcrew.response.ErrorCode;
-import matchTeam.crewcrew.response.exception.CrewException;
 import matchTeam.crewcrew.service.chat.ChatMessageService;
 import matchTeam.crewcrew.service.chat.ChatRoomService;
 import matchTeam.crewcrew.response.ResponseHandler;
 import matchTeam.crewcrew.service.user.UserService;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -59,13 +51,8 @@ public class ChatRestController {
     }
 
     @ApiOperation(value = "X-AUTH-TOKEN으로 특정 멤버가 속한 모든 채팅방 조회")
-<<<<<<< HEAD
-    @GetMapping("/user")
-    public ResponseEntity<Object> memberId( @RequestHeader("X-AUTH-TOKEN") String token) {
-=======
     @GetMapping("/user/{page}")
     public ResponseEntity<Object> memberId( @RequestHeader("X-AUTH-TOKEN") String token, @PathVariable("page") int page) {
->>>>>>> origin/Oauth
         User user = userService.tokenChecker(token);
         List<RoomListResponseDTO> messages = chatRoomService.roomList(user.getUid(),page,2);
         return ResponseHandler.generateResponse("member가 속한 방 리스트 조회 완료", HttpStatus.OK, messages);
