@@ -57,6 +57,7 @@ public class ApplicationQueryRepository {
      * 내 참여요청의 상세 정보를 조회하는 메소드
      * @param pageable 페이징 관련 변수
      * @return
+     * @return
      */
     public Page<ApplicationDetailResponseDTO> getMyApplicationDetails(User req, Long categoryParentId, Pageable pageable){
         List<ApplicationDetailResponseDTO> fetch = queryFactory

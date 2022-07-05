@@ -35,7 +35,7 @@ public class ChatController {
 
         ChatRoom chatRoom = chatRoomService.isValidRoom(chatMessageDTO.getRoomId());
 
-        chatRoomService.findByRoomIdAndSubscriberOrPublisher(chatRoom.getRoomId(),user,user);
+        chatRoomService.findByRoomIdAndSubscriberOrPublisher(chatRoom.getRoomId(),user);
         chatMessageService.saveMessage(chatRoom, user, chatMessageDTO.getContent());
         System.out.println("/sub/chat/room/"+chatMessageDTO.getRoomId());
 

@@ -22,17 +22,16 @@ public class ChatRoom  extends BaseTimeEntity {
     
     private UUID roomId;
 
-    private String name;
 
     @ManyToOne
     @JoinColumn(name="board_seq")
     private Board board;
 
-    @OneToOne(fetch=FetchType.EAGER)
+    @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "publisherId")
     private User publisher;
 
-    @OneToOne(fetch=FetchType.EAGER)
+    @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "subscriberId")
     private User subscriber;
 
