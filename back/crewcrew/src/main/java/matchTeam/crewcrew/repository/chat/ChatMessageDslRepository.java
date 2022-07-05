@@ -86,7 +86,7 @@ public class ChatMessageDslRepository {
                 .select(Projections.constructor(ChatMessageRecentMessageDTO.class, chatMessage))
                 .from(chatMessage)
                 .where(chatMessage.chatRoom.roomId.eq(roomId))
-                .orderBy(chatMessage.createdDate.asc())
+                .orderBy(chatMessage.createdDate.desc())
                 .limit(1)
                 .fetchOne();
         return message;
