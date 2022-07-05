@@ -143,8 +143,8 @@ public class ChatRoomService {
         return rooms;
     }
 
-    public List<RoomListResponseDTO> roomList(Long uid, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public List<RoomListResponseDTO> roomList(Long uid) {
+//        Pageable pageable = PageRequest.of(page, size);
         User member = userRepository.findById(uid).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
         List<ChatRoom> rooms = chatRoomRepository.findBySubscriberOrPublisher(member, member);
         int length = rooms.size();
@@ -197,16 +197,16 @@ public class ChatRoomService {
             result.add(roomList);
         }
         result.sort(Comparator.comparing(RoomListResponseDTO::getRecentMessageTime).reversed());
-        final int start = (int) pageable.getOffset();
-        final int end = Math.min((start + pageable.getPageSize()), result.size());
-        final Page<RoomListResponseDTO> paged = new PageImpl<>(result.subList(start, end), pageable, result.size());
-        List<RoomListResponseDTO> array = new ArrayList<>();
-
-        for (RoomListResponseDTO r : paged) {
-            RoomListResponseDTO roomListResponseDTO = new RoomListResponseDTO(r.getRoomId(), r.getBoardSeq(), r.isCaptain(), r.getBoardTitle(), r.getOther(), r.getCategoryId(), r.getCategoryName(), r.getUnReadCnt(), r.getRecentMessageTime(), r.getRecentMessageContent());
-            array.add(roomListResponseDTO);
-        }
-        return array;
+//        final int start = (int) pageable.getOffset();
+//        final int end = Math.min((start + pageable.getPageSize()), result.size());
+//        final Page<RoomListResponseDTO> paged = new PageImpl<>(result.subList(start, end), pageable, result.size());
+//        List<RoomListResponseDTO> array = new ArrayList<>();
+//
+//        for (RoomListResponseDTO r : paged) {
+//            RoomListResponseDTO roomListResponseDTO = new RoomListResponseDTO(r.getRoomId(), r.getBoardSeq(), r.isCaptain(), r.getBoardTitle(), r.getOther(), r.getCategoryId(), r.getCategoryName(), r.getUnReadCnt(), r.getRecentMessageTime(), r.getRecentMessageContent());
+//            array.add(roomListResponseDTO);
+//        }
+        return result;
     }
 
 

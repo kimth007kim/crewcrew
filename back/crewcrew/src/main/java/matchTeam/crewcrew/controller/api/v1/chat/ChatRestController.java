@@ -51,10 +51,10 @@ public class ChatRestController {
     }
 
     @ApiOperation(value = "X-AUTH-TOKEN으로 특정 멤버가 속한 모든 채팅방 조회")
-    @GetMapping("/user/{page}")
-    public ResponseEntity<Object> memberId( @RequestHeader("X-AUTH-TOKEN") String token, @PathVariable("page") int page) {
+    @GetMapping("/user")
+    public ResponseEntity<Object> memberId( @RequestHeader("X-AUTH-TOKEN") String token) {
         User user = userService.tokenChecker(token);
-        List<RoomListResponseDTO> messages = chatRoomService.roomList(user.getUid(),page,10);
+        List<RoomListResponseDTO> messages = chatRoomService.roomList(user.getUid());
         return ResponseHandler.generateResponse("member가 속한 방 리스트 조회 완료", HttpStatus.OK, messages);
     }
 
