@@ -54,7 +54,7 @@ public class ChatRestController {
     @GetMapping("/user/{page}")
     public ResponseEntity<Object> memberId( @RequestHeader("X-AUTH-TOKEN") String token, @PathVariable("page") int page) {
         User user = userService.tokenChecker(token);
-        List<RoomListResponseDTO> messages = chatRoomService.roomList(user.getUid(),page,2);
+        List<RoomListResponseDTO> messages = chatRoomService.roomList(user.getUid(),page,10);
         return ResponseHandler.generateResponse("member가 속한 방 리스트 조회 완료", HttpStatus.OK, messages);
     }
 
