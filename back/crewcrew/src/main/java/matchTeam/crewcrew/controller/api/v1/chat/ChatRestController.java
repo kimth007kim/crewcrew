@@ -38,7 +38,7 @@ public class ChatRestController {
     private final ChatMessageService chatMessageService;
 
     @ApiOperation(value = "채팅방 1개의 정보를 확인합니다")
-    @GetMapping("/room/{roomId}/info")
+    @GetMapping("/room/{roomId}/detail")
     public ResponseEntity<Object> roomInfo(@PathVariable UUID roomId, @RequestHeader("X-AUTH-TOKEN") String token) {
         User user = userService.tokenChecker(token);
 
