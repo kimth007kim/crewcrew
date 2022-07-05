@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { useLocation, NavLink } from 'react-router-dom';
+import { useLocation, NavLink, useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
 import { Cookies } from 'react-cookie';
 import NavMobile from './mobile';
@@ -37,6 +37,7 @@ function Lnb({ path }) {
   const [authVisible, openAuth, closeAuth] = useModal();
 
   const [postVisible, openPost, closePost] = useModal();
+  const navigate = useNavigate();
 
   const handleAuthModal = useCallback(() => {
     openAuth();
@@ -45,6 +46,18 @@ function Lnb({ path }) {
   const handlePostModal = () => {
     if (myData && myData.data) {
       openPost();
+    } else {
+      const login = window.confirm('로그인 후 이용가능합니다. 로그인하시겠습니까?');
+      if (login) {
+        return openAuth();
+      }
+      return;
+    }
+  };
+
+  const navigateChat = () => {
+    if (myData && myData.data) {
+      navigate('/mypage/chat');
     } else {
       const login = window.confirm('로그인 후 이용가능합니다. 로그인하시겠습니까?');
       if (login) {
@@ -88,12 +101,10 @@ function Lnb({ path }) {
                 </RecruIcon>
               </li>
               <li>
-                <NavLink to="/mypage/chat">
-                  <ChatIcon selected={pathname.startsWith('/chat')}>
-                    <span />
-                    <p>채팅</p>
-                  </ChatIcon>
-                </NavLink>
+                <ChatIcon selected={pathname.startsWith('/chat')} onClick={navigateChat}>
+                  <span />
+                  <p>채팅</p>
+                </ChatIcon>
               </li>
             </NavPCBodyUl>
           </NavPCBody>
@@ -104,7 +115,7 @@ function Lnb({ path }) {
                   <NavPCFooterA to="/mypage">
                     <ProfileNullImg src={`${myData.data.file}`} alt="myprofile" />
                   </NavPCFooterA>
-                  <Alarm />
+                  {myData.data.flag && <Alarm />}
                 </>
               ) : (
                 <NavPCFooterB onClick={handleAuthModal}>

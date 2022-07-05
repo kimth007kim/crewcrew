@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 import useSWR from 'swr';
 import ProfileNull from '@/assets/images/ProfileNull.png';
@@ -21,17 +21,7 @@ import fetcher from '@/utils/fetcher';
 import useModal from '@/hooks/useModal';
 import AuthModal from '../Auth/AuthModal';
 import PostCreateModal from '@/components/post/modal/PostCreate';
-
-function MobileNavButton({ icon, title, link = '/', selected }) {
-  return (
-    <NavLink to={link}>
-      <MobileNavLi selected={selected}>
-        {icon}
-        {title}
-      </MobileNavLi>
-    </NavLink>
-  );
-}
+import MobileNavButton from './MobileNavButton';
 
 function NavMobile({ path, openModal }) {
   const { pathname } = useLocation();
@@ -41,10 +31,23 @@ function NavMobile({ path, openModal }) {
   const [authVisible, openAuth, closeAuth] = useModal();
 
   const [postVisible, openPost, closePost] = useModal();
+  const navigate = useNavigate();
 
   const handlePostModal = () => {
     if (myData && myData.data) {
       openPost();
+    } else {
+      const login = window.confirm('로그인 후 이용가능합니다. 로그인하시겠습니까?');
+      if (login) {
+        return openAuth();
+      }
+      return;
+    }
+  };
+
+  const navigateChat = () => {
+    if (myData && myData.data) {
+      navigate('/mypage/chat');
     } else {
       const login = window.confirm('로그인 후 이용가능합니다. 로그인하시겠습니까?');
       if (login) {
@@ -71,13 +74,13 @@ function NavMobile({ path, openModal }) {
               {myData && myData.data ? (
                 <>
                   <MobileGnbA to="/mypage">
-                    <MobileProfileimg src={ProfileNull} alt="마이페이지" />
+                    <MobileProfileimg src={myData.data.file} alt="프로필이미지" />
                   </MobileGnbA>
                   <Alarm />
                 </>
               ) : (
                 <MobileGnbB onClick={() => openModal()}>
-                  <MobileProfileimg src={ProfileNull} alt="마이페이지" />
+                  <MobileProfileimg src={ProfileNull} alt="빈이미지" />
                 </MobileGnbB>
               )}
             </NavProfileWrapper>
@@ -106,14 +109,11 @@ function NavMobile({ path, openModal }) {
             {<RecruIcon selected={pathname.startsWith('/crew')} />}
             {'팀원모집'}
           </MobileNavLi>
-          <li>
-            <MobileNavButton
-              icon={<ChatIcon selected={pathname.startsWith('/chat')} />}
-              title="채팅"
-              link="/mypage/chat"
-              selected={pathname.startsWith('/chat')}
-            />
-          </li>
+
+          <MobileNavLi selected={pathname.startsWith('/chat')} onClick={navigateChat}>
+            {<RecruIcon selected={pathname.startsWith('/chat')} />}
+            {'채팅'}
+          </MobileNavLi>
         </MobileNavUl>
       </MobileNav>
       <AuthModal closeModal={closeAuth} visible={authVisible} />

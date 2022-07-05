@@ -166,7 +166,7 @@ export default MypagePostList;
 
 const Container = styled('section')`
   background-color: #f6f7fb;
-  padding: 60px 0 40px;
+  padding: 0px 0 40px;
   position: relative;
 `;
 

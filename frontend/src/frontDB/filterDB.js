@@ -1,3 +1,8 @@
+import Profile1 from '@/assets/images/Profile1.png';
+import Profile2 from '@/assets/images/Profile3.png';
+import Profile3 from '@/assets/images/Profile5.png';
+import Profile4 from '@/assets/images/Profile2.png';
+
 export const articleArr = [
   {
     htmlId: 'postRecent',
@@ -136,3 +141,38 @@ export const hobbyFilterArr = [
 ];
 
 export const cateogoryAll = [...hobbyFilterArr, ...studyFilterArr];
+
+export const contiCards = [
+  {
+    title: '14가지 분야 <br/>크루원 모집',
+    desc: '스터디, 취미도<br/> 크루원과 함께!',
+    reverse: true,
+    number: 1,
+    img: Profile1,
+    color: '#001881',
+  },
+  {
+    title: '속전속결<br/> 간편 모집글 작성',
+    desc: '크루원 모으기,<br/> 어렵지 않잖아?',
+    reverse: false,
+    number: 2,
+    img: Profile2,
+    color: '#005ec5',
+  },
+  {
+    title: '안전한<br/> 크루크루 채팅',
+    desc: '따로 방파지 말고<br/> 여기서 떠들자~!',
+    reverse: true,
+    number: 3,
+    img: Profile3,
+    color: '#00b7ff',
+  },
+  {
+    title: '간단한<br/> 간편 가입 신청',
+    desc: '한번의 클릭으로<br/> QUICK 가입신청!',
+    reverse: false,
+    number: 4,
+    img: Profile4,
+    color: '#1AB861',
+  },
+];

@@ -26,7 +26,7 @@ export default MypageTimeline;
 
 const Container = styled('section')`
   background-color: #f6f7fb;
-  padding-bottom: 88px;
+  padding-bottom: 90px;
   @media screen and (max-width: 820px) {
     padding-bottom: 70px;
   }
