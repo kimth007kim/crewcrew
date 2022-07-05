@@ -563,15 +563,16 @@ const CardBody = styled('div')`
     padding: 0;
 
     button {
-      width: 30px;
-      height: 30px;
+      min-width: 30px;
+      min-height: 30px;
       border: none;
       border-radius: 5px;
       outline: none;
       color: #fff;
       cursor: pointer;
       transition: 0.3s;
-      font-size: 15px;
+      font-size: 12px;
+      line-height: 15px;
       background-color: #c4c4c4;
 
       &.set {

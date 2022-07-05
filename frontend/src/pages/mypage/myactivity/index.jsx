@@ -1,5 +1,6 @@
 import Button from '@/components/common/Button';
 import MyLayout from '@/components/common/MyLayout';
+import ActivityCard from '@/components/mypage/Card/ActivityCard';
 import MypageMainSubTop from '@/components/mypage/MypageMainSubTop';
 import MypageSubTop from '@/components/mypage/MypageSubTop';
 import axios from 'axios';
@@ -70,7 +71,16 @@ function MyActivity() {
       <Wrap className="wrotePost">
         <SectionWrap>
           <h3>내가 쓴 마감글</h3>
-          <CardWrapper></CardWrapper>
+          <CardWrapper>
+            <ul>
+              <li>
+                <ActivityCard></ActivityCard>
+              </li>
+              <li>
+                <ActivityCard></ActivityCard>
+              </li>
+            </ul>
+          </CardWrapper>
         </SectionWrap>
       </Wrap>
       <Wrap className="accepted">
