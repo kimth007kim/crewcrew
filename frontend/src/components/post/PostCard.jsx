@@ -20,6 +20,7 @@ import fetcher from '@/utils/fetcher';
 import { loginCheck } from '@/atoms/login';
 import { lnbBookmarkDelete } from '@/atoms/post';
 import ProfileTooltip from './tooltip/ProfileTooltip';
+import { tooltipBoardId } from '@/atoms/profile';
 
 function PostCard({ data }) {
   const cookies = new Cookies();
@@ -29,6 +30,7 @@ function PostCard({ data }) {
   const [tooltip, setTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState(1);
   const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
+  const [currentBoardId, setCurrentBoardId] = useRecoilState(tooltipBoardId);
   const [deletedBookmark, setDeletedBookmark] = useRecoilState(lnbBookmarkDelete);
   const isLogin = useRecoilValue(loginCheck);
 
@@ -137,11 +139,15 @@ function PostCard({ data }) {
     }
   };
 
-  const viewTooltip = (e, position) => {
-    e.stopPropagation();
-    setTooltip(true);
-    setTooltipPosition(position);
-  };
+  const viewTooltip = useCallback(
+    (e, position) => {
+      e.stopPropagation();
+      setTooltipPosition(position);
+      setCurrentBoardId(data.boardId);
+      setTooltip(true);
+    },
+    [tooltip],
+  );
 
   useEffect(() => {
     const bool = !data.viewable || renderDay() < 0;
@@ -155,6 +161,12 @@ function PostCard({ data }) {
   useEffect(() => {
     DeletedBookmarkOnLnb();
   }, [deletedBookmark]);
+
+  useEffect(() => {
+    if (currentBoardId !== data.boardId) {
+      setTooltip(false);
+    }
+  }, [currentBoardId]);
 
   return (
     <>
@@ -172,7 +184,14 @@ function PostCard({ data }) {
             <CardDate>{renderDate()}</CardDate>
             <CardName onClick={(e) => viewTooltip(e, 2)}>{data.nickname}</CardName>
           </TextBox>
-          {tooltip && <ProfileTooltip data={data} position={tooltipPosition} />}
+          {tooltip && (
+            <ProfileTooltip
+              data={data}
+              position={tooltipPosition}
+              open={tooltip}
+              setOpen={setTooltip}
+            />
+          )}
         </CardHead>
         <CardBody isDisabled={IsDisable}>
           <TextBox>

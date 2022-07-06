@@ -1,20 +1,45 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import IconChat from '@/assets/images/IconChat.png';
 import { useNavigate } from 'react-router-dom';
+import { useRef } from 'react';
+import { useCallback } from 'react';
 
-function ProfileTooltip({ data, position }) {
+function ProfileTooltip({ data, position, open, setOpen }) {
   const navigate = useNavigate();
+  const profileRef = useRef(null);
+
+  const stopPropagation = useCallback((e) => {
+    e.stopPropagation();
+  }, []);
+
   const navigateProfile = (e) => {
     e.stopPropagation();
     navigate(`/profile/${data.uid}`);
   };
   const navigateChat = (e) => {
     e.stopPropagation();
-    navigate(`/mypage/chat`);
+    navigate(`/mypage/chat/${data.boardId}`);
   };
+
+  useEffect(() => {
+    const handleWindowClick = (event) => {
+      const { current: container } = profileRef;
+      if (!container) return;
+      const eventTarget = event.path && event.path.length > 0 ? event.path[0] : event.target;
+      if (container.contains(eventTarget)) return;
+      if (!open) return;
+      setOpen(false);
+    };
+
+    window.addEventListener('click', handleWindowClick);
+    return () => {
+      window.removeEventListener('click', handleWindowClick);
+    };
+  }, [open]);
+
   return (
-    <Container position={position}>
+    <Container position={position} ref={profileRef} onClick={stopPropagation}>
       <ToolTipName>{data.nickname}</ToolTipName>
       <ToolTipBtn>
         <Chat onClick={(e) => navigateChat(e)} />

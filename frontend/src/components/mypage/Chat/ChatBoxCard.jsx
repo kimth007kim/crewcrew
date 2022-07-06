@@ -24,7 +24,7 @@ function ChatBoxCard({ isSetting, onClick, check, data }) {
         <ContentHead>
           <HeadBox className="profile">
             <img src={data.other.profileImage} alt="profile" className="profile" />
-            {data.captain && <img src={IconFlag} alt="flag" className="flag" />}
+            {!data.captain && <img src={IconFlag} alt="flag" className="flag" />}
             <p>{data.other.nickName}</p>
           </HeadBox>
           <HeadBox className="post">
