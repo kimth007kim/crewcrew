@@ -95,14 +95,16 @@ function NavContainer() {
   const renderBookmarked = () => {
     return (
       <>
-        {bookmarkArr.map((data) => (
-          <BookmarkLi key={`${data.boardId}bookmarked`}>
-            <PostCardSlide data={data} cookies={cookies.get('X-AUTH-TOKEN')} isLnb={true} />
-          </BookmarkLi>
-        ))}
+        {bookmarkArr.length > 0 &&
+          bookmarkArr.map((data) => (
+            <BookmarkLi key={`${data.boardId}bookmarked`}>
+              <PostCardSlide data={data} cookies={cookies.get('X-AUTH-TOKEN')} isLnb={true} />
+            </BookmarkLi>
+          ))}
       </>
     );
   };
+
   return (
     <>
       <NavCont>
@@ -153,7 +155,7 @@ function NavContainer() {
           {myData?.data ? (
             <NavPostCardWrapper>
               <ul>
-                {bookmarkArr.length > 0 && renderBookmarked()}
+                {renderBookmarked()}
                 <BookmarkLi>
                   <NavCardPlusPost to="/post">
                     <PlusIcon />
@@ -164,17 +166,18 @@ function NavContainer() {
             </NavPostCardWrapper>
           ) : (
             <NavCardList>
-              {contiCards.map((ele, i) => (
-                <NavCard
-                  title={ele.title}
-                  p={ele.desc}
-                  reverse={ele.reverse}
-                  number={i + 1}
-                  img={ele.img}
-                  color={ele.color}
-                  key={ele.title + ele.number}
-                />
-              ))}
+              {contiCards.length > 0 &&
+                contiCards.map((ele, i) => (
+                  <NavCard
+                    title={ele.title}
+                    p={ele.desc}
+                    reverse={ele.reverse}
+                    number={i + 1}
+                    img={ele.img}
+                    color={ele.color}
+                    key={ele.title + ele.number}
+                  />
+                ))}
             </NavCardList>
           )}
         </NavContInner>

@@ -51,11 +51,7 @@ const categoryIcon = [
 
 function Main() {
   const cookies = new Cookies();
-  const {
-    data: myData,
-    error,
-    mutate,
-  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
   const [categoryCheck, setCategoryCheck] = useState(0);
   const [newPost, setNewPost] = useState([]);
   const [deadlinePost, setDeadlinePost] = useState([]);
@@ -184,9 +180,8 @@ function Main() {
           <SectionWraph4>12가지 분야에서 크루원 절찬리 모집중!</SectionWraph4>
           <SectionWrapp>혼자서 공부하기 힘들었죠? 이제는 크루원들과 함께 성공합시다~!</SectionWrapp>
           <GridWrap>
-            {catList.map((data) => (
-              <CategoryCard data={data} key={data.categoryId} />
-            ))}
+            {catList.length > 0 &&
+              catList.map((data) => <CategoryCard data={data} key={data.categoryId} />)}
           </GridWrap>
         </SectionWrap>
       </MainCategory>

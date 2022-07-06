@@ -47,11 +47,12 @@ function SwiperSection({ data, post, cookies }) {
     <PostSwiperContainer>
       <PostSwiperWrapper>
         <Swiper {...swiperParams} ref={setSwiper}>
-          {data.map((data, i) => (
-            <SwiperSlide key={data.boardId + post + data.uid + i * 10}>
-              <PostCardSlide data={data} cookies={cookies} />
-            </SwiperSlide>
-          ))}
+          {data.length > 0 &&
+            data.map((data, i) => (
+              <SwiperSlide key={data.boardId + post + data.uid + i * 10}>
+                <PostCardSlide data={data} cookies={cookies} />
+              </SwiperSlide>
+            ))}
         </Swiper>
         <ButtonPrev ref={btnPrevRef} />
         <ButtonNext ref={btnNextRef} />

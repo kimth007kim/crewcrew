@@ -217,7 +217,7 @@ const Body = styled.div`
     width: 100%;
     margin-top: -1px;
     border-radius: 0;
-    height: calc(var(--vh, 1vh) * 100)-194px;
+    height: calc(100vh - 194px);
     transition: 0.5s;
 
     overflow-y: auto;
