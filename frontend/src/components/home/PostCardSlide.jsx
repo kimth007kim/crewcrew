@@ -157,7 +157,6 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
           </CardBody>
           <CardFooter>
             <CardTagColor category={category()}>
-              {' '}
               {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
             </CardTagColor>
             <CardTagColor category={category()}>
