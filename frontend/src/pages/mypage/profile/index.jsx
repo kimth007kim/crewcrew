@@ -30,8 +30,6 @@ function Profile() {
       toast.error(error);
       console.dir(error);
       navigate('/');
-    } finally {
-      myData.data.uid === Number(uid) && navigate('/mypage');
     }
   }, [myData]);
 
@@ -47,9 +45,13 @@ function Profile() {
     }
   }, [myData]);
 
+  setTimeout(() => myData?.data?.uid === Number(uid) && navigate('/mypage'), 50);
+
   useEffect(() => {
     getUserProfile();
     getUserBoard();
+
+    return () => setUserInfo([]);
   }, [myData]);
 
   return (

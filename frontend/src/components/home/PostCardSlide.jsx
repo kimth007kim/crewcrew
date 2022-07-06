@@ -17,9 +17,12 @@ import useModal from '@/hooks/useModal';
 import AuthModal from '../common/Auth/AuthModal';
 import { loginCheck } from '@/atoms/login';
 import { lnbBookmarkDelete } from '@/atoms/post';
+import ProfileTooltip from '../post/tooltip/ProfileTooltip';
 
 function PostCardSlide({ data, cookies, isLnb = false }) {
   const [isBookmark, setIsBookmark] = useState(false);
+  const [tooltip, setTooltip] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState(1);
   const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
   const [deletedBookmark, setDeletedBookmark] = useRecoilState(lnbBookmarkDelete);
   const isLogin = useRecoilValue(loginCheck);
@@ -110,6 +113,12 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
     }
   }, [myData]);
 
+  const viewTooltip = (e, position) => {
+    e.stopPropagation();
+    setTooltip(true);
+    setTooltipPosition(position);
+  };
+
   useEffect(() => {
     getBookmark();
     return () => setIsBookmark(false);
@@ -137,13 +146,14 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
             </CardHeadRight>
           </CardHead>
           <CardBody>
-            <CardProfile>
+            <CardProfile onClick={(e) => viewTooltip(e, 1)}>
               <ProfileImg profileImg={data.profileImage} alt="" />
             </CardProfile>
             <CardTxt>
               <h4>{data.title}</h4>
-              <p>{data.nickname}</p>
+              <p onClick={(e) => viewTooltip(e, 2)}>{data.nickname}</p>
             </CardTxt>
+            {tooltip && <ProfileTooltip data={data} position={tooltipPosition} />}
           </CardBody>
           <CardFooter>
             <CardTagColor category={category()}>
@@ -240,6 +250,7 @@ const CardBody = styled.div`
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
+  position: relative;
   @media screen and (max-width: 820px) {
     padding: 0 5px 0 15px;
     height: 64px;

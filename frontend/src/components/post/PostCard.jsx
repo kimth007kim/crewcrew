@@ -19,12 +19,15 @@ import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
 import { loginCheck } from '@/atoms/login';
 import { lnbBookmarkDelete } from '@/atoms/post';
+import ProfileTooltip from './tooltip/ProfileTooltip';
 
 function PostCard({ data }) {
   const cookies = new Cookies();
   const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
   const [isBookmark, setIsBookmark] = useState(false);
   const [IsDisable, setIsDisable] = useState(false);
+  const [tooltip, setTooltip] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState(1);
   const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
   const [deletedBookmark, setDeletedBookmark] = useRecoilState(lnbBookmarkDelete);
   const isLogin = useRecoilValue(loginCheck);
@@ -134,6 +137,12 @@ function PostCard({ data }) {
     }
   };
 
+  const viewTooltip = (e, position) => {
+    e.stopPropagation();
+    setTooltip(true);
+    setTooltipPosition(position);
+  };
+
   useEffect(() => {
     const bool = !data.viewable || renderDay() < 0;
     setIsDisable(bool);
@@ -151,7 +160,7 @@ function PostCard({ data }) {
     <>
       <Wrapper onClick={handleLocate} current={String(data.boardId) === postId}>
         <CardHead isDisabled={IsDisable}>
-          <ProfileBox profile={data.profileImage}>
+          <ProfileBox profile={data.profileImage} onClick={(e) => viewTooltip(e, 1)}>
             {data.profileImage ? (
               <img src={`${data.profileImage}`} alt="" />
             ) : (
@@ -161,8 +170,9 @@ function PostCard({ data }) {
           <TextBox>
             <Dday>{IsDisable ? '마감' : `D-${renderDay()}`}</Dday>
             <CardDate>{renderDate()}</CardDate>
-            <CardName>{data.nickname}</CardName>
+            <CardName onClick={(e) => viewTooltip(e, 2)}>{data.nickname}</CardName>
           </TextBox>
+          {tooltip && <ProfileTooltip data={data} position={tooltipPosition} />}
         </CardHead>
         <CardBody isDisabled={IsDisable}>
           <TextBox>
@@ -344,6 +354,7 @@ const CardHead = styled.div`
   min-width: 204px;
   height: 100%;
   border-right: 1px solid #a8a8a8;
+  position: relative;
 
   ${ProfileBox} {
     min-width: 60px;
