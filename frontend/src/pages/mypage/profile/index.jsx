@@ -45,13 +45,17 @@ function Profile() {
     }
   }, [myData]);
 
-  setTimeout(() => myData?.data?.uid === Number(uid) && navigate('/mypage'), 50);
-
   useEffect(() => {
+    if (myData?.data?.uid === Number(uid)) {
+      return navigate('/mypage');
+    }
     getUserProfile();
     getUserBoard();
 
-    return () => setUserInfo([]);
+    return () => {
+      setUserInfo([]);
+      setUserBoard([]);
+    };
   }, [myData]);
 
   return (

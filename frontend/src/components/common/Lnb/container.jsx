@@ -83,6 +83,9 @@ function NavContainer() {
 
   useEffect(() => {
     axiosGetBookmark();
+    return () => {
+      setBookmarkArr([]);
+    };
   }, [myData, changeBookmarked]);
 
   useEffect(() => {

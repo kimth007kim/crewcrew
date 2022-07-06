@@ -85,8 +85,8 @@ function MyInfoInput({ open, closeFunc }) {
       switch (data.status) {
         case 200:
           toast.success('성공적으로 변경되었습니다.');
+          await mutate('/auth/token');
           InitialState();
-          mutate('/auth/token');
           break;
         case 1009:
         case 1010:

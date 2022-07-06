@@ -195,6 +195,9 @@ function ProfilePostList() {
 
   useEffect(() => {
     postLoaded && NavigateVailidPartiPage();
+    return () => {
+      setPostLoaded(false);
+    };
   }, [postLoaded]);
 
   return (
