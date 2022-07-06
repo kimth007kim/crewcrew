@@ -25,7 +25,7 @@ function Profile() {
     try {
       const { data } = await axios.get(`/profile/${uid}`);
       data.status === 200 && setUserInfo(data.data);
-      data.status === 1008 && navigate('/');
+      data.status === 1008 && navigate('/', { replace: true });
     } catch (error) {
       toast.error(error);
       console.dir(error);
@@ -47,7 +47,7 @@ function Profile() {
 
   useEffect(() => {
     if (myData?.data?.uid === Number(uid)) {
-      return navigate('/mypage');
+      return navigate('/mypage', { replace: true });
     }
     getUserProfile();
     getUserBoard();

@@ -4,8 +4,14 @@ import IconChat from '@/assets/images/IconChat.png';
 import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 import { useCallback } from 'react';
+import useSWR from 'swr';
+import { Cookies } from 'react-cookie';
+import fetcher from '@/utils/fetcher';
 
 function ProfileTooltip({ data, position, open, setOpen }) {
+  const cookies = new Cookies();
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+
   const navigate = useNavigate();
   const profileRef = useRef(null);
 
@@ -19,6 +25,10 @@ function ProfileTooltip({ data, position, open, setOpen }) {
   };
   const navigateChat = (e) => {
     e.stopPropagation();
+    if (myData?.data.uid === data.uid) {
+      window.alert('자기자신에게 채팅을 보낼 수 없습니다');
+      return false;
+    }
     navigate(`/mypage/chat/${data.boardId}`);
   };
 
@@ -42,7 +52,7 @@ function ProfileTooltip({ data, position, open, setOpen }) {
     <Container position={position} ref={profileRef} onClick={stopPropagation}>
       <ToolTipName>{data.nickname}</ToolTipName>
       <ToolTipBtn>
-        <Chat onClick={(e) => navigateChat(e)} />
+        {myData?.data?.uid !== data.uid && <Chat onClick={(e) => navigateChat(e)} />}
         <Profile onClick={(e) => navigateProfile(e)}>프로필 확인</Profile>
       </ToolTipBtn>
     </Container>

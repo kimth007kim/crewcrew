@@ -184,7 +184,7 @@ function PostCard({ data }) {
             <CardDate>{renderDate()}</CardDate>
             <CardName onClick={(e) => viewTooltip(e, 2)}>{data.nickname}</CardName>
           </TextBox>
-          {tooltip && (
+          {myData && myData.data?.uid && tooltip && (
             <ProfileTooltip
               data={data}
               position={tooltipPosition}

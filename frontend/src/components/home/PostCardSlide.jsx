@@ -18,11 +18,14 @@ import AuthModal from '../common/Auth/AuthModal';
 import { loginCheck } from '@/atoms/login';
 import { lnbBookmarkDelete } from '@/atoms/post';
 import ProfileTooltip from '../post/tooltip/ProfileTooltip';
+import { tooltipBoardId } from '@/atoms/profile';
 
 function PostCardSlide({ data, cookies, isLnb = false }) {
   const [isBookmark, setIsBookmark] = useState(false);
   const [tooltip, setTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState(1);
+  const [currentBoardId, setCurrentBoardId] = useRecoilState(tooltipBoardId);
+
   const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
   const [deletedBookmark, setDeletedBookmark] = useRecoilState(lnbBookmarkDelete);
   const isLogin = useRecoilValue(loginCheck);
@@ -113,11 +116,15 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
     }
   }, [myData]);
 
-  const viewTooltip = (e, position) => {
-    e.stopPropagation();
-    setTooltip(true);
-    setTooltipPosition(position);
-  };
+  const viewTooltip = useCallback(
+    (e, position) => {
+      e.stopPropagation();
+      setTooltipPosition(position);
+      setCurrentBoardId(data.boardId);
+      setTooltip(true);
+    },
+    [tooltip],
+  );
 
   useEffect(() => {
     getBookmark();
@@ -127,6 +134,12 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
   useEffect(() => {
     DeletedBookmarkOnLnb();
   }, [deletedBookmark]);
+
+  useEffect(() => {
+    if (currentBoardId !== data.boardId) {
+      setTooltip(false);
+    }
+  }, [currentBoardId]);
 
   return (
     <>
@@ -153,7 +166,14 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
               <h4>{data.title}</h4>
               <p onClick={(e) => viewTooltip(e, 2)}>{data.nickname}</p>
             </CardTxt>
-            {tooltip && <ProfileTooltip data={data} position={tooltipPosition} />}
+            {myData && myData.data?.uid && tooltip && (
+              <ProfileTooltip
+                data={data}
+                position={tooltipPosition}
+                open={tooltip}
+                setOpen={setTooltip}
+              />
+            )}
           </CardBody>
           <CardFooter>
             <CardTagColor category={category()}>
