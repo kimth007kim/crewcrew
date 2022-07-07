@@ -1,37 +1,17 @@
 package matchTeam.crewcrew.repository.chat;
 
-import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.CaseBuilder;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import matchTeam.crewcrew.dto.board.BoardPageDetailResponseDTO;
-import matchTeam.crewcrew.dto.bookmark.BookmarkResponseDTO;
 import matchTeam.crewcrew.dto.chat.*;
-import matchTeam.crewcrew.entity.bookmark.Bookmark;
-import matchTeam.crewcrew.entity.chat.ChatMessage;
-import matchTeam.crewcrew.response.exception.board.NotExistOrderKeywordException;
-import matchTeam.crewcrew.util.customException.OrderByNull;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
+import matchTeam.crewcrew.entity.user.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
 
-import static matchTeam.crewcrew.entity.application.QApplication.application;
-import static matchTeam.crewcrew.entity.board.QBoard.board;
-import static matchTeam.crewcrew.entity.bookmark.QBookmark.bookmark;
-import static org.springframework.util.StringUtils.hasText;
-
-
-import static matchTeam.crewcrew.entity.user.QUser.user;
 import static matchTeam.crewcrew.entity.chat.QChatMessage.chatMessage;
 import static matchTeam.crewcrew.entity.chat.QChatRoom.chatRoom;
-import static matchTeam.crewcrew.entity.board.QBoard.board;
-import static matchTeam.crewcrew.entity.board.QCategory.category;
 
 @RequiredArgsConstructor
 @Repository
@@ -91,17 +71,41 @@ public class ChatMessageDslRepository {
                 .fetchOne();
         return message;
     }
-//
-//    private OrderSpecifier<?> findOrder(String order){
-//        if (!hasText(order)){
-//            return OrderByNull.DEFAULT;
-//        }
-//        else if (order.equals("recent")){
-//            return board.createdDate.desc();
-//        }else if (order.equals("bookmarked")){
-//            return bookmark.bookmarkId.desc();
-//        } else {
-//            throw new NotExistOrderKeywordException();
-//        }
-//    }
+    public void exitChatRoomPublisher(UUID roomId, Long uid) {
+        long execute = queryFactory
+                .update(chatRoom)
+                .set(chatRoom.publisher, (User) null)
+                .where(chatRoom.publisher.uid.eq(uid).and(chatRoom.roomId.eq(roomId)))
+                .execute();
+    }
+    public void exitChatRoomSubscriber(UUID roomId, Long uid) {
+        long execute = queryFactory
+                .update(chatRoom)
+                .set(chatRoom.subscriber, (User) null)
+                .where(chatRoom.subscriber.uid.eq(uid).and(chatRoom.roomId.eq(roomId)))
+                .execute();
+    }
+    public void exitChatMessage(UUID roomId, Long uid) {
+        long execute = queryFactory
+                .update(chatMessage)
+                .set(chatMessage.user, (User) null)
+                .where(chatMessage.user.uid.eq(uid).and(chatMessage.chatRoom.roomId.eq(roomId)))
+                .execute();
+    }
+
+
+    public void deleteChatRoom(UUID roomId){
+        long execute = queryFactory
+                .delete(chatRoom)
+                .where(chatRoom.roomId.eq(roomId))
+                .execute();
+    }
+    public void deleteChatMessage(UUID roomId){
+        long execute= queryFactory
+                .delete(chatMessage)
+                .where(chatMessage.chatRoom.roomId.eq(roomId))
+                .execute();
+    }
+
+
 }
