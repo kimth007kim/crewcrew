@@ -40,6 +40,8 @@ public class QAnnouncement extends EntityPathBase<Announcement> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
+    public final BooleanPath readChk = createBoolean("readChk");
+
     public QAnnouncement(String variable) {
         this(Announcement.class, forVariable(variable), INITS);
     }

@@ -29,7 +29,9 @@ public class AnnouncementService {
         Announcement announcement = announcementRepository.save(
                 Announcement.builder().applicant(applicant)
                         .leader(leader)
-                        .board(board).build()
+                        .board(board)
+                        .applicant(applicant)
+                        .build()
         );
     }
 }
