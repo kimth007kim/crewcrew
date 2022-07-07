@@ -82,6 +82,13 @@ public class ChatRestController {
         chatRoomService.readMessage(roomId, user.getUid());
         return ResponseHandler.generateResponse("해당 방의 읽음처리 성공", HttpStatus.OK, null);
     }
+    @ApiOperation(value = "삭제")
+    @DeleteMapping("/room")
+    public ResponseEntity<Object> deleteRoom(@RequestBody DeleteChatRoomDTO deleteChatRoomDTO,@RequestHeader("X-AUTH-TOKEN") String token) {
+        User user = userService.tokenChecker(token);
+        chatRoomService.deleteRoom(deleteChatRoomDTO.getRooms(),user);
+        return ResponseHandler.generateResponse("해당 방의 읽음처리 성공", HttpStatus.OK, deleteChatRoomDTO);
+    }
 
 
 }
