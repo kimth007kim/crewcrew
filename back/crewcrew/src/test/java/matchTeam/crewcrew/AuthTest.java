@@ -76,20 +76,20 @@ public class AuthTest {
         }
 
     }
-
-    @Test
-    public void 다른_유저_찾기() throws Exception {
-
-        List<RoomListResponseDTO> result =chatMessageDslRepository.search(5L);
-        for(RoomListResponseDTO r : result){
-            System.out.println("=========================="+r.getBoardSeq());
-            System.out.println("=========================="+r.getBoard_name());
-            System.out.println("=========================="+r.getFile());
-            System.out.println("=========================="+r.getRoomId());
-            System.out.println("=========================="+r.getCategoryName());
-
-        }
-    }
+//
+//    @Test
+//    public void 다른_유저_찾기() throws Exception {
+//
+//        List<RoomListResponseDTO> result =chatMessageDslRepository.search(5L);
+//        for(RoomListResponseDTO r : result){
+//            System.out.println("=========================="+r.getBoardSeq());
+//            System.out.println("=========================="+r.getBoard_name());
+//            System.out.println("=========================="+r.getFile());
+//            System.out.println("=========================="+r.getRoomId());
+//            System.out.println("=========================="+r.getCategoryName());
+//
+//        }
+//    }
 
 }
 

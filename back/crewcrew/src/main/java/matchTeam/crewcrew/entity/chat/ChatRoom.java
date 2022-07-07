@@ -35,11 +35,17 @@ public class ChatRoom  extends BaseTimeEntity {
     @JoinColumn(name = "subscriberId")
     private User subscriber;
 
+    private boolean publisherIn;
+
+    private boolean subscriberIn;
+
     public ChatRoom toEntity(User publisher,User subscriber,Board board) {
         return ChatRoom.builder()
                 .publisher(publisher)
                 .subscriber(subscriber)
                 .board(board)
+                .publisherIn(true)
+                .subscriberIn(true)
                 .build();
     }
 

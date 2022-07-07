@@ -96,10 +96,15 @@ public class ChatRoomService {
 
     public List<ChatMessageResponseDTO> messageToResponse(UUID roomId, List<ChatMessage> messages) {
         ChatRoom room = isValidRoom(roomId);
+        Long uid1 =null;
+        Long uid2 =null;
         User user1 = room.getPublisher();
-        Long uid1 = user1.getUid();
+        if (user1!=null)
+            uid1 =user1.getUid();
         User user2 = room.getSubscriber();
-        Long uid2 = user2.getUid();
+        if (user2!=null)
+            uid2 =user2.getUid();
+
 
         int length = messages.size();
         List<ChatMessageResponseDTO> result = new ArrayList<>();
@@ -192,6 +197,98 @@ public class ChatRoomService {
     }
 
 
+    public List<RoomListResponseDTO> searchRoom(Long uid, String target) {
+        User member = userRepository.findById(uid).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
+        List<ChatRoom> rooms = chatRoomRepository.findBySubscriberOrPublisher(member, member);
+        int length = rooms.size();
+        boolean input = false;
+        System.out.println(length + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        List<RoomListResponseDTO> result = new ArrayList<>();
+        for (int i = 0; i < length; i++) {
+            ChatRoom room = rooms.get(i);
+            Long pid = null;
+            Long sid = null;
+            String otherNickName = null;
+//            User publisher = room.getPublisher();
+//            User subscriber = room.getSubscriber();
+//            if (publisher !=null)
+//                pid = publisher.getUid();
+//            if (subscriber !=null)
+//                sid = subscriber.getUid();
+            Long otherUid = chatMessageDslRepository.findAnother(room.getRoomId(), uid);
+//            Long searchResult =0L;
+//            if (otherUid ==pid) {
+//                searchResult=chatMessageDslRepository.search(target,room.getRoomId(),null,sid);
+//            }else if(otherUid==sid) {
+//                searchResult=chatMessageDslRepository.search(target, room.getRoomId(), pid, null);
+//            }else{
+//                searchResult=chatMessageDslRepository.search(target, room.getRoomId(), null, null);
+//            }
+//            if (searchResult==0L)
+//                continue;
+            RoomListResponseDTO roomList = new RoomListResponseDTO();
+
+            User otherUser = null;
+            if (otherUid != null) {
+                otherUser = userRepository.findById(otherUid).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
+            }
+
+            if (otherUid == null) {
+                Other another = new Other(null, null, null);
+                roomList.setOther(another);
+            } else {
+                otherNickName = otherUser.getNickname();
+                Other another = new Other(otherUid, otherUser.getNickname(), otherUser.getProfileImage());
+                roomList.setOther(another);
+            }
+
+
+            roomList.setRoomId(room.getRoomId());
+            if (room.getPublisher() == null) {
+                roomList.setCaptain(false);
+            }
+            if (room.getPublisher() != null && room.getPublisher().getUid() == uid)
+                roomList.setCaptain(true);
+            else
+                roomList.setCaptain(false);
+
+
+            Board board = room.getBoard();
+            Category category = board.getCategory();
+
+            roomList.setBoardSeq(board.getId());
+            roomList.setBoardTitle(board.getTitle());
+            roomList.setCategoryId(category.getId());
+            roomList.setCategoryName(category.getCategoryName());
+
+            int left = chatMessageDslRepository.viewLeft(room.getRoomId(), otherUid);
+            roomList.setUnReadCnt(Long.valueOf(left));
+            ChatMessageRecentMessageDTO recentDTO = chatMessageDslRepository.lastMessage(room.getRoomId());
+            if (recentDTO == null) {
+                roomList.setRecentMessageTime(room.getCreatedDate());
+                roomList.setRecentMessageContent(null);
+            } else {
+                roomList.setRecentMessageTime(recentDTO.getTime());
+                roomList.setRecentMessageContent(recentDTO.getContent());
+            }
+            if (otherNickName != null && otherNickName.contains(target)==true) {
+                System.out.println(otherNickName);
+                input = true;
+            }
+            if (board.getTitle().contains(target)==true || category.getCategoryName().contains(target)==true) {
+                System.out.println(board.getTitle()+category.getCategoryName());
+
+                input = true;
+            }
+            System.out.println(otherNickName+board.getTitle()+category.getCategoryName()+input);
+            if (input == true)
+                result.add(roomList);
+        }
+        result.sort(Comparator.comparing(RoomListResponseDTO::getRecentMessageTime).reversed());
+        return result;
+    }
+
+
     public ChatRoom isValidRoom(UUID roomId) {
         ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(() -> new CrewException(ErrorCode.ACCESS_DENIED));
         return chatRoom;
@@ -259,12 +356,12 @@ public class ChatRoomService {
             User subscriber = chatRoom.getSubscriber();
             Long pid = null;
             Long sid = null;
-            if (publisher != null) {
+            if (publisher != null || chatRoom.isPublisherIn()==false) {
                 pid = publisher.getUid();
             } else {
                 cnt += 1;
             }
-            if (subscriber != null) {
+            if (subscriber != null || chatRoom.isSubscriberIn()==false) {
                 sid = subscriber.getUid();
             } else {
                 cnt += 1;
