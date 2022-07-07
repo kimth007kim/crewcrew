@@ -216,14 +216,14 @@ public class ChatRoomService {
 //            if (subscriber !=null)
 //                sid = subscriber.getUid();
             Long otherUid = chatMessageDslRepository.findAnother(room.getRoomId(), uid);
-//            Long searchResult =0L;
-//            if (otherUid ==pid) {
-//                searchResult=chatMessageDslRepository.search(target,room.getRoomId(),null,sid);
-//            }else if(otherUid==sid) {
-//                searchResult=chatMessageDslRepository.search(target, room.getRoomId(), pid, null);
-//            }else{
-//                searchResult=chatMessageDslRepository.search(target, room.getRoomId(), null, null);
-//            }
+            Long searchResult =0L;
+            if (otherUid ==pid) {
+                searchResult=chatMessageDslRepository.search(target,room.getRoomId(),null,sid);
+            }else if(otherUid==sid) {
+                searchResult=chatMessageDslRepository.search(target, room.getRoomId(), pid, null);
+            }else{
+                searchResult=chatMessageDslRepository.search(target, room.getRoomId(), null, null);
+            }
 //            if (searchResult==0L)
 //                continue;
             RoomListResponseDTO roomList = new RoomListResponseDTO();

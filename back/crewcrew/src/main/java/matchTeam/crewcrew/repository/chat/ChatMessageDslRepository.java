@@ -54,22 +54,23 @@ public class ChatMessageDslRepository {
     }
 
     public Long search(String target, UUID roomId, Long pid, Long sid) {
-        BooleanBuilder builder = new BooleanBuilder();
+//        Boole builder = new BooleanBuilder();
         System.out.println("--------" + target + sid + " " + pid);
-        if (pid != null && sid == null) {
-            builder.and((chatRoom.publisher.nickname.contains(target))
-                    .or(chatRoom.board.title.contains(target))
-                    .or(chatRoom.board.category.categoryName.contains(target)));
-        }
-        if (pid == null && sid != null) {
-            builder.and((chatRoom.subscriber.nickname.contains(target))
-                    .or(chatRoom.board.title.contains(target))
-                    .or(chatRoom.board.category.categoryName.contains(target)));
-        }
+//        if (pid != null && sid == null) {
+//            builder.and((chatRoom.publisher.nickname.contains(target))
+//                    .or(chatRoom.board.title.contains(target))
+//                    .or(chatRoom.board.category.categoryName.contains(target)));
+//        }
+//        if (pid == null && sid != null) {
+//            builder.and((chatRoom.subscriber.nickname.contains(target))
+//                    .or(chatRoom.board.title.contains(target))
+//                    .or(chatRoom.board.category.categoryName.contains(target)));
+//        }
         Long result = queryFactory
-                .select(chatRoom,board)
+                .select(chatRoom)
                 .from(chatRoom)
-                .where(chatRoom.roomId.eq(roomId).and(chatRoom.board.title.contains(target)))
+                .where(chatRoom.roomId.eq(roomId),
+                        (chatRoom.board.title.contains(target)))
                 .fetchCount();
         System.out.println("---------------------------------" + result);
         return result;
