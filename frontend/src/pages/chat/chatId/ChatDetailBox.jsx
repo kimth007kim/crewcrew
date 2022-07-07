@@ -214,6 +214,7 @@ function ChatDetailBox({ roomId }) {
         setSize={setSize}
         isReachingEnd={isReachingEnd}
         loading={loading}
+        other={roomInfo && roomInfo.other}
       ></ChatList>
       <ChatBoxBottom>
         <form onSubmit={onSubmitContent}>
