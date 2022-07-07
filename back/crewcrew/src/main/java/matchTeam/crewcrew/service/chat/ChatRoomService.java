@@ -315,7 +315,7 @@ public class ChatRoomService {
             throw new CrewException(ErrorCode.CHAT_NOT_SUPPORTED_SAME_USER);
         }
 
-        ChatRoom chatRoom = ChatRoom.builder().publisher(pubs).subscriber(subs).board(board).build();
+        ChatRoom chatRoom = ChatRoom.builder().publisher(pubs).subscriber(subs).board(board).publisherIn(1).subscriberIn(1).build();
         chatRoomRepository.save(chatRoom);
         return chatRoom;
     }

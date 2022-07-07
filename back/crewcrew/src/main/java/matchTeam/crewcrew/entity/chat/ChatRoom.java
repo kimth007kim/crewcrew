@@ -41,13 +41,13 @@ public class ChatRoom  extends BaseTimeEntity {
 
     private int subscriberIn;
 
-    public ChatRoom toEntity(User publisher,User subscriber,Board board) {
+    public ChatRoom toEntity(User publisher,User subscriber,Board board,int publisherIn, int subscriberIn) {
         return ChatRoom.builder()
                 .publisher(publisher)
                 .subscriber(subscriber)
                 .board(board)
-                .publisherIn(1)
-                .subscriberIn(1)
+                .publisherIn(publisherIn)
+                .subscriberIn(subscriberIn)
                 .build();
     }
 

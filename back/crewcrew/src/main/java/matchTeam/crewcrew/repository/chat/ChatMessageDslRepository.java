@@ -29,6 +29,17 @@ public class ChatMessageDslRepository {
                 .fetch();
     }
 
+    public Long createRoom(User publisher, User subscriber) {
+        queryFactory.insert(chatRoom)
+                .set(chatRoom.publisher,publisher)
+                .set(chatRoom.subscriber,subscriber)
+                .set(chatRoom.publisherIn,1)
+                .set(chatRoom.subscriberIn,1)
+                .execute();
+
+        return 1L;
+    }
+
     public Long findAnother(UUID roomId, Long userId) {
         ChatRoomByUsersDTO roomByUsersDTO = queryFactory
                 .select(Projections.constructor(ChatRoomByUsersDTO.class, chatRoom))
