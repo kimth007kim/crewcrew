@@ -96,14 +96,14 @@ public class ChatRoomService {
 
     public List<ChatMessageResponseDTO> messageToResponse(UUID roomId, List<ChatMessage> messages) {
         ChatRoom room = isValidRoom(roomId);
-        Long uid1 =null;
-        Long uid2 =null;
+        Long uid1 = null;
+        Long uid2 = null;
         User user1 = room.getPublisher();
-        if (user1!=null)
-            uid1 =user1.getUid();
+        if (user1 != null)
+            uid1 = user1.getUid();
         User user2 = room.getSubscriber();
-        if (user2!=null)
-            uid2 =user2.getUid();
+        if (user2 != null)
+            uid2 = user2.getUid();
 
 
         int length = messages.size();
@@ -271,16 +271,16 @@ public class ChatRoomService {
                 roomList.setRecentMessageTime(recentDTO.getTime());
                 roomList.setRecentMessageContent(recentDTO.getContent());
             }
-            if (otherNickName != null && otherNickName.contains(target)==true) {
+            if (otherNickName != null && otherNickName.contains(target) == true) {
                 System.out.println(otherNickName);
                 input = true;
             }
-            if (board.getTitle().contains(target)==true || category.getCategoryName().contains(target)==true) {
-                System.out.println(board.getTitle()+category.getCategoryName());
+            if (board.getTitle().contains(target) == true || category.getCategoryName().contains(target) == true) {
+                System.out.println(board.getTitle() + category.getCategoryName());
 
                 input = true;
             }
-            System.out.println(otherNickName+board.getTitle()+category.getCategoryName()+input);
+            System.out.println(otherNickName + board.getTitle() + category.getCategoryName() + input);
             if (input == true)
                 result.add(roomList);
         }
@@ -356,14 +356,16 @@ public class ChatRoomService {
             User subscriber = chatRoom.getSubscriber();
             Long pid = null;
             Long sid = null;
-            if (publisher != null || chatRoom.isPublisherIn()==false) {
+            if (publisher != null) {
                 pid = publisher.getUid();
-            } else {
+            }
+            if (chatRoom.getPublisherIn() == 0) {
                 cnt += 1;
             }
-            if (subscriber != null || chatRoom.isSubscriberIn()==false) {
+            if (subscriber != null) {
                 sid = subscriber.getUid();
-            } else {
+            }
+            if (chatRoom.getSubscriberIn() == 0) {
                 cnt += 1;
             }
             if (pid == user.getUid()) {

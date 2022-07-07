@@ -100,7 +100,7 @@ public class ChatMessageDslRepository {
     public void exitChatRoomPublisher(UUID roomId, Long uid) {
         long execute = queryFactory
                 .update(chatRoom)
-                .set(chatRoom.publisherIn, false)
+                .set(chatRoom.publisherIn, 0)
                 .where(chatRoom.publisher.uid.eq(uid).and(chatRoom.roomId.eq(roomId)))
                 .execute();
     }
@@ -108,7 +108,7 @@ public class ChatMessageDslRepository {
     public void exitChatRoomSubscriber(UUID roomId, Long uid) {
         long execute = queryFactory
                 .update(chatRoom)
-                .set(chatRoom.subscriberIn, false)
+                .set(chatRoom.subscriberIn, 0)
                 .where(chatRoom.subscriber.uid.eq(uid).and(chatRoom.roomId.eq(roomId)))
                 .execute();
     }
