@@ -142,7 +142,7 @@ function DetailPostList({ data }) {
       filterContext.categorylist = [...categories];
     }
 
-    localStorage.postFilter = JSON.stringify(filterContext);
+    localStorage.setItem('postFilter', JSON.stringify(filterContext));
     setArticle({
       ...filterContext.article,
     });

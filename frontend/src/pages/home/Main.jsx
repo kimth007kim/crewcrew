@@ -161,7 +161,10 @@ function Main() {
       approach: [...approachArr],
       categorylist: [...allFilter],
     };
-    localStorage.postFilter = JSON.stringify(filterContext);
+    if (localStorage) {
+      localStorage.setItem('postFilter', JSON.stringify(filterContext));
+    }
+
     return navigate('/post');
   };
 

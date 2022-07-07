@@ -331,7 +331,7 @@ const ButtonCancel = styled('button')`
   @media screen and (max-width: 820px) {
     width: 100%;
     :hover {
-      background-color: #00b7ff !important;
+      background-color: #c4c4c4 !important;
     }
   }
 `;

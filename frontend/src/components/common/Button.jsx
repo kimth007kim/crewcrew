@@ -190,6 +190,42 @@ const Colors = {
     `,
   },
 
+  pink: {
+    fill: `
+    --text: #fff;
+    --bg: #F95884;
+    --line: #F95884;
+    --text-hover: #fff;
+    --bg-hover: #E9416E;
+    --line-hover: #E9416E;
+    --text-disabled: #fff;
+    --bg-disabled: #e2e2e2;
+    --line-disabled: #e2e2e2;
+    `,
+    line: `
+      --text: #a8a8a8;
+      --bg: #fff;
+      --line: #e2e2e2;
+      --text-hover: #00b7ff;
+      --bg-hover: #fff;
+      --line-hover: #00b7ff;
+      --text-disabled: #fff;
+      --bg-disabled: #e2e2e2;
+      --line-disabled: #e2e2e2;
+    `,
+    text: `
+        --text: var(--button_text_gray);
+        --bg: var(--button_base_white);
+        --line: var(--button_base_white);
+        --text-hover: var(--button_text_gray);
+        --bg-hover: var(--button_hover_base_gray);
+        --line-hover: var(--button_hover_base_gray);
+        --text-disabled: var(--button_disabled_text_gray);
+        --bg-disabled: var(--button_base_white);
+        --line-disabled: var(--button_base_white);
+    `,
+  },
+
   white: {
     fill: `
         --text: var(--button_disabled_text_gray);

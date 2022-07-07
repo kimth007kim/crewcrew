@@ -100,7 +100,7 @@ function FilterBox({ handleGetAxios }) {
     if (checkedList.length > 0) {
       filterContext.categorylist = filterContext.categorylist.sort((a, b) => a.index - b.index);
     }
-    localStorage.postFilter = JSON.stringify(filterContext);
+    localStorage.setItem('postFilter', JSON.stringify(filterContext));
     setArticle({
       ...filterContext.article,
     });
@@ -147,7 +147,7 @@ function FilterBox({ handleGetAxios }) {
       filterContext.categorylist = [...categories];
     }
 
-    localStorage.postFilter = JSON.stringify(filterContext);
+    localStorage.setItem('postFilter', JSON.stringify(filterContext));
     setArticle({
       ...filterContext.article,
     });

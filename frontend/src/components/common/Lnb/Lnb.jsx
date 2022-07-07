@@ -115,7 +115,7 @@ function Lnb({ path }) {
                   <NavPCFooterA to="/mypage">
                     <ProfileNullImg src={`${myData.data.file}`} alt="myprofile" />
                   </NavPCFooterA>
-                  {myData.data.flag && <Alarm />}
+                  {myData.data && <Alarm />}
                 </>
               ) : (
                 <NavPCFooterB onClick={handleAuthModal}>

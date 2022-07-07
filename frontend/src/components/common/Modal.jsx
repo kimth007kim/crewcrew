@@ -88,22 +88,6 @@ const FadeOut = keyframes`
     }
 `;
 
-const DownTop = keyframes`
-    from{
-      height: 0;
-    } to {
-      height: calc(var(--vh, 1vh) * 100)-40px;
-    }
-`;
-
-const TopDown = keyframes`
-    from{
-      height: calc(var(--vh, 1vh) * 100)-40px;
-    } to {
-      height: 0;
-    }
-`;
-
 const ModalBg = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
