@@ -232,8 +232,8 @@ function SignupSection3({ IsClick, HandleClick }) {
 
           switch (data.status) {
             case 200:
+              await mutate('/auth/token');
               HandleClick(4);
-              mutate('/auth/token');
               break;
             case 1004:
             case 1005:

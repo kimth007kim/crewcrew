@@ -26,7 +26,7 @@ function ChatCard({ data }) {
     () =>
       regexifyString({
         input: data.content,
-        pattern: /\n+/g,
+        pattern: /[\n]+/g,
         decorator(match, index) {
           return <br key={index} />;
         },

@@ -41,9 +41,14 @@ function NavContainer() {
       });
       switch (data.status) {
         case 200:
-          await mutate('/auth/token');
+          cookies.remove('X-AUTH-TOKEN');
+
+          mutate('/auth/token');
           if (pathname.startsWith('/mypage')) {
             navigate('/', { replace: true });
+          }
+          if (window && window.location) {
+            window.location.reload();
           }
           break;
         case 1900:
