@@ -201,13 +201,14 @@ public class ChatRoomService {
         User member = userRepository.findById(uid).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
         List<ChatRoom> rooms = chatRoomRepository.findBySubscriberOrPublisher(member, member);
         int length = rooms.size();
-        boolean input = false;
         System.out.println(length + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         List<RoomListResponseDTO> result = new ArrayList<>();
         for (int i = 0; i < length; i++) {
+            boolean input = false;
             ChatRoom room = rooms.get(i);
             Long pid = null;
             Long sid = null;
+            Long otherUid = chatMessageDslRepository.findAnother(room.getRoomId(), uid);
             String otherNickName = null;
 //            User publisher = room.getPublisher();
 //            User subscriber = room.getSubscriber();
@@ -215,15 +216,14 @@ public class ChatRoomService {
 //                pid = publisher.getUid();
 //            if (subscriber !=null)
 //                sid = subscriber.getUid();
-            Long otherUid = chatMessageDslRepository.findAnother(room.getRoomId(), uid);
-            Long searchResult =0L;
-            if (otherUid ==pid) {
-                searchResult=chatMessageDslRepository.search(target,room.getRoomId(),null,sid);
-            }else if(otherUid==sid) {
-                searchResult=chatMessageDslRepository.search(target, room.getRoomId(), pid, null);
-            }else{
-                searchResult=chatMessageDslRepository.search(target, room.getRoomId(), null, null);
-            }
+//            Long searchResult =0L;
+//            if (otherUid ==pid) {
+//                searchResult=chatMessageDslRepository.search(target,room.getRoomId(),null,sid);
+//            }else if(otherUid==sid) {
+//                searchResult=chatMessageDslRepository.search(target, room.getRoomId(), pid, null);
+//            }else{
+//                searchResult=chatMessageDslRepository.search(target, room.getRoomId(), null, null);
+//            }
 //            if (searchResult==0L)
 //                continue;
             RoomListResponseDTO roomList = new RoomListResponseDTO();
@@ -273,10 +273,12 @@ public class ChatRoomService {
             }
             if (otherNickName != null && otherNickName.contains(target) == true) {
                 System.out.println(otherNickName);
+                log.info("닉네임에 속함");
                 input = true;
             }
             if (board.getTitle().contains(target) == true || category.getCategoryName().contains(target) == true) {
                 System.out.println(board.getTitle() + category.getCategoryName());
+                log.info("카테고리 or 보드 타이틀에 속함");
 
                 input = true;
             }
