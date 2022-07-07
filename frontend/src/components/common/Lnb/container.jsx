@@ -41,7 +41,9 @@ function NavContainer() {
       });
       switch (data.status) {
         case 200:
-          cookies.remove('X-AUTH-TOKEN');
+          if (process.env.NODE_ENV !== 'production') {
+            cookies.remove('X-AUTH-TOKEN');
+          }
 
           mutate('/auth/token');
           if (pathname.startsWith('/mypage')) {
