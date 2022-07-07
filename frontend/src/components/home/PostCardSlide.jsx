@@ -180,7 +180,7 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
               {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
             </CardTagColor>
             <CardTagColor category={category()}>
-              {data.approachCode ? '온라인' : '오프라인'}
+              {data.approachCode ? '오프라인' : '온라인'}
             </CardTagColor>
             <CardTag>
               <span>

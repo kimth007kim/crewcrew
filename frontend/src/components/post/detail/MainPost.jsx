@@ -16,6 +16,8 @@ import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
 import ParticipateModal from '../modal/Participate';
 import { loginCheck } from '@/atoms/login';
+import PostDeleteModal from '@/components/common/DeleteModal/PostDeleteModal';
+import PostFixModal from '../modal/PostFix';
 
 function MainPost({ data }) {
   const cookies = new Cookies();
@@ -27,6 +29,8 @@ function MainPost({ data }) {
   const isLogin = useRecoilValue(loginCheck);
 
   const [participateVisible, openParticipate, closeParticipate] = useModal();
+  const [deleteVisible, openDelete, closeDelete] = useModal();
+  const [fixVisible, openFix, closeFix] = useModal();
 
   const renderDate = useCallback(() => {
     const date = new Date(data.createdDate);
@@ -97,7 +101,7 @@ function MainPost({ data }) {
       e.stopPropagation();
       if (myData && myData.data) {
         if (data.uid === myData.data.uid) {
-          return window.alert('자신의 게시글에 지원할 수 없습니다.');
+          return openFix();
         }
         openParticipate();
       } else {
@@ -133,7 +137,14 @@ function MainPost({ data }) {
             <li>
               <ButtonStar type="button" onClick={bookmarkClick} bookmark={isBookmarked} />
             </li>
-            <li>
+            {myData?.data?.uid === data.uid && (
+              <li className="mypost">
+                <Button className="delete" onClick={openDelete}>
+                  삭제
+                </Button>
+              </li>
+            )}
+            <li className={myData?.data?.uid === data.uid && 'mypost'}>
               <Button
                 type="button"
                 disabled={IsDisable}
@@ -148,7 +159,7 @@ function MainPost({ data }) {
             <li>
               {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
             </li>
-            <li>{data.approachCode ? '온라인' : '오프라인'}</li>
+            <li>{data.approachCode ? '오프라인' : '온라인'}</li>
             <li>{`${data.recruitedCrew}/${data.totalCrew}명`}</li>
             <li>{`조회수 ${data.hit}`}</li>
           </TopUList>
@@ -162,6 +173,13 @@ function MainPost({ data }) {
         postData={data}
         visible={participateVisible}
       />
+
+      <PostDeleteModal
+        visible={deleteVisible}
+        closeModal={closeDelete}
+        postData={data}
+      ></PostDeleteModal>
+      <PostFixModal visible={fixVisible} closeModal={closeFix} postData={data}></PostFixModal>
     </>
   );
 }
@@ -226,6 +244,10 @@ const Wrapper = styled('div')`
 
       li:not(:first-child) {
         width: 78px;
+
+        &.mypost {
+          width: 50px;
+        }
       }
     }
   }
@@ -259,6 +281,10 @@ const Wrapper = styled('div')`
 
         li:not(:first-child) {
           width: 100%;
+
+          &.mypost {
+            width: 100%;
+          }
         }
       }
     }
@@ -371,11 +397,21 @@ const Button = styled('button')`
     cursor: default;
   }
 
+  &.delete {
+    background-color: #c4c4c4;
+    :hover {
+      background-color: #a8a8a8;
+    }
+  }
+
   ${(props) =>
     props.myPost &&
     css`
       text-indent: -9999px;
-      background: #00b7ff url(${SettingWhite}) center/24px no-repeat;
+      background: #c4c4c4 url(${SettingWhite}) center/24px no-repeat;
+      :hover {
+        background-color: #a8a8a8;
+      }
     `}
 `;
 

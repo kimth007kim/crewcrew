@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 function useModal() {
   const [visible, setVisible] = useState(false);
@@ -9,6 +9,12 @@ function useModal() {
 
   const close = useCallback(() => {
     setVisible(false);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      setVisible(false);
+    };
   }, []);
 
   return [visible, open, close];

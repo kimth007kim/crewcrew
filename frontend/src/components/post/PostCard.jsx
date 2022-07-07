@@ -21,6 +21,7 @@ import { loginCheck } from '@/atoms/login';
 import { lnbBookmarkDelete } from '@/atoms/post';
 import ProfileTooltip from './tooltip/ProfileTooltip';
 import { tooltipBoardId } from '@/atoms/profile';
+import PostFixModal from './modal/PostFix';
 
 function PostCard({ data }) {
   const cookies = new Cookies();
@@ -39,6 +40,7 @@ function PostCard({ data }) {
   const { postId } = useParams();
 
   const [participateVisible, openParticipate, closeParticipate] = useModal();
+  const [fixVisible, openFix, closeFix] = useModal();
 
   const renderDate = useCallback(() => {
     const date = new Date(data.createdDate);
@@ -125,6 +127,9 @@ function PostCard({ data }) {
     (e) => {
       e.stopPropagation();
       if (myData?.data) {
+        if (data.uid === myData.data.uid) {
+          return openFix();
+        }
         openParticipate();
       } else {
         const login = window.alert('로그인 후 이용가능합니다.');
@@ -206,7 +211,7 @@ function PostCard({ data }) {
               >
                 {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
               </CategoryText>
-              <p>{data.approachCode ? '온라인' : '오프라인'}</p>
+              <p>{data.approachCode ? '오프라인' : '온라인'}</p>
               <p>{`${data.recruitedCrew}/${data.totalCrew}명`}</p>
               <p>
                 조회수
@@ -231,6 +236,7 @@ function PostCard({ data }) {
         postData={data}
         visible={participateVisible}
       />
+      <PostFixModal visible={fixVisible} closeModal={closeFix} postData={data}></PostFixModal>
     </>
   );
 }

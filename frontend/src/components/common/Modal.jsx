@@ -16,13 +16,22 @@ function Modal({
   const [Animate, setAnimate] = useState(visible);
 
   useEffect(() => {
-    if (LocalVisible && !visible) {
-      setAnimate(true);
-      setTimeout(() => {
+    const anime = () => {
+      return setTimeout(() => {
         setAnimate(false);
       }, 500);
+    };
+    if (LocalVisible && !visible) {
+      setAnimate(true);
+      anime();
     }
     setLocalVisible(visible);
+
+    return () => {
+      setLocalVisible(false);
+      setAnimate(false);
+      clearTimeout(anime);
+    };
   }, [LocalVisible, visible]);
 
   const setScreenSize = useCallback(() => {

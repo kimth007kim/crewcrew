@@ -1,7 +1,8 @@
+import { cateogoryAll } from '@/frontDB/filterDB';
 import fetcher from '@/utils/fetcher';
 import axios from 'axios';
 import { format } from 'date-fns';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Cookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -13,7 +14,7 @@ import HeaderContent1 from './HeaderContent1';
 import HeaderContent2 from './HeaderContent2';
 import MainContent from './MainContent';
 
-function PostCreateModal({ closeModal, visible, category = 0, postData = null }) {
+function PostFixModal({ closeModal, visible, category = 0, postData = null }) {
   const cookies = new Cookies();
   const { data: myData, error: myError } = useSWR(
     ['/auth/token', cookies.get('X-AUTH-TOKEN')],
@@ -25,6 +26,7 @@ function PostCreateModal({ closeModal, visible, category = 0, postData = null })
   const [categoryCheck, setCategoryCheck] = useState(category);
   const [meetingCheck, setMeetingCheck] = useState(0);
   const [peopleNum, setPeopleNum] = useState(1);
+  const [categoryValue, setCategoryValue] = useState('');
   const [lastDate, setLastDate] = useState(new Date(nowDate.setDate(nowDate.getDate() + 1)));
   const [detailCategoryCheck, setDetailCategoryCheck] = useState(0);
   const [inviteLink, setInviteLink] = useState('');
@@ -83,7 +85,7 @@ function PostCreateModal({ closeModal, visible, category = 0, postData = null })
         case 200:
           closeModal();
           navigate(`/post/${data.data.boardId}`);
-          toast.success('성공적으로 게시되었습니다.');
+          toast.success('성공적으로 변경되었습니다.');
           break;
         case 2001:
         case 2101:
@@ -123,6 +125,37 @@ function PostCreateModal({ closeModal, visible, category = 0, postData = null })
     }
   }, [category]);
 
+  const initialData = useCallback(() => {
+    if (postData.categoryParentId === 2) {
+      setCategoryCheck(1);
+    }
+    if (postData.approachCode === 1) {
+      setMeetingCheck(1);
+    }
+    if (postData.totalCrew) {
+      setPeopleNum(postData.totalCrew);
+    }
+    if (postData.expiredDate) {
+      setLastDate(new Date(postData.expiredDate));
+    }
+    if (postData.kakaoChat) {
+      setInviteLink(postData.kakaoChat);
+    }
+    if (postData.title) {
+      setTitleText(postData.title);
+    }
+    if (postData.categoryId) {
+      setDetailCategoryCheck(postData.categoryId);
+      const categoryName = cateogoryAll.filter((v) => postData.categoryId === Number(v.value))[0]
+        .name;
+      setCategoryValue(categoryName);
+    }
+  }, [postData]);
+
+  useEffect(() => {
+    initialData();
+  }, [visible]);
+
   if (!myData || !myData.data || myError) {
     return null;
   }
@@ -144,6 +177,8 @@ function PostCreateModal({ closeModal, visible, category = 0, postData = null })
                 setCategoryCheck,
                 detailCategoryCheck,
                 setDetailCategoryCheck,
+                categoryValue,
+                setCategoryValue,
               }}
             ></HeaderContent1>
             <HeaderContent2
@@ -164,6 +199,7 @@ function PostCreateModal({ closeModal, visible, category = 0, postData = null })
                 titleText,
                 setTitleText,
               }}
+              text={postData && postData.boardContent}
             ></MainContent>
           </Body>
           <Footer>
@@ -199,7 +235,7 @@ function PostCreateModal({ closeModal, visible, category = 0, postData = null })
   );
 }
 
-export default PostCreateModal;
+export default PostFixModal;
 
 const Wrapper = styled('div')`
   width: 100%;
