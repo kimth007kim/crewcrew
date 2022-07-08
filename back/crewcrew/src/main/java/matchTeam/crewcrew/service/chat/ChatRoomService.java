@@ -140,7 +140,15 @@ public class ChatRoomService {
 
     public List<RoomListResponseDTO> roomList(Long uid) {
         User member = userRepository.findById(uid).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
-        List<ChatRoom> rooms = chatRoomRepository.findBySubscriberOrPublisher(member, member);
+        List<ChatRoom> rooms = new ArrayList<>();
+
+        List<ChatRoom> subs= chatRoomRepository.findSubscriber(member);
+        List<ChatRoom> pubs= chatRoomRepository.findPublisher(member);
+        for (ChatRoom s: subs)
+            rooms.add(s);
+        for (ChatRoom p: pubs)
+            rooms.add(p);
+
         int length = rooms.size();
 
         System.out.println(length + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -199,7 +207,15 @@ public class ChatRoomService {
 
     public List<RoomListResponseDTO> searchRoom(Long uid, String target) {
         User member = userRepository.findById(uid).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
-        List<ChatRoom> rooms = chatRoomRepository.findBySubscriberOrPublisher(member, member);
+        List<ChatRoom> rooms = new ArrayList<>();
+
+        List<ChatRoom> subs= chatRoomRepository.findSubscriber(member);
+        List<ChatRoom> pubs= chatRoomRepository.findPublisher(member);
+        for (ChatRoom s: subs)
+            rooms.add(s);
+        for (ChatRoom p: pubs)
+            rooms.add(p);
+
         int length = rooms.size();
         System.out.println(length + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         List<RoomListResponseDTO> result = new ArrayList<>();
@@ -370,14 +386,12 @@ public class ChatRoomService {
             if (chatRoom.getSubscriberIn() == 0) {
                 cnt += 1;
             }
-            if (pid == user.getUid()) {
+            if (pid == user.getUid() && chatRoom.getPublisherIn()==1) {
                 chatMessageDslRepository.exitChatRoomPublisher(roomId, user.getUid());
-//                chatMessageDslRepository.exitChatMessage(roomId,user.getUid());
                 cnt += 1;
             }
-            if (sid == user.getUid()) {
+            if (sid == user.getUid()  && chatRoom.getSubscriberIn()==1) {
                 chatMessageDslRepository.exitChatRoomSubscriber(roomId, user.getUid());
-//                chatMessageDslRepository.exitChatMessage(roomId,user.getUid());
                 cnt += 1;
             }
             if (cnt == 2) {
