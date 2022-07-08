@@ -11,7 +11,7 @@ import useQuery from '@/hooks/useQuery';
 import { allFilter } from '@/frontDB/filterDB';
 import { Link } from 'react-router-dom';
 
-function DetailPostList({ data }) {
+function DetailPostList({ data, loading }) {
   const [approach, setApproach] = useRecoilState(approachFilterState);
   const [article, setArticle] = useRecoilState(articleFilterState);
   const [filterData, setFilterData] = useRecoilState(arrayFilterState);
@@ -19,7 +19,6 @@ function DetailPostList({ data }) {
   const [pageData, setPageData] = useState(null);
 
   const [PostListData, setPostListData] = useState([]);
-  const [postLoading, setPostLoading] = useState(false);
 
   const query = useQuery();
 
@@ -169,7 +168,7 @@ function DetailPostList({ data }) {
         </FilterCheckedWrapper>
       </FilterWrapper>
       <SectionWrapper>
-        {postLoading ? (
+        {loading ? (
           <LoadingList>
             <Loader height={80} width={80} />
           </LoadingList>

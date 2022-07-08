@@ -72,9 +72,10 @@ function PostFixModal({ closeModal, visible, category = 0, postData = null }) {
         kakaoChat: inviteLink,
         title: titleText,
         totalCrew: peopleNum,
+        recruitedCrew: postData.recruitedCrew,
       };
 
-      const { data } = await axios.post('/board', context, {
+      const { data } = await axios.put(`/board/${postData.boardId}`, context, {
         withCredentials: true,
         headers: {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
@@ -83,9 +84,11 @@ function PostFixModal({ closeModal, visible, category = 0, postData = null }) {
 
       switch (data.status) {
         case 200:
+          setLoading(false);
           closeModal();
-          navigate(`/post/${data.data.boardId}`);
+          navigate(`/post/${data.data.boardId}?page=1`);
           toast.success('성공적으로 변경되었습니다.');
+
           break;
         case 2001:
         case 2101:
@@ -96,24 +99,24 @@ function PostFixModal({ closeModal, visible, category = 0, postData = null }) {
         case 2106:
         case 2107:
         case 2109:
+          setLoading(false);
           toast.error(data.message);
           break;
         case 2110:
         case 2111:
           // 유저 정보
           toast.error(data.message);
+          setLoading(false);
           closeModal();
           break;
         default:
+          setLoading(false);
           toast.error(data.message);
           break;
       }
     } catch (error) {
       console.error(error);
-    } finally {
-      if (loading) {
-        setLoading(false);
-      }
+      setLoading(false);
     }
   };
 
@@ -224,7 +227,7 @@ function PostFixModal({ closeModal, visible, category = 0, postData = null }) {
                   onClick={handlePostUpload}
                   loadings={loading}
                 >
-                  업로드
+                  수정
                 </Button>
               </li>
             </ListFlex>
