@@ -40,6 +40,9 @@ function ChatList({ chatSections, setSize, isReachingEnd, loading, other }, scro
           onScrollFrame={onScroll}
         >
           {Object.entries(chatSections).map(([date, chats]) => {
+            if (!date) {
+              return null;
+            }
             return (
               <ChatDtWrapper key={date}>
                 <DtDate>{dayjs(date).format('MM.DD')}</DtDate>

@@ -6,6 +6,7 @@ import React, { useCallback, useState } from 'react';
 import { Cookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import styled from 'styled-components';
 import Button from '../Button';
 import {
   Body,
@@ -117,6 +118,10 @@ function PostDeleteModal({ closeModal, visible, postData }) {
                 <li>{`${postData.recruitedCrew}/${postData.totalCrew}명`}</li>
               </CardFooter>
             </ClassificationCard>
+            <Notification>
+              <li>삭제시 이 모집글의 참여자 및 대기자가 더 이상 모집글을 확인할 수 없습니다</li>
+              <li>마이페이지 글 목록등 모든 페이지에서 모집글 삭제</li>
+            </Notification>
             <ButtonWrap>
               <ButtonCancel onClick={closeModal}>취소</ButtonCancel>
               <Button
@@ -137,3 +142,13 @@ function PostDeleteModal({ closeModal, visible, postData }) {
 }
 
 export default PostDeleteModal;
+
+const Notification = styled('div')`
+  display: flex;
+  flex-direction: column;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 19px;
+  color: #a8a8a8;
+  margin-top: 32px;
+`;

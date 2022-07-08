@@ -12,6 +12,8 @@ import axios from 'axios';
 import { Cookies } from 'react-cookie';
 import NocontProfile from '@/assets/images/NocontProfile.png';
 import Loader from '@/components/common/Loader';
+import ChatDeleteModal from '@/components/common/DeleteModal/ChatDeleteModal';
+import useModal from '@/hooks/useModal';
 
 function Chat() {
   const cookies = new Cookies();
@@ -20,45 +22,71 @@ function Chat() {
   const [isSetting, setIsSetting] = useState(false);
   const [chattingList, setChattingList] = useState([]);
   const [isCheckChatList, setIsCheckChatList] = useState([]);
+  const [isCheckChatDataList, setIsCheckChatDataList] = useState([]);
+  const [isDelete, setIsDelete] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+  const [deleteVisible, openDelete, closeDelete] = useModal();
 
   const toggleSearch = useCallback(() => {
     setIsSearch(!isSearch);
   }, [isSearch]);
 
+  const openModal = useCallback(
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (isCheckChatList.length > 0) {
+        openDelete();
+      }
+    },
+    [isCheckChatList],
+  );
+
+  const handleInitial = useCallback(() => {
+    setIsDelete(true);
+  }, []);
+
   const toggleSetting = useCallback(() => {
     setIsSetting(!isSetting);
     setIsCheckChatList([]);
+    setIsCheckChatDataList([]);
   }, [isSetting]);
 
   const onClickCancelSetting = useCallback(() => {
     setIsSetting(false);
     setIsCheckChatList([]);
+    setIsCheckChatDataList([]);
   }, []);
 
   const onClickNavigate = useCallback(
-    (e, roomId) => {
+    (e, roomId, data) => {
       e.stopPropagation();
       if (!isSetting) {
         return navigate(`1054/${roomId}`);
       }
       if (isCheckChatList.includes(roomId)) {
         setIsCheckChatList(isCheckChatList.filter((checkId) => checkId !== roomId));
+        setIsCheckChatDataList(isCheckChatDataList.filter((data) => data.roomId !== roomId));
         return;
       }
       setIsCheckChatList([...isCheckChatList, roomId]);
+      setIsCheckChatDataList([...isCheckChatDataList, data]);
     },
-    [isSetting, isCheckChatList],
+    [isSetting, isCheckChatList, isCheckChatDataList],
   );
 
   const onClickCheckAll = useCallback(() => {
-    const checkAll = chattingList.map((data) => data.chatId);
+    const checkAll = chattingList.map((data) => data.roomId);
+
     if (isCheckChatList.length === chattingList.length) {
       setIsCheckChatList([]);
+      setIsCheckChatDataList([]);
       return;
     }
     setIsCheckChatList(checkAll);
+    setIsCheckChatDataList([...chattingList]);
   }, [chattingList, isCheckChatList]);
 
   const getRoomList = useCallback(async () => {
@@ -74,6 +102,7 @@ function Chat() {
       switch (roomData.status) {
         case 200:
           setChattingList(roomData.data);
+          setIsDelete(false);
           break;
 
         default:
@@ -104,7 +133,7 @@ function Chat() {
               <ChatBoxCard
                 key={index}
                 isSetting={isSetting}
-                onClick={(e) => onClickNavigate(e, data.roomId)}
+                onClick={(e) => onClickNavigate(e, data.roomId, data)}
                 data={data}
                 check={isCheckChatList.includes(data.roomId)}
               ></ChatBoxCard>
@@ -124,7 +153,7 @@ function Chat() {
             <button type="reset" onClick={onClickCancelSetting}>
               선택취소
             </button>
-            <button type="submit">삭제</button>
+            <button onClick={openModal}>삭제</button>
           </DeleteBox>
         </>
       );
@@ -142,7 +171,7 @@ function Chat() {
             <br />
             "언제든지 채팅을 시작해보세요!"
           </p>
-          <button>크루참여</button>
+          <button onClick={() => navigate('/post')}>크루참여</button>
         </NoContent>
       );
     }
@@ -150,7 +179,7 @@ function Chat() {
 
   useEffect(() => {
     getRoomList();
-  }, []);
+  }, [isDelete]);
 
   return (
     <MyLayout>
@@ -175,6 +204,13 @@ function Chat() {
             <ChatBoxBody Search={isSearch}>
               <form action="">{renderSection()}</form>
             </ChatBoxBody>
+            <ChatDeleteModal
+              visible={deleteVisible}
+              closeModal={closeDelete}
+              chatData={isCheckChatDataList[0]}
+              checkList={isCheckChatList}
+              handleInitial={handleInitial}
+            ></ChatDeleteModal>
           </BoxWrapper>
         </SectionWrap>
       </Container>

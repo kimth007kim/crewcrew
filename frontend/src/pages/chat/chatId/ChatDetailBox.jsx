@@ -11,6 +11,9 @@ import axios from 'axios';
 import IconFlag from '@/assets/images/IconFlag.png';
 import IconPostArrow from '@/assets/images/IconPostArrow.png';
 import ChatList from '@/components/mypage/Chat/ChatList';
+import ChatDeleteModal from '@/components/common/DeleteModal/ChatDeleteModal';
+import useModal from '@/hooks/useModal';
+import { useNavigate } from 'react-router-dom';
 
 let client = null;
 
@@ -30,6 +33,8 @@ function ChatDetailBox({ roomId }) {
   const [content, setContent] = useState('');
   const [roomInfo, setRoomInfo] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [deleteVisible, openDelete, closeDelete] = useModal();
+  const navigate = useNavigate();
 
   const chatBtnRef = useRef(null);
   const scrollbarRef = useRef(null);
@@ -39,14 +44,14 @@ function ChatDetailBox({ roomId }) {
     (e) => {
       setContent(e.target.value);
     },
-    [content],
+    [roomInfo],
   );
 
   const onSubmitContent = useCallback(
     (e) => {
       e.preventDefault();
 
-      if (content?.trim() && client) {
+      if (roomInfo && !roomInfo.delete && content?.trim() && client) {
         client.publish({
           destination: '/pub/chat/message',
           body: JSON.stringify({
@@ -66,7 +71,7 @@ function ChatDetailBox({ roomId }) {
         setContent('');
       }
     },
-    [content, client, myData, roomId, scrollbarRef],
+    [content, client, myData, roomId, scrollbarRef, roomInfo],
   );
 
   const onKeyDownChat = useCallback(
@@ -155,6 +160,7 @@ function ChatDetailBox({ roomId }) {
           break;
 
         default:
+          navigate('/mypage/chat', { replace: true });
           console.dir(data.message);
           break;
       }
@@ -194,46 +200,61 @@ function ChatDetailBox({ roomId }) {
   }
 
   return (
-    <BoxWrapper>
-      <BoxHead>
-        <HeadTop>
-          <h3>
-            {roomInfo && roomInfo.other.nickName}
-            {roomInfo && !roomInfo.captain && <img src={IconFlag} alt="flag" />}
-          </h3>
-          <button className="del">삭제</button>
-        </HeadTop>
-        <p>
-          <CategoryTxt>{roomInfo && roomInfo.categoryName}</CategoryTxt>
-          {roomInfo && roomInfo.boardTitle}
-        </p>
-      </BoxHead>
-      <ChatList
-        chatSections={chatSections}
-        ref={scrollbarRef}
-        setSize={setSize}
-        isReachingEnd={isReachingEnd}
-        loading={loading}
-        other={roomInfo && roomInfo.other}
-      ></ChatList>
-      <ChatBoxBottom>
-        <form onSubmit={onSubmitContent}>
-          <ChatInput
-            cols="30"
-            rows="10"
-            name="chat-input"
-            placeholder="보낼 채팅 내용을 입력해주세요."
-            value={content}
-            onChange={onChangeContent}
-            onKeyDown={onKeyDownChat}
-            ref={inputRef}
-          ></ChatInput>
-          <ChatButton type="submit" disabled={!content?.trim()} ref={chatBtnRef}>
-            채팅보내기
-          </ChatButton>
-        </form>
-      </ChatBoxBottom>
-    </BoxWrapper>
+    <>
+      <BoxWrapper>
+        <BoxHead>
+          <HeadTop>
+            <h3>
+              {roomInfo && roomInfo.other.nickName}
+              {roomInfo && !roomInfo.captain && <img src={IconFlag} alt="flag" />}
+            </h3>
+            <button className="del" onClick={openDelete}>
+              삭제
+            </button>
+          </HeadTop>
+          <p>
+            <CategoryTxt>{roomInfo && roomInfo.categoryName}</CategoryTxt>
+            {roomInfo && roomInfo.boardTitle}
+          </p>
+        </BoxHead>
+        <ChatList
+          chatSections={chatSections}
+          ref={scrollbarRef}
+          setSize={setSize}
+          isReachingEnd={isReachingEnd}
+          loading={loading}
+          other={roomInfo && roomInfo.other}
+        ></ChatList>
+        <ChatBoxBottom>
+          <form onSubmit={onSubmitContent}>
+            <ChatInput
+              cols="30"
+              rows="10"
+              name="chat-input"
+              placeholder={
+                roomInfo && roomInfo.delete
+                  ? '채팅을 보낼 수 없습니다'
+                  : '보낼 채팅 내용을 입력해주세요.'
+              }
+              value={content}
+              onChange={onChangeContent}
+              onKeyDown={onKeyDownChat}
+              ref={inputRef}
+              disabled={roomInfo && roomInfo.delete}
+            ></ChatInput>
+            <ChatButton type="submit" disabled={!content?.trim()} ref={chatBtnRef}>
+              채팅보내기
+            </ChatButton>
+          </form>
+        </ChatBoxBottom>
+      </BoxWrapper>
+      <ChatDeleteModal
+        visible={deleteVisible}
+        closeModal={closeDelete}
+        chatData={roomInfo && roomInfo}
+        checkList={[roomId]}
+      ></ChatDeleteModal>
+    </>
   );
 }
 
@@ -350,6 +371,10 @@ const ChatInput = styled('textarea')`
 
   ::placeholder {
     color: #a8a8a8;
+  }
+
+  :disabled {
+    background-color: #fff;
   }
 
   @media screen and (max-width: 820px) {
