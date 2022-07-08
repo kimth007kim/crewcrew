@@ -156,6 +156,22 @@ const SectionWrap = styled('div')`
     font-weight: 700;
     padding: 38px 0 24px;
   }
+
+  @media screen and (max-width: 820px) {
+    padding: 0 20px;
+
+    h3 {
+      padding: 36px 0 20px;
+    }
+  }
+
+  @media screen and (max-width: 300px) {
+    padding: 0 10px;
+
+    br.fold {
+      display: block;
+    }
+  }
 `;
 
 const Wrap = styled('section')`

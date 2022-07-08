@@ -21,6 +21,11 @@ function ActivityCard({ postData }) {
     setIsSwiperClick(!isSwiperClick);
   }, [isSwiperClick]);
 
+  const openInNewTab = useCallback((url) => {
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+    if (newWindow) newWindow.opener = null;
+  }, []);
+
   const getParticipant = useCallback(async () => {
     try {
       const { data } = await axios.get(`/application/myCrew/details/applier/${postData.boardId}`, {
@@ -48,8 +53,6 @@ function ActivityCard({ postData }) {
     getParticipant();
   }, []);
 
-  const deadlineDate = renderDay(postData.expiredDate);
-
   return (
     <Container>
       <Wrapper>
@@ -64,10 +67,10 @@ function ActivityCard({ postData }) {
                 <p>
                   <span>{`(${postData.recruitedCrew}/${postData.totalCrew}명)`}</span> 모집완료
                 </p>
-                <button>크루원채팅</button>
+                <button onClick={() => openInNewTab(postData.kakaoChat)}>크루원채팅</button>
               </DetailBox>
             </CardHead>
-            <CardBody>
+            <CardBody isDisabled={IsDisable}>
               <TextBox>
                 <TitleBox>
                   <h5>{postData.title}</h5>
@@ -91,8 +94,7 @@ function ActivityCard({ postData }) {
                 </ButtonBox>
                 <RightBtnBox>
                   <button className="deadline">
-                    마감일 {deadlineDate < -10 ? '+10' : deadlineDate * -1}
-                    <span>일</span>
+                    마감 7<span>일+</span>
                   </button>
                 </RightBtnBox>
               </TextBox>
@@ -165,6 +167,10 @@ const SwiperBtn = styled('div')`
     css`
       background-image: url(${SwiperArrowReverse});
     `}
+
+  @media screen and (max-width: 820px) {
+    margin-right: 10px;
+  }
 `;
 
 const CardTopHeader = styled('div')``;
@@ -212,6 +218,17 @@ const CardTop = styled('div')`
     padding: 14px 0;
     border: none;
     position: relative;
+  }
+
+  @media screen and (max-width: 820px) {
+    min-height: 146px;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 0 10px;
+
+    ${CardTopHeader} {
+      flex-direction: column;
+    }
   }
 `;
 
@@ -407,6 +424,8 @@ const CardBody = styled('div')`
     padding: 0;
 
     button {
+      width: 30px;
+      height: 30px;
       min-width: 30px;
       min-height: 30px;
       border: none;

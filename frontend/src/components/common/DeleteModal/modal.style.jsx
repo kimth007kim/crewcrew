@@ -90,6 +90,12 @@ export const ClassificationCard = styled('div')`
   display: flex;
   flex-direction: column;
 
+  &.chat {
+    gap: 12px;
+    color: #000;
+    align-items: flex-start;
+  }
+
   h4 {
     font-size: 16px;
     font-weight: 700;

@@ -58,6 +58,20 @@ function RequestCard({ data }) {
         </>
       );
     }
+    if (data.progress === 3) {
+      return (
+        <>
+          <DetailBox>
+            <p>
+              <span>{data && format(new Date(data.appliedDate), '(MM/dd)')}</span> 참여취소
+            </p>
+          </DetailBox>
+          <ButtonBox>
+            <button>내역삭제</button>
+          </ButtonBox>
+        </>
+      );
+    }
   };
 
   return (
@@ -408,13 +422,19 @@ const DetailBox = styled('div')`
   p {
     font-size: 14px;
     font-weight: 700;
-    margin-bottom: 7px;
     white-space: nowrap;
+    text-align: center;
 
     ${(props) =>
       props.color === 'nega' &&
       css`
         color: #f95884;
+      `}
+
+    ${(props) =>
+      props.color === 'posi' &&
+      css`
+        margin-bottom: 7px;
       `}
 
     span {
@@ -447,6 +467,7 @@ const DetailBox = styled('div')`
   @media screen and (max-width: 820px) {
     flex-direction: row;
     align-items: center;
+    justify-content: flex-end;
     gap: 8px;
     height: 30px;
     position: absolute;
