@@ -198,6 +198,11 @@ public class ChatRoomService {
                 roomList.setRecentMessageTime(recentDTO.getTime());
                 roomList.setRecentMessageContent(recentDTO.getContent());
             }
+            if (room.getSubscriberIn()==0 || room.getPublisherIn()==0){
+                roomList.setDelete(true);
+            }else{
+                roomList.setDelete(false);
+            }
             result.add(roomList);
         }
         result.sort(Comparator.comparing(RoomListResponseDTO::getRecentMessageTime).reversed());
@@ -297,6 +302,11 @@ public class ChatRoomService {
                 log.info("카테고리 or 보드 타이틀에 속함");
 
                 input = true;
+            }
+            if (room.getSubscriberIn()==0 || room.getPublisherIn()==0){
+                roomList.setDelete(true);
+            }else{
+                roomList.setDelete(false);
             }
             System.out.println(otherNickName + board.getTitle() + category.getCategoryName() + input);
             if (input == true)
