@@ -50,13 +50,13 @@ public class TimelineController {
         return ResponseHandler.generateResponse(announcementId+"번 타임라인 삭제 성공", HttpStatus.OK, announcementId);
     }
 
-/*    @ResponseStatus(value = HttpStatus.OK)
-    @PutMapping("timeline/{announcementId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    @PutMapping("/timeline/{announcementId}")
     public ResponseEntity<Object> read(@RequestHeader("X-AUTH-TOKEN") String token, @ApiParam(value = "읽음 처리할 타임라인 번호", required = true)
     @PathVariable Long announcementId){
         User user = userService.tokenChecker(token);
         if (user == null) throw new CrewException(ErrorCode.NOT_EXIST_LOGINED_USER);
-        timelineService.update(announcementId);
+        timelineService.read(announcementId);
         return ResponseHandler.generateResponse(announcementId+"번 타임라인 읽음 처리 성공", HttpStatus.OK, announcementId);
-    }*/
+    }
 }

@@ -38,4 +38,12 @@ public class TimelineService {
         announcementRepository.delete(announcement);
     }
 
+    @Transactional
+    public Long read(Long id){
+        Announcement announcement = announcementRepository.findById(id)
+                .orElseThrow(() -> new CrewException(ErrorCode.NOT_EXIST_TIMELINE_TO_CANCEL));
+
+        announcement.read();
+        return id;
+    }
 }

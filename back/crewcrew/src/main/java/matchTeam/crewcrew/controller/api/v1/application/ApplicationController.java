@@ -122,6 +122,7 @@ import static java.util.stream.Collectors.joining;
 
         User user = userService.tokenChecker(token);
         ApplicationUserDetailsResponseDTO result = applicationService.updateApply(request, user);
+        announcementService.save(result);
 
         if (request.getStatusCode() == 2){ // 참여 수락된 경우 메일 발송
             Application application = applicationService.findbyId(request.getApId());

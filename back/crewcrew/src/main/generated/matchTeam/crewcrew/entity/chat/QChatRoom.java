@@ -34,9 +34,13 @@ public class QChatRoom extends EntityPathBase<ChatRoom> {
 
     public final matchTeam.crewcrew.entity.user.QUser publisher;
 
+    public final NumberPath<Integer> publisherIn = createNumber("publisherIn", Integer.class);
+
     public final ComparablePath<java.util.UUID> roomId = createComparable("roomId", java.util.UUID.class);
 
     public final matchTeam.crewcrew.entity.user.QUser subscriber;
+
+    public final NumberPath<Integer> subscriberIn = createNumber("subscriberIn", Integer.class);
 
     public QChatRoom(String variable) {
         this(ChatRoom.class, forVariable(variable), INITS);
