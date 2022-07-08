@@ -144,7 +144,7 @@ function MainPost({ data }) {
                 </Button>
               </li>
             )}
-            <li className={myData?.data?.uid === data.uid && 'mypost'}>
+            <li className={myData?.data?.uid === data.uid ? 'mypost' : ''}>
               <Button
                 type="button"
                 disabled={IsDisable}

@@ -38,7 +38,7 @@ function PostDetail() {
           params.append('categoryIds', categoryIds);
         }
 
-        if (page) {
+        if (page > 0) {
           params.append('page', page - 1);
         }
 
@@ -84,10 +84,10 @@ function PostDetail() {
       <MainContainer>
         <ScrollButton />
         <MainTop />
-        {!loading && data && (
+        {data && (
           <>
             <MainPost data={data[0]} />
-            <DetailPostList data={data[1]} />
+            <DetailPostList data={data[1]} loading={loading} />
           </>
         )}
       </MainContainer>
