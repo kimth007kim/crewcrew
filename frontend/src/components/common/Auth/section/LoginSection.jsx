@@ -4,7 +4,7 @@ import { debounce } from 'lodash';
 import axios from 'axios';
 import { Cookies, useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import CheckOff from '@/assets/images/LogInCheck_off.png';
 import CheckOn from '@/assets/images/LogInCheck_on.png';
 import Naver from '@/assets/images/Naver.png';
@@ -31,9 +31,6 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
   const [isLogin, setIsLogin] = useRecoilState(loginCheck);
 
   const [cookies, setCookie, removeCookie] = useCookies(['user-cookie']);
-  const myCookies = new Cookies();
-
-  const { mutate } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
 
   const EmailValidCheck = useCallback((value) => {
     if (!isEmail(value)) {
@@ -134,8 +131,12 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
               }
               setIsLogin(true);
 
-              await mutate('/auth/token');
-              closeModal();
+              mutate('/auth/token');
+
+              if (window && window.location) {
+                window.location.reload();
+              }
+
               break;
             case 400:
             case 1101:
@@ -154,7 +155,9 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
 
           console.dir(error);
         } finally {
-          setBtnLoading(false);
+          if (BtnLoading) {
+            setBtnLoading(false);
+          }
         }
       }
       axiosPost();
