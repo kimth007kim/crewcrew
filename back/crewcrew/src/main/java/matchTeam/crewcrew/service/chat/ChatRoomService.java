@@ -69,6 +69,11 @@ public class ChatRoomService {
         roomInfo.setBoardTitle(board.getTitle());
         roomInfo.setCategoryId(category.getId());
         roomInfo.setCategoryName(category.getCategoryName());
+        if (room.getSubscriberIn()==0 || room.getPublisherIn()==0){
+            roomInfo.setDelete(true);
+        }else{
+            roomInfo.setDelete(false);
+        }
 
         return roomInfo;
     }
