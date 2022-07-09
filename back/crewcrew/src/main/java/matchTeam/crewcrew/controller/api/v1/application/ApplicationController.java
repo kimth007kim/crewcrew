@@ -341,7 +341,7 @@ import static java.util.stream.Collectors.joining;
         return ResponseHandler.generateResponse("\"나의 활동 크루\" - 참여수락된 글의 다른 참여자 상세보기 성공", HttpStatus.OK, dto);
     }
 
-    @ApiOperation(value = "게시글 삭제(게시글 번호로 삭제)", notes = "게시글 번호로 삭제한다.")
+    @ApiOperation(value = "신청서 삭제(신청서 번호로 삭제)", notes = "신청서 번호로 삭제한다.")
     @ResponseStatus(value = HttpStatus.OK)
     @DeleteMapping("/application/{apId}")
     public ResponseEntity<Object> delete(@ApiParam(value = "삭제를 요청하는 게시글 번호", required = true)
