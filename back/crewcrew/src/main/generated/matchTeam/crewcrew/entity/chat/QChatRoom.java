@@ -32,8 +32,6 @@ public class QChatRoom extends EntityPathBase<ChatRoom> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
-    public final StringPath name = createString("name");
-
     public final matchTeam.crewcrew.entity.user.QUser publisher;
 
     public final ComparablePath<java.util.UUID> roomId = createComparable("roomId", java.util.UUID.class);

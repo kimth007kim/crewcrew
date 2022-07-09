@@ -14,4 +14,18 @@ public class ApplicationProgressService {
     public void increaseApply(Long boardId){
         boardRepository.IncreaseApplyByBoardId(boardId);
     }
+
+    @Transactional
+    public void declinedApply(Long boardId) {
+        boardRepository.decreaseApplyByBoardId(boardId);
+    }
+
+    @Transactional
+    public void completedApply(Long boardId){ boardRepository.increaseRecruitedByBoardId(boardId);}
+
+    @Transactional
+    public void canceledApply(Long boardId){
+        boardRepository.decreaseApplyByBoardId(boardId);
+        boardRepository.decreaseRecruitedByBoardId(boardId);
+    }
 }

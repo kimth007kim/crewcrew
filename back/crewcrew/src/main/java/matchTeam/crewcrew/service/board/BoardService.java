@@ -56,8 +56,7 @@ public class BoardService {
         Category category = categoryRepository.findById(req.getCategoryId())
                         .orElseThrow(NotExistCategoryException::new);
 
-        board.update(req.getTitle(), req.getBoardContent(),
-                req.getRecruitedCrew(), req.getTotalCrew(), req.getApproachCode(),
+        board.update(req.getTitle(), req.getBoardContent(), req.getTotalCrew(), req.getApproachCode(),
                category, req.getExpiredDate(), checkViewableInDate(req.getExpiredDate()), req.getKakaoChat());
 
         return id;
@@ -171,8 +170,6 @@ public class BoardService {
             throw new OverTotalCrewException();
         } else if(updateRequestDTO.getTotalCrew() <= 0){
             throw new NotValidTotalCrewException();
-        }else if (updateRequestDTO.getRecruitedCrew() >= updateRequestDTO.getTotalCrew()){
-            throw new OverRecruitedCrewException();
         }
         categoryRepository.findById(updateRequestDTO.getCategoryId())
                 .orElseThrow(NotExistCategoryException::new);
