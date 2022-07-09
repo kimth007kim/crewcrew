@@ -199,7 +199,7 @@ function ChatDetailBox({ roomId }) {
         <HeadTop>
           <h3>
             {roomInfo && roomInfo.other.nickName}
-            {roomInfo && roomInfo.captain && <img src={IconFlag} alt="flag" />}
+            {roomInfo && !roomInfo.captain && <img src={IconFlag} alt="flag" />}
           </h3>
           <button className="del">삭제</button>
         </HeadTop>
@@ -214,6 +214,7 @@ function ChatDetailBox({ roomId }) {
         setSize={setSize}
         isReachingEnd={isReachingEnd}
         loading={loading}
+        other={roomInfo && roomInfo.other}
       ></ChatList>
       <ChatBoxBottom>
         <form onSubmit={onSubmitContent}>

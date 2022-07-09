@@ -24,7 +24,7 @@ function ChatBoxCard({ isSetting, onClick, check, data }) {
         <ContentHead>
           <HeadBox className="profile">
             <img src={data.other.profileImage} alt="profile" className="profile" />
-            {data.captain && <img src={IconFlag} alt="flag" className="flag" />}
+            {!data.captain && <img src={IconFlag} alt="flag" className="flag" />}
             <p>{data.other.nickName}</p>
           </HeadBox>
           <HeadBox className="post">
@@ -35,7 +35,13 @@ function ChatBoxCard({ isSetting, onClick, check, data }) {
           </HeadBox>
         </ContentHead>
         <ContentBody>
-          <p>{data.other.uid ? data.recentMessageContent : '이 채팅방은 삭제되었습니다'}</p>
+          <p>
+            {data.other.uid
+              ? data.recentMessageContent
+                ? data.recentMessageContent
+                : '이 채팅방에 채팅이 없습니다.'
+              : '이 채팅방은 삭제되었습니다'}
+          </p>
         </ContentBody>
         <ContentFooter>
           <PDate>{format(new Date(data.recentMessageTime), 'MM.dd')}</PDate>

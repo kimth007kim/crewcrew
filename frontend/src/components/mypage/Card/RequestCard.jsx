@@ -84,7 +84,7 @@ function RequestCard({ data }) {
             >
               {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
             </CategoryText>
-            <p>{data.approachCode ? '온라인' : '오프라인'}</p>
+            <p>{data.approachCode ? '오프라인' : '온라인'}</p>
             <p>{`${data.recruitedCrew}/${data.totalCrew}명`}</p>
             <p>
               요청자

@@ -20,6 +20,7 @@ public class RoomInfoResponseDTO {
 
     private Long categoryId;
     private String categoryName;
+    private boolean delete;
 
 
 }

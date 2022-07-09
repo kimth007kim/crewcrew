@@ -22,7 +22,7 @@ function NavContainer() {
   const [bookmarkArr, setBookmarkArr] = useState([]);
   const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
   const cookies = new Cookies();
-  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData, mutate } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [Dialog, openModal, closeModal] = useModal();
@@ -34,33 +34,29 @@ function NavContainer() {
     navigate('/mypage');
   }, []);
 
-  const handleLogout = useCallback(() => {
-    async function axiosDelete() {
-      try {
-        const { data } = await axios.delete('/auth/logout', {
-          withCredentials: true,
-        });
-        switch (data.status) {
-          case 200:
-            if (pathname.startsWith('/mypage')) {
-              navigate('/', { replace: true });
-            }
-            window.location.reload();
-            //cookies.remove('X-AUTH-TOKEN');
-            break;
-          case 1900:
-            toast.error(data.message);
-            break;
+  const handleLogout = useCallback(async () => {
+    try {
+      const { data } = await axios.delete('/auth/logout', {
+        withCredentials: true,
+      });
+      switch (data.status) {
+        case 200:
+          await mutate('/auth/token');
+          if (pathname.startsWith('/mypage')) {
+            navigate('/', { replace: true });
+          }
+          break;
+        case 1900:
+          toast.error(data.message);
+          break;
 
-          default:
-            toast.error(data.message);
-            break;
-        }
-      } catch (error) {
-        console.dir(error);
+        default:
+          toast.error(data.message);
+          break;
       }
+    } catch (error) {
+      console.dir(error);
     }
-    axiosDelete();
   }, []);
 
   const axiosGetBookmark = useCallback(async () => {
@@ -87,10 +83,6 @@ function NavContainer() {
       setBookmarkArr([]);
     };
   }, [myData, changeBookmarked]);
-
-  useEffect(() => {
-    return () => setBookmarkArr([]);
-  }, []);
 
   const renderBookmarked = () => {
     return (

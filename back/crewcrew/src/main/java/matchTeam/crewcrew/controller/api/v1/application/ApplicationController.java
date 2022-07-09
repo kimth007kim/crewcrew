@@ -122,8 +122,11 @@ import static java.util.stream.Collectors.joining;
 
         User user = userService.tokenChecker(token);
         ApplicationUserDetailsResponseDTO result = applicationService.updateApply(request, user);
+        announcementService.save(result);
+
         Application application = applicationService.findbyId(request.getApId());
         Board board = application.getBoard();
+
 
         if (request.getStatusCode().equals(0)){
             applicationProgressService.declinedApply(board.getId()); // 참여거절할 경우, 참여요청자수 - 1

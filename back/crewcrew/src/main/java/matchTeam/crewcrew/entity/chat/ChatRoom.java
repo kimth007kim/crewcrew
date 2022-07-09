@@ -4,6 +4,8 @@ import lombok.*;
 import matchTeam.crewcrew.entity.BaseTimeEntity;
 import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.user.User;
+import net.bytebuddy.implementation.bind.annotation.Default;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
@@ -35,11 +37,17 @@ public class ChatRoom  extends BaseTimeEntity {
     @JoinColumn(name = "subscriberId")
     private User subscriber;
 
-    public ChatRoom toEntity(User publisher,User subscriber,Board board) {
+    private int publisherIn;
+
+    private int subscriberIn;
+
+    public ChatRoom toEntity(User publisher,User subscriber,Board board,int publisherIn, int subscriberIn) {
         return ChatRoom.builder()
                 .publisher(publisher)
                 .subscriber(subscriber)
                 .board(board)
+                .publisherIn(publisherIn)
+                .subscriberIn(subscriberIn)
                 .build();
     }
 

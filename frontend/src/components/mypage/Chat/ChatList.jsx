@@ -7,7 +7,7 @@ import { Scrollbars } from 'react-custom-scrollbars-2';
 import NocontProfile2 from '@/assets/images/NocontProfile2.png';
 import Loader from '@/components/common/Loader';
 
-function ChatList({ chatSections, setSize, isReachingEnd, loading }, scrollRef) {
+function ChatList({ chatSections, setSize, isReachingEnd, loading, other }, scrollRef) {
   const onScroll = useCallback((values) => {
     if (values.scrollTop === 0 && !isReachingEnd) {
       setSize((prevSize) => prevSize + 1).then(() => {
@@ -59,11 +59,11 @@ function ChatList({ chatSections, setSize, isReachingEnd, loading }, scrollRef) 
           </div>
           <p>
             <em>
-              <span></span>
-              {' 님에게 채팅을 보내세요'}
+              <span>{other && other.nickName}</span>
+              {` 님에게 채팅을 보내세요`}
             </em>
             <br />
-            "보낸 채팅은 채팅목록에서 확인할 수 있습니다."
+            보낸 채팅은 채팅목록에서 확인할 수 있습니다.
           </p>
         </NoContent>
       );

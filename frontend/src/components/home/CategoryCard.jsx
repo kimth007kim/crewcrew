@@ -22,7 +22,7 @@ function CategoryCard({ data }) {
       approach: [...approachArr],
       categorylist: [...category],
     };
-    localStorage.postFilter = JSON.stringify(filterContext);
+    localStorage.setItem('postFilter', JSON.stringify(filterContext));
     return navigate('/post');
   };
 

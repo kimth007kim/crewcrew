@@ -1,23 +1,58 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import IconChat from '@/assets/images/IconChat.png';
 import { useNavigate } from 'react-router-dom';
+import { useRef } from 'react';
+import { useCallback } from 'react';
+import useSWR from 'swr';
+import { Cookies } from 'react-cookie';
+import fetcher from '@/utils/fetcher';
 
-function ProfileTooltip({ data, position }) {
+function ProfileTooltip({ data, position, open, setOpen }) {
+  const cookies = new Cookies();
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+
   const navigate = useNavigate();
+  const profileRef = useRef(null);
+
+  const stopPropagation = useCallback((e) => {
+    e.stopPropagation();
+  }, []);
+
   const navigateProfile = (e) => {
     e.stopPropagation();
     navigate(`/profile/${data.uid}`);
   };
   const navigateChat = (e) => {
     e.stopPropagation();
-    navigate(`/mypage/chat`);
+    if (myData?.data.uid === data.uid) {
+      window.alert('자기자신에게 채팅을 보낼 수 없습니다');
+      return false;
+    }
+    navigate(`/mypage/chat/${data.boardId}`);
   };
+
+  useEffect(() => {
+    const handleWindowClick = (event) => {
+      const { current: container } = profileRef;
+      if (!container) return;
+      const eventTarget = event.path && event.path.length > 0 ? event.path[0] : event.target;
+      if (container.contains(eventTarget)) return;
+      if (!open) return;
+      setOpen(false);
+    };
+
+    window.addEventListener('click', handleWindowClick);
+    return () => {
+      window.removeEventListener('click', handleWindowClick);
+    };
+  }, [open]);
+
   return (
-    <Container position={position}>
+    <Container position={position} ref={profileRef} onClick={stopPropagation}>
       <ToolTipName>{data.nickname}</ToolTipName>
       <ToolTipBtn>
-        <Chat onClick={(e) => navigateChat(e)} />
+        {myData?.data?.uid !== data.uid && <Chat onClick={(e) => navigateChat(e)} />}
         <Profile onClick={(e) => navigateProfile(e)}>프로필 확인</Profile>
       </ToolTipBtn>
     </Container>

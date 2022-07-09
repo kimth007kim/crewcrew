@@ -83,7 +83,7 @@ function ActivityCard({ postData }) {
                       )[0].name
                     }
                   </CategoryText>
-                  <p>{postData.approachCode ? '온라인' : '오프라인'}</p>
+                  <p>{postData.approachCode ? '오프라인' : '온라인'}</p>
                 </TextList>
                 <ButtonBox>
                   <button>삭제</button>

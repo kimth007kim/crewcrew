@@ -145,7 +145,7 @@ function ParticipateModal({ closeModal, visible, postData }) {
                     .name
                 }
               </li>
-              <li>{postData.approachCode ? '온라인' : '오프라인'}</li>
+              <li>{postData.approachCode ? '오프라인' : '온라인'}</li>
               <li>{`${postData.recruitedCrew}/${postData.totalCrew}명`}</li>
               <li>
                 조회수

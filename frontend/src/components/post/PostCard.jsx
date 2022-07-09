@@ -20,6 +20,8 @@ import fetcher from '@/utils/fetcher';
 import { loginCheck } from '@/atoms/login';
 import { lnbBookmarkDelete } from '@/atoms/post';
 import ProfileTooltip from './tooltip/ProfileTooltip';
+import { tooltipBoardId } from '@/atoms/profile';
+import PostFixModal from './modal/PostFix';
 
 function PostCard({ data }) {
   const cookies = new Cookies();
@@ -29,6 +31,7 @@ function PostCard({ data }) {
   const [tooltip, setTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState(1);
   const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
+  const [currentBoardId, setCurrentBoardId] = useRecoilState(tooltipBoardId);
   const [deletedBookmark, setDeletedBookmark] = useRecoilState(lnbBookmarkDelete);
   const isLogin = useRecoilValue(loginCheck);
 
@@ -37,6 +40,7 @@ function PostCard({ data }) {
   const { postId } = useParams();
 
   const [participateVisible, openParticipate, closeParticipate] = useModal();
+  const [fixVisible, openFix, closeFix] = useModal();
 
   const renderDate = useCallback(() => {
     const date = new Date(data.createdDate);
@@ -123,6 +127,9 @@ function PostCard({ data }) {
     (e) => {
       e.stopPropagation();
       if (myData?.data) {
+        if (data.uid === myData.data.uid) {
+          return openFix();
+        }
         openParticipate();
       } else {
         const login = window.alert('로그인 후 이용가능합니다.');
@@ -137,11 +144,15 @@ function PostCard({ data }) {
     }
   };
 
-  const viewTooltip = (e, position) => {
-    e.stopPropagation();
-    setTooltip(true);
-    setTooltipPosition(position);
-  };
+  const viewTooltip = useCallback(
+    (e, position) => {
+      e.stopPropagation();
+      setTooltipPosition(position);
+      setCurrentBoardId(data.boardId);
+      setTooltip(true);
+    },
+    [tooltip],
+  );
 
   useEffect(() => {
     const bool = !data.viewable || renderDay() < 0;
@@ -155,6 +166,12 @@ function PostCard({ data }) {
   useEffect(() => {
     DeletedBookmarkOnLnb();
   }, [deletedBookmark]);
+
+  useEffect(() => {
+    if (currentBoardId !== data.boardId) {
+      setTooltip(false);
+    }
+  }, [currentBoardId]);
 
   return (
     <>
@@ -172,7 +189,14 @@ function PostCard({ data }) {
             <CardDate>{renderDate()}</CardDate>
             <CardName onClick={(e) => viewTooltip(e, 2)}>{data.nickname}</CardName>
           </TextBox>
-          {tooltip && <ProfileTooltip data={data} position={tooltipPosition} />}
+          {myData && myData.data?.uid && tooltip && (
+            <ProfileTooltip
+              data={data}
+              position={tooltipPosition}
+              open={tooltip}
+              setOpen={setTooltip}
+            />
+          )}
         </CardHead>
         <CardBody isDisabled={IsDisable}>
           <TextBox>
@@ -187,7 +211,7 @@ function PostCard({ data }) {
               >
                 {cateogoryAll.filter((category) => `${data.categoryId}` === category.value)[0].name}
               </CategoryText>
-              <p>{data.approachCode ? '온라인' : '오프라인'}</p>
+              <p>{data.approachCode ? '오프라인' : '온라인'}</p>
               <p>{`${data.recruitedCrew}/${data.totalCrew}명`}</p>
               <p>
                 조회수
@@ -212,6 +236,7 @@ function PostCard({ data }) {
         postData={data}
         visible={participateVisible}
       />
+      <PostFixModal visible={fixVisible} closeModal={closeFix} postData={data}></PostFixModal>
     </>
   );
 }

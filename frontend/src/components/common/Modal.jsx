@@ -16,13 +16,22 @@ function Modal({
   const [Animate, setAnimate] = useState(visible);
 
   useEffect(() => {
-    if (LocalVisible && !visible) {
-      setAnimate(true);
-      setTimeout(() => {
+    const anime = () => {
+      return setTimeout(() => {
         setAnimate(false);
       }, 500);
+    };
+    if (LocalVisible && !visible) {
+      setAnimate(true);
+      anime();
     }
     setLocalVisible(visible);
+
+    return () => {
+      setLocalVisible(false);
+      setAnimate(false);
+      clearTimeout(anime);
+    };
   }, [LocalVisible, visible]);
 
   const setScreenSize = useCallback(() => {
@@ -85,22 +94,6 @@ const FadeOut = keyframes`
         opacity:1;
     } to {
         opacity:0;
-    }
-`;
-
-const DownTop = keyframes`
-    from{
-      height: 0;
-    } to {
-      height: calc(var(--vh, 1vh) * 100)-40px;
-    }
-`;
-
-const TopDown = keyframes`
-    from{
-      height: calc(var(--vh, 1vh) * 100)-40px;
-    } to {
-      height: 0;
     }
 `;
 
