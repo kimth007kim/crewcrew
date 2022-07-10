@@ -119,6 +119,12 @@ const TLCardbox = styled('div')`
     padding: 10px;
     height: auto;
     margin-left: 15px;
+
+    &::before {
+      width: 14px;
+      height: 14px;
+      left: -25px;
+    }
   }
 
   ${(props) =>
@@ -148,6 +154,12 @@ const TLCardbox = styled('div')`
         top: 10px;
         right: 14px;
         background: url(${ChatShow}) top center/20px no-repeat;
+
+        @media screen and (max-width: 820px) {
+          padding-top: 2px;
+          text-indent: -9999px;
+          top: 9px;
+        }
       }
     `}
 `;
@@ -162,6 +174,13 @@ const Title = styled('p')`
   em {
     font-size: 20px;
     margin-right: 18px;
+  }
+
+  @media screen and (max-width: 820px) {
+    em {
+      font-size: 15px;
+      margin-right: 8px;
+    }
   }
 
   ${(props) =>

@@ -53,10 +53,4 @@ const TLCardList = styled('ul')`
       padding-bottom: 34px;
     }
   }
-
-  @media screen and (max-width: 820px) {
-    li:first-child {
-      padding-top: 8px;
-    }
-  }
 `;
