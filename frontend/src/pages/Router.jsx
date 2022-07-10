@@ -14,6 +14,7 @@ import Chat from './chat';
 import ChatDetail from './chat/chatId';
 import MyActivity from './mypage/myactivity';
 import Profile from './mypage/profile';
+import PageTimeline from './mypage/timeline';
 
 function Router() {
   return (
@@ -34,6 +35,7 @@ function Router() {
         <Route path="/mypage/chat/:boardId" element={<ChatDetail />} />
         <Route path="/mypage/chat/:boardId/:roomId" element={<ChatDetail />} />
         <Route path="/profile/:uid" element={<Profile />} />
+        <Route path="/mypage/timeline" element={<PageTimeline />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
