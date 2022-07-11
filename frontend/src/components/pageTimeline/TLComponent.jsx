@@ -1,17 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import TLCard from './TLCard';
+import dayjs from 'dayjs';
 
-function TLComponent() {
+function TLComponent({ data }) {
+  const [day, setDay] = useState('');
+  const date = dayjs(data[0].createdDate);
+  const formDate = date.format('YYYY.MM.DD');
+  const kor = ['월', '화', '수', '목', '금', '토', '일'];
+  useEffect(() => {
+    kor.forEach((e, i) => {
+      date.day() - 1 === i && setDay(e);
+    });
+  }, [data]);
   return (
     <div>
       <TopDate>
-        <p>22.05.25 (수)</p>
+        <p>
+          {formDate} ({day})
+        </p>
       </TopDate>
       <TLCardList>
-        <li>
-          <TLCard />
-        </li>
+        {data.map((e) => (
+          <li key={`Card${e.announcementId}`}>
+            <TLCard data={e} />
+          </li>
+        ))}
       </TLCardList>
     </div>
   );

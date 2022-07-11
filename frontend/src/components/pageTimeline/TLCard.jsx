@@ -1,14 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import LogInCheckOff from '@/assets/images/LogInCheck_off.png';
 import LogInCheckOn from '@/assets/images/LogInCheck_on.png';
 import ChatShow from '@/assets/images/ChatShow.png';
-function TLCard() {
+import dayjs from 'dayjs';
+function TLCard({ data }) {
+  console.log(data);
   const [checked, setChecked] = useState(false);
+  const [category, setCategory] = useState('study');
+  const hobbyCat = ['예술', '요리', '운동', '게임', '덕질', '트렌드', '취미기타'];
+  const Date = dayjs(data.createdDate).format('YY/MM/DD HH:mm');
 
   const checkProp = () => {
     setChecked((state) => !state);
   };
+
+  useEffect(() => {
+    hobbyCat.forEach((e) => {
+      e === data.categoryName && setCategory('hobby');
+    });
+  }, [data]);
+
   return (
     <>
       <TLCardSet>
@@ -18,12 +30,13 @@ function TLCard() {
         </LabelCheck>
       </TLCardSet>
       <TLCardboxWrapper>
-        <TLCardbox Cat={'hobby'} State={'posi'} Disabled={'disabled'}>
-          <Title Cat={'hobby'} Disabled={'disabled'}>
-            <em>요리</em>22/05/25 15:38
+        <TLCardbox Cat={category} State={'posi'} Disabled={data.readChk}>
+          <Title Cat={category} Disabled={data.readChk}>
+            <em>{data.categoryName}</em>
+            {Date}
           </Title>
-          <Detail State={'posi'} Disabled={'disabled'}>
-            <em>재영</em>님이 회원님의 글에 <b>참여요청</b>하였습니다.
+          <Detail State={'posi'} Disabled={data.readChk}>
+            <em>{data.boardTitle}</em>님이 회원님의 글에 <b>참여요청</b>하였습니다.
           </Detail>
         </TLCardbox>
       </TLCardboxWrapper>
@@ -140,7 +153,7 @@ const TLCardbox = styled('div')`
           }
         `}
   ${(props) =>
-    props.Disabled === 'disabled' &&
+    props.Disabled &&
     css`
       &::after {
         content: '읽음';
@@ -196,7 +209,7 @@ const Title = styled('p')`
           }
         `}
   ${(props) =>
-    props.Disabled === 'disabled' &&
+    props.Disabled &&
     css`
       em {
         color: #c4c4c4;
@@ -238,7 +251,7 @@ const Detail = styled('p')`
           }
         `}
   ${(props) =>
-    props.Disabled === 'disabled' &&
+    props.Disabled &&
     css`
       b {
         color: #c4c4c4;

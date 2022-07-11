@@ -29,11 +29,11 @@ function TimelineList({ data }) {
     makeArr();
   }, [data]);
 
-  console.log(timelineArr);
-
   return (
     <Container>
-      <TLComponent data={data} />
+      {timelineArr.map((e) => (
+        <TLComponent data={e} key={`Component${e[0].announcementId}`} />
+      ))}
     </Container>
   );
 }
