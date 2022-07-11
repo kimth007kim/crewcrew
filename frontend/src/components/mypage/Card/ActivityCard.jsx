@@ -8,6 +8,9 @@ import SwiperBtSection from './SwiperBtSection';
 import { renderDate, renderDay } from '@/utils';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import axios from 'axios';
+import PostDeleteModal from '@/components/common/DeleteModal/PostDeleteModal';
+import PostFixModal from '@/components/post/modal/PostFix';
+import useModal from '@/hooks/useModal';
 
 function ActivityCard({ postData }) {
   const cookies = new Cookies();
@@ -16,6 +19,8 @@ function ActivityCard({ postData }) {
   const [isSwiperClick, setIsSwiperClick] = useState(false);
 
   const [participantList, setParticipantList] = useState([]);
+  const [deleteVisible, openDelete, closeDelete] = useModal();
+  const [fixVisible, openFix, closeFix] = useModal();
 
   const handleClick = useCallback(() => {
     setIsSwiperClick(!isSwiperClick);
@@ -54,68 +59,78 @@ function ActivityCard({ postData }) {
   }, []);
 
   return (
-    <Container>
-      <Wrapper>
-        <CardTop active={isSwiperClick}>
-          <CardTopHeader>
-            <CardHead>
-              <TextBox>
-                <Dday>마감</Dday>
-                <PostDate>{renderDate(postData.createdDate)} 게시</PostDate>
-              </TextBox>
-              <DetailBox>
-                <p>
-                  <span>{`(${postData.recruitedCrew}/${postData.totalCrew}명)`}</span> 모집완료
-                </p>
-                <button onClick={() => openInNewTab(postData.kakaoChat)}>크루원채팅</button>
-              </DetailBox>
-            </CardHead>
-            <CardBody isDisabled={IsDisable}>
-              <TextBox>
-                <TitleBox>
-                  <h5>{postData.title}</h5>
-                </TitleBox>
-                <TextList>
-                  <CategoryText
-                    textColor={postData.categoryParentId === 1 ? '#005ec5' : '#F7971E'}
-                    isDisabled
-                  >
-                    {
-                      cateogoryAll.filter(
-                        (category) => `${postData.categoryId}` === category.value,
-                      )[0].name
-                    }
-                  </CategoryText>
-                  <p>{postData.approachCode ? '오프라인' : '온라인'}</p>
-                </TextList>
-                <ButtonBox>
-                  <button>삭제</button>
-                  <button className="set">세팅</button>
-                </ButtonBox>
-                <RightBtnBox>
-                  <button className="deadline">
-                    마감 7<span>일+</span>
-                  </button>
-                </RightBtnBox>
-              </TextBox>
-            </CardBody>
-          </CardTopHeader>
-        </CardTop>
-        <CardBottom active={isSwiperClick}>
-          <BtTop>
-            <p>
-              참여자 <em>{postData.recruitedCrew}</em>
-            </p>
-          </BtTop>
-          <SwiperBtSection
-            isSwiperClick={isSwiperClick}
-            participantList={participantList}
-            waitingList={[]}
-          ></SwiperBtSection>
-        </CardBottom>
-      </Wrapper>
-      <SwiperBtn onClick={handleClick}>참여자</SwiperBtn>
-    </Container>
+    <>
+      <Container>
+        <Wrapper>
+          <CardTop active={isSwiperClick}>
+            <CardTopHeader>
+              <CardHead>
+                <TextBox>
+                  <Dday>마감</Dday>
+                  <PostDate>{renderDate(postData.createdDate)} 게시</PostDate>
+                </TextBox>
+                <DetailBox>
+                  <p>
+                    <span>{`(${postData.recruitedCrew}/${postData.totalCrew}명)`}</span> 모집완료
+                  </p>
+                  <button onClick={() => openInNewTab(postData.kakaoChat)}>크루원채팅</button>
+                </DetailBox>
+              </CardHead>
+              <CardBody isDisabled={IsDisable}>
+                <TextBox>
+                  <TitleBox>
+                    <h5>{postData.title}</h5>
+                  </TitleBox>
+                  <TextList>
+                    <CategoryText
+                      textColor={postData.categoryParentId === 1 ? '#005ec5' : '#F7971E'}
+                      isDisabled
+                    >
+                      {
+                        cateogoryAll.filter(
+                          (category) => `${postData.categoryId}` === category.value,
+                        )[0].name
+                      }
+                    </CategoryText>
+                    <p>{postData.approachCode ? '오프라인' : '온라인'}</p>
+                  </TextList>
+                  <ButtonBox>
+                    <button onClick={openDelete}>삭제</button>
+                    <button className="set" onClick={openFix}>
+                      세팅
+                    </button>
+                  </ButtonBox>
+                  <RightBtnBox>
+                    <button className="deadline">
+                      마감 7<span>일+</span>
+                    </button>
+                  </RightBtnBox>
+                </TextBox>
+              </CardBody>
+            </CardTopHeader>
+          </CardTop>
+          <CardBottom active={isSwiperClick}>
+            <BtTop>
+              <p>
+                참여자 <em>{postData.recruitedCrew}</em>
+              </p>
+            </BtTop>
+            <SwiperBtSection
+              isSwiperClick={isSwiperClick}
+              participantList={participantList}
+              waitingList={[]}
+            ></SwiperBtSection>
+          </CardBottom>
+        </Wrapper>
+        <SwiperBtn onClick={handleClick}>참여자</SwiperBtn>
+      </Container>
+      <PostDeleteModal
+        visible={deleteVisible}
+        closeModal={closeDelete}
+        postData={postData}
+      ></PostDeleteModal>
+      <PostFixModal visible={fixVisible} closeModal={closeFix} postData={postData}></PostFixModal>
+    </>
   );
 }
 

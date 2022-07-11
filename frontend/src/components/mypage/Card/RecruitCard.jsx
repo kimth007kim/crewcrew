@@ -8,6 +8,10 @@ import { renderDate, renderDay } from '@/utils';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
+import PostDeleteModal from '@/components/common/DeleteModal/PostDeleteModal';
+import PostFixModal from '@/components/post/modal/PostFix';
+import useModal from '@/hooks/useModal';
 
 function RecruitCard({ postData }) {
   const cookies = new Cookies();
@@ -18,6 +22,25 @@ function RecruitCard({ postData }) {
 
   const [participantList, setParticipantList] = useState([]);
   const [waitingList, setWaitingList] = useState([]);
+  const navigate = useNavigate();
+  const [deleteVisible, openDelete, closeDelete] = useModal();
+  const [fixVisible, openFix, closeFix] = useModal();
+
+  const navigateBoard = useCallback(
+    (e) => {
+      e.stopPropagation();
+      if (IsDisable) {
+        return;
+      }
+      navigate(`/post/${postData.boardId}`);
+    },
+    [IsDisable],
+  );
+
+  const openInNewTab = useCallback((url) => {
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+    if (newWindow) newWindow.opener = null;
+  }, []);
 
   const handleClick = useCallback(() => {
     setIsSwiperClick(!isSwiperClick);
@@ -98,75 +121,87 @@ function RecruitCard({ postData }) {
   }, []);
 
   return (
-    <Container>
-      <Wrapper>
-        <CardTop active={isSwiperClick}>
-          <CardTopHeader>
-            <CardHead>
-              <TextBox>
-                <Dday>{IsDisable ? '마감' : `D-${renderDay(postData.expiredDate)}`}</Dday>
-                <PostDate>{renderDate(postData.createdDate)} 게시</PostDate>
-              </TextBox>
-              <DetailBox>
-                <p>
-                  <span>{`(${postData.recruitedCrew}/${postData.totalCrew}명)`}</span> 모집완료
-                </p>
-                <button>크루원채팅</button>
-              </DetailBox>
-            </CardHead>
-            <CardBody>
-              <TextBox>
-                <TitleBox>
-                  <h5>{postData.title}</h5>
-                </TitleBox>
-                <TextList>
-                  <CategoryText textColor={postData.categoryParentId === 1 ? '#005ec5' : '#F7971E'}>
-                    {
-                      cateogoryAll.filter(
-                        (category) => `${postData.categoryId}` === category.value,
-                      )[0].name
-                    }
-                  </CategoryText>
-                  <p>{postData.approachCode ? '오프라인' : '온라인'}</p>
-                </TextList>
-                <ButtonBox>
-                  <button>삭제</button>
-                  <button className="set">세팅</button>
-                </ButtonBox>
-                <RightBtnBox>
-                  <button>마감하기</button>
-                </RightBtnBox>
-              </TextBox>
-            </CardBody>
-          </CardTopHeader>
-          <CardTopFooter>
-            <p>참여자 및 대기자 관리</p>
-            <CardToggle>
-              <ToggleText active={!toggleCheck} onClick={() => onClickToggleText(false)}>
-                참여자 {postData.recruitedCrew}명
-              </ToggleText>
-              <ToggleBtn onClick={onClickToggle}>
-                <ToggleIndicator active={toggleCheck}></ToggleIndicator>
-              </ToggleBtn>
-              <ToggleText active={toggleCheck} onClick={() => onClickToggleText(true)}>
-                대기자 {postData.appliedCrew}명
-              </ToggleText>
-            </CardToggle>
-            <SwiperBtn onClick={handleClick} active={isSwiperClick}>
-              대기자
-            </SwiperBtn>
-          </CardTopFooter>
-        </CardTop>
-        <CardBottom active={isSwiperClick}>
-          <SwiperBtSection
-            isSwiperClick={isSwiperClick}
-            toggleCheck={toggleCheck}
-            participantList={participantList}
-            waitingList={waitingList}
-          ></SwiperBtSection>
-        </CardBottom>
-      </Wrapper>
-    </Container>
+    <>
+      <Container>
+        <Wrapper>
+          <CardTop active={isSwiperClick}>
+            <CardTopHeader>
+              <CardHead>
+                <TextBox>
+                  <Dday>{IsDisable ? '마감' : `D-${renderDay(postData.expiredDate)}`}</Dday>
+                  <PostDate>{renderDate(postData.createdDate)} 게시</PostDate>
+                </TextBox>
+                <DetailBox>
+                  <p>
+                    <span>{`(${postData.recruitedCrew}/${postData.totalCrew}명)`}</span> 모집완료
+                  </p>
+                  <button onClick={() => openInNewTab(postData.kakaoCaht)}>크루원채팅</button>
+                </DetailBox>
+              </CardHead>
+              <CardBody>
+                <TextBox>
+                  <TitleBox>
+                    <h5 onClick={navigateBoard}>{postData.title}</h5>
+                  </TitleBox>
+                  <TextList>
+                    <CategoryText
+                      textColor={postData.categoryParentId === 1 ? '#005ec5' : '#F7971E'}
+                    >
+                      {
+                        cateogoryAll.filter(
+                          (category) => `${postData.categoryId}` === category.value,
+                        )[0].name
+                      }
+                    </CategoryText>
+                    <p>{postData.approachCode ? '오프라인' : '온라인'}</p>
+                  </TextList>
+                  <ButtonBox>
+                    <button onClick={openDelete}>삭제</button>
+                    <button className="set" onClick={openFix}>
+                      세팅
+                    </button>
+                  </ButtonBox>
+                  <RightBtnBox>
+                    <button>마감하기</button>
+                  </RightBtnBox>
+                </TextBox>
+              </CardBody>
+            </CardTopHeader>
+            <CardTopFooter>
+              <p>참여자 및 대기자 관리</p>
+              <CardToggle>
+                <ToggleText active={!toggleCheck} onClick={() => onClickToggleText(false)}>
+                  참여자 {postData.recruitedCrew}명
+                </ToggleText>
+                <ToggleBtn onClick={onClickToggle}>
+                  <ToggleIndicator active={toggleCheck}></ToggleIndicator>
+                </ToggleBtn>
+                <ToggleText active={toggleCheck} onClick={() => onClickToggleText(true)}>
+                  대기자 {postData.appliedCrew}명
+                </ToggleText>
+              </CardToggle>
+              <SwiperBtn onClick={handleClick} active={isSwiperClick}>
+                대기자
+              </SwiperBtn>
+            </CardTopFooter>
+          </CardTop>
+          <CardBottom active={isSwiperClick}>
+            <SwiperBtSection
+              isSwiperClick={isSwiperClick}
+              toggleCheck={toggleCheck}
+              participantList={participantList}
+              waitingList={waitingList}
+            ></SwiperBtSection>
+          </CardBottom>
+        </Wrapper>
+      </Container>
+      <PostDeleteModal
+        visible={deleteVisible}
+        closeModal={closeDelete}
+        postData={postData}
+      ></PostDeleteModal>
+      <PostFixModal visible={fixVisible} closeModal={closeFix} postData={postData}></PostFixModal>
+    </>
   );
 }
 
@@ -204,6 +239,10 @@ const SwiperBtn = styled('div')`
   background: #fff url(${SwiperArrow}) center/10px no-repeat;
   cursor: pointer;
   border: 1px solid #d9d9d9;
+
+  :hover {
+    border-color: #b0b0b0;
+  }
   ${(props) =>
     props.active &&
     css`
@@ -521,10 +560,17 @@ const CardBody = styled('div')`
         font-size: 15px;
         font-weight: 700;
         color: #000;
+        cursor: pointer;
+        :hover {
+          color: #00b7ff;
+        }
         ${(props) =>
           props.isDisabled &&
           css`
             color: #a8a8a8;
+            :hover {
+              color: #a8a8a8;
+            }
           `}
       }
     }
@@ -581,6 +627,10 @@ const CardBody = styled('div')`
         text-indent: -9999px;
         background: #c4c4c4 url(${SettingWhite}) center/16px no-repeat;
         background-position: center;
+      }
+
+      :hover {
+        background-color: #b0b0b0;
       }
     }
   }

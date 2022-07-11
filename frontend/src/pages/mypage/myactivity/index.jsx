@@ -1,6 +1,7 @@
 import Button from '@/components/common/Button';
 import MyLayout from '@/components/common/MyLayout';
 import ActivityCard from '@/components/mypage/Card/ActivityCard';
+import ParticipateCard from '@/components/mypage/Card/ParticipateCard';
 import MypageMainSubTop from '@/components/mypage/MypageMainSubTop';
 import MypageSubTop from '@/components/mypage/MypageSubTop';
 import axios from 'axios';
@@ -119,25 +120,16 @@ function MyActivity() {
       <Wrap className="accepted">
         <SectionWrap>
           <h3>참여수락된 글</h3>
-          <NoContent>
-            <p>
-              <em>나의 활동 내역이 없습니다.</em>
-              <br></br>
-              활동을 하러 가보실까요?
-            </p>
-            <Button
-              widthSize={100}
-              heightSize={50}
-              paddings={0}
-              fontSize={15}
-              lineHeight={26}
-              borderRadius={10}
-              size={'regular'}
-              color={'lightBlue'}
-            >
-              크루참여
-            </Button>
-          </NoContent>
+          <CardWrapper>
+            <ul>
+              {acceptList.length > 0 &&
+                acceptList.map((v) => (
+                  <li key={v.boardId}>
+                    <ParticipateCard postData={v}></ParticipateCard>
+                  </li>
+                ))}
+            </ul>
+          </CardWrapper>
         </SectionWrap>
       </Wrap>
     </MyLayout>

@@ -3,10 +3,19 @@ import styled from 'styled-components';
 import { format } from 'date-fns';
 import ChatWhite from '@/assets/images/ChatWhite.png';
 import { hobbyFilterArr, studyFilterArr } from '@/frontDB/filterDB';
+import { useNavigate } from 'react-router-dom';
+import { Cookies } from 'react-cookie';
+import useSWR from 'swr';
+import fetcher from '@/utils/fetcher';
 
 function SwiperCard({ data, boardId }) {
+  const cookies = new Cookies();
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+
   const [studyList, setStudyList] = useState([]);
   const [hobbyList, setHobbyList] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const studyArr = [];
@@ -26,6 +35,15 @@ function SwiperCard({ data, boardId }) {
     setStudyList([...studyArr]);
     setHobbyList([...hobbyArr]);
   }, []);
+
+  const navigateChat = (e) => {
+    e.stopPropagation();
+    if (myData?.data.uid === data.uid) {
+      window.alert('자기자신에게 채팅을 보낼 수 없습니다');
+      return false;
+    }
+    navigate(`/mypage/chat/${boardId}`);
+  };
 
   return (
     <>
@@ -57,7 +75,9 @@ function SwiperCard({ data, boardId }) {
       <CardBtn>
         <p>{format(new Date(data.appliedDate), 'MM/dd')} 요청</p>
         <BtnWrapper>
-          <button className="chat">채팅</button>
+          <button className="chat" onClick={navigateChat}>
+            채팅
+          </button>
           <button className="nega">거절</button>
           <button className="posi">수락</button>
         </BtnWrapper>

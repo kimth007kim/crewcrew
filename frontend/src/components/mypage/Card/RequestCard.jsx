@@ -1,17 +1,52 @@
+import { tooltipBoardId } from '@/atoms/profile';
+import ProfileTooltip from '@/components/post/tooltip/ProfileTooltip';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import { renderDate, renderDay } from '@/utils';
+import fetcher from '@/utils/fetcher';
 import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Cookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { css } from 'styled-components';
+import useSWR from 'swr';
 
 function RequestCard({ data }) {
+  const cookies = new Cookies();
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+
+  const [tooltip, setTooltip] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState(1);
+  const setCurrentBoardId = useSetRecoilState(tooltipBoardId);
   const [IsDisable, setIsDisable] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const bool = !data.viewable || renderDay(data.expiredDate) < 0;
     setIsDisable(bool);
   }, []);
+
+  const viewTooltip = useCallback(
+    (e, position) => {
+      e.stopPropagation();
+      setTooltipPosition(position);
+      setCurrentBoardId(data.boardId);
+      setTooltip(true);
+    },
+    [tooltip],
+  );
+
+  const navigateBoard = useCallback(
+    (e) => {
+      e.stopPropagation();
+      if (IsDisable) {
+        return;
+      }
+      navigate(`/post/${data.boardId}`);
+    },
+    [IsDisable],
+  );
 
   const renderProgress = () => {
     if (data.progress === 1) {
@@ -77,18 +112,26 @@ function RequestCard({ data }) {
   return (
     <Container>
       <CardHead isDisabled={IsDisable}>
-        <ProfileBox>
+        <ProfileBox onClick={(e) => viewTooltip(e, 1)}>
           <img src={`${data.profileImage}`} alt="" />
         </ProfileBox>
         <TextBox>
           <Dday>{IsDisable ? '마감' : `D-${renderDay(data.expiredDate)}`}</Dday>
           <CardDate>{renderDate(data.appliedDate)}</CardDate>
-          <CardName>{data.nickName}</CardName>
+          <CardName onClick={(e) => viewTooltip(e, 2)}>{data.nickName}</CardName>
         </TextBox>
+        {myData && myData.data?.uid && tooltip && (
+          <ProfileTooltip
+            data={data}
+            position={tooltipPosition}
+            open={tooltip}
+            setOpen={setTooltip}
+          />
+        )}
       </CardHead>
       <CardBody isDisabled={IsDisable}>
         <TextBox>
-          <TitleBox>
+          <TitleBox onClick={navigateBoard}>
             <h5>{data.title}</h5>
           </TitleBox>
           <TextList>
@@ -174,6 +217,7 @@ const CardHead = styled.div`
   min-width: 204px;
   height: 100%;
   border-right: 1px solid #a8a8a8;
+  position: relative;
 
   ${ProfileBox} {
     min-width: 60px;
@@ -372,7 +416,6 @@ const CardBody = styled.div`
         margin-top: 0;
         h5 {
           width: 100%;
-          overflow: visible;
           white-space: normal;
           line-height: 21px;
           margin-top: 0;

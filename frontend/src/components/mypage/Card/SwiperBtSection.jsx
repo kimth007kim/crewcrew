@@ -169,8 +169,18 @@ const PostSwiperWrapper = styled.div`
 
   @media screen and (max-width: 820px) {
     .swiper-slide {
-      width: 226px;
+      width: calc(100% - 78px);
       margin-bottom: 10px;
+    }
+
+    .card_swiper {
+      padding: 0 10px;
+    }
+  }
+
+  @media screen and (max-width: 300px) {
+    .swiper-slide {
+      width: calc(100% - 18px);
     }
   }
 `;

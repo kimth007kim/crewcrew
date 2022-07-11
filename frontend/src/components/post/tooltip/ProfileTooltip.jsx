@@ -50,7 +50,7 @@ function ProfileTooltip({ data, position, open, setOpen }) {
 
   return (
     <Container position={position} ref={profileRef} onClick={stopPropagation}>
-      <ToolTipName>{data.nickname}</ToolTipName>
+      <ToolTipName>{data.nickname || data.nickName}</ToolTipName>
       <ToolTipBtn>
         {myData?.data?.uid !== data.uid && <Chat onClick={(e) => navigateChat(e)} />}
         <Profile onClick={(e) => navigateProfile(e)}>프로필 확인</Profile>
