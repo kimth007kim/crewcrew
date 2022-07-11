@@ -4,8 +4,7 @@ import LogInCheckOff from '@/assets/images/LogInCheck_off.png';
 import LogInCheckOn from '@/assets/images/LogInCheck_on.png';
 import ChatShow from '@/assets/images/ChatShow.png';
 import dayjs from 'dayjs';
-function TLCard({ data }) {
-  console.log(data);
+function TLCard({ data, isLast }) {
   const [checked, setChecked] = useState(false);
   const [category, setCategory] = useState('study');
   const hobbyCat = ['예술', '요리', '운동', '게임', '덕질', '트렌드', '취미기타'];
@@ -29,7 +28,7 @@ function TLCard({ data }) {
           <span />
         </LabelCheck>
       </TLCardSet>
-      <TLCardboxWrapper>
+      <TLCardboxWrapper isLast={isLast}>
         <TLCardbox Cat={category} State={'posi'} Disabled={data.readChk}>
           <Title Cat={category} Disabled={data.readChk}>
             <em>{data.categoryName}</em>
@@ -99,8 +98,14 @@ const TLCardboxWrapper = styled('div')`
   border-left: 1px solid #e2e2e2;
 
   @media screen and (max-width: 820px) {
-    padding: 18px 0 0;
+    padding: 18px 0 6px;
   }
+
+  ${(props) =>
+    props.isLast &&
+    css`
+      padding-bottom: 24px !important;
+    `}
 `;
 
 const TLCardbox = styled('div')`

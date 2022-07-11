@@ -13,7 +13,7 @@ function TimelineSection() {
 
   const getTimeLine = useCallback(async () => {
     try {
-      const { data } = await axios.get(`/timeline/list?filter=${currentFilterNum}&page=2`, {
+      const { data } = await axios.get(`/timeline/list?filter=${currentFilterNum}`, {
         withCredentials: true,
         headers: {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
@@ -23,7 +23,7 @@ function TimelineSection() {
     } catch (error) {
       console.dir(error);
     }
-  }, []);
+  }, [currentFilterNum]);
 
   useEffect(() => {
     getTimeLine();

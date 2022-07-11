@@ -22,6 +22,8 @@ function TimelineList({ data }) {
         dataArr.push(dataObj[prop]);
       }
       setTimelineArr(dataArr);
+    } else {
+      setTimelineArr([]);
     }
   };
 

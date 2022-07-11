@@ -13,6 +13,7 @@ function TLComponent({ data }) {
       date.day() - 1 === i && setDay(e);
     });
   }, [data]);
+
   return (
     <div>
       <TopDate>
@@ -21,11 +22,15 @@ function TLComponent({ data }) {
         </p>
       </TopDate>
       <TLCardList>
-        {data.map((e) => (
-          <li key={`Card${e.announcementId}`}>
-            <TLCard data={e} />
-          </li>
-        ))}
+        {data.map((e, i) => {
+          let isLast = false;
+          if (i === data.length - 1) isLast = true;
+          return (
+            <li key={`Card${e.announcementId}`}>
+              <TLCard data={e} isLast={isLast} />
+            </li>
+          );
+        })}
       </TLCardList>
     </div>
   );
@@ -62,9 +67,5 @@ const TLCardList = styled('ul')`
 
   li {
     display: flex;
-
-    &:last-child {
-      padding-bottom: 34px;
-    }
   }
 `;

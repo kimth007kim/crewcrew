@@ -4,3 +4,8 @@ export const timelineFilter = atom({
   key: 'timelineFilter',
   default: 0,
 });
+
+export const BtnOpened = atom({
+  key: 'BtnOpened',
+  default: false,
+});
