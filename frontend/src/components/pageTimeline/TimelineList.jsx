@@ -1,11 +1,39 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import TLComponent from './TLComponent';
+import dayjs from 'dayjs';
 
-function TimelineList() {
+function TimelineList({ data }) {
+  const [timelineArr, setTimelineArr] = useState([]);
+  const makeArr = () => {
+    const dataObj = {};
+    const dataArr = [];
+    if (data.length) {
+      data.forEach((e) => {
+        const Date = dayjs(e.createdDate).format('YYYY.MM.DD');
+        if (Array.isArray(dataObj[Date])) {
+          dataObj[Date].push(e);
+        } else {
+          dataObj[Date] = [e];
+        }
+      });
+
+      for (const prop in dataObj) {
+        dataArr.push(dataObj[prop]);
+      }
+      setTimelineArr(dataArr);
+    }
+  };
+
+  useEffect(() => {
+    makeArr();
+  }, [data]);
+
+  console.log(timelineArr);
+
   return (
     <Container>
-      <TLComponent></TLComponent>
+      <TLComponent data={data} />
     </Container>
   );
 }

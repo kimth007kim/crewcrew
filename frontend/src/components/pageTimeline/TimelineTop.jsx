@@ -3,6 +3,8 @@ import styled, { css } from 'styled-components';
 import SettingWhite from '@/assets/images/SettingWhite.png';
 import ArrowDown from '@/assets/images/ArrowDown.png';
 import ArrowUpOn from '@/assets/images/ArrowUpOn.png';
+import { timelineFilter } from '@/atoms/timeline';
+import { useRecoilState } from 'recoil';
 
 function TimelineTop() {
   const [FilterOpen, setFilterOpen] = useState(false);
@@ -14,13 +16,13 @@ function TimelineTop() {
     '나의 참여 취소',
   ];
   const [currentFilter, setCurrentFilter] = useState(FliterList[0]);
-  const [currentFilterNum, setCurrentFilterNum] = useState(0);
+  const [currentFilterNum, setCurrentFilterNum] = useRecoilState(timelineFilter);
 
   const ChangeFilter = (i) => {
     setCurrentFilter(FliterList[i]);
     setCurrentFilterNum(i);
   };
-  console.log(currentFilterNum);
+
   return (
     <Container>
       <Wrapper>
