@@ -105,9 +105,7 @@ public class BoardSearchRepository{
                 .where(
                         board.user.uid.eq(uid)
                                 .and(board.viewable.eq(true))
-                ).offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .orderBy(board.createdDate.desc());
+                ).orderBy(board.createdDate.desc());
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }

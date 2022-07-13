@@ -131,8 +131,11 @@ public enum ErrorCode {
     //5000~ 채팅 예외
 
     CHAT_NOT_ALLOWED_USER(5001, "THIS USER IS NOT ALLOWED TO TALK THIS CHATROOM", "현재 방에 참여하지않은 유저입니다."),
-    CHAT_NOT_SUPPORTED_SAME_USER(5002,"CHATTING IS NOT SUPPORTED WHEN SAME USER COMMUNICATE", "선택하신 채팅방은 본인이 작성한 글입니다.");
+    CHAT_NOT_SUPPORTED_SAME_USER(5002,"CHATTING IS NOT SUPPORTED WHEN SAME USER COMMUNICATE", "선택하신 채팅방은 본인이 작성한 글입니다."),
 
+    //6000 ~ 타임라인 예외
+
+    NOT_EXIST_TIMELINE_TO_CANCEL(6001, "TIMELINE IS EMPTY", "없는 타임라인을 삭제하려고 했습니다.");
 
 
     private int status;

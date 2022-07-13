@@ -105,11 +105,10 @@ public class Board extends BaseTimeEntity {
     }
 
     public void update(String title, String boardContent,
-                       Integer recruitedCrew, Integer totalCrew, Integer approachCode, Category category,
+                       Integer totalCrew, Integer approachCode, Category category,
                        LocalDate expiredDate, Boolean viewable, String kakaoChat){
         this.title = title;
         this.boardContent = boardContent;
-        this.recruitedCrew = recruitedCrew;
         this.totalCrew = totalCrew;
         this.approach = approachCode;
         this.category = category;

@@ -164,6 +164,13 @@ public class ApplicationService {
         return ap;
     }
 
+    @Transactional
+    public void delete(Long id){
+        Application application = applicationRepository.findById(id)
+                .orElseThrow(NotExistApIdException::new);
+        applicationRepository.delete(application);
+    }
+
     //중복 지원했을때
     public void checkDuplicateApplier(User req, ApplicationSaveRequestDTO info){
         System.out.println("queryRepository.checkDuplicateApply(req) = " + queryRepository.checkDuplicateApply(req, info));

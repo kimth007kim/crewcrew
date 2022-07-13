@@ -7,10 +7,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import matchTeam.crewcrew.entity.BaseTimeEntity;
 import matchTeam.crewcrew.entity.board.Board;
+import matchTeam.crewcrew.entity.board.Category;
 import matchTeam.crewcrew.entity.user.User;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,6 +23,7 @@ import java.time.Instant;
         @Index(name = "fk_announce_to_user_applicant_idx", columnList = "applicant_id"),
         @Index(name = "fk_announce_to_user_idx", columnList = "leader_id")
 })
+
 public class Announcement extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,11 +45,19 @@ public class Announcement extends BaseTimeEntity {
     @Column(name = "announce_type")
     private Integer announceType;
 
+    @Column(name = "read_chk")
+    private Boolean readChk;
+
     @Builder
-    public Announcement(Board board, User leader, User applicant) {
+    public Announcement(Board board, User leader, User applicant, Integer announceType) {
         this.board = board;
         this.leader = leader;
         this.applicant = applicant;
-        this.announceType = 1;
+        this.announceType = announceType;
+        this.readChk = false;
+    }
+
+    public void read(){
+        this.readChk = true;
     }
 }

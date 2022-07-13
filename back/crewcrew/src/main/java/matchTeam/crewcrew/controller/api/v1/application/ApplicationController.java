@@ -122,17 +122,25 @@ import static java.util.stream.Collectors.joining;
 
         User user = userService.tokenChecker(token);
         ApplicationUserDetailsResponseDTO result = applicationService.updateApply(request, user);
+        announcementService.save(result);
 
-        if (request.getStatusCode() == 2){ // 참여 수락된 경우 메일 발송
-            Application application = applicationService.findbyId(request.getApId());
+        Application application = applicationService.findbyId(request.getApId());
+        Board board = application.getBoard();
+
+
+        if (request.getStatusCode().equals(0)){
+            applicationProgressService.declinedApply(board.getId()); // 참여거절할 경우, 참여요청자수 - 1
+        } else if (request.getStatusCode() == 2){ // 참여 수락된 경우 메일 발송
             User appliedUser = application.getUser();
-            Board board = application.getBoard();
 
             Context context = new Context();
             context.setVariable("nickname", appliedUser.getNickname());
             context.setVariable("chatURL", board.getKakaoChat());
             context.setVariable("boardTitle", board.getTitle());
             totalEmailService.sendJavaMail("[크루크루] 회원님의 요청이 수락되었습니다", appliedUser.getEmail(), "mailform/accepted", context);
+            applicationProgressService.completedApply(board.getId()); // 참여완료할 경우, 참여자수 + 1
+        } else if (request.getStatusCode().equals(3)){
+            applicationProgressService.canceledApply(board.getId()); // 참여취소할 경우, 참여요청자수 -1, 참여자수 -1
         }
         return ResponseHandler.generateResponse("지원서 진행사항 수정 성공", HttpStatus.OK, result);
     }
@@ -331,5 +339,14 @@ import static java.util.stream.Collectors.joining;
         User user = userService.tokenChecker(token);
         MyWaitingCrewResponseDTO dto = applicationService.findParticipatedApplierDetails(user, boardId);
         return ResponseHandler.generateResponse("\"나의 활동 크루\" - 참여수락된 글의 다른 참여자 상세보기 성공", HttpStatus.OK, dto);
+    }
+
+    @ApiOperation(value = "신청서 삭제(신청서 번호로 삭제)", notes = "신청서 번호로 삭제한다.")
+    @ResponseStatus(value = HttpStatus.OK)
+    @DeleteMapping("/application/{apId}")
+    public ResponseEntity<Object> delete(@ApiParam(value = "삭제를 요청하는 게시글 번호", required = true)
+                                         @PathVariable Long apId){
+        applicationService.delete(apId);
+        return ResponseHandler.generateResponse(apId+"번 신청서 삭제 성공", HttpStatus.OK, apId);
     }
 }

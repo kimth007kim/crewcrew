@@ -32,6 +32,7 @@ public class RoomListResponseDTO implements Comparable<RoomListResponseDTO> {
     private Long unReadCnt;
     private LocalDateTime recentMessageTime;
     private String recentMessageContent;
+    private boolean delete;
 
     @Override
     public int compareTo(RoomListResponseDTO o) {

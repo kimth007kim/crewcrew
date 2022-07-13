@@ -26,9 +26,9 @@ public class BoardUpdateRequestDTO {
     @NotBlank(message = "게시글 본문을 입력해주세요.")
     private String boardContent;
 
-    @ApiModelProperty(value = "모집된 크루원 수", notes = "모집된 크루원 수를 입력해주세요", required = true, example = "3")
+   /* @ApiModelProperty(value = "모집된 크루원 수", notes = "모집된 크루원 수를 입력해주세요", required = true, example = "3")
     @NotNull(message = "지금 현재 모집된 크루원 수 입력해주세요.(총 모집수 보다 작아야합니다.)")
-    private Integer recruitedCrew;
+    private Integer recruitedCrew;*/
 
     @ApiModelProperty(value = "총 모집 크루원 수", notes = "총 모집 크루원 수를 입력해주세요", required = true, example = "10")
     @NotNull(message = "총 모집 크루원 수 입력해주세요.(모집하는 크루원수보다 크거나 같아야 합니다.)")
@@ -56,11 +56,11 @@ public class BoardUpdateRequestDTO {
 
     @Builder
     public BoardUpdateRequestDTO(String title, String boardContent,
-                                 Integer recruitedCrew, Integer totalCrew,
+                                  Integer totalCrew,
                                  Integer approachCode, Long categoryId, LocalDate expiredDate, String kakaoChat) {
         this.title = title;
         this.boardContent = boardContent;
-        this.recruitedCrew = recruitedCrew;
+//        this.recruitedCrew = recruitedCrew;
         this.totalCrew = totalCrew;
         this.approachCode = approachCode;
         this.categoryId = categoryId;
