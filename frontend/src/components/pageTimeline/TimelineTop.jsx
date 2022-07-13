@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import SettingWhite from '@/assets/images/SettingWhite.png';
 import ArrowDown from '@/assets/images/ArrowDown.png';
 import ArrowUpOn from '@/assets/images/ArrowUpOn.png';
-import { timelineFilter, BtnOpened } from '@/atoms/timeline';
+import { BtnOpened, timelineFilter } from '@/atoms/timeline';
 import { useRecoilState } from 'recoil';
 
 function TimelineTop() {
@@ -17,10 +17,12 @@ function TimelineTop() {
   ];
   const [currentFilter, setCurrentFilter] = useState(FliterList[0]);
   const [currentFilterNum, setCurrentFilterNum] = useRecoilState(timelineFilter);
+
   const [btnOpen, setBtnOpen] = useRecoilState(BtnOpened);
 
   const ChangeFilter = (i) => {
     setCurrentFilter(FliterList[i]);
+    localStorage.currentFilterNum = i;
     setCurrentFilterNum(i);
   };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import TimelineTop from './TimelineTop';
 import TimelineList from './TimelineList';
-import { timelineFilter, DataLists } from '@/atoms/timeline';
+import { DataLists, timelineFilter } from '@/atoms/timeline';
 import { useRecoilState } from 'recoil';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
@@ -13,13 +13,13 @@ function TimelineSection() {
   const query = useQuery();
   const cookies = new Cookies();
   const [timelineData, setTimelineData] = useState([]);
-  const [currentFilterNum, setCurrentFilterNum] = useRecoilState(timelineFilter);
   const [dataLists, setDataLists] = useRecoilState(DataLists);
   const [pageData, setPageData] = useState(null);
   const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(query.get('page') || 1);
   const [postsPerPage, setPostsPerPage] = useState(10);
   const [timelineLoaded, setTimelineLoaded] = useState(false);
+  const [currentFilterNum, setCurrentFilterNum] = useRecoilState(timelineFilter);
 
   const getTimeLine = useCallback(
     async (page) => {
@@ -32,7 +32,6 @@ function TimelineSection() {
           },
         });
         if (data.status === 200) {
-          console.log(data.data);
           setTimelineData([...data.data.contents]);
           setPageData({ ...data.data });
           setTotalPage(data.data.totalPages);
@@ -73,6 +72,20 @@ function TimelineSection() {
   useEffect(() => {
     timelineLoaded && NavigateVailidPage();
   }, [timelineLoaded]);
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    const FilterNum = localStorage.getItem('currentFilterNum');
+    FilterNum && setCurrentFilterNum(localStorage.getItem('currentFilterNum'));
+  }, [currentFilterNum]);
 
   return (
     <>
