@@ -125,6 +125,7 @@ const Container = styled('div')`
   justify-content: flex-end;
   align-items: center;
   gap: 8px;
+  z-index: 1;
 
   @media screen and (max-width: 820px) {
     width: 100%;
