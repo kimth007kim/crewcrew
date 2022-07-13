@@ -24,6 +24,8 @@ function TimelineTop() {
     setCurrentFilterNum(i);
   };
 
+  const openBtn = () => setBtnOpen((state) => !state);
+
   return (
     <Container>
       <Wrapper>
@@ -31,7 +33,7 @@ function TimelineTop() {
           <h3>크루 타임라인</h3>
           <p>최근 30일 이내 알림을 확인해보세요!</p>
         </Title>
-        <BtnSet />
+        <BtnSet onClick={openBtn} />
         <FilterWrapper open={FilterOpen} onClick={() => setFilterOpen((state) => !state)}>
           <p>{currentFilter}</p>
           <ul>

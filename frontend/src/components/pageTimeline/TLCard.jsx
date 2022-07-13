@@ -3,15 +3,25 @@ import styled, { css } from 'styled-components';
 import LogInCheckOff from '@/assets/images/LogInCheck_off.png';
 import LogInCheckOn from '@/assets/images/LogInCheck_on.png';
 import ChatShow from '@/assets/images/ChatShow.png';
+import { BtnOpened, DataLists } from '@/atoms/timeline';
+import { useRecoilState } from 'recoil';
 import dayjs from 'dayjs';
 function TLCard({ data, isLast }) {
-  const [checked, setChecked] = useState(false);
   const [category, setCategory] = useState('study');
+  const [isCheck, setIsCheck] = useState(false);
+  const [btnOpen, setBtnOpen] = useRecoilState(BtnOpened);
+  const [dataLists, setDataLists] = useRecoilState(DataLists);
   const hobbyCat = ['예술', '요리', '운동', '게임', '덕질', '트렌드', '취미기타'];
   const Date = dayjs(data.createdDate).format('YY/MM/DD HH:mm');
 
-  const checkProp = () => {
-    setChecked((state) => !state);
+  const changeProps = (e) => {
+    const value = `${data.announcementId}`;
+    if (e.target.checked) {
+      setDataLists([...dataLists, value]);
+    } else if (!e.target.checked && dataLists.find((one) => one === value)) {
+      const filter = dataLists.filter((one) => one !== value);
+      setDataLists([...filter]);
+    }
   };
 
   useEffect(() => {
@@ -20,11 +30,24 @@ function TLCard({ data, isLast }) {
     });
   }, [data]);
 
+  useEffect(() => {
+    if (dataLists.includes(`${data.announcementId}`)) {
+      setIsCheck(true);
+    } else {
+      setIsCheck(false);
+    }
+  }, [dataLists]);
+
   return (
     <>
-      <TLCardSet>
-        <InputHide type={'checkbox'} id="timeline1" onChange={checkProp} />
-        <LabelCheck checked={checked} htmlFor="timeline1">
+      <TLCardSet isOpen={btnOpen}>
+        <InputHide
+          type={'checkbox'}
+          id={data.announcementId}
+          onChange={(e) => changeProps(e)}
+          checked={isCheck}
+        />
+        <LabelCheck htmlFor={data.announcementId}>
           <span />
         </LabelCheck>
       </TLCardSet>
@@ -52,7 +75,7 @@ const TLCardSet = styled('div')`
   overflow: hidden;
 
   ${(props) =>
-    props.on &&
+    props.isOpen &&
     css`
       width: 48px;
     `}
@@ -73,15 +96,6 @@ const LabelCheck = styled('label')`
     background: url(${LogInCheckOff}) center/100% no-repeat;
     transition: background 0.2s;
   }
-
-  ${(props) =>
-    props.checked &&
-    css`
-      span {
-        background: url(${LogInCheckOn});
-        background-size: 100%;
-      }
-    `}
 `;
 
 const InputHide = styled('input')`
@@ -90,6 +104,11 @@ const InputHide = styled('input')`
   clip: rect(1px, 1px, 1px, 1px);
   position: absolute;
   display: none;
+
+  &:checked ~ ${LabelCheck} span {
+    background: url(${LogInCheckOn});
+    background-size: 100%;
+  }
 `;
 
 const TLCardboxWrapper = styled('div')`

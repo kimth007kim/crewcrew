@@ -9,3 +9,8 @@ export const BtnOpened = atom({
   key: 'BtnOpened',
   default: false,
 });
+
+export const DataLists = atom({
+  key: 'DataLists',
+  default: [],
+});

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import TLComponent from './TLComponent';
 import dayjs from 'dayjs';
+import SettingBar from './SettingBar';
 
 function TimelineList({ data }) {
   const [timelineArr, setTimelineArr] = useState([]);
@@ -36,6 +37,7 @@ function TimelineList({ data }) {
       {timelineArr.map((e) => (
         <TLComponent data={e} key={`Component${e[0].announcementId}`} />
       ))}
+      <SettingBar data={data} />
     </Container>
   );
 }
