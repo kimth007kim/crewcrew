@@ -2,14 +2,18 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import LogInCheckOff from '@/assets/images/LogInCheck_off.png';
 import LogInCheckOn from '@/assets/images/LogInCheck_on.png';
-import { BtnOpened, DataLists } from '@/atoms/timeline';
+import { BtnOpened, DataLists, TimelineChanged } from '@/atoms/timeline';
 import { useRecoilState } from 'recoil';
 import { useEffect } from 'react';
+import axios from 'axios';
+import { Cookies } from 'react-cookie';
 
 function SettingBar({ data }) {
+  const cookies = new Cookies();
   const [btnOpen, setBtnOpen] = useRecoilState(BtnOpened);
   const [dataLists, setDataLists] = useRecoilState(DataLists);
   const [isCheck, setIsCheck] = useState(false);
+  const [timelineChanged, setTimelineChanged] = useRecoilState(TimelineChanged);
 
   const changePropAll = (e) => {
     if (e.target.checked) {
@@ -19,6 +23,60 @@ function SettingBar({ data }) {
     } else {
       setDataLists([]);
     }
+  };
+
+  const resetDataLists = () => {
+    setDataLists([]);
+  };
+
+  const postTimeline = (e) => {
+    e.preventDefault();
+    if (!dataLists.length) {
+      alert('읽음처리할 타임라인을 체크해주세요.');
+      return false;
+    }
+    dataLists.forEach(async (e) => {
+      try {
+        const timelineData = await axios.put(`/timeline/${e}`, '', {
+          withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+          },
+        });
+        if (timelineData.data.status === 200) {
+          setDataLists([]);
+          setTimelineChanged((state) => !state);
+          console.log(timelineData.data);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  };
+
+  const delTimeline = (e) => {
+    e.preventDefault();
+    if (!dataLists.length) {
+      alert('삭제할 타임라인을 체크해주세요.');
+      return false;
+    }
+    dataLists.forEach(async (e) => {
+      try {
+        const timelineData = await axios.delete(`/timeline/${e}`, {
+          withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+          },
+        });
+        if (timelineData.data.status === 200) {
+          setDataLists([]);
+          setTimelineChanged((state) => !state);
+          console.log(timelineData.data);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    });
   };
 
   useEffect(() => {
@@ -39,9 +97,13 @@ function SettingBar({ data }) {
         </LabelCheck>
         <p>전체 선택</p>
       </TLSetBox>
-      <SetBtn type="reset">선택취소</SetBtn>
-      <SetBtn>읽음처리</SetBtn>
-      <SetBtn roll={'Del'}>삭제</SetBtn>
+      <SetBtn type="reset" onClick={resetDataLists}>
+        선택취소
+      </SetBtn>
+      <SetBtn onClick={postTimeline}>읽음처리</SetBtn>
+      <SetBtn roll={'Del'} onClick={delTimeline}>
+        삭제
+      </SetBtn>
     </Container>
   );
 }

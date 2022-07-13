@@ -35,10 +35,13 @@ function TimelineList({ data, pageData, totalPage, currentPage, postsPerPage }) 
 
   return (
     <Container>
-      {timelineArr.map((e) => (
-        <TLComponent data={e} key={`Component${e[0].announcementId}`} />
-      ))}
-      <SettingBar data={data} />
+      <form>
+        {timelineArr.map((e) => (
+          <TLComponent data={e} key={`Component${e[0].announcementId}`} />
+        ))}
+        <SettingBar data={data} />
+      </form>
+
       <TimelinePagination
         data={pageData}
         currentPage={currentPage}

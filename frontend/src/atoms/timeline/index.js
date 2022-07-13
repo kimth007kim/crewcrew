@@ -14,3 +14,8 @@ export const DataLists = atom({
   key: 'DataLists',
   default: [],
 });
+
+export const TimelineChanged = atom({
+  key: 'TimelineChanged',
+  default: false,
+});

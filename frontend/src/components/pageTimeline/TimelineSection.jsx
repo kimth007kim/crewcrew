@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import TimelineTop from './TimelineTop';
 import TimelineList from './TimelineList';
-import { DataLists, timelineFilter } from '@/atoms/timeline';
+import { DataLists, timelineFilter, TimelineChanged } from '@/atoms/timeline';
 import { useRecoilState } from 'recoil';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
@@ -20,6 +20,7 @@ function TimelineSection() {
   const [postsPerPage, setPostsPerPage] = useState(10);
   const [timelineLoaded, setTimelineLoaded] = useState(false);
   const [currentFilterNum, setCurrentFilterNum] = useRecoilState(timelineFilter);
+  const [timelineChanged, setTimelineChanged] = useRecoilState(TimelineChanged);
 
   const getTimeLine = useCallback(
     async (page) => {
@@ -42,11 +43,11 @@ function TimelineSection() {
         setTimelineLoaded(true);
       }
     },
-    [currentFilterNum],
+    [currentFilterNum, timelineChanged],
   );
 
   const handleResize = () => {
-    if (window.innerWidth > 768) {
+    if (window.innerWidth > 820) {
       setPostsPerPage(10);
     } else if (window.innerWidth > 320) {
       setPostsPerPage(5);
@@ -67,7 +68,7 @@ function TimelineSection() {
     const pageNum = query.get('page');
     getTimeLine(pageNum - 1);
     setCurrentPage(pageNum || 1);
-  }, [query.get('page'), currentFilterNum]);
+  }, [query.get('page'), currentFilterNum, timelineChanged]);
 
   useEffect(() => {
     timelineLoaded && NavigateVailidPage();
@@ -84,7 +85,7 @@ function TimelineSection() {
 
   useEffect(() => {
     const FilterNum = localStorage.getItem('currentFilterNum');
-    FilterNum && setCurrentFilterNum(localStorage.getItem('currentFilterNum'));
+    FilterNum && setCurrentFilterNum(FilterNum);
   }, [currentFilterNum]);
 
   return (

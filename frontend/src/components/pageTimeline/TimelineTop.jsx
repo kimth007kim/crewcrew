@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import SettingWhite from '@/assets/images/SettingWhite.png';
 import ArrowDown from '@/assets/images/ArrowDown.png';
 import ArrowUpOn from '@/assets/images/ArrowUpOn.png';
 import { BtnOpened, timelineFilter } from '@/atoms/timeline';
 import { useRecoilState } from 'recoil';
+import { useScroll } from '@/hooks/useScroll';
 
 function TimelineTop() {
+  const { scrollY } = useScroll();
   const [FilterOpen, setFilterOpen] = useState(false);
   const FliterList = [
     '전체알림',
@@ -29,7 +31,7 @@ function TimelineTop() {
   const openBtn = () => setBtnOpen((state) => !state);
 
   return (
-    <Container>
+    <Container fixed={scrollY}>
       <Wrapper>
         <Title>
           <h3>크루 타임라인</h3>
@@ -65,6 +67,23 @@ const Container = styled('section')`
 
   @media screen and (max-width: 820px) {
     height: 94px;
+  }
+
+  ${(props) =>
+    props.fixed >= 130 &&
+    css`
+      position: fixed;
+      width: calc(100% - 142px);
+    `}
+
+  @media screen and (max-width: 820px) {
+    ${(props) =>
+      props.fixed >= 60 &&
+      css`
+        position: fixed;
+        top: 60px;
+        width: 100%;
+      `}
   }
 `;
 
