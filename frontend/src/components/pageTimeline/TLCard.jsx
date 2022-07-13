@@ -6,6 +6,7 @@ import ChatShow from '@/assets/images/ChatShow.png';
 import { BtnOpened, DataLists } from '@/atoms/timeline';
 import { useRecoilState } from 'recoil';
 import dayjs from 'dayjs';
+
 function TLCard({ data, isLast }) {
   const [category, setCategory] = useState('study');
   const [isCheck, setIsCheck] = useState(false);

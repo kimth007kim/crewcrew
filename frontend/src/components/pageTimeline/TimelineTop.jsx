@@ -31,29 +31,55 @@ function TimelineTop() {
   const openBtn = () => setBtnOpen((state) => !state);
 
   return (
-    <Container fixed={scrollY}>
-      <Wrapper>
-        <Title>
-          <h3>크루 타임라인</h3>
-          <p>최근 30일 이내 알림을 확인해보세요!</p>
-        </Title>
-        <BtnSet onClick={openBtn} />
-        <FilterWrapper open={FilterOpen} onClick={() => setFilterOpen((state) => !state)}>
-          <p>{currentFilter}</p>
-          <ul>
-            {FliterList.map((e, i) => (
-              <FilterLi onClick={() => ChangeFilter(i)} key={`fliter${i}`}>
-                {e}
-              </FilterLi>
-            ))}
-          </ul>
-        </FilterWrapper>
-      </Wrapper>
-    </Container>
+    <>
+      <FakeSection fixed={scrollY}></FakeSection>
+      <Container fixed={scrollY}>
+        <Wrapper>
+          <Title>
+            <h3>크루 타임라인</h3>
+            <p>최근 30일 이내 알림을 확인해보세요!</p>
+          </Title>
+          <BtnSet onClick={openBtn} />
+          <FilterWrapper open={FilterOpen} onClick={() => setFilterOpen((state) => !state)}>
+            <p>{currentFilter}</p>
+            <ul>
+              {FliterList.map((e, i) => (
+                <FilterLi onClick={() => ChangeFilter(i)} key={`fliter${i}`}>
+                  {e}
+                </FilterLi>
+              ))}
+            </ul>
+          </FilterWrapper>
+        </Wrapper>
+      </Container>
+    </>
   );
 }
 
 export default TimelineTop;
+
+const FakeSection = styled('section')`
+  display: none;
+  width: 100%;
+  height: 108px;
+  @media screen and (max-width: 820px) {
+    height: 94px;
+  }
+
+  ${(props) =>
+    props.fixed >= 130 &&
+    css`
+      display: block;
+    `}
+
+  @media screen and (max-width: 820px) {
+    ${(props) =>
+      props.fixed >= 60 &&
+      css`
+        display: block;
+      `}
+  }
+`;
 
 const Container = styled('section')`
   width: 100%;
