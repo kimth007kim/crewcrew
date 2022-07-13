@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import TLComponent from './TLComponent';
 import dayjs from 'dayjs';
 import SettingBar from './SettingBar';
+import TimelinePagination from './TimelinePagination';
 
-function TimelineList({ data }) {
+function TimelineList({ data, pageData, totalPage, currentPage, postsPerPage }) {
   const [timelineArr, setTimelineArr] = useState([]);
   const makeArr = () => {
     const dataObj = {};
@@ -38,6 +39,12 @@ function TimelineList({ data }) {
         <TLComponent data={e} key={`Component${e[0].announcementId}`} />
       ))}
       <SettingBar data={data} />
+      <TimelinePagination
+        data={pageData}
+        currentPage={currentPage}
+        postsPerPage={postsPerPage}
+        totalPage={totalPage}
+      />
     </Container>
   );
 }
