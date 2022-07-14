@@ -4,6 +4,7 @@ import ActivityCard from '@/components/mypage/Card/ActivityCard';
 import ParticipateCard from '@/components/mypage/Card/ParticipateCard';
 import MypageMainSubTop from '@/components/mypage/MypageMainSubTop';
 import MypageSubTop from '@/components/mypage/MypageSubTop';
+import MyPagination from '@/components/mypage/MyPagination';
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Cookies } from 'react-cookie';
@@ -12,8 +13,17 @@ import styled from 'styled-components';
 function MyActivity() {
   const cookies = new Cookies();
   const [crewActivity, setCrewActivity] = useState(null);
+  const [postsPerPage, setPostsPerPage] = useState(10);
+
   const [deadlineList, setDeadlineList] = useState([]);
+  const [deadlinePageData, setDeadlinePageData] = useState(null);
+  const [deadlineTotalPage, setDeadlineTotalPage] = useState(0);
+  const [deadlineCurrentPage, setDeadlineCurrentPage] = useState(1);
+
   const [acceptList, setAcceptList] = useState([]);
+  const [acceptPageData, setAcceptPageData] = useState(null);
+  const [acceptTotalPage, setAcceptTotalPage] = useState(0);
+  const [acceptCurrentPage, setAcceptCurrentPage] = useState(1);
 
   const apiActivity = useCallback(async () => {
     try {
@@ -39,15 +49,24 @@ function MyActivity() {
 
   const getActivityDeadline = useCallback(async () => {
     try {
-      const { data } = await axios.get('/application/myCrew/details', {
-        withCredentials: true,
-        headers: {
-          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+      const { data } = await axios.get(
+        `/application/myCrew/details?page=${deadlineCurrentPage - 1}`,
+        {
+          withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+          },
         },
-      });
+      );
       switch (data.status) {
         case 200:
+          console.log(data);
+
           setDeadlineList([...data.data.content]);
+          setDeadlinePageData({
+            ...data.data,
+          });
+          setDeadlineTotalPage(data.data.totalPages);
           break;
 
         default:
@@ -57,19 +76,26 @@ function MyActivity() {
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [deadlineCurrentPage]);
 
   const getActivityAccept = useCallback(async () => {
     try {
-      const { data } = await axios.get('/application/myCrew/participated/details', {
-        withCredentials: true,
-        headers: {
-          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+      const { data } = await axios.get(
+        `/application/myCrew/participated/details?page=${deadlineCurrentPage - 1}`,
+        {
+          withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+          },
         },
-      });
+      );
       switch (data.status) {
         case 200:
           setAcceptList([...data.data.contents]);
+          setAcceptPageData({
+            ...data.data,
+          });
+          setAcceptTotalPage(data.data.totalPages);
           break;
 
         default:
@@ -79,11 +105,128 @@ function MyActivity() {
     } catch (error) {
       console.error(error);
     }
+  }, [deadlineCurrentPage]);
+
+  const renderDeadlineList = () => {
+    if (deadlineList.length > 0) {
+      return (
+        <CardWrapper>
+          <ul>
+            {deadlineList.length > 0 &&
+              deadlineList.map((v) => (
+                <li key={v.boardId}>
+                  <ActivityCard postData={v}></ActivityCard>
+                </li>
+              ))}
+          </ul>
+          <MyPagination
+            data={deadlinePageData}
+            setCurrentPage={setDeadlineCurrentPage}
+            currentPage={deadlineCurrentPage}
+            postsPerPage={postsPerPage}
+            totalPage={deadlineTotalPage}
+          ></MyPagination>
+        </CardWrapper>
+      );
+    }
+
+    return (
+      <NoContent>
+        <p>
+          <em>크루에 참여요청한 내역이 없습니다.</em>
+          <br></br>
+          크루에 참여하셔서<br className="fold"></br> 활동 이력을 남겨보세요!
+        </p>
+        <Button
+          widthSize={100}
+          heightSize={50}
+          paddings={0}
+          fontSize={15}
+          lineHeight={26}
+          borderRadius={10}
+          size={'regular'}
+          color={'lightBlue'}
+        >
+          크루참여
+        </Button>
+      </NoContent>
+    );
+  };
+
+  const renderAcceptList = () => {
+    if (acceptList.length > 0) {
+      return (
+        <CardWrapper>
+          <ul>
+            {acceptList.length > 0 &&
+              acceptList.map((v) => (
+                <li key={v.boardId}>
+                  <ParticipateCard postData={v}></ParticipateCard>
+                </li>
+              ))}
+          </ul>
+          <MyPagination
+            data={acceptPageData}
+            setCurrentPage={setAcceptCurrentPage}
+            currentPage={acceptCurrentPage}
+            postsPerPage={postsPerPage}
+            totalPage={acceptTotalPage}
+          ></MyPagination>
+        </CardWrapper>
+      );
+    }
+
+    return (
+      <NoContent>
+        <p>
+          <em>크루에 참여요청한 내역이 없습니다.</em>
+          <br></br>
+          크루에 참여하셔서<br className="fold"></br> 활동 이력을 남겨보세요!
+        </p>
+        <Button
+          widthSize={100}
+          heightSize={50}
+          paddings={0}
+          fontSize={15}
+          lineHeight={26}
+          borderRadius={10}
+          size={'regular'}
+          color={'lightBlue'}
+        >
+          크루참여
+        </Button>
+      </NoContent>
+    );
+  };
+
+  const handleResize = () => {
+    if (window.innerWidth > 768) {
+      setPostsPerPage(10);
+    } else if (window.innerWidth > 320) {
+      setPostsPerPage(5);
+    } else {
+      setPostsPerPage(3);
+    }
+  };
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   useEffect(() => {
     apiActivity();
+  }, []);
+
+  useEffect(() => {
     getActivityDeadline();
+  }, [deadlineCurrentPage]);
+
+  useEffect(() => {
     getActivityAccept();
   }, []);
 
@@ -105,31 +248,13 @@ function MyActivity() {
       <Wrap className="wrotePost">
         <SectionWrap>
           <h3>내가 쓴 마감글</h3>
-          <CardWrapper>
-            <ul>
-              {deadlineList.length > 0 &&
-                deadlineList.map((v) => (
-                  <li key={v.boardId}>
-                    <ActivityCard postData={v}></ActivityCard>
-                  </li>
-                ))}
-            </ul>
-          </CardWrapper>
+          {renderDeadlineList()}
         </SectionWrap>
       </Wrap>
       <Wrap className="accepted">
         <SectionWrap>
           <h3>참여수락된 글</h3>
-          <CardWrapper>
-            <ul>
-              {acceptList.length > 0 &&
-                acceptList.map((v) => (
-                  <li key={v.boardId}>
-                    <ParticipateCard postData={v}></ParticipateCard>
-                  </li>
-                ))}
-            </ul>
-          </CardWrapper>
+          {renderAcceptList()}
         </SectionWrap>
       </Wrap>
     </MyLayout>

@@ -19,6 +19,8 @@ function Chat() {
   const cookies = new Cookies();
 
   const [isSearch, setIsSearch] = useState(false);
+  const [isSearchClick, setIsSearchClick] = useState(false);
+  const [searchText, setSearchText] = useState('');
   const [isSetting, setIsSetting] = useState(false);
   const [chattingList, setChattingList] = useState([]);
   const [isCheckChatList, setIsCheckChatList] = useState([]);
@@ -30,8 +32,8 @@ function Chat() {
   const [deleteVisible, openDelete, closeDelete] = useModal();
 
   const toggleSearch = useCallback(() => {
-    setIsSearch(!isSearch);
-  }, [isSearch]);
+    setIsSearchClick(!isSearchClick);
+  }, [isSearchClick]);
 
   const openModal = useCallback(
     (e) => {
@@ -43,6 +45,10 @@ function Chat() {
     },
     [isCheckChatList],
   );
+
+  const onChangeSearchText = useCallback((e) => {
+    setSearchText(e.target.value);
+  }, []);
 
   const handleInitial = useCallback(() => {
     setIsDelete(true);
@@ -59,6 +65,14 @@ function Chat() {
     setIsCheckChatList([]);
     setIsCheckChatDataList([]);
   }, []);
+
+  const handleNoContentBtn = useCallback(() => {
+    setIsSearch(false);
+    if (isSearch) {
+      return getRoomList();
+    }
+    navigate('/post');
+  }, [isSearch]);
 
   const onClickNavigate = useCallback(
     (e, roomId, data) => {
@@ -102,6 +116,7 @@ function Chat() {
       switch (roomData.status) {
         case 200:
           setChattingList(roomData.data);
+          setIsSearch(false);
           setIsDelete(false);
           break;
 
@@ -115,6 +130,41 @@ function Chat() {
       setLoading(false);
     }
   }, []);
+
+  const getSearchingRoomList = useCallback(
+    async (e) => {
+      e.preventDefault();
+      try {
+        if (!isSearchClick) {
+          return;
+        }
+        setLoading(true);
+        const { data: roomData } = await axios.get(`/talk/user/${searchText}`, {
+          withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+          },
+        });
+
+        switch (roomData.status) {
+          case 200:
+            setIsSearch(true);
+            setChattingList(roomData.data);
+            setIsDelete(false);
+            break;
+
+          default:
+            console.dir(roomData.message);
+            break;
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [isSearchClick, searchText],
+  );
 
   const renderSection = useCallback(() => {
     if (loading) {
@@ -166,12 +216,12 @@ function Chat() {
           <p>
             <em>
               <span></span>
-              {'진행중인 채팅이 없습니다'}
+              {isSearch ? '해당 검색어에 대한 검색결과가 없습니다.' : '진행중인 채팅이 없습니다'}
             </em>
             <br />
-            "언제든지 채팅을 시작해보세요!"
+            {isSearch ? '다른 채팅을 찾아보세요' : '언제든지 채팅을 시작해보세요!'}
           </p>
-          <button onClick={() => navigate('/post')}>크루참여</button>
+          <button onClick={handleNoContentBtn}>{isSearch ? '채팅목록' : '크루참여'}</button>
         </NoContent>
       );
     }
@@ -192,16 +242,21 @@ function Chat() {
               <button className="search" onClick={toggleSearch}></button>
               <ButtonSet active={isSetting} onClick={toggleSetting}></ButtonSet>
             </BoxHead>
-            <ChatBoxSearch Search={isSearch}>
-              <form action="">
+            <ChatBoxSearch Search={isSearchClick}>
+              <form onSubmit={getSearchingRoomList}>
                 <SearchInputWrap>
-                  <button></button>
-                  <input type="text" placeholder="채팅 상대 또는 관련 모집글 이름/카테고리" />
+                  <button type="submit"></button>
+                  <input
+                    type="text"
+                    placeholder="채팅 상대 또는 관련 모집글 이름/카테고리"
+                    onChange={onChangeSearchText}
+                    value={searchText}
+                  />
                 </SearchInputWrap>
               </form>
             </ChatBoxSearch>
 
-            <ChatBoxBody Search={isSearch}>
+            <ChatBoxBody Search={isSearchClick}>
               <form action="">{renderSection()}</form>
             </ChatBoxBody>
             <ChatDeleteModal

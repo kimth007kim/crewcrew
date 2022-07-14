@@ -18,6 +18,7 @@ function SwiperBtSection({
   waitingList,
   toggleCheck = false,
   boardId,
+  status,
 }) {
   const [swiper, setSwiper] = useState(null);
   const [mainIndex, setMainIndex] = useState(0);
@@ -57,13 +58,13 @@ function SwiperBtSection({
           ? participantList.length > 0 &&
             participantList.map((p) => (
               <SwiperSlide key={p && p.apId}>
-                <SwiperCard data={p} boardId={boardId} />
+                <SwiperCard data={p} boardId={boardId} status={status} />
               </SwiperSlide>
             ))
           : waitingList.length > 0 &&
             waitingList.map((w) => (
               <SwiperSlide key={w.apId}>
-                <SwiperCard data={w} boardId={boardId} />
+                <SwiperCard data={w} boardId={boardId} status={status} />
               </SwiperSlide>
             ))}
       </Swiper>

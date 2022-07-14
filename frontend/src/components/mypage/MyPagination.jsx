@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 
 import PageArrow2Prev from '@/assets/images/PageArrow2Prev.png';
@@ -6,9 +6,16 @@ import PageArrowPrev from '@/assets/images/PageArrowPrev.png';
 import PageArrowNext from '@/assets/images/PageArrowNext.png';
 import PageArrow2Next from '@/assets/images/PageArrow2Next.png';
 
-function MyPagination({ data, currentPage, postsPerPage, totalPage, detail = false }) {
+function MyPagination({ data, setCurrentPage, currentPage, postsPerPage, totalPage }) {
   const [page, setPage] = useState(0);
   const [btnDeactive, setbtnDeactive] = useState(null);
+
+  const handleClickPageNavi = useCallback(
+    (i) => {
+      setCurrentPage(i + 1);
+    },
+    [currentPage],
+  );
 
   const renderNumberDiv = () => {
     const renderArr = [];
@@ -20,6 +27,43 @@ function MyPagination({ data, currentPage, postsPerPage, totalPage, detail = fal
     }
     return renderArr;
   };
+
+  const handleClickPrevFirst = useCallback(() => {
+    if (btnDeactive && btnDeactive.prev2) {
+      return null;
+    }
+    setCurrentPage(1);
+  }, [totalPage, postsPerPage, btnDeactive, currentPage]);
+
+  const handleClickPrev = useCallback(() => {
+    if (btnDeactive && btnDeactive.prev1) {
+      return null;
+    }
+    if ((page - 1) * postsPerPage + 1 < 1) {
+      return null;
+    }
+
+    setCurrentPage((page - 1) * postsPerPage + 1);
+  }, [page, totalPage, postsPerPage, btnDeactive]);
+
+  const handleClickNext = useCallback(() => {
+    if (btnDeactive && btnDeactive.next1) {
+      return null;
+    }
+    if ((page + 1) * postsPerPage + 1 > totalPage) {
+      return null;
+    }
+
+    setCurrentPage((page + 1) * postsPerPage + 1);
+  }, [page, totalPage, postsPerPage, btnDeactive]);
+
+  const handleClickNextLast = useCallback(() => {
+    if (btnDeactive && btnDeactive.next2) {
+      return null;
+    }
+
+    setCurrentPage(totalPage);
+  }, [totalPage, postsPerPage, btnDeactive, page]);
 
   useEffect(() => {
     let pageNum = Math.floor((Number(currentPage) - 1) / postsPerPage);
@@ -72,15 +116,19 @@ function MyPagination({ data, currentPage, postsPerPage, totalPage, detail = fal
     <PaginationWrapper>
       {data && totalPage > 1 && btnDeactive && (
         <>
-          <Prev2 deActive={btnDeactive.prev2} />
-          <Prev1 deActive={btnDeactive.prev1} />
+          <Prev2 onClick={handleClickPrevFirst} deActive={btnDeactive.prev2} />
+          <Prev1 onClick={handleClickPrev} deActive={btnDeactive.prev1} />
           {renderNumberDiv().map((i) => (
-            <NumberDiv active={i + 1 === Number(currentPage)} key={i}>
+            <NumberDiv
+              active={i + 1 === Number(currentPage)}
+              key={i}
+              onClick={() => handleClickPageNavi(i)}
+            >
               {i + 1}
             </NumberDiv>
           ))}
-          <Next1 deActive={btnDeactive.next1} />
-          <Next2 deActive={btnDeactive.next2} />
+          <Next1 onClick={handleClickNext} deActive={btnDeactive.next1} />
+          <Next2 onClick={handleClickNextLast} deActive={btnDeactive.next2} />
         </>
       )}
     </PaginationWrapper>

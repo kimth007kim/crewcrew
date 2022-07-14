@@ -76,7 +76,9 @@ function ChatList({ chatSections, setSize, isReachingEnd, loading, other }, scro
   // 로딩 시 스크롤바 제일 아래로
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current?.scrollToBottom();
+      setTimeout(() => {
+        scrollRef.current?.scrollToBottom();
+      }, 50);
     }
   }, [scrollRef.current, loading]);
 

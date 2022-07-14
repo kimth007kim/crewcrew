@@ -49,7 +49,7 @@ function Recruit() {
 
   const getRecruitStudyList = useCallback(async () => {
     try {
-      const { data } = await axios.get('/application/recruiting/1', {
+      const { data } = await axios.get(`/application/recruiting/1?page=${studyCurrentPage - 1}`, {
         withCredentials: true,
         headers: {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
@@ -70,11 +70,11 @@ function Recruit() {
     } catch (error) {
       console.dir(error);
     }
-  }, []);
+  }, [studyCurrentPage]);
 
   const getRecruitHobbyList = useCallback(async () => {
     try {
-      const { data } = await axios.get('/application/recruiting/2', {
+      const { data } = await axios.get(`/application/recruiting/2?page=${hobbyCurrentPage - 1}`, {
         withCredentials: true,
         headers: {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
@@ -95,7 +95,7 @@ function Recruit() {
     } catch (error) {
       console.dir(error);
     }
-  }, []);
+  }, [hobbyCurrentPage]);
 
   const renderStudyList = () => {
     if (studyAppList.length > 0) {
@@ -113,6 +113,7 @@ function Recruit() {
             currentPage={studyCurrentPage}
             postsPerPage={postsPerPage}
             totalPage={studyTotalPage}
+            setCurrentPage={setStudyCurrentPage}
           ></MyPagination>
         </CardWrapper>
       );
@@ -157,6 +158,7 @@ function Recruit() {
             currentPage={hobbyCurrentPage}
             postsPerPage={postsPerPage}
             totalPage={hobbyTotalPage}
+            setCurrentPage={setHobbyCurrentPage}
           ></MyPagination>
         </CardWrapper>
       );
@@ -187,9 +189,15 @@ function Recruit() {
 
   useEffect(() => {
     getRecruit();
-    getRecruitStudyList();
-    getRecruitHobbyList();
   }, []);
+
+  useEffect(() => {
+    getRecruitStudyList();
+  }, [studyCurrentPage]);
+
+  useEffect(() => {
+    getRecruitHobbyList();
+  }, [hobbyCurrentPage]);
 
   return (
     <MyLayout>

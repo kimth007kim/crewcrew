@@ -14,6 +14,7 @@ import ChatList from '@/components/mypage/Chat/ChatList';
 import ChatDeleteModal from '@/components/common/DeleteModal/ChatDeleteModal';
 import useModal from '@/hooks/useModal';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 let client = null;
 
@@ -57,7 +58,7 @@ function ChatDetailBox({ roomId }) {
           body: JSON.stringify({
             type: 'TALK',
             roomId,
-            uid: myData.data.uid,
+            token: cookies.get('X-AUTH-TOKEN'),
             content,
           }),
         });
@@ -158,10 +159,13 @@ function ChatDetailBox({ roomId }) {
         case 200:
           setRoomInfo({ ...data.data });
           break;
+        case 5001:
+          navigate('/mypage/chat', { replace: true });
+          toast.error(data.message);
+          break;
 
         default:
-          navigate('/mypage/chat', { replace: true });
-          console.dir(data.message);
+          toast.error(data.message);
           break;
       }
     } catch (error) {

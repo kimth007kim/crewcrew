@@ -137,7 +137,7 @@ function MyInfoProfile({ open, closeFunc }) {
       switch (data.status) {
         case 200:
           toast.success('성공적으로 변경되었습니다.');
-          await mutate('/auth/token');
+          mutate('/auth/token');
           InitialState();
           break;
         case 1007:

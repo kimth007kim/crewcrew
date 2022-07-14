@@ -6,7 +6,7 @@ import PageArrowPrev from '@/assets/images/PageArrowPrev.png';
 import PageArrowNext from '@/assets/images/PageArrowNext.png';
 import PageArrow2Next from '@/assets/images/PageArrow2Next.png';
 
-function MyPaginationMain({ data, currentPage, postsPerPage, totalPage}) {
+function MyPaginationMain({ data, currentPage, postsPerPage, totalPage }) {
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [btnDeactive, setbtnDeactive] = useState(null);
@@ -18,7 +18,6 @@ function MyPaginationMain({ data, currentPage, postsPerPage, totalPage}) {
     },
     [postId],
   );
-
 
   const renderNumberDiv = () => {
     const renderArr = [];
@@ -36,7 +35,7 @@ function MyPaginationMain({ data, currentPage, postsPerPage, totalPage}) {
       return null;
     }
     navigate(`/mypage?page=${1}`);
-  }, [ totalPage, postsPerPage, btnDeactive, postId]);
+  }, [totalPage, postsPerPage, btnDeactive, postId]);
 
   const handleClickPrev = useCallback(() => {
     if (btnDeactive && btnDeactive.prev1) {
@@ -67,7 +66,6 @@ function MyPaginationMain({ data, currentPage, postsPerPage, totalPage}) {
 
     navigate(`/mypage?page=${totalPage}`);
   }, [totalPage, postsPerPage, btnDeactive, postId]);
-
 
   useEffect(() => {
     let pageNum = Math.floor((Number(currentPage) - 1) / postsPerPage);
@@ -123,7 +121,11 @@ function MyPaginationMain({ data, currentPage, postsPerPage, totalPage}) {
           <Prev2 onClick={handleClickPrevFirst} deActive={btnDeactive.prev2} />
           <Prev1 onClick={handleClickPrev} deActive={btnDeactive.prev1} />
           {renderNumberDiv().map((i) => (
-            <NumberDiv active={i + 1 === Number(currentPage)} key={i} onClick={() => handleClickPageNavi(i)}>
+            <NumberDiv
+              active={i + 1 === Number(currentPage)}
+              key={i}
+              onClick={() => handleClickPageNavi(i)}
+            >
               {i + 1}
             </NumberDiv>
           ))}
