@@ -25,12 +25,11 @@ function TLCard({ data, isLast }) {
       setDataLists([...filter]);
     }
   };
-  console.log(data);
   const renderDetail = () => {
     if (data.announceType === 1) {
       return (
         <Detail State={detailState} Disabled={data.readChk}>
-          <em>{data.boardTitle}</em>님이 회원님의 글에 <b>참여요청</b>하였습니다.
+          <em>{data.nickname}</em>님이 회원님의 글에 <b>참여요청</b>하였습니다.
         </Detail>
       );
     } else if (data.announceType === 2) {

@@ -1,19 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 function TimelineMent({ data }) {
+  const navigate = useNavigate();
+
+  const navigateDetail = () => {
+    navigate(`/`);
+  };
+
   if (data.announceType === 1) {
     return (
       <>
         <p>
-          <Name>{data.boardTitle}</Name>
+          <Name>{data.nickname}</Name>
           님이 회원님의 글에&nbsp;
           <Positive>참여요청</Positive>
           &nbsp;하였습니다.
         </p>
         <ul>
           <li>
-            <button type="button">상세</button>
+            <button type="button" onClick={navigateDetail}>
+              상세
+            </button>
           </li>
           <li>
             <button type="button">수락</button>
@@ -32,7 +41,9 @@ function TimelineMent({ data }) {
         </p>
         <ul>
           <li>
-            <button type="button">상세</button>
+            <button type="button" onClick={navigateDetail}>
+              상세
+            </button>
           </li>
         </ul>
       </>
@@ -48,7 +59,9 @@ function TimelineMent({ data }) {
         </p>
         <ul>
           <li>
-            <button type="button">상세</button>
+            <button type="button" onClick={navigateDetail}>
+              상세
+            </button>
           </li>
           <li>
             <button type="button">채팅</button>
@@ -67,7 +80,9 @@ function TimelineMent({ data }) {
         </p>
         <ul>
           <li>
-            <button type="button">상세</button>
+            <button type="button" onClick={navigateDetail}>
+              상세
+            </button>
           </li>
         </ul>
       </>
