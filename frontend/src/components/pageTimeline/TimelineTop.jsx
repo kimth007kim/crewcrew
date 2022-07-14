@@ -8,6 +8,7 @@ import { useRecoilState } from 'recoil';
 import { useScroll } from '@/hooks/useScroll';
 
 function TimelineTop() {
+  const FilterNum = localStorage.getItem('currentFilterNum') || 0;
   const { scrollY } = useScroll();
   const [FilterOpen, setFilterOpen] = useState(false);
   const FliterList = [
@@ -17,7 +18,7 @@ function TimelineTop() {
     '나의 참여요청 수락',
     '나의 참여 취소',
   ];
-  const [currentFilter, setCurrentFilter] = useState(FliterList[0]);
+  const [currentFilter, setCurrentFilter] = useState(FliterList[FilterNum]);
   const [currentFilterNum, setCurrentFilterNum] = useRecoilState(timelineFilter);
 
   const [btnOpen, setBtnOpen] = useRecoilState(BtnOpened);
