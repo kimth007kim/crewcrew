@@ -17,17 +17,25 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, UUID> {
     List<ChatRoom> findAll();
 
     Optional<ChatRoom> findById(UUID roomId);
+
     List<ChatRoom> findBySubscriberOrPublisher(User member1, User member2);
 
 
     @Query("select c from ChatRoom c where c.subscriber=:user and c.subscriberIn=1")
-    List<ChatRoom> findSubscriber(@Param("user")User user);
+    List<ChatRoom> findSubscriber(@Param("user") User user);
 
     @Query("select c from ChatRoom c where c.publisher=:user and c.publisherIn=1")
-    List<ChatRoom> findPublisher(@Param("user")User user);
+    List<ChatRoom> findPublisher(@Param("user") User user);
 
-//    Optional<ChatRoom> findByRoomIdAndSubscriberOrPublisher(UUID roomId, User member1, User member2);
+
+    @Query("select c from ChatRoom c where c.roomId=:roomId  and ((c.publisher=:user and c.publisherIn=1) or  (c.subscriber=:user and c.subscriberIn=1))")
+    Optional<ChatRoom> findUserInRoom(@Param("roomId") UUID roomId, @Param("user") User user);
+
+
+    //    Optional<ChatRoom> findByRoomIdAndSubscriberOrPublisher(UUID roomId, User member1, User member2);
     Optional<ChatRoom> findByRoomIdAndPublisher(UUID roomId, User user);
+
     Optional<ChatRoom> findByRoomIdAndSubscriber(UUID roomId, User user);
+
     Optional<ChatRoom> findBySubscriberAndPublisherAndBoard(User sub, User pub, Board board);
 }
