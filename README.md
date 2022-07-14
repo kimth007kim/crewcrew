@@ -22,7 +22,7 @@
 | [김경동](https://github.com/kimth007kim)     | Backend   |        |
 | [김도희](https://github.com/Slowth-KIM)   | Backend   |  |
 | [이하늘](https://github.com/belowalways) | Backend |     |
-| [박한결](http://phk9436.pe.kr/)      | Publisher |      |
+| [박한결](http://phk9436.pe.kr/)      | Frontend |      |
 | [유재영](http://nicole-yoo.com/) | Designer |    |
 | [오주영](https://github.com/ohjooyeong) | Frontend |     |
 
@@ -149,8 +149,6 @@ $ cd frontend && npm run build
 ## See Also
 
 - [WiKi](#)
-- [Project Kanban Board](#)
-- [Figma](https://www.figma.com/file/rW7LcNcg8OWsfHvWB3gXXp/Untitled)
 
 ## LICENSE
 
