@@ -1,14 +1,40 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import TimelineCard from './TimelineCard';
+import axios from 'axios';
+import { Cookies } from 'react-cookie';
 
 function Timeline() {
+  const cookies = new Cookies();
+  const [timelineData, setTimelineData] = useState([]);
+
+  const getTimeLine = useCallback(async () => {
+    try {
+      const { data } = await axios.get(`/timeline/list?filter=0`, {
+        withCredentials: true,
+        headers: {
+          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+        },
+      });
+      if (data.status === 200) {
+        setTimelineData([...data.data.contents]);
+      }
+    } catch (error) {
+      console.dir(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    getTimeLine();
+  }, []);
+
   return (
     <Container>
-      <TimelineCard />
-      <TimelineCard />
-      <TimelineCard />
-      <TimelineCard />
+      {timelineData.map((e, i) => {
+        if (i <= 3) {
+          return <TimelineCard data={e} key={`timeline${e.announcementId}`} />;
+        }
+      })}
     </Container>
   );
 }

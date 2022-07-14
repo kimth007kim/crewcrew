@@ -10,7 +10,7 @@ function MypageTimeline() {
       <Wrapper>
         <TimeBox>
           <h4>
-            <Link to="/">
+            <Link to="/mypage/timeline">
               크루타임라인
               <span />
             </Link>

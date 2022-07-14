@@ -1,28 +1,26 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import styled, { css } from 'styled-components';
+import dayjs from 'dayjs';
+import TimelineMent from './TimelineMent';
 
-function TimelineCard() {
+function TimelineCard({ data }) {
+  const hobbyCat = ['예술', '요리', '운동', '게임', '덕질', '트렌드', '취미기타'];
+  const Date = dayjs(data.createdDate).format('YY/MM/DD');
+  const [category, setCategory] = useState('study');
+
+  useEffect(() => {
+    hobbyCat.forEach((e) => {
+      e === data.categoryName && setCategory('hobby');
+    });
+  }, [data]);
   return (
     <Container>
-      <ContentTop>
-        <h5>요리</h5>
-        <p>22/03/25</p>
+      <ContentTop Cat={category}>
+        <h5>{data.categoryName}</h5>
+        <p>{Date}</p>
       </ContentTop>
       <ContentBottom>
-        <p>
-          <Name>오주영</Name>
-          {'님이 회원님의 글에 '}
-          <Positive>참여를 수락</Positive>
-          {' 하였습니다'}
-        </p>
-        <ul>
-          <li>
-            <button type="button">상세</button>
-          </li>
-          <li>
-            <button type="button">수락</button>
-          </li>
-        </ul>
+        <TimelineMent data={data} />
       </ContentBottom>
     </Container>
   );
@@ -87,6 +85,7 @@ const ContentTop = styled('div')`
   h5 {
     font-size: 15px;
     font-weight: 700;
+    }
   }
 
   p {
@@ -94,6 +93,19 @@ const ContentTop = styled('div')`
     font-weight: 500;
     color: #a8a8a8;
   }
+  ${(props) =>
+    props.Cat === 'study'
+      ? css`
+          h5 {
+            color: #0f3fa6;
+          }
+        `
+      : css`
+          h5 {
+            color: #f7971e;
+          }
+        `}
+  
 `;
 
 const ContentBottom = styled('div')`
@@ -162,13 +174,4 @@ const ContentBottom = styled('div')`
       gap: 6px;
     }
   }
-`;
-
-const Name = styled('span')`
-  color: #000;
-  font-weight: 700;
-`;
-
-const Positive = styled('span')`
-  color: #00b7ff;
 `;

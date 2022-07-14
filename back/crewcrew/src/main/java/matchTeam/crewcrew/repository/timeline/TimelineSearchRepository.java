@@ -32,7 +32,10 @@ public class TimelineSearchRepository {
 
         switch (filter){
             case 0:
-                chkUser = announcement.leader.uid.eq(userId).or(announcement.applicant.uid.eq(userId));
+                chkUser = announcement.leader.uid.eq(userId).and(announcement.announceType.eq(1))
+                        .or(announcement.applicant.uid.eq(userId).and(announcement.announceType.eq(0)))
+                        .or(announcement.applicant.uid.eq(userId).and(announcement.announceType.eq(2)))
+                        .or(announcement.leader.uid.eq(userId).and(announcement.announceType.eq(3)));
                 chkAnnounceType = announcement.isNotNull();
                 break;
             case 1:
