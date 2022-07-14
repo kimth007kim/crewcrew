@@ -10,6 +10,7 @@ import matchTeam.crewcrew.response.ErrorCode;
 import matchTeam.crewcrew.response.exception.CrewException;
 import matchTeam.crewcrew.service.chat.ChatMessageService;
 import matchTeam.crewcrew.service.chat.ChatRoomService;
+import matchTeam.crewcrew.service.user.UserService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
@@ -23,13 +24,13 @@ public class ChatController {
     private final SimpMessageSendingOperations messagingTemplate;
     private final ChatMessageService chatMessageService;
     private final ChatRoomService chatRoomService;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @MessageMapping("/chat/message")
     public void message(ChatMessageDTO chatMessageDTO) {
 
 
-        User user = userRepository.findById(chatMessageDTO.getUid()).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
+        User user = userService.tokenChecker(chatMessageDTO.getToken());
 
         ChatRoom chatRoom = chatRoomService.isValidRoom(chatMessageDTO.getRoomId());
 

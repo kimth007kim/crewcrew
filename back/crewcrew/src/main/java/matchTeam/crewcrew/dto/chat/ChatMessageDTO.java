@@ -14,6 +14,6 @@ public class ChatMessageDTO {
 
     private MessageType type;
     private UUID roomId;
-    private Long uid;
+    private String token;
     private String content;
 }
