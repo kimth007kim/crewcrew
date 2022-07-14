@@ -48,7 +48,9 @@ function ChatDeleteModal({ closeModal, visible, chatData, checkList, handleIniti
       switch (data.status) {
         case 200:
           setLoading(false);
-          handleInitial();
+          if (handleInitial) {
+            handleInitial();
+          }
           closeModal();
           navigate('/mypage/chat', { replace: true });
           toast.success('성공적으로 삭제되었습니다.');
