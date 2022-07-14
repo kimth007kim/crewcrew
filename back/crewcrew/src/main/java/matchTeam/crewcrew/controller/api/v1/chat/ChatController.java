@@ -27,8 +27,6 @@ public class ChatController {
 
     @MessageMapping("/chat/message")
     public void message(ChatMessageDTO chatMessageDTO) {
-//        if (ChatMessageDTO.MessageType.ENTER.equals(chatMessageDTO.getType()))
-//            chatMessageDTO.setContent(chatMessageDTO.getUid() + "님이 입장하셨습니다.");
 
 
         User user = userRepository.findById(chatMessageDTO.getUid()).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
@@ -36,6 +34,9 @@ public class ChatController {
         ChatRoom chatRoom = chatRoomService.isValidRoom(chatMessageDTO.getRoomId());
 
         chatRoomService.findByRoomIdAndSubscriberOrPublisher(chatRoom.getRoomId(), user);
+        if (ChatMessageDTO.MessageType.EXIT.equals(chatMessageDTO.getType())){
+            chatMessageDTO.setContent(user.getNickname() + "님이 퇴장하셨습니다.");
+        }
         chatMessageService.saveMessage(chatRoom, user, chatMessageDTO.getContent());
         System.out.println("/sub/chat/room/" + chatMessageDTO.getRoomId());
 
@@ -43,4 +44,5 @@ public class ChatController {
         // TODO 여기를 DTO로 바꾸게 하는것 이 관건
         messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessageDTO.getRoomId(), chatMessageDTO);
     }
+
 }

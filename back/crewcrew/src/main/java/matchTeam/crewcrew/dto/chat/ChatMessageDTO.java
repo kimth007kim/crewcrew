@@ -9,7 +9,7 @@ import java.util.UUID;
 @Setter
 public class ChatMessageDTO {
     public enum MessageType{
-        ENTER,TALK
+        EXIT,TALK
     }
 
     private MessageType type;
