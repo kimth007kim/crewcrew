@@ -4,13 +4,16 @@ import MyLayout from '@/components/common/MyLayout';
 import MypageTop from '@/components/mypage/MypageTop';
 import { Cookies } from 'react-cookie';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ChatDetailBox from './ChatDetailBox';
+import { toast } from 'react-toastify';
 
 function ChatDetail() {
   const cookies = new Cookies();
   const [roomId, setRoomId] = useState('');
   const params = useParams();
+
+  const navigate = useNavigate();
 
   const apiCreateRoom = useCallback(async () => {
     try {
@@ -31,7 +34,8 @@ function ChatDetail() {
           break;
 
         default:
-          console.dir(roomData.message);
+          toast.error(roomData.message);
+          navigate('/mypage/chat');
           break;
       }
     } catch (error) {

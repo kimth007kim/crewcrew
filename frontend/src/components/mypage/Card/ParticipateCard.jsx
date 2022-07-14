@@ -69,7 +69,6 @@ function ParticipateCard({ postData }) {
           },
         },
       );
-      console.log(data);
       switch (data.status) {
         case 200:
           setParticipantList([...data.data.content]);
@@ -157,6 +156,7 @@ function ParticipateCard({ postData }) {
             isSwiperClick={isSwiperClick}
             participantList={participantList}
             waitingList={[]}
+            status={2}
           ></SwiperBtSection>
         </CardBottom>
       </Wrapper>

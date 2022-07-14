@@ -48,6 +48,11 @@ function RequestCard({ data }) {
     [IsDisable],
   );
 
+  const openInNewTab = useCallback((url) => {
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+    if (newWindow) newWindow.opener = null;
+  }, []);
+
   const renderProgress = () => {
     if (data.progress === 1) {
       return (
@@ -85,7 +90,7 @@ function RequestCard({ data }) {
             <p>
               <span>{data && format(new Date(data.appliedDate), '(MM/dd)')}</span> 참여중
             </p>
-            <button>크루원채팅</button>
+            <button onClick={() => openInNewTab(data.kakaoCaht)}>크루원채팅</button>
           </DetailBox>
           <ButtonBox>
             <button>참여취소</button>
@@ -386,6 +391,12 @@ const CardBody = styled.div`
       font-size: 15px;
       background-color: #c4c4c4;
       cursor: pointer;
+
+      transition: 0.3s;
+
+      :hover {
+        background-color: #a8a8a8;
+      }
     }
   }
 
@@ -504,6 +515,10 @@ const DetailBox = styled('div')`
       props.color === 'posi' &&
       css`
         background-color: #00b7ff;
+
+        :hover {
+          background-color: #00a3e3;
+        }
       `}
   }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { format } from 'date-fns';
 import ChatWhite from '@/assets/images/ChatWhite.png';
@@ -8,7 +8,7 @@ import { Cookies } from 'react-cookie';
 import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
 
-function SwiperCard({ data, boardId }) {
+function SwiperCard({ data, boardId, status }) {
   const cookies = new Cookies();
   const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
@@ -45,6 +45,21 @@ function SwiperCard({ data, boardId }) {
     navigate(`/mypage/chat/${boardId}`);
   };
 
+  const renderStatusBtn = useCallback(() => {
+    if (status === 0) {
+      return (
+        <>
+          <button className="nega">거절</button>
+          <button className="posi">수락</button>
+        </>
+      );
+    }
+
+    if (status === 1) {
+      return <button className="cancel">참여취소</button>;
+    }
+  }, [status]);
+
   return (
     <>
       <Container>
@@ -78,8 +93,7 @@ function SwiperCard({ data, boardId }) {
           <button className="chat" onClick={navigateChat}>
             채팅
           </button>
-          <button className="nega">거절</button>
-          <button className="posi">수락</button>
+          {renderStatusBtn()}
         </BtnWrapper>
       </CardBtn>
     </>
@@ -252,7 +266,7 @@ const CardBtn = styled('div')`
       color: #fff;
       font-size: 13px;
       transition: 0.3s;
-      width: 50px;
+      width: 51px;
 
       &.chat {
         background: #c4c4c4 url(${ChatWhite}) center/20px no-repeat;
@@ -277,6 +291,16 @@ const CardBtn = styled('div')`
 
         :hover {
           background-color: #00a3e3;
+        }
+      }
+
+      &.cancel {
+        width: 74px;
+
+        background-color: #f95884;
+
+        :hover {
+          background-color: #e9416e;
         }
       }
     }

@@ -50,7 +50,7 @@ function Request() {
 
   const apiApplicationStudy = useCallback(async () => {
     try {
-      const { data } = await axios.get(`/application/details/1`, {
+      const { data } = await axios.get(`/application/details/1?page=${studyCurrentPage - 1}`, {
         withCredentials: true,
         headers: {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
@@ -76,11 +76,11 @@ function Request() {
     } catch (error) {
       console.dir(error);
     }
-  }, []);
+  }, [studyCurrentPage]);
 
   const apiApplicationHobby = useCallback(async () => {
     try {
-      const { data } = await axios.get('/application/details/2', {
+      const { data } = await axios.get(`/application/details/2?page=${hobbyCurrentPage - 1}`, {
         withCredentials: true,
         headers: {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
@@ -102,7 +102,7 @@ function Request() {
       toast.error(error);
       console.dir(error);
     }
-  }, []);
+  }, [hobbyCurrentPage]);
 
   const renderStudyList = () => {
     if (studyAppList.length > 0) {
@@ -117,6 +117,7 @@ function Request() {
           </ul>
           <MyPagination
             data={studyPageData}
+            setCurrentPage={setStudyCurrentPage}
             currentPage={studyCurrentPage}
             postsPerPage={postsPerPage}
             totalPage={studyTotalPage}
@@ -161,6 +162,7 @@ function Request() {
           </ul>
           <MyPagination
             data={hobbyPageData}
+            setCurrentPage={setHobbyCurrentPage}
             currentPage={hobbyCurrentPage}
             postsPerPage={postsPerPage}
             totalPage={hobbyTotalPage}
@@ -213,9 +215,15 @@ function Request() {
 
   useEffect(() => {
     apiApplication();
+  }, []);
+
+  useEffect(() => {
     apiApplicationStudy();
+  }, [studyCurrentPage]);
+
+  useEffect(() => {
     apiApplicationHobby();
-  }, [studyCurrentPage, hobbyCurrentPage]);
+  }, [hobbyCurrentPage]);
 
   return (
     <MyLayout>

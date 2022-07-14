@@ -191,6 +191,8 @@ function RecruitCard({ postData }) {
               toggleCheck={toggleCheck}
               participantList={participantList}
               waitingList={waitingList}
+              boardId={postData.boardId}
+              status={toggleCheck ? 0 : 1}
             ></SwiperBtSection>
           </CardBottom>
         </Wrapper>

@@ -119,6 +119,8 @@ function ActivityCard({ postData }) {
               isSwiperClick={isSwiperClick}
               participantList={participantList}
               waitingList={[]}
+              status={1}
+              boardId={postData.boardId}
             ></SwiperBtSection>
           </CardBottom>
         </Wrapper>
