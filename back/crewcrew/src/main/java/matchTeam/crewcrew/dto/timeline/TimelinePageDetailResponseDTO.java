@@ -48,7 +48,7 @@ public class TimelinePageDetailResponseDTO {
         this.boardTitle = res.getBoard().getTitle();
         this.boardLink = "https://crewcrew.org/board/" + res.getBoard().getId();
         this.nickname = res.getApplicant().getNickname();
-        this.readChk = false;
+        this.readChk = res.getReadChk();
     }
 
     public static TimelinePageDetailResponseDTO toDTO(Announcement announcement){

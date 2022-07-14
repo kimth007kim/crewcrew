@@ -31,7 +31,7 @@ public class TimelineController {
     @ApiOperation(value = "타임라인 리스트 조회", notes = "filter는 전체 0, 나에게 온 참여요청 1, 나의 참여요청 거절 2, 나의 참여요청 수락 3, 나의 참여 취소 4 옵션 중 하나 선택")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/timeline/list")
-    public ResponseEntity<Object> getTimelineList(@RequestHeader("X-AUTH-TOKEN") String token, @PageableDefault(size = 5) Pageable pageable, @ApiParam(value = "타임라인 필터", required = true)
+    public ResponseEntity<Object> getTimelineList(@RequestHeader("X-AUTH-TOKEN") String token, @PageableDefault(size = 10) Pageable pageable, @ApiParam(value = "타임라인 필터", required = true)
     @RequestParam Integer filter){
         User user = userService.tokenChecker(token);
         if (user == null) throw new CrewException(ErrorCode.NOT_EXIST_LOGINED_USER);
