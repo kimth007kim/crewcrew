@@ -60,7 +60,7 @@ public class ChatRestController {
 
     @ApiOperation(value = "채팅방 검색기능 입력받은 문자열이 카테고리,상대닉네임,게시판이름이 포함된것 만 리턴")
     @GetMapping("/user/{target}")
-    public ResponseEntity<Object> memberId( @RequestHeader("X-AUTH-TOKEN") String token,@PathVariable String target) {
+    public ResponseEntity<Object> search( @RequestHeader("X-AUTH-TOKEN") String token,@PathVariable String target) {
         User user = userService.tokenChecker(token);
         List<RoomListResponseDTO> messages = chatRoomService.searchRoom(user.getUid(),target);
         return ResponseHandler.generateResponse("member가 속한 방 리스트 조회 완료", HttpStatus.OK, messages);
@@ -88,7 +88,9 @@ public class ChatRestController {
     @PatchMapping("/room/{roomId}")
     public ResponseEntity<Object> readMessage(@PathVariable("roomId") UUID roomId, @RequestHeader("X-AUTH-TOKEN") String token) {
         User user = userService.tokenChecker(token);
-        chatRoomService.readMessage(roomId, user.getUid());
+
+        chatRoomService.readMessage(roomId, user);
+//        chatRoomService.readMessage(roomId, user.getUid());
         return ResponseHandler.generateResponse("해당 방의 읽음처리 성공", HttpStatus.OK, null);
     }
     @ApiOperation(value = "삭제")
