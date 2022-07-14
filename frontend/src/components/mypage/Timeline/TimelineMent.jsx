@@ -1,0 +1,91 @@
+import React from 'react';
+import styled from 'styled-components';
+
+function TimelineMent({ data }) {
+  if (data.announceType === 1) {
+    return (
+      <>
+        <p>
+          <Name>{data.boardTitle}</Name>
+          님이 회원님의 글에&nbsp;
+          <Positive>참여요청</Positive>
+          &nbsp;하였습니다.
+        </p>
+        <ul>
+          <li>
+            <button type="button">상세</button>
+          </li>
+          <li>
+            <button type="button">수락</button>
+          </li>
+        </ul>
+      </>
+    );
+  } else if (data.announceType === 2) {
+    return (
+      <>
+        <p>
+          <Name>{data.boardTitle}</Name>
+          에서 회원님의&nbsp;
+          <Negative>참여요청을 거절</Negative>
+          &nbsp;하였습니다.
+        </p>
+        <ul>
+          <li>
+            <button type="button">상세</button>
+          </li>
+        </ul>
+      </>
+    );
+  } else if (data.announceType === 3) {
+    return (
+      <>
+        <p>
+          <Name>{data.boardTitle}</Name>
+          에서 회원님의&nbsp;
+          <Positive>참여요청을 수락</Positive>
+          &nbsp;하였습니다.
+        </p>
+        <ul>
+          <li>
+            <button type="button">상세</button>
+          </li>
+          <li>
+            <button type="button">채팅</button>
+          </li>
+        </ul>
+      </>
+    );
+  } else if (data.announceType === 4) {
+    return (
+      <>
+        <p>
+          <Name>{data.boardTitle}</Name>
+          에서 회원님의 &nbsp;
+          <Negative>참여를 취소</Negative>
+          &nbsp;하였습니다.
+        </p>
+        <ul>
+          <li>
+            <button type="button">상세</button>
+          </li>
+        </ul>
+      </>
+    );
+  }
+}
+
+export default TimelineMent;
+
+const Positive = styled('span')`
+  color: #00b7ff;
+`;
+
+const Negative = styled('span')`
+  color: #ff0045;
+`;
+
+const Name = styled('span')`
+  color: #000;
+  font-weight: 700;
+`;

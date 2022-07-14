@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import dayjs from 'dayjs';
+import TimelineMent from './TimelineMent';
 
 function TimelineCard({ data }) {
   const hobbyCat = ['예술', '요리', '운동', '게임', '덕질', '트렌드', '취미기타'];
@@ -12,7 +13,6 @@ function TimelineCard({ data }) {
       e === data.categoryName && setCategory('hobby');
     });
   }, [data]);
-  console.log(data);
   return (
     <Container>
       <ContentTop Cat={category}>
@@ -20,20 +20,7 @@ function TimelineCard({ data }) {
         <p>{Date}</p>
       </ContentTop>
       <ContentBottom>
-        <p>
-          <Name>{data.boardTitle}</Name>
-          {'님이 회원님의 글에 '}
-          <Positive>참여를 수락</Positive>
-          {' 하였습니다'}
-        </p>
-        <ul>
-          <li>
-            <button type="button">상세</button>
-          </li>
-          <li>
-            <button type="button">수락</button>
-          </li>
-        </ul>
+        <TimelineMent data={data} />
       </ContentBottom>
     </Container>
   );
@@ -187,13 +174,4 @@ const ContentBottom = styled('div')`
       gap: 6px;
     }
   }
-`;
-
-const Name = styled('span')`
-  color: #000;
-  font-weight: 700;
-`;
-
-const Positive = styled('span')`
-  color: #00b7ff;
 `;

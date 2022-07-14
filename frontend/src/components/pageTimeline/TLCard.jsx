@@ -14,6 +14,7 @@ function TLCard({ data, isLast }) {
   const [dataLists, setDataLists] = useRecoilState(DataLists);
   const hobbyCat = ['예술', '요리', '운동', '게임', '덕질', '트렌드', '취미기타'];
   const Date = dayjs(data.createdDate).format('YY/MM/DD HH:mm');
+  const [detailState, setDetailState] = useState('nega');
 
   const changeProps = (e) => {
     const value = `${data.announcementId}`;
@@ -24,11 +25,42 @@ function TLCard({ data, isLast }) {
       setDataLists([...filter]);
     }
   };
+  console.log(data);
+  const renderDetail = () => {
+    if (data.announceType === 1) {
+      return (
+        <Detail State={detailState} Disabled={data.readChk}>
+          <em>{data.boardTitle}</em>님이 회원님의 글에 <b>참여요청</b>하였습니다.
+        </Detail>
+      );
+    } else if (data.announceType === 2) {
+      return (
+        <Detail State={detailState} Disabled={data.readChk}>
+          <em>{data.boardTitle}</em>에서 회원님의 <b>참여요청을 거절</b>하였습니다.
+        </Detail>
+      );
+    } else if (data.announceType === 3) {
+      return (
+        <Detail State={detailState} Disabled={data.readChk}>
+          <em>{data.boardTitle}</em>에서 회원님의 <b>참여요청을 수락</b>하였습니다.
+        </Detail>
+      );
+    } else if (data.announceType === 4) {
+      return (
+        <Detail State={detailState} Disabled={data.readChk}>
+          <em>{data.boardTitle}</em>님이 회원님의 <b>참여를 취소</b>하였습니다.
+        </Detail>
+      );
+    }
+  };
 
   useEffect(() => {
     hobbyCat.forEach((e) => {
       e === data.categoryName && setCategory('hobby');
     });
+    if (data.announceType === 1 || data.announceType === 3) {
+      setDetailState('posi');
+    }
   }, [data]);
 
   useEffect(() => {
@@ -53,14 +85,12 @@ function TLCard({ data, isLast }) {
         </LabelCheck>
       </TLCardSet>
       <TLCardboxWrapper isLast={isLast}>
-        <TLCardbox Cat={category} State={'posi'} Disabled={data.readChk}>
+        <TLCardbox Cat={category} State={detailState} Disabled={data.readChk}>
           <Title Cat={category} Disabled={data.readChk}>
             <em>{data.categoryName}</em>
             {Date}
           </Title>
-          <Detail State={'posi'} Disabled={data.readChk}>
-            <em>{data.boardTitle}</em>님이 회원님의 글에 <b>참여요청</b>하였습니다.
-          </Detail>
+          {renderDetail()}
         </TLCardbox>
       </TLCardboxWrapper>
     </>
