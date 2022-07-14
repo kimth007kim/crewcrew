@@ -35,14 +35,12 @@ public class ChatController {
 
         ChatRoom chatRoom = chatRoomService.isValidRoom(chatMessageDTO.getRoomId());
 
-        chatRoomService.findByRoomIdAndSubscriberOrPublisher(chatRoom.getRoomId(),user);
+        chatRoomService.findByRoomIdAndSubscriberOrPublisher(chatRoom.getRoomId(), user);
         chatMessageService.saveMessage(chatRoom, user, chatMessageDTO.getContent());
-        System.out.println("/sub/chat/room/"+chatMessageDTO.getRoomId());
+        System.out.println("/sub/chat/room/" + chatMessageDTO.getRoomId());
 
 
         // TODO 여기를 DTO로 바꾸게 하는것 이 관건
-
         messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessageDTO.getRoomId(), chatMessageDTO);
-//        System.out.println(result);
     }
 }

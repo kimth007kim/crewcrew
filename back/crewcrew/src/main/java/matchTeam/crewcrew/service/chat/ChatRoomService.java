@@ -328,10 +328,11 @@ public class ChatRoomService {
     }
 
     public void findByRoomIdAndSubscriberOrPublisher(UUID roomId, User user) {
-//        Optional<ChatRoom> room1 = chatRoomRepository.findByRoomIdAndSubscriberOrPublisher(roomId, pub, sub);
-        Optional room1 = chatRoomRepository.findByRoomIdAndPublisher(roomId, user);
-        Optional room2 = chatRoomRepository.findByRoomIdAndSubscriber(roomId, user);
-        if (room1.isEmpty() && room2.isEmpty())
+        Optional<ChatRoom> userInRoom = chatRoomRepository.findUserInRoom(roomId,user);
+//        Optional room1 = chatRoomRepository.findByRoomIdAndPublisher(roomId, user);
+//        Optional room2 = chatRoomRepository.findByRoomIdAndSubscriber(roomId, user);
+        if (userInRoom.isEmpty())
+//        if (room1.isEmpty() && room2.isEmpty())
             throw new CrewException(ErrorCode.CHAT_NOT_ALLOWED_USER);
     }
 
@@ -353,32 +354,11 @@ public class ChatRoomService {
         return chatRoom;
     }
 
-    public void readMessage(UUID roomId, Long uid) {
+    public void readMessage(UUID roomId, User user) {
         ChatRoom room = isValidRoom(roomId);
-        User publisher = room.getPublisher();
-        User subscriber = room.getSubscriber();
-
-        if (uid != publisher.getUid() && uid != subscriber.getUid()) {
-
-            // TODO 여기를 EXCEPTION 변경
-            throw new CrewException(ErrorCode.UID_NOT_EXIST);
-        }
-        Long another = null;
-
-        if (uid == publisher.getUid())
-            another = subscriber.getUid();
-        else
-            another = publisher.getUid();
-
-        User other = userRepository.findById(another).orElseThrow(() -> new CrewException(ErrorCode.UID_NOT_EXIST));
-        List<ChatMessage> messages = chatMessageRepository.findByChatRoomAndUser(room, other);
-
-        for (ChatMessage m : messages) {
-            System.out.println(m.getContent());
-            m.setReadCnt(0);
-            chatMessageRepository.save(m);
-        }
+        chatMessageRepository.updateReadCnt(room,user);
     }
+
 
     @Transactional
     public void deleteRoom(List<UUID> rooms, User user) {

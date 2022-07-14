@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,9 +25,10 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage,Long> {
 //    List<RoomListResponseDTO>
 
 
-//    @Modifying
-//    @Query("UPDATE ChatMessage c set c.readCnt != 0 where c.user not :user")
-//    void updateReadCnt(@Param("readCnt") int readCnt);
+    @Transactional
+    @Modifying
+    @Query("UPDATE ChatMessage c set c.readCnt= 0 where c.chatRoom= :chatRoom and not c.user=:user")
+    void updateReadCnt(@Param("chatRoom") ChatRoom chatRoom ,@Param("user") User user);
 
 
 }
