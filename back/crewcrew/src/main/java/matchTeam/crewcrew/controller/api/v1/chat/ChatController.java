@@ -14,6 +14,7 @@ import matchTeam.crewcrew.service.user.UserService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class ChatController {
     private final ChatRoomService chatRoomService;
     private final UserService userService;
 
+    @Transactional
     @MessageMapping("/chat/message")
     public void message(ChatMessageDTO chatMessageDTO) {
 

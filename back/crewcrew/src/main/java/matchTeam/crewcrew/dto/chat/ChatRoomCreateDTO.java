@@ -7,5 +7,6 @@ import lombok.Setter;
 @Setter
 public class ChatRoomCreateDTO {
     private Long board_seq;
+    private Long otherUid;
 
 }

@@ -44,9 +44,9 @@ public class ChatRestController {
     @ApiOperation(value = "채팅방을 생성합니다.")
     @PostMapping("/room")
     public ResponseEntity<Object> createRoom(@RequestBody ChatRoomCreateDTO chatRoomCreateDTO, @RequestHeader("X-AUTH-TOKEN") String token) {
-        User subscriber = userService.tokenChecker(token);
+        User me = userService.tokenChecker(token);
         Long board_seq = chatRoomCreateDTO.getBoard_seq();
-        ChatRoom room = chatRoomService.createChatRoom(subscriber, board_seq);
+        ChatRoom room = chatRoomService.createChatRoom(me, board_seq, chatRoomCreateDTO.getOtherUid());
         return ResponseHandler.generateResponse("채팅방 생성 성공", HttpStatus.OK, room.getRoomId());
     }
 
