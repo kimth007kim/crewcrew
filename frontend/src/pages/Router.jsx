@@ -35,8 +35,8 @@ function Router() {
           <Route path="/mypage/recruit" element={<Recruit />} />
           <Route path="/mypage/activity" element={<MyActivity />} />
           <Route path="/mypage/chat" element={<Chat />} />
-          <Route path="/mypage/chat/:boardId" element={<ChatDetail />} />
-          <Route path="/mypage/chat/:boardId/:roomId" element={<ChatDetail />} />
+          <Route path="/mypage/chat/:boardId/:uid" element={<ChatDetail />} />
+          <Route path="/mypage/chat/:boardId/:uid/:roomId" element={<ChatDetail />} />
           <Route path="/mypage/timeline" element={<PageTimeline />} />
           <Route path="/profile/:uid" element={<Profile />} />
           <Route path="/*" element={<NotFound />} />

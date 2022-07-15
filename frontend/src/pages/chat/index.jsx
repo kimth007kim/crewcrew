@@ -78,7 +78,7 @@ function Chat() {
     (e, roomId, data) => {
       e.stopPropagation();
       if (!isSetting) {
-        return navigate(`1054/${roomId}`);
+        return navigate(`${data.boardSeq}/${data.other.uid}/${roomId}`);
       }
       if (isCheckChatList.includes(roomId)) {
         setIsCheckChatList(isCheckChatList.filter((checkId) => checkId !== roomId));

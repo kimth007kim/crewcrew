@@ -18,7 +18,8 @@ function ChatDetail() {
   const apiCreateRoom = useCallback(async () => {
     try {
       const context = {
-        board_seq: params.boardId,
+        board_seq: Number(params.boardId),
+        otherUid: Number(params.uid),
       };
 
       const { data: roomData } = await axios.post('/talk/room', context, {
@@ -39,6 +40,7 @@ function ChatDetail() {
           break;
       }
     } catch (error) {
+      navigate('/mypage/chat');
       console.error(error);
     }
   }, [params.boardId]);

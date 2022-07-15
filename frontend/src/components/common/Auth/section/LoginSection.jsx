@@ -117,6 +117,7 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
           const { data } = await axios.post('/auth/login', context, {
             withCredentials: true,
           });
+          setBtnLoading(false);
 
           switch (data.status) {
             case 200:
@@ -152,12 +153,8 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
           }
         } catch (error) {
           toast.error('알 수 없는 오류가 발생했습니다. 새로고침 후 다시 시도해주시길 바랍니다');
-
+          setBtnLoading(false);
           console.dir(error);
-        } finally {
-          if (BtnLoading) {
-            setBtnLoading(false);
-          }
         }
       }
       axiosPost();
