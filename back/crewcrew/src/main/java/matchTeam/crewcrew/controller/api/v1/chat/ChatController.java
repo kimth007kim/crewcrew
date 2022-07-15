@@ -36,7 +36,7 @@ public class ChatController {
 
         ChatRoom chatRoom = chatRoomService.isValidRoom(chatMessageDTO.getRoomId());
 
-        chatRoomService.findByRoomIdAndSubscriberOrPublisher(chatRoom.getRoomId(), user);
+        chatRoomService.checkMessageSend(chatRoom.getRoomId(), user);
         if (ChatMessageDTO.MessageType.EXIT.equals(chatMessageDTO.getType())){
             chatMessageDTO.setContent(user.getNickname() + "님이 퇴장하셨습니다.");
         }

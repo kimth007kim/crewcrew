@@ -339,6 +339,19 @@ public class ChatRoomService {
 //        if (room1.isEmpty() && room2.isEmpty())
             throw new CrewException(ErrorCode.CHAT_NOT_ALLOWED_USER);
     }
+    public void checkMessageSend(UUID roomId, User user) {
+
+        Optional<ChatRoom> bothUserInRoom = chatRoomRepository.findBothUserInRoom(roomId);
+        if(bothUserInRoom.isPresent()){
+            throw new CrewException(ErrorCode.CHAT_NOT_OTHER_USER);
+        }
+
+        Optional<ChatRoom> userInRoom = chatRoomRepository.findUserInRoom(roomId,user);
+
+        if (userInRoom.isEmpty())
+//        if (room1.isEmpty() && room2.isEmpty())
+            throw new CrewException(ErrorCode.CHAT_NOT_ALLOWED_USER);
+    }
 
     @Transactional
     public ChatRoom createChatRoom(User me, Long board_seq, Long otherUid) {
