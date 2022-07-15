@@ -87,6 +87,8 @@ function TimelineMent({ data }) {
         </ul>
       </>
     );
+  } else {
+    return null;
   }
 }
 
