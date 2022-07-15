@@ -328,9 +328,13 @@ public class ChatRoomService {
     }
 
     public void findByRoomIdAndSubscriberOrPublisher(UUID roomId, User user) {
+
+        Optional<ChatRoom> leftUserInRoom = chatRoomRepository.findLeftUserInRoom(roomId,user);
+        if (leftUserInRoom.isPresent()){
+            throw new CrewException(ErrorCode.CHAT_USER_ALREADY_DELETE_ROOM);
+        }
         Optional<ChatRoom> userInRoom = chatRoomRepository.findUserInRoom(roomId,user);
-//        Optional room1 = chatRoomRepository.findByRoomIdAndPublisher(roomId, user);
-//        Optional room2 = chatRoomRepository.findByRoomIdAndSubscriber(roomId, user);
+
         if (userInRoom.isEmpty())
 //        if (room1.isEmpty() && room2.isEmpty())
             throw new CrewException(ErrorCode.CHAT_NOT_ALLOWED_USER);
