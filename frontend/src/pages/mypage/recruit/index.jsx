@@ -8,6 +8,7 @@ import { Cookies } from 'react-cookie';
 import Button from '@/components/common/Button';
 import RecruitCard from '@/components/mypage/Card/RecruitCard';
 import MyPagination from '@/components/mypage/MyPagination';
+import Loader from '@/components/common/Loader';
 
 function Recruit() {
   const cookies = new Cookies();
@@ -15,12 +16,14 @@ function Recruit() {
   const [postsPerPage, setPostsPerPage] = useState(10);
 
   // 스터디 리스트
+  const [studyLoading, setStudyLoading] = useState(false);
   const [studyAppList, setStudyAppList] = useState([]);
   const [studyPageData, setStudyPageData] = useState(null);
   const [studyTotalPage, setStudyTotalPage] = useState(0);
   const [studyCurrentPage, setStudyCurrentPage] = useState(1);
 
   // 취미 리스트
+  const [hobbyLoading, setHobbyLoading] = useState(false);
   const [hobbyAppList, setHobbyAppList] = useState([]);
   const [hobbyPageData, setHobbyPageData] = useState(null);
   const [hobbyTotalPage, setHobbyTotalPage] = useState(0);
@@ -48,6 +51,7 @@ function Recruit() {
   }, []);
 
   const getRecruitStudyList = useCallback(async () => {
+    setStudyLoading(true);
     try {
       const { data } = await axios.get(`/application/recruiting/1?page=${studyCurrentPage - 1}`, {
         withCredentials: true,
@@ -69,10 +73,13 @@ function Recruit() {
       }
     } catch (error) {
       console.dir(error);
+    } finally {
+      setStudyLoading(false);
     }
   }, [studyCurrentPage]);
 
   const getRecruitHobbyList = useCallback(async () => {
+    setHobbyLoading(true);
     try {
       const { data } = await axios.get(`/application/recruiting/2?page=${hobbyCurrentPage - 1}`, {
         withCredentials: true,
@@ -94,10 +101,19 @@ function Recruit() {
       }
     } catch (error) {
       console.dir(error);
+    } finally {
+      setHobbyLoading(false);
     }
   }, [hobbyCurrentPage]);
 
   const renderStudyList = () => {
+    if (studyLoading) {
+      return (
+        <LoadingWrap>
+          <Loader height={80} width={80} />
+        </LoadingWrap>
+      );
+    }
     if (studyAppList.length > 0) {
       return (
         <CardWrapper>
@@ -143,6 +159,13 @@ function Recruit() {
   };
 
   const renderHobbyList = () => {
+    if (studyLoading) {
+      return (
+        <LoadingWrap>
+          <Loader height={80} width={80} />
+        </LoadingWrap>
+      );
+    }
     if (hobbyAppList.length > 0) {
       return (
         <CardWrapper>
@@ -267,8 +290,12 @@ const Wrap = styled('section')`
       border-bottom: 2px solid #d7dae4;
     }
   }
-  &.hobby h3 {
-    color: #f7971e;
+  &.hobby {
+    padding-bottom: 40px;
+
+    h3 {
+      color: #f7971e;
+    }
   }
 `;
 
@@ -295,4 +322,11 @@ const NoContent = styled('div')`
       font-weight: 700;
     }
   }
+`;
+
+const LoadingWrap = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
 `;

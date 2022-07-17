@@ -1,4 +1,5 @@
 import Button from '@/components/common/Button';
+import Loader from '@/components/common/Loader';
 import MyLayout from '@/components/common/MyLayout';
 import ActivityCard from '@/components/mypage/Card/ActivityCard';
 import ParticipateCard from '@/components/mypage/Card/ParticipateCard';
@@ -15,11 +16,15 @@ function MyActivity() {
   const [crewActivity, setCrewActivity] = useState(null);
   const [postsPerPage, setPostsPerPage] = useState(10);
 
+  // 마감글
+  const [deadlineLoading, setDeadlineLoading] = useState([]);
   const [deadlineList, setDeadlineList] = useState([]);
   const [deadlinePageData, setDeadlinePageData] = useState(null);
   const [deadlineTotalPage, setDeadlineTotalPage] = useState(0);
   const [deadlineCurrentPage, setDeadlineCurrentPage] = useState(1);
 
+  // 수락글
+  const [acceptLoading, setAcceptLoading] = useState([]);
   const [acceptList, setAcceptList] = useState([]);
   const [acceptPageData, setAcceptPageData] = useState(null);
   const [acceptTotalPage, setAcceptTotalPage] = useState(0);
@@ -48,6 +53,7 @@ function MyActivity() {
   }, []);
 
   const getActivityDeadline = useCallback(async () => {
+    setDeadlineLoading(true);
     try {
       const { data } = await axios.get(
         `/application/myCrew/details?page=${deadlineCurrentPage - 1}`,
@@ -60,8 +66,6 @@ function MyActivity() {
       );
       switch (data.status) {
         case 200:
-          console.log(data);
-
           setDeadlineList([...data.data.content]);
           setDeadlinePageData({
             ...data.data,
@@ -75,10 +79,13 @@ function MyActivity() {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setDeadlineLoading(false);
     }
   }, [deadlineCurrentPage]);
 
   const getActivityAccept = useCallback(async () => {
+    setAcceptLoading(true);
     try {
       const { data } = await axios.get(
         `/application/myCrew/participated/details?page=${deadlineCurrentPage - 1}`,
@@ -104,10 +111,19 @@ function MyActivity() {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setAcceptLoading(false);
     }
   }, [deadlineCurrentPage]);
 
   const renderDeadlineList = () => {
+    if (deadlineLoading) {
+      return (
+        <LoadingWrap>
+          <Loader height={80} width={80} />
+        </LoadingWrap>
+      );
+    }
     if (deadlineList.length > 0) {
       return (
         <CardWrapper>
@@ -154,6 +170,13 @@ function MyActivity() {
   };
 
   const renderAcceptList = () => {
+    if (acceptLoading) {
+      return (
+        <LoadingWrap>
+          <Loader height={80} width={80} />
+        </LoadingWrap>
+      );
+    }
     if (acceptList.length > 0) {
       return (
         <CardWrapper>
@@ -301,6 +324,10 @@ const Wrap = styled('section')`
       border-bottom: 2px solid #d7dae4;
     }
   }
+
+  &.accepted {
+    padding-bottom: 40px;
+  }
 `;
 
 const CardWrapper = styled('div')`
@@ -326,4 +353,11 @@ const NoContent = styled('div')`
       font-weight: 700;
     }
   }
+`;
+
+const LoadingWrap = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
 `;
