@@ -92,7 +92,7 @@ public class ChatRoomService {
     public List<ChatMessageResponseDTO> messageByRoomId(UUID roomId, int page, int size) {
         ChatRoom room = isValidRoom(roomId);
         Pageable pageable = PageRequest.of(page, size);
-        List<ChatMessage> messages = chatMessageRepository.findByChatRoomOrderByCreatedDateDesc(room, pageable);
+        List<ChatMessage> messages = chatMessageRepository.findByChatRoomOrderByMessageIdDesc(room, pageable);
         List<ChatMessageResponseDTO> result = messageToResponse(roomId, messages);
 //        Collections.reverse(result);
         return result;
@@ -328,30 +328,59 @@ public class ChatRoomService {
     }
 
     public void findByRoomIdAndSubscriberOrPublisher(UUID roomId, User user) {
+
+        Optional<ChatRoom> leftUserInRoom = chatRoomRepository.findLeftUserInRoom(roomId,user);
+        if (leftUserInRoom.isPresent()){
+            throw new CrewException(ErrorCode.CHAT_USER_ALREADY_DELETE_ROOM);
+        }
         Optional<ChatRoom> userInRoom = chatRoomRepository.findUserInRoom(roomId,user);
-//        Optional room1 = chatRoomRepository.findByRoomIdAndPublisher(roomId, user);
-//        Optional room2 = chatRoomRepository.findByRoomIdAndSubscriber(roomId, user);
+
+        if (userInRoom.isEmpty())
+//        if (room1.isEmpty() && room2.isEmpty())
+            throw new CrewException(ErrorCode.CHAT_NOT_ALLOWED_USER);
+    }
+    public void checkMessageSend(UUID roomId, User user) {
+
+        Optional<ChatRoom> bothUserInRoom = chatRoomRepository.findBothUserInRoom(roomId);
+        if(bothUserInRoom.isPresent()){
+            throw new CrewException(ErrorCode.CHAT_NOT_OTHER_USER);
+        }
+
+        Optional<ChatRoom> userInRoom = chatRoomRepository.findUserInRoom(roomId,user);
+
         if (userInRoom.isEmpty())
 //        if (room1.isEmpty() && room2.isEmpty())
             throw new CrewException(ErrorCode.CHAT_NOT_ALLOWED_USER);
     }
 
-    public ChatRoom createChatRoom(User subs, Long board_seq) {
+    @Transactional
+    public ChatRoom createChatRoom(User me, Long board_seq, Long otherUid) {
+        if (me.getUid() == otherUid) {
+            throw new CrewException(ErrorCode.CHAT_NOT_SUPPORTED_SAME_USER);
+        }
+
         Board board = boardRepository.findById(board_seq).orElseThrow(() -> new CrewException(ErrorCode.NOT_EXIST_BOARD_IN_ID));
+        User other = userRepository.findById(otherUid).orElseThrow(()-> new CrewException(ErrorCode.CHAT_NOT_OTHER_USER));
+
         User pubs = board.getUser();
-        Optional<ChatRoom> already = chatRoomRepository.findBySubscriberAndPublisherAndBoard(subs, pubs, board);
+        Optional<ChatRoom> already = chatRoomRepository.findBySubscriberAndPublisherAndBoard(me, pubs, board);
         if (already.isPresent()) {
             ChatRoom chatRoom = already.get();
             return chatRoom;
         }
-
-        if (pubs.getUid() == subs.getUid()) {
-            throw new CrewException(ErrorCode.CHAT_NOT_SUPPORTED_SAME_USER);
+        if (board.getUser().getUid() != otherUid && board.getUser().getUid()!= me.getUid()){
+            throw new CrewException(ErrorCode.CHAT_BOARD_NOT_ALLOWED);
         }
 
-        ChatRoom chatRoom = ChatRoom.builder().publisher(pubs).subscriber(subs).board(board).publisherIn(1).subscriberIn(1).build();
-        chatRoomRepository.save(chatRoom);
-        return chatRoom;
+        if (board.getUser().getUid() == me.getUid()) {
+            ChatRoom chatRoom = ChatRoom.builder().publisher(me).subscriber(other).board(board).publisherIn(1).subscriberIn(1).build();
+            chatRoomRepository.save(chatRoom);
+            return chatRoom;
+        }
+            ChatRoom chatRoom = ChatRoom.builder().publisher(other).subscriber(me).board(board).publisherIn(1).subscriberIn(1).build();
+            chatRoomRepository.save(chatRoom);
+            return chatRoom;
+
     }
 
     public void readMessage(UUID roomId, User user) {

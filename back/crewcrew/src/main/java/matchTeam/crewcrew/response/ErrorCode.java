@@ -132,6 +132,9 @@ public enum ErrorCode {
 
     CHAT_NOT_ALLOWED_USER(5001, "THIS USER IS NOT ALLOWED TO TALK THIS CHATROOM", "현재 방에 참여하지않은 유저입니다."),
     CHAT_NOT_SUPPORTED_SAME_USER(5002,"CHATTING IS NOT SUPPORTED WHEN SAME USER COMMUNICATE", "선택하신 채팅방은 본인이 작성한 글입니다."),
+    CHAT_NOT_OTHER_USER(5003,"THERE IS NOT OPPONENT UESER","상대 유저가 존재하지 않습니다."),
+    CHAT_BOARD_NOT_ALLOWED(5004,"BOTH USER NOT HAVE BOARD","채팅을 하려는 게시글을 두 유저 중 하나도 소유하고 있지않습니다.."),
+    CHAT_USER_ALREADY_DELETE_ROOM(5005,"ALREADY DELETED CHAT ROOM","이미 나가신 채팅 방입니다."),
 
     //6000 ~ 타임라인 예외
 

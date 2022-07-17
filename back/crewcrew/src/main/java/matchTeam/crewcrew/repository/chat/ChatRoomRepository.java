@@ -31,6 +31,12 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, UUID> {
     @Query("select c from ChatRoom c where c.roomId=:roomId  and ((c.publisher=:user and c.publisherIn=1) or  (c.subscriber=:user and c.subscriberIn=1))")
     Optional<ChatRoom> findUserInRoom(@Param("roomId") UUID roomId, @Param("user") User user);
 
+    @Query("select c from ChatRoom c where c.roomId=:roomId  and ((c.publisher=:user and c.publisherIn=0) or  (c.subscriber=:user and c.subscriberIn=0))")
+    Optional<ChatRoom> findLeftUserInRoom(@Param("roomId") UUID roomId, @Param("user") User user);
+
+
+    @Query("select c from ChatRoom c where c.roomId=:roomId and (c.subscriberIn=0 or c.subscriberIn=0)")
+    Optional<ChatRoom> findBothUserInRoom(@Param("roomId") UUID roomId);
 
     //    Optional<ChatRoom> findByRoomIdAndSubscriberOrPublisher(UUID roomId, User member1, User member2);
     Optional<ChatRoom> findByRoomIdAndPublisher(UUID roomId, User user);

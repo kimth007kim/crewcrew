@@ -14,6 +14,7 @@ import matchTeam.crewcrew.service.user.UserService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class ChatController {
     private final ChatRoomService chatRoomService;
     private final UserService userService;
 
+    @Transactional
     @MessageMapping("/chat/message")
     public void message(ChatMessageDTO chatMessageDTO) {
 
@@ -34,7 +36,7 @@ public class ChatController {
 
         ChatRoom chatRoom = chatRoomService.isValidRoom(chatMessageDTO.getRoomId());
 
-        chatRoomService.findByRoomIdAndSubscriberOrPublisher(chatRoom.getRoomId(), user);
+        chatRoomService.checkMessageSend(chatRoom.getRoomId(), user);
         if (ChatMessageDTO.MessageType.EXIT.equals(chatMessageDTO.getType())){
             chatMessageDTO.setContent(user.getNickname() + "님이 퇴장하셨습니다.");
         }
