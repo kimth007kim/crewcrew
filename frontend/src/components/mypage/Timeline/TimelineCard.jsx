@@ -150,6 +150,7 @@ const ContentBottom = styled('div')`
   @media screen and (max-width: 820px) {
     display: flex;
     align-items: center;
+    margin-bottom: 26px;
 
     p {
       max-width: 100%;
