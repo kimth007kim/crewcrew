@@ -6,7 +6,18 @@ function TimelineMent({ data }) {
   const navigate = useNavigate();
 
   const navigateDetail = () => {
-    navigate(`/`);
+    if (data.announceType === 1) {
+      return navigate(`/mypage/activity`);
+    }
+    if (data.announceType === 2) {
+      return navigate(`/mypage/request`);
+    }
+    if (data.announceType === 3) {
+      return navigate(`/mypage/request`);
+    }
+    if (data.announceType === 4) {
+      return navigate(`/mypage/request`);
+    }
   };
 
   if (data.announceType === 1) {
@@ -23,9 +34,6 @@ function TimelineMent({ data }) {
             <button type="button" onClick={navigateDetail}>
               상세
             </button>
-          </li>
-          <li>
-            <button type="button">수락</button>
           </li>
         </ul>
       </>
@@ -63,9 +71,6 @@ function TimelineMent({ data }) {
               상세
             </button>
           </li>
-          <li>
-            <button type="button">채팅</button>
-          </li>
         </ul>
       </>
     );
@@ -87,6 +92,8 @@ function TimelineMent({ data }) {
         </ul>
       </>
     );
+  } else {
+    return null;
   }
 }
 

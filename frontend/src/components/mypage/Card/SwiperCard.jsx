@@ -42,7 +42,7 @@ function SwiperCard({ data, boardId, status }) {
       window.alert('자기자신에게 채팅을 보낼 수 없습니다');
       return false;
     }
-    navigate(`/mypage/chat/${boardId}`);
+    navigate(`/mypage/chat/${boardId}/${data.uid}`);
   };
 
   const renderStatusBtn = useCallback(() => {

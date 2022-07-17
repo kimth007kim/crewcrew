@@ -13,6 +13,7 @@ function TimelineCard({ data }) {
       e === data.categoryName && setCategory('hobby');
     });
   }, [data]);
+
   return (
     <Container>
       <ContentTop Cat={category}>
@@ -85,7 +86,6 @@ const ContentTop = styled('div')`
   h5 {
     font-size: 15px;
     font-weight: 700;
-    }
   }
 
   p {
@@ -105,7 +105,6 @@ const ContentTop = styled('div')`
             color: #f7971e;
           }
         `}
-  
 `;
 
 const ContentBottom = styled('div')`
@@ -151,6 +150,7 @@ const ContentBottom = styled('div')`
   @media screen and (max-width: 820px) {
     display: flex;
     align-items: center;
+    margin-bottom: 26px;
 
     p {
       max-width: 100%;
