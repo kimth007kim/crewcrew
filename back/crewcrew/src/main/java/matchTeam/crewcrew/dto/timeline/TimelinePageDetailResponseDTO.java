@@ -34,7 +34,7 @@ public class TimelinePageDetailResponseDTO {
     @ApiModelProperty(value = "읽음 여부", notes = "초깃값은 false", example = "false")
     private Boolean readChk;
 
-    private String boardLink;
+    private Long boardId;
 
     private String nickname;
 
@@ -46,7 +46,7 @@ public class TimelinePageDetailResponseDTO {
         this.createdDate = res.getCreatedDate();
         this.announceType = res.getAnnounceType();
         this.boardTitle = res.getBoard().getTitle();
-        this.boardLink = "https://crewcrew.org/board/" + res.getBoard().getId();
+        this.boardId = res.getBoard().getId();
         this.nickname = res.getApplicant().getNickname();
         this.readChk = res.getReadChk();
     }

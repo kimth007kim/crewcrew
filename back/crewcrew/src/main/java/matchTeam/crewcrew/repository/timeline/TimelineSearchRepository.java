@@ -28,31 +28,25 @@ public class TimelineSearchRepository {
     public Page<TimelinePageDetailResponseDTO> search(Long userId, Pageable pageable, Integer filter){
 
         BooleanExpression chkUser = null;
-        BooleanExpression chkAnnounceType = null;
 
         switch (filter){
             case 0:
                 chkUser = announcement.leader.uid.eq(userId).and(announcement.announceType.eq(1))
                         .or(announcement.applicant.uid.eq(userId).and(announcement.announceType.eq(0)))
                         .or(announcement.applicant.uid.eq(userId).and(announcement.announceType.eq(2)))
-                        .or(announcement.leader.uid.eq(userId).and(announcement.announceType.eq(3)));
-                chkAnnounceType = announcement.isNotNull();
+                        .or(announcement.applicant.uid.eq(userId).and(announcement.announceType.eq(3)));
                 break;
             case 1:
-                chkUser = announcement.leader.uid.eq(userId);
-                chkAnnounceType = announcement.announceType.eq(1);
+                chkUser = announcement.leader.uid.eq(userId).and(announcement.announceType.eq(1));
                 break;
             case 2:
-                chkUser = announcement.applicant.uid.eq(userId);
-                chkAnnounceType = announcement.announceType.eq(0);
+                chkUser = announcement.applicant.uid.eq(userId).and(announcement.announceType.eq(0));
                 break;
             case 3:
-                chkUser = announcement.applicant.uid.eq(userId);
-                chkAnnounceType = announcement.announceType.eq(2);
+                chkUser = announcement.applicant.uid.eq(userId).and(announcement.announceType.eq(2));
                 break;
             case 4:
-                chkUser = announcement.leader.uid.eq(userId);
-                chkAnnounceType = announcement.announceType.eq(3);
+                chkUser = announcement.applicant.uid.eq(userId).and(announcement.announceType.eq(3));
                 break;
         }
 
@@ -60,7 +54,7 @@ public class TimelineSearchRepository {
                 .select(Projections.constructor(TimelinePageDetailResponseDTO.class, announcement))
                 .from(announcement)
                 .where(
-                        chkUser, chkAnnounceType
+                        chkUser
                 ).offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(announcement.createdDate.desc())
@@ -70,7 +64,7 @@ public class TimelineSearchRepository {
                 .select(announcement)
                 .from(announcement)
                 .where(
-                        chkUser, chkAnnounceType
+                        chkUser
                 );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
