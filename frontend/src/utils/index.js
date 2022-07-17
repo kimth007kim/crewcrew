@@ -62,13 +62,13 @@ export const viewDay = (value) => {
 };
 
 export const renderDate = (createdDate = new Date()) => {
-  const date = new Date(createdDate);
+  const date = new Date(String(createdDate).replace(/-/g, '/'));
 
   return `${format(date, 'M/d')} (${viewDay(getDay(date))})`;
 };
 
 export const renderDay = (expiredDate = new Date()) => {
-  const date = new Date(expiredDate);
+  const date = new Date(String(expiredDate).replace(/-/g, '/'));
   const nowDate = new Date();
   return differenceInDays(date, nowDate) + 1;
 };

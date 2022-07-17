@@ -67,7 +67,7 @@ function NavContainer() {
   }, []);
 
   const axiosGetBookmark = useCallback(async () => {
-    if (!myData?.data) {
+    if (!(myData && myData.data)) {
       return;
     }
     try {

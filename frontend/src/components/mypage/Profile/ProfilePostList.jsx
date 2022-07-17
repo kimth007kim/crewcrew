@@ -36,7 +36,7 @@ function ProfilePostList() {
 
   const getUserBoardAccepted = useCallback(
     async (page) => {
-      if (!myData?.data) return false;
+      if (!(myData && myData.data)) return false;
       try {
         const { data } = await axios.get(`/profile/board/accepted/${uid}?page=${page}`);
         if (data.status === 200) {
@@ -57,7 +57,7 @@ function ProfilePostList() {
 
   const getUserBoardRecruited = useCallback(
     async (page) => {
-      if (!myData?.data) return false;
+      if (!(myData && myData.data)) return false;
       try {
         const { data } = await axios.get(`/profile/board/recruited/${uid}?page=${page}`);
         if (data.status === 200) {

@@ -20,7 +20,7 @@ function Profile() {
   const { data: myData } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
 
   const getUserProfile = useCallback(async () => {
-    if (!myData?.data) return;
+    if (!(myData && myData.data)) return;
 
     try {
       const { data } = await axios.get(`/profile/${uid}`);
@@ -34,7 +34,7 @@ function Profile() {
   }, [myData]);
 
   const getUserBoard = useCallback(async () => {
-    if (!myData?.data) return false;
+    if (!(myData && myData.data)) return false;
 
     try {
       const { data } = await axios.get(`/profile/board/${uid}`);

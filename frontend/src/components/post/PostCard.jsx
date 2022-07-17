@@ -6,7 +6,7 @@ import ButtonStarOn from '@/assets/images/ButtonStarOn.png';
 import SettingWhite from '@/assets/images/SettingWhite.png';
 import ProfileNull from '@/assets/images/ProfileNull.png';
 import { cateogoryAll } from '@/frontDB/filterDB';
-import { viewDay } from '@/utils';
+import { renderDay, viewDay } from '@/utils';
 import { useNavigate, useParams } from 'react-router-dom';
 import useQuery from '@/hooks/useQuery';
 import { Cookies } from 'react-cookie';
@@ -43,7 +43,7 @@ function PostCard({ data }) {
   const [fixVisible, openFix, closeFix] = useModal();
 
   const renderDate = useCallback(() => {
-    const date = new Date(data.createdDate);
+    const date = new Date(data.createdDate.replace(/-/g, '/'));
     return `${format(date, 'M/d')} (${viewDay(getDay(date))})`;
   }, []);
 
@@ -55,21 +55,15 @@ function PostCard({ data }) {
     navigate(`/post/${data.boardId}`);
   }, [query.get('page')]);
 
-  const renderDay = useCallback(() => {
-    const date = new Date(data.expiredDate);
-    const nowDate = new Date();
-    return differenceInDays(date, nowDate) + 1;
-  }, []);
-
   const bookmark = async (e) => {
     e.stopPropagation();
-    if (!myData?.data) {
+    if (!(myData && myData.data)) {
       window.alert('로그인 후 이용가능합니다.');
       return false;
     }
     try {
-      if (!myData?.data) {
-        const login = window.alert('로그인 후 이용가능합니다.');
+      if (!(myData && myData.data)) {
+        window.alert('로그인 후 이용가능합니다.');
         return;
       }
       if (!isBookmark) {
@@ -108,7 +102,7 @@ function PostCard({ data }) {
 
   const getBookmark = useCallback(async () => {
     try {
-      if (!myData?.data) {
+      if (!(myData && myData.data)) {
         return;
       }
       const bookmarkdata = await axios.get(`/bookmark/${data.boardId}`, {
@@ -132,7 +126,7 @@ function PostCard({ data }) {
         }
         openParticipate();
       } else {
-        const login = window.alert('로그인 후 이용가능합니다.');
+        window.alert('로그인 후 이용가능합니다.');
       }
     },
     [myData],
@@ -155,7 +149,7 @@ function PostCard({ data }) {
   );
 
   useEffect(() => {
-    const bool = !data.viewable || renderDay() < 0;
+    const bool = !data.viewable || renderDay(data.expiredDate) < 0;
     setIsDisable(bool);
   }, []);
 
@@ -185,8 +179,8 @@ function PostCard({ data }) {
             )}
           </ProfileBox>
           <TextBox>
-            <Dday>{IsDisable ? '마감' : `D-${renderDay()}`}</Dday>
-            <CardDate>{renderDate()}</CardDate>
+            <Dday>{IsDisable ? '마감' : `D-${renderDay(data.expiredDate)}`}</Dday>
+            <CardDate>{renderDate(data.createdDate)}</CardDate>
             <CardName onClick={(e) => viewTooltip(e, 2)}>{data.nickname}</CardName>
           </TextBox>
           {myData && myData.data?.uid && tooltip && (

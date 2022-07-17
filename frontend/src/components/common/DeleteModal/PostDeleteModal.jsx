@@ -29,7 +29,7 @@ function PostDeleteModal({ closeModal, visible, postData }) {
   const navigate = useNavigate();
 
   const renderDate = useCallback(() => {
-    const date = new Date(postData.createdDate);
+    const date = new Date(postData.createdDate.replace(/-/g, '/'));
     return `${format(date, 'MM월 dd일')}`;
   }, []);
 

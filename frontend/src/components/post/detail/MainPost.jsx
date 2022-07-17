@@ -4,8 +4,7 @@ import StarOff from '@/assets/images/ButtonStar.png';
 import StarOn from '@/assets/images/ButtonStarOn.png';
 import SettingWhite from '@/assets/images/SettingWhite.png';
 import Markdown from '@/lib/Markdown';
-import { viewDay } from '@/utils';
-import { differenceInDays, format, getDay } from 'date-fns';
+import { renderDate, renderDay } from '@/utils';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
@@ -31,17 +30,6 @@ function MainPost({ data }) {
   const [participateVisible, openParticipate, closeParticipate] = useModal();
   const [deleteVisible, openDelete, closeDelete] = useModal();
   const [fixVisible, openFix, closeFix] = useModal();
-
-  const renderDate = useCallback(() => {
-    const date = new Date(data.createdDate);
-    return `${format(date, 'M/d')} (${viewDay(getDay(date))})`;
-  }, []);
-
-  const renderDay = useCallback(() => {
-    const date = new Date(data.expiredDate);
-    const nowDate = new Date();
-    return differenceInDays(date, nowDate) + 1;
-  }, []);
 
   const bookmarkClick = async () => {
     try {
@@ -112,7 +100,7 @@ function MainPost({ data }) {
   );
 
   useEffect(() => {
-    const bool = !data.viewable || renderDay() < 0;
+    const bool = !data.viewable || renderDay(data.expiredDate) < 0;
     setIsDisable(bool);
   }, []);
 
@@ -125,9 +113,9 @@ function MainPost({ data }) {
       <Container>
         <Wrapper>
           <ul>
-            <li>{IsDisable ? '마감' : `D-${renderDay()}`}</li>
+            <li>{IsDisable ? '마감' : `D-${renderDay(data.expiredDate)}`}</li>
             <li>{data.nickname}</li>
-            <li>{renderDate()}</li>
+            <li>{renderDate(data.created)}</li>
           </ul>
           <TitleMobile>{data.title}</TitleMobile>
           <ul>

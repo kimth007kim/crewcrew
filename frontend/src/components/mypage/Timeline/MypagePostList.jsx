@@ -31,7 +31,7 @@ function MypagePostList() {
 
   const axiosGetBookmark = useCallback(
     async (page) => {
-      if (!myData?.data) return false;
+      if (!(myData && myData.data)) return false;
       try {
         const { data } = await axios.get(`/bookmark/list?page=${page}&order=recent`, {
           withCredentials: true,

@@ -5,16 +5,14 @@ import { Cookies } from 'react-cookie';
 import ButtonStarWhite from '@/assets/images/ButtonStarWhite.png';
 import ButtonStarOn from '@/assets/images/ButtonStarOn.png';
 import { cateogoryAll } from '@/frontDB/filterDB';
-import { format, getDay, differenceInDays } from 'date-fns';
-import { viewDay } from '@/utils';
+import { renderDate, renderDay } from '@/utils';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { changedBookmark } from '@/atoms/post';
 import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
-import useModal from '@/hooks/useModal';
-import AuthModal from '../common/Auth/AuthModal';
+
 import { loginCheck } from '@/atoms/login';
 import { lnbBookmarkDelete } from '@/atoms/post';
 import ProfileTooltip from '../post/tooltip/ProfileTooltip';
@@ -33,18 +31,6 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
   const { data: myData } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
 
   const navigate = useNavigate();
-  const [authVisible, openAuth, closeAuth] = useModal();
-
-  const renderDate = useCallback(() => {
-    const date = new Date(data.createdDate);
-    return `${format(date, 'M/d')} (${viewDay(getDay(date))})`;
-  }, []);
-
-  const renderDay = useCallback(() => {
-    const date = new Date(data.expiredDate);
-    const nowDate = new Date();
-    return differenceInDays(date, nowDate) + 1;
-  }, []);
 
   const category = (id = data.categoryParentId) => {
     return id === 1 ? 'study' : 'hobby';
@@ -61,7 +47,7 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
   const bookmark = async (e) => {
     e.stopPropagation();
     try {
-      if (!myData?.data) {
+      if (!(myData && myData.data)) {
         window.alert('로그인 후 이용가능합니다.');
         return false;
       }
@@ -102,7 +88,7 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
   };
 
   const getBookmark = useCallback(async () => {
-    if (!myData?.data) return false;
+    if (!(myData && myData.data)) return false;
     try {
       const bookmarkdata = await axios.get(`/bookmark/${data.boardId}`, {
         withCredentials: true,
@@ -147,10 +133,10 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
         <CardPost category={category()} onClick={handleLocate}>
           <CardHead>
             <h5>
-              <span>{`D-${renderDay()}`}</span>
+              <span>{`D-${renderDay(data.expiredDate)}`}</span>
             </h5>
             <CardHeadRight>
-              <p>{renderDate()}</p>
+              <p>{renderDate(data.createdDate)}</p>
               <p>
                 조회수
                 <span> {data.hit}</span>
@@ -191,7 +177,6 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
           </CardFooter>
         </CardPost>
       </Container>
-      <AuthModal closeModal={closeAuth} visible={authVisible} />
     </>
   );
 }
