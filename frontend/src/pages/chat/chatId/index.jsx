@@ -36,11 +36,11 @@ function ChatDetail() {
 
         default:
           toast.error(roomData.message);
-          navigate('/mypage/chat');
+          navigate('/chat');
           break;
       }
     } catch (error) {
-      navigate('/mypage/chat');
+      navigate('/chat');
       console.error(error);
     }
   }, [params.boardId]);

@@ -161,12 +161,12 @@ function ChatDetailBox({ roomId }) {
           break;
         case 5001:
           // 현재 채팅방에 등록된 유저가 아닌 유저가 접근하는 경우
-          navigate('/mypage/chat', { replace: true });
+          navigate('/chat', { replace: true });
           toast.error(data.message);
           break;
         case 5005:
           // 현재 채팅방에 등록됐었지만 자신이 그 채팅방을 삭제한 경우
-          navigate('/mypage/chat', { replace: true });
+          navigate('/chat', { replace: true });
           toast.error(data.message);
           break;
 

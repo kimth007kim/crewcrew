@@ -57,7 +57,7 @@ function Lnb({ path }) {
 
   const navigateChat = () => {
     if (myData && myData.data) {
-      navigate('/mypage/chat');
+      navigate('/chat');
     } else {
       const login = window.confirm('로그인 후 이용가능합니다. 로그인하시겠습니까?');
       if (login) {

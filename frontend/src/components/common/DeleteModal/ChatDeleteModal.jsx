@@ -52,7 +52,7 @@ function ChatDeleteModal({ closeModal, visible, chatData, checkList, handleIniti
             handleInitial();
           }
           closeModal();
-          navigate('/mypage/chat', { replace: true });
+          navigate('/chat', { replace: true });
           toast.success('성공적으로 삭제되었습니다.');
           break;
         case 2301:

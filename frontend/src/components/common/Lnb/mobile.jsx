@@ -47,7 +47,7 @@ function NavMobile({ path, openModal }) {
 
   const navigateChat = () => {
     if (myData && myData.data) {
-      navigate('/mypage/chat');
+      navigate('/chat');
     } else {
       const login = window.confirm('로그인 후 이용가능합니다. 로그인하시겠습니까?');
       if (login) {
@@ -111,7 +111,7 @@ function NavMobile({ path, openModal }) {
           </MobileNavLi>
 
           <MobileNavLi selected={pathname.startsWith('/chat')} onClick={navigateChat}>
-            {<RecruIcon selected={pathname.startsWith('/chat')} />}
+            {<ChatIcon selected={pathname.startsWith('/chat')} />}
             {'채팅'}
           </MobileNavLi>
         </MobileNavUl>
@@ -268,7 +268,6 @@ const MobileGnb = styled.div`
     z-index: 90;
     background-color: #fff;
     top: 0;
-    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.05);
   }
   @media screen and (max-width: 300px) {
     padding: 0 10px;
