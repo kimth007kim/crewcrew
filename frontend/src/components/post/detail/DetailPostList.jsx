@@ -11,14 +11,12 @@ import useQuery from '@/hooks/useQuery';
 import { allFilter } from '@/frontDB/filterDB';
 import { Link } from 'react-router-dom';
 
-function DetailPostList({ data, loading }) {
+function DetailPostList({ data, loading, listData }) {
   const [approach, setApproach] = useRecoilState(approachFilterState);
   const [article, setArticle] = useRecoilState(articleFilterState);
   const [filterData, setFilterData] = useRecoilState(arrayFilterState);
 
   const [pageData, setPageData] = useState(null);
-
-  const [PostListData, setPostListData] = useState([]);
 
   const query = useQuery();
 
@@ -69,12 +67,12 @@ function DetailPostList({ data, loading }) {
   };
 
   const renderPostList = () => {
-    if (PostListData.length > 0) {
+    if (listData.length > 0) {
       return (
         <>
           <PostWrapper>
             <ul>
-              {PostListData.map((post, i) => (
+              {listData.map((post, i) => (
                 <li key={post.boardId + post.uid + i * 10}>
                   <PostCard data={post} />
                 </li>
@@ -111,7 +109,6 @@ function DetailPostList({ data, loading }) {
     setPageData({
       data,
     });
-    setPostListData([...data.contents]);
     setTotalPage(data.totalPages);
   }, [query.get('page')]);
 
