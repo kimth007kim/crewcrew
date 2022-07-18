@@ -9,7 +9,7 @@ import { useScroll } from '@/hooks/useScroll';
 
 function TimelineTop() {
   const FilterNum = localStorage.getItem('currentFilterNum') || 0;
-  let { scrollY } = useScroll();
+  const { scrollY } = useScroll();
   const [FilterOpen, setFilterOpen] = useState(false);
   const FliterList = [
     '전체알림',
@@ -30,12 +30,6 @@ function TimelineTop() {
   };
 
   const openBtn = () => setBtnOpen((state) => !state);
-
-  useEffect(() => {
-    return () => {
-      scrollY = 0;
-    };
-  }, []);
 
   return (
     <>
