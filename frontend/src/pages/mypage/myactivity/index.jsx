@@ -149,7 +149,7 @@ function MyActivity() {
     return (
       <NoContent>
         <p>
-          <em>크루에 참여요청한 내역이 없습니다.</em>
+          <em>모집한 글의 마감된 내역이 없습니다.</em>
           <br></br>
           크루에 참여하셔서<br className="fold"></br> 활동 이력을 남겨보세요!
         </p>
@@ -295,6 +295,10 @@ const SectionWrap = styled('div')`
     font-size: 20px;
     font-weight: 700;
     padding: 38px 0 24px;
+  }
+
+  br.fold {
+    display: none;
   }
 
   @media screen and (max-width: 820px) {

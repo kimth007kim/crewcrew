@@ -138,9 +138,9 @@ function Recruit() {
     return (
       <NoContent>
         <p>
-          <em>크루에 참여요청한 내역이 없습니다.</em>
+          <em>내가 모집중인 크루가 없습니다.</em>
           <br></br>
-          크루에 참여하셔서<br className="fold"></br> 활동 이력을 남겨보세요!
+          크루 모집글을 작성해<br className="fold"></br> 크루원을 모집하세요!
         </p>
         <Button
           widthSize={100}
@@ -190,9 +190,9 @@ function Recruit() {
     return (
       <NoContent>
         <p>
-          <em>크루에 참여요청한 내역이 없습니다.</em>
+          <em>내가 모집중인 크루가 없습니다.</em>
           <br></br>
-          크루에 참여하셔서<br className="fold"></br> 활동 이력을 남겨보세요!
+          크루 모집글을 작성해<br className="fold"></br> 크루원을 모집하세요!
         </p>
         <Button
           widthSize={100}
@@ -259,6 +259,10 @@ const SectionWrap = styled('div')`
     font-size: 20px;
     font-weight: 700;
     padding: 38px 0 24px;
+  }
+
+  br.fold {
+    display: none;
   }
 
   @media screen and (max-width: 820px) {
