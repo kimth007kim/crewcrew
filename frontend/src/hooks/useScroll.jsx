@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 
 export function useScroll() {
-  const [scrollY, setScrollY] = useState(0);
+  const [scrollY, setScrollY] = useState(1);
 
   const listener = () => {
     setScrollY(window.pageYOffset);
@@ -11,7 +11,7 @@ export function useScroll() {
   const delay = 15;
 
   useEffect(() => {
-    scrollY || window.addEventListener('scroll', debounce(listener, delay));
+    scrollY && window.addEventListener('scroll', debounce(listener, delay));
     return () => {
       window.removeEventListener('scroll', listener);
       setScrollY(0);
