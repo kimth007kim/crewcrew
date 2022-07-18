@@ -17,6 +17,8 @@ import ParticipateModal from '../modal/Participate';
 import { loginCheck } from '@/atoms/login';
 import PostDeleteModal from '@/components/common/DeleteModal/PostDeleteModal';
 import PostFixModal from '../modal/PostFix';
+import ProfileTooltip from '../tooltip/ProfileTooltip';
+import { tooltipBoardId } from '@/atoms/profile';
 
 function MainPost({ data }) {
   const cookies = new Cookies();
@@ -24,6 +26,9 @@ function MainPost({ data }) {
 
   const [IsDisable, setIsDisable] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [tooltip, setTooltip] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState(1);
+  const [currentBoardId, setCurrentBoardId] = useRecoilState(tooltipBoardId);
   const [bookmarkChanged, setBookmarkChanged] = useRecoilState(changedBookmark);
   const isLogin = useRecoilValue(loginCheck);
 
@@ -99,6 +104,22 @@ function MainPost({ data }) {
     [myData],
   );
 
+  const viewTooltip = useCallback(
+    (e, position) => {
+      e.stopPropagation();
+      setTooltipPosition(position);
+      setCurrentBoardId(data.boardId);
+      setTooltip(true);
+    },
+    [tooltip],
+  );
+
+  useEffect(() => {
+    if (currentBoardId !== data.boardId) {
+      setTooltip(false);
+    }
+  }, [currentBoardId]);
+
   useEffect(() => {
     const bool = !data.viewable || renderDay(data.expiredDate) < 0;
     setIsDisable(bool);
@@ -114,8 +135,16 @@ function MainPost({ data }) {
         <Wrapper>
           <ul>
             <li>{IsDisable ? '마감' : `D-${renderDay(data.expiredDate)}`}</li>
-            <li>{data.nickname}</li>
+            <li onClick={(e) => viewTooltip(e, 3)}>{data.nickname}</li>
             <li>{renderDate(data.created)}</li>
+            {myData && myData.data?.uid && tooltip && (
+              <ProfileTooltip
+                data={data}
+                position={tooltipPosition}
+                open={tooltip}
+                setOpen={setTooltip}
+              />
+            )}
           </ul>
           <TitleMobile>{data.title}</TitleMobile>
           <ul>
@@ -191,6 +220,7 @@ const Wrapper = styled('div')`
   position: relative;
 
   ul {
+    position: relative;
     display: flex;
     align-items: center;
 
@@ -215,6 +245,7 @@ const Wrapper = styled('div')`
 
       li:nth-child(2) {
         color: #000;
+        cursor: pointer;
       }
     }
 

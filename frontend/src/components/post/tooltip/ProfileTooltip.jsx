@@ -92,6 +92,16 @@ const Container = styled('div')`
             right: 0;
           }
         `}
+  ${(props) =>
+    props.position === 3 &&
+    css`
+      top: 25px;
+      left: 80px;
+
+      @media screen and (max-width: 820px) {
+        left: 60px;
+      }
+    `}
 `;
 
 const ToolTipName = styled('p')`

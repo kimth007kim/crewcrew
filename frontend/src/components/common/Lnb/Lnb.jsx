@@ -434,6 +434,7 @@ const NavPCFooter = styled.section`
 
 const NavProfileWrapper = styled.div`
   position: relative;
+  user-select: none;
 `;
 
 const Alarm = styled.div`

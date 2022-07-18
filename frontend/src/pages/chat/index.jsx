@@ -1,11 +1,12 @@
 import MyLayout from '@/components/common/MyLayout';
 import MypageTop from '@/components/mypage/MypageTop';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import serchSmall from '@/assets/images/serchSmall.png';
 import SettingWhite from '@/assets/images/SettingWhite.png';
 import LogInCheck_off from '@/assets/images/LogInCheck_off.png';
 import LogInCheck_on from '@/assets/images/LogInCheck_on.png';
+import delImage from '@/assets/images/InputDel.png';
 import ChatBoxCard from '@/components/mypage/Chat/ChatBoxCard';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -14,6 +15,7 @@ import NocontProfile from '@/assets/images/NocontProfile.png';
 import Loader from '@/components/common/Loader';
 import ChatDeleteModal from '@/components/common/DeleteModal/ChatDeleteModal';
 import useModal from '@/hooks/useModal';
+import { emojiSlice } from '@/utils';
 
 function Chat() {
   const cookies = new Cookies();
@@ -30,8 +32,14 @@ function Chat() {
 
   const navigate = useNavigate();
   const [deleteVisible, openDelete, closeDelete] = useModal();
+  const InputRef = useRef(null);
 
   const toggleSearch = useCallback(() => {
+    if (!isSearchClick) {
+      setTimeout(() => {
+        InputRef.current.focus();
+      }, 300);
+    }
     setIsSearchClick(!isSearchClick);
   }, [isSearchClick]);
 
@@ -47,7 +55,13 @@ function Chat() {
   );
 
   const onChangeSearchText = useCallback((e) => {
-    setSearchText(e.target.value);
+    let value = emojiSlice(e.target.value).slice(0, 30);
+
+    setSearchText(value);
+  }, []);
+
+  const handleSearchTextDelete = useCallback(() => {
+    setSearchText('');
   }, []);
 
   const handleInitial = useCallback(() => {
@@ -251,6 +265,15 @@ function Chat() {
                     placeholder="채팅 상대 또는 관련 모집글 이름/카테고리"
                     onChange={onChangeSearchText}
                     value={searchText}
+                    ref={InputRef}
+                  />
+                  <InputDel
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      handleSearchTextDelete();
+                      InputRef.current.focus();
+                    }}
+                    TextIn={!!searchText}
                   />
                 </SearchInputWrap>
               </form>
@@ -301,6 +324,28 @@ const SectionWrap = styled('div')`
 
   @media screen and (max-width: 300px) {
     padding: 0 10px;
+  }
+`;
+
+const InputDel = styled.div`
+  width: 18px;
+  height: 18px;
+  background-image: url(${delImage});
+  background-size: 100%;
+  cursor: pointer;
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  display: none;
+  user-select: none;
+
+  ${(props) =>
+    props.TextIn &&
+    css`
+      display: block;
+    `};
+  @media screen and (max-width: 820px) {
+    top: 8px;
   }
 `;
 
@@ -395,6 +440,7 @@ const SearchInputWrap = styled('div')`
   display: flex;
   align-items: center;
   gap: 14px;
+  position: relative;
 
   button {
     width: 26px;

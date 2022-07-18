@@ -17,9 +17,8 @@ import fetcher from '@/utils/fetcher';
 function TitleRender({ IsClick, HandleClick }) {
   const SignupClick = () => {
     if (IsClick >= 2) {
-      return undefined;
+      return;
     }
-
     HandleClick(1);
   };
   return (
@@ -175,8 +174,8 @@ const Top = styled.div`
   margin-top: 48px;
   height: 18px;
   @media screen and (max-width: 820px) {
-    margin-top: 40px;
-    margin-bottom: 45px;
+    margin-top: 20px;
+    margin-bottom: 25px;
   }
 `;
 

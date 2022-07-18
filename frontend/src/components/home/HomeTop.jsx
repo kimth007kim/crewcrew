@@ -6,14 +6,31 @@ import IconLinkIntro from '@/assets/images/IconLinkIntro.png';
 import IconSearch from '@/assets/images/IconSearch.png';
 import delImage from '@/assets/images/InputDel.png';
 import LogoCircle from '@/assets/images/LogoCircle3.png';
+import { emojiSlice } from '@/utils';
 
 function HomeTop() {
   const [searchText, setSearchText] = useState('');
+  const [throttle, setThrottle] = useState(false);
   const navigate = useNavigate();
   const InputRef = useRef(null);
+  const myRef = useRef(null);
+
+  const excuteScroll = (ref) => {
+    if (throttle) return;
+    if (!throttle) {
+      setThrottle(true);
+      if (ref?.current) {
+        window.scrollTo(0, ref.current.offsetTop);
+      }
+      setTimeout(() => {
+        setThrottle(false);
+      }, 500);
+    }
+  };
 
   const onChangeSearchText = useCallback((e) => {
-    setSearchText(e.target.value);
+    let value = emojiSlice(e.target.value).slice(0, 30);
+    setSearchText(value);
   }, []);
 
   const handleSearchTextDelete = useCallback(() => {
@@ -33,7 +50,7 @@ function HomeTop() {
     <MainTop>
       <TopCont>
         <LogoCircleImg />
-        <h2>크루원과 크루원이 만나다!</h2>
+        <h2 ref={myRef}>크루원과 크루원이 만나다!</h2>
         <h3>목표를 향해 항해하는 팀원모집 플랫폼, 크루크루</h3>
         <form onSubmit={handleSearchTextSubmit}>
           <InputWrapper>
@@ -44,6 +61,7 @@ function HomeTop() {
               onChange={onChangeSearchText}
               ref={InputRef}
               value={searchText}
+              onMouseDown={() => excuteScroll(myRef)}
             />
             <InputDel
               onMouseDown={(e) => {
@@ -177,6 +195,7 @@ const InputWrapper = styled.div`
     height: 26px;
     margin-left: 18px;
     margin-bottom: 4px;
+    user-select: none;
   }
 
   input {

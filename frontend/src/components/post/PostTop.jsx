@@ -6,14 +6,31 @@ import BgProfile3 from '@/assets/images/Profile3.png';
 import IconLinkIntro from '@/assets/images/IconLinkIntro.png';
 import IconSearch from '@/assets/images/IconSearch.png';
 import delImage from '@/assets/images/InputDel.png';
+import { emojiSlice } from '@/utils';
 
 function PostTop() {
   const [searchText, setSearchText] = useState('');
   const navigate = useNavigate();
+  const [throttle, setThrottle] = useState(false);
   const InputRef = useRef(null);
+  const myRef = useRef(null);
+
+  const excuteScroll = (ref) => {
+    if (throttle) return;
+    if (!throttle) {
+      setThrottle(true);
+      if (ref?.current) {
+        window.scrollTo(0, ref.current.offsetTop);
+      }
+      setTimeout(() => {
+        setThrottle(false);
+      }, 500);
+    }
+  };
 
   const onChangeSearchText = useCallback((e) => {
-    setSearchText(e.target.value);
+    let value = emojiSlice(e.target.value).slice(0, 30);
+    setSearchText(value);
   }, []);
 
   const handleSearchTextDelete = useCallback(() => {
@@ -33,7 +50,7 @@ function PostTop() {
     <MainTop>
       <TopBgCharacter />
       <TopCont>
-        <h2>크루 참여하고 목표 이루기</h2>
+        <h2 ref={myRef}>크루 참여하고 목표 이루기</h2>
         <h3>나에게 딱 맞는 크루, 여기서 찾아요!</h3>
         <form onSubmit={handleSearchTextSubmit}>
           <InputWrapper>
@@ -44,6 +61,7 @@ function PostTop() {
               onChange={onChangeSearchText}
               ref={InputRef}
               value={searchText}
+              onMouseDown={() => excuteScroll(myRef)}
             />
             <InputDel
               onMouseDown={(e) => {
@@ -177,6 +195,7 @@ const InputWrapper = styled.div`
     height: 26px;
     margin-left: 18px;
     margin-bottom: 4px;
+    user-select: none;
   }
 
   input {
