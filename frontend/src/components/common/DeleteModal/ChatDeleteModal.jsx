@@ -141,7 +141,7 @@ function ChatDeleteModal({ closeModal, visible, chatData, checkList, handleIniti
                 loadings={loading}
                 onClick={deletePost}
               >
-                삭제
+                {checkList.length > 1 ? `(${checkList.length})삭제` : `삭제`}
               </Button>
             </ButtonWrap>
           </Body>

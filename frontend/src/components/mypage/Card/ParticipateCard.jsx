@@ -278,6 +278,7 @@ const CardHead = styled.div`
 
   ${ProfileBox} {
     min-width: 60px;
+    width: 60px;
     height: 60px;
     border-radius: 50%;
     background-color: transparent;
@@ -339,6 +340,7 @@ const CardHead = styled.div`
     ${ProfileBox} {
       display: block;
       min-width: 30px;
+      width: 30px;
       height: 30px;
       margin-right: 12px;
     }

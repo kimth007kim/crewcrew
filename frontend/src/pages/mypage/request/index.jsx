@@ -126,7 +126,7 @@ function Request() {
         <CardWrapper>
           <ul>
             {studyAppList.map((post) => (
-              <li key={post.apId + post.boardId}>
+              <li key={post.apId + post.title + post.boardId}>
                 <RequestCard data={post}></RequestCard>
               </li>
             ))}
@@ -179,7 +179,7 @@ function Request() {
         <CardWrapper>
           <ul>
             {hobbyAppList.map((post) => (
-              <li key={post.apId + post.boardId}>
+              <li key={post.apId + post.title + post.boardId}>
                 <RequestCard data={post}></RequestCard>
               </li>
             ))}

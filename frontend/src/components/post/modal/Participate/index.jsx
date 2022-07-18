@@ -94,6 +94,7 @@ function ParticipateModal({ closeModal, visible, postData }) {
             placeholder="한줄 참여 메세지 입력 (선택)"
             value={message}
             onChange={onChangeMessage}
+            readOnly={loading}
           ></textarea>
           <ButtonWrap>
             <Button

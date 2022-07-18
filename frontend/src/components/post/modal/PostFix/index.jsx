@@ -170,7 +170,7 @@ function PostFixModal({ closeModal, visible, category = 0, postData = null }) {
       }}
       visible={visible}
       size="large"
-      heightSize={850}
+      heightSize={750}
       body={
         <Wrapper>
           <Body ref={bodyRef}>

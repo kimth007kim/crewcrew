@@ -88,7 +88,7 @@ function SwiperCard({ data, boardId, status }) {
         </CardBody>
       </Container>
       <CardBtn>
-        <p>{format(new Date(data.appliedDate), 'MM/dd')} 요청</p>
+        <p>{format(new Date(data.appliedDate.replace(/-/g, '/')), 'MM/dd')} 요청</p>
         <BtnWrapper>
           <button className="chat" onClick={navigateChat}>
             채팅

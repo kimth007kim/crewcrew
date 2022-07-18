@@ -59,7 +59,10 @@ function RequestCard({ data }) {
         <>
           <DetailBox>
             <p>
-              <span>{data && format(new Date(data.appliedDate), '(MM/dd)')}</span> 요청완료
+              <span>
+                {data && format(new Date(data.appliedDate.replace(/-/g, '/')), '(MM/dd)')}
+              </span>{' '}
+              요청완료
             </p>
           </DetailBox>
           <ButtonBox>
@@ -74,7 +77,10 @@ function RequestCard({ data }) {
         <>
           <DetailBox color="nega">
             <p>
-              <span>{data && format(new Date(data.appliedDate), '(MM/dd)')}</span> 요청거절
+              <span>
+                {data && format(new Date(data.appliedDate.replace(/-/g, '/')), '(MM/dd)')}
+              </span>{' '}
+              요청거절
             </p>
           </DetailBox>
           <ButtonBox>
@@ -88,7 +94,10 @@ function RequestCard({ data }) {
         <>
           <DetailBox color="posi">
             <p>
-              <span>{data && format(new Date(data.appliedDate), '(MM/dd)')}</span> 참여중
+              <span>
+                {data && format(new Date(data.appliedDate.replace(/-/g, '/')), '(MM/dd)')}
+              </span>{' '}
+              참여중
             </p>
             <button onClick={() => openInNewTab(data.kakaoCaht)}>크루원채팅</button>
           </DetailBox>
@@ -103,7 +112,10 @@ function RequestCard({ data }) {
         <>
           <DetailBox>
             <p>
-              <span>{data && format(new Date(data.appliedDate), '(MM/dd)')}</span> 참여취소
+              <span>
+                {data && format(new Date(data.appliedDate.replace(/-/g, '/')), '(MM/dd)')}
+              </span>{' '}
+              참여취소
             </p>
           </DetailBox>
           <ButtonBox>
@@ -226,6 +238,7 @@ const CardHead = styled.div`
 
   ${ProfileBox} {
     min-width: 60px;
+    width: 60px;
     height: 60px;
     border-radius: 50%;
     background-color: transparent;
@@ -278,6 +291,7 @@ const CardHead = styled.div`
     ${ProfileBox} {
       display: block;
       min-width: 30px;
+      width: 30px;
       height: 30px;
       margin-right: 12px;
     }
