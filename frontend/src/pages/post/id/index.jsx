@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
@@ -10,7 +10,6 @@ import MainTop from '@/components/post/detail/MainTop';
 import ScrollButton from '@/components/common/ScrollButton';
 import useQuery from '@/hooks/useQuery';
 import { Cookies } from 'react-cookie';
-import { cloneDeep } from 'lodash';
 
 function PostDetail() {
   const cookies = new Cookies();

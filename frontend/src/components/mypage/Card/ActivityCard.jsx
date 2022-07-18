@@ -121,6 +121,7 @@ function ActivityCard({ postData }) {
               waitingList={[]}
               status={1}
               boardId={postData.boardId}
+              pageStatus={1}
             ></SwiperBtSection>
           </CardBottom>
         </Wrapper>
@@ -564,7 +565,7 @@ const CardBottom = styled('div')`
   ${(props) =>
     props.active &&
     css`
-      height: 416px;
+      height: 472px;
     `}
 
   ${BtTop} {

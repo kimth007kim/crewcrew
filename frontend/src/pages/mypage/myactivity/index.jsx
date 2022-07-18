@@ -10,6 +10,9 @@ import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Cookies } from 'react-cookie';
 import styled from 'styled-components';
+import useModal from '@/hooks/useModal';
+import PostCreateModal from '@/components/post/modal/PostCreate';
+import { useNavigate } from 'react-router-dom';
 
 function MyActivity() {
   const cookies = new Cookies();
@@ -29,6 +32,14 @@ function MyActivity() {
   const [acceptPageData, setAcceptPageData] = useState(null);
   const [acceptTotalPage, setAcceptTotalPage] = useState(0);
   const [acceptCurrentPage, setAcceptCurrentPage] = useState(1);
+
+  const [postVisible, openPost, closePost] = useModal();
+
+  const navigate = useNavigate();
+
+  const handleNavigate = useCallback(() => {
+    navigate('/post');
+  }, []);
 
   const apiActivity = useCallback(async () => {
     try {
@@ -149,9 +160,9 @@ function MyActivity() {
     return (
       <NoContent>
         <p>
-          <em>모집한 글의 마감된 내역이 없습니다.</em>
+          <em>내가 모집한 글이 없습니다.</em>
           <br></br>
-          크루에 참여하셔서<br className="fold"></br> 활동 이력을 남겨보세요!
+          크루 모집글을 작성해<br className="fold"></br> 크루원을 모집하세요!
         </p>
         <Button
           widthSize={100}
@@ -162,9 +173,11 @@ function MyActivity() {
           borderRadius={10}
           size={'regular'}
           color={'lightBlue'}
+          onClick={openPost}
         >
-          크루참여
+          크루모집
         </Button>
+        <PostCreateModal closeModal={closePost} visible={postVisible} />
       </NoContent>
     );
   };
@@ -215,6 +228,7 @@ function MyActivity() {
           borderRadius={10}
           size={'regular'}
           color={'lightBlue'}
+          onClick={handleNavigate}
         >
           크루참여
         </Button>

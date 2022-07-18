@@ -9,6 +9,8 @@ import Button from '@/components/common/Button';
 import RecruitCard from '@/components/mypage/Card/RecruitCard';
 import MyPagination from '@/components/mypage/MyPagination';
 import Loader from '@/components/common/Loader';
+import PostCreateModal from '@/components/post/modal/PostCreate';
+import useModal from '@/hooks/useModal';
 
 function Recruit() {
   const cookies = new Cookies();
@@ -28,6 +30,8 @@ function Recruit() {
   const [hobbyPageData, setHobbyPageData] = useState(null);
   const [hobbyTotalPage, setHobbyTotalPage] = useState(0);
   const [hobbyCurrentPage, setHobbyCurrentPage] = useState(1);
+
+  const [postVisible, openPost, closePost] = useModal();
 
   const getRecruit = useCallback(async () => {
     try {
@@ -151,15 +155,17 @@ function Recruit() {
           borderRadius={10}
           size={'regular'}
           color={'lightBlue'}
+          onClick={openPost}
         >
-          크루참여
+          크루모집
         </Button>
+        <PostCreateModal closeModal={closePost} visible={postVisible} />
       </NoContent>
     );
   };
 
   const renderHobbyList = () => {
-    if (studyLoading) {
+    if (hobbyLoading) {
       return (
         <LoadingWrap>
           <Loader height={80} width={80} />
@@ -203,9 +209,11 @@ function Recruit() {
           borderRadius={10}
           size={'regular'}
           color={'lightBlue'}
+          onClick={openPost}
         >
-          크루참여
+          크루모집
         </Button>
+        <PostCreateModal closeModal={closePost} visible={postVisible} />
       </NoContent>
     );
   };
