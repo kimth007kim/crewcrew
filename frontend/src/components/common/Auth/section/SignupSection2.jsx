@@ -84,6 +84,7 @@ function SignupSection2({ IsClick, HandleClick }) {
           switch (data.status) {
             case 200:
               setDoubleCheck(true);
+              setNicknameValid(false);
               setValidMessage('사용 가능한 닉네임입니다.');
               break;
             case 1007:

@@ -21,6 +21,7 @@ function SignupSection4({ IsClick, closeModal, HandleClick }) {
       HandleClick(0);
     }, 200);
     closeModal();
+    window.location.reload();
   }, []);
 
   return (

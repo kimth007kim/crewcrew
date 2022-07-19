@@ -6,7 +6,6 @@ import React, { useCallback, useState } from 'react';
 import { Cookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import styled from 'styled-components';
 import Button from '@/components/common/Button';
 import {
   Body,

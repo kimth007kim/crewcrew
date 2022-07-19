@@ -64,17 +64,21 @@ function SignupSection3({ IsClick, HandleClick }) {
   const hobbyUnderRef = useRef(null);
 
   const HandleMessageChange = useCallback((e) => {
-    setMessage(e.target.value);
-    if (e.target.value.length < 6 && e.target.value) {
+    let value = e.target.value;
+    setMessage(value.slice(0, 30));
+    if (value.length <= 6 && value) {
       setMessageValid(true);
+      setMessageValidMsg('6자 이상 입력해주세요.');
     } else {
       setMessageValid(false);
+      setMessageValidMsg('나를 소개하는 한 줄 메세지를 입력해주세요.(30자 이내)');
     }
   }, []);
 
   const HandleMessageDelete = useCallback(() => {
     setMessage('');
     setMessageValid(false);
+    setMessageValidMsg('나를 소개하는 한 줄 메세지를 입력해주세요.(30자 이내)');
   }, []);
 
   const HandleScrollTop = (e) => {
@@ -230,6 +234,8 @@ function SignupSection3({ IsClick, HandleClick }) {
             withCredentials: true,
           });
 
+          setBtnLoading(false);
+
           switch (data.status) {
             case 200:
               mutate('/auth/token');
@@ -240,12 +246,12 @@ function SignupSection3({ IsClick, HandleClick }) {
               toast.error(data.message);
               break;
             default:
+              toast.error(data.message);
               break;
           }
         } catch (error) {
           toast.error('알 수 없는 오류가 발생했습니다. 새로고침 후 다시 시도해주시길 바랍니다');
           console.dir(error);
-        } finally {
           setBtnLoading(false);
         }
       }
