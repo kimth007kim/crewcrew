@@ -27,10 +27,10 @@ function ChatDeleteModal({ closeModal, visible, chatData, checkList, handleIniti
   const navigate = useNavigate();
 
   const deletePost = useCallback(async () => {
-    setLoading(true);
     if (!cookies.get('X-AUTH-TOKEN')) {
       return;
     }
+    setLoading(true);
 
     try {
       const context = {
@@ -45,9 +45,9 @@ function ChatDeleteModal({ closeModal, visible, chatData, checkList, handleIniti
         data: context,
       });
 
+      setLoading(false);
       switch (data.status) {
         case 200:
-          setLoading(false);
           if (handleInitial) {
             handleInitial();
           }
@@ -57,13 +57,11 @@ function ChatDeleteModal({ closeModal, visible, chatData, checkList, handleIniti
           break;
         case 2301:
           toast.error(data.message);
-          setLoading(false);
           closeModal();
           break;
 
         default:
           toast.error(data.message);
-          setLoading(false);
           break;
       }
     } catch (err) {

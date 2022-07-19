@@ -11,6 +11,7 @@ import axios from 'axios';
 import PostDeleteModal from '@/components/common/DeleteModal/PostDeleteModal';
 import PostFixModal from '@/components/post/modal/PostFix';
 import useModal from '@/hooks/useModal';
+import PlusDateModal from '../Modal/PlusDateModal';
 
 function ActivityCard({ postData }) {
   const cookies = new Cookies();
@@ -21,6 +22,7 @@ function ActivityCard({ postData }) {
   const [participantList, setParticipantList] = useState([]);
   const [deleteVisible, openDelete, closeDelete] = useModal();
   const [fixVisible, openFix, closeFix] = useModal();
+  const [plusVisible, openPlus, closePlus] = useModal();
 
   const handleClick = useCallback(() => {
     setIsSwiperClick(!isSwiperClick);
@@ -101,7 +103,7 @@ function ActivityCard({ postData }) {
                     </button>
                   </ButtonBox>
                   <RightBtnBox>
-                    <button className="deadline">
+                    <button className="deadline" onClick={openPlus}>
                       마감 7<span>일+</span>
                     </button>
                   </RightBtnBox>
@@ -132,6 +134,11 @@ function ActivityCard({ postData }) {
         postData={postData}
       ></PostDeleteModal>
       <PostFixModal visible={fixVisible} closeModal={closeFix} postData={postData}></PostFixModal>
+      <PlusDateModal
+        visible={plusVisible}
+        closeModal={closePlus}
+        postData={postData}
+      ></PlusDateModal>
     </>
   );
 }
