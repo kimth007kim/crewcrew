@@ -72,26 +72,21 @@
 └─.prettierrc
 
 🔥 server🔥
-├── src
-│ ├─config (db설정, dotenv 등)
-│ ├─loaders (설정 불러오기)
-│ ├─middlewares (미들웨어)
-│ ├─routes (라우트)
-│ ├─controllers (컨트롤러 / controller)
-│ ├─services (데이터 가공 / service)
-│ ├─repositories (쿼리문 / dao)
-│ ├─models (모델 / dto)
-│ ├─validation (req.body query parameter 값 검증)
-│ ├─types (ts 공통 타입, 인터페이스)
-│ ├─utils (공통되는 작은 함수)
-│ │ └─error (에러 처리)
-│ └─app.ts
-├─package.json
-├─tsconfig.json
-├─.eslintrc.json
-├─.prettierrc
-└─.env
-```
+├── main
+│ ├─crewcrew
+│ │ ├─aop
+│ │ ├─config
+│ │ │ ├─security
+│ │ │ ├─websocket
+│ │ │ └─redisconfig.java
+│ │ ├─controller
+│ │ ├─dto
+│ │ ├─entity
+│ │ ├─repositoriy
+│ │ ├─response
+│ │ ├─service
+│ │ └─util
+
 
 ## Database ERD
 
