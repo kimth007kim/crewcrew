@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
@@ -13,8 +13,11 @@ import { Cookies } from 'react-cookie';
 
 function PostDetail() {
   const cookies = new Cookies();
-  const [data, setData] = useState(null);
+  const [postData, setPostData] = useState(null);
+  const [postListInfoData, setPostListInfoData] = useState(null);
+  const [postListData, setPostListData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const query = useQuery();
 
@@ -50,33 +53,39 @@ function PostDetail() {
         };
 
         const { data } = await axios.get(`/board/${postId}`, context);
+
+        setLoading(false);
+
         switch (data.status) {
           case 200:
-            setData({
-              ...data.data,
-            });
+            setPostData({ ...data.data[0] });
+            setPostListInfoData({ ...data.data[1] });
+            setPostListData([...data.data[1].contents]);
             break;
           case 2001:
           case 2301:
+            navigate('/post', { replace: true });
             toast.error(data.message);
             break;
 
           default:
+            navigate('/post', { replace: true });
+            toast.error(data.message);
             break;
         }
       } catch (error) {
+        setLoading(false);
+
         toast.error(error);
         console.dir(error);
-      } finally {
-        setLoading(false);
       }
     },
-    [postId],
+    [postId, query.get('page')],
   );
 
   useEffect(() => {
     axiosGet(query.get('page'));
-  }, [query.get('page'), axiosGet]);
+  }, [axiosGet]);
 
   return (
     <>
@@ -84,10 +93,10 @@ function PostDetail() {
       <MainContainer>
         <ScrollButton />
         <MainTop />
-        {data && (
+        {postData && postListInfoData && (
           <>
-            <MainPost data={data[0]} />
-            <DetailPostList data={data[1]} loading={loading} />
+            <MainPost data={postData} />
+            <DetailPostList data={postListInfoData} loading={loading} listData={postListData} />
           </>
         )}
       </MainContainer>

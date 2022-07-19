@@ -100,6 +100,7 @@ function PostList() {
           params.append('categoryIds', categoryIds);
         }
       }
+
       if (page) {
         params.append('page', page - 1);
       }
@@ -145,6 +146,11 @@ function PostList() {
     navigate(-1);
   }, []);
 
+  const handleInitial = useCallback(() => {
+    localStorage.removeItem('postFilter');
+    window.location.reload();
+  }, []);
+
   const renderPostList = () => {
     if (PostListData.length > 0) {
       return (
@@ -182,8 +188,8 @@ function PostList() {
       <EmptyList>
         <h2>해당 조건에 대한 결과가 없습니다.</h2>
         <span>다른 조건을 찾아보세요</span>
-        <button type="button" onClick={handleHistoryback}>
-          돌아가기
+        <button type="button" onClick={handleInitial}>
+          초기화하기
         </button>
       </EmptyList>
     );

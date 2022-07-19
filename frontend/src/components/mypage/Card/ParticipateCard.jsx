@@ -157,6 +157,7 @@ function ParticipateCard({ postData }) {
             participantList={participantList}
             waitingList={[]}
             status={2}
+            pageStatus={1}
           ></SwiperBtSection>
         </CardBottom>
       </Wrapper>
@@ -628,7 +629,7 @@ const CardBottom = styled('div')`
   ${(props) =>
     props.active &&
     css`
-      height: 471px;
+      height: 472px;
     `}
 
   ${BtTop} {

@@ -9,6 +9,8 @@ import Button from '@/components/common/Button';
 import RecruitCard from '@/components/mypage/Card/RecruitCard';
 import MyPagination from '@/components/mypage/MyPagination';
 import Loader from '@/components/common/Loader';
+import PostCreateModal from '@/components/post/modal/PostCreate';
+import useModal from '@/hooks/useModal';
 
 function Recruit() {
   const cookies = new Cookies();
@@ -28,6 +30,8 @@ function Recruit() {
   const [hobbyPageData, setHobbyPageData] = useState(null);
   const [hobbyTotalPage, setHobbyTotalPage] = useState(0);
   const [hobbyCurrentPage, setHobbyCurrentPage] = useState(1);
+
+  const [postVisible, openPost, closePost] = useModal();
 
   const getRecruit = useCallback(async () => {
     try {
@@ -138,9 +142,9 @@ function Recruit() {
     return (
       <NoContent>
         <p>
-          <em>크루에 참여요청한 내역이 없습니다.</em>
+          <em>내가 모집중인 크루가 없습니다.</em>
           <br></br>
-          크루에 참여하셔서<br className="fold"></br> 활동 이력을 남겨보세요!
+          크루 모집글을 작성해<br className="fold"></br> 크루원을 모집하세요!
         </p>
         <Button
           widthSize={100}
@@ -151,15 +155,17 @@ function Recruit() {
           borderRadius={10}
           size={'regular'}
           color={'lightBlue'}
+          onClick={openPost}
         >
-          크루참여
+          크루모집
         </Button>
+        <PostCreateModal closeModal={closePost} visible={postVisible} />
       </NoContent>
     );
   };
 
   const renderHobbyList = () => {
-    if (studyLoading) {
+    if (hobbyLoading) {
       return (
         <LoadingWrap>
           <Loader height={80} width={80} />
@@ -190,9 +196,9 @@ function Recruit() {
     return (
       <NoContent>
         <p>
-          <em>크루에 참여요청한 내역이 없습니다.</em>
+          <em>내가 모집중인 크루가 없습니다.</em>
           <br></br>
-          크루에 참여하셔서<br className="fold"></br> 활동 이력을 남겨보세요!
+          크루 모집글을 작성해<br className="fold"></br> 크루원을 모집하세요!
         </p>
         <Button
           widthSize={100}
@@ -203,9 +209,11 @@ function Recruit() {
           borderRadius={10}
           size={'regular'}
           color={'lightBlue'}
+          onClick={openPost}
         >
-          크루참여
+          크루모집
         </Button>
+        <PostCreateModal closeModal={closePost} visible={postVisible} />
       </NoContent>
     );
   };
@@ -259,6 +267,10 @@ const SectionWrap = styled('div')`
     font-size: 20px;
     font-weight: 700;
     padding: 38px 0 24px;
+  }
+
+  br.fold {
+    display: none;
   }
 
   @media screen and (max-width: 820px) {

@@ -241,6 +241,10 @@ const FilterWrapper = styled('div')`
       border: 1px solid #00b7ff;
       background: #fff url(${ArrowUpOn}) top 12px right 9px/11px no-repeat;
 
+      &:hover {
+        border: 1px solid #00b7ff;
+      }
+
       p,
       ul {
         opacity: 1;
@@ -265,6 +269,10 @@ const FilterLi = styled('li')`
   font-size: 13px;
   font-weight: 500;
   transition: 0.3s;
+
+  &:hover {
+    color: #00b7ff;
+  }
 
   @media screen and (max-width: 300px) {
     font-size: 11px;

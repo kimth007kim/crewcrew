@@ -1,10 +1,11 @@
 /* eslint-disable import/no-unresolved */
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
 import styled, { css } from 'styled-components';
 import SlideArrowNext from '@/assets/images/SlideArrowNext.png';
 import SlideArrowPrev from '@/assets/images/SlideArrowPrev.png';
+import NocontProfile2 from '@/assets/images/NocontProfile2.png';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -19,6 +20,7 @@ function SwiperBtSection({
   toggleCheck = false,
   boardId,
   status,
+  pageStatus = 0,
 }) {
   const [swiper, setSwiper] = useState(null);
   const [mainIndex, setMainIndex] = useState(0);
@@ -51,22 +53,58 @@ function SwiperBtSection({
     },
   };
 
+  const renderParticipantList = () => {
+    if (participantList.length > 0) {
+      return participantList.map((p) => (
+        <SwiperSlide key={p && p.apId}>
+          <SwiperCard data={p} boardId={boardId} status={status} />
+        </SwiperSlide>
+      ));
+    } else {
+      return (
+        <NoContent>
+          <div className="illust">
+            <img src={NocontProfile2} alt="noContentImg" />
+          </div>
+          <p>
+            <em>{pageStatus === 1 ? '참여자가 없네요...!' : '아직 참여자가 없네요...!'}</em>
+            <br />
+            {pageStatus === 1
+              ? '마감일을 연장하시면 다시 모집가능합니다'
+              : '대기자가 없는지 한번 확인해보세요'}
+          </p>
+        </NoContent>
+      );
+    }
+  };
+
+  const renderWaitingList = () => {
+    if (waitingList.length > 0) {
+      return waitingList.map((p) => (
+        <SwiperSlide key={p && p.apId}>
+          <SwiperCard data={p} boardId={boardId} status={status} />
+        </SwiperSlide>
+      ));
+    } else {
+      return (
+        <NoContent>
+          <div className="illust">
+            <img src={NocontProfile2} alt="noContentImg" />
+          </div>
+          <p>
+            <em>아직 대기자가 없네요...!</em>
+            <br />
+            기다리다보면 참여요청하는 크루원이 있을거에요
+          </p>
+        </NoContent>
+      );
+    }
+  };
+
   return (
     <PostSwiperWrapper active={isSwiperClick}>
       <Swiper {...swiperParams} ref={setSwiper} className="card_swiper">
-        {!toggleCheck
-          ? participantList.length > 0 &&
-            participantList.map((p) => (
-              <SwiperSlide key={p && p.apId}>
-                <SwiperCard data={p} boardId={boardId} status={status} />
-              </SwiperSlide>
-            ))
-          : waitingList.length > 0 &&
-            waitingList.map((w) => (
-              <SwiperSlide key={w.apId}>
-                <SwiperCard data={w} boardId={boardId} status={status} />
-              </SwiperSlide>
-            ))}
+        {!toggleCheck ? renderParticipantList() : renderWaitingList()}
       </Swiper>
       <ButtonPrev ref={btnPrevRef} />
       <ButtonNext ref={btnNextRef} />
@@ -182,6 +220,52 @@ const PostSwiperWrapper = styled.div`
   @media screen and (max-width: 300px) {
     .swiper-slide {
       width: calc(100% - 18px);
+    }
+  }
+`;
+
+const NoContent = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 416px;
+
+  .illust {
+    width: 240px;
+    height: 240px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 20px;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  p {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: center;
+
+    em {
+      font-weight: 700;
+
+      span {
+        color: #00b7ff;
+      }
+    }
+  }
+
+  @media screen and (max-width: 820px) {
+    .illust {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 24px;
     }
   }
 `;

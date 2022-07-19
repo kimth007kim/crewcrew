@@ -10,6 +10,7 @@ import Button from '@/components/common/Button';
 import { toast } from 'react-toastify';
 import MyPagination from '@/components/mypage/MyPagination';
 import Loader from '@/components/common/Loader';
+import { useNavigate } from 'react-router-dom';
 
 function Request() {
   const cookies = new Cookies();
@@ -29,6 +30,12 @@ function Request() {
   const [hobbyPageData, setHobbyPageData] = useState(null);
   const [hobbyTotalPage, setHobbyTotalPage] = useState(0);
   const [hobbyCurrentPage, setHobbyCurrentPage] = useState(1);
+
+  const navigate = useNavigate();
+
+  const handleNavigate = useCallback(() => {
+    navigate('/post');
+  }, []);
 
   const apiApplication = useCallback(async () => {
     try {
@@ -158,6 +165,7 @@ function Request() {
           borderRadius={10}
           size={'regular'}
           color={'lightBlue'}
+          onClick={handleNavigate}
         >
           크루참여
         </Button>
@@ -211,6 +219,7 @@ function Request() {
           borderRadius={10}
           size={'regular'}
           color={'lightBlue'}
+          onClick={handleNavigate}
         >
           크루참여
         </Button>

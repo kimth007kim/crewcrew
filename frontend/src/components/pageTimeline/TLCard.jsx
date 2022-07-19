@@ -6,8 +6,13 @@ import ChatShow from '@/assets/images/ChatShow.png';
 import { BtnOpened, DataLists } from '@/atoms/timeline';
 import { useRecoilState } from 'recoil';
 import dayjs from 'dayjs';
+import axios from 'axios';
+import { Cookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 
 function TLCard({ data, isLast }) {
+  const navigate = useNavigate();
+  const cookies = new Cookies();
   const [category, setCategory] = useState('study');
   const [isCheck, setIsCheck] = useState(false);
   const [btnOpen, setBtnOpen] = useRecoilState(BtnOpened);
@@ -53,6 +58,41 @@ function TLCard({ data, isLast }) {
     }
   };
 
+  const navigateDetail = () => {
+    if (data.announceType === 1) {
+      return navigate(`/mypage/activity`);
+    }
+    if (data.announceType === 2) {
+      return navigate(`/mypage/request`);
+    }
+    if (data.announceType === 3) {
+      return navigate(`/mypage/request`);
+    }
+    if (data.announceType === 4) {
+      return navigate(`/mypage/request`);
+    }
+  };
+
+  const readDetail = async () => {
+    if (data.readChk) {
+      navigateDetail();
+      return false;
+    }
+    try {
+      const timelineData = await axios.put(`/timeline/${data.announcementId}`, '', {
+        withCredentials: true,
+        headers: {
+          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+        },
+      });
+      if (timelineData.data.status === 200) {
+        navigateDetail();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     hobbyCat.forEach((e) => {
       e === data.categoryName && setCategory('hobby');
@@ -84,7 +124,7 @@ function TLCard({ data, isLast }) {
         </LabelCheck>
       </TLCardSet>
       <TLCardboxWrapper isLast={isLast}>
-        <TLCardbox Cat={category} State={detailState} Disabled={data.readChk}>
+        <TLCardbox Cat={category} State={detailState} Disabled={data.readChk} onClick={readDetail}>
           <Title Cat={category} Disabled={data.readChk}>
             <em>{data.categoryName}</em>
             {Date}
