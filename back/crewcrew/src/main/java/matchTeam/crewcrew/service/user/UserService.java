@@ -133,7 +133,7 @@ public class UserService {
 
 //        refreshTokenJpaRepository.save(refresh_Token);
         Long time = jwtProvider.refreshTokenTime(userLoginRequestDto.isMaintain());
-        redisutil.setDataExpire(tokenDto.getRefreshToken(), Long.toString(id), time);
+//        redisutil.setDataExpire(tokenDto.getRefreshToken(), Long.toString(id), time);
 
         return tokenDto;
 

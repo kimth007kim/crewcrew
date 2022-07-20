@@ -101,6 +101,7 @@ public class JwtProvider {
         String accessToken = createToken(userPk,roles,accessTokenValidMillisecond);
         String refreshToken = createToken(userPk,roles,duration);
 
+        redisUtil.setDataExpire(refreshToken, Long.toString(userPk), duration);
         return ResponseTokenDto.builder()
                 .grantType("bearer")
                 .accessToken(accessToken)
