@@ -136,7 +136,7 @@ function MainPost({ data }) {
           <ul>
             <li>{IsDisable ? '마감' : `D-${renderDay(data.expiredDate)}`}</li>
             <li onClick={(e) => viewTooltip(e, 3)}>{data.nickname}</li>
-            <li>{renderDate(data.created)}</li>
+            <li>{renderDate(data.createdDate)}</li>
             {myData && myData.data?.uid && tooltip && (
               <ProfileTooltip
                 data={data}

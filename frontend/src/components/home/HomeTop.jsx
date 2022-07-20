@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import WaveSvg from '@/assets/images/Wave.svg';
@@ -8,20 +8,23 @@ import delImage from '@/assets/images/InputDel.png';
 import LogoCircle from '@/assets/images/LogoCircle3.png';
 import { emojiSlice } from '@/utils';
 
+const this_device = navigator.platform;
+const pc_device = 'win16|win32|win64|mac|macintel';
+
 function HomeTop() {
   const [searchText, setSearchText] = useState('');
   const [throttle, setThrottle] = useState(false);
   const navigate = useNavigate();
   const InputRef = useRef(null);
-  const myRef = useRef(null);
 
-  const excuteScroll = (ref) => {
+  const webRef = useRef(null);
+  const mobileRef = useRef(null);
+
+  const excuteScroll = () => {
     if (throttle) return;
     if (!throttle) {
       setThrottle(true);
-      if (ref?.current) {
-        window.scrollTo(0, ref.current.offsetTop);
-      }
+      handlePlatform();
       setTimeout(() => {
         setThrottle(false);
       }, 500);
@@ -46,11 +49,29 @@ function HomeTop() {
     [searchText],
   );
 
+  const handlePlatform = () => {
+    if (this_device) {
+      if (pc_device.indexOf(navigator.platform.toLowerCase()) < 0) {
+        if (mobileRef?.current) {
+          window.scrollTo(0, mobileRef.current.offsetTop);
+        }
+      } else {
+        if (webRef?.current) {
+          window.scrollTo(0, webRef.current.offsetTop);
+        }
+      }
+    } else {
+      if (webRef?.current) {
+        window.scrollTo(0, webRef.current.offsetTop);
+      }
+    }
+  };
+
   return (
     <MainTop>
       <TopCont>
         <LogoCircleImg />
-        <h2 ref={myRef}>크루원과 크루원이 만나다!</h2>
+        <h2 ref={webRef}>크루원과 크루원이 만나다!</h2>
         <h3>목표를 향해 항해하는 팀원모집 플랫폼, 크루크루</h3>
         <form onSubmit={handleSearchTextSubmit}>
           <InputWrapper>
@@ -61,7 +82,7 @@ function HomeTop() {
               onChange={onChangeSearchText}
               ref={InputRef}
               value={searchText}
-              onMouseDown={() => excuteScroll(myRef)}
+              onMouseDown={excuteScroll}
             />
             <InputDel
               onMouseDown={(e) => {

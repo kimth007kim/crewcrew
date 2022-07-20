@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import BgProfile1 from '@/assets/images/Profile1.png';
@@ -8,20 +8,23 @@ import IconSearch from '@/assets/images/IconSearch.png';
 import delImage from '@/assets/images/InputDel.png';
 import { emojiSlice } from '@/utils';
 
+const this_device = navigator.platform;
+const pc_device = 'win16|win32|win64|mac|macintel';
+
 function PostTop() {
   const [searchText, setSearchText] = useState('');
   const navigate = useNavigate();
   const [throttle, setThrottle] = useState(false);
   const InputRef = useRef(null);
-  const myRef = useRef(null);
 
-  const excuteScroll = (ref) => {
+  const webRef = useRef(null);
+  const mobileRef = useRef(null);
+
+  const excuteScroll = () => {
     if (throttle) return;
     if (!throttle) {
       setThrottle(true);
-      if (ref?.current) {
-        window.scrollTo(0, ref.current.offsetTop);
-      }
+      handlePlatform();
       setTimeout(() => {
         setThrottle(false);
       }, 500);
@@ -46,12 +49,30 @@ function PostTop() {
     [searchText],
   );
 
+  const handlePlatform = () => {
+    if (this_device) {
+      if (pc_device.indexOf(navigator.platform.toLowerCase()) < 0) {
+        if (mobileRef?.current) {
+          window.scrollTo(0, mobileRef.current.offsetTop);
+        }
+      } else {
+        if (webRef?.current) {
+          window.scrollTo(0, webRef.current.offsetTop);
+        }
+      }
+    } else {
+      if (webRef?.current) {
+        window.scrollTo(0, webRef.current.offsetTop);
+      }
+    }
+  };
+
   return (
     <MainTop>
       <TopBgCharacter />
       <TopCont>
-        <h2 ref={myRef}>크루 참여하고 목표 이루기</h2>
-        <h3>나에게 딱 맞는 크루, 여기서 찾아요!</h3>
+        <h2 ref={webRef}>크루 참여하고 목표 이루기</h2>
+        <h3 ref={mobileRef}>나에게 딱 맞는 크루, 여기서 찾아요!</h3>
         <form onSubmit={handleSearchTextSubmit}>
           <InputWrapper>
             <img src={`${IconSearch}`} alt="" />
@@ -61,7 +82,7 @@ function PostTop() {
               onChange={onChangeSearchText}
               ref={InputRef}
               value={searchText}
-              onMouseDown={() => excuteScroll(myRef)}
+              onMouseDown={excuteScroll}
             />
             <InputDel
               onMouseDown={(e) => {

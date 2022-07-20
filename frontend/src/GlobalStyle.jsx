@@ -3,13 +3,13 @@ import { createGlobalStyle } from 'styled-components';
 import './assets/styles/fonts.css';
 
 const GlobalStyle = createGlobalStyle`
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
-  * {
-    scroll-behavior: smooth;
-}
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
 
+    * {
+      scroll-behavior: smooth;
+    }
     * {
     margin: 0;
     padding: 0;
