@@ -70,6 +70,10 @@ export const TitleMsg = styled('p')`
   padding-bottom: 23px;
   border-bottom: 1px solid #a8a8a8;
 
+  span {
+    color: #00b7ff;
+  }
+
   @media screen and (max-width: 820px) {
     font-size: 16px;
     line-height: 24px;

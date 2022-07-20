@@ -10,36 +10,13 @@ import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Cookies } from 'react-cookie';
 import styled from 'styled-components';
-import useModal from '@/hooks/useModal';
-import PostCreateModal from '@/components/post/modal/PostCreate';
-import { useNavigate } from 'react-router-dom';
+import DeadlineList from '@/components/mypage/MyActivity/DeadlineList';
+import AcceptList from '@/components/mypage/MyActivity/AcceptList';
 
 function MyActivity() {
   const cookies = new Cookies();
   const [crewActivity, setCrewActivity] = useState(null);
   const [postsPerPage, setPostsPerPage] = useState(10);
-
-  // 마감글
-  const [deadlineLoading, setDeadlineLoading] = useState([]);
-  const [deadlineList, setDeadlineList] = useState([]);
-  const [deadlinePageData, setDeadlinePageData] = useState(null);
-  const [deadlineTotalPage, setDeadlineTotalPage] = useState(0);
-  const [deadlineCurrentPage, setDeadlineCurrentPage] = useState(1);
-
-  // 수락글
-  const [acceptLoading, setAcceptLoading] = useState([]);
-  const [acceptList, setAcceptList] = useState([]);
-  const [acceptPageData, setAcceptPageData] = useState(null);
-  const [acceptTotalPage, setAcceptTotalPage] = useState(0);
-  const [acceptCurrentPage, setAcceptCurrentPage] = useState(1);
-
-  const [postVisible, openPost, closePost] = useModal();
-
-  const navigate = useNavigate();
-
-  const handleNavigate = useCallback(() => {
-    navigate('/post');
-  }, []);
 
   const apiActivity = useCallback(async () => {
     try {
@@ -62,179 +39,6 @@ function MyActivity() {
       console.error(error);
     }
   }, []);
-
-  const getActivityDeadline = useCallback(async () => {
-    setDeadlineLoading(true);
-    try {
-      const { data } = await axios.get(
-        `/application/myCrew/details?page=${deadlineCurrentPage - 1}`,
-        {
-          withCredentials: true,
-          headers: {
-            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
-          },
-        },
-      );
-      switch (data.status) {
-        case 200:
-          setDeadlineList([...data.data.content]);
-          setDeadlinePageData({
-            ...data.data,
-          });
-          setDeadlineTotalPage(data.data.totalPages);
-          break;
-
-        default:
-          console.dir(data.message);
-          break;
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setDeadlineLoading(false);
-    }
-  }, [deadlineCurrentPage]);
-
-  const getActivityAccept = useCallback(async () => {
-    setAcceptLoading(true);
-    try {
-      const { data } = await axios.get(
-        `/application/myCrew/participated/details?page=${deadlineCurrentPage - 1}`,
-        {
-          withCredentials: true,
-          headers: {
-            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
-          },
-        },
-      );
-      switch (data.status) {
-        case 200:
-          setAcceptList([...data.data.contents]);
-          setAcceptPageData({
-            ...data.data,
-          });
-          setAcceptTotalPage(data.data.totalPages);
-          break;
-
-        default:
-          console.dir(data.message);
-          break;
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setAcceptLoading(false);
-    }
-  }, [deadlineCurrentPage]);
-
-  const renderDeadlineList = () => {
-    if (deadlineLoading) {
-      return (
-        <LoadingWrap>
-          <Loader height={80} width={80} />
-        </LoadingWrap>
-      );
-    }
-    if (deadlineList.length > 0) {
-      return (
-        <CardWrapper>
-          <ul>
-            {deadlineList.length > 0 &&
-              deadlineList.map((v) => (
-                <li key={v.boardId}>
-                  <ActivityCard postData={v}></ActivityCard>
-                </li>
-              ))}
-          </ul>
-          <MyPagination
-            data={deadlinePageData}
-            setCurrentPage={setDeadlineCurrentPage}
-            currentPage={deadlineCurrentPage}
-            postsPerPage={postsPerPage}
-            totalPage={deadlineTotalPage}
-          ></MyPagination>
-        </CardWrapper>
-      );
-    }
-
-    return (
-      <NoContent>
-        <p>
-          <em>내가 모집한 글이 없습니다.</em>
-          <br></br>
-          크루 모집글을 작성해<br className="fold"></br> 크루원을 모집하세요!
-        </p>
-        <Button
-          widthSize={100}
-          heightSize={50}
-          paddings={0}
-          fontSize={15}
-          lineHeight={26}
-          borderRadius={10}
-          size={'regular'}
-          color={'lightBlue'}
-          onClick={openPost}
-        >
-          크루모집
-        </Button>
-        <PostCreateModal closeModal={closePost} visible={postVisible} />
-      </NoContent>
-    );
-  };
-
-  const renderAcceptList = () => {
-    if (acceptLoading) {
-      return (
-        <LoadingWrap>
-          <Loader height={80} width={80} />
-        </LoadingWrap>
-      );
-    }
-    if (acceptList.length > 0) {
-      return (
-        <CardWrapper>
-          <ul>
-            {acceptList.length > 0 &&
-              acceptList.map((v) => (
-                <li key={v.boardId}>
-                  <ParticipateCard postData={v}></ParticipateCard>
-                </li>
-              ))}
-          </ul>
-          <MyPagination
-            data={acceptPageData}
-            setCurrentPage={setAcceptCurrentPage}
-            currentPage={acceptCurrentPage}
-            postsPerPage={postsPerPage}
-            totalPage={acceptTotalPage}
-          ></MyPagination>
-        </CardWrapper>
-      );
-    }
-
-    return (
-      <NoContent>
-        <p>
-          <em>크루에 참여요청한 내역이 없습니다.</em>
-          <br></br>
-          크루에 참여하셔서<br className="fold"></br> 활동 이력을 남겨보세요!
-        </p>
-        <Button
-          widthSize={100}
-          heightSize={50}
-          paddings={0}
-          fontSize={15}
-          lineHeight={26}
-          borderRadius={10}
-          size={'regular'}
-          color={'lightBlue'}
-          onClick={handleNavigate}
-        >
-          크루참여
-        </Button>
-      </NoContent>
-    );
-  };
 
   const handleResize = () => {
     if (window.innerWidth > 768) {
@@ -259,14 +63,6 @@ function MyActivity() {
     apiActivity();
   }, []);
 
-  useEffect(() => {
-    getActivityDeadline();
-  }, [deadlineCurrentPage]);
-
-  useEffect(() => {
-    getActivityAccept();
-  }, []);
-
   return (
     <MyLayout>
       <MypageSubTop title="나의 활동 크루"></MypageSubTop>
@@ -285,13 +81,13 @@ function MyActivity() {
       <Wrap className="wrotePost">
         <SectionWrap>
           <h3>내가 쓴 마감글</h3>
-          {renderDeadlineList()}
+          <DeadlineList postsPerPage={postsPerPage} />
         </SectionWrap>
       </Wrap>
       <Wrap className="accepted">
         <SectionWrap>
           <h3>참여수락된 글</h3>
-          {renderAcceptList()}
+          <AcceptList postsPerPage={postsPerPage} />
         </SectionWrap>
       </Wrap>
     </MyLayout>
@@ -346,36 +142,4 @@ const Wrap = styled('section')`
   &.accepted {
     padding-bottom: 40px;
   }
-`;
-
-const CardWrapper = styled('div')`
-  li {
-    padding-bottom: 14px;
-  }
-`;
-
-const NoContent = styled('div')`
-  padding: 100px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  p {
-    font-size: 15px;
-    line-height: 22px;
-    text-align: center;
-    font-weight: 400;
-    margin-bottom: 20px;
-
-    em {
-      font-weight: 700;
-    }
-  }
-`;
-
-const LoadingWrap = styled('div')`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 300px;
 `;

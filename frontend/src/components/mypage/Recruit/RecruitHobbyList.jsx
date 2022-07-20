@@ -46,7 +46,6 @@ function RecruitHobbyList({ postsPerPage }) {
             ...data.data,
           });
           setHobbyTotalPage(data.data.totalPages);
-          console.log(data.data);
           break;
 
         default:

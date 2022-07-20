@@ -12,8 +12,9 @@ import { useNavigate } from 'react-router-dom';
 import PostDeleteModal from '@/components/common/DeleteModal/PostDeleteModal';
 import PostFixModal from '@/components/post/modal/PostFix';
 import useModal from '@/hooks/useModal';
+import PostCloseDownModal from '../Modal/PostCloseDownModal';
 
-function RecruitCard({ postData }) {
+function RecruitCard({ postData, handleCloseDownId }) {
   const cookies = new Cookies();
 
   const [IsDisable, setIsDisable] = useState(false);
@@ -22,9 +23,11 @@ function RecruitCard({ postData }) {
 
   const [participantList, setParticipantList] = useState([]);
   const [waitingList, setWaitingList] = useState([]);
+
   const navigate = useNavigate();
   const [deleteVisible, openDelete, closeDelete] = useModal();
   const [fixVisible, openFix, closeFix] = useModal();
+  const [closeDownVisible, openCloseDown, closeCloseDown] = useModal();
 
   const navigateBoard = useCallback(
     (e) => {
@@ -162,7 +165,7 @@ function RecruitCard({ postData }) {
                     </button>
                   </ButtonBox>
                   <RightBtnBox>
-                    <button>마감하기</button>
+                    <button onClick={openCloseDown}>마감하기</button>
                   </RightBtnBox>
                 </TextBox>
               </CardBody>
@@ -203,6 +206,12 @@ function RecruitCard({ postData }) {
         postData={postData}
       ></PostDeleteModal>
       <PostFixModal visible={fixVisible} closeModal={closeFix} postData={postData}></PostFixModal>
+      <PostCloseDownModal
+        visible={closeDownVisible}
+        closeModal={closeCloseDown}
+        postData={postData}
+        handleCloseDownId={handleCloseDownId}
+      ></PostCloseDownModal>
     </>
   );
 }

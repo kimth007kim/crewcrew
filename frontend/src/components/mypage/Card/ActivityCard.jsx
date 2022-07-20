@@ -13,7 +13,7 @@ import PostFixModal from '@/components/post/modal/PostFix';
 import useModal from '@/hooks/useModal';
 import PlusDateModal from '../Modal/PlusDateModal';
 
-function ActivityCard({ postData }) {
+function ActivityCard({ postData, handleCloseDownId }) {
   const cookies = new Cookies();
 
   const [IsDisable, setIsDisable] = useState(false);
@@ -133,6 +133,7 @@ function ActivityCard({ postData }) {
         visible={deleteVisible}
         closeModal={closeDelete}
         postData={postData}
+        handleCloseDownId={handleCloseDownId}
       ></PostDeleteModal>
       <PostFixModal visible={fixVisible} closeModal={closeFix} postData={postData}></PostFixModal>
       <PlusDateModal

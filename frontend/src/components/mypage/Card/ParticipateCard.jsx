@@ -13,8 +13,10 @@ import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import MyPartiCancelModal from '../Modal/MyPartiCancelModal';
+import useModal from '@/hooks/useModal';
 
-function ParticipateCard({ postData }) {
+function ParticipateCard({ postData, handleCloseDownId }) {
   const cookies = new Cookies();
   const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
@@ -25,6 +27,8 @@ function ParticipateCard({ postData }) {
   const [tooltipPosition, setTooltipPosition] = useState(1);
   const setCurrentBoardId = useSetRecoilState(tooltipBoardId);
   const [participantList, setParticipantList] = useState([]);
+
+  const [cancelVisible, openCancel, closeCancel] = useModal();
 
   const navigate = useNavigate();
 
@@ -141,7 +145,9 @@ function ParticipateCard({ postData }) {
               </TextBox>
 
               <RightBtnBox>
-                <button className="cancel">참여취소</button>
+                <button className="cancel" onClick={openCancel}>
+                  참여취소
+                </button>
               </RightBtnBox>
             </CardBody>
           </CardTopHeader>
@@ -162,6 +168,12 @@ function ParticipateCard({ postData }) {
         </CardBottom>
       </Wrapper>
       <SwiperBtn onClick={handleClick}>참여자</SwiperBtn>
+      <MyPartiCancelModal
+        visible={cancelVisible}
+        postData={postData}
+        closeModal={closeCancel}
+        handleCloseDownId={handleCloseDownId}
+      ></MyPartiCancelModal>
     </Container>
   );
 }
