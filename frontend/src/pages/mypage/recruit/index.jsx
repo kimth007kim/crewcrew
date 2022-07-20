@@ -5,33 +5,13 @@ import MypageSubTop from '@/components/mypage/MypageSubTop';
 import styled from 'styled-components';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
-import Button from '@/components/common/Button';
-import RecruitCard from '@/components/mypage/Card/RecruitCard';
-import MyPagination from '@/components/mypage/MyPagination';
-import Loader from '@/components/common/Loader';
-import PostCreateModal from '@/components/post/modal/PostCreate';
-import useModal from '@/hooks/useModal';
+import RecruitStudyList from '@/components/mypage/Recruit/RecruitStudyList';
+import RecruitHobbyList from '@/components/mypage/Recruit/RecruitHobbyList';
 
 function Recruit() {
   const cookies = new Cookies();
   const [crewRecruit, setCrewRecruit] = useState(null);
   const [postsPerPage, setPostsPerPage] = useState(10);
-
-  // 스터디 리스트
-  const [studyLoading, setStudyLoading] = useState(false);
-  const [studyAppList, setStudyAppList] = useState([]);
-  const [studyPageData, setStudyPageData] = useState(null);
-  const [studyTotalPage, setStudyTotalPage] = useState(0);
-  const [studyCurrentPage, setStudyCurrentPage] = useState(1);
-
-  // 취미 리스트
-  const [hobbyLoading, setHobbyLoading] = useState(false);
-  const [hobbyAppList, setHobbyAppList] = useState([]);
-  const [hobbyPageData, setHobbyPageData] = useState(null);
-  const [hobbyTotalPage, setHobbyTotalPage] = useState(0);
-  const [hobbyCurrentPage, setHobbyCurrentPage] = useState(1);
-
-  const [postVisible, openPost, closePost] = useModal();
 
   const getRecruit = useCallback(async () => {
     try {
@@ -54,181 +34,28 @@ function Recruit() {
     }
   }, []);
 
-  const getRecruitStudyList = useCallback(async () => {
-    setStudyLoading(true);
-    try {
-      const { data } = await axios.get(`/application/recruiting/1?page=${studyCurrentPage - 1}`, {
-        withCredentials: true,
-        headers: {
-          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
-        },
-      });
-      switch (data.status) {
-        case 200:
-          setStudyAppList([...data.data.contents]);
-          setStudyPageData({
-            ...data.data,
-          });
-          setStudyTotalPage(data.data.totalPages);
-          break;
-
-        default:
-          break;
-      }
-    } catch (error) {
-      console.dir(error);
-    } finally {
-      setStudyLoading(false);
-    }
-  }, [studyCurrentPage]);
-
-  const getRecruitHobbyList = useCallback(async () => {
-    setHobbyLoading(true);
-    try {
-      const { data } = await axios.get(`/application/recruiting/2?page=${hobbyCurrentPage - 1}`, {
-        withCredentials: true,
-        headers: {
-          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
-        },
-      });
-      switch (data.status) {
-        case 200:
-          setHobbyAppList([...data.data.contents]);
-          setHobbyPageData({
-            ...data.data,
-          });
-          setHobbyTotalPage(data.data.totalPages);
-          break;
-
-        default:
-          break;
-      }
-    } catch (error) {
-      console.dir(error);
-    } finally {
-      setHobbyLoading(false);
-    }
-  }, [hobbyCurrentPage]);
-
-  const renderStudyList = () => {
-    if (studyLoading) {
-      return (
-        <LoadingWrap>
-          <Loader height={80} width={80} />
-        </LoadingWrap>
-      );
-    }
-    if (studyAppList.length > 0) {
-      return (
-        <CardWrapper>
-          <ul>
-            {studyAppList.map((post) => (
-              <li key={post.title + post.boardId}>
-                <RecruitCard postData={post}></RecruitCard>
-              </li>
-            ))}
-          </ul>
-          <MyPagination
-            data={studyPageData}
-            currentPage={studyCurrentPage}
-            postsPerPage={postsPerPage}
-            totalPage={studyTotalPage}
-            setCurrentPage={setStudyCurrentPage}
-          ></MyPagination>
-        </CardWrapper>
-      );
-    }
-
-    return (
-      <NoContent>
-        <p>
-          <em>내가 모집중인 크루가 없습니다.</em>
-          <br></br>
-          크루 모집글을 작성해<br className="fold"></br> 크루원을 모집하세요!
-        </p>
-        <Button
-          widthSize={100}
-          heightSize={50}
-          paddings={0}
-          fontSize={15}
-          lineHeight={26}
-          borderRadius={10}
-          size={'regular'}
-          color={'lightBlue'}
-          onClick={openPost}
-        >
-          크루모집
-        </Button>
-        <PostCreateModal closeModal={closePost} visible={postVisible} />
-      </NoContent>
-    );
-  };
-
-  const renderHobbyList = () => {
-    if (hobbyLoading) {
-      return (
-        <LoadingWrap>
-          <Loader height={80} width={80} />
-        </LoadingWrap>
-      );
-    }
-    if (hobbyAppList.length > 0) {
-      return (
-        <CardWrapper>
-          <ul>
-            {hobbyAppList.map((post) => (
-              <li key={post.title + post.boardId}>
-                <RecruitCard postData={post}></RecruitCard>
-              </li>
-            ))}
-          </ul>
-          <MyPagination
-            data={hobbyPageData}
-            currentPage={hobbyCurrentPage}
-            postsPerPage={postsPerPage}
-            totalPage={hobbyTotalPage}
-            setCurrentPage={setHobbyCurrentPage}
-          ></MyPagination>
-        </CardWrapper>
-      );
-    }
-
-    return (
-      <NoContent>
-        <p>
-          <em>내가 모집중인 크루가 없습니다.</em>
-          <br></br>
-          크루 모집글을 작성해<br className="fold"></br> 크루원을 모집하세요!
-        </p>
-        <Button
-          widthSize={100}
-          heightSize={50}
-          paddings={0}
-          fontSize={15}
-          lineHeight={26}
-          borderRadius={10}
-          size={'regular'}
-          color={'lightBlue'}
-          onClick={openPost}
-        >
-          크루모집
-        </Button>
-        <PostCreateModal closeModal={closePost} visible={postVisible} />
-      </NoContent>
-    );
-  };
-
   useEffect(() => {
     getRecruit();
   }, []);
 
-  useEffect(() => {
-    getRecruitStudyList();
-  }, [studyCurrentPage]);
+  const handleResize = () => {
+    if (window.innerWidth > 768) {
+      setPostsPerPage(10);
+    } else if (window.innerWidth > 320) {
+      setPostsPerPage(5);
+    } else {
+      setPostsPerPage(3);
+    }
+  };
 
   useEffect(() => {
-    getRecruitHobbyList();
-  }, [hobbyCurrentPage]);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <MyLayout>
@@ -243,13 +70,13 @@ function Recruit() {
       <Wrap className="study">
         <SectionWrap>
           <h3>스터디 크루</h3>
-          {renderStudyList()}
+          <RecruitStudyList postsPerPage={postsPerPage} />
         </SectionWrap>
       </Wrap>
       <Wrap className="hobby">
         <SectionWrap>
           <h3>취미 크루</h3>
-          {renderHobbyList()}
+          <RecruitHobbyList postsPerPage={postsPerPage} />
         </SectionWrap>
       </Wrap>
     </MyLayout>
