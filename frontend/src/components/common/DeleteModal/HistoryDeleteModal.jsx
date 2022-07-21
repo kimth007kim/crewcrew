@@ -4,9 +4,7 @@ import axios from 'axios';
 import { format } from 'date-fns';
 import React, { useCallback, useState } from 'react';
 import { Cookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import styled from 'styled-components';
 import Button from '../Button';
 import {
   Body,
@@ -23,23 +21,22 @@ import {
   Wrapper,
 } from './modal.style';
 
-function PostDeleteModal({ closeModal, visible, postData }) {
+function HistoryDeleteModal({ closeModal, visible, postData, handleReloadApId }) {
   const cookies = new Cookies();
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const renderDate = useCallback(() => {
     const date = new Date(postData.createdDate.replace(/-/g, '/'));
     return `${format(date, 'MM월 dd일')}`;
   }, []);
 
-  const deletePost = useCallback(async () => {
+  const deleteHistory = useCallback(async () => {
     if (!cookies.get('X-AUTH-TOKEN')) {
       return;
     }
     setLoading(true);
     try {
-      const { data } = await axios.delete(`/board/${postData.boardId}`, {
+      const { data } = await axios.delete(`/application/${postData.apId}`, {
         withCredentials: true,
         headers: {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
@@ -49,8 +46,8 @@ function PostDeleteModal({ closeModal, visible, postData }) {
 
       switch (data.status) {
         case 200:
+          handleReloadApId(postData.apId + 'delete');
           closeModal();
-          navigate('/post', { replace: true });
           toast.success('성공적으로 삭제되었습니다.');
           break;
         case 2301:
@@ -89,23 +86,23 @@ function PostDeleteModal({ closeModal, visible, postData }) {
             </li>
           </ModalTop>
           <TitleMsg>
-            정말 모집글을 삭제하시겠습니까?
+            내역을 삭제하시겠습니까?
             <br />
-            삭제시 더이상 이 모집글과 관련된 활동을 할 수 없어요!
+            지금 삭제하면 내역을 다시 확인할 수 없어요!
           </TitleMsg>
         </Header>
       }
       body={
         <Wrapper>
           <Body>
-            <Classification>삭제되는 모집글</Classification>
-            <ClassificationCard>
+            <Classification>삭제되는 내역</Classification>
+            <ClassificationCard isDisabled={true}>
               <CardHead>
-                <span>{renderDate()}</span> 업로드
+                <span>{renderDate()}</span> 참여취소
               </CardHead>
               <h4>{postData.title}</h4>
               <CardFooter>
-                <li className={postData.categoryParentId === 1 ? 'study' : 'hobby'}>
+                <li>
                   {
                     cateogoryAll.filter(
                       (category) => `${postData.categoryId}` === category.value,
@@ -116,10 +113,7 @@ function PostDeleteModal({ closeModal, visible, postData }) {
                 <li>{`${postData.recruitedCrew}/${postData.totalCrew}명`}</li>
               </CardFooter>
             </ClassificationCard>
-            <Notification>
-              <li>삭제시 이 모집글의 참여자 및 대기자가 더 이상 모집글을 확인할 수 없습니다</li>
-              <li>마이페이지 글 목록등 모든 페이지에서 모집글 삭제</li>
-            </Notification>
+
             <ButtonWrap>
               <ButtonCancel onClick={closeModal}>취소</ButtonCancel>
               <Button
@@ -127,7 +121,7 @@ function PostDeleteModal({ closeModal, visible, postData }) {
                 heightSize={50}
                 color="pink"
                 loadings={loading}
-                onClick={deletePost}
+                onClick={deleteHistory}
               >
                 삭제
               </Button>
@@ -139,14 +133,4 @@ function PostDeleteModal({ closeModal, visible, postData }) {
   );
 }
 
-export default PostDeleteModal;
-
-const Notification = styled('div')`
-  display: flex;
-  flex-direction: column;
-  font-weight: 700;
-  font-size: 13px;
-  line-height: 19px;
-  color: #a8a8a8;
-  margin-top: 32px;
-`;
+export default HistoryDeleteModal;

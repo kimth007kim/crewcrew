@@ -5,37 +5,14 @@ import MypageSubTop from '@/components/mypage/MypageSubTop';
 import styled from 'styled-components';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
-import RequestCard from '@/components/mypage/Card/RequestCard';
-import Button from '@/components/common/Button';
-import { toast } from 'react-toastify';
-import MyPagination from '@/components/mypage/MyPagination';
-import Loader from '@/components/common/Loader';
-import { useNavigate } from 'react-router-dom';
+
+import RequestStudyList from '@/components/mypage/Request/RequestStudyList';
+import RequestHobbyList from '@/components/mypage/Request/RequestHobbyList';
 
 function Request() {
   const cookies = new Cookies();
   const [crewRequest, setCrewRequest] = useState(null);
   const [postsPerPage, setPostsPerPage] = useState(10);
-
-  // 스터디 리스트
-  const [studyLoading, setStudyLoading] = useState(false);
-  const [studyAppList, setStudyAppList] = useState([]);
-  const [studyPageData, setStudyPageData] = useState(null);
-  const [studyTotalPage, setStudyTotalPage] = useState(0);
-  const [studyCurrentPage, setStudyCurrentPage] = useState(1);
-
-  // 취미 리스트
-  const [hobbyLoading, setHobbyLoading] = useState(false);
-  const [hobbyAppList, setHobbyAppList] = useState([]);
-  const [hobbyPageData, setHobbyPageData] = useState(null);
-  const [hobbyTotalPage, setHobbyTotalPage] = useState(0);
-  const [hobbyCurrentPage, setHobbyCurrentPage] = useState(1);
-
-  const navigate = useNavigate();
-
-  const handleNavigate = useCallback(() => {
-    navigate('/post');
-  }, []);
 
   const apiApplication = useCallback(async () => {
     try {
@@ -57,175 +34,6 @@ function Request() {
       console.dir(error);
     }
   }, []);
-
-  const apiApplicationStudy = useCallback(async () => {
-    setStudyLoading(true);
-    try {
-      const { data } = await axios.get(`/application/details/1?page=${studyCurrentPage - 1}`, {
-        withCredentials: true,
-        headers: {
-          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
-        },
-      });
-      switch (data.status) {
-        case 200:
-          setStudyAppList([...data.data.contents]);
-          setStudyPageData({
-            ...data.data,
-          });
-          setStudyTotalPage(data.data.totalPages);
-          break;
-        case 2001:
-        case 2405:
-          toast.error(data.message);
-          break;
-
-        default:
-          toast.error(data.message);
-          break;
-      }
-    } catch (error) {
-      console.dir(error);
-    } finally {
-      setStudyLoading(false);
-    }
-  }, [studyCurrentPage]);
-
-  const apiApplicationHobby = useCallback(async () => {
-    setHobbyLoading(true);
-    try {
-      const { data } = await axios.get(`/application/details/2?page=${hobbyCurrentPage - 1}`, {
-        withCredentials: true,
-        headers: {
-          'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
-        },
-      });
-      switch (data.status) {
-        case 200:
-          setHobbyAppList([...data.data.contents]);
-          setHobbyPageData({
-            ...data.data,
-          });
-          setHobbyTotalPage(data.data.totalPages);
-          break;
-
-        default:
-          break;
-      }
-    } catch (error) {
-      toast.error(error);
-      console.dir(error);
-    } finally {
-      setHobbyLoading(false);
-    }
-  }, [hobbyCurrentPage]);
-
-  const renderStudyList = () => {
-    if (studyLoading) {
-      return (
-        <LoadingWrap>
-          <Loader height={80} width={80} />
-        </LoadingWrap>
-      );
-    }
-    if (studyAppList.length > 0) {
-      return (
-        <CardWrapper>
-          <ul>
-            {studyAppList.map((post) => (
-              <li key={post.apId + post.title + post.boardId}>
-                <RequestCard data={post}></RequestCard>
-              </li>
-            ))}
-          </ul>
-          <MyPagination
-            data={studyPageData}
-            setCurrentPage={setStudyCurrentPage}
-            currentPage={studyCurrentPage}
-            postsPerPage={postsPerPage}
-            totalPage={studyTotalPage}
-          ></MyPagination>
-        </CardWrapper>
-      );
-    }
-
-    return (
-      <NoContent>
-        <p>
-          <em>크루에 참여요청한 내역이 없습니다.</em>
-          <br></br>
-          크루에 참여하셔서<br className="fold"></br> 활동 이력을 남겨보세요!
-        </p>
-        <Button
-          widthSize={100}
-          heightSize={50}
-          paddings={0}
-          fontSize={15}
-          lineHeight={26}
-          borderRadius={10}
-          size={'regular'}
-          color={'lightBlue'}
-          onClick={handleNavigate}
-        >
-          크루참여
-        </Button>
-      </NoContent>
-    );
-  };
-
-  const renderHobbyList = () => {
-    if (hobbyLoading) {
-      return (
-        <LoadingWrap>
-          <Loader height={80} width={80} />
-        </LoadingWrap>
-      );
-    }
-
-    if (hobbyAppList.length > 0) {
-      return (
-        <CardWrapper>
-          <ul>
-            {hobbyAppList.map((post) => (
-              <li key={post.apId + post.title + post.boardId}>
-                <RequestCard data={post}></RequestCard>
-              </li>
-            ))}
-          </ul>
-          <MyPagination
-            data={hobbyPageData}
-            setCurrentPage={setHobbyCurrentPage}
-            currentPage={hobbyCurrentPage}
-            postsPerPage={postsPerPage}
-            totalPage={hobbyTotalPage}
-          ></MyPagination>
-        </CardWrapper>
-      );
-    }
-
-    return (
-      <NoContent>
-        <p>
-          <em>크루에 참여요청한 내역이 없습니다.</em>
-          <br></br>
-          크루에 참여하셔서<br className="fold"></br> 활동 이력을 남겨보세요!
-        </p>
-        <Button
-          widthSize={100}
-          heightSize={50}
-          paddings={0}
-          fontSize={15}
-          lineHeight={26}
-          borderRadius={10}
-          size={'regular'}
-          color={'lightBlue'}
-          onClick={handleNavigate}
-        >
-          크루참여
-        </Button>
-      </NoContent>
-    );
-  };
 
   const handleResize = () => {
     if (window.innerWidth > 768) {
@@ -250,14 +58,6 @@ function Request() {
     apiApplication();
   }, []);
 
-  useEffect(() => {
-    apiApplicationStudy();
-  }, [studyCurrentPage]);
-
-  useEffect(() => {
-    apiApplicationHobby();
-  }, [hobbyCurrentPage]);
-
   return (
     <MyLayout>
       <MypageSubTop title="내가 참여요청한 크루"></MypageSubTop>
@@ -269,13 +69,13 @@ function Request() {
       <Wrap className="study">
         <SectionWrap>
           <h3>스터디 크루</h3>
-          {renderStudyList()}
+          <RequestStudyList postsPerPage={postsPerPage} />
         </SectionWrap>
       </Wrap>
       <Wrap className="hobby">
         <SectionWrap>
           <h3>취미 크루</h3>
-          {renderHobbyList()}
+          <RequestHobbyList postsPerPage={postsPerPage} />
         </SectionWrap>
       </Wrap>
     </MyLayout>

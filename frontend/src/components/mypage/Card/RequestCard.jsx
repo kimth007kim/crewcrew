@@ -1,6 +1,8 @@
 import { tooltipBoardId } from '@/atoms/profile';
+import HistoryDeleteModal from '@/components/common/DeleteModal/HistoryDeleteModal';
 import ProfileTooltip from '@/components/post/tooltip/ProfileTooltip';
 import { cateogoryAll } from '@/frontDB/filterDB';
+import useModal from '@/hooks/useModal';
 import { renderDate, renderDay } from '@/utils';
 import fetcher from '@/utils/fetcher';
 import { format } from 'date-fns';
@@ -11,15 +13,20 @@ import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { css } from 'styled-components';
 import useSWR from 'swr';
+import RequestCancelModal from '../Modal/RequestCancelModal';
 
-function RequestCard({ data }) {
+function RequestCard({ data, handleReloadApId }) {
   const cookies = new Cookies();
   const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const [tooltip, setTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState(1);
-  const setCurrentBoardId = useSetRecoilState(tooltipBoardId);
   const [IsDisable, setIsDisable] = useState(false);
+  const setCurrentBoardId = useSetRecoilState(tooltipBoardId);
+
+  const [cancelVisible, openCancel, closeCancel] = useModal();
+  const [historyVisible, openHistory, closeHistory] = useModal();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -66,7 +73,7 @@ function RequestCard({ data }) {
             </p>
           </DetailBox>
           <ButtonBox>
-            <button>요청취소</button>
+            <button onClick={openCancel}>요청취소</button>
           </ButtonBox>
         </>
       );
@@ -84,7 +91,7 @@ function RequestCard({ data }) {
             </p>
           </DetailBox>
           <ButtonBox>
-            <button>내역삭제</button>
+            <button onClick={openHistory}>내역삭제</button>
           </ButtonBox>
         </>
       );
@@ -119,7 +126,7 @@ function RequestCard({ data }) {
             </p>
           </DetailBox>
           <ButtonBox>
-            <button>내역삭제</button>
+            <button onClick={openHistory}>내역삭제</button>
           </ButtonBox>
         </>
       );
@@ -133,7 +140,7 @@ function RequestCard({ data }) {
           </p>
         </DetailBox>
         <ButtonBox>
-          <button>내역삭제</button>
+          <button onClick={openHistory}>내역삭제</button>
         </ButtonBox>
       </>
     );
@@ -181,6 +188,18 @@ function RequestCard({ data }) {
         </TextBox>
         {renderProgress()}
       </CardBody>
+      <RequestCancelModal
+        closeModal={closeCancel}
+        visible={cancelVisible}
+        postData={data}
+        handleReloadApId={handleReloadApId}
+      />
+      <HistoryDeleteModal
+        closeModal={closeHistory}
+        visible={historyVisible}
+        postData={data}
+        handleReloadApId={handleReloadApId}
+      />
     </Container>
   );
 }

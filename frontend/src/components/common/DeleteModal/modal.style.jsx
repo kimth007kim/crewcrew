@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Close from '@/assets/images/ModalClose.png';
 
 export const Wrapper = styled('div')`
@@ -105,9 +105,11 @@ export const ClassificationCard = styled('div')`
     color: #000;
     margin-bottom: 10px;
 
-    &.disabled {
-      color: #a8a8a8;
-    }
+    ${(props) =>
+      props.isDisabled &&
+      css`
+        color: #868686;
+      `}
   }
 
   @media screen and (max-width: 300px) {
@@ -135,15 +137,13 @@ export const CardFooter = styled('ul')`
     font-weight: 500;
     color: #868686;
 
-    &.disabled {
-      color: #a8a8a8;
-    }
-
     &.hobby {
+      font-weight: 700;
       color: #f7971e;
     }
 
     &.study {
+      font-weight: 700;
       color: #0f3fa6;
     }
   }

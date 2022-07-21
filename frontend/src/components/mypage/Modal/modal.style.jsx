@@ -35,6 +35,9 @@ export const Body = styled('div')`
   @media screen and (max-width: 820px) {
     height: calc(100% - 150px);
   }
+  @media screen and (max-width: 300px) {
+    height: calc(100% - 185px);
+  }
 `;
 
 export const ModalTop = styled('ul')`
@@ -110,6 +113,10 @@ export const ClassificationCard = styled('div')`
       color: #a8a8a8;
     }
   }
+
+  @media screen and (max-width: 300px) {
+    padding-left: 16px;
+  }
 `;
 
 export const CardHead = styled('p')`
@@ -132,16 +139,22 @@ export const CardFooter = styled('ul')`
     font-weight: 500;
     color: #868686;
 
-    &.disabled {
-      color: #a8a8a8;
-    }
-
     &.hobby {
+      font-weight: 700;
       color: #f7971e;
+
+      :disabled {
+        color: #868686;
+      }
     }
 
     &.study {
+      font-weight: 700;
       color: #0f3fa6;
+
+      :disabled {
+        color: #868686;
+      }
     }
   }
 `;
