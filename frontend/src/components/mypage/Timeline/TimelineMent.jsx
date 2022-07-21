@@ -7,10 +7,10 @@ function TimelineMent({ data }) {
 
   const navigateDetail = () => {
     if (data.announceType === 1) {
-      return navigate(`/mypage/activity`);
+      return navigate(`/mypage/request`);
     }
     if (data.announceType === 2) {
-      return navigate(`/mypage/request`);
+      return navigate(`/mypage/activity`);
     }
     if (data.announceType === 3) {
       return navigate(`/mypage/request`);
@@ -44,7 +44,7 @@ function TimelineMent({ data }) {
         <p>
           <Name>{data.boardTitle}</Name>
           에서 회원님의&nbsp;
-          <Negative>참여요청을 거절</Negative>
+          <Positive>참여요청을 수락</Positive>
           &nbsp;하였습니다.
         </p>
         <ul>
@@ -62,7 +62,7 @@ function TimelineMent({ data }) {
         <p>
           <Name>{data.boardTitle}</Name>
           에서 회원님의&nbsp;
-          <Positive>참여요청을 수락</Positive>
+          <Negative>참여요청을 거절</Negative>
           &nbsp;하였습니다.
         </p>
         <ul>

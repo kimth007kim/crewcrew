@@ -35,6 +35,9 @@ export const Body = styled('div')`
   @media screen and (max-width: 820px) {
     height: calc(100% - 150px);
   }
+  @media screen and (max-width: 300px) {
+    height: calc(100% - 185px);
+  }
 `;
 
 export const ModalTop = styled('ul')`
@@ -105,6 +108,10 @@ export const ClassificationCard = styled('div')`
     &.disabled {
       color: #a8a8a8;
     }
+  }
+
+  @media screen and (max-width: 300px) {
+    padding-left: 16px;
   }
 `;
 

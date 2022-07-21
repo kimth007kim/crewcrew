@@ -40,13 +40,13 @@ function TLCard({ data, isLast }) {
     } else if (data.announceType === 2) {
       return (
         <Detail State={detailState} Disabled={data.readChk}>
-          <em>{data.boardTitle}</em>에서 회원님의 <b>참여요청을 거절</b>하였습니다.
+          <em>{data.boardTitle}</em>에서 회원님의 <b>참여요청을 수락</b>하였습니다.
         </Detail>
       );
     } else if (data.announceType === 3) {
       return (
         <Detail State={detailState} Disabled={data.readChk}>
-          <em>{data.boardTitle}</em>에서 회원님의 <b>참여요청을 수락</b>하였습니다.
+          <em>{data.boardTitle}</em>에서 회원님의 <b>참여요청을 거절</b>하였습니다.
         </Detail>
       );
     } else if (data.announceType === 4) {

@@ -23,11 +23,16 @@ function RecruitCard({ postData, handleCloseDownId }) {
 
   const [participantList, setParticipantList] = useState([]);
   const [waitingList, setWaitingList] = useState([]);
+  const [reloadAppId, setReloadAppId] = useState('');
 
   const navigate = useNavigate();
   const [deleteVisible, openDelete, closeDelete] = useModal();
   const [fixVisible, openFix, closeFix] = useModal();
   const [closeDownVisible, openCloseDown, closeCloseDown] = useModal();
+
+  const handleReloadAppId = useCallback((id) => {
+    setReloadAppId(id);
+  }, []);
 
   const navigateBoard = useCallback(
     (e) => {
@@ -92,7 +97,7 @@ function RecruitCard({ postData, handleCloseDownId }) {
     } catch (error) {
       console.dir(error);
     }
-  }, []);
+  }, [reloadAppId]);
 
   const getWaiting = useCallback(async () => {
     try {
@@ -116,12 +121,12 @@ function RecruitCard({ postData, handleCloseDownId }) {
     } catch (error) {
       console.dir(error);
     }
-  }, []);
+  }, [reloadAppId]);
 
   useEffect(() => {
     getParticipant();
     getWaiting();
-  }, []);
+  }, [reloadAppId]);
 
   return (
     <>
@@ -174,13 +179,13 @@ function RecruitCard({ postData, handleCloseDownId }) {
               <p>참여자 및 대기자 관리</p>
               <CardToggle>
                 <ToggleText active={!toggleCheck} onClick={() => onClickToggleText(false)}>
-                  참여자 {postData.recruitedCrew}명
+                  참여자 {participantList.length}명
                 </ToggleText>
                 <ToggleBtn onClick={onClickToggle}>
                   <ToggleIndicator active={toggleCheck}></ToggleIndicator>
                 </ToggleBtn>
                 <ToggleText active={toggleCheck} onClick={() => onClickToggleText(true)}>
-                  대기자 {postData.appliedCrew}명
+                  대기자 {waitingList.length}명
                 </ToggleText>
               </CardToggle>
               <SwiperBtn onClick={handleClick} active={isSwiperClick}>
@@ -196,6 +201,8 @@ function RecruitCard({ postData, handleCloseDownId }) {
               waitingList={waitingList}
               boardId={postData.boardId}
               status={toggleCheck ? 0 : 1}
+              postData={postData}
+              handleReloadAppId={handleReloadAppId}
             ></SwiperBtSection>
           </CardBottom>
         </Wrapper>

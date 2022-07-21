@@ -124,6 +124,19 @@ function RequestCard({ data }) {
         </>
       );
     }
+    return (
+      <>
+        <DetailBox>
+          <p>
+            <span>{data && format(new Date(data.appliedDate.replace(/-/g, '/')), '(MM/dd)')}</span>{' '}
+            참여취소
+          </p>
+        </DetailBox>
+        <ButtonBox>
+          <button>내역삭제</button>
+        </ButtonBox>
+      </>
+    );
   };
 
   return (

@@ -155,7 +155,7 @@ function ParticipateCard({ postData, handleCloseDownId }) {
         <CardBottom active={isSwiperClick}>
           <BtTop>
             <p>
-              참여자 <em>{postData.recruitedCrew}</em>
+              참여자 <em>{participantList.length}</em>
             </p>
           </BtTop>
           <SwiperBtSection

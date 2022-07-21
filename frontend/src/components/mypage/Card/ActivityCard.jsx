@@ -114,7 +114,7 @@ function ActivityCard({ postData, handleCloseDownId }) {
           <CardBottom active={isSwiperClick}>
             <BtTop>
               <p>
-                참여자 <em>{postData.recruitedCrew}</em>
+                참여자 <em>{participantList.length}</em>
               </p>
             </BtTop>
             <SwiperBtSection
@@ -124,6 +124,7 @@ function ActivityCard({ postData, handleCloseDownId }) {
               status={1}
               boardId={postData.boardId}
               pageStatus={1}
+              postData={postData}
             ></SwiperBtSection>
           </CardBottom>
         </Wrapper>

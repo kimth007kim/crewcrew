@@ -7,15 +7,64 @@ import { useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
+import OtherPartiCancelModal from '../Modal/OtherPartiCancelModal';
+import OtherRequestRejectModal from '../Modal/OtherRequestRejectModal';
+import useModal from '@/hooks/useModal';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import Spinner from '@/components/common/Spinner';
 
-function SwiperCard({ data, boardId, status }) {
+function SwiperCard({ data, boardId, status, handleReloadAppId, postData }) {
   const cookies = new Cookies();
   const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const [studyList, setStudyList] = useState([]);
   const [hobbyList, setHobbyList] = useState([]);
 
+  const [cancelVisible, openCancel, closeCancel] = useModal();
+  const [rejectVisible, openReject, closeReject] = useModal();
+
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+
+  const handleAcceptRequest = useCallback(async () => {
+    setLoading(true);
+    try {
+      const { data: acceptData } = await axios.put(
+        `/application/status`,
+        {
+          apId: data.apId,
+          statusCode: 2,
+        },
+        {
+          withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+          },
+        },
+      );
+
+      switch (acceptData.status) {
+        case 200:
+          setLoading(false);
+          handleReloadAppId(data.apId + 'accept');
+          break;
+        case 2301:
+          setLoading(false);
+          toast.error(data.message);
+          break;
+
+        default:
+          setLoading(false);
+          toast.error(data.message);
+          break;
+      }
+    } catch (error) {
+      setLoading(false);
+      console.dir(error);
+    }
+  }, []);
 
   useEffect(() => {
     const studyArr = [];
@@ -49,16 +98,30 @@ function SwiperCard({ data, boardId, status }) {
     if (status === 0) {
       return (
         <>
-          <button className="nega">거절</button>
-          <button className="posi">수락</button>
+          <button className="nega" onClick={openReject}>
+            거절
+          </button>
+          <button className="posi" onClick={handleAcceptRequest} disabled={loading}>
+            {loading ? (
+              <ButtonSpinner>
+                <Spinner />
+              </ButtonSpinner>
+            ) : (
+              '수락'
+            )}
+          </button>
         </>
       );
     }
 
     if (status === 1) {
-      return <button className="cancel">참여취소</button>;
+      return (
+        <button className="cancel" onClick={openCancel}>
+          참여취소
+        </button>
+      );
     }
-  }, [status]);
+  }, [status, loading]);
 
   return (
     <>
@@ -96,6 +159,20 @@ function SwiperCard({ data, boardId, status }) {
           {renderStatusBtn()}
         </BtnWrapper>
       </CardBtn>
+      <OtherPartiCancelModal
+        visible={cancelVisible}
+        closeModal={closeCancel}
+        postData={postData}
+        apData={data}
+        handleReloadAppId={handleReloadAppId}
+      ></OtherPartiCancelModal>
+      <OtherRequestRejectModal
+        visible={rejectVisible}
+        closeModal={closeReject}
+        postData={postData}
+        apData={data}
+        handleReloadAppId={handleReloadAppId}
+      ></OtherRequestRejectModal>
     </>
   );
 }
@@ -238,6 +315,19 @@ const CardBody = styled('div')`
   }
 `;
 
+const ButtonSpinner = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #eeeeee;
+  border-radius: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const BtnWrapper = styled('div')``;
 
 const CardBtn = styled('div')`
@@ -267,6 +357,11 @@ const CardBtn = styled('div')`
       font-size: 13px;
       transition: 0.3s;
       width: 51px;
+      position: relative;
+
+      :disabled {
+        background-color: #eeeeee;
+      }
 
       &.chat {
         background: #c4c4c4 url(${ChatWhite}) center/20px no-repeat;

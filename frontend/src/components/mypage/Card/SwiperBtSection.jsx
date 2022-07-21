@@ -21,6 +21,8 @@ function SwiperBtSection({
   boardId,
   status,
   pageStatus = 0,
+  handleReloadAppId,
+  postData,
 }) {
   const [swiper, setSwiper] = useState(null);
   const [mainIndex, setMainIndex] = useState(0);
@@ -57,7 +59,13 @@ function SwiperBtSection({
     if (participantList.length > 0) {
       return participantList.map((p) => (
         <SwiperSlide key={p && p.apId}>
-          <SwiperCard data={p} boardId={boardId} status={status} />
+          <SwiperCard
+            data={p}
+            boardId={boardId}
+            status={status}
+            handleReloadAppId={handleReloadAppId}
+            postData={postData}
+          />
         </SwiperSlide>
       ));
     } else {
@@ -82,7 +90,13 @@ function SwiperBtSection({
     if (waitingList.length > 0) {
       return waitingList.map((p) => (
         <SwiperSlide key={p && p.apId}>
-          <SwiperCard data={p} boardId={boardId} status={status} />
+          <SwiperCard
+            data={p}
+            boardId={boardId}
+            status={status}
+            handleReloadAppId={handleReloadAppId}
+            postData={postData}
+          />
         </SwiperSlide>
       ));
     } else {
