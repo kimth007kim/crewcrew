@@ -6,11 +6,14 @@ function TimelineMent({ data }) {
   const navigate = useNavigate();
 
   const navigateDetail = () => {
-    if (data.announceType === 1) {
+    if (data.announceType === 0) {
       return navigate(`/mypage/request`);
     }
-    if (data.announceType === 2) {
+    if (data.announceType === 1) {
       return navigate(`/mypage/activity`);
+    }
+    if (data.announceType === 2) {
+      return navigate(`/mypage/request`);
     }
     if (data.announceType === 3) {
       return navigate(`/mypage/request`);
@@ -19,6 +22,26 @@ function TimelineMent({ data }) {
       return navigate(`/mypage/request`);
     }
   };
+
+  if (data.announceType === 0) {
+    return (
+      <>
+        <p>
+          <Name>{data.nickname}</Name>
+          님이 회원님의&nbsp;
+          <Negative>참여를 거절</Negative>
+          &nbsp;하였습니다.
+        </p>
+        <ul>
+          <li>
+            <button type="button" onClick={navigateDetail}>
+              상세
+            </button>
+          </li>
+        </ul>
+      </>
+    );
+  }
 
   if (data.announceType === 1) {
     return (
@@ -38,7 +61,8 @@ function TimelineMent({ data }) {
         </ul>
       </>
     );
-  } else if (data.announceType === 2) {
+  }
+  if (data.announceType === 2) {
     return (
       <>
         <p>
@@ -56,13 +80,14 @@ function TimelineMent({ data }) {
         </ul>
       </>
     );
-  } else if (data.announceType === 3) {
+  }
+  if (data.announceType === 3) {
     return (
       <>
         <p>
           <Name>{data.boardTitle}</Name>
           에서 회원님의&nbsp;
-          <Negative>참여요청을 거절</Negative>
+          <Negative>참여를 취소</Negative>
           &nbsp;하였습니다.
         </p>
         <ul>
@@ -74,12 +99,13 @@ function TimelineMent({ data }) {
         </ul>
       </>
     );
-  } else if (data.announceType === 4) {
+  }
+  if (data.announceType === 4) {
     return (
       <>
         <p>
           <Name>{data.boardTitle}</Name>
-          에서 회원님의 &nbsp;
+          에서 회원님이 &nbsp;
           <Negative>참여를 취소</Negative>
           &nbsp;하였습니다.
         </p>

@@ -40,7 +40,7 @@ function MyPartiCancelModal({ closeModal, visible, postData, handleCloseDownId }
         `/application/status`,
         {
           apId: postData.apId,
-          statusCode: 3,
+          statusCode: 4,
         },
         {
           withCredentials: true,

@@ -30,35 +30,51 @@ function TLCard({ data, isLast }) {
       setDataLists([...filter]);
     }
   };
+
   const renderDetail = () => {
+    if (data.announceType === 0) {
+      return (
+        <Detail State={detailState} Disabled={data.readChk}>
+          <em>{data.nickname}</em>님이 회원님의 <b>참여를 거절</b>하였습니다.
+        </Detail>
+      );
+    }
     if (data.announceType === 1) {
       return (
         <Detail State={detailState} Disabled={data.readChk}>
           <em>{data.nickname}</em>님이 회원님의 글에 <b>참여요청</b>하였습니다.
         </Detail>
       );
-    } else if (data.announceType === 2) {
+    }
+    if (data.announceType === 2) {
       return (
         <Detail State={detailState} Disabled={data.readChk}>
           <em>{data.boardTitle}</em>에서 회원님의 <b>참여요청을 수락</b>하였습니다.
         </Detail>
       );
-    } else if (data.announceType === 3) {
+    }
+    if (data.announceType === 3) {
       return (
         <Detail State={detailState} Disabled={data.readChk}>
-          <em>{data.boardTitle}</em>에서 회원님의 <b>참여요청을 거절</b>하였습니다.
+          <em>{data.boardTitle}</em>에서 회원님의 <b>참여를 취소</b>하였습니다.
         </Detail>
       );
-    } else if (data.announceType === 4) {
+    }
+    if (data.announceType === 4) {
       return (
         <Detail State={detailState} Disabled={data.readChk}>
-          <em>{data.boardTitle}</em>님이 회원님의 <b>참여를 취소</b>하였습니다.
+          <em>{data.boardTitle}</em>에서 회원님이 <b>참여를 취소</b>하였습니다.
         </Detail>
       );
+    } else {
+      return null;
     }
   };
 
   const navigateDetail = () => {
+    if (data.announceType === 0) {
+      return navigate(`/mypage/request`);
+    }
     if (data.announceType === 1) {
       return navigate(`/mypage/activity`);
     }
@@ -97,7 +113,7 @@ function TLCard({ data, isLast }) {
     hobbyCat.forEach((e) => {
       e === data.categoryName && setCategory('hobby');
     });
-    if (data.announceType === 1 || data.announceType === 3) {
+    if (data.announceType === 1 || data.announceType === 2) {
       setDetailState('posi');
     }
   }, [data]);

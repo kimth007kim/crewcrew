@@ -46,7 +46,6 @@ function SettingBar({ data }) {
         if (timelineData.data.status === 200) {
           setDataLists([]);
           setTimelineChanged((state) => !state);
-          console.log(timelineData.data);
         }
       } catch (err) {
         console.error(err);
@@ -71,7 +70,6 @@ function SettingBar({ data }) {
         if (timelineData.data.status === 200) {
           setDataLists([]);
           setTimelineChanged((state) => !state);
-          console.log(timelineData.data);
         }
       } catch (err) {
         console.error(err);

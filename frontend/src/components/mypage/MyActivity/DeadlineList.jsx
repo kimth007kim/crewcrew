@@ -37,7 +37,6 @@ function DeadlineList({ postsPerPage }) {
         },
       );
       setDeadlineLoading(false);
-      console.log(data, 'deadline');
 
       switch (data.status) {
         case 200:

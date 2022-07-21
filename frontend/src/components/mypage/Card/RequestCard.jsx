@@ -61,6 +61,24 @@ function RequestCard({ data, handleReloadApId }) {
   }, []);
 
   const renderProgress = () => {
+    if (data.progress === 0) {
+      return (
+        <>
+          <DetailBox color="nega">
+            <p>
+              <span>
+                {data && format(new Date(data.appliedDate.replace(/-/g, '/')), '(MM/dd)')}
+              </span>{' '}
+              요청거절
+            </p>
+          </DetailBox>
+          <ButtonBox>
+            <button onClick={openHistory}>내역삭제</button>
+          </ButtonBox>
+        </>
+      );
+    }
+
     if (data.progress === 1) {
       return (
         <>
@@ -79,23 +97,6 @@ function RequestCard({ data, handleReloadApId }) {
       );
     }
 
-    if (data.progress === 0) {
-      return (
-        <>
-          <DetailBox color="nega">
-            <p>
-              <span>
-                {data && format(new Date(data.appliedDate.replace(/-/g, '/')), '(MM/dd)')}
-              </span>{' '}
-              요청거절
-            </p>
-          </DetailBox>
-          <ButtonBox>
-            <button onClick={openHistory}>내역삭제</button>
-          </ButtonBox>
-        </>
-      );
-    }
     if (data.progress === 2) {
       return (
         <>
@@ -131,19 +132,25 @@ function RequestCard({ data, handleReloadApId }) {
         </>
       );
     }
-    return (
-      <>
-        <DetailBox>
-          <p>
-            <span>{data && format(new Date(data.appliedDate.replace(/-/g, '/')), '(MM/dd)')}</span>{' '}
-            참여취소
-          </p>
-        </DetailBox>
-        <ButtonBox>
-          <button onClick={openHistory}>내역삭제</button>
-        </ButtonBox>
-      </>
-    );
+    if (data.progress === 4) {
+      return (
+        <>
+          <DetailBox>
+            <p>
+              <span>
+                {data && format(new Date(data.appliedDate.replace(/-/g, '/')), '(MM/dd)')}
+              </span>{' '}
+              참여취소
+            </p>
+          </DetailBox>
+          <ButtonBox>
+            <button onClick={openHistory}>내역삭제</button>
+          </ButtonBox>
+        </>
+      );
+    } else {
+      return null;
+    }
   };
 
   return (
