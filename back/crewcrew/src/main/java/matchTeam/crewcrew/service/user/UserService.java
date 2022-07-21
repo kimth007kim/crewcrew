@@ -13,8 +13,11 @@ import matchTeam.crewcrew.dto.social.KakaoProfile;
 import matchTeam.crewcrew.dto.social.NaverProfile;
 import matchTeam.crewcrew.dto.user.*;
 import matchTeam.crewcrew.dto.user.example.UserResponseDto;
+import matchTeam.crewcrew.entity.chat.ChatRoom;
 import matchTeam.crewcrew.entity.security.RefreshToken;
 import matchTeam.crewcrew.entity.user.User;
+import matchTeam.crewcrew.repository.chat.ChatMessageRepository;
+import matchTeam.crewcrew.repository.chat.ChatRoomRepository;
 import matchTeam.crewcrew.repository.security.RefreshTokenJpaRepository;
 import matchTeam.crewcrew.repository.user.LikedCategoryRepository;
 import matchTeam.crewcrew.repository.user.UserRepository;
@@ -49,9 +52,8 @@ public class UserService {
     private final LikedCategoryRepository likedCategoryRepository;
     //email 발송기능
     private final PasswordEncoder passwordEncoder;
-    private final CookieService cookieService;
-    private final RedisUtil redisutil;
-    private final RefreshTokenJpaRepository refreshTokenJpaRepository;
+    private final ChatRoomRepository chatRoomRepository;
+    private final ChatMessageRepository chatMessageRepository;
     private final LikedCategoryService likedCategoryService;
     private final JwtProvider jwtProvider;
     private final EmailService emailService;
@@ -504,9 +506,27 @@ public class UserService {
         setRandomMessage(user);
         return user;
     }
-
+    @Transactional
     public void deleteUser(User user){
+
 //        User user = userRepository.findById(id).orElseThrow(()-> new CrewException(ErrorCode.UID_NOT_EXIST));
+        List<ChatRoom> subsRoom =chatRoomRepository.findSubscriber(user);
+        List<ChatRoom> pubsRoom =chatRoomRepository.findPublisher(user);
+        ArrayList<UUID> roomIdArray= new ArrayList<>();
+
+        for (ChatRoom c: subsRoom){
+            roomIdArray.add(c.getRoomId());
+            chatMessageRepository.deleteChatMessageByChatRoom(c);
+        }
+        for (ChatRoom c: pubsRoom){
+            roomIdArray.add(c.getRoomId());
+            chatMessageRepository.deleteChatMessageByChatRoom(c);
+        }
+        for (UUID roomId : roomIdArray){
+            chatRoomRepository.deleteChatRoomByRoomId(roomId);
+        }
+
+
         userRepository.delete(user);
     }
 

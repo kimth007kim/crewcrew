@@ -532,7 +532,7 @@ public class AuthController {
     }
 
     @DeleteMapping("/user")
-    public ResponseEntity<Object> test(@RequestHeader("X-AUTH-TOKEN") String token) {
+    public ResponseEntity<Object> deleteUser(@RequestHeader("X-AUTH-TOKEN") String token) {
         User user = userService.tokenChecker(token);
         userService.deleteUser(user);
         return ResponseHandler.generateResponse("회원 탈퇴 성공", HttpStatus.OK, null);

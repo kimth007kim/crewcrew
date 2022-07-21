@@ -6,6 +6,8 @@ import matchTeam.crewcrew.entity.board.Board;
 import matchTeam.crewcrew.entity.user.User;
 import net.bytebuddy.implementation.bind.annotation.Default;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
@@ -27,14 +29,17 @@ public class ChatRoom  extends BaseTimeEntity {
 
     @ManyToOne
     @JoinColumn(name="board_seq")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Board board;
 
     @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "publisherId")
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     private User publisher;
 
     @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "subscriberId")
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     private User subscriber;
 
     private int publisherIn;

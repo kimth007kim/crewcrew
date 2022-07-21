@@ -19,7 +19,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, UUID> {
     Optional<ChatRoom> findById(UUID roomId);
 
     List<ChatRoom> findBySubscriberOrPublisher(User member1, User member2);
-
+    void deleteChatRoomByRoomId(UUID roomId);
 
     @Query("select c from ChatRoom c where c.subscriber=:user and c.subscriberIn=1")
     List<ChatRoom> findSubscriber(@Param("user") User user);

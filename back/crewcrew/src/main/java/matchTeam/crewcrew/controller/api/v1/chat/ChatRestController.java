@@ -4,6 +4,7 @@ package matchTeam.crewcrew.controller.api.v1.chat;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import matchTeam.crewcrew.dto.chat.*;
 import matchTeam.crewcrew.entity.chat.ChatRoom;
 import matchTeam.crewcrew.entity.user.User;
@@ -24,6 +25,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/talk")
 @RestController
+@Slf4j
 public class ChatRestController {
     private final ChatRoomService chatRoomService;
     private final UserService userService;
@@ -54,6 +56,7 @@ public class ChatRestController {
     @GetMapping("/user")
     public ResponseEntity<Object> memberId( @RequestHeader("X-AUTH-TOKEN") String token) {
         User user = userService.tokenChecker(token);
+        log.info("--------------------------uid"+user.getUid());
         List<RoomListResponseDTO> messages = chatRoomService.roomList(user.getUid());
         return ResponseHandler.generateResponse("member가 속한 방 리스트 조회 완료", HttpStatus.OK, messages);
     }

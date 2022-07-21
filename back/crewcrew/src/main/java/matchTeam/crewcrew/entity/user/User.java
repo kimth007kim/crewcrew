@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import matchTeam.crewcrew.entity.BaseTimeEntity;
+import matchTeam.crewcrew.entity.board.Board;
+import matchTeam.crewcrew.entity.bookmark.Bookmark;
+import matchTeam.crewcrew.entity.chat.ChatRoom;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -67,6 +70,19 @@ public class User extends BaseTimeEntity implements UserDetails {
             orphanRemoval = true)
     @JsonManagedReference
     private final List<LikedCategory> likedCategories= new ArrayList<>();
+
+    @OneToMany(mappedBy = "user",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private final List<Board> board = new ArrayList<>();
+//
+    @OneToMany(mappedBy = "uid",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private final List<Bookmark> bookmarks = new ArrayList<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
