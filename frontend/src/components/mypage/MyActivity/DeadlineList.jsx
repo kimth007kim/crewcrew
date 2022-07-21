@@ -37,6 +37,8 @@ function DeadlineList({ postsPerPage }) {
         },
       );
       setDeadlineLoading(false);
+      console.log(data, 'deadline');
+
       switch (data.status) {
         case 200:
           if (data.data.content.length === 0 && deadlineCurrentPage > 1) {

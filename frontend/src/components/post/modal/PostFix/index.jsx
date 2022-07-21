@@ -14,7 +14,7 @@ import HeaderContent1 from './HeaderContent1';
 import HeaderContent2 from './HeaderContent2';
 import MainContent from './MainContent';
 
-function PostFixModal({ closeModal, visible, category = 0, postData = null }) {
+function PostFixModal({ closeModal, visible, category = 0, postData }) {
   const cookies = new Cookies();
   const { data: myData, error: myError } = useSWR(
     ['/auth/token', cookies.get('X-AUTH-TOKEN')],
@@ -72,10 +72,10 @@ function PostFixModal({ closeModal, visible, category = 0, postData = null }) {
         kakaoChat: inviteLink,
         title: titleText,
         totalCrew: peopleNum,
-        recruitedCrew: postData.recruitedCrew,
+        recruitedCrew: postData?.recruitedCrew,
       };
 
-      const { data } = await axios.put(`/board/${postData.boardId}`, context, {
+      const { data } = await axios.put(`/board/${postData?.boardId}`, context, {
         withCredentials: true,
         headers: {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
@@ -129,31 +129,31 @@ function PostFixModal({ closeModal, visible, category = 0, postData = null }) {
   }, [category]);
 
   const initialData = useCallback(() => {
-    if (postData.categoryParentId === 2) {
+    if (postData?.categoryParentId === 2) {
       setCategoryCheck(1);
     }
-    if (postData.approachCode === 1) {
+    if (postData?.approachCode === 1) {
       setMeetingCheck(1);
     }
-    if (postData.totalCrew) {
-      setPeopleNum(postData.totalCrew);
+    if (postData?.totalCrew) {
+      setPeopleNum(postData?.totalCrew);
     }
-    if (postData.expiredDate) {
-      setLastDate(new Date(postData.expiredDate));
+    if (postData?.expiredDate) {
+      setLastDate(new Date(postData?.expiredDate));
     }
-    if (postData.kakaoChat) {
-      setInviteLink(postData.kakaoChat);
+    if (postData?.kakaoChat) {
+      setInviteLink(postData?.kakaoChat);
     }
-    if (postData.title) {
-      setTitleText(postData.title);
+    if (postData?.title) {
+      setTitleText(postData?.title);
     }
-    if (postData.categoryId) {
-      setDetailCategoryCheck(postData.categoryId);
-      const categoryName = cateogoryAll.filter((v) => postData.categoryId === Number(v.value))[0]
+    if (postData?.categoryId) {
+      setDetailCategoryCheck(postData?.categoryId);
+      const categoryName = cateogoryAll.filter((v) => postData?.categoryId === Number(v.value))[0]
         .name;
       setCategoryValue(categoryName);
     }
-  }, [postData]);
+  }, []);
 
   useEffect(() => {
     initialData();
@@ -202,7 +202,7 @@ function PostFixModal({ closeModal, visible, category = 0, postData = null }) {
                 titleText,
                 setTitleText,
               }}
-              text={postData && postData.boardContent}
+              text={postData?.boardContent}
             ></MainContent>
           </Body>
           <Footer>

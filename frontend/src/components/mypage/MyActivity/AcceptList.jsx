@@ -41,6 +41,7 @@ function AcceptList({ postsPerPage }) {
         },
       );
       setAcceptLoading(false);
+      console.log(data, 'accept');
       switch (data.status) {
         case 200:
           if (data.data.contents.length === 0 && acceptCurrentPage > 1) {

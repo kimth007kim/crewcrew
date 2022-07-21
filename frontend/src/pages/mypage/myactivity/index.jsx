@@ -1,11 +1,6 @@
-import Button from '@/components/common/Button';
-import Loader from '@/components/common/Loader';
 import MyLayout from '@/components/common/MyLayout';
-import ActivityCard from '@/components/mypage/Card/ActivityCard';
-import ParticipateCard from '@/components/mypage/Card/ParticipateCard';
 import MypageMainSubTop from '@/components/mypage/MypageMainSubTop';
 import MypageSubTop from '@/components/mypage/MypageSubTop';
-import MyPagination from '@/components/mypage/MyPagination';
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Cookies } from 'react-cookie';

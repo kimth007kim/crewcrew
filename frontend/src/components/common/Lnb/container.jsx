@@ -49,9 +49,7 @@ function NavContainer() {
           if (pathname.startsWith('/mypage')) {
             navigate('/', { replace: true });
           }
-          if (window && window.location) {
-            window.location.reload();
-          }
+          window.location.reload();
           break;
         case 1900:
           toast.error(data.message);

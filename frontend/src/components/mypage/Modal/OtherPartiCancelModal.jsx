@@ -72,6 +72,10 @@ function OtherPartiCancelModal({ closeModal, visible, apData, postData, handleRe
     }
   }, []);
 
+  if (!postData) {
+    return null;
+  }
+
   return (
     <Modal
       handleClose={() => {
@@ -107,17 +111,17 @@ function OtherPartiCancelModal({ closeModal, visible, apData, postData, handleRe
               <CardHead>
                 <span>{renderDate()}</span> 참여중
               </CardHead>
-              <h4>{postData.title}</h4>
+              <h4>{postData?.title}</h4>
               <CardFooter>
-                <li className={postData.categoryParentId === 1 ? 'study' : 'hobby'}>
+                <li className={postData?.categoryParentId === 1 ? 'study' : 'hobby'}>
                   {
                     cateogoryAll.filter(
-                      (category) => `${postData.categoryId}` === category.value,
-                    )[0].name
+                      (category) => `${postData?.categoryId}` === category.value,
+                    )[0]?.name
                   }
                 </li>
-                <li>{postData.approachCode ? '오프라인' : '온라인'}</li>
-                <li>{`${postData.recruitedCrew}/${postData.totalCrew}명`}</li>
+                <li>{postData?.approachCode ? '오프라인' : '온라인'}</li>
+                <li>{`${postData?.recruitedCrew}/${postData?.totalCrew}명`}</li>
               </CardFooter>
             </ClassificationCard>
 

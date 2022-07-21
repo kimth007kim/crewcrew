@@ -72,6 +72,10 @@ function RequestCancelModal({ closeModal, visible, postData, handleReloadApId })
     }
   }, []);
 
+  if (!postData) {
+    return null;
+  }
+
   return (
     <Modal
       handleClose={() => {

@@ -47,7 +47,7 @@ function ParticipateCard({ postData, handleCloseDownId }) {
       if (IsDisable) {
         return;
       }
-      navigate(`/post/${postData.boardId}`);
+      navigate(`/post/${postData?.boardId}`);
     },
     [IsDisable],
   );
@@ -56,7 +56,7 @@ function ParticipateCard({ postData, handleCloseDownId }) {
     (e, position) => {
       e.stopPropagation();
       setTooltipPosition(position);
-      setCurrentBoardId(postData.boardId);
+      setCurrentBoardId(postData?.boardId);
       setTooltip(true);
     },
     [tooltip],
@@ -65,7 +65,7 @@ function ParticipateCard({ postData, handleCloseDownId }) {
   const getParticipant = useCallback(async () => {
     try {
       const { data } = await axios.get(
-        `/application/myCrew/participated/applier/${postData.boardId}`,
+        `/application/myCrew/participated/applier/${postData?.boardId}`,
         {
           withCredentials: true,
           headers: {
@@ -87,13 +87,17 @@ function ParticipateCard({ postData, handleCloseDownId }) {
   }, []);
 
   useEffect(() => {
-    const bool = !postData.viewable || renderDay(postData.expiredDate) < 0;
+    const bool = !postData?.viewable || renderDay(postData?.expiredDate) < 0;
     setIsDisable(bool);
   }, []);
 
   useEffect(() => {
     getParticipant();
   }, []);
+
+  if (!postData) {
+    return null;
+  }
 
   return (
     <Container>
@@ -102,14 +106,14 @@ function ParticipateCard({ postData, handleCloseDownId }) {
           <CardTopHeader active={isSwiperClick}>
             <CardHead isDisabled={IsDisable}>
               <ProfileBox onClick={(e) => viewTooltip(e, 1)}>
-                <img src={`${postData.profileImage}`} alt="" />
+                <img src={`${postData?.profileImage}`} alt="" />
               </ProfileBox>
               <TextBox>
-                <Dday>{IsDisable ? '마감' : `D-${renderDay(postData.expiredDate)}`}</Dday>
-                <CardDate>{renderDate(postData.appliedDate)}</CardDate>
-                <CardName onClick={(e) => viewTooltip(e, 2)}>{postData.nickName}</CardName>
+                <Dday>{IsDisable ? '마감' : `D-${renderDay(postData?.expiredDate)}`}</Dday>
+                <CardDate>{renderDate(postData?.appliedDate)}</CardDate>
+                <CardName onClick={(e) => viewTooltip(e, 2)}>{postData?.nickName}</CardName>
               </TextBox>
-              {myData && myData.data?.uid && tooltip && (
+              {myData && myData.data?.uid && tooltip && postData && (
                 <ProfileTooltip
                   data={postData}
                   position={tooltipPosition}
@@ -119,28 +123,28 @@ function ParticipateCard({ postData, handleCloseDownId }) {
               )}
               <DetailBox>
                 <p>
-                  <span>{`(${postData.recruitedCrew}/${postData.totalCrew}명)`}</span> 모집완료
+                  <span>{`(${postData?.recruitedCrew}/${postData?.totalCrew}명)`}</span> 모집완료
                 </p>
-                <button onClick={() => openInNewTab(postData.kakaoChat)}>크루원채팅</button>
+                <button onClick={() => openInNewTab(postData?.kakaoChat)}>크루원채팅</button>
               </DetailBox>
             </CardHead>
             <CardBody isDisabled={IsDisable}>
               <TextBox>
                 <TitleBox>
-                  <h5 onClick={navigateBoard}>{postData.title}</h5>
+                  <h5 onClick={navigateBoard}>{postData?.title}</h5>
                 </TitleBox>
                 <TextList>
                   <CategoryText
-                    textColor={postData.categoryParentId === 1 ? '#005ec5' : '#F7971E'}
+                    textColor={postData?.categoryParentId === 1 ? '#005ec5' : '#F7971E'}
                     isDisabled={IsDisable}
                   >
                     {
                       cateogoryAll.filter(
-                        (category) => `${postData.categoryId}` === category.value,
+                        (category) => `${postData?.categoryId}` === category.value,
                       )[0].name
                     }
                   </CategoryText>
-                  <p>{postData.approachCode ? '오프라인' : '온라인'}</p>
+                  <p>{postData?.approachCode ? '오프라인' : '온라인'}</p>
                 </TextList>
               </TextBox>
 

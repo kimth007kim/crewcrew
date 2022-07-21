@@ -41,7 +41,7 @@ function RequestHobbyList({ postsPerPage }) {
             setHobbyCurrentPage(hobbyCurrentPage - 1);
             return;
           }
-          console.log(data);
+
           setHobbyAppList([...data.data.contents]);
           setHobbyPageData({
             ...data.data,

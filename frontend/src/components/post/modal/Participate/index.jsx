@@ -33,7 +33,7 @@ function ParticipateModal({ closeModal, visible, postData }) {
     try {
       setLoading(true);
       const context = {
-        boardId: postData.boardId,
+        boardId: postData?.boardId,
         commentary: message,
       };
       const { data } = await axios.post('/board/application', context, {
@@ -137,20 +137,20 @@ function ParticipateModal({ closeModal, visible, postData }) {
               ></ModalClose>
             </li>
           </ModalTop>
-          <TitleWrap textColor={postData.categoryParentId === 1 ? '#005ec5' : '#F7971E'}>
-            <h4>{postData.title}</h4>
+          <TitleWrap textColor={postData?.categoryParentId === 1 ? '#005ec5' : '#F7971E'}>
+            <h4>{postData?.title}</h4>
             <ul>
               <li>
                 {
-                  cateogoryAll.filter((category) => `${postData.categoryId}` === category.value)[0]
+                  cateogoryAll.filter((category) => `${postData?.categoryId}` === category.value)[0]
                     .name
                 }
               </li>
-              <li>{postData.approachCode ? '오프라인' : '온라인'}</li>
-              <li>{`${postData.recruitedCrew}/${postData.totalCrew}명`}</li>
+              <li>{postData?.approachCode ? '오프라인' : '온라인'}</li>
+              <li>{`${postData?.recruitedCrew}/${postData?.totalCrew}명`}</li>
               <li>
                 조회수
-                {` ${postData.hit}`}
+                {` ${postData?.hit}`}
               </li>
             </ul>
           </TitleWrap>

@@ -29,7 +29,7 @@ function PlusDateModal({ closeModal, visible, postData }) {
   const navigate = useNavigate();
 
   const renderDate = useCallback(() => {
-    const date = new Date(postData.createdDate.replace(/-/g, '/'));
+    const date = new Date(postData?.createdDate.replace(/-/g, '/'));
     return `${format(date, 'MM월 dd일')}`;
   }, []);
 
@@ -46,7 +46,7 @@ function PlusDateModal({ closeModal, visible, postData }) {
     setLoading(true);
     try {
       const { data } = await axios.patch(
-        `/application/myCrew/extend/${postData.boardId}`,
+        `/application/myCrew/extend/${postData?.boardId}`,
         {},
         {
           withCredentials: true,
@@ -60,7 +60,7 @@ function PlusDateModal({ closeModal, visible, postData }) {
       switch (data.status) {
         case 200:
           closeModal();
-          navigate(`/post/${postData.boardId}`);
+          navigate(`/post/${postData?.boardId}`);
           toast.success('성공적으로 연장되었습니다.');
           break;
         case 2301:
@@ -78,6 +78,10 @@ function PlusDateModal({ closeModal, visible, postData }) {
       console.error(err);
     }
   }, []);
+
+  if (!postData) {
+    return null;
+  }
 
   return (
     <Modal
@@ -114,17 +118,17 @@ function PlusDateModal({ closeModal, visible, postData }) {
               <CardHead>
                 <span>{renderDate()}</span> 마감
               </CardHead>
-              <h4>{postData.title}</h4>
+              <h4>{postData?.title}</h4>
               <CardFooter>
-                <li className={postData.categoryParentId === 1 ? 'study' : 'hobby'}>
+                <li className={postData?.categoryParentId === 1 ? 'study' : 'hobby'}>
                   {
                     cateogoryAll.filter(
-                      (category) => `${postData.categoryId}` === category.value,
+                      (category) => `${postData?.categoryId}` === category.value,
                     )[0].name
                   }
                 </li>
-                <li>{postData.approachCode ? '오프라인' : '온라인'}</li>
-                <li>{`${postData.recruitedCrew}/${postData.totalCrew}명`}</li>
+                <li>{postData?.approachCode ? '오프라인' : '온라인'}</li>
+                <li>{`${postData?.recruitedCrew}/${postData?.totalCrew}명`}</li>
               </CardFooter>
             </ClassificationCard>
             <ButtonWrap>

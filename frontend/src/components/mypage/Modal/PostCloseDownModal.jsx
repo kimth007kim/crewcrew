@@ -70,6 +70,10 @@ function PostCloseDownModal({ closeModal, visible, postData, handleCloseDownId }
     }
   }, []);
 
+  if (!postData) {
+    return null;
+  }
+
   return (
     <Modal
       handleClose={() => {

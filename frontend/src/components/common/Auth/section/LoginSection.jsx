@@ -131,13 +131,8 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
                 });
               }
               setIsLogin(true);
-
               mutate('/auth/token');
-
-              if (window && window.location) {
-                window.location.reload();
-              }
-
+              window.location.reload();
               break;
             case 400:
             case 1101:

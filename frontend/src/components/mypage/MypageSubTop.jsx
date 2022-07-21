@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import FilterArrowImg from '@/assets/images/IconNavArrow_Big_Rev.png';
 import IconLinkIntro from '@/assets/images/IconLinkIntro.png';
 
-function MypageSubTop({ title }) {
+function MypageSubTop({ title = '내가 참여요청한 크루' }) {
   return (
     <Container>
       <TopCont>

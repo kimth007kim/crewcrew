@@ -29,7 +29,7 @@ function PostDeleteModal({ closeModal, visible, postData }) {
   const navigate = useNavigate();
 
   const renderDate = useCallback(() => {
-    const date = new Date(postData.createdDate.replace(/-/g, '/'));
+    const date = new Date(postData?.createdDate.replace(/-/g, '/'));
     return `${format(date, 'MM월 dd일')}`;
   }, []);
 
@@ -39,7 +39,7 @@ function PostDeleteModal({ closeModal, visible, postData }) {
     }
     setLoading(true);
     try {
-      const { data } = await axios.delete(`/board/${postData.boardId}`, {
+      const { data } = await axios.delete(`/board/${postData?.boardId}`, {
         withCredentials: true,
         headers: {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
@@ -103,17 +103,17 @@ function PostDeleteModal({ closeModal, visible, postData }) {
               <CardHead>
                 <span>{renderDate()}</span> 업로드
               </CardHead>
-              <h4>{postData.title}</h4>
+              <h4>{postData?.title}</h4>
               <CardFooter>
-                <li className={postData.categoryParentId === 1 ? 'study' : 'hobby'}>
+                <li className={postData?.categoryParentId === 1 ? 'study' : 'hobby'}>
                   {
                     cateogoryAll.filter(
-                      (category) => `${postData.categoryId}` === category.value,
+                      (category) => `${postData?.categoryId}` === category.value,
                     )[0].name
                   }
                 </li>
-                <li>{postData.approachCode ? '오프라인' : '온라인'}</li>
-                <li>{`${postData.recruitedCrew}/${postData.totalCrew}명`}</li>
+                <li>{postData?.approachCode ? '오프라인' : '온라인'}</li>
+                <li>{`${postData?.recruitedCrew}/${postData?.totalCrew}명`}</li>
               </CardFooter>
             </ClassificationCard>
             <Notification>

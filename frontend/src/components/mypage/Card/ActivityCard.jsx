@@ -35,7 +35,7 @@ function ActivityCard({ postData, handleCloseDownId }) {
 
   const getParticipant = useCallback(async () => {
     try {
-      const { data } = await axios.get(`/application/myCrew/details/applier/${postData.boardId}`, {
+      const { data } = await axios.get(`/application/myCrew/details/applier/${postData?.boardId}`, {
         withCredentials: true,
         headers: {
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
@@ -55,10 +55,14 @@ function ActivityCard({ postData, handleCloseDownId }) {
   }, []);
 
   useEffect(() => {
-    const bool = !postData.viewable || renderDay(postData.expiredDate) < 0;
+    const bool = !postData?.viewable || renderDay(postData?.expiredDate) < 0;
     setIsDisable(bool);
     getParticipant();
   }, []);
+
+  if (!postData) {
+    return null;
+  }
 
   return (
     <>
@@ -69,32 +73,32 @@ function ActivityCard({ postData, handleCloseDownId }) {
               <CardHead>
                 <TextBox>
                   <Dday>마감</Dday>
-                  <PostDate>{renderDate(postData.createdDate)} 게시</PostDate>
+                  <PostDate>{renderDate(postData?.createdDate)} 게시</PostDate>
                 </TextBox>
                 <DetailBox>
                   <p>
-                    <span>{`(${postData.recruitedCrew}/${postData.totalCrew}명)`}</span> 모집완료
+                    <span>{`(${postData?.recruitedCrew}/${postData?.totalCrew}명)`}</span> 모집완료
                   </p>
-                  <button onClick={() => openInNewTab(postData.kakaoChat)}>크루원채팅</button>
+                  <button onClick={() => openInNewTab(postData?.kakaoChat)}>크루원채팅</button>
                 </DetailBox>
               </CardHead>
               <CardBody isDisabled={IsDisable}>
                 <TextBox>
                   <TitleBox>
-                    <h5>{postData.title}</h5>
+                    <h5>{postData?.title}</h5>
                   </TitleBox>
                   <TextList>
                     <CategoryText
-                      textColor={postData.categoryParentId === 1 ? '#005ec5' : '#F7971E'}
+                      textColor={postData?.categoryParentId === 1 ? '#005ec5' : '#F7971E'}
                       isDisabled
                     >
                       {
                         cateogoryAll.filter(
-                          (category) => `${postData.categoryId}` === category.value,
+                          (category) => `${postData?.categoryId}` === category.value,
                         )[0].name
                       }
                     </CategoryText>
-                    <p>{postData.approachCode ? '오프라인' : '온라인'}</p>
+                    <p>{postData?.approachCode ? '오프라인' : '온라인'}</p>
                   </TextList>
                   <ButtonBox>
                     <button onClick={openDelete}>삭제</button>
@@ -122,7 +126,7 @@ function ActivityCard({ postData, handleCloseDownId }) {
               participantList={participantList}
               waitingList={[]}
               status={1}
-              boardId={postData.boardId}
+              boardId={postData?.boardId}
               pageStatus={1}
               postData={postData}
             ></SwiperBtSection>
