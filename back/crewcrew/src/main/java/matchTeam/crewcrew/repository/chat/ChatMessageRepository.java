@@ -20,10 +20,10 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage,Long> {
     List<ChatMessage> findByChatRoom(ChatRoom chatRoom);
     List<ChatMessage> findByChatRoomOrderByMessageIdDesc(ChatRoom chatRoom,Pageable pageable);
     List<ChatMessage> findByChatRoomAndUser(ChatRoom chatRoom, User user);
-
 //    @Query("Select m FROM ChatRoom inner join m.user t ",ChatROom.class )
 //    List<RoomListResponseDTO>
 
+    void deleteChatMessageByChatRoom(ChatRoom chatRoom);
 
     @Transactional
     @Modifying

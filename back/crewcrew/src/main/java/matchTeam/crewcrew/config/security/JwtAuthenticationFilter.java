@@ -93,15 +93,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         log.info("--------------------새로운 토큰 발급-----------"+newToken);
 
                         Cookie newCookie = cookieService.generateXAuthCookie("X-AUTH-TOKEN", newToken, 60 * 60 * 1000L);
-                        response.addCookie(newCookie);
+                        log.info("--------- 리프레시토큰 에 해당하는 엑세스토큰을 쿠키에 추가---------");
 
+                        response.addCookie(newCookie);
+                        log.info("--------- ACesss 토큰 발급 하고 리스폰스에 추가 완료------------");
                     }
                 }
             }
 
 
         } catch (Exception e) {
-            log.info(" 여기가 exception 여기가 exception");
+            log.info(e.getMessage()+" 여기가 exception 여기가 exception");
         }
 
         filterChain.doFilter(request, response);
