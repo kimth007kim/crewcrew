@@ -309,8 +309,6 @@ public class ApplicationQueryRepository {
                 .from(board)
                 .innerJoin(category)
                 .on(board.category.id.eq(category.id))
-                .innerJoin(application)
-                .on(application.board.id.eq(board.id))
                 .where(board.viewable.eq(true).and(board.user.uid.eq(req.getUid())).and(category.categoryParent.id.eq(categoryParentId)))
                 .orderBy(board.createdDate.desc());
 
