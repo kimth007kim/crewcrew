@@ -59,4 +59,14 @@ public class TimelineController {
         timelineService.read(announcementId);
         return ResponseHandler.generateResponse(announcementId+"번 타임라인 읽음 처리 성공", HttpStatus.OK, announcementId);
     }
+
+    @ApiOperation(value = "읽지 않은 타임라인 존재 여부", notes = "있으면 true, 없으면 false")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping("/timeline/unread")
+    public ResponseEntity<Object> getUnreadTimelineList(@RequestHeader("X-AUTH-TOKEN") String token){
+        User user = userService.tokenChecker(token);
+        if (user == null) throw new CrewException(ErrorCode.NOT_EXIST_LOGINED_USER);
+        Boolean hasUnreadTimeline = timelineService.checkUnreadTimeline(user.getUid());
+        return ResponseHandler.generateResponse("읽지 않은 타임라인 존재 여부 조회 성공", HttpStatus.OK, hasUnreadTimeline);
+    }
 }
