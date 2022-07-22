@@ -130,7 +130,27 @@ public class BoardController {
         result.add(findBoard);
         result.add(pageResponseDTO);
 
-        return ResponseHandler.generateResponse("게시글 번호로 상세 조회 성공",HttpStatus.OK, result);
+        return ResponseHandler.generateResponse("게시글 번호로 상세 조회 성공(페이징 포함)",HttpStatus.OK, result);
+    }
+
+    @ApiOperation(value = "게시글 조회(번호로 조회)", notes = "게시글 번호로 조회한다.")
+    @ApiResponses({
+            @ApiResponse(
+                    code = 200,
+                    message = "게시글 번호로 조회 성공",
+                    response = BoardResponseDTO.class
+            ),
+            @ApiResponse(
+                    code = 2301,
+                    message = "존재하지 않는 게시글 번호입니다."
+            )
+    })
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping("/board/details/{boardId}")
+    public ResponseEntity<Object> findByBoardDetailsById(@ApiParam(value = "게시글 번호", required = true)@PathVariable Long boardId){
+
+        BoardResponseDTO responseDTO = boardService.findById(boardId);
+        return ResponseHandler.generateResponse("게시글 번호로 상세 조회 성공",HttpStatus.OK, responseDTO);
     }
 
     @ApiOperation(value = "다중 조건에 의한 게시글 리스트 조회", notes = "조건에 따라 게시글 목록을 조회한다.")
