@@ -22,6 +22,10 @@ public class QUser extends EntityPathBase<User> {
 
     public final matchTeam.crewcrew.entity.QBaseTimeEntity _super = new matchTeam.crewcrew.entity.QBaseTimeEntity(this);
 
+    public final ListPath<matchTeam.crewcrew.entity.board.Board, matchTeam.crewcrew.entity.board.QBoard> board = this.<matchTeam.crewcrew.entity.board.Board, matchTeam.crewcrew.entity.board.QBoard>createList("board", matchTeam.crewcrew.entity.board.Board.class, matchTeam.crewcrew.entity.board.QBoard.class, PathInits.DIRECT2);
+
+    public final ListPath<matchTeam.crewcrew.entity.bookmark.Bookmark, matchTeam.crewcrew.entity.bookmark.QBookmark> bookmarks = this.<matchTeam.crewcrew.entity.bookmark.Bookmark, matchTeam.crewcrew.entity.bookmark.QBookmark>createList("bookmarks", matchTeam.crewcrew.entity.bookmark.Bookmark.class, matchTeam.crewcrew.entity.bookmark.QBookmark.class, PathInits.DIRECT2);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 

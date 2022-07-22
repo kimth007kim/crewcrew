@@ -17,6 +17,9 @@ public class TimelinePageDetailResponseDTO {
     @ApiModelProperty(value = "타임라인 id", notes = "타임라인 식별용 id", example = "123")
     private Long announcementId;
 
+    @ApiModelProperty(value = "부모 카테고리명", notes = "부모 카테고리 이름", example = "취미")
+    private String parentCategoryName;
+
     @ApiModelProperty(value = "카테고리명", notes = "카테고리 이름", example = "요리")
     private String categoryName;
 
@@ -49,6 +52,7 @@ public class TimelinePageDetailResponseDTO {
         this.boardId = res.getBoard().getId();
         this.nickname = res.getApplicant().getNickname();
         this.readChk = res.getReadChk();
+        this.parentCategoryName = res.getBoard().getCategory().getCategoryParent().getCategoryName();
     }
 
     public static TimelinePageDetailResponseDTO toDTO(Announcement announcement){
