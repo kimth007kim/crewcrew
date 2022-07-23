@@ -282,7 +282,7 @@ const PostTitle = styled.h4`
 `;
 
 const PostDesc = styled.p`
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   color: #868686;
   @media screen and (max-width: 820px) {

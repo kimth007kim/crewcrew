@@ -165,9 +165,9 @@ const NoContent = styled('div')`
   }
 
   p {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 400;
-    line-height: 20px;
+    line-height: 22px;
     text-align: center;
 
     em {

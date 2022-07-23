@@ -1,15 +1,46 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import IconFlag from '@/assets/images/IconFlag.png';
 import LogInCheck_off from '@/assets/images/LogInCheck_off.png';
 import LogInCheck_on from '@/assets/images/LogInCheck_on.png';
 import { format } from 'date-fns';
 import { cateogoryAll } from '@/frontDB/filterDB';
+import { useRecoilState } from 'recoil';
+import { tooltipBoardId } from '@/atoms/profile';
+import fetcher from '@/utils/fetcher';
+import useSWR from 'swr';
+import { Cookies } from 'react-cookie';
+import ProfileTooltip from '@/components/post/tooltip/ProfileTooltip';
 
 function ChatBoxCard({ isSetting, onClick, check, data }) {
+  const cookies = new Cookies();
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+
+  const [tooltip, setTooltip] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState(1);
+  const [currentBoardId, setCurrentBoardId] = useRecoilState(tooltipBoardId);
+
   const categoryData = cateogoryAll.filter(
     (category) => `${data.categoryId}` === category.value,
   )[0];
+
+  const viewTooltip = useCallback(
+    (e, position) => {
+      e.stopPropagation();
+      setTooltipPosition(position);
+      setCurrentBoardId(data.boardId);
+      setTooltip(true);
+    },
+    [tooltip],
+  );
+
+  useEffect(() => {
+    if (currentBoardId !== data.boardId) {
+      setTooltip(false);
+    }
+  }, [currentBoardId]);
+
+  console.log(data);
 
   return (
     <Container onClick={onClick}>
@@ -22,11 +53,20 @@ function ChatBoxCard({ isSetting, onClick, check, data }) {
 
       <ContentCard active={isSetting}>
         <ContentHead>
-          <HeadBox className="profile">
+          <HeadBox className="profile" onClick={(e) => viewTooltip(e, 3)}>
             <img src={data.other.profileImage} alt="profile" className="profile" />
             {!data.captain && <img src={IconFlag} alt="flag" className="flag" />}
             <p>{data.other.nickName}</p>
           </HeadBox>
+          {myData && myData.data?.uid && tooltip && data && (
+            <ProfileTooltip
+              data={{ ...data.other, boardId: data.boardSeq }}
+              position={tooltipPosition}
+              open={tooltip}
+              setOpen={setTooltip}
+              chatNone={true}
+            />
+          )}
           <HeadBox className="post">
             <p>
               <CategoryTxt textColor={categoryData.color}>{categoryData.name}</CategoryTxt>

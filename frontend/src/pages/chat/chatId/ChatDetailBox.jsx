@@ -15,6 +15,9 @@ import ChatDeleteModal from '@/components/common/DeleteModal/ChatDeleteModal';
 import useModal from '@/hooks/useModal';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useRecoilState } from 'recoil';
+import { tooltipBoardId } from '@/atoms/profile';
+import ProfileTooltip from '@/components/post/tooltip/ProfileTooltip';
 
 let client = null;
 
@@ -34,6 +37,11 @@ function ChatDetailBox({ roomId }) {
   const [content, setContent] = useState('');
   const [roomInfo, setRoomInfo] = useState(null);
   const [loading, setLoading] = useState(false);
+  // 툴팁
+  const [tooltip, setTooltip] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState(1);
+  const [currentBoardId, setCurrentBoardId] = useRecoilState(tooltipBoardId);
+
   const [deleteVisible, openDelete, closeDelete] = useModal();
   const navigate = useNavigate();
 
@@ -85,6 +93,16 @@ function ChatDetailBox({ roomId }) {
       }
     },
     [onSubmitContent],
+  );
+
+  const viewTooltip = useCallback(
+    (e, position) => {
+      e.stopPropagation();
+      setTooltipPosition(position);
+      setCurrentBoardId(roomInfo?.boardSeq);
+      setTooltip(true);
+    },
+    [tooltip, roomInfo],
   );
 
   const readChat = () => {
@@ -208,18 +226,35 @@ function ChatDetailBox({ roomId }) {
     chatSections = makeSection(arrayData ? arrayData.flat().reverse() : []);
   }
 
+  useEffect(() => {
+    if (currentBoardId !== roomInfo?.boardSeq) {
+      setTooltip(false);
+    }
+  }, [currentBoardId]);
+
   return (
     <>
       <BoxWrapper>
         <BoxHead>
           <HeadTop>
             <h3>
-              {roomInfo && roomInfo.other.nickName}
+              {roomInfo && (
+                <span onClick={(e) => viewTooltip(e, 1)}>{roomInfo.other.nickName}</span>
+              )}
               {roomInfo && !roomInfo.captain && <img src={IconFlag} alt="flag" />}
             </h3>
             <button className="del" onClick={openDelete}>
               삭제
             </button>
+            {myData && myData.data?.uid && tooltip && roomInfo && (
+              <ProfileTooltip
+                data={{ ...roomInfo.other, boardId: roomInfo.boardSeq }}
+                position={tooltipPosition}
+                open={tooltip}
+                setOpen={setTooltip}
+                chatNone={true}
+              />
+            )}
           </HeadTop>
           <p>
             <CategoryTxt>{roomInfo && roomInfo.categoryName}</CategoryTxt>
@@ -292,7 +327,7 @@ const BoxHead = styled('div')`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 18px;
+  gap: 15px;
 
   h3 {
     margin-right: auto;
@@ -307,8 +342,8 @@ const BoxHead = styled('div')`
     }
   }
 
-  p {
-    font-size: 12px;
+  & > p {
+    font-size: 14px;
     font-weight: 500;
     color: #a8a8a8;
   }
@@ -352,6 +387,11 @@ const HeadTop = styled('div')`
   display: flex;
   width: 100%;
   justify-content: space-between;
+  position: relative;
+
+  span {
+    cursor: pointer;
+  }
 `;
 
 const ChatBoxBottom = styled('div')`

@@ -8,7 +8,7 @@ import useSWR from 'swr';
 import { Cookies } from 'react-cookie';
 import fetcher from '@/utils/fetcher';
 
-function ProfileTooltip({ data, position, open, setOpen }) {
+function ProfileTooltip({ data, position, open, setOpen, chatNone = false }) {
   const cookies = new Cookies();
   const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
@@ -52,7 +52,7 @@ function ProfileTooltip({ data, position, open, setOpen }) {
     <Container position={position} ref={profileRef} onClick={stopPropagation}>
       <ToolTipName>{data.nickname || data.nickName}</ToolTipName>
       <ToolTipBtn>
-        {myData?.data?.uid !== data.uid && <Chat onClick={(e) => navigateChat(e)} />}
+        {myData?.data?.uid !== data.uid && !chatNone && <Chat onClick={(e) => navigateChat(e)} />}
         <Profile onClick={(e) => navigateProfile(e)}>프로필 확인</Profile>
       </ToolTipBtn>
     </Container>

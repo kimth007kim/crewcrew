@@ -496,7 +496,7 @@ const CardBody = styled.div`
 
     ${TextList} {
       display: flex;
-      margin-top: 15px;
+      margin-top: 12px;
       p {
         font-size: 12px;
         font-weight: 400;

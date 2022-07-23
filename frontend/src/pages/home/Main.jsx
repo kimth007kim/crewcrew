@@ -281,7 +281,7 @@ const WriteWrap = styled.div`
 
   p {
     text-align: center;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 400;
     color: #868686;
     margin-top: 10px;
@@ -320,7 +320,7 @@ const SectionWraph4 = styled.h4`
 `;
 
 const SectionWrapp = styled.p`
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   color: #868686;
   margin-top: 10px;
@@ -566,7 +566,7 @@ const PostWrap = styled.div`
     }
   }
   & > p {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 400;
     color: #868686;
     margin-top: 10px;
