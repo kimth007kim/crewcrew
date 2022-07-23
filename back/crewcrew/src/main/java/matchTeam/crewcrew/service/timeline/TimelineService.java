@@ -41,9 +41,13 @@ public class TimelineService {
     @Transactional
     public Long read(Long id){
         Announcement announcement = announcementRepository.findById(id)
-                .orElseThrow(() -> new CrewException(ErrorCode.NOT_EXIST_TIMELINE_TO_CANCEL));
-
+                .orElseThrow(() -> new CrewException(ErrorCode.NOT_EXIST_TIMELINE_TO_READ));
         announcement.read();
         return id;
+    }
+
+    @Transactional
+    public Boolean checkUnreadTimeline(Long uid){
+        return timelineQueryRepository.checkUnreadTimeline(uid);
     }
 }

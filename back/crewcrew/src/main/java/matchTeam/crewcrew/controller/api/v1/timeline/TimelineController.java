@@ -28,7 +28,7 @@ public class TimelineController {
     private final UserService userService;
     private final TimelineService timelineService;
 
-    @ApiOperation(value = "타임라인 리스트 조회", notes = "filter는 전체 0, 나에게 온 참여요청 1, 나의 참여요청 거절 2, 나의 참여요청 수락 3, 나의 참여 취소 4 옵션 중 하나 선택")
+    @ApiOperation(value = "타임라인 리스트 조회", notes = "filter는 전체 0, 나에게 온 참여요청 1, 나의 참여요청 거절 2, 나의 참여요청 수락 3, 나의 참여 취소 4 옵션 중 하나 선택 (5 - 수락했던 참여 취소당함)은 명칭 미정)")
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/timeline/list")
     public ResponseEntity<Object> getTimelineList(@RequestHeader("X-AUTH-TOKEN") String token, @PageableDefault(size = 10) Pageable pageable, @ApiParam(value = "타임라인 필터", required = true)
@@ -58,5 +58,15 @@ public class TimelineController {
         if (user == null) throw new CrewException(ErrorCode.NOT_EXIST_LOGINED_USER);
         timelineService.read(announcementId);
         return ResponseHandler.generateResponse(announcementId+"번 타임라인 읽음 처리 성공", HttpStatus.OK, announcementId);
+    }
+
+    @ApiOperation(value = "읽지 않은 타임라인 존재 여부", notes = "있으면 true, 없으면 false")
+    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping("/timeline/unread")
+    public ResponseEntity<Object> getUnreadTimelineList(@RequestHeader("X-AUTH-TOKEN") String token){
+        User user = userService.tokenChecker(token);
+        if (user == null) throw new CrewException(ErrorCode.NOT_EXIST_LOGINED_USER);
+        Boolean hasUnreadTimeline = timelineService.checkUnreadTimeline(user.getUid());
+        return ResponseHandler.generateResponse("읽지 않은 타임라인 존재 여부 조회 성공", HttpStatus.OK, hasUnreadTimeline);
     }
 }

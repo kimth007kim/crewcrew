@@ -138,7 +138,8 @@ public enum ErrorCode {
 
     //6000 ~ 타임라인 예외
 
-    NOT_EXIST_TIMELINE_TO_CANCEL(6001, "TIMELINE IS EMPTY", "없는 타임라인을 삭제하려고 했습니다.");
+    NOT_EXIST_TIMELINE_TO_CANCEL(6001, "TIMELINE IS UNAVAILABLE TO DELETE", "없는 타임라인을 삭제하려고 했습니다."),
+    NOT_EXIST_TIMELINE_TO_READ(6002, "TIMELINE IS UNAVAILABLE TO READ", "없는 타임라인을 읽으려고 했습니다.");
 
 
     private int status;
