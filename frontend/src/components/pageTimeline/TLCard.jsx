@@ -13,12 +13,10 @@ import { useNavigate } from 'react-router-dom';
 function TLCard({ data, isLast }) {
   const navigate = useNavigate();
   const cookies = new Cookies();
-  const [category, setCategory] = useState('study');
   const [isCheck, setIsCheck] = useState(false);
   const [btnOpen, setBtnOpen] = useRecoilState(BtnOpened);
   const [dataLists, setDataLists] = useRecoilState(DataLists);
-  const hobbyCat = ['예술', '요리', '운동', '게임', '덕질', '트렌드', '취미기타'];
-  const Date = dayjs(data.createdDate).format('YY/MM/DD HH:mm');
+  const Date = dayjs(data.createdDate.replace(/-/g, '/')).format('YY/MM/DD HH:mm');
   const [detailState, setDetailState] = useState('nega');
 
   const changeProps = (e) => {
@@ -110,9 +108,6 @@ function TLCard({ data, isLast }) {
   };
 
   useEffect(() => {
-    hobbyCat.forEach((e) => {
-      e === data.categoryName && setCategory('hobby');
-    });
     if (data.announceType === 1 || data.announceType === 2) {
       setDetailState('posi');
     }
@@ -140,8 +135,16 @@ function TLCard({ data, isLast }) {
         </LabelCheck>
       </TLCardSet>
       <TLCardboxWrapper isLast={isLast}>
-        <TLCardbox Cat={category} State={detailState} Disabled={data.readChk} onClick={readDetail}>
-          <Title Cat={category} Disabled={data.readChk}>
+        <TLCardbox
+          Cat={data.parentCategoryName === '취미' ? 'hobby' : 'study'}
+          State={detailState}
+          Disabled={data.readChk}
+          onClick={readDetail}
+        >
+          <Title
+            Cat={data.parentCategoryName === '취미' ? 'hobby' : 'study'}
+            Disabled={data.readChk}
+          >
             <em>{data.categoryName}</em>
             {Date}
           </Title>

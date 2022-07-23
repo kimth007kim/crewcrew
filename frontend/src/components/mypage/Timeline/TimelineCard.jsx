@@ -1,22 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import dayjs from 'dayjs';
 import TimelineMent from './TimelineMent';
 
 function TimelineCard({ data }) {
-  const hobbyCat = ['예술', '요리', '운동', '게임', '덕질', '트렌드', '취미기타'];
-  const Date = dayjs(data.createdDate).format('YY/MM/DD');
-  const [category, setCategory] = useState('study');
-
-  useEffect(() => {
-    hobbyCat.forEach((e) => {
-      e === data.categoryName && setCategory('hobby');
-    });
-  }, [data]);
+  const Date = dayjs(data.createdDate.replace(/-/g, '/')).format('YY/MM/DD');
 
   return (
     <Container>
-      <ContentTop Cat={category}>
+      <ContentTop Cat={data.parentCategoryName === '취미' ? 'hobby' : 'study'}>
         <h5>{data.categoryName}</h5>
         <p>{Date}</p>
       </ContentTop>
