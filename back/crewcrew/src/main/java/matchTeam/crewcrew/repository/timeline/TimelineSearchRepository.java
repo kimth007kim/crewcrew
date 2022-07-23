@@ -34,7 +34,8 @@ public class TimelineSearchRepository {
                 chkUser = announcement.leader.uid.eq(userId).and(announcement.announceType.eq(1))
                         .or(announcement.applicant.uid.eq(userId).and(announcement.announceType.eq(0)))
                         .or(announcement.applicant.uid.eq(userId).and(announcement.announceType.eq(2)))
-                        .or(announcement.applicant.uid.eq(userId).and(announcement.announceType.eq(3)));
+                        .or(announcement.applicant.uid.eq(userId).and(announcement.announceType.eq(3)))
+                        .or(announcement.leader.uid.eq(userId).and(announcement.announceType.eq(4)));
                 break;
             case 1:
                 chkUser = announcement.leader.uid.eq(userId).and(announcement.announceType.eq(1));
@@ -47,6 +48,9 @@ public class TimelineSearchRepository {
                 break;
             case 4:
                 chkUser = announcement.applicant.uid.eq(userId).and(announcement.announceType.eq(3));
+                break;
+            case 5:
+                chkUser = announcement.leader.uid.eq(userId).and(announcement.announceType.eq(4));
                 break;
         }
 
@@ -68,5 +72,21 @@ public class TimelineSearchRepository {
                 );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
+    public boolean checkUnreadTimeline(Long userId){
+        long count = queryFactory
+                .select(announcement.count())
+                .from(announcement)
+                .where(
+                        announcement.leader.uid.eq(userId).and(announcement.announceType.eq(1))
+                                .or(announcement.applicant.uid.eq(userId).and(announcement.announceType.eq(0)))
+                                .or(announcement.applicant.uid.eq(userId).and(announcement.announceType.eq(2)))
+                                .or(announcement.applicant.uid.eq(userId).and(announcement.announceType.eq(3)))
+                                .or(announcement.leader.uid.eq(userId).and(announcement.announceType.eq(4))),
+                        announcement.readChk.eq(false)
+                ).fetchCount();
+        System.out.println(count);
+        return count > 0;
     }
 }

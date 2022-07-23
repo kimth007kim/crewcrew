@@ -9,6 +9,8 @@ import { emojiSlice, isCheckPassword, spaceSlice } from '@/utils';
 import fetcher from '@/utils/fetcher';
 import Textfield from '@/components/common/TextfieldEmail';
 import TextfieldPW from '@/components/common/TextfieldPW';
+import useModal from '@/hooks/useModal';
+import DeleteUserModal from '../Modal/DeleteUserModal';
 
 function InfoInputList({ state }) {
   const cookies = new Cookies();
@@ -17,6 +19,8 @@ function InfoInputList({ state }) {
   const [nameFocus, setNameFocus] = useState(false);
 
   const [passwordFocus, setPasswordFocus] = useState(false);
+
+  const [deleteUserVisible, openDeleteUser, closeDeleteUser] = useModal();
 
   // 이름 변경 함수
   const HandleNameChange = useCallback((e) => {
@@ -161,8 +165,9 @@ function InfoInputList({ state }) {
         </>
       )}
       <AuthWithDrawWrap>
-        <span>회원탈퇴</span>
+        <span onClick={openDeleteUser}>회원탈퇴</span>
       </AuthWithDrawWrap>
+      <DeleteUserModal visible={deleteUserVisible} closeModal={closeDeleteUser} />
     </Container>
   );
 }

@@ -59,7 +59,7 @@ export const ModalClose = styled('span')`
   background: url(${Close});
   background-size: 100%;
   cursor: pointer;
-  margin-right: 10px;
+  margin-right: 0px;
   @media screen and (max-width: 820px) {
     margin-right: 0;
   }

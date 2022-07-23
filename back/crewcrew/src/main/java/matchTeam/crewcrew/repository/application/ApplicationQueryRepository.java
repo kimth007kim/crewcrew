@@ -204,8 +204,6 @@ public class ApplicationQueryRepository {
                 .where(
                         board.user.uid.eq(req.getUid()).
                                 and(board.viewable.eq(false)))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
                 .orderBy(board.expiredDate.asc(), board.createdDate.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -245,17 +243,21 @@ public class ApplicationQueryRepository {
                 .where(
                         application.user.uid.eq(req.getUid())
                                 .and(application.progress.eq(2)))
+                .orderBy(board.expiredDate.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(board.expiredDate.asc())
                 .fetch();
 
         JPAQuery<ApplicationParticipatedDetailResponseDTO> countQuery = queryFactory
                 .select(Projections.constructor(ApplicationParticipatedDetailResponseDTO.class, board, application, user))
-                .from(board)
+                .from(application)
+                .innerJoin(user)
+                .on(application.user.uid.eq(user.uid))
+                .innerJoin(board)
+                .on(application.board.id.eq(board.id))
                 .where(
-                        board.user.uid.eq(req.getUid()).
-                                and(board.viewable.eq(false)))
+                        application.user.uid.eq(req.getUid())
+                                .and(application.progress.eq(2)))
                 .orderBy(board.expiredDate.asc());
 
         return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchCount);
@@ -307,9 +309,7 @@ public class ApplicationQueryRepository {
                 .from(board)
                 .innerJoin(category)
                 .on(board.category.id.eq(category.id))
-                .innerJoin(application)
-                .on(application.board.id.eq(board.id))
-                .where(application.user.uid.eq(req.getUid()).and(category.categoryParent.id.eq(categoryParentId)))
+                .where(board.viewable.eq(true).and(board.user.uid.eq(req.getUid())).and(category.categoryParent.id.eq(categoryParentId)))
                 .orderBy(board.createdDate.desc());
 
         return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchCount);
@@ -353,8 +353,6 @@ public class ApplicationQueryRepository {
                 .innerJoin(board)
                 .on(application.board.id.eq(board.id))
                 .where(application.user.uid.eq(uid).and(application.progress.eq(2)))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
                 .orderBy(board.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
