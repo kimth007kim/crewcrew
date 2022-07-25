@@ -24,7 +24,7 @@
 
 
 
-## Contributors
+## 🧑‍🤝‍🧑 Contributors
 
 | Contributor                              | Role | Introduce        |
 | ---------------------------------------- | -------- | ---------------- |
@@ -36,12 +36,10 @@
 | [오주영](https://github.com/ohjooyeong) | Frontend |     |
 
 
-## 웹페이지 링크
- <a href="https://crewcrew.org/">
-  <b>크루크루</b>
- </a>
+## 🌏 링크
+### **📚 [크루크루](https://crewcrew.org/) 홈페이지입니다.**
 
-## Stacks
+## 🔨 Stacks
 
 ### Front
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
@@ -76,11 +74,8 @@
 ![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
 ![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white)
 
-## Project Structure
+## 🧩 Project Structure
 
-<h4 align="center">
-
-</h3>
 
 ```
 🔥 client🔥
@@ -120,14 +115,14 @@
 │ │ └─util
 ```
 
-## Database ERD
+## 🛢 Database ERD
 
 ![ERD](README_image/ERD.png)
 
 
-## Preview
+## ⚡ Preview
 
-## Main Page & Login
+### 🟥 Main Page & Login
 <img src="https://user-images.githubusercontent.com/48953435/180340456-bd3c36bd-42eb-47b4-a721-485e360cee42.png" width="45%" height="400px" title="Home" alt="Home"></img>
 <img src="https://user-images.githubusercontent.com/48953435/180340515-3d670979-a1d2-41ed-9477-aeddcefc8c2e.png" width="45%" height="400px" title="Home" alt="Home"></img>
 <img src="https://user-images.githubusercontent.com/48953435/180340548-6fc0b3ba-71cc-40dd-aaf5-32dac6a1553b.png" width="45%" height="400px" title="Home" alt="Home"></img>
@@ -135,32 +130,32 @@
 <img src="https://user-images.githubusercontent.com/48953435/180340631-1dc1c94a-dc11-442c-b3f4-556de6ce49bc.png" width="45%" height="400px" title="Home" alt="Home"></img>
 
 
-### Post Search
+### 🟧 Post Search
 <img src="https://user-images.githubusercontent.com/48953435/180340579-0fb231ae-ed03-4202-8c0e-98ab47d443b9.png" width="45%" height="400px" title="Home" alt="Home"></img>
 
 
-### Post Detail
+### 🟨 Post Detail
 <img src="https://user-images.githubusercontent.com/48953435/180340647-452a0c65-5d50-4fa0-8ed6-3af5981ee9ce.png" width="45%" height="400px" title="Home" alt="Home"></img>
 
-### My Page
+### 🟩 My Page
 <img src="https://user-images.githubusercontent.com/48953435/180340747-9d6cd4fe-b1e1-492d-99f1-18dab8e65c71.png" width="45%" height="400px" title="Home" alt="Home"></img>
 <img src="https://user-images.githubusercontent.com/48953435/180340773-acf110a6-9af6-4a53-ae07-39d70373a824.png" width="45%" height="400px" title="Home" alt="Home"></img>
 <img src="https://user-images.githubusercontent.com/48953435/180340789-72d587d9-63aa-49c2-922d-9a7c6be6481e.png" width="45%" height="400px" title="Home" alt="Home"></img>
 <img src="https://user-images.githubusercontent.com/48953435/180340813-6a959f4d-ad5a-4536-a74d-cce45cb1a05c.png" width="45%" height="400px" title="Home" alt="Home"></img>
 
-### Chat
+### 🟦 Chat
 <img src="https://user-images.githubusercontent.com/48953435/180340839-cddbe035-10c8-4f8f-b4ab-d5f55c2ea3e6.png" width="45%" height="400px" title="Home" alt="Home"></img>
 <img src="https://user-images.githubusercontent.com/48953435/180340875-50228720-7028-4b10-ad3c-8087c3a9556f.png" width="45%" height="400px" title="Home" alt="Home"></img>
 
-### Timeline
+### 🟪 Timeline
 <img src="https://user-images.githubusercontent.com/48953435/180340912-1194f6da-e4f6-4acb-ae28-eee4d674535c.png" width="45%" height="400px" title="Home" alt="Home"></img>
 
-### Mobile Also
+### 🟫 Mobile Also
 
 
 
 - [WiKi](#)
 
-## LICENSE
+## 🏴 LICENSE
 
 [MIT License](#) © 김경동 김도희 이하늘 박한결 유재영 오주영
