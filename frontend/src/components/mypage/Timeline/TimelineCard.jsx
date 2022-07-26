@@ -129,6 +129,10 @@ const ContentBottom = styled('div')`
         font-weight: 500;
         cursor: pointer;
         transition: 0.3s;
+
+        :hover {
+          background-color: #a8a8a8;
+        }
       }
 
       &:nth-child(2) {

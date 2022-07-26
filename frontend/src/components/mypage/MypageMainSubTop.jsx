@@ -14,6 +14,8 @@ function MypageMainSubTop({
   disable,
   small_title1 = '스터디 크루',
   small_title2 = '취미 크루',
+  handleTitle1,
+  handleTitle2,
 }) {
   const totalRef = useRef(null);
   const studyRef = useRef(null);
@@ -82,12 +84,12 @@ function MypageMainSubTop({
             <span ref={totalRef} data-rate={total}></span>
           </h4>
           <BoxWrap>
-            <SentBox color="#0575e6" hoverColor="#005ec5" disable={disable}>
+            <SentBox color="#0575e6" hoverColor="#005ec5" disable={disable} onClick={handleTitle1}>
               <p ref={studyRef}>{studyCnt}개</p>
               <p>{small_title1}</p>
               <div className="arrow"></div>
             </SentBox>
-            <SentBox color="#ffd458" hoverColor="#fcb90d" disable={disable}>
+            <SentBox color="#ffd458" hoverColor="#fcb90d" disable={disable} onClick={handleTitle2}>
               <p ref={hobbyRef}>{hobbyCnt}개</p>
               <p>{small_title2}</p>
               <div className="arrow"></div>

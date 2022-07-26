@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import MyLayout from '@/components/common/MyLayout';
 import MypageMainSubTop from '@/components/mypage/MypageMainSubTop';
 import MypageSubTop from '@/components/mypage/MypageSubTop';
@@ -8,11 +8,15 @@ import { Cookies } from 'react-cookie';
 
 import RequestStudyList from '@/components/mypage/Request/RequestStudyList';
 import RequestHobbyList from '@/components/mypage/Request/RequestHobbyList';
+import { throttle } from '@/utils';
 
 function Request() {
   const cookies = new Cookies();
   const [crewRequest, setCrewRequest] = useState(null);
   const [postsPerPage, setPostsPerPage] = useState(10);
+
+  const title1Ref = useRef(null);
+  const title2Ref = useRef(null);
 
   const apiApplication = useCallback(async () => {
     try {
@@ -34,6 +38,16 @@ function Request() {
       console.dir(error);
     }
   }, []);
+
+  const excuteScroll = useCallback((ref) => {
+    throttle(handleScrollTitle(ref), 500);
+  }, []);
+
+  const handleScrollTitle = (ref) => {
+    if (ref?.current) {
+      window.scrollTo(0, ref.current.offsetTop);
+    }
+  };
 
   const handleResize = () => {
     if (window.innerWidth > 768) {
@@ -65,14 +79,16 @@ function Request() {
         total={crewRequest ? crewRequest.totalApplyCount : 0}
         studyCnt={crewRequest ? crewRequest.applyToStudyCount : 0}
         hobbyCnt={crewRequest ? crewRequest.applyToHobbyCount : 0}
+        handleTitle1={() => excuteScroll(title1Ref)}
+        handleTitle2={() => excuteScroll(title2Ref)}
       ></MypageMainSubTop>
-      <Wrap className="study">
+      <Wrap className="study" ref={title1Ref}>
         <SectionWrap>
           <h3>스터디 크루</h3>
           <RequestStudyList postsPerPage={postsPerPage} />
         </SectionWrap>
       </Wrap>
-      <Wrap className="hobby">
+      <Wrap className="hobby" ref={title2Ref}>
         <SectionWrap>
           <h3>취미 크루</h3>
           <RequestHobbyList postsPerPage={postsPerPage} />

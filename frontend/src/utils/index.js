@@ -72,3 +72,15 @@ export const renderDay = (expiredDate) => {
   const nowDate = new Date();
   return differenceInDays(date, nowDate) + 1;
 };
+
+export const throttle = (fn, delay) => {
+  let last = 0;
+  return () => {
+    const now = new Date().getTime();
+    if (now - last < delay) {
+      return;
+    }
+    last = now;
+    return fn();
+  };
+};
