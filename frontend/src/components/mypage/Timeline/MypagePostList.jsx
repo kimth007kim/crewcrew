@@ -17,6 +17,7 @@ function MypagePostList() {
   const cookies = new Cookies();
   const dataList = ['bookmark', 'recent'];
   const [bookmarkArr, setBookmarkArr] = useState([]);
+  const [recentPostList, setRecentPostList] = useState([]);
   const [active, setActive] = useState(dataList[0]);
   const [pageData, setPageData] = useState(null);
   const [totalPage, setTotalPage] = useState(0);
@@ -106,6 +107,19 @@ function MypagePostList() {
   };
 
   const renderRecentPost = () => {
+    if (recentPostList.length > 0) {
+      return (
+        <PostWrapper>
+          <ul>
+            {recentPostList.map((data) => (
+              <li key={data.boardId}>
+                <PostCard data={data} />
+              </li>
+            ))}
+          </ul>
+        </PostWrapper>
+      );
+    }
     return (
       <EmptyList>
         <p>
@@ -126,6 +140,43 @@ function MypagePostList() {
       navigate('/mypage');
     }
   };
+
+  const getRecent = useCallback(
+    async (postId) => {
+      if (!(myData && myData.data)) return;
+      try {
+        const { data } = await axios.get(`/board/details/${postId}`, {
+          withCredentials: true,
+          headers: {
+            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
+          },
+        });
+
+        if (data.status === 200) {
+          return data.data;
+        } else {
+          return;
+        }
+      } catch (error) {
+        toast.error(error);
+        console.dir(error);
+      }
+    },
+    [recentPostList],
+  );
+
+  const getRecentList = useCallback(async () => {
+    const recentPost = JSON.parse(localStorage.getItem('recentPost'));
+    if (recentPost && myData?.data) {
+      let tempArr = recentPost[myData.data.uid].reverse();
+      tempArr = await Promise.all(tempArr.map((postId) => getRecent(postId)));
+      setRecentPostList(tempArr);
+    }
+  }, []);
+
+  useEffect(() => {
+    getRecentList();
+  }, []);
 
   useEffect(() => {
     const pageNum = query.get('page');

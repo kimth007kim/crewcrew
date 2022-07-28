@@ -126,6 +126,32 @@ function MainPost({ data }) {
   }, []);
 
   useEffect(() => {
+    let recentPost = JSON.parse(localStorage.getItem('recentPost'));
+
+    if (myData?.data) {
+      const uid = String(myData.data.uid);
+      if (!recentPost) {
+        recentPost = {};
+      }
+
+      let recentArr = [];
+      if (recentPost[uid]) {
+        recentArr = recentPost[uid];
+        recentArr = recentArr.filter((id) => id !== data.boardId);
+      }
+      recentArr.push(data.boardId);
+
+      if (Array.isArray(recentPost[uid])) {
+        recentPost[uid] = recentArr;
+      } else {
+        recentPost[uid] = [data.boardId];
+      }
+
+      localStorage.setItem('recentPost', JSON.stringify(recentPost));
+    }
+  }, []);
+
+  useEffect(() => {
     bookmarkGet();
   }, [bookmarkChanged, isLogin]);
 
