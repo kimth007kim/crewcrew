@@ -432,6 +432,7 @@ const CardHead = styled.div`
       justify-content: flex-end;
       align-items: center;
       padding: 0;
+      margin-top: 2px;
       ${Dday} {
         margin: 0;
         margin-right: auto;
