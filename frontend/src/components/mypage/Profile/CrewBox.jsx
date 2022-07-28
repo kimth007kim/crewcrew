@@ -25,7 +25,6 @@ export default CrewBox;
 const Container = styled('div')`
   width: 100%;
   height: 182px;
-  cursor: pointer;
   padding: 10px;
   box-sizing: border-box;
   display: flex;

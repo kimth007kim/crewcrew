@@ -221,9 +221,9 @@ const ButtonBox = styled('div')``;
 const RightBtnBox = styled('div')``;
 
 const CategoryText = styled.span`
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
-  margin-right: 20px;
+  margin-right: 14px;
   ${(props) =>
     props.textColor &&
     css`
@@ -423,7 +423,7 @@ const CardBody = styled('div')`
 
     ${TextList} {
       display: flex;
-      margin-top: 22px;
+      margin-top: 20px;
       p {
         font-size: 12px;
         font-weight: 400;
@@ -533,7 +533,6 @@ const CardBody = styled('div')`
         height: 36px;
         margin-top: 18px;
         h5 {
-          font-size: 14px;
           width: calc(100% - 83px);
           margin-top: 0;
           white-space: normal;

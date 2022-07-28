@@ -425,12 +425,16 @@ const ChatBoxSearch = styled('div')`
   ${(props) =>
     props.Search &&
     css`
-      height: 78px;
+      height: 66px;
+
+      @media screen and (max-width: 820px){
+        height: 56px;
+      }
     `};
 `;
 
 const SearchInputWrap = styled('div')`
-  margin: 14px 20px;
+  margin: 8px 20px;
   width: calc(100% - 40px);
   height: 50px;
   border-radius: 35px;
