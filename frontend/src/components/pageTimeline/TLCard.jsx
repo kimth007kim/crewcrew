@@ -61,7 +61,8 @@ function TLCard({ data, isLast }) {
     if (data.announceType === 4) {
       return (
         <Detail State={detailState} Disabled={data.readChk}>
-          <em>{data.boardTitle}</em>에서 회원님이 <b>참여를 취소</b>하였습니다.
+          회원님의 글 <em>{data.boardTitle}</em>에서 <em>{data.nickname}</em>님이 <b>크루탈퇴</b>
+          하였습니다.
         </Detail>
       );
     } else {
