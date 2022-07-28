@@ -21,26 +21,23 @@ import {
   Wrapper,
 } from './modal.style';
 
-function OtherPartiCancelModal({ closeModal, visible, apData, postData, handleReloadAppId }) {
+function OtherReqeustAcceptModal({ closeModal, visible, postData, apData, handleReloadAppId }) {
   const cookies = new Cookies();
   const [loading, setLoading] = useState(false);
 
   const renderDate = useCallback(() => {
-    const date = new Date(apData.appliedDate.replace(/-/g, '/'));
+    const date = new Date(postData?.createdDate.replace(/-/g, '/'));
     return `${format(date, 'MM월 dd일')}`;
   }, []);
 
-  const cancelRequest = useCallback(async () => {
-    if (!cookies.get('X-AUTH-TOKEN')) {
-      return;
-    }
+  const handleAcceptRequest = useCallback(async () => {
     setLoading(true);
     try {
-      const { data } = await axios.put(
+      const { data: acceptData } = await axios.put(
         `/application/status`,
         {
           apId: apData.apId,
-          statusCode: 3,
+          statusCode: 2,
         },
         {
           withCredentials: true,
@@ -50,25 +47,21 @@ function OtherPartiCancelModal({ closeModal, visible, apData, postData, handleRe
         },
       );
       setLoading(false);
-
-      switch (data.status) {
+      switch (acceptData.status) {
         case 200:
-          handleReloadAppId(apData.apId + 'cancelRequest');
-          closeModal();
-          toast.success('성공적으로 취소되었습니다.');
+          handleReloadAppId(apData.apId + 'accept');
           break;
         case 2301:
-          closeModal();
-          toast.error(data.message);
+          toast.error(apData.message);
           break;
 
         default:
-          toast.error(data.message);
+          toast.error(apData.message);
           break;
       }
-    } catch (err) {
+    } catch (error) {
       setLoading(false);
-      console.error(err);
+      console.dir(error);
     }
   }, []);
 
@@ -101,19 +94,19 @@ function OtherPartiCancelModal({ closeModal, visible, apData, postData, handleRe
             </li>
           </ModalTop>
           <TitleMsg>
-            <span>{apData.nickName}</span>님의 크루참여를 취소하시겠습니까?
+            <span>{apData.nickName}</span>님의 참여요청을 수락하시겠습니까?
             <br />
-            참여취소시 해당 크루원에게 소식이 전달됩니다.
+            요청수락시 참여링크가 해당 회원에게 메일로 전달됩니다.
           </TitleMsg>
         </Header>
       }
       body={
         <Wrapper>
           <Body>
-            <Classification>참여취소하는 크루</Classification>
+            <Classification>요청수락하는 크루</Classification>
             <ClassificationCard>
               <CardHead>
-                <span>{renderDate()}</span> 참여중
+                <span>{renderDate()}</span> 업로드
               </CardHead>
               <h4>{postData?.title}</h4>
               <CardFooter>
@@ -121,14 +114,13 @@ function OtherPartiCancelModal({ closeModal, visible, apData, postData, handleRe
                   {
                     cateogoryAll.filter(
                       (category) => `${postData?.categoryId}` === category.value,
-                    )[0]?.name
+                    )[0].name
                   }
                 </li>
                 <li>{postData?.approachCode ? '오프라인' : '온라인'}</li>
                 <li>{`${postData?.recruitedCrew}/${postData?.totalCrew}명`}</li>
               </CardFooter>
             </ClassificationCard>
-
             <ButtonWrap>
               <ButtonCancel
                 onClick={() => {
@@ -142,11 +134,11 @@ function OtherPartiCancelModal({ closeModal, visible, apData, postData, handleRe
               <Button
                 widthSize={113}
                 heightSize={50}
-                color="pink"
+                color="lightBlue"
                 loadings={loading}
-                onClick={cancelRequest}
+                onClick={handleAcceptRequest}
               >
-                참여취소
+                요청수락
               </Button>
             </ButtonWrap>
           </Body>
@@ -156,4 +148,4 @@ function OtherPartiCancelModal({ closeModal, visible, apData, postData, handleRe
   );
 }
 
-export default OtherPartiCancelModal;
+export default OtherReqeustAcceptModal;

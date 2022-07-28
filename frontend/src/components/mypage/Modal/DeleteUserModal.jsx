@@ -21,13 +21,16 @@ function DeleteUserModal({ closeModal, visible }) {
   const navigate = useNavigate();
 
   const handleClose = useCallback(() => {
+    if (loading) {
+      return;
+    }
     closeModal();
     if (nextStep) {
       navigate('/');
       window.location.reload();
       return;
     }
-  }, [nextStep]);
+  }, [nextStep, loading]);
 
   const handleDeleteUser = useCallback(async () => {
     if (!cookies.get('X-AUTH-TOKEN')) {

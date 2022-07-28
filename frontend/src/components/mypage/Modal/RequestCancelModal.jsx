@@ -79,7 +79,9 @@ function RequestCancelModal({ closeModal, visible, postData, handleReloadApId })
   return (
     <Modal
       handleClose={() => {
-        closeModal();
+        if (!loading) {
+          closeModal();
+        }
       }}
       visible={visible}
       size="regular"
@@ -91,7 +93,9 @@ function RequestCancelModal({ closeModal, visible, postData, handleReloadApId })
             <li>
               <ModalClose
                 onClick={() => {
-                  closeModal();
+                  if (!loading) {
+                    closeModal();
+                  }
                 }}
               ></ModalClose>
             </li>
@@ -126,7 +130,15 @@ function RequestCancelModal({ closeModal, visible, postData, handleReloadApId })
             </ClassificationCard>
 
             <ButtonWrap>
-              <ButtonCancel onClick={closeModal}>취소</ButtonCancel>
+              <ButtonCancel
+                onClick={() => {
+                  if (!loading) {
+                    closeModal();
+                  }
+                }}
+              >
+                취소
+              </ButtonCancel>
               <Button
                 widthSize={113}
                 heightSize={50}

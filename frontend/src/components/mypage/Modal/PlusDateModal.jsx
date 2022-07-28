@@ -86,7 +86,9 @@ function PlusDateModal({ closeModal, visible, postData }) {
   return (
     <Modal
       handleClose={() => {
-        closeModal();
+        if (!loading) {
+          closeModal();
+        }
       }}
       visible={visible}
       size="regular"
@@ -98,7 +100,9 @@ function PlusDateModal({ closeModal, visible, postData }) {
             <li>
               <ModalClose
                 onClick={() => {
-                  closeModal();
+                  if (!loading) {
+                    closeModal();
+                  }
                 }}
               ></ModalClose>
             </li>
@@ -132,7 +136,15 @@ function PlusDateModal({ closeModal, visible, postData }) {
               </CardFooter>
             </ClassificationCard>
             <ButtonWrap>
-              <ButtonCancel onClick={closeModal}>취소</ButtonCancel>
+              <ButtonCancel
+                onClick={() => {
+                  if (!loading) {
+                    closeModal();
+                  }
+                }}
+              >
+                취소
+              </ButtonCancel>
               <Button
                 widthSize={113}
                 heightSize={50}

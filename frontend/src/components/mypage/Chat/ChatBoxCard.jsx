@@ -40,8 +40,6 @@ function ChatBoxCard({ isSetting, onClick, check, data }) {
     }
   }, [currentBoardId]);
 
-  console.log(data);
-
   return (
     <Container onClick={onClick}>
       <ContentSet active={isSetting}>

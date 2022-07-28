@@ -77,7 +77,9 @@ function PostCloseDownModal({ closeModal, visible, postData, handleCloseDownId }
   return (
     <Modal
       handleClose={() => {
-        closeModal();
+        if (!loading) {
+          closeModal();
+        }
       }}
       visible={visible}
       size="regular"
@@ -89,7 +91,9 @@ function PostCloseDownModal({ closeModal, visible, postData, handleCloseDownId }
             <li>
               <ModalClose
                 onClick={() => {
-                  closeModal();
+                  if (!loading) {
+                    closeModal();
+                  }
                 }}
               ></ModalClose>
             </li>
@@ -128,7 +132,15 @@ function PostCloseDownModal({ closeModal, visible, postData, handleCloseDownId }
               </li>
             </Notification>
             <ButtonWrap>
-              <ButtonCancel onClick={closeModal}>취소</ButtonCancel>
+              <ButtonCancel
+                onClick={() => {
+                  if (!loading) {
+                    closeModal();
+                  }
+                }}
+              >
+                취소
+              </ButtonCancel>
               <Button
                 widthSize={113}
                 heightSize={50}

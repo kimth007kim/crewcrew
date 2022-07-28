@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { format } from 'date-fns';
 import ChatWhite from '@/assets/images/ChatWhite.png';
 import { hobbyFilterArr, studyFilterArr } from '@/frontDB/filterDB';
 import { useNavigate } from 'react-router-dom';
@@ -9,10 +8,8 @@ import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
 import OtherPartiCancelModal from '../Modal/OtherPartiCancelModal';
 import OtherRequestRejectModal from '../Modal/OtherRequestRejectModal';
+import OtherReqeustAcceptModal from '../Modal/OtherReqeustAcceptModal';
 import useModal from '@/hooks/useModal';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import Spinner from '@/components/common/Spinner';
 
 function SwiperCard({ data, boardId, status, handleReloadAppId, postData }) {
   const cookies = new Cookies();
@@ -23,48 +20,9 @@ function SwiperCard({ data, boardId, status, handleReloadAppId, postData }) {
 
   const [cancelVisible, openCancel, closeCancel] = useModal();
   const [rejectVisible, openReject, closeReject] = useModal();
-
-  const [loading, setLoading] = useState(false);
+  const [acceptVisible, openAccept, closeAccept] = useModal();
 
   const navigate = useNavigate();
-
-  const handleAcceptRequest = useCallback(async () => {
-    setLoading(true);
-    try {
-      const { data: acceptData } = await axios.put(
-        `/application/status`,
-        {
-          apId: data.apId,
-          statusCode: 2,
-        },
-        {
-          withCredentials: true,
-          headers: {
-            'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
-          },
-        },
-      );
-
-      switch (acceptData.status) {
-        case 200:
-          setLoading(false);
-          handleReloadAppId(data.apId + 'accept');
-          break;
-        case 2301:
-          setLoading(false);
-          toast.error(data.message);
-          break;
-
-        default:
-          setLoading(false);
-          toast.error(data.message);
-          break;
-      }
-    } catch (error) {
-      setLoading(false);
-      console.dir(error);
-    }
-  }, []);
 
   useEffect(() => {
     const studyArr = [];
@@ -101,14 +59,8 @@ function SwiperCard({ data, boardId, status, handleReloadAppId, postData }) {
           <button className="nega" onClick={openReject}>
             거절
           </button>
-          <button className="posi" onClick={handleAcceptRequest} disabled={loading}>
-            {loading ? (
-              <ButtonSpinner>
-                <Spinner />
-              </ButtonSpinner>
-            ) : (
-              '수락'
-            )}
+          <button className="posi" onClick={openAccept}>
+            수락
           </button>
         </>
       );
@@ -121,7 +73,7 @@ function SwiperCard({ data, boardId, status, handleReloadAppId, postData }) {
         </button>
       );
     }
-  }, [status, loading]);
+  }, [status]);
 
   return (
     <>
@@ -173,6 +125,13 @@ function SwiperCard({ data, boardId, status, handleReloadAppId, postData }) {
         apData={data}
         handleReloadAppId={handleReloadAppId}
       ></OtherRequestRejectModal>
+      <OtherReqeustAcceptModal
+        visible={acceptVisible}
+        closeModal={closeAccept}
+        postData={postData}
+        apData={data}
+        handleReloadAppId={handleReloadAppId}
+      ></OtherReqeustAcceptModal>
     </>
   );
 }

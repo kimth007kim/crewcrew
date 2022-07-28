@@ -79,7 +79,9 @@ function OtherRequestRejectModal({ closeModal, visible, apData, postData, handle
   return (
     <Modal
       handleClose={() => {
-        closeModal();
+        if (!loading) {
+          closeModal();
+        }
       }}
       visible={visible}
       size="regular"
@@ -91,13 +93,15 @@ function OtherRequestRejectModal({ closeModal, visible, apData, postData, handle
             <li>
               <ModalClose
                 onClick={() => {
-                  closeModal();
+                  if (!loading) {
+                    closeModal();
+                  }
                 }}
               ></ModalClose>
             </li>
           </ModalTop>
           <TitleMsg>
-            <span>{apData.nickName}</span>의 참여요청을 거절하시겠습니까?
+            <span>{apData.nickName}</span>님의 참여요청을 거절하시겠습니까?
             <br />
             요청거절시 해당 회원에게 소식이 전달됩니다.
           </TitleMsg>
@@ -126,7 +130,15 @@ function OtherRequestRejectModal({ closeModal, visible, apData, postData, handle
             </ClassificationCard>
 
             <ButtonWrap>
-              <ButtonCancel onClick={closeModal}>취소</ButtonCancel>
+              <ButtonCancel
+                onClick={() => {
+                  if (!loading) {
+                    closeModal();
+                  }
+                }}
+              >
+                취소
+              </ButtonCancel>
               <Button
                 widthSize={113}
                 heightSize={50}
