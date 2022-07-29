@@ -11,7 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useQuery from '@/hooks/useQuery';
 import { Cookies } from 'react-cookie';
 import axios from 'axios';
-import { useRecoilState, useRecoilValue, useRecoilSetState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { changedBookmark } from '@/atoms/post';
 import useModal from '@/hooks/useModal';
 import ParticipateModal from './modal/Participate';
@@ -34,7 +34,7 @@ function PostCard({ data }) {
   const [IsDisable, setIsDisable] = useState(false);
   const [tooltip, setTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState(1);
-  const setchangeBookmarked = useRecoilSetState(changedBookmark);
+  const setchangeBookmarked = useSetRecoilState(changedBookmark);
   const [currentBoardId, setCurrentBoardId] = useRecoilState(tooltipBoardId);
   const [deletedBookmark, setDeletedBookmark] = useRecoilState(lnbBookmarkDelete);
   const isLogin = useRecoilValue(loginCheck);

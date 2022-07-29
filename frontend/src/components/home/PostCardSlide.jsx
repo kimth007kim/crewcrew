@@ -8,7 +8,7 @@ import { cateogoryAll } from '@/frontDB/filterDB';
 import { renderDate, renderDay } from '@/utils';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useRecoilState, useRecoilValue, useRecoilSetState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { changedBookmark } from '@/atoms/post';
 import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
@@ -26,7 +26,7 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
   const [tooltipPosition, setTooltipPosition] = useState(1);
   const [currentBoardId, setCurrentBoardId] = useRecoilState(tooltipBoardId);
 
-  const setchangeBookmarked = useRecoilSetState(changedBookmark);
+  const setchangeBookmarked = useSetRecoilState(changedBookmark);
   const [deletedBookmark, setDeletedBookmark] = useRecoilState(lnbBookmarkDelete);
   const isLogin = useRecoilValue(loginCheck);
   const myCookies = new Cookies();

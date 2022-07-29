@@ -427,7 +427,7 @@ const ChatBoxSearch = styled('div')`
     css`
       height: 66px;
 
-      @media screen and (max-width: 820px){
+      @media screen and (max-width: 820px) {
         height: 56px;
       }
     `};

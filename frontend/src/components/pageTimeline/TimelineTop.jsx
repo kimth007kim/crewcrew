@@ -4,8 +4,8 @@ import SettingWhite from '@/assets/images/SettingWhite.png';
 import ArrowDown from '@/assets/images/ArrowDown.png';
 import ArrowUpOn from '@/assets/images/ArrowUpOn.png';
 import { BtnOpened, timelineFilter } from '@/atoms/timeline';
-import { useRecoilSetState } from 'recoil';
 import { useScroll } from '@/hooks/useScroll';
+import { useSetRecoilState } from 'recoil';
 
 function TimelineTop() {
   const FilterNum = localStorage.getItem('currentFilterNum') || 0;
@@ -20,9 +20,9 @@ function TimelineTop() {
     '크루원의 크루탈퇴',
   ];
   const [currentFilter, setCurrentFilter] = useState(FliterList[FilterNum]);
-  const setCurrentFilterNum = useRecoilSetState(timelineFilter);
+  const setCurrentFilterNum = useSetRecoilState(timelineFilter);
 
-  const setBtnOpen = useRecoilSetState(BtnOpened);
+  const setBtnOpen = useSetRecoilState(BtnOpened);
 
   const ChangeFilter = (i) => {
     setCurrentFilter(FliterList[i]);
