@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
@@ -22,12 +22,19 @@ import useModal from '@/hooks/useModal';
 import AuthModal from '../Auth/AuthModal';
 import PostCreateModal from '@/components/post/modal/PostCreate';
 import MobileNavButton from './MobileNavButton';
+import { useRecoilValue } from 'recoil';
+import { TimelineChanged } from '@/atoms/timeline';
 
 function NavMobile({ path, openModal }) {
+  const timelineChanged = useRecoilValue(TimelineChanged);
   const { pathname } = useLocation();
   const cookies = new Cookies();
   const { data: myData } = useSWR(
     cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
+  const { data: isAlarm, mutate } = useSWR(
+    ['/timeline/unread', cookies.get('X-AUTH-TOKEN')],
     fetcher,
   );
 
@@ -60,6 +67,10 @@ function NavMobile({ path, openModal }) {
     }
   };
 
+  useEffect(() => {
+    mutate('/timeline/unread');
+  }, [timelineChanged]);
+
   return (
     <>
       <MobileGnb>
@@ -79,7 +90,7 @@ function NavMobile({ path, openModal }) {
                   <MobileGnbA to="/mypage">
                     <MobileProfileimg src={myData.data.file} alt="프로필이미지" />
                   </MobileGnbA>
-                  <Alarm />
+                  {isAlarm?.data && <Alarm />}
                 </>
               ) : (
                 <MobileGnbB onClick={() => openModal()}>

@@ -13,14 +13,14 @@ import useModal from '@/hooks/useModal';
 import NavCard from './NavCard';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { changedBookmark } from '@/atoms/post';
 import { contiCards } from '@/frontDB/filterDB';
 import NavButton from './NavButton';
 
 function NavContainer() {
   const [bookmarkArr, setBookmarkArr] = useState([]);
-  const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
+  const changeBookmarked = useRecoilValue(changedBookmark);
   const cookies = new Cookies();
   const { data: myData, mutate } = useSWR(
     cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,

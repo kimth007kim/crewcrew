@@ -27,6 +27,9 @@ import fetcher from '@/utils/fetcher';
 import AuthModal from '../Auth/AuthModal';
 import useModal from '@/hooks/useModal';
 import PostCreateModal from '../../post/modal/PostCreate';
+import { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
+import { TimelineChanged } from '@/atoms/timeline';
 
 function Lnb({ path }) {
   const cookies = new Cookies();
@@ -34,8 +37,13 @@ function Lnb({ path }) {
     cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
     fetcher,
   );
+  const { data: isAlarm, mutate } = useSWR(
+    ['/timeline/unread', cookies.get('X-AUTH-TOKEN')],
+    fetcher,
+  );
 
   const [on, changeOn] = useState(false);
+  const timelineChanged = useRecoilValue(TimelineChanged);
   const { pathname } = useLocation();
   const [authVisible, openAuth, closeAuth] = useModal();
 
@@ -57,6 +65,10 @@ function Lnb({ path }) {
       return;
     }
   };
+
+  useEffect(() => {
+    mutate('/timeline/unread');
+  }, [timelineChanged]);
 
   const navigateChat = () => {
     if (myData && myData.data) {
@@ -118,7 +130,7 @@ function Lnb({ path }) {
                   <NavPCFooterA to="/mypage">
                     <ProfileNullImg src={`${myData.data.file}`} alt="myprofile" />
                   </NavPCFooterA>
-                  {myData.data && <Alarm />}
+                  {isAlarm?.data && <Alarm />}
                 </>
               ) : (
                 <NavPCFooterB onClick={handleAuthModal}>

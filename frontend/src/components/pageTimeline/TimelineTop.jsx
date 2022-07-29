@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import SettingWhite from '@/assets/images/SettingWhite.png';
 import ArrowDown from '@/assets/images/ArrowDown.png';
 import ArrowUpOn from '@/assets/images/ArrowUpOn.png';
 import { BtnOpened, timelineFilter } from '@/atoms/timeline';
-import { useRecoilState } from 'recoil';
+import { useRecoilSetState } from 'recoil';
 import { useScroll } from '@/hooks/useScroll';
 
 function TimelineTop() {
@@ -17,11 +17,12 @@ function TimelineTop() {
     '나의 참여요청 거절',
     '나의 참여요청 수락',
     '나의 참여 취소',
+    '크루원의 크루탈퇴',
   ];
   const [currentFilter, setCurrentFilter] = useState(FliterList[FilterNum]);
-  const [currentFilterNum, setCurrentFilterNum] = useRecoilState(timelineFilter);
+  const setCurrentFilterNum = useRecoilSetState(timelineFilter);
 
-  const [btnOpen, setBtnOpen] = useRecoilState(BtnOpened);
+  const setBtnOpen = useRecoilSetState(BtnOpened);
 
   const ChangeFilter = (i) => {
     setCurrentFilter(FliterList[i]);
@@ -237,7 +238,7 @@ const FilterWrapper = styled('div')`
     props.open &&
     css`
       width: 156px;
-      height: 190px;
+      height: 216px;
       border: 1px solid #00b7ff;
       background: #fff url(${ArrowUpOn}) top 12px right 9px/11px no-repeat;
 
@@ -258,7 +259,7 @@ const FilterWrapper = styled('div')`
       @media screen and (max-width: 300px) {
         padding: 0 8px;
         width: 100px;
-        height: 182px;
+        height: 204px;
       }
     `}
 `;

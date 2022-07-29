@@ -229,7 +229,7 @@ const TitleBox = styled('div')``;
 const RightBtnBox = styled('div')``;
 
 const CategoryText = styled.span`
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   margin-right: 20px;
   ${(props) =>
@@ -567,7 +567,6 @@ const CardBody = styled.div`
         height: 42px;
         h5 {
           width: calc(100% - 83px);
-          font-size: 14px;
           margin-top: 0;
           white-space: normal !important;
           line-height: 20px;

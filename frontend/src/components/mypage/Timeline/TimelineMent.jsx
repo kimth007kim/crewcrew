@@ -104,9 +104,10 @@ function TimelineMent({ data }) {
     return (
       <>
         <p>
-          <Name>{data.boardTitle}</Name>
-          에서 회원님이 &nbsp;
-          <Negative>참여를 취소</Negative>
+          회원님의 글 <Name>{data.boardTitle}</Name>
+          에서&nbsp;
+          <Name>{data.nickname}</Name>님이 &nbsp;
+          <Negative>크루탈퇴</Negative>
           &nbsp;하였습니다.
         </p>
         <ul>
