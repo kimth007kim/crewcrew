@@ -89,20 +89,17 @@ function MainPost({ data }) {
     setBookmarkChanged((state) => !state);
   };
 
-  const handleOpenPartiModal = useCallback(
-    (e) => {
-      e.stopPropagation();
-      if (myData && myData.data) {
-        if (data.uid === myData.data.uid) {
-          return openFix();
-        }
-        openParticipate();
-      } else {
-        const login = window.alert('로그인 후 이용가능합니다.');
+  const handleOpenPartiModal = (e) => {
+    e.stopPropagation();
+    if (myData && myData.data) {
+      if (data.uid === myData.data.uid) {
+        return openFix();
       }
-    },
-    [myData],
-  );
+      openParticipate();
+    } else {
+      const login = window.alert('로그인 후 이용가능합니다.');
+    }
+  };
 
   const viewTooltip = useCallback(
     (e, position) => {

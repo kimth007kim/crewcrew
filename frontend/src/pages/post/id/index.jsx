@@ -29,9 +29,15 @@ function PostDetail() {
         setLoading(true);
         const postFilter = JSON.parse(localStorage.getItem('postFilter'));
 
-        const order = postFilter.article.value;
-        const access = postFilter.approach.map((data) => data.value);
-        const categoryIds = postFilter.categorylist.map((data) => data.value);
+        let order = 'recent';
+        let access = ['0', '1'];
+        let categoryIds = ['0'];
+
+        if (postFilter) {
+          order = postFilter.article.value;
+          access = postFilter.approach.map((data) => data.value);
+          categoryIds = postFilter.categorylist.map((data) => data.value);
+        }
 
         const params = new URLSearchParams();
 

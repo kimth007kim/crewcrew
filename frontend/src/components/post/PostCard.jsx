@@ -285,7 +285,7 @@ const TitleBox = styled.div``;
 const CategoryText = styled.span`
   font-size: 12px;
   font-weight: 400;
-  margin-right: 20px;
+  margin-right: 14px;
   ${(props) =>
     props.textColor &&
     css`
@@ -504,7 +504,7 @@ const CardBody = styled.div`
       }
 
       p:not(:last-child) {
-        margin-right: 20px;
+        margin-right: 14px;
       }
 
       ${CategoryText} {
@@ -530,6 +530,7 @@ const CardBody = styled.div`
       border-radius: 10px;
       outline: none;
       color: #fff;
+      font-weight: 700;
     }
   }
 
