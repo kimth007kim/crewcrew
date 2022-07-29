@@ -3,17 +3,17 @@ import styled, { css } from 'styled-components';
 import LogInCheckOff from '@/assets/images/LogInCheck_off.png';
 import LogInCheckOn from '@/assets/images/LogInCheck_on.png';
 import { BtnOpened, DataLists, TimelineChanged } from '@/atoms/timeline';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
 
 function SettingBar({ data }) {
   const cookies = new Cookies();
-  const [btnOpen, setBtnOpen] = useRecoilState(BtnOpened);
+  const btnOpen = useRecoilValue(BtnOpened);
   const [dataLists, setDataLists] = useRecoilState(DataLists);
   const [isCheck, setIsCheck] = useState(false);
-  const [timelineChanged, setTimelineChanged] = useRecoilState(TimelineChanged);
+  const setTimelineChanged = useSetRecoilState(TimelineChanged);
 
   const changePropAll = (e) => {
     if (e.target.checked) {
