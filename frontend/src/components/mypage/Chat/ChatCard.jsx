@@ -10,7 +10,10 @@ import regexifyString from 'regexify-string';
 
 function ChatCard({ data }) {
   const myCookies = new Cookies();
-  const { data: myData } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(
+    myCookies.get('X-AUTH-TOKEN') ? ['/auth/token', myCookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
 
   const meCheck = data.publisher.uid === myData.data.uid;
   let otherUser = null;

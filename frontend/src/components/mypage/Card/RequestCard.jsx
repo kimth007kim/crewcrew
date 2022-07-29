@@ -17,7 +17,10 @@ import RequestCancelModal from '../Modal/RequestCancelModal';
 
 function RequestCard({ data, handleReloadApId }) {
   const cookies = new Cookies();
-  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(
+    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
 
   const [tooltip, setTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState(1);
@@ -164,7 +167,7 @@ function RequestCard({ data, handleReloadApId }) {
           <CardDate>{renderDate(data.appliedDate)}</CardDate>
           <CardName onClick={(e) => viewTooltip(e, 2)}>{data.nickName}</CardName>
         </TextBox>
-        {myData && myData.data?.uid && tooltip && (
+        {tooltip && (
           <ProfileTooltip
             data={data}
             position={tooltipPosition}

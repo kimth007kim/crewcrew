@@ -19,10 +19,14 @@ import PostDeleteModal from '@/components/common/DeleteModal/PostDeleteModal';
 import PostFixModal from '../modal/PostFix';
 import ProfileTooltip from '../tooltip/ProfileTooltip';
 import { tooltipBoardId } from '@/atoms/profile';
+import AuthModal from '@/components/common/Auth/AuthModal';
 
 function MainPost({ data }) {
   const cookies = new Cookies();
-  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(
+    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
 
   const [IsDisable, setIsDisable] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -35,11 +39,15 @@ function MainPost({ data }) {
   const [participateVisible, openParticipate, closeParticipate] = useModal();
   const [deleteVisible, openDelete, closeDelete] = useModal();
   const [fixVisible, openFix, closeFix] = useModal();
+  const [authVisible, openAuth, closeAuth] = useModal();
 
   const bookmarkClick = async () => {
     try {
-      if (myData && !myData.data) {
-        const login = window.alert('로그인 후 이용가능합니다.');
+      if (!(myData && myData.data)) {
+        const login = window.confirm('로그인 후 이용가능합니다. 로그인하시겠습니까?');
+        if (login) {
+          return openAuth();
+        }
         return;
       }
       if (!isBookmarked) {
@@ -70,7 +78,7 @@ function MainPost({ data }) {
 
   const bookmarkGet = useCallback(async () => {
     try {
-      if (myData && !myData.data) {
+      if (!(myData && myData.data)) {
         return;
       }
       const bookmarkdata = await axios.get(`/bookmark/${data.boardId}`, {
@@ -97,7 +105,11 @@ function MainPost({ data }) {
       }
       openParticipate();
     } else {
-      const login = window.alert('로그인 후 이용가능합니다.');
+      const login = window.confirm('로그인 후 이용가능합니다. 로그인하시겠습니까?');
+      if (login) {
+        return openAuth();
+      }
+      return;
     }
   };
 
@@ -138,6 +150,10 @@ function MainPost({ data }) {
       }
       recentArr.push(data.boardId);
 
+      if (recentArr.length > 5) {
+        recentArr = recentArr.slice(recentArr.length - 5, recentArr.length);
+      }
+
       if (Array.isArray(recentPost[uid])) {
         recentPost[uid] = recentArr;
       } else {
@@ -160,7 +176,7 @@ function MainPost({ data }) {
             <li>{IsDisable ? '마감' : `D-${renderDay(data.expiredDate)}`}</li>
             <li onClick={(e) => viewTooltip(e, 3)}>{data.nickname}</li>
             <li>{renderDate(data.createdDate)}</li>
-            {myData && myData.data?.uid && tooltip && (
+            {tooltip && (
               <ProfileTooltip
                 data={data}
                 position={tooltipPosition}
@@ -219,6 +235,7 @@ function MainPost({ data }) {
         closeModal={closeDelete}
         postData={data}
       ></PostDeleteModal>
+      <AuthModal closeModal={closeAuth} visible={authVisible} />
       <PostFixModal visible={fixVisible} closeModal={closeFix} postData={data}></PostFixModal>
     </>
   );

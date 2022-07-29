@@ -23,7 +23,10 @@ let client = null;
 
 function ChatDetailBox({ roomId }) {
   const cookies = new Cookies();
-  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(
+    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
 
   const getKey = (pageIndex, previousPageData) => {
     if (previousPageData && previousPageData.data.length < 10) {
@@ -246,7 +249,7 @@ function ChatDetailBox({ roomId }) {
             <button className="del" onClick={openDelete}>
               삭제
             </button>
-            {myData && myData.data?.uid && tooltip && roomInfo && (
+            {tooltip && roomInfo && (
               <ProfileTooltip
                 data={{ ...roomInfo.other, boardId: roomInfo.boardSeq }}
                 position={tooltipPosition}

@@ -123,6 +123,7 @@ const Wrapper = styled('div')`
   }
 
   @media screen and (max-width: 820px) {
+    background-color: #fff;
     padding: 0 20px;
     padding-top: 36px;
   }

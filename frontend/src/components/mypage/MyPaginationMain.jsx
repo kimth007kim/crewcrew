@@ -160,7 +160,7 @@ const PaginationWrapper = styled.div`
   }
   @media screen and (max-width: 820px) {
     width: 100%;
-    margin: 28px auto 80px;
+    padding: 28px auto 80px;
 
     div {
       width: 24px;

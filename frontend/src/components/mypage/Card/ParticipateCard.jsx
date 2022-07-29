@@ -18,7 +18,10 @@ import useModal from '@/hooks/useModal';
 
 function ParticipateCard({ postData, handleCloseDownId }) {
   const cookies = new Cookies();
-  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(
+    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
 
   const [IsDisable, setIsDisable] = useState(false);
   const [isSwiperClick, setIsSwiperClick] = useState(false);
@@ -113,7 +116,7 @@ function ParticipateCard({ postData, handleCloseDownId }) {
                 <CardDate>{renderDate(postData?.appliedDate)}</CardDate>
                 <CardName onClick={(e) => viewTooltip(e, 2)}>{postData?.nickName}</CardName>
               </TextBox>
-              {myData && myData.data?.uid && tooltip && postData && (
+              {tooltip && postData && (
                 <ProfileTooltip
                   data={postData}
                   position={tooltipPosition}

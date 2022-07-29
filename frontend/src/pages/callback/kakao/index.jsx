@@ -17,7 +17,10 @@ function Kakao() {
     data: myData,
     error,
     mutate,
-  } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
+  } = useSWR(
+    myCookies.get('X-AUTH-TOKEN') ? ['/auth/token', myCookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
 
   useEffect(() => {
     const getToken = async () => {

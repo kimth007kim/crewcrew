@@ -2,9 +2,9 @@ import React, { useCallback, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import { debounce } from 'lodash';
 import axios from 'axios';
-import { Cookies, useCookies } from 'react-cookie';
+import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
-import useSWR, { mutate } from 'swr';
+import { mutate } from 'swr';
 import CheckOff from '@/assets/images/LogInCheck_off.png';
 import CheckOn from '@/assets/images/LogInCheck_on.png';
 import Naver from '@/assets/images/Naver.png';
@@ -14,7 +14,7 @@ import Button from '../../Button';
 import Textfield from '../../TextfieldEmail';
 import TextfieldPW from '../../TextfieldPW';
 import { emojiSlice, isCheckPassword, isEmail, spaceSlice } from '@/utils';
-import fetcher from '@/utils/fetcher';
+
 import { loginCheck } from '@/atoms/login';
 import { useRecoilState } from 'recoil';
 
@@ -132,6 +132,7 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
               }
               setIsLogin(true);
               mutate('/auth/token');
+              closeModal();
               window.location.reload();
               break;
             case 400:

@@ -9,7 +9,10 @@ import InfoInputList from '../InfoInputList';
 
 function MyInfoInput({ open, closeFunc }) {
   const cookies = new Cookies();
-  const { data: myData, mutate } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData, mutate } = useSWR(
+    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
 
   // 이름
   const [name, setName] = useState('');

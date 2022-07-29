@@ -22,7 +22,10 @@ function NavContainer() {
   const [bookmarkArr, setBookmarkArr] = useState([]);
   const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
   const cookies = new Cookies();
-  const { data: myData, mutate } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData, mutate } = useSWR(
+    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [Dialog, openModal, closeModal] = useModal();
@@ -41,11 +44,12 @@ function NavContainer() {
       });
       switch (data.status) {
         case 200:
-          if (process.env.NODE_ENV !== 'production') {
+          mutate('/auth/token');
+          mutate(null);
+          if (process.env.NODE_ENV === 'development') {
             cookies.remove('X-AUTH-TOKEN');
           }
 
-          mutate('/auth/token');
           if (pathname.startsWith('/mypage')) {
             navigate('/', { replace: true });
           }
@@ -81,6 +85,15 @@ function NavContainer() {
       console.dir(error);
     }
   }, [myData]);
+
+  const handleClickNavCard = useCallback((index) => {
+    if (index === 0) {
+      navigate('/post');
+      return;
+    }
+    openModal();
+    return;
+  }, []);
 
   useEffect(() => {
     axiosGetBookmark();
@@ -173,6 +186,7 @@ function NavContainer() {
                     img={ele.img}
                     color={ele.color}
                     key={ele.title + ele.number}
+                    onClick={() => handleClickNavCard(i)}
                   />
                 ))}
             </NavCardList>

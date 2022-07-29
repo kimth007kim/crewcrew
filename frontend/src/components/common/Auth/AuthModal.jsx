@@ -54,7 +54,10 @@ function AuthModal({ closeModal, visible }) {
   }, []);
   const myCookies = new Cookies();
 
-  const { data: myData } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(
+    myCookies.get('X-AUTH-TOKEN') ? ['/auth/token', myCookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
 
   if (myData && myData.data) {
     return null;

@@ -16,7 +16,7 @@ import MainContent from './MainContent';
 function PostCreateModal({ closeModal, visible, category = 0, postData = null }) {
   const cookies = new Cookies();
   const { data: myData, error: myError } = useSWR(
-    ['/auth/token', cookies.get('X-AUTH-TOKEN')],
+    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
     fetcher,
   );
 

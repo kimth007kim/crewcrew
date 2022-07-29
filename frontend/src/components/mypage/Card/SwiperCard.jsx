@@ -10,10 +10,16 @@ import OtherPartiCancelModal from '../Modal/OtherPartiCancelModal';
 import OtherRequestRejectModal from '../Modal/OtherRequestRejectModal';
 import OtherReqeustAcceptModal from '../Modal/OtherReqeustAcceptModal';
 import useModal from '@/hooks/useModal';
+import { useRecoilState } from 'recoil';
+import { tooltipBoardId } from '@/atoms/profile';
+import ProfileTooltip from '@/components/post/tooltip/ProfileTooltip';
 
 function SwiperCard({ data, boardId, status, handleReloadAppId, postData }) {
   const cookies = new Cookies();
-  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(
+    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
 
   const [studyList, setStudyList] = useState([]);
   const [hobbyList, setHobbyList] = useState([]);
@@ -22,7 +28,21 @@ function SwiperCard({ data, boardId, status, handleReloadAppId, postData }) {
   const [rejectVisible, openReject, closeReject] = useModal();
   const [acceptVisible, openAccept, closeAccept] = useModal();
 
+  const [tooltip, setTooltip] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState(1);
+  const [currentBoardId, setCurrentBoardId] = useRecoilState(tooltipBoardId);
+
   const navigate = useNavigate();
+
+  const viewTooltip = useCallback(
+    (e, position) => {
+      e.stopPropagation();
+      setTooltipPosition(position);
+      setCurrentBoardId(data.apId);
+      setTooltip(true);
+    },
+    [tooltip],
+  );
 
   useEffect(() => {
     const studyArr = [];
@@ -52,6 +72,12 @@ function SwiperCard({ data, boardId, status, handleReloadAppId, postData }) {
     navigate(`/chat/${boardId}/${data.uid}`);
   };
 
+  useEffect(() => {
+    if (currentBoardId !== data.apId) {
+      setTooltip(false);
+    }
+  }, [currentBoardId]);
+
   const renderStatusBtn = useCallback(() => {
     if (status === 0) {
       return (
@@ -79,13 +105,22 @@ function SwiperCard({ data, boardId, status, handleReloadAppId, postData }) {
     <>
       <Container>
         <CardHead>
-          <CardProfile>
+          <CardProfile onClick={(e) => viewTooltip(e, 3)}>
             <img src={data.profileImage} alt="" />
           </CardProfile>
           <CardTxt>
-            <h4>{data.nickName}</h4>
+            <h4 onClick={(e) => viewTooltip(e, 4)}>{data.nickName}</h4>
             <p>{data.commentary}</p>
           </CardTxt>
+          {tooltip && (
+            <ProfileTooltip
+              data={data}
+              position={tooltipPosition}
+              open={tooltip}
+              setOpen={setTooltip}
+              chatNone={true}
+            />
+          )}
         </CardHead>
         <CardBody>
           <h5>관심 스터디 크루</h5>
@@ -156,13 +191,17 @@ const CardHead = styled('div')`
   border-bottom: 1px solid #e2e2e2;
   display: flex;
   gap: 13px;
+  position: relative;
 
   ${CardProfile} {
     min-width: 50px;
+    min-height: 50px;
+    width: 50px;
     height: 50px;
     border-radius: 50%;
     overflow: hidden;
     background-color: transparent;
+    cursor: pointer;
 
     img {
       width: 100%;
@@ -176,6 +215,7 @@ const CardHead = styled('div')`
       font-size: 15px;
       font-weight: 700;
       margin-bottom: 10px;
+      cursor: pointer;
     }
 
     p {
@@ -194,7 +234,9 @@ const CardHead = styled('div')`
     ${CardProfile} {
       position: absolute;
       min-width: 24px;
+      min-height: 24px;
       height: 24px;
+      width: 24px;
 
       img {
         width: 100%;
@@ -272,19 +314,6 @@ const CardBody = styled('div')`
       }
     }
   }
-`;
-
-const ButtonSpinner = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #eeeeee;
-  border-radius: inherit;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const BtnWrapper = styled('div')``;

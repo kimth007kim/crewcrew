@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function NavCard({ title, p, img, color, number, reverse }) {
+function NavCard({ title, p, img, color, number, reverse, onClick }) {
   return (
-    <NavCardListli>
+    <NavCardListli onClick={onClick}>
       {reverse ? (
         <CardIntro img={img} color={color} number={number}>
           <h3
@@ -40,6 +40,7 @@ export default NavCard;
 const NavCardListli = styled.li`
   padding-bottom: 15px;
   margin-right: 10px;
+  cursor: pointer;
   @media screen and (max-width: 820px) {
     padding-bottom: 10px;
   }

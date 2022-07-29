@@ -10,7 +10,10 @@ import Lnb from './Lnb/Lnb';
 
 function MyLayout({ children, path = 'mypage' }) {
   const cookies = new Cookies();
-  const { data: myData, error } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData, error } = useSWR(
+    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
 
   if (error || (myData && myData.data === null)) {
     toast.error('로그인 후 이용 가능합니다. 잘못된 접근입니다.');
@@ -41,5 +44,6 @@ const MainContainer = styled('main')`
     width: 100%;
     padding: 60px 0 70px;
     margin: 0;
+    background-color: #f6f7fb;
   }
 `;

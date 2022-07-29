@@ -26,7 +26,10 @@ import MobileNavButton from './MobileNavButton';
 function NavMobile({ path, openModal }) {
   const { pathname } = useLocation();
   const cookies = new Cookies();
-  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(
+    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
 
   const [authVisible, openAuth, closeAuth] = useModal();
 
@@ -87,35 +90,37 @@ function NavMobile({ path, openModal }) {
           </MobileGnbli>
         </MobileGnbul>
       </MobileGnb>
-      <MobileNav>
-        <MobileNavUl>
-          <li>
-            <MobileNavButton
-              icon={<HomeIcon selected={path === 'home'} />}
-              title="홈"
-              link="/"
-              selected={path === 'home'}
-            />
-          </li>
-          <li>
-            <MobileNavButton
-              icon={<PartIcon selected={pathname.startsWith('/post')} />}
-              title="크루참여"
-              link="/post"
-              selected={pathname.startsWith('/post')}
-            />
-          </li>
-          <MobileNavLi selected={pathname.startsWith('/crew')} onClick={handlePostModal}>
-            {<RecruIcon selected={pathname.startsWith('/crew')} />}
-            {'팀원모집'}
-          </MobileNavLi>
+      {!pathname.startsWith('/chat') && (
+        <MobileNav>
+          <MobileNavUl>
+            <li>
+              <MobileNavButton
+                icon={<HomeIcon selected={path === 'home'} />}
+                title="홈"
+                link="/"
+                selected={path === 'home'}
+              />
+            </li>
+            <li>
+              <MobileNavButton
+                icon={<PartIcon selected={pathname.startsWith('/post')} />}
+                title="크루참여"
+                link="/post"
+                selected={pathname.startsWith('/post')}
+              />
+            </li>
+            <MobileNavLi selected={pathname.startsWith('/crew')} onClick={handlePostModal}>
+              {<RecruIcon selected={pathname.startsWith('/crew')} />}
+              {'팀원모집'}
+            </MobileNavLi>
 
-          <MobileNavLi selected={pathname.startsWith('/chat')} onClick={navigateChat}>
-            {<ChatIcon selected={pathname.startsWith('/chat')} />}
-            {'채팅'}
-          </MobileNavLi>
-        </MobileNavUl>
-      </MobileNav>
+            <MobileNavLi selected={pathname.startsWith('/chat')} onClick={navigateChat}>
+              {<ChatIcon selected={pathname.startsWith('/chat')} />}
+              {'채팅'}
+            </MobileNavLi>
+          </MobileNavUl>
+        </MobileNav>
+      )}
       <AuthModal closeModal={closeAuth} visible={authVisible} />
       <PostCreateModal closeModal={closePost} visible={postVisible} />
     </>

@@ -17,7 +17,10 @@ function Profile() {
   const uid = useParams().uid;
   const navigate = useNavigate();
   const myCookies = new Cookies();
-  const { data: myData } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(
+    myCookies.get('X-AUTH-TOKEN') ? ['/auth/token', myCookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
 
   const getUserProfile = useCallback(async () => {
     if (!(myData && myData.data)) return;

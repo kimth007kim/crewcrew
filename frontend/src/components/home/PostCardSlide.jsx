@@ -17,6 +17,8 @@ import { loginCheck } from '@/atoms/login';
 import { lnbBookmarkDelete } from '@/atoms/post';
 import ProfileTooltip from '../post/tooltip/ProfileTooltip';
 import { tooltipBoardId } from '@/atoms/profile';
+import useModal from '@/hooks/useModal';
+import AuthModal from '../common/Auth/AuthModal';
 
 function PostCardSlide({ data, cookies, isLnb = false }) {
   const [isBookmark, setIsBookmark] = useState(false);
@@ -28,9 +30,14 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
   const [deletedBookmark, setDeletedBookmark] = useRecoilState(lnbBookmarkDelete);
   const isLogin = useRecoilValue(loginCheck);
   const myCookies = new Cookies();
-  const { data: myData } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(
+    myCookies.get('X-AUTH-TOKEN') ? ['/auth/token', myCookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
 
   const navigate = useNavigate();
+
+  const [authVisible, openAuth, closeAuth] = useModal();
 
   const category = (id = data.categoryParentId) => {
     return id === 1 ? 'study' : 'hobby';
@@ -48,8 +55,11 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
     e.stopPropagation();
     try {
       if (!(myData && myData.data)) {
-        window.alert('로그인 후 이용가능합니다.');
-        return false;
+        const login = window.confirm('로그인 후 이용가능합니다. 로그인하시겠습니까?');
+        if (login) {
+          return openAuth();
+        }
+        return;
       }
       if (!isBookmark) {
         const bookmarkdata = await axios.post(`/bookmark/${data.boardId}`, '', {
@@ -152,7 +162,7 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
               <h4>{data.title}</h4>
               <p onClick={(e) => viewTooltip(e, 2)}>{data.nickname}</p>
             </CardTxt>
-            {myData && myData.data?.uid && tooltip && (
+            {tooltip && (
               <ProfileTooltip
                 data={data}
                 position={tooltipPosition}
@@ -177,6 +187,7 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
           </CardFooter>
         </CardPost>
       </Container>
+      <AuthModal closeModal={closeAuth} visible={authVisible} />
     </>
   );
 }

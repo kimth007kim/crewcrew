@@ -7,11 +7,17 @@ import { useCallback } from 'react';
 import useSWR from 'swr';
 import { Cookies } from 'react-cookie';
 import fetcher from '@/utils/fetcher';
+import useModal from '@/hooks/useModal';
+import AuthModal from '@/components/common/Auth/AuthModal';
 
 function ProfileTooltip({ data, position, open, setOpen, chatNone = false }) {
   const cookies = new Cookies();
-  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(
+    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
 
+  const [authVisible, openAuth, closeAuth] = useModal();
   const navigate = useNavigate();
   const profileRef = useRef(null);
 
@@ -21,10 +27,25 @@ function ProfileTooltip({ data, position, open, setOpen, chatNone = false }) {
 
   const navigateProfile = (e) => {
     e.stopPropagation();
+    if (!(myData && myData.data)) {
+      const login = window.confirm('로그인 후 이용가능합니다. 로그인하시겠습니까?');
+      if (login) {
+        return openAuth();
+      }
+      return;
+    }
     navigate(`/profile/${data.uid}`);
   };
+
   const navigateChat = (e) => {
     e.stopPropagation();
+    if (!(myData && myData.data)) {
+      const login = window.confirm('로그인 후 이용가능합니다. 로그인하시겠습니까?');
+      if (login) {
+        return openAuth();
+      }
+      return;
+    }
     if (myData?.data.uid === data.uid) {
       window.alert('자기자신에게 채팅을 보낼 수 없습니다');
       return false;
@@ -55,6 +76,7 @@ function ProfileTooltip({ data, position, open, setOpen, chatNone = false }) {
         {myData?.data?.uid !== data.uid && !chatNone && <Chat onClick={(e) => navigateChat(e)} />}
         <Profile onClick={(e) => navigateProfile(e)}>프로필 확인</Profile>
       </ToolTipBtn>
+      <AuthModal closeModal={closeAuth} visible={authVisible} />
     </Container>
   );
 }
@@ -97,6 +119,17 @@ const Container = styled('div')`
     css`
       top: 25px;
       left: 80px;
+
+      @media screen and (max-width: 820px) {
+        left: 60px;
+      }
+    `}
+
+    ${(props) =>
+    props.position === 4 &&
+    css`
+      top: 50px;
+      left: 82px;
 
       @media screen and (max-width: 820px) {
         left: 60px;

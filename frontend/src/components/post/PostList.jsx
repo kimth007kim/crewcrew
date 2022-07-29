@@ -164,7 +164,7 @@ function PostList() {
           <PostWrapper>
             <ul>
               {PostListData.map((post, i) => (
-                <li key={post.boardId + post.uid + i * 10}>
+                <li key={post.boardId + post.title + post.uid}>
                   <PostCard data={post} />
                 </li>
               ))}

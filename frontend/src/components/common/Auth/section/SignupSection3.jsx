@@ -46,7 +46,10 @@ function SignupSection3({ IsClick, HandleClick }) {
   );
 
   const myCookies = new Cookies();
-  const { mutate } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
+  const { mutate } = useSWR(
+    myCookies.get('X-AUTH-TOKEN') ? ['/auth/token', myCookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
 
   // Recoil State
   const name = useRecoilValue(nameState);

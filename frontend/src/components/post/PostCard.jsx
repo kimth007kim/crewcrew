@@ -22,16 +22,20 @@ import { lnbBookmarkDelete } from '@/atoms/post';
 import ProfileTooltip from './tooltip/ProfileTooltip';
 import { tooltipBoardId } from '@/atoms/profile';
 import PostFixModal from './modal/PostFix';
+import AuthModal from '../common/Auth/AuthModal';
 
 function PostCard({ data }) {
   const cookies = new Cookies();
-  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(
+    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
   const [isBookmark, setIsBookmark] = useState(false);
   const [IsDisable, setIsDisable] = useState(false);
   const [tooltip, setTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState(1);
-  const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
   const [currentBoardId, setCurrentBoardId] = useRecoilState(tooltipBoardId);
+  const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
   const [deletedBookmark, setDeletedBookmark] = useRecoilState(lnbBookmarkDelete);
   const isLogin = useRecoilValue(loginCheck);
 
@@ -41,6 +45,7 @@ function PostCard({ data }) {
 
   const [participateVisible, openParticipate, closeParticipate] = useModal();
   const [fixVisible, openFix, closeFix] = useModal();
+  const [authVisible, openAuth, closeAuth] = useModal();
 
   const renderDate = useCallback(() => {
     const date = new Date(data.createdDate.replace(/-/g, '/'));
@@ -57,13 +62,13 @@ function PostCard({ data }) {
 
   const bookmark = async (e) => {
     e.stopPropagation();
-    if (!(myData && myData.data)) {
-      window.alert('로그인 후 이용가능합니다.');
-      return false;
-    }
+
     try {
       if (!(myData && myData.data)) {
-        window.alert('로그인 후 이용가능합니다.');
+        const login = window.confirm('로그인 후 이용가능합니다. 로그인하시겠습니까?');
+        if (login) {
+          return openAuth();
+        }
         return;
       }
       if (!isBookmark) {
@@ -126,7 +131,13 @@ function PostCard({ data }) {
         }
         openParticipate();
       } else {
-        window.alert('로그인 후 이용가능합니다.');
+        if (!(myData && myData.data)) {
+          const login = window.confirm('로그인 후 이용가능합니다. 로그인하시겠습니까?');
+          if (login) {
+            return openAuth();
+          }
+          return;
+        }
       }
     },
     [myData],
@@ -183,7 +194,7 @@ function PostCard({ data }) {
             <CardDate>{renderDate(data.createdDate)}</CardDate>
             <CardName onClick={(e) => viewTooltip(e, 2)}>{data.nickname}</CardName>
           </TextBox>
-          {myData && myData.data?.uid && tooltip && (
+          {tooltip && (
             <ProfileTooltip
               data={data}
               position={tooltipPosition}
@@ -230,6 +241,7 @@ function PostCard({ data }) {
         postData={data}
         visible={participateVisible}
       />
+      <AuthModal closeModal={closeAuth} visible={authVisible} />
       <PostFixModal visible={fixVisible} closeModal={closeFix} postData={data}></PostFixModal>
     </>
   );

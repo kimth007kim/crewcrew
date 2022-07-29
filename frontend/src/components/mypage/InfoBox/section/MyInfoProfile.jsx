@@ -15,7 +15,10 @@ function MyInfoProfile({ open, closeFunc }) {
     data: myData,
     error: myError,
     mutate,
-  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  } = useSWR(
+    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
 
   // 닉네임
   const [nickname, setNickname] = useState('');

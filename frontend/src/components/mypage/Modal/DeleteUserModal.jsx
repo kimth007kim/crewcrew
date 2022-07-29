@@ -14,7 +14,10 @@ import fetcher from '@/utils/fetcher';
 
 function DeleteUserModal({ closeModal, visible }) {
   const cookies = new Cookies();
-  const { mutate } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { mutate } = useSWR(
+    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
 
   const [loading, setLoading] = useState(false);
   const [nextStep, setNextStep] = useState(false);

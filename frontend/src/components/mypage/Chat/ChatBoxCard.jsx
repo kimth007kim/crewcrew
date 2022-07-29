@@ -14,7 +14,10 @@ import ProfileTooltip from '@/components/post/tooltip/ProfileTooltip';
 
 function ChatBoxCard({ isSetting, onClick, check, data }) {
   const cookies = new Cookies();
-  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: myData } = useSWR(
+    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
+    fetcher,
+  );
 
   const [tooltip, setTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState(1);
@@ -28,14 +31,14 @@ function ChatBoxCard({ isSetting, onClick, check, data }) {
     (e, position) => {
       e.stopPropagation();
       setTooltipPosition(position);
-      setCurrentBoardId(data.boardId);
+      setCurrentBoardId(data.boardSeq);
       setTooltip(true);
     },
     [tooltip],
   );
 
   useEffect(() => {
-    if (currentBoardId !== data.boardId) {
+    if (currentBoardId !== data.boardSeq) {
       setTooltip(false);
     }
   }, [currentBoardId]);
@@ -56,7 +59,7 @@ function ChatBoxCard({ isSetting, onClick, check, data }) {
             {!data.captain && <img src={IconFlag} alt="flag" className="flag" />}
             <p>{data.other.nickName}</p>
           </HeadBox>
-          {myData && myData.data?.uid && tooltip && data && (
+          {tooltip && data && (
             <ProfileTooltip
               data={{ ...data.other, boardId: data.boardSeq }}
               position={tooltipPosition}
