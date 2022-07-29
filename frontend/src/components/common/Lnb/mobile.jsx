@@ -27,6 +27,7 @@ function NavMobile({ path, openModal }) {
   const { pathname } = useLocation();
   const cookies = new Cookies();
   const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: isAlarm } = useSWR(['/timeline/unread', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const [authVisible, openAuth, closeAuth] = useModal();
 
@@ -76,7 +77,7 @@ function NavMobile({ path, openModal }) {
                   <MobileGnbA to="/mypage">
                     <MobileProfileimg src={myData.data.file} alt="프로필이미지" />
                   </MobileGnbA>
-                  <Alarm />
+                  {isAlarm?.data && <Alarm />}
                 </>
               ) : (
                 <MobileGnbB onClick={() => openModal()}>

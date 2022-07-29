@@ -31,6 +31,7 @@ import PostCreateModal from '../../post/modal/PostCreate';
 function Lnb({ path }) {
   const cookies = new Cookies();
   const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const { data: isAlarm } = useSWR(['/timeline/unread', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const [on, changeOn] = useState(false);
   const { pathname } = useLocation();
@@ -115,7 +116,7 @@ function Lnb({ path }) {
                   <NavPCFooterA to="/mypage">
                     <ProfileNullImg src={`${myData.data.file}`} alt="myprofile" />
                   </NavPCFooterA>
-                  {myData.data && <Alarm />}
+                  {isAlarm?.data && <Alarm />}
                 </>
               ) : (
                 <NavPCFooterB onClick={handleAuthModal}>

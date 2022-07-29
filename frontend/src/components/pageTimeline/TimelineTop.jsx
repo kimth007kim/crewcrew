@@ -17,6 +17,7 @@ function TimelineTop() {
     '나의 참여요청 거절',
     '나의 참여요청 수락',
     '나의 참여 취소',
+    '크루원의 크루탈퇴',
   ];
   const [currentFilter, setCurrentFilter] = useState(FliterList[FilterNum]);
   const [currentFilterNum, setCurrentFilterNum] = useRecoilState(timelineFilter);
@@ -237,7 +238,7 @@ const FilterWrapper = styled('div')`
     props.open &&
     css`
       width: 156px;
-      height: 190px;
+      height: 216px;
       border: 1px solid #00b7ff;
       background: #fff url(${ArrowUpOn}) top 12px right 9px/11px no-repeat;
 
@@ -258,7 +259,7 @@ const FilterWrapper = styled('div')`
       @media screen and (max-width: 300px) {
         padding: 0 8px;
         width: 100px;
-        height: 182px;
+        height: 204px;
       }
     `}
 `;
