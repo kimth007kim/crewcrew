@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import TimelineTop from './TimelineTop';
 import TimelineList from './TimelineList';
 import { DataLists, timelineFilter, TimelineChanged } from '@/atoms/timeline';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
 import useQuery from '@/hooks/useQuery';
@@ -13,14 +13,14 @@ function TimelineSection() {
   const query = useQuery();
   const cookies = new Cookies();
   const [timelineData, setTimelineData] = useState([]);
-  const [dataLists, setDataLists] = useRecoilState(DataLists);
+  const setDataLists = useSetRecoilState(DataLists);
   const [pageData, setPageData] = useState(null);
   const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(query.get('page') || 1);
   const [postsPerPage, setPostsPerPage] = useState(10);
   const [timelineLoaded, setTimelineLoaded] = useState(false);
   const [currentFilterNum, setCurrentFilterNum] = useRecoilState(timelineFilter);
-  const [timelineChanged, setTimelineChanged] = useRecoilState(TimelineChanged);
+  const [timelineChanged] = useRecoilValue(TimelineChanged);
 
   const getTimeLine = useCallback(
     async (page) => {

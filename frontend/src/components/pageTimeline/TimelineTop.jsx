@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import SettingWhite from '@/assets/images/SettingWhite.png';
 import ArrowDown from '@/assets/images/ArrowDown.png';
 import ArrowUpOn from '@/assets/images/ArrowUpOn.png';
 import { BtnOpened, timelineFilter } from '@/atoms/timeline';
-import { useRecoilState } from 'recoil';
+import { useRecoilSetState } from 'recoil';
 import { useScroll } from '@/hooks/useScroll';
 
 function TimelineTop() {
@@ -20,9 +20,9 @@ function TimelineTop() {
     '크루원의 크루탈퇴',
   ];
   const [currentFilter, setCurrentFilter] = useState(FliterList[FilterNum]);
-  const [currentFilterNum, setCurrentFilterNum] = useRecoilState(timelineFilter);
+  const setCurrentFilterNum = useRecoilSetState(timelineFilter);
 
-  const [btnOpen, setBtnOpen] = useRecoilState(BtnOpened);
+  const setBtnOpen = useRecoilSetState(BtnOpened);
 
   const ChangeFilter = (i) => {
     setCurrentFilter(FliterList[i]);

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { format, getDay, differenceInDays } from 'date-fns';
+import { format, getDay } from 'date-fns';
 import ButtonStarWhite from '@/assets/images/ButtonStarWhite.png';
 import ButtonStarOn from '@/assets/images/ButtonStarOn.png';
 import SettingWhite from '@/assets/images/SettingWhite.png';
@@ -11,7 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useQuery from '@/hooks/useQuery';
 import { Cookies } from 'react-cookie';
 import axios from 'axios';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useRecoilSetState } from 'recoil';
 import { changedBookmark } from '@/atoms/post';
 import useModal from '@/hooks/useModal';
 import ParticipateModal from './modal/Participate';
@@ -30,7 +30,7 @@ function PostCard({ data }) {
   const [IsDisable, setIsDisable] = useState(false);
   const [tooltip, setTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState(1);
-  const [changeBookmarked, setchangeBookmarked] = useRecoilState(changedBookmark);
+  const setchangeBookmarked = useRecoilSetState(changedBookmark);
   const [currentBoardId, setCurrentBoardId] = useRecoilState(tooltipBoardId);
   const [deletedBookmark, setDeletedBookmark] = useRecoilState(lnbBookmarkDelete);
   const isLogin = useRecoilValue(loginCheck);

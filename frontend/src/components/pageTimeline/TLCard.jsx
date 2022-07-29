@@ -4,7 +4,7 @@ import LogInCheckOff from '@/assets/images/LogInCheck_off.png';
 import LogInCheckOn from '@/assets/images/LogInCheck_on.png';
 import ChatShow from '@/assets/images/ChatShow.png';
 import { BtnOpened, DataLists } from '@/atoms/timeline';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
@@ -14,7 +14,7 @@ function TLCard({ data, isLast }) {
   const navigate = useNavigate();
   const cookies = new Cookies();
   const [isCheck, setIsCheck] = useState(false);
-  const [btnOpen, setBtnOpen] = useRecoilState(BtnOpened);
+  const btnOpen = useRecoilValue(BtnOpened);
   const [dataLists, setDataLists] = useRecoilState(DataLists);
   const Date = dayjs(data.createdDate.replace(/-/g, '/')).format('YY/MM/DD HH:mm');
   const [detailState, setDetailState] = useState('nega');
