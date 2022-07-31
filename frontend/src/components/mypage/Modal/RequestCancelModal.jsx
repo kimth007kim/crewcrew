@@ -40,7 +40,7 @@ function RequestCancelModal({ closeModal, visible, postData, handleReloadApId })
         `/application/status`,
         {
           apId: postData.apId,
-          statusCode: 3,
+          statusCode: 0,
         },
         {
           withCredentials: true,
@@ -55,7 +55,7 @@ function RequestCancelModal({ closeModal, visible, postData, handleReloadApId })
         case 200:
           handleReloadApId(postData.apId + 'cancel');
           closeModal();
-          toast.success('성공적으로 취소되었습니다.');
+          toast.success('성공적으로 요청이 취소되었습니다.');
           break;
         case 2301:
           toast.error(data.message);

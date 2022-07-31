@@ -7,18 +7,9 @@ import { format } from 'date-fns';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import { useRecoilState } from 'recoil';
 import { tooltipBoardId } from '@/atoms/profile';
-import fetcher from '@/utils/fetcher';
-import useSWR from 'swr';
-import { Cookies } from 'react-cookie';
 import ProfileTooltip from '@/components/post/tooltip/ProfileTooltip';
 
 function ChatBoxCard({ isSetting, onClick, check, data }) {
-  const cookies = new Cookies();
-  const { data: myData } = useSWR(
-    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
-    fetcher,
-  );
-
   const [tooltip, setTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState(1);
   const [currentBoardId, setCurrentBoardId] = useRecoilState(tooltipBoardId);

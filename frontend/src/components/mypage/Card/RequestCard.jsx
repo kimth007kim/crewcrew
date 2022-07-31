@@ -4,24 +4,15 @@ import ProfileTooltip from '@/components/post/tooltip/ProfileTooltip';
 import { cateogoryAll } from '@/frontDB/filterDB';
 import useModal from '@/hooks/useModal';
 import { renderDate, renderDay } from '@/utils';
-import fetcher from '@/utils/fetcher';
 import { format } from 'date-fns';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Cookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { css } from 'styled-components';
-import useSWR from 'swr';
 import RequestCancelModal from '../Modal/RequestCancelModal';
 
 function RequestCard({ data, handleReloadApId }) {
-  const cookies = new Cookies();
-  const { data: myData } = useSWR(
-    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
-    fetcher,
-  );
-
   const [tooltip, setTooltip] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState(1);
   const [IsDisable, setIsDisable] = useState(false);

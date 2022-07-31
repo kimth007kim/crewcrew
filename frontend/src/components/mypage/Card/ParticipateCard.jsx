@@ -9,8 +9,6 @@ import { useSetRecoilState } from 'recoil';
 import { tooltipBoardId } from '@/atoms/profile';
 import ProfileTooltip from '@/components/post/tooltip/ProfileTooltip';
 import { Cookies } from 'react-cookie';
-import useSWR from 'swr';
-import fetcher from '@/utils/fetcher';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import MyPartiCancelModal from '../Modal/MyPartiCancelModal';
@@ -18,10 +16,6 @@ import useModal from '@/hooks/useModal';
 
 function ParticipateCard({ postData, handleCloseDownId }) {
   const cookies = new Cookies();
-  const { data: myData } = useSWR(
-    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
-    fetcher,
-  );
 
   const [IsDisable, setIsDisable] = useState(false);
   const [isSwiperClick, setIsSwiperClick] = useState(false);
