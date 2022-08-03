@@ -33,10 +33,7 @@ import { TimelineChanged } from '@/atoms/timeline';
 
 function Lnb({ path }) {
   const cookies = new Cookies();
-  const { data: myData } = useSWR(
-    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
-    fetcher,
-  );
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
   const { data: isAlarm, mutate } = useSWR(
     ['/timeline/unread', cookies.get('X-AUTH-TOKEN')],
     fetcher,

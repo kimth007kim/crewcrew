@@ -16,7 +16,7 @@ function ParticipateModal({ closeModal, visible, postData }) {
   const cookies = new Cookies();
 
   const { data: myData, error: myError } = useSWR(
-    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
+    ['/auth/token', cookies.get('X-AUTH-TOKEN')],
     fetcher,
   );
 

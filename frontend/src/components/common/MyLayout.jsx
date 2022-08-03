@@ -10,12 +10,15 @@ import Lnb from './Lnb/Lnb';
 
 function MyLayout({ children, path = 'mypage' }) {
   const cookies = new Cookies();
-  const { data: myData, error } = useSWR(
-    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
-    fetcher,
-  );
+  const { data: myData, error } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
-  if (error || (myData && myData.data === null) || myData === undefined) {
+  if (error || (myData && myData.data === null)) {
+    toast.error('잘못된 접근입니다. 로그인 후 이용 가능합니다.');
+
+    return <Navigate to="/" />;
+  }
+
+  if (!cookies.get('X-AUTH-TOKEN') && myData === undefined) {
     toast.error('잘못된 접근입니다. 로그인 후 이용 가능합니다.');
 
     return <Navigate to="/" />;

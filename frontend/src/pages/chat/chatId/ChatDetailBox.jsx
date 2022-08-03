@@ -23,10 +23,7 @@ let client = null;
 
 function ChatDetailBox({ roomId }) {
   const cookies = new Cookies();
-  const { data: myData } = useSWR(
-    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
-    fetcher,
-  );
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const getKey = (pageIndex, previousPageData) => {
     if (previousPageData && previousPageData.data.length < 10) {

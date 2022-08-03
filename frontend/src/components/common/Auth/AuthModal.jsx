@@ -52,12 +52,9 @@ function AuthModal({ closeModal, visible }) {
   const HandleClick = useCallback((num) => {
     setIsClick(num);
   }, []);
-  const myCookies = new Cookies();
+  const cookies = new Cookies();
 
-  const { data: myData } = useSWR(
-    myCookies.get('X-AUTH-TOKEN') ? ['/auth/token', myCookies.get('X-AUTH-TOKEN')] : null,
-    fetcher,
-  );
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   if (myData && myData.data) {
     return null;

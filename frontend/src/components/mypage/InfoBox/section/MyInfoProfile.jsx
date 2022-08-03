@@ -15,10 +15,7 @@ function MyInfoProfile({ open, closeFunc }) {
     data: myData,
     error: myError,
     mutate,
-  } = useSWR(
-    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
-    fetcher,
-  );
+  } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   // 닉네임
   const [nickname, setNickname] = useState('');
@@ -84,7 +81,7 @@ function MyInfoProfile({ open, closeFunc }) {
 
     setStudyCheckedList([...studyArr]);
     setHobbyCheckedList([...hobbyArr]);
-  }, [myData.data]);
+  }, [myData]);
 
   const HandleCancelUpload = useCallback(() => {
     InitialState();
@@ -192,7 +189,7 @@ function MyInfoProfile({ open, closeFunc }) {
 
     setStudyCheckedList([...studyArr]);
     setHobbyCheckedList([...hobbyArr]);
-  }, [myData.data]);
+  }, [myData]);
 
   return (
     <>

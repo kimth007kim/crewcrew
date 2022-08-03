@@ -11,10 +11,7 @@ import Button from '../../Button';
 
 function SignupSection4({ IsClick, closeModal, HandleClick }) {
   const cookies = new Cookies();
-  const { data: myData } = useSWR(
-    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
-    fetcher,
-  );
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const nickName = useRecoilValue(nickNameState);
 

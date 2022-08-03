@@ -16,10 +16,7 @@ import ProfileTooltip from '@/components/post/tooltip/ProfileTooltip';
 
 function SwiperCard({ data, boardId, status, handleReloadAppId, postData }) {
   const cookies = new Cookies();
-  const { data: myData } = useSWR(
-    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
-    fetcher,
-  );
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const [studyList, setStudyList] = useState([]);
   const [hobbyList, setHobbyList] = useState([]);

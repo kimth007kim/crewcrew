@@ -12,15 +12,8 @@ import useSWR from 'swr';
 function Kakao() {
   const navigate = useNavigate();
   const { search } = useLocation();
-  const myCookies = new Cookies();
-  const {
-    data: myData,
-    error,
-    mutate,
-  } = useSWR(
-    myCookies.get('X-AUTH-TOKEN') ? ['/auth/token', myCookies.get('X-AUTH-TOKEN')] : null,
-    fetcher,
-  );
+  const cookies = new Cookies();
+  const { data: myData, mutate } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   useEffect(() => {
     const getToken = async () => {

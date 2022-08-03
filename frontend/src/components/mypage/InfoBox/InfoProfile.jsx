@@ -12,10 +12,7 @@ import { emojiSlice } from '@/utils';
 
 function InfoProfile({ state }) {
   const cookies = new Cookies();
-  const { data: myData } = useSWR(
-    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
-    fetcher,
-  );
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const [nicknameFocus, setNicknameFocus] = useState(false);
 

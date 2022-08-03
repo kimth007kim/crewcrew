@@ -22,10 +22,7 @@ function NavContainer() {
   const [bookmarkArr, setBookmarkArr] = useState([]);
   const changeBookmarked = useRecoilValue(changedBookmark);
   const cookies = new Cookies();
-  const { data: myData, mutate } = useSWR(
-    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
-    fetcher,
-  );
+  const { data: myData, mutate } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [Dialog, openModal, closeModal] = useModal();
@@ -44,15 +41,15 @@ function NavContainer() {
       });
       switch (data.status) {
         case 200:
+          cookies.remove('X-AUTH-TOKEN', { path: '/', domain: '.crewcrew.org' });
+          cookies.remove('refreshToken', { path: '/', domain: '.crewcrew.org' });
           mutate('/auth/token');
           mutate(null);
-          if (process.env.NODE_ENV === 'development') {
-            cookies.remove('X-AUTH-TOKEN');
-          }
 
           if (pathname.startsWith('/mypage')) {
             navigate('/', { replace: true });
           }
+
           window.location.reload();
           break;
         case 1900:

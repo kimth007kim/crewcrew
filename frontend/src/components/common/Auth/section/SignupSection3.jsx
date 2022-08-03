@@ -45,11 +45,8 @@ function SignupSection3({ IsClick, HandleClick }) {
     '나를 소개하는 한 줄 메세지를 입력해주세요.(30자 이내)',
   );
 
-  const myCookies = new Cookies();
-  const { mutate } = useSWR(
-    myCookies.get('X-AUTH-TOKEN') ? ['/auth/token', myCookies.get('X-AUTH-TOKEN')] : null,
-    fetcher,
-  );
+  const cookies = new Cookies();
+  const { mutate } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   // Recoil State
   const name = useRecoilValue(nameState);

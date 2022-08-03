@@ -30,10 +30,7 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
   const [deletedBookmark, setDeletedBookmark] = useRecoilState(lnbBookmarkDelete);
   const isLogin = useRecoilValue(loginCheck);
   const myCookies = new Cookies();
-  const { data: myData } = useSWR(
-    myCookies.get('X-AUTH-TOKEN') ? ['/auth/token', myCookies.get('X-AUTH-TOKEN')] : null,
-    fetcher,
-  );
+  const { data: myData } = useSWR(['/auth/token', myCookies.get('X-AUTH-TOKEN')], fetcher);
 
   const navigate = useNavigate();
 

@@ -29,10 +29,7 @@ function NavMobile({ path, openModal }) {
   const timelineChanged = useRecoilValue(TimelineChanged);
   const { pathname } = useLocation();
   const cookies = new Cookies();
-  const { data: myData } = useSWR(
-    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
-    fetcher,
-  );
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
   const { data: isAlarm, mutate } = useSWR(
     ['/timeline/unread', cookies.get('X-AUTH-TOKEN')],
     fetcher,

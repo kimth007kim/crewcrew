@@ -23,10 +23,7 @@ import AuthModal from '@/components/common/Auth/AuthModal';
 
 function MainPost({ data }) {
   const cookies = new Cookies();
-  const { data: myData } = useSWR(
-    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
-    fetcher,
-  );
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const [IsDisable, setIsDisable] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);

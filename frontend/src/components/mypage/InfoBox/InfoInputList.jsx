@@ -14,10 +14,7 @@ import DeleteUserModal from '../Modal/DeleteUserModal';
 
 function InfoInputList({ state }) {
   const cookies = new Cookies();
-  const { data: myData } = useSWR(
-    cookies.get('X-AUTH-TOKEN') ? ['/auth/token', cookies.get('X-AUTH-TOKEN')] : null,
-    fetcher,
-  );
+  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
 
   const [nameFocus, setNameFocus] = useState(false);
 
