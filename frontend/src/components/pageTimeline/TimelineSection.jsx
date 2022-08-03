@@ -20,7 +20,7 @@ function TimelineSection() {
   const [postsPerPage, setPostsPerPage] = useState(10);
   const [timelineLoaded, setTimelineLoaded] = useState(false);
   const [currentFilterNum, setCurrentFilterNum] = useRecoilState(timelineFilter);
-  const [timelineChanged] = useRecoilValue(TimelineChanged);
+  const timelineChanged = useRecoilValue(TimelineChanged);
 
   const getTimeLine = useCallback(
     async (page) => {
