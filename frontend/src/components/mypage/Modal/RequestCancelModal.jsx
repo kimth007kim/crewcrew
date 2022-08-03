@@ -40,7 +40,7 @@ function RequestCancelModal({ closeModal, visible, postData, handleReloadApId })
         `/application/status`,
         {
           apId: postData.apId,
-          statusCode: 0,
+          statusCode: 5,
         },
         {
           withCredentials: true,

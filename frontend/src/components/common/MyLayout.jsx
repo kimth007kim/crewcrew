@@ -15,14 +15,10 @@ function MyLayout({ children, path = 'mypage' }) {
     fetcher,
   );
 
-  if (error || (myData && myData.data === null)) {
-    toast.error('로그인 후 이용 가능합니다. 잘못된 접근입니다.');
+  if (error || (myData && myData.data === null) || myData === undefined) {
+    toast.error('잘못된 접근입니다. 로그인 후 이용 가능합니다.');
 
     return <Navigate to="/" />;
-  }
-
-  if (myData === undefined) {
-    return null;
   }
 
   return (
