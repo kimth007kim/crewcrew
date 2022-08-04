@@ -117,7 +117,7 @@
 
 ## 🛢 Database ERD
 
-![ERD](README_image/ERD.png)
+![ERD]![CREWCREW_ERD](https://user-images.githubusercontent.com/48907339/182824282-49d6ac0f-1720-4c81-8e49-3e5f53df40a6.png)
 
 
 ## ⚡ Preview
