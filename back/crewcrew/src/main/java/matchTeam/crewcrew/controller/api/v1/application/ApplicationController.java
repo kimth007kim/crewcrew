@@ -108,7 +108,7 @@ import static java.util.stream.Collectors.joining;
         context.setVariable("commentary", info.getCommentary());
         context.setVariable("introduce", user.getIntroduce());
         context.setVariable("interestStudyCategory", likedCategoryService.findUsersStudyLike(user).stream().collect(joining(",")));
-        context.setVariable("interestHobbyCategory", likedCategoryService.findUsersHobbyLike(user).stream().collect(joining(",")));;
+        context.setVariable("interestHobbyCategory", likedCategoryService.findUsersHobbyLike(user).stream().collect(joining(",")));
         context.setVariable("profileImageURL", user.getProfileImage());
         context.setVariable("url", "https://crewcrew.org/post/" + board.getBoardId());
         totalEmailService.sendJavaMail("[크루크루] 지원서 도착", userService.findByUid(board.getUid()).getEmail(), "mailform/apply", context);
@@ -130,7 +130,9 @@ import static java.util.stream.Collectors.joining;
 
         if (request.getStatusCode().equals(0)){
             applicationProgressService.declinedApply(board.getId()); // 참여거절할 경우, 참여요청자수 - 1
-        } else if (request.getStatusCode() == 2){ // 참여 수락된 경우 메일 발송
+        } else if (request.getStatusCode().equals(1)){
+            applicationProgressService.increaseApply(board.getId());
+        }else if (request.getStatusCode() == 2){ // 참여 수락된 경우 메일 발송
             User appliedUser = application.getUser();
 
             Context context = new Context();
@@ -138,9 +140,18 @@ import static java.util.stream.Collectors.joining;
             context.setVariable("chatURL", board.getKakaoChat());
             context.setVariable("boardTitle", board.getTitle());
             totalEmailService.sendJavaMail("[크루크루] 회원님의 요청이 수락되었습니다", appliedUser.getEmail(), "mailform/accepted", context);
-            applicationProgressService.completedApply(board.getId()); // 참여완료할 경우, 참여자수 + 1
+
+            applicationProgressService.declinedApply(board.getId());
+            applicationProgressService.increaseRecruited(board.getId());
+
         } else if (request.getStatusCode().equals(3)){
-            applicationProgressService.canceledApply(board.getId()); // 참여취소할 경우, 참여요청자수 -1, 참여자수 -1
+           applicationProgressService.decreaseRecruited(board.getId());
+
+        } else if (request.getStatusCode().equals(4)) {
+            applicationProgressService.decreaseRecruited(board.getId());
+
+        } else if (request.getStatusCode().equals(5)){
+            applicationProgressService.decreaseRecruited(board.getId());
         }
         return ResponseHandler.generateResponse("지원서 진행사항 수정 성공", HttpStatus.OK, result);
     }

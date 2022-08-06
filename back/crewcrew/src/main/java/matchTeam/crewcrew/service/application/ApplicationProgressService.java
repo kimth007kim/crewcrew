@@ -12,7 +12,7 @@ public class ApplicationProgressService {
 
     @Transactional
     public void increaseApply(Long boardId){
-        boardRepository.IncreaseApplyByBoardId(boardId);
+        boardRepository.increaseApplyByBoardId(boardId);
     }
 
     @Transactional
@@ -21,11 +21,10 @@ public class ApplicationProgressService {
     }
 
     @Transactional
-    public void completedApply(Long boardId){ boardRepository.increaseRecruitedByBoardId(boardId);}
+    public void increaseRecruited(Long boardId){ boardRepository.increaseRecruitedByBoardId(boardId);}
 
     @Transactional
-    public void canceledApply(Long boardId){
-        boardRepository.decreaseApplyByBoardId(boardId);
+    public void decreaseRecruited(Long boardId){
         boardRepository.decreaseRecruitedByBoardId(boardId);
     }
 }
