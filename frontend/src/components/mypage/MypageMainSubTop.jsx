@@ -81,7 +81,9 @@ function MypageMainSubTop({
         <Content>
           <h4>
             {'전체 '}
-            <span ref={totalRef} data-rate={total}></span>
+            <span ref={totalRef} data-rate={total}>
+              0개
+            </span>
           </h4>
           <BoxWrap>
             <SentBox color="#0575e6" hoverColor="#005ec5" disable={disable} onClick={handleTitle1}>

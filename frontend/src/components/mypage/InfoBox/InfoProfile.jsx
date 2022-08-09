@@ -9,6 +9,7 @@ import Textfield from '@/components/common/TextfieldEmail';
 import SettingGray from '@/assets/images/SettingGray.png';
 import CheckImg from '@/assets/images/Checked_on.png';
 import { emojiSlice } from '@/utils';
+import ProfileNull from '@/assets/images/ProfileNull.png';
 
 function InfoProfile({ state }) {
   const cookies = new Cookies();
@@ -153,7 +154,10 @@ function InfoProfile({ state }) {
               {state.file ? (
                 <img src={URL.createObjectURL(state.file)} alt="" />
               ) : (
-                <img src={`${myData && myData.data && myData.data.file}`} alt="myprofile" />
+                <img
+                  src={`${(myData && myData.data && myData.data.file) || ProfileNull}`}
+                  alt="profile"
+                />
               )}
             </MyProfile>
             <InputHide
@@ -170,7 +174,7 @@ function InfoProfile({ state }) {
                 value={state.nickname}
                 label={
                   state.nicknameSetting
-                    ? `${myData && myData.data && myData.data.nickName}`
+                    ? `${(myData && myData.data && myData.data.nickName) || '닉네임'}`
                     : '닉네임'
                 }
                 validMessage={state.nicknameValidMsg}
@@ -201,7 +205,7 @@ function InfoProfile({ state }) {
               value={state.message}
               label={
                 state.messageSetting
-                  ? `${myData && myData.data && myData.data.message}`
+                  ? `${(myData && myData.data && myData.data.message) || '자기소개'}`
                   : '자기소개'
               }
               validMessage={state.messageValidMsg}
