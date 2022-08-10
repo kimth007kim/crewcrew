@@ -1,33 +1,38 @@
 import React from 'react';
+import loadable from '@loadable/component';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './home';
-import Testing from './testing';
-import NotFound from './notfound';
-import Post from './post';
-import MyPage from './mypage';
-import PostDetail from './post/id';
-import Recruit from './mypage/recruit';
-import Request from './mypage/request';
-import Kakao from './callback/kakao';
-import Naver from './callback/naver';
-import Chat from './chat';
-import ChatDetail from './chat/chatId';
-import MyActivity from './mypage/myactivity';
-import Profile from './mypage/profile';
-import PageTimeline from './mypage/timeline';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { HelmetProvider } from 'react-helmet-async';
+
+import PageLoader from '@/components/common/PageLoader';
+
+const Fallback = {
+  fallback: <PageLoader></PageLoader>,
+};
+
+const Home = loadable(() => import('./home'), Fallback);
+const NotFound = loadable(() => import('./notfound'), Fallback);
+const Post = loadable(() => import('./post'), Fallback);
+const MyPage = loadable(() => import('./mypage'), Fallback);
+const PostDetail = loadable(() => import('./post/id'), Fallback);
+const Recruit = loadable(() => import('./mypage/recruit'), Fallback);
+const Request = loadable(() => import('./mypage/request'), Fallback);
+const Kakao = loadable(() => import('./callback/kakao'), Fallback);
+const Naver = loadable(() => import('./callback/naver'), Fallback);
+const Chat = loadable(() => import('./chat'), Fallback);
+const ChatDetail = loadable(() => import('./chat/chatId'), Fallback);
+const MyActivity = loadable(() => import('./mypage/myactivity'), Fallback);
+const Profile = loadable(() => import('./mypage/profile'), Fallback);
+const PageTimeline = loadable(() => import('./mypage/timeline'), Fallback);
 
 function Router() {
   return (
     <BrowserRouter>
       <HelmetProvider>
-        <Helmet></Helmet>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/callback/kakao" element={<Kakao />} />
           <Route path="/callback/naver" element={<Naver />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/testing" element={<Testing />} />
           <Route path="/post" element={<Post />} />
           <Route path="/post/:postId" element={<PostDetail />} />
           <Route path="/chat" element={<Chat />} />
