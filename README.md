@@ -28,13 +28,12 @@
 
 | Contributor                              | Role | Introduce        |
 | ---------------------------------------- | -------- | ---------------- |
+| [유재영](http://nicole-yoo.com/) | Designer |    |
+| [박한결](http://phk9436.pe.kr/)      | Frontend |      |
+| [오주영](https://github.com/ohjooyeong) | Frontend |     |
 | [김경동](https://github.com/kimth007kim)     | Backend   |        |
 | [김도희](https://github.com/Slowth-KIM)   | Backend   |  |
 | [이하늘](https://github.com/belowalways) | Backend |     |
-| [박한결](http://phk9436.pe.kr/)      | Frontend |      |
-| [유재영](http://nicole-yoo.com/) | Designer |    |
-| [오주영](https://github.com/ohjooyeong) | Frontend |     |
-
 
 ## 🌏 링크
 ### **📚 [크루크루](https://crewcrew.org/) 홈페이지입니다.**
@@ -117,40 +116,36 @@
 
 ## 🛢 Database ERD
 
-![ERD](README_image/ERD.png)
+![CREWCREW_ERD](https://user-images.githubusercontent.com/48907339/182824282-49d6ac0f-1720-4c81-8e49-3e5f53df40a6.png)
 
 
 ## ⚡ Preview
 
-### 🟥 Main Page & Login
-<img src="https://user-images.githubusercontent.com/48953435/180340456-bd3c36bd-42eb-47b4-a721-485e360cee42.png" width="45%" height="400px" title="Home" alt="Home"></img>
-<img src="https://user-images.githubusercontent.com/48953435/180340515-3d670979-a1d2-41ed-9477-aeddcefc8c2e.png" width="45%" height="400px" title="Home" alt="Home"></img>
-<img src="https://user-images.githubusercontent.com/48953435/180340548-6fc0b3ba-71cc-40dd-aaf5-32dac6a1553b.png" width="45%" height="400px" title="Home" alt="Home"></img>
-<img src="https://user-images.githubusercontent.com/48953435/180340608-49a94710-5776-4312-9614-d2864ac05470.png" width="45%" height="400px" title="Home" alt="Home"></img>
-<img src="https://user-images.githubusercontent.com/48953435/180340631-1dc1c94a-dc11-442c-b3f4-556de6ce49bc.png" width="45%" height="400px" title="Home" alt="Home"></img>
+### 🟥 Auth
+<img src="https://user-images.githubusercontent.com/48953435/184121904-92344dfb-bc3e-41a7-a378-952853fce94c.jpg" width="100%" height="600px" title="Home" alt="Home"></img>
 
+### 🟧 Post
+<img src="https://user-images.githubusercontent.com/48953435/184121841-6538e1ed-a4eb-4c4c-a830-894b43a951e0.jpg" width="100%" height="600px" title="Post" alt="Post"></img>
 
-### 🟧 Post Search
-<img src="https://user-images.githubusercontent.com/48953435/180340579-0fb231ae-ed03-4202-8c0e-98ab47d443b9.png" width="45%" height="400px" title="Home" alt="Home"></img>
-
-
-### 🟨 Post Detail
-<img src="https://user-images.githubusercontent.com/48953435/180340647-452a0c65-5d50-4fa0-8ed6-3af5981ee9ce.png" width="45%" height="400px" title="Home" alt="Home"></img>
+### 🟨 Post Modal
+<img src="https://user-images.githubusercontent.com/48953435/184121959-5612d5c0-3985-4440-9d0d-c0d54b1376cf.jpg" width="100%" height="600px" title="Post Modal" alt="Post Modal"></img>
 
 ### 🟩 My Page
-<img src="https://user-images.githubusercontent.com/48953435/180340747-9d6cd4fe-b1e1-492d-99f1-18dab8e65c71.png" width="45%" height="400px" title="Home" alt="Home"></img>
-<img src="https://user-images.githubusercontent.com/48953435/180340773-acf110a6-9af6-4a53-ae07-39d70373a824.png" width="45%" height="400px" title="Home" alt="Home"></img>
-<img src="https://user-images.githubusercontent.com/48953435/180340789-72d587d9-63aa-49c2-922d-9a7c6be6481e.png" width="45%" height="400px" title="Home" alt="Home"></img>
-<img src="https://user-images.githubusercontent.com/48953435/180340813-6a959f4d-ad5a-4536-a74d-cce45cb1a05c.png" width="45%" height="400px" title="Home" alt="Home"></img>
-
-### 🟦 Chat
-<img src="https://user-images.githubusercontent.com/48953435/180340839-cddbe035-10c8-4f8f-b4ab-d5f55c2ea3e6.png" width="45%" height="400px" title="Home" alt="Home"></img>
-<img src="https://user-images.githubusercontent.com/48953435/180340875-50228720-7028-4b10-ad3c-8087c3a9556f.png" width="45%" height="400px" title="Home" alt="Home"></img>
+<img src="https://user-images.githubusercontent.com/48953435/184122013-7164d6fc-7e36-49ec-b391-cbe5aa2bb101.jpg" width="100%" height="600px" title="MyPage" alt="MyPage"></img>
 
 ### 🟪 Timeline
-<img src="https://user-images.githubusercontent.com/48953435/180340912-1194f6da-e4f6-4acb-ae28-eee4d674535c.png" width="45%" height="400px" title="Home" alt="Home"></img>
+<img src="https://user-images.githubusercontent.com/48953435/184122056-7c63f8d2-f999-427d-8936-0eba56b5b626.jpg" width="100%" height="600px" title="Timeline" alt="Timeline"></img>
 
-### 🟫 Mobile Also
+
+### 🟫 Mypage Detail
+<img src="https://user-images.githubusercontent.com/48953435/184122107-12f06f99-21e1-4a42-b256-302d19c8e055.jpg" width="100%" height="600px" title="MypageDetail" alt="MypageDetail"></img>
+
+
+### 🟦 Chat List
+<img src="https://user-images.githubusercontent.com/48953435/184122119-18252c07-7fc9-4ed2-a608-1cfc99e8b449.jpg" width="100%" height="600px" title="Chat" alt="Chat"></img>
+
+### 🟩 Chat Detail
+<img src="https://user-images.githubusercontent.com/48953435/184122128-5fe359ef-3cff-4822-9425-e66dbd70483b.jpg" width="100%" height="600px" title="ChatDetail" alt="ChatDetail"></img>
 
 
 

@@ -16,7 +16,7 @@ public interface BoardRepository extends JpaRepository<Board, Long>, JpaSpecific
 
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Board b set b.appliedCrew = b.appliedCrew+1 WHERE b.id = ?1")
-    void IncreaseApplyByBoardId(Long id);
+    void increaseApplyByBoardId(Long id);
 
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Board b set b.appliedCrew = b.appliedCrew-1 WHERE b.id = ?1")
