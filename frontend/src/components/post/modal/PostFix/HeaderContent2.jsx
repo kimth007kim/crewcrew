@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { css } from 'styled-components';
 import { ko } from 'date-fns/esm/locale';
 import DatePickers from 'react-datepicker';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import InputMask from 'react-input-mask';
 
 import { InputHide, LabelBtn, ListFlex } from './index.style';
@@ -111,7 +111,7 @@ function HeaderContent2({ state }) {
   useEffect(() => {
     // input date 예외 처리
 
-    if (moment(state.lastDate).isValid()) {
+    if (dayjs(state.lastDate).isValid()) {
       const inputDate = new Date(state.lastDate);
       const currentDate = new Date();
       const tomorrow = new Date(currentDate.setDate(currentDate.getDate() + 1));

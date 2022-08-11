@@ -8,7 +8,16 @@
         "rootPathSuffix": "src"
       }
     ],
-    "@babel/plugin-transform-runtime"
+    "@babel/plugin-transform-runtime",
+    [
+      "babel-plugin-import",
+      {
+        "libraryName": "lodash",
+        "libraryDirectory": "",
+        "camel2DashComponentName": false
+      },
+      "lodash"
+    ]
   ],
   "env": {
     "development": {

@@ -141,6 +141,5 @@ const TagWrap = styled('div')`
         : css`
             background-color: #f7971e;
           `}
-
- 
+  }
 `;

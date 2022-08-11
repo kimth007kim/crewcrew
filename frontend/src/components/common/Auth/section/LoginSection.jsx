@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';

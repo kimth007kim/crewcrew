@@ -2,6 +2,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // 추가 코드
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const Dotenv = require('dotenv-webpack');
 const path = require('path');
 
@@ -15,6 +16,14 @@ module.exports = {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, './build/'),
     publicPath: '/',
+  },
+  optimization: {
+    nodeEnv: 'production',
+    minimize: true,
+    concatenateModules: true,
+    splitChunks: {
+      chunks: 'all',
+    },
   },
   devServer: {
     open: true,
@@ -92,5 +101,6 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new Dotenv(),
+    new BundleAnalyzerPlugin(),
   ],
 };

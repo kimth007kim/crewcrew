@@ -1,6 +1,5 @@
 import Button from '@/components/common/Button';
 import Loader from '@/components/common/Loader';
-import useModal from '@/hooks/useModal';
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Cookies } from 'react-cookie';

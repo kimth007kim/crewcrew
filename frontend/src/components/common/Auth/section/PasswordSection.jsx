@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import Naver from '@/assets/images/Naver.png';
 import Kakao from '@/assets/images/Kakao.png';
 import CheckImg from '@/assets/images/Checked_on.png';
