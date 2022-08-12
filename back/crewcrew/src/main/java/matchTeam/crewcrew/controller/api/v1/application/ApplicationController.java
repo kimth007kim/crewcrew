@@ -151,7 +151,7 @@ import static java.util.stream.Collectors.joining;
             applicationProgressService.decreaseRecruited(board.getId());
 
         } else if (request.getStatusCode().equals(5)){
-            applicationProgressService.decreaseRecruited(board.getId());
+            applicationProgressService.declinedApply(board.getId());
         }
         return ResponseHandler.generateResponse("지원서 진행사항 수정 성공", HttpStatus.OK, result);
     }
