@@ -64,6 +64,9 @@ function AuthModal({ closeModal, visible }) {
     <Modal
       handleClose={() => {
         closeModal();
+        if (IsClick === 4) {
+          window.location.reload();
+        }
         setTimeout(() => {
           HandleClick(0);
         }, 500);
@@ -109,6 +112,9 @@ function AuthModal({ closeModal, visible }) {
                 <ModalClose
                   onClick={() => {
                     closeModal();
+                    if (IsClick === 4) {
+                      window.location.reload();
+                    }
                     setTimeout(() => {
                       HandleClick(0);
                     }, 500);
@@ -125,9 +131,7 @@ function AuthModal({ closeModal, visible }) {
           <SignupSection IsClick={IsClick} HandleClick={HandleClick} />
           <SignupSection2 IsClick={IsClick} HandleClick={HandleClick} />
           <SignupSection3 IsClick={IsClick} HandleClick={HandleClick} />
-          {IsClick === 4 && (
-            <SignupSection4 IsClick={IsClick} closeModal={closeModal} HandleClick={HandleClick} />
-          )}
+          <SignupSection4 IsClick={IsClick} closeModal={closeModal} HandleClick={HandleClick} />
           <PasswordSection IsClick={IsClick} HandleClick={HandleClick} />
         </Body>
       }

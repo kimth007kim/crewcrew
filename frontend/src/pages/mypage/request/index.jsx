@@ -9,6 +9,7 @@ import { Cookies } from 'react-cookie';
 import RequestStudyList from '@/components/mypage/Request/RequestStudyList';
 import RequestHobbyList from '@/components/mypage/Request/RequestHobbyList';
 import { throttle } from '@/utils';
+import { Helmet } from 'react-helmet-async';
 
 function Request() {
   const cookies = new Cookies();
@@ -74,6 +75,9 @@ function Request() {
 
   return (
     <MyLayout>
+      <Helmet>
+        <title>내가 참여요청한 크루 - 크루크루</title>
+      </Helmet>
       <MypageSubTop title="내가 참여요청한 크루"></MypageSubTop>
       <MypageMainSubTop
         total={crewRequest ? crewRequest.totalApplyCount : 0}

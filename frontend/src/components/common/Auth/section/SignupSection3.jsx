@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Cookies } from 'react-cookie';
+import { Cookies, useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled, { css, keyframes } from 'styled-components';
@@ -22,6 +22,7 @@ import fetcher from '@/utils/fetcher';
 import Button from '../../Button';
 import MTextfield from './MTextfield';
 import Progress from './Progress';
+import { loginCheck } from '@/atoms/login';
 
 function SignupSection3({ IsClick, HandleClick }) {
   const [studyClick, setStudyClick] = useState(false);
@@ -47,6 +48,9 @@ function SignupSection3({ IsClick, HandleClick }) {
 
   const cookies = new Cookies();
   const { mutate } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
+  const [isLogin, setIsLogin] = useRecoilState(loginCheck);
+
+  const [cookie, setCookie, removeCookie] = useCookies(['user-cookie']);
 
   // Recoil State
   const name = useRecoilValue(nameState);
@@ -238,6 +242,16 @@ function SignupSection3({ IsClick, HandleClick }) {
 
           switch (data.status) {
             case 200:
+              if (process.env.NODE_ENV !== 'production') {
+                const now = new Date();
+                const afterh = new Date();
+                afterh.setHours(now.getHours() + 72);
+                setCookie('X-AUTH-TOKEN', data.data.accessToken, {
+                  path: '/',
+                  expires: afterh,
+                });
+              }
+              setIsLogin(true);
               mutate('/auth/token');
               HandleClick(4);
               break;

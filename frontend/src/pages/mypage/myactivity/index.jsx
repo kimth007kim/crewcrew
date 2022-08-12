@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import DeadlineList from '@/components/mypage/MyActivity/DeadlineList';
 import AcceptList from '@/components/mypage/MyActivity/AcceptList';
 import { throttle } from '@/utils';
+import { Helmet } from 'react-helmet-async';
 
 function MyActivity() {
   const cookies = new Cookies();
@@ -74,6 +75,9 @@ function MyActivity() {
 
   return (
     <MyLayout>
+      <Helmet>
+        <title>나의 활동 크루 - 크루크루</title>
+      </Helmet>
       <MypageSubTop title="나의 활동 크루"></MypageSubTop>
       <MypageMainSubTop
         total={

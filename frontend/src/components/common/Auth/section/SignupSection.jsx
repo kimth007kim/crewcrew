@@ -163,8 +163,8 @@ function SignupSection({ IsClick, HandleClick }) {
 
   const HandleCodeChange = (e) => {
     let value = emojiSlice(e.target.value);
-    value = spaceSlice(value);
-    value = value.slice(0, 6);
+    value = spaceSlice(value).replace(/[^A-Za-z0-9]/gi, '');
+    value = value.slice(0, 6).toUpperCase();
     setCheckCodeEmail(false);
     if (!SendCode) {
       value = value.slice(0, 0);
@@ -481,7 +481,7 @@ function SignupSection({ IsClick, HandleClick }) {
               }}
             >
               <TextfieldSU
-                type="text"
+                type="url"
                 onChange={HandleCodeChange}
                 value={code}
                 label="코드입력"

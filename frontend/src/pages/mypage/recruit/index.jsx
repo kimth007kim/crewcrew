@@ -8,6 +8,7 @@ import { Cookies } from 'react-cookie';
 import RecruitStudyList from '@/components/mypage/Recruit/RecruitStudyList';
 import RecruitHobbyList from '@/components/mypage/Recruit/RecruitHobbyList';
 import { throttle } from '@/utils';
+import { Helmet } from 'react-helmet-async';
 
 function Recruit() {
   const cookies = new Cookies();
@@ -73,6 +74,9 @@ function Recruit() {
 
   return (
     <MyLayout>
+      <Helmet>
+        <title>내가 모집중인 크루 - 크루크루</title>
+      </Helmet>
       <MypageSubTop title="내가 모집중인 크루"></MypageSubTop>
       <MypageMainSubTop
         total={crewRecruit ? crewRecruit.totalApplyCount : 0}

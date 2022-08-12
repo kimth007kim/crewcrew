@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import ChatDetailBox from './ChatDetailBox';
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet-async';
 
 function ChatDetail() {
   const cookies = new Cookies();
@@ -55,6 +56,9 @@ function ChatDetail() {
 
   return (
     <MyLayout>
+      <Helmet>
+        <title>채팅 - 크루크루</title>
+      </Helmet>
       <MypageTop title="채팅"></MypageTop>
       <Container>
         <SectionWrap>{roomId && <ChatDetailBox roomId={roomId}></ChatDetailBox>}</SectionWrap>

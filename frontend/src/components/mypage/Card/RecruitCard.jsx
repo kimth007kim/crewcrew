@@ -143,7 +143,7 @@ function RecruitCard({ postData, handleCloseDownId }) {
                   <p>
                     <span>{`(${postData.recruitedCrew}/${postData.totalCrew}명)`}</span> 모집완료
                   </p>
-                  <button onClick={() => openInNewTab(postData.kakaoCaht)}>크루원채팅</button>
+                  <button onClick={() => openInNewTab(postData.kakaoChat)}>크루원채팅</button>
                 </DetailBox>
               </CardHead>
               <CardBody>

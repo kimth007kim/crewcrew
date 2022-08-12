@@ -73,11 +73,13 @@ function SignupSection2({ IsClick, HandleClick }) {
     setNickname('');
     setNicknameValid(false);
     setDoubleCheck(false);
+    setValidMessage('앞으로 사용할 닉네임을 입력해주세요. (10자 이내)');
   }, []);
 
   const HandleCheckNickname = useCallback(
     (e) => {
       e.preventDefault();
+      e.stopPropagation();
       async function axiosPost() {
         try {
           const { data } = await axios.get(`/auth/user/nickname/${nickname}`);
@@ -92,6 +94,8 @@ function SignupSection2({ IsClick, HandleClick }) {
               setNicknameValid(true);
               break;
             default:
+              setValidMessage(data.message);
+              setNicknameValid(true);
               break;
           }
         } catch (error) {
@@ -268,11 +272,9 @@ function SignupSection2({ IsClick, HandleClick }) {
             validMessage={validMessage}
             valid={nicknameValid}
             onDelete={HandleNicknameDelete}
+            isKeep={doubleCheck}
           />
-          <InputDouble
-            active={nickname.length >= 2 && !doubleCheck}
-            onMouseDown={HandleCheckNickname}
-          >
+          <InputDouble active={nickname.length >= 2 && !doubleCheck} onClick={HandleCheckNickname}>
             중복확인
           </InputDouble>
           <InputChecked active={doubleCheck} />
