@@ -251,7 +251,7 @@ function SignupSection3({ IsClick, HandleClick }) {
                   expires: afterh,
                 });
               }
-              setIsLogin(true);
+
               mutate('/auth/token');
               HandleClick(4);
               break;

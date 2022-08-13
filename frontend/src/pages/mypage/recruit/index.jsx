@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import MyLayout from '@/components/common/MyLayout';
 import MypageMainSubTop from '@/components/mypage/MypageMainSubTop';
 import MypageSubTop from '@/components/mypage/MypageSubTop';
@@ -7,16 +7,16 @@ import axios from 'axios';
 import { Cookies } from 'react-cookie';
 import RecruitStudyList from '@/components/mypage/Recruit/RecruitStudyList';
 import RecruitHobbyList from '@/components/mypage/Recruit/RecruitHobbyList';
-import { throttle } from '@/utils';
 import { Helmet } from 'react-helmet-async';
+import useMoveScroll from '@/hooks/useMoveScroll';
 
 function Recruit() {
   const cookies = new Cookies();
   const [crewRecruit, setCrewRecruit] = useState(null);
   const [postsPerPage, setPostsPerPage] = useState(10);
 
-  const title1Ref = useRef(null);
-  const title2Ref = useRef(null);
+  const [element1, handleMove1] = useMoveScroll();
+  const [element2, handleMove2] = useMoveScroll();
 
   const getRecruit = useCallback(async () => {
     try {
@@ -38,16 +38,6 @@ function Recruit() {
       console.dir(error);
     }
   }, []);
-
-  const excuteScroll = useCallback((ref) => {
-    throttle(handleScrollTitle(ref), 500);
-  }, []);
-
-  const handleScrollTitle = (ref) => {
-    if (ref?.current) {
-      window.scrollTo(0, ref.current.offsetTop);
-    }
-  };
 
   useEffect(() => {
     getRecruit();
@@ -84,16 +74,16 @@ function Recruit() {
         hobbyCnt={crewRecruit ? crewRecruit.applyToHobbyCount : 0}
         title="내가 모집중인 크루"
         desc="내가 모집중인 크루를 이곳에서 간편하게 관리하세요!"
-        handleTitle1={() => excuteScroll(title1Ref)}
-        handleTitle2={() => excuteScroll(title2Ref)}
+        handleTitle1={handleMove1}
+        handleTitle2={handleMove2}
       ></MypageMainSubTop>
-      <Wrap className="study" ref={title1Ref}>
+      <Wrap className="study" ref={element1}>
         <SectionWrap>
           <h3>스터디 크루</h3>
           <RecruitStudyList postsPerPage={postsPerPage} />
         </SectionWrap>
       </Wrap>
-      <Wrap className="hobby" ref={title2Ref}>
+      <Wrap className="hobby" ref={element2}>
         <SectionWrap>
           <h3>취미 크루</h3>
           <RecruitHobbyList postsPerPage={postsPerPage} />

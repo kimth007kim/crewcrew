@@ -2,21 +2,22 @@ import MyLayout from '@/components/common/MyLayout';
 import MypageMainSubTop from '@/components/mypage/MypageMainSubTop';
 import MypageSubTop from '@/components/mypage/MypageSubTop';
 import axios from 'axios';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Cookies } from 'react-cookie';
 import styled from 'styled-components';
 import DeadlineList from '@/components/mypage/MyActivity/DeadlineList';
 import AcceptList from '@/components/mypage/MyActivity/AcceptList';
-import { throttle } from '@/utils';
+
 import { Helmet } from 'react-helmet-async';
+import useMoveScroll from '@/hooks/useMoveScroll';
 
 function MyActivity() {
   const cookies = new Cookies();
   const [crewActivity, setCrewActivity] = useState(null);
   const [postsPerPage, setPostsPerPage] = useState(10);
 
-  const title1Ref = useRef(null);
-  const title2Ref = useRef(null);
+  const [element1, handleMove1] = useMoveScroll();
+  const [element2, handleMove2] = useMoveScroll();
 
   const apiActivity = useCallback(async () => {
     try {
@@ -39,16 +40,6 @@ function MyActivity() {
       console.error(error);
     }
   }, []);
-
-  const excuteScroll = useCallback((ref) => {
-    throttle(handleScrollTitle(ref), 500);
-  }, []);
-
-  const handleScrollTitle = (ref) => {
-    if (ref?.current) {
-      window.scrollTo(0, ref.current.offsetTop);
-    }
-  };
 
   const handleResize = () => {
     if (window.innerWidth > 768) {
@@ -90,16 +81,16 @@ function MyActivity() {
         disable={true}
         small_title1="내가 쓴 마감글"
         small_title2="참여 수락된 글"
-        handleTitle1={() => excuteScroll(title1Ref)}
-        handleTitle2={() => excuteScroll(title2Ref)}
+        handleTitle1={handleMove1}
+        handleTitle2={handleMove2}
       ></MypageMainSubTop>
-      <Wrap className="wrotePost" ref={title1Ref}>
+      <Wrap className="wrotePost" ref={element1}>
         <SectionWrap>
           <h3>내가 쓴 마감글</h3>
           <DeadlineList postsPerPage={postsPerPage} />
         </SectionWrap>
       </Wrap>
-      <Wrap className="accepted" ref={title2Ref}>
+      <Wrap className="accepted" ref={element2}>
         <SectionWrap>
           <h3>참여수락된 글</h3>
           <AcceptList postsPerPage={postsPerPage} />
