@@ -65,6 +65,9 @@ public class ApplicationDetailResponseDTO {
     @ApiModelProperty(value = "참여요청한 날짜", notes = "참여요청한 날짜(년월일)", example = "2022-06-01")
     private LocalDateTime createdDate;
 
+    @ApiModelProperty(value = "오픈채팅방 링크")
+    private String kakaoChat;
+
     @ApiModelProperty(value = "만료여부", notes = "만료여부를 true(만료x) or false(만료됨)로 표현", example = "1")
     private Boolean viewable;
 
@@ -91,5 +94,6 @@ public class ApplicationDetailResponseDTO {
         this.createdDate = res.getCreatedDate();
         this.viewable = res.getViewable();
         this.progress = application.getProgress();
+        this.kakaoChat = res.getKakaoChat();
     }
 }

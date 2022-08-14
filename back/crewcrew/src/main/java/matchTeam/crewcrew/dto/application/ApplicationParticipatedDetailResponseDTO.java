@@ -72,6 +72,9 @@ public class ApplicationParticipatedDetailResponseDTO {
     @ApiModelProperty(value = "모집진행상태(0: 참여거절, 1: 참여요청중, 2: 참여완료, 3: 참여취소)")
     private Integer progress;
 
+    @ApiModelProperty(value = "오픈채팅방 링크")
+    private String kakaoChat;
+
     @QueryProjection
     @Builder
     public ApplicationParticipatedDetailResponseDTO(Board board, Application application, User user) {
@@ -92,5 +95,6 @@ public class ApplicationParticipatedDetailResponseDTO {
         this.expiredDate = board.getExpiredDate();
         this.viewable = board.getViewable();
         this.progress = application.getProgress();
+        this.kakaoChat = board.getKakaoChat();
     }
 }
