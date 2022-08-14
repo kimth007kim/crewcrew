@@ -14,15 +14,21 @@ module.exports = {
   // 번들된 파일 경로
   output: {
     filename: '[name].bundle.js',
+    chunkFilename: '[id].[chunkhash].js',
     path: path.resolve(__dirname, './build/'),
     publicPath: '/',
   },
   optimization: {
-    nodeEnv: 'production',
     minimize: true,
-    concatenateModules: true,
     splitChunks: {
-      chunks: 'all',
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'initial',
+          enforce: true,
+        },
+      },
     },
   },
   devServer: {
@@ -96,9 +102,7 @@ module.exports = {
       template: './public/index.html',
       filename: 'index.html',
     }),
-    new MiniCssExtractPlugin({
-      filename: 'style.css',
-    }),
+    new MiniCssExtractPlugin(),
     new CleanWebpackPlugin(),
     new Dotenv(),
     new BundleAnalyzerPlugin(),

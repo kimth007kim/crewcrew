@@ -11,6 +11,7 @@ function Textfield({
   label,
   onDelete,
   disabled = false,
+  isKeep = false,
   focus,
   otherHover,
 }) {
@@ -39,6 +40,7 @@ function Textfield({
       HandleOnBlur();
       InputRef.current.blur();
     }
+
     if (focus) {
       InputRef.current.focus();
     }
@@ -73,7 +75,7 @@ function Textfield({
         }}
         TextIn={!!value}
       />
-      <InputText Focused={Focused} Valid={valid}>
+      <InputText Focused={Focused || isKeep} Valid={valid}>
         {validMessage}
       </InputText>
     </Wrapper>

@@ -16,6 +16,7 @@ import Loader from '@/components/common/Loader';
 import ChatDeleteModal from '@/components/common/DeleteModal/ChatDeleteModal';
 import useModal from '@/hooks/useModal';
 import { emojiSlice } from '@/utils';
+import { Helmet } from 'react-helmet-async';
 
 function Chat() {
   const cookies = new Cookies();
@@ -247,6 +248,9 @@ function Chat() {
 
   return (
     <MyLayout>
+      <Helmet>
+        <title>채팅 - 크루크루</title>
+      </Helmet>
       <MypageTop title="채팅"></MypageTop>
       <Container>
         <SectionWrap>

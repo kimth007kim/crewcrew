@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
 import fetcher from '@/utils/fetcher';
 import { Cookies } from 'react-cookie';
+import { Helmet } from 'react-helmet-async';
 
 function Profile() {
   const [userInfo, setUserInfo] = useState([]);
@@ -60,6 +61,9 @@ function Profile() {
 
   return (
     <MyLayout>
+      <Helmet>
+        <title>프로필 - 크루크루</title>
+      </Helmet>
       <MypageTop title={userInfo.nickName} />
       <ProfileSection userInfo={userInfo} userBoard={userBoard} />
       <ProfilePostList />

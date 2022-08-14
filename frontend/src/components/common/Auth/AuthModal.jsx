@@ -10,9 +10,6 @@ import PasswordSection from './section/PasswordSection';
 import SignupSection2 from './section/SignupSection2';
 import SignupSection3 from './section/SignupSection3';
 import SignupSection4 from './section/SignupSection4';
-import useSWR from 'swr';
-import { Cookies } from 'react-cookie';
-import fetcher from '@/utils/fetcher';
 
 function TitleRender({ IsClick, HandleClick }) {
   const SignupClick = () => {
@@ -52,18 +49,14 @@ function AuthModal({ closeModal, visible }) {
   const HandleClick = useCallback((num) => {
     setIsClick(num);
   }, []);
-  const cookies = new Cookies();
-
-  const { data: myData } = useSWR(['/auth/token', cookies.get('X-AUTH-TOKEN')], fetcher);
-
-  if (myData && myData.data) {
-    return null;
-  }
 
   return (
     <Modal
       handleClose={() => {
         closeModal();
+        if (IsClick === 4) {
+          window.location.reload();
+        }
         setTimeout(() => {
           HandleClick(0);
         }, 500);
@@ -109,6 +102,9 @@ function AuthModal({ closeModal, visible }) {
                 <ModalClose
                   onClick={() => {
                     closeModal();
+                    if (IsClick === 4) {
+                      window.location.reload();
+                    }
                     setTimeout(() => {
                       HandleClick(0);
                     }, 500);

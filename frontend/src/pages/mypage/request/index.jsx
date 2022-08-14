@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import MyLayout from '@/components/common/MyLayout';
 import MypageMainSubTop from '@/components/mypage/MypageMainSubTop';
 import MypageSubTop from '@/components/mypage/MypageSubTop';
@@ -8,15 +8,17 @@ import { Cookies } from 'react-cookie';
 
 import RequestStudyList from '@/components/mypage/Request/RequestStudyList';
 import RequestHobbyList from '@/components/mypage/Request/RequestHobbyList';
-import { throttle } from '@/utils';
+
+import { Helmet } from 'react-helmet-async';
+import useMoveScroll from '@/hooks/useMoveScroll';
 
 function Request() {
   const cookies = new Cookies();
   const [crewRequest, setCrewRequest] = useState(null);
   const [postsPerPage, setPostsPerPage] = useState(10);
 
-  const title1Ref = useRef(null);
-  const title2Ref = useRef(null);
+  const [element1, handleMove1] = useMoveScroll();
+  const [element2, handleMove2] = useMoveScroll();
 
   const apiApplication = useCallback(async () => {
     try {
@@ -38,16 +40,6 @@ function Request() {
       console.dir(error);
     }
   }, []);
-
-  const excuteScroll = useCallback((ref) => {
-    throttle(handleScrollTitle(ref), 500);
-  }, []);
-
-  const handleScrollTitle = (ref) => {
-    if (ref?.current) {
-      window.scrollTo(0, ref.current.offsetTop);
-    }
-  };
 
   const handleResize = () => {
     if (window.innerWidth > 768) {
@@ -74,21 +66,24 @@ function Request() {
 
   return (
     <MyLayout>
+      <Helmet>
+        <title>내가 참여요청한 크루 - 크루크루</title>
+      </Helmet>
       <MypageSubTop title="내가 참여요청한 크루"></MypageSubTop>
       <MypageMainSubTop
         total={crewRequest ? crewRequest.totalApplyCount : 0}
         studyCnt={crewRequest ? crewRequest.applyToStudyCount : 0}
         hobbyCnt={crewRequest ? crewRequest.applyToHobbyCount : 0}
-        handleTitle1={() => excuteScroll(title1Ref)}
-        handleTitle2={() => excuteScroll(title2Ref)}
+        handleTitle1={handleMove1}
+        handleTitle2={handleMove2}
       ></MypageMainSubTop>
-      <Wrap className="study" ref={title1Ref}>
+      <Wrap className="study" ref={element1}>
         <SectionWrap>
           <h3>스터디 크루</h3>
           <RequestStudyList postsPerPage={postsPerPage} />
         </SectionWrap>
       </Wrap>
-      <Wrap className="hobby" ref={title2Ref}>
+      <Wrap className="hobby" ref={element2}>
         <SectionWrap>
           <h3>취미 크루</h3>
           <RequestHobbyList postsPerPage={postsPerPage} />

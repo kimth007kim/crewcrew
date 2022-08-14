@@ -10,6 +10,7 @@ import MainTop from '@/components/post/detail/MainTop';
 import ScrollButton from '@/components/common/ScrollButton';
 import useQuery from '@/hooks/useQuery';
 import { Cookies } from 'react-cookie';
+import { Helmet } from 'react-helmet-async';
 
 function PostDetail() {
   const cookies = new Cookies();
@@ -95,6 +96,9 @@ function PostDetail() {
 
   return (
     <>
+      <Helmet>
+        {postData ? <title>{postData.title} - 크루크루</title> : <title>크루크루</title>}
+      </Helmet>
       <Lnb path="postDetail" />
       <MainContainer>
         <ScrollButton />
