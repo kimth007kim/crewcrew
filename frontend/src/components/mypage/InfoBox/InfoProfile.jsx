@@ -236,6 +236,8 @@ const InputTop = styled('div')`
 
 const MyProfile = styled('div')`
   min-width: 50px;
+  width: 50px;
+  min-height: 50px;
   height: 50px;
   background-color: transparent;
   border-radius: 50%;
@@ -252,6 +254,7 @@ const MyProfile = styled('div')`
 const Setting = styled('label')`
   min-width: 16px;
   width: 16px;
+  min-height: 16px;
   height: 16px;
   cursor: pointer;
   text-indent: -9999em;
@@ -276,6 +279,7 @@ const InputWrap = styled('div')`
 const TxtFieldSetting = styled('div')`
   min-width: 16px;
   width: 16px;
+  min-height: 16px;
   height: 16px;
   cursor: pointer;
   text-indent: -9999em;
