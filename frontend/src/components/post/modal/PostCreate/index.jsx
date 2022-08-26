@@ -38,8 +38,6 @@ function PostCreateModal({ closeModal, visible, category = 0, postData = null })
 
   const handlePostUpload = async () => {
     try {
-      setLoading(true);
-
       if (detailCategoryCheck === 0) {
         toast.error('카테고리를 선택해주세요');
         return;
@@ -60,6 +58,8 @@ function PostCreateModal({ closeModal, visible, category = 0, postData = null })
         return;
       }
 
+      setLoading(true);
+
       const expiredDate = format(lastDate, 'yyyy-MM-dd');
 
       const context = {
@@ -78,6 +78,7 @@ function PostCreateModal({ closeModal, visible, category = 0, postData = null })
           'X-AUTH-TOKEN': cookies.get('X-AUTH-TOKEN'),
         },
       });
+      setLoading(false);
 
       switch (data.status) {
         case 200:
@@ -107,11 +108,9 @@ function PostCreateModal({ closeModal, visible, category = 0, postData = null })
           break;
       }
     } catch (error) {
+      setLoading(false);
+
       console.error(error);
-    } finally {
-      if (loading) {
-        setLoading(false);
-      }
     }
   };
 
