@@ -1,8 +1,11 @@
 // webpack.config.dev.js
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // 추가 코드
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CompressionPlugin = require('compression-webpack-plugin');
+const BrotliPlugin = require('brotli-webpack-plugin'); //brotli
 const Dotenv = require('dotenv-webpack');
 const path = require('path');
 
@@ -13,8 +16,8 @@ module.exports = {
   entry: './src/index.js', // 애플리케이션 시작 경로
   // 번들된 파일 경로
   output: {
-    filename: '[name].bundle.js',
-    chunkFilename: '[id].[chunkhash].js',
+    filename: '[name].[hash:8].js',
+    chunkFilename: '[id].[hash:8].js',
     path: path.resolve(__dirname, './build/'),
     publicPath: '/',
   },
@@ -46,16 +49,21 @@ module.exports = {
     rules: [
       {
         test: /\.(png|jpe?g|gif|svg)$/i,
-        loader: 'file-loader',
+        loader: 'url-loader',
         options: {
-          name: 'assets/[contenthash].[ext]',
+          name: '[contenthash].[ext]',
+          limit: 5000,
         },
       },
+
       {
         test: /\.(js|jsx)$/, // 빌드할 파일 확장자 정규식
         exclude: /node_modules/, // 제외할 파일 정규식
         use: {
           loader: 'babel-loader', // 사용할 로더 이름
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+          },
         },
       },
       {
@@ -104,6 +112,20 @@ module.exports = {
     }),
     new MiniCssExtractPlugin(),
     new CleanWebpackPlugin(),
+    new CompressionPlugin({
+      filename: '[path][base].gz[query]',
+      algorithm: 'gzip',
+      test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/,
+      threshold: 8192,
+      minRatio: 0.8,
+    }),
+    new BrotliPlugin({
+      //brotli plugin
+      asset: '[path].br[query]',
+      test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/,
+      threshold: 10240,
+      minRatio: 0.8,
+    }),
     new Dotenv(),
     new BundleAnalyzerPlugin(),
   ],

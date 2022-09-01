@@ -24,12 +24,14 @@ import IconNavChat from '@/assets/images/NavIcon4.png';
 import IconNavChatHover from '@/assets/images/NavIcon4_Hover.png';
 import IconNavChatActive from '@/assets/images/NavIcon4_Active.png';
 import fetcher from '@/utils/fetcher';
-import AuthModal from '../Auth/AuthModal';
 import useModal from '@/hooks/useModal';
-import PostCreateModal from '../../post/modal/PostCreate';
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { TimelineChanged } from '@/atoms/timeline';
+import loadable from '@loadable/component';
+
+const AuthModal = loadable(() => import('../Auth/AuthModal'));
+const PostCreateModal = loadable(() => import('../../post/modal/PostCreate'));
 
 function Lnb({ path }) {
   const cookies = new Cookies();
@@ -63,10 +65,6 @@ function Lnb({ path }) {
     }
   };
 
-  useEffect(() => {
-    mutate('/timeline/unread');
-  }, [timelineChanged]);
-
   const navigateChat = () => {
     if (myData && myData.data) {
       navigate('/chat');
@@ -78,6 +76,10 @@ function Lnb({ path }) {
       return;
     }
   };
+
+  useEffect(() => {
+    mutate('/timeline/unread');
+  }, [timelineChanged]);
 
   return (
     <header>

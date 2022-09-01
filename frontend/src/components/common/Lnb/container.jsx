@@ -7,7 +7,6 @@ import LogoTxt from '@/assets/images/LogoTxt.png';
 
 import NavIconPlus from '@/assets/images/NavIconPlus.png';
 import PostCardSlide from '@/components/home/PostCardSlide';
-import AuthModal from '../Auth/AuthModal';
 import fetcher from '@/utils/fetcher';
 import useModal from '@/hooks/useModal';
 import NavCard from './NavCard';
@@ -17,6 +16,9 @@ import { useRecoilValue } from 'recoil';
 import { changedBookmark } from '@/atoms/post';
 import { contiCards } from '@/frontDB/filterDB';
 import NavButton from './NavButton';
+import loadable from '@loadable/component';
+
+const AuthModal = loadable(() => import('../Auth/AuthModal'));
 
 function NavContainer() {
   const [bookmarkArr, setBookmarkArr] = useState([]);
