@@ -5,7 +5,7 @@ function ProfileTop({ data }) {
   return (
     <Container>
       <ProfileImg>
-        <img src={data.file} alt="프로필이미지" />
+        <img src={data.file} alt="myprofile" />
       </ProfileImg>
       <ProfileName>
         <p>{data.nickName}</p>

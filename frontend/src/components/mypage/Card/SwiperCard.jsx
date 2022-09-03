@@ -103,7 +103,7 @@ function SwiperCard({ data, boardId, status, handleReloadAppId, postData }) {
       <Container>
         <CardHead>
           <CardProfile onClick={(e) => viewTooltip(e, 3)}>
-            <img src={data.profileImage} alt="" />
+            <img src={data.profileImage} alt="postprofile" />
           </CardProfile>
           <CardTxt>
             <h4 onClick={(e) => viewTooltip(e, 4)}>{data.nickName}</h4>

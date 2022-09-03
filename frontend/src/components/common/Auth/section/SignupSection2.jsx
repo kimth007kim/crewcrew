@@ -293,7 +293,7 @@ function SignupSection2({ IsClick, HandleClick }) {
                 사진변경
               </ProfileChange>
               <ProfileImg ref={myImgRef} grayed={grayed}>
-                <img src={`${Profile1}`} alt="" />
+                <img src={`${Profile1}`} alt="defaultprofile" />
               </ProfileImg>
               <ProfileBg />
             </ProfileShow>
@@ -324,7 +324,7 @@ function SignupSection2({ IsClick, HandleClick }) {
                           active={myFileImg === i + 1}
                         >
                           <InnerCircle bg={p.bg}>
-                            <img src={`${p.src}`} alt="" />
+                            <img src={`${p.src}`} alt="selectprofile" />
                           </InnerCircle>
                         </OuterCircle>
                       </li>

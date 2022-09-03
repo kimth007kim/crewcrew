@@ -151,7 +151,7 @@ function RequestCard({ data, handleReloadApId }) {
     <Container>
       <CardHead isDisabled={IsDisable}>
         <ProfileBox onClick={(e) => viewTooltip(e, 1)}>
-          <img src={`${data.profileImage}`} alt="" />
+          <img src={`${data.profileImage}`} alt="postprofile" />
         </ProfileBox>
         <TextBox>
           <Dday>{IsDisable ? '마감' : `D-${renderDay(data.expiredDate)}`}</Dday>

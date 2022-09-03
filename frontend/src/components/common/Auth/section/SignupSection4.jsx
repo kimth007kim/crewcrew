@@ -30,9 +30,9 @@ function SignupSection4({ IsClick, closeModal, HandleClick }) {
       <ResultProfileWrapper>
         <ResultProfile>
           {myData && myData.data ? (
-            <img src={myData.data.file} alt="" />
+            <img src={myData.data.file} alt="myprofile" />
           ) : (
-            <img src={Profile1} alt="" />
+            <img src={Profile1} alt="defaultprofile" />
           )}
         </ResultProfile>
         <ResultTitle>

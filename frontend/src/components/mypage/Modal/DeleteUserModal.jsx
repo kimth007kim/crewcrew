@@ -71,7 +71,7 @@ function DeleteUserModal({ closeModal, visible }) {
     if (nextStep) {
       return (
         <>
-          <img src={SuccessCheck} alt="" />
+          <img src={SuccessCheck} alt="successicon" />
           <h4>회원탈퇴 완료</h4>
           <span>
             크루크루 회원탈퇴가 완료되었습니다. <br />
@@ -83,7 +83,7 @@ function DeleteUserModal({ closeModal, visible }) {
 
     return (
       <>
-        <img src={DeleteCheck} alt="" />
+        <img src={DeleteCheck} alt="deleteicon" />
         <h4>정말 탈퇴하실건가요?</h4>
         <span>
           지금 탈퇴하시면 지금까지의 모든 기록이 사라지게 됩니다. <br />

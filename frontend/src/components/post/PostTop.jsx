@@ -75,7 +75,7 @@ function PostTop() {
         <h3 ref={mobileRef}>나에게 딱 맞는 크루, 여기서 찾아요!</h3>
         <form onSubmit={handleSearchTextSubmit}>
           <InputWrapper>
-            <img src={`${IconSearch}`} alt="" />
+            <img src={`${IconSearch}`} alt="searchicon" />
             <input
               type="text"
               placeholder="참여하고 싶은 모임을 검색해보세요!"

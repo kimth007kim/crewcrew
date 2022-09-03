@@ -75,7 +75,7 @@ function HomeTop() {
         <h3>목표를 향해 항해하는 팀원모집 플랫폼, 크루크루</h3>
         <form onSubmit={handleSearchTextSubmit}>
           <InputWrapper>
-            <img src={`${IconSearch}`} alt="" />
+            <img src={`${IconSearch}`} alt="searchicon" />
             <input
               type="text"
               placeholder="참여하고 싶은 모임을 검색해보세요!"

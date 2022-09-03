@@ -75,7 +75,7 @@ function ParticipateModal({ closeModal, visible, postData }) {
     if (isParticipate) {
       return (
         <>
-          <img src={SuccessCheck} alt="" />
+          <img src={SuccessCheck} alt="successicon" />
           <p>참여 요청 완료!</p>
           <p>
             모집자에게 성공적으로 <span>{myData && myData.data && myData.data.nickName}</span>님의

@@ -38,7 +38,7 @@ function MainTop() {
         </h2>
         <form onSubmit={handleSearchTextSubmit}>
           <InputWrapper>
-            <img src={`${IconSearch}`} alt="" />
+            <img src={`${IconSearch}`} alt="searchicon" />
             <input
               type="text"
               placeholder="참여하고 싶은 모임을 검색해보세요!"

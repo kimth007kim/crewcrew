@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Cookies } from 'react-cookie';
 
 import Category1 from '@/assets/images/IconCategory1.png';
@@ -23,16 +23,18 @@ import ScrollButton from '@/components/common/ScrollButton';
 import SwiperSection from '@/components/home/SwiperSection';
 import CategoryCard from '@/components/home/CategoryCard';
 import Footer from '@/components/common/Footer';
-import PostCreateModal from '@/components/post/modal/PostCreate';
 import useModal from '@/hooks/useModal';
 import fetcher from '@/utils/fetcher';
 import useSWR from 'swr';
-import AuthModal from '@/components/common/Auth/AuthModal';
 import axios, { toast } from 'axios';
 import { allFilter, approachArr, articleArr } from '@/frontDB/filterDB';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { loginCheck } from '@/atoms/login';
+import loadable from '@loadable/component';
+
+const AuthModal = loadable(() => import('@/components/common/Auth/AuthModal'));
+const PostCreateModal = loadable(() => import('@/components/post/modal/PostCreate'));
 
 const categoryIcon = [
   Category1,
@@ -195,7 +197,7 @@ function Main() {
           <WriteButtonList>
             <WriteButtonLi1>
               <WriteButton onClick={() => handlePostModal(0)}>
-                <WriteButtonimg src={Profile1} />
+                <WriteButtonimg src={Profile1} alt="introstudyimg" />
                 <h5>
                   <em>스터디 크루원</em>
                   <br />
@@ -207,7 +209,7 @@ function Main() {
             </WriteButtonLi1>
             <WriteButtonLi2>
               <WriteButton onClick={() => handlePostModal(1)}>
-                <WriteButtonimg src={Profile5} alt="" />
+                <WriteButtonimg src={Profile5} alt="introhobbyimg" />
                 <h5>
                   <em>취미 크루원</em>
                   <br />

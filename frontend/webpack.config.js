@@ -23,6 +23,30 @@ module.exports = {
   },
   optimization: {
     minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          parse: {
+            ecma: 8,
+          },
+          compress: {
+            ecma: 5,
+            warnings: false,
+            comparisons: false,
+            inline: 2,
+          },
+          mangle: {
+            safari10: true,
+          },
+
+          output: {
+            ecma: 5,
+            comments: false,
+            ascii_only: true,
+          },
+        },
+      }),
+    ],
     splitChunks: {
       cacheGroups: {
         commons: {
@@ -52,7 +76,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           name: '[contenthash].[ext]',
-          limit: 5000,
+          limit: 10000,
         },
       },
 
@@ -102,6 +126,10 @@ module.exports = {
           'sass-loader',
         ],
       },
+      {
+        test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
+        type: 'asset/inline',
+      },
     ],
   },
 
@@ -115,14 +143,14 @@ module.exports = {
     new CompressionPlugin({
       filename: '[path][base].gz[query]',
       algorithm: 'gzip',
-      test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/,
+      test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.otf?.+$|\.svg?.+$/,
       threshold: 8192,
       minRatio: 0.8,
     }),
     new BrotliPlugin({
       //brotli plugin
       asset: '[path].br[query]',
-      test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/,
+      test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.otf?.+$|\.svg?.+$/,
       threshold: 10240,
       minRatio: 0.8,
     }),

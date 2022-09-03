@@ -46,7 +46,7 @@ function ChatCard({ data }) {
         <ChatDt className="other">
           <ChatProfile>
             <ProfileImg>
-              <img src={otherUser.image} alt="" />
+              <img src={otherUser.image} alt="chatprofile" />
             </ProfileImg>
             <h4>{otherUser.nickName}</h4>
           </ChatProfile>

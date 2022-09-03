@@ -153,7 +153,7 @@ function PostCardSlide({ data, cookies, isLnb = false }) {
           </CardHead>
           <CardBody>
             <CardProfile onClick={(e) => viewTooltip(e, 1)}>
-              <ProfileImg profileImg={data.profileImage} alt="" />
+              <ProfileImg profileImg={data.profileImage} alt="postprofile" />
             </CardProfile>
             <CardTxt>
               <h4>{data.title}</h4>

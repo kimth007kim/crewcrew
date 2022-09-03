@@ -181,9 +181,9 @@ function PostCard({ data }) {
         <CardHead isDisabled={IsDisable}>
           <ProfileBox profile={data.profileImage} onClick={(e) => viewTooltip(e, 1)}>
             {data.profileImage ? (
-              <img src={`${data.profileImage}`} alt="" />
+              <img src={`${data.profileImage}`} alt="postprofile" />
             ) : (
-              <img src={`${ProfileNull}`} alt="" />
+              <img src={`${ProfileNull}`} alt="nullprofile" />
             )}
           </ProfileBox>
           <TextBox>

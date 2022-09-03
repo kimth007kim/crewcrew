@@ -103,7 +103,7 @@ function ParticipateCard({ postData, handleCloseDownId }) {
           <CardTopHeader active={isSwiperClick}>
             <CardHead isDisabled={IsDisable}>
               <ProfileBox onClick={(e) => viewTooltip(e, 1)}>
-                <img src={`${postData?.profileImage}`} alt="" />
+                <img src={`${postData?.profileImage}`} alt="postprofile" />
               </ProfileBox>
               <TextBox>
                 <Dday>{IsDisable ? '마감' : `D-${renderDay(postData?.expiredDate)}`}</Dday>

@@ -152,7 +152,7 @@ function InfoProfile({ state }) {
           <InputTop>
             <MyProfile ref={myImgRef}>
               {state.file ? (
-                <img src={URL.createObjectURL(state.file)} alt="" />
+                <img src={URL.createObjectURL(state.file)} alt="profile" />
               ) : (
                 <img
                   src={`${(myData && myData.data && myData.data.file) || ProfileNull}`}
