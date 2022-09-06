@@ -469,6 +469,8 @@ const Alarm = styled.div`
 
 const LogoCircleImg = styled.img`
   width: 49px;
+  height: 57px;
+  object-fit: cover;
 `;
 const NavPCFooterA = styled(NavLink)`
   display: block;

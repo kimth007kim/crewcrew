@@ -126,10 +126,6 @@ module.exports = {
           'sass-loader',
         ],
       },
-      {
-        test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
-        type: 'asset/inline',
-      },
     ],
   },
 

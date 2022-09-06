@@ -201,7 +201,11 @@ function NavContainer() {
 
 export default NavContainer;
 
-const LogoTxtImg = styled.img``;
+const LogoTxtImg = styled.img`
+  width: 212px;
+  height: 55px;
+  object-fit: cover;
+`;
 
 const NavCont = styled.div`
   width: 330px;
