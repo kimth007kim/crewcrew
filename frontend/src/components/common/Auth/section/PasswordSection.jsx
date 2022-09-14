@@ -368,12 +368,6 @@ function PasswordSection({ HandleClick, IsClick }) {
           <DividingLine>혹시 회원이 아니신가요?</DividingLine>
           <SnsList>
             <li>
-              <ButtonNaver>
-                <NaverImg src={Naver} />
-                네이버 로그인
-              </ButtonNaver>
-            </li>
-            <li>
               <ButtonKakao>
                 <KakaoImg src={Kakao} />
                 카카오 로그인

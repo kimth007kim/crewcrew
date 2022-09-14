@@ -205,14 +205,6 @@ function LoginSection({ IsClick, HandleClick, closeModal }) {
       <DividingLine>또는 간편하게</DividingLine>
       <SnsList>
         <li>
-          <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&state=STATE_STRING&client_id=CTJFctZzRNLw8XkP1xik&redirect_uri=https://crewcrew.org/callback/naver">
-            <ButtonNaver>
-              <NaverImg src={Naver} />
-              네이버 로그인
-            </ButtonNaver>
-          </a>
-        </li>
-        <li>
           <a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=99ba28ab4b31cad385145d741c0641fe&redirect_uri=https://crewcrew.org/callback/kakao">
             <ButtonKakao>
               <KakaoImg src={Kakao} />
