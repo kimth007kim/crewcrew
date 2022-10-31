@@ -101,7 +101,7 @@ function RequestCard({ data, handleReloadApId }) {
               </span>{' '}
               참여중
             </p>
-            <button onClick={() => openInNewTab(data.kakaoCaht)}>크루원채팅</button>
+            <button onClick={() => openInNewTab(data.kakaoChat)}>크루원채팅</button>
           </DetailBox>
           <ButtonBox>
             <button>참여취소</button>
