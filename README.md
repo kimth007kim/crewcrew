@@ -122,30 +122,30 @@
 ## ⚡ Preview
 
 ### 🟥 Auth
-<img src="https://user-images.githubusercontent.com/48953435/184121904-92344dfb-bc3e-41a7-a378-952853fce94c.jpg" width="100%" height="600px" title="Home" alt="Home"></img>
+<img src="https://user-images.githubusercontent.com/48953435/184121904-92344dfb-bc3e-41a7-a378-952853fce94c.jpg" width="100%" height="auto" title="Home" alt="Home"></img>
 
 ### 🟧 Post
-<img src="https://user-images.githubusercontent.com/48953435/184121841-6538e1ed-a4eb-4c4c-a830-894b43a951e0.jpg" width="100%" height="600px" title="Post" alt="Post"></img>
+<img src="https://user-images.githubusercontent.com/48953435/184121841-6538e1ed-a4eb-4c4c-a830-894b43a951e0.jpg" width="100%" height="auto" title="Post" alt="Post"></img>
 
 ### 🟨 Post Modal
-<img src="https://user-images.githubusercontent.com/48953435/184121959-5612d5c0-3985-4440-9d0d-c0d54b1376cf.jpg" width="100%" height="600px" title="Post Modal" alt="Post Modal"></img>
+<img src="https://user-images.githubusercontent.com/48953435/184121959-5612d5c0-3985-4440-9d0d-c0d54b1376cf.jpg" width="100%" height="auto" title="Post Modal" alt="Post Modal"></img>
 
 ### 🟩 My Page
-<img src="https://user-images.githubusercontent.com/48953435/184122013-7164d6fc-7e36-49ec-b391-cbe5aa2bb101.jpg" width="100%" height="600px" title="MyPage" alt="MyPage"></img>
+<img src="https://user-images.githubusercontent.com/48953435/184122013-7164d6fc-7e36-49ec-b391-cbe5aa2bb101.jpg" width="100%" height="auto" title="MyPage" alt="MyPage"></img>
 
 ### 🟪 Timeline
-<img src="https://user-images.githubusercontent.com/48953435/184122056-7c63f8d2-f999-427d-8936-0eba56b5b626.jpg" width="100%" height="600px" title="Timeline" alt="Timeline"></img>
+<img src="https://user-images.githubusercontent.com/48953435/184122056-7c63f8d2-f999-427d-8936-0eba56b5b626.jpg" width="100%" height="auto" title="Timeline" alt="Timeline"></img>
 
 
 ### 🟫 Mypage Detail
-<img src="https://user-images.githubusercontent.com/48953435/184122107-12f06f99-21e1-4a42-b256-302d19c8e055.jpg" width="100%" height="600px" title="MypageDetail" alt="MypageDetail"></img>
+<img src="https://user-images.githubusercontent.com/48953435/184122107-12f06f99-21e1-4a42-b256-302d19c8e055.jpg" width="100%" height="auto" title="MypageDetail" alt="MypageDetail"></img>
 
 
 ### 🟦 Chat List
-<img src="https://user-images.githubusercontent.com/48953435/184122119-18252c07-7fc9-4ed2-a608-1cfc99e8b449.jpg" width="100%" height="600px" title="Chat" alt="Chat"></img>
+<img src="https://user-images.githubusercontent.com/48953435/184122119-18252c07-7fc9-4ed2-a608-1cfc99e8b449.jpg" width="100%" height="auto" title="Chat" alt="Chat"></img>
 
 ### 🟩 Chat Detail
-<img src="https://user-images.githubusercontent.com/48953435/184122128-5fe359ef-3cff-4822-9425-e66dbd70483b.jpg" width="100%" height="600px" title="ChatDetail" alt="ChatDetail"></img>
+<img src="https://user-images.githubusercontent.com/48953435/184122128-5fe359ef-3cff-4822-9425-e66dbd70483b.jpg" width="100%" height="auto" title="ChatDetail" alt="ChatDetail"></img>
 
 
 
