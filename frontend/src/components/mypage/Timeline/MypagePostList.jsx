@@ -75,11 +75,16 @@ function MypagePostList() {
         <>
           <PostWrapper>
             <ul>
-              {bookmarkArr.map((data) => (
-                <li key={data.boardId}>
-                  <PostCard data={data} />
-                </li>
-              ))}
+              {bookmarkArr.map((data) => {
+                if (!data) {
+                  return;
+                }
+                return (
+                  <li key={data.boardId}>
+                    <PostCard data={data} />
+                  </li>
+                );
+              })}
             </ul>
           </PostWrapper>
           <MyPaginationMain
@@ -111,11 +116,16 @@ function MypagePostList() {
       return (
         <PostWrapper>
           <ul>
-            {recentPostList.map((data) => (
-              <li key={data.boardId}>
-                <PostCard data={data} />
-              </li>
-            ))}
+            {recentPostList.map((data) => {
+              if (!data) {
+                return;
+              }
+              return (
+                <li key={data.boardId}>
+                  <PostCard data={data} />
+                </li>
+              );
+            })}
           </ul>
         </PostWrapper>
       );
