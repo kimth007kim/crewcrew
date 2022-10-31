@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import FilterArrowImg from '@/assets/images/IconNavArrow_Big_Rev.png';
-import IconLinkIntro from '@/assets/images/IconLinkIntro.png';
+import ButtonIntro from '../common/ButtonIntro';
 
 function MypageSubTop({ title = '내가 참여요청한 크루' }) {
   return (
@@ -106,29 +106,5 @@ const TopCont = styled('div')`
         }
       }
     }
-  }
-`;
-const ButtonIntro = styled('div')`
-  width: 45px;
-  height: 45px;
-  background: url(${IconLinkIntro}) 50% 50%;
-  background-size: 100% !important;
-  cursor: pointer;
-  position: absolute;
-  top: 42px;
-  right: 45px;
-  opacity: 0.5;
-  transition: 0.3s;
-
-  @media screen and (max-width: 820px) {
-    width: 24px;
-    height: 24px;
-    right: 20px;
-    opacity: 1;
-    top: 10px;
-  }
-
-  @media screen and (max-width: 300px) {
-    right: 10px;
   }
 `;

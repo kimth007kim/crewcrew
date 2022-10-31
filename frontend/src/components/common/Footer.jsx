@@ -11,7 +11,11 @@ function Footer() {
           <ul>
             <li>개인정보 취급 방침</li>
             <li>이용 약관</li>
-            <li>프로젝트 개요</li>
+            <li>
+              <a href="https://github.com/kimth007kim/crewcrew" target="_blank" rel="noreferrer">
+                프로젝트 개요
+              </a>
+            </li>
           </ul>
         </FooterTop>
         <FooterBody>

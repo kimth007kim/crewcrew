@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import WaveSvg from '@/assets/images/Wave.svg';
-import IconLinkIntro from '@/assets/images/IconLinkIntro.png';
+import ButtonIntro from '../common/ButtonIntro';
 import IconSearch from '@/assets/images/IconSearch.png';
 import delImage from '@/assets/images/InputDel.png';
 import LogoCircle from '@/assets/images/LogoCircle3.png';
@@ -271,32 +271,6 @@ const InputDel = styled.div`
     `};
   @media screen and (max-width: 820px) {
     top: 8px;
-  }
-`;
-
-const ButtonIntro = styled.div`
-  width: 45px;
-  height: 45px;
-  background: url(${IconLinkIntro}) 50% 50%;
-  background-size: 100% !important;
-  cursor: pointer;
-  position: absolute;
-  top: 63px;
-  right: 45px;
-  opacity: 0.5;
-  transition: 0.3s;
-  :hover {
-    opacity: 1;
-  }
-  @media screen and (max-width: 820px) {
-    width: 24px;
-    height: 24px;
-    top: 17px;
-    right: 20px;
-    opacity: 1;
-  }
-  @media screen and (max-width: 300px) {
-    right: 10px;
   }
 `;
 
