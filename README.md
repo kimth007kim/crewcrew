@@ -29,7 +29,7 @@
 | Contributor                              | Role | Introduce        |
 | ---------------------------------------- | -------- | ---------------- |
 | [유재영](http://nicole-yoo.com/) | Designer |    |
-| [박한결](http://phk9436.pe.kr/)      | Frontend |      |
+| [박한결](https://github.com/phk9436/)      | Frontend |      |
 | [오주영](https://github.com/ohjooyeong) | Frontend |     |
 | [김경동](https://github.com/kimth007kim)     | Backend   |        |
 | [김도희](https://github.com/Slowth-KIM)   | Backend   |  |
