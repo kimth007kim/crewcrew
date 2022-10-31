@@ -21,12 +21,36 @@ function Footer() {
         <FooterBody>
           <h4>프로젝트 참여자</h4>
           <ul>
-            <li>김경동</li>
-            <li>김도희</li>
-            <li>이하늘</li>
-            <li>박한결</li>
-            <li>오주영</li>
-            <li>유재영</li>
+            <li>
+              <a href="https://github.com/kimth007kim" target="_blank" rel="noreferrer">
+                김경동
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/Slowth-KIM" target="_blank" rel="noreferrer">
+                김도희
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/belowalways" target="_blank" rel="noreferrer">
+                이하늘
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/phk9436" target="_blank" rel="noreferrer">
+                박한결
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/ohjooyeong" target="_blank" rel="noreferrer">
+                오주영
+              </a>
+            </li>
+            <li>
+              <a href="http://nicole-yoo.com/" target="_blank" rel="noreferrer">
+                유재영
+              </a>
+            </li>
           </ul>
         </FooterBody>
         <FooterBottom>
@@ -120,6 +144,10 @@ const FooterBody = styled.div`
   margin: 30px 0;
   color: #fff;
   font-size: 13px;
+
+  a {
+    color: inherit;
+  }
 
   @media screen and (max-width: 820px) {
     margin: 20px 0 30px;
