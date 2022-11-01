@@ -159,7 +159,7 @@ function MainPost({ data }) {
 
       localStorage.setItem('recentPost', JSON.stringify(recentPost));
     }
-  }, []);
+  }, [data.boardId]);
 
   useEffect(() => {
     bookmarkGet();

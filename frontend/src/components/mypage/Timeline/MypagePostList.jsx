@@ -172,21 +172,25 @@ function MypagePostList() {
         console.dir(error);
       }
     },
-    [recentPostList],
+    [recentPostList, myData],
   );
 
   const getRecentList = useCallback(async () => {
-    const recentPost = JSON.parse(localStorage.getItem('recentPost'));
-    if (recentPost && myData?.data) {
-      let tempArr = recentPost[myData.data.uid].reverse();
-      tempArr = await Promise.all(tempArr.map((postId) => getRecent(postId)));
-      setRecentPostList(tempArr);
+    try {
+      const recentPost = JSON.parse(localStorage.getItem('recentPost'));
+      if (recentPost && myData?.data) {
+        let tempArr = recentPost[myData.data.uid].reverse();
+        tempArr = await Promise.all(tempArr.map((postId) => getRecent(postId)));
+        setRecentPostList(tempArr);
+      }
+    } catch (error) {
+      console.error(error);
     }
-  }, []);
+  }, [myData]);
 
   useEffect(() => {
     getRecentList();
-  }, []);
+  }, [getRecentList]);
 
   useEffect(() => {
     const pageNum = query.get('page');
@@ -260,6 +264,7 @@ const ListTap = styled('ul')`
 `;
 
 const PostWrapper = styled.div`
+  min-height: 300px;
   li {
     padding-bottom: 14px;
   }

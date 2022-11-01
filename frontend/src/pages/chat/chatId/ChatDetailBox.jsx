@@ -48,6 +48,9 @@ function ChatDetailBox({ roomId }) {
   const chatBtnRef = useRef(null);
   const scrollbarRef = useRef(null);
   const inputRef = useRef(null);
+  const variable = useRef({
+    isDoubleClick: false,
+  });
 
   const onChangeContent = useCallback(
     (e) => {
@@ -59,6 +62,11 @@ function ChatDetailBox({ roomId }) {
   const onSubmitContent = useCallback(
     (e) => {
       e.preventDefault();
+      if (variable.current.isDoubleClick) {
+        return;
+      }
+
+      variable.current.isDoubleClick = true;
 
       if (roomInfo && !roomInfo.delete && content?.trim() && client) {
         client.publish({
@@ -79,6 +87,7 @@ function ChatDetailBox({ roomId }) {
         });
         setContent('');
       }
+      variable.current.isDoubleClick = false;
     },
     [content, client, myData, roomId, scrollbarRef, roomInfo],
   );
