@@ -36,7 +36,7 @@
 | [이하늘](https://github.com/belowalways) | Backend |     |
 
 ## 🌏 링크
-### **📚 [크루크루](https://crewcrew.org/) 홈페이지입니다.**
+### **📚 [크루크루](https://crewcrew.pages.dev//) 홈페이지입니다.**
 
 ## 🔨 Stacks
 
