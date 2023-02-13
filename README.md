@@ -4,10 +4,10 @@
 
 
   <h4 align="center">
-    <a href="https://crewcrew.org/"><img og:image:height="200" width:"200" src="https://crewcrewbucket.s3.ap-northeast-2.amazonaws.com/default/logo.png" /></a>
+    <a href="https://crewcrew.pages.dev/"><img og:image:height="200" width:"200" src="https://crewcrewbucket.s3.ap-northeast-2.amazonaws.com/default/logo.png" /></a>
   </h4>
   <h4 align="center">
-    <a href="https://crewcrew.org/">🎁 크루크루(웹 어플리케이션)</a>
+    <a href="https://crewcrew.pages.dev/">🎁 크루크루(웹 어플리케이션)</a>
   </h4>
  <h2>
 </h2>
@@ -36,7 +36,7 @@
 | [이하늘](https://github.com/belowalways) | Backend |     |
 
 ## 🌏 링크
-### **📚 [크루크루](https://crewcrew.pages.dev//) 홈페이지입니다.**
+### **📚 [크루크루](https://crewcrew.pages.dev/) 홈페이지입니다.**
 
 ## 🔨 Stacks
 
